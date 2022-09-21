@@ -1,0 +1,37 @@
+{
+  "id": "5c6b3e22-2db4-42bd-9fdb-b3c1ceda164e",
+  "name": "MGTS Customizations",
+  "publisher": "Delphisoft",
+  "version": "20.0.0.0",
+  "brief": "MGTS Customizations",
+  "description": "MGTS Customizations",
+  "privacyStatement": "https://www.delphisoft.ch/",
+  "EULA": "https://www.delphisoft.ch/",
+  "help": "https://www.delphisoft.ch/",
+  "url": "https://www.delphisoft.ch/",
+  "logo": "./res/Logo-Delphisoft.png",
+  "screenshots": [],
+  "platform": "1.0.0.0",
+  "application": "20.0.0.0",
+  "idRanges": [
+    {
+      "from": 50000,
+      "to": 99999
+    }
+  ],
+  "resourceExposurePolicy": {
+    "allowDebugging": true,
+    "allowDownloadingSource": false,
+    "includeSourceInSymbolFile": false
+  },
+  "runtime": "9.0",
+  "contextSensitiveHelpUrl": "https://mgts.com/help/",
+  "features": [
+    "TranslationFile"
+  ],
+  "supportedLocales": [
+    "en-US",
+    "fr-FR"
+  ],
+  "target": "Cloud"
+}
