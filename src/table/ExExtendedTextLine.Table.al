@@ -1,4 +1,6 @@
+
 table 99209 "DEL Ex_Extended Text Line"
+
 {
     Caption = 'Extended Text Line';
 
@@ -31,6 +33,7 @@ table 99209 "DEL Ex_Extended Text Line"
         {
             Caption = 'Line No.';
         }
+
         field(6; "Text"; Text[50])
         {
             Caption = 'Text';

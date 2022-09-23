@@ -15,7 +15,10 @@ table 50020 "DEL Deal"
 
             Caption = 'Status';
         }
-        field(3; "Date"; Date)
+
+
+        field(3; Date; Date)
+
         {
             Caption = 'Date';
         }

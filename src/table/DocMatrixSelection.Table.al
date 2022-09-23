@@ -1,60 +1,47 @@
 table 50071 "DEL DocMatrix Selection"
 {
     Caption = 'DocMatrix Selection';
-    // DEL/PD/20190227/LOP003 : object created
-    // DEL/PD/20190228/LOP003 : changed "Post - OnValidate": small correction in BL
-    // DEL/PD/20190305/LOP003 : deleted obsolete functions
-    // 20200915/DEL/PD/CR100  : new field "E-Mail from Sales Order"
-    // 20201007/DEL/PD/CR100  : published to PROD
 
 
     fields
     {
-        field(1; Type; Option)
+        field(1; Type; Enum "DEL Type Fee Connection")
         {
             Caption = 'Type';
             DataClassification = ToBeClassified;
-            OptionCaption = 'Customer,Vendor';
-            OptionMembers = Customer,Vendor;
+
         }
         field(2; "No."; Code[20])
         {
             Caption = 'No.';
             DataClassification = ToBeClassified;
-            TableRelation = IF (Type = CONST(Customer)) Customer.No.
-                            ELSE IF (Type=CONST(Vendor)) Vendor.No.;
+            TableRelation = IF (Type = CONST(Customer)) Customer."No."
+            ELSE
+            IF (Type = CONST(Vendor)) Vendor."No.";
         }
-        field(3; "Process Type"; Option)
+        field(3; "Process Type"; Enum "DEL Process Type")
         {
             Caption = 'Process Type';
             DataClassification = ToBeClassified;
-            OptionCaption = 'Manual,Automatic';
-            OptionMembers = Manual,Automatic;
+
         }
         field(4; "Report ID"; Integer)
         {
             Caption = 'Report ID';
             Editable = false;
-            TableRelation = AllObjWithCaption."Object ID" WHERE (Object Type=CONST(Report    Caption     Caption = 'Caption';
-= '';
-));
+            TableRelation = AllObjWithCaption."Object ID" WHERE("Object Type" = CONST(Report));
         }
         field(5; "Report Caption"; Text[250])
         {
-            CalcFormula = Lookup(AllObjWithCaption."Object Caption" WHERE (Object Type=CONST(Report    Caption     Caption = 'Caption';
-= '';
-),
-                                                                           Object ID=FIELD(Report ID    Caption = 'ID';
-)));
+            CalcFormula = Lookup(AllObjWithCaption."Object Caption" WHERE("Object Type" = CONST(Report),
+                                                                           "Object ID" = FIELD("Report ID")));
             Caption = 'Report Caption';
             Editable = false;
             FieldClass = FlowField;
         }
-        field(6; Usage; Option)
+        field(6; Usage; Enum "DEL Usage DocMatrix Selection")
         {
             Caption = 'Usage';
-            OptionCaption = ',S.Order,S.Invoice,S.Cr.Memo,,,P.Order,P.Invoice,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,C.Statement';
-            OptionMembers = ,"S.Order","S.Invoice","S.Cr.Memo",,,"P.Order","P.Invoice",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"C.Statement";
         }
         field(7; Name; Text[50])
         {
@@ -74,9 +61,9 @@ table 50071 "DEL DocMatrix Selection"
             trigger OnValidate()
             begin
                 IF xRec."Save PDF" AND NOT "Save PDF" THEN BEGIN
-                  IF NOT "Save PDF" THEN BEGIN
-                    "Save PDF" := TRUE;
-                  END;
+                    IF NOT "Save PDF" THEN BEGIN
+                        "Save PDF" := TRUE;
+                    END;
                 END;
             end;
         }
@@ -88,9 +75,9 @@ table 50071 "DEL DocMatrix Selection"
             trigger OnValidate()
             begin
                 IF xRec."Save PDF" AND NOT "Save PDF" THEN BEGIN
-                  IF NOT "Save PDF" THEN BEGIN
-                    "Save PDF" := TRUE;
-                  END;
+                    IF NOT "Save PDF" THEN BEGIN
+                        "Save PDF" := TRUE;
+                    END;
                 END;
             end;
         }
@@ -99,59 +86,59 @@ table 50071 "DEL DocMatrix Selection"
             Caption = 'E-Mail To 1';
             DataClassification = ToBeClassified;
 
-            trigger OnValidate()
-            begin
-                IF (xRec."E-Mail To 1" = '') AND ("E-Mail To 1" <> '') THEN BEGIN
-                  IF NOT "Save PDF" THEN BEGIN
-                    "Save PDF" := TRUE;
-                    IF "E-Mail From" = '' THEN
-                      "E-Mail From" := CheckEmailFromAddress;
-                  END;
-                END;
-            end;
+            // trigger OnValidate()
+            // begin
+            //     IF (xRec."E-Mail To 1" = '') AND ("E-Mail To 1" <> '') THEN BEGIN
+            //         IF NOT "Save PDF" THEN BEGIN
+            //             "Save PDF" := TRUE;
+            //         //     IF "E-Mail From" = '' THEN
+            //         //        //TODO "E-Mail From" := CheckEmailFromAddress;
+            //         // END;
+            //     END;
+            // end;
         }
         field(21; "E-Mail To 2"; Text[80])
         {
             Caption = 'E-Mail To 2';
             DataClassification = ToBeClassified;
 
-            trigger OnValidate()
-            begin
-                IF (xRec."E-Mail To 2" = '') AND ("E-Mail To 2" <> '') THEN BEGIN
-                  IF NOT "Save PDF" THEN BEGIN
-                    "Save PDF" := TRUE;
-                    IF "E-Mail From" = '' THEN
-                      "E-Mail From" := CheckEmailFromAddress;
-                  END;
-                END;
-            end;
+            // trigger OnValidate()
+            // begin
+            //     IF (xRec."E-Mail To 2" = '') AND ("E-Mail To 2" <> '') THEN BEGIN
+            //         IF NOT "Save PDF" THEN BEGIN
+            //             "Save PDF" := TRUE;
+            //         // TODO    IF "E-Mail From" = '' THEN
+            //         //         "E-Mail From" := CheckEmailFromAddress;
+            //         // END;
+            //     END;
+            // end;
         }
         field(22; "E-Mail To 3"; Text[80])
         {
             Caption = 'E-Mail To 3';
             DataClassification = ToBeClassified;
 
-            trigger OnValidate()
-            begin
-                IF (xRec."E-Mail To 3" = '') AND ("E-Mail To 3" <> '') THEN BEGIN
-                  IF NOT "Save PDF" THEN BEGIN
-                    "Save PDF" := TRUE;
-                    IF "E-Mail From" = '' THEN
-                      "E-Mail From" := CheckEmailFromAddress;
-                  END;
-                END;
-            end;
+            //TODO trigger OnValidate()
+            // begin
+            //     IF (xRec."E-Mail To 3" = '') AND ("E-Mail To 3" <> '') THEN BEGIN
+            //         IF NOT "Save PDF" THEN BEGIN
+            //             "Save PDF" := TRUE;
+            //             IF "E-Mail From" = '' THEN
+            //                 "E-Mail From" := CheckEmailFromAddress;
+            //         END;
+            //     END;
+            // end;
         }
         field(23; "E-Mail From"; Text[80])
         {
             Caption = 'E-Mail From';
             DataClassification = ToBeClassified;
 
-            trigger OnValidate()
-            begin
-                IF EMailAddresExists AND (xRec."E-Mail From" <> '') AND ("E-Mail From" = '') THEN
-                  ERROR(Err003);
-            end;
+            //TODO trigger OnValidate()
+            // begin
+            //     IF EMailAddresExists AND (xRec."E-Mail From" <> '') AND ("E-Mail From" = '') THEN
+            //         ERROR(Err003);
+            // end;
         }
         field(30; "Save PDF"; Boolean)
         {
@@ -173,7 +160,7 @@ table 50071 "DEL DocMatrix Selection"
         {
             Caption = 'Mail Text Code';
             DataClassification = ToBeClassified;
-            TableRelation = "DocMatrix Email Codes" WHERE (Language Code=FILTER("MAIL TEXT LANGAUGE CODE"|''));
+            TableRelation = "DEL DocMatrix Email Codes" WHERE("Language Code" = FILTER("MAIL TEXT LANGAUGE CODE" | ''));
         }
         field(51; "Mail Text Langauge Code"; Code[10])
         {
@@ -186,24 +173,22 @@ table 50071 "DEL DocMatrix Selection"
             Caption = 'Request Page Parameters';
             DataClassification = ToBeClassified;
         }
-        field(70; Post; Option)
+        field(70; Post; Enum "DEL Post DocMatrix")
         {
             Caption = 'Post';
             DataClassification = ToBeClassified;
-            OptionCaption = ' ,Ship,Invoice,Ship and Invoice,Yes';
-            OptionMembers = " ",Ship,Invoice,"Ship and Invoice",Yes;
 
             trigger OnValidate()
             begin
-                IF (Post IN [1,2,3]) AND (Usage <> Usage::"S.Order") THEN BEGIN
-                  IF Usage = Usage::"S.Cr.Memo" THEN
-                    ERROR(Err007,FORMAT(Usage::"S.Cr.Memo"))
-                  ELSE
-                    ERROR(Err005,FORMAT(Usage));
+                IF (Post IN [1, 2, 3]) AND (Usage <> Usage::"S.Order") THEN BEGIN
+                    IF Usage = Usage::"S.Cr.Memo" THEN
+                        ERROR(Err007, FORMAT(Usage::"S.Cr.Memo"))
+                    ELSE
+                        ERROR(Err005, FORMAT(Usage));
                 END;
 
                 IF (Usage <> Usage::"S.Cr.Memo") AND (Post = Post::Yes) THEN
-                  ERROR(Err006,FORMAT(Usage::"S.Cr.Memo"));
+                    ERROR(Err006, FORMAT(Usage::"S.Cr.Memo"));
             end;
         }
         field(75; "E-Mail from Sales Order"; Boolean)
@@ -213,16 +198,16 @@ table 50071 "DEL DocMatrix Selection"
 
             trigger OnValidate()
             begin
-                //20200915/DEL/PD/CR100.begin
-                TESTFIELD(Type,Type::Customer);
-                //20200915/DEL/PD/CR100.end
+
+                TESTFIELD(Type, Type::Customer);
+
             end;
         }
     }
 
     keys
     {
-        key(Key1;UserId)
+        key(Key1; UserId)
         {
             Clustered = true;
         }
@@ -233,8 +218,9 @@ table 50071 "DEL DocMatrix Selection"
     }
 
     var
-        DocumentMatrixMgt: Codeunit "50015";
-        DocumentMatrixSetup: Record "50069";
+        //TODO: documentMatrix lors de la creation des codeunits
+        DocumentMatrixMgt: Codeunit 50015;
+        DocumentMatrixSetup: Record "DEL DocMatrix Setup";
         boNotificationAlreadySent: Boolean;
         Err001: Label 'Please enter the Document Matrix Setup first.';
         Err002: Label 'You can not desactivate "Save PDF" if EMail or FTP is active, or if "Process Type" is "Automatic".';
@@ -257,9 +243,9 @@ table 50071 "DEL DocMatrix Selection"
         ltxText001: Label 'You can enter a "Default E-Mail From" Address in the Document Matrix Setup.';
     begin
         IF EMailAddresExists THEN BEGIN
-          IF (DocumentMatrixSetup.GET) AND (DocumentMatrixSetup."Default E-Mail From" = '') THEN
-            SendNotificationInfo(ltxText001);
-          EXIT(DocumentMatrixSetup."Default E-Mail From");
+            IF (DocumentMatrixSetup.GET) AND (DocumentMatrixSetup."Default E-Mail From" = '') THEN
+                SendNotificationInfo(ltxText001);
+            EXIT(DocumentMatrixSetup."Default E-Mail From");
         END;
     end;
 
@@ -268,7 +254,7 @@ table 50071 "DEL DocMatrix Selection"
         MyNotification: Notification;
     begin
         IF boNotificationAlreadySent AND NOT NotificationsActive THEN
-          EXIT;
+            EXIT;
         MyNotification.MESSAGE := ptxNotificationText;
         MyNotification.SCOPE := NOTIFICATIONSCOPE::LocalScope;
         MyNotification.SEND;
@@ -278,7 +264,7 @@ table 50071 "DEL DocMatrix Selection"
     local procedure NotificationsActive(): Boolean
     begin
         IF DocumentMatrixSetup.GET THEN
-          EXIT(DocumentMatrixSetup."Show Notifications");
+            EXIT(DocumentMatrixSetup."Show Notifications");
     end;
 }
 

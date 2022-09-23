@@ -1,8 +1,10 @@
+
 table 99204 "DEL Ex_Item Translation"
 {
     Caption = 'Item Translation';
     DataCaptionFields = "Item No.", "Variant Code", "Language Code", Description;
     LookupPageID = "Item Translations";
+
 
     fields
     {
@@ -29,8 +31,9 @@ table 99204 "DEL Ex_Item Translation"
         field(5400; "Variant Code"; Code[10])
         {
             Caption = 'Variant Code';
-            TableRelation = "Item Variant".Code WHERE(Item No.=FIELD(Item No    Caption = 'Item';
-.));
+
+            TableRelation = "Item Variant".Code WHERE(Item No.=FIELD(Item No.));
+
         }
     }
 

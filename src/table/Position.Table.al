@@ -1,6 +1,8 @@
 table 50022 "DEL Position"
 {
-    LookupPageID = 50022;
+
+    //TODO LookupPageID = 50022;
+
     Caption = 'Position';
 
     fields
@@ -11,23 +13,28 @@ table 50022 "DEL Position"
         }
         field(2; Deal_ID; Code[20])
         {
-            TableRelation = Deal.ID;
+
+            TableRelation = "DEL Deal".ID;
+
             Caption = 'Deal_ID';
         }
         field(3; Element_ID; Code[20])
         {
-            TableRelation = Element.ID;
+
+            TableRelation = "DEL Element".ID;
             Caption = 'Element_ID';
         }
-        field(4; Instance; Option)
+        field(4; Instance; Enum "DEL Instance")
         {
-            OptionCaption = 'Planned,Real,Dispatched';
-            OptionMembers = Planned,Real,Dispatched;
+
+
             Caption = 'Instance';
         }
         field(5; "Deal Item No."; Code[20])
         {
-            TableRelation = "Deal Item"."Item No." WHERE(Deal_ID = FIELD(Deal_ID));
+
+            TableRelation = "DEL Deal Item"."Item No." WHERE(Deal_ID = FIELD(Deal_ID));
+
             Caption = 'Deal Item No.';
         }
         field(6; Quantity; Decimal)
@@ -58,7 +65,9 @@ table 50022 "DEL Position"
         }
         field(9; "Sub Element_ID"; Code[20])
         {
-            TableRelation = Element.ID;
+
+            TableRelation = "DEL Element".ID;
+
             Caption = 'Sub Element_ID';
         }
         field(10; Rate; Decimal)
@@ -114,7 +123,9 @@ table 50022 "DEL Position"
     end;
 
     var
-        NoSeriesMgt: Codeunit "396";
-        Setup: Record "50000";
+
+        NoSeriesMgt: Codeunit "NoSeriesManagement";
+        Setup: Record "DEL General Setup";
+
 }
 

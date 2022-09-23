@@ -1,67 +1,50 @@
 table 50067 "DEL Document Matrix"
 {
-    // DEL/PD/20190127/LOP003 : object created
-    //                          currently supported Documents (field "Usage") in ProcessType "Manual":
-    //                          - Confirmation commande Vente,"S.Order"
-    //                          - Facture vente, "S.Invoice"
-    //                          - Avoir Vente, "S.Cr.Mem"
-    //                          - Commande Achat, "P.Order"
-    //                          - Facture Achat, "P.Invoice"
-    //                          currently supported Document (field "Usage") in ProcessType "Automatic":
-    //                          - Relevé client, "C.Statement"
-    // DEL/PD/20190305/LOP003 : renamed functions "SetRequestPageParameters" and "GetRequestPageParameters" to "SetRequestPageParametersText" and "GetRequestPageParametersText"
-    //                          changed function "GetRequestPageParametersBigText" : get the Parameter from the correct record
-    // DEL/PD/20190306/LOP003 : FTP1 and FTP2 only allowed for Type::Customer
-    // 20200916/DEL/PD/CR100  : new field "E-Mail from Sales Order"
-    //                          new code in "E-Mail from Sales Order - OnValidate()", only allow Customer."Sale Orders"
-    // 20201007/DEL/PD/CR100  : published to PROD
 
     Caption = 'Document Matrix';
 
     fields
     {
-        field(1; Type; Option)
+        field(1; Type; Enum "DEL Type Fee Connection")
         {
             Caption = 'Type';
             DataClassification = ToBeClassified;
-            OptionCaption = 'Customer,Vendor';
-            OptionMembers = Customer,Vendor;
+
         }
         field(2; "No."; Code[20])
         {
             Caption = 'No.';
             DataClassification = ToBeClassified;
-            TableRelation = IF (Type = CONST(Customer)) Customer.No.
-                            ELSE IF (Type=CONST(Vendor)) Vendor.No.;
+            TableRelation = IF (Type = CONST(Customer)) Customer."No."
+            ELSE
+            IF (Type = CONST(Vendor)) Vendor."No.";
 
             trigger OnValidate()
             begin
-                Name := DocumentMatrixMgt.GetCustVendName(Type, "No.");
-                "Mail Text Langauge Code" := DocumentMatrixMgt.GetCustVendLanguageCode(Type, "No.");
+                //TODO
+                // Name := DocumentMatrixMgt.GetCustVendName(Type, "No.");
+                //"Mail Text Langauge Code" := DocumentMatrixMgt.GetCustVendLanguageCode(Type, "No.");
             end;
         }
-        field(3; "Process Type"; Option)
+        field(3; "Process Type"; Enum "DEL Process Type")
         {
             Caption = 'Process Type';
             DataClassification = ToBeClassified;
-            OptionCaption = 'Manual,Automatic';
-            OptionMembers = Manual,Automatic;
 
             trigger OnValidate()
             begin
                 IF "Process Type" = "Process Type"::Automatic THEN
-                  VALIDATE(Usage, Usage::"C.Statement")
+                    VALIDATE(Usage, Usage::"C.Statement")
                 ELSE
-                  IF (xRec."Process Type" <> "Process Type") THEN
-                    SendNotificationInfo(Text003);
+                    IF (xRec."Process Type" <> "Process Type") THEN
+                        SendNotificationInfo(Text003);
             end;
         }
         field(4; "Report ID"; Integer)
         {
             Caption = 'Report ID';
             Editable = false;
-            TableRelation = AllObjWithCaption."Object ID" WHERE (Object Type=CONST(Report    Caption     Caption = 'Caption';
-= '';
+            TableRelation = AllObjWithCaption."Object ID" WHERE("Object Type" = CONST(Report Caption = '';
 ));
 
             trigger OnValidate()
@@ -71,8 +54,7 @@ table 50067 "DEL Document Matrix"
         }
         field(5; "Report Caption"; Text[250])
         {
-            CalcFormula = Lookup(AllObjWithCaption."Object Caption" WHERE (Object Type=CONST(Report    Caption     Caption = 'Caption';
-= '';
+            CalcFormula = Lookup(AllObjWithCaption."Object Caption" WHERE (Object Type=CONST(Report    Caption = '';
 ),
                                                                            Object ID=FIELD(Report ID    Caption = 'ID';
 )));
@@ -288,8 +270,8 @@ table 50067 "DEL Document Matrix"
     end;
 
     var
-        DocumentMatrixMgt: Codeunit "50015";
-        DocumentMatrixSetup: Record "50069";
+        DocumentMatrixMgt: Codeunit "DocMatrix Management";
+        DocumentMatrixSetup: Record "DocumentMatrixSetup";
         Err001: Label 'Please enter the Document Matrix Setup first.';
         Err002: Label 'You can not desactivate "Save PDF" if EMail or FTP is active, or if "Process Type" is "Automatic".';
         Err003: Label 'You can not delete the "E-Mail From" Address, if a E-Mail Address is entered. First you have to delete all the E-Mail Addresses.';
@@ -370,16 +352,13 @@ table 50067 "DEL Document Matrix"
         EXIT(EMailAddresExists OR FtpActivated OR (Usage = Usage::"C.Statement"));
     end;
 
-    
     procedure SaveRequestPageParameters(precDocumentMatrix: Record "50067")
     var
         XmlParameters: Text;
         OStream: OutStream;
     begin
         WITH precDocumentMatrix DO BEGIN
-          XmlParameters := REPORT    Caption     Caption = 'Caption';
-= '';
-.RUNREQUESTPAGE("Report ID");
+          XmlParameters := REPORT.RUNREQUESTPAGE("Report ID");
           SETAUTOCALCFIELDS("Request Page Parameters");
           "Request Page Parameters".CREATEOUTSTREAM(OStream,TEXTENCODING::UTF8);
           OStream.WRITETEXT(XmlParameters);
@@ -387,8 +366,8 @@ table 50067 "DEL Document Matrix"
         END;
     end;
 
-    
-    procedure SetRequestPageParametersText(precDocumentMatrix: Record "50067";Value: Text)
+
+    procedure SetRequestPageParametersText(precDocumentMatrix: Record "DocumentMatrixSetup";Value: Text)
     var
         DataStream: OutStream;
         BodyText: BigText;
@@ -403,11 +382,11 @@ table 50067 "DEL Document Matrix"
         END;
     end;
 
-    
-    procedure GetRequestPageParametersText(precDocumentMatrix: Record "50067") Value: Text
+
+    procedure GetRequestPageParametersText(precDocumentMatrix: Record "DocumentMatrixSetup") Value: Text
     var
-        TempBlob: Record "99008535";
-        FileManagement: Codeunit "419";
+        TempBlob: Record "TempBlob";
+        FileManagement: Codeunit "File Management";
         DataStream: InStream;
         BodyOutStream: OutStream;
         BodyText: BigText;
@@ -427,8 +406,8 @@ table 50067 "DEL Document Matrix"
         END;
     end;
 
-    
-    procedure SetRequestPageParametersBigText(var precDocumentMatrix: Record "50067";pBigText: BigText)
+
+    procedure SetRequestPageParametersBigText(var precDocumentMatrix: Record "DocumentMatrixSetup";pBigText: BigText)
     var
         DataStream: OutStream;
         BodyText: BigText;
@@ -442,11 +421,11 @@ table 50067 "DEL Document Matrix"
         END;
     end;
 
-    
-    procedure GetRequestPageParametersBigText(var precDocumentMatrix: Record "50067";var pBigText: BigText)
+ 
+    procedure GetRequestPageParametersBigText(var precDocumentMatrix: Record "DocumentMatrixSetup";var pBigText: BigText)
     var
-        TempBlob: Record "99008535";
-        FileManagement: Codeunit "419";
+        TempBlob: Record "TempBlob";
+        FileManagement: Codeunit "File Management";
         DataStream: InStream;
         BodyOutStream: OutStream;
         BodyText: BigText;
@@ -463,8 +442,8 @@ table 50067 "DEL Document Matrix"
         END;
     end;
 
-    
-    procedure ChangeRequestPageParameters(var precDocumentMatrix: Record "50067";pTextToFind: Text;pTextToReplace: Text)
+
+    procedure ChangeRequestPageParameters(var precDocumentMatrix: Record "DocumentMatrixSetup";pTextToFind: Text;pTextToReplace: Text)
     var
         InStream: InStream;
         OutStream: OutStream;

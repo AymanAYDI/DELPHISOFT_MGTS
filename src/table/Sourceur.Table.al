@@ -1,8 +1,11 @@
 table 50061 "DEL Sourceur"
 {
-    DrillDownPageID = 50101;
-    LookupPageID = 50101;
+
+    //TODO DrillDownPageID = 50101;
+    // LookupPageID = 50101;
     Caption = 'Sourceur';
+    DataClassification = CustomerContent;
+
 
     fields
     {
@@ -10,10 +13,16 @@ table 50061 "DEL Sourceur"
         {
             Caption = 'Code';
             NotBlank = true;
+
+            DataClassification = CustomerContent;
+
         }
         field(2; Name; Text[50])
         {
             Caption = 'Name';
+
+            DataClassification = CustomerContent;
+
         }
     }
 

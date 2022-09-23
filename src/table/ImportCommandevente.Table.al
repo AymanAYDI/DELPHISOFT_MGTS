@@ -78,7 +78,9 @@ table 50002 "DEL Import Commande vente"
         {
             Caption = 'Cross-Reference No.';
         }
+
         field(10; "Error"; Text[250])
+
         {
             Caption = 'Error';
             Editable = false;
@@ -96,7 +98,7 @@ table 50002 "DEL Import Commande vente"
     fieldgroups
     {
     }
-    //TODO
+
     trigger OnDelete()
     begin
         ErrorImportvente.SETRANGE(ErrorImportvente."Document No.", "Document No.");

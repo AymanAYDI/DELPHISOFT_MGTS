@@ -1,31 +1,34 @@
 table 50068 "DEL DocMatrix Log"
 {
-    // DEL/PD/20190227/LOP003 : object created
-    // DEL/PD/20190305/LOP003 : new field Description
-    //                          changed field Error from Text to Boolean
-    // DEL/PD/20190307/LOP003 : new field "Solving Description" and "Error Solved"
-    //                          renamed field "Desctiption" to "Process Result Description"
-    // 20200915/DEL/PD/CR100  : new field "E-Mail from Sales Order"
-    // 20201007/DEL/PD/CR100  : published to PROD
 
-    LookupPageID = 50138;
+
+
+    // LookupPageID = 50138;
+
     Caption = 'DocMatrix Log';
 
     fields
     {
-        field(1; Type; Enum type)
+
+
+        field(1; Type; Option)
+
         {
-            Caption = 'Type';
-            DataClassification = ToBeClassified;
-            Editable = false;
+          
+            OptionCaption = 'Customer,Vendor';
+            OptionMembers = Customer,Vendor;
+
         }
         field(2; "No."; Code[20])
         {
             Caption = 'No.';
             DataClassification = ToBeClassified;
             Editable = false;
-            TableRelation = IF (Type = CONST(Customer)) Customer.No.
-                            ELSE IF (Type=CONST(Vendor)) Vendor.No.;
+
+            TableRelation = IF (Type = CONST(Customer)) Customer."No."
+            ELSE
+            IF (Type = CONST(Vendor)) Vendor."No.";
+
         }
         field(3; "Process Type"; Option)
         {
@@ -39,14 +42,15 @@ table 50068 "DEL DocMatrix Log"
         {
             Caption = 'Report ID';
             Editable = false;
-            TableRelation = AllObjWithCaption."Object ID" WHERE (Object Type=CONST(Report    Caption     Caption = 'Caption';
-= '';
-));
+
+            TableRelation = AllObjWithCaption."Object ID" WHERE(Object Type=CONST(Report    Caption = '';
+
         }
         field(5; "Report Caption"; Text[250])
         {
-            CalcFormula = Lookup(AllObjWithCaption."Object Caption" WHERE (Object Type=CONST(Report    Caption     Caption = 'Caption';
-= '';
+
+            CalcFormula = Lookup(AllObjWithCaption."Object Caption" WHERE (Object Type=CONST(Report    Caption = '';
+
 ),
                                                                            Object ID=FIELD(Report ID    Caption = 'ID';
 )));

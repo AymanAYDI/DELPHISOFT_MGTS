@@ -1,3 +1,4 @@
+
 table 50033 "DEL Position Detail"
 {
     Caption = 'DEL Position Detail';
@@ -8,6 +9,7 @@ table 50033 "DEL Position Detail"
     {
         field(1; ID; Code[20])
         {
+
             Caption = 'ID';
             //TODO //Codeunit 
             // trigger OnValidate()
@@ -31,7 +33,7 @@ table 50033 "DEL Position Detail"
             ELSE
             IF (Type = CONST(VCO)) "Sales Header"."No."
             ELSE
-            IF (Type = CONST(Fee)) Fee.ID
+            IF (Type = CONST(Fee)) "DEL Fee".ID
             ELSE
             IF (Type = CONST(BR)) "Purch. Rcpt. Header"."No."
             ELSE
@@ -65,12 +67,15 @@ table 50033 "DEL Position Detail"
         field(70; "Line Amount"; Decimal)
         {
             Caption = 'Line Amount';
+
         }
     }
 
     keys
     {
+
         key(Key1; ID)
+
         {
             Clustered = true;
         }
@@ -79,8 +84,10 @@ table 50033 "DEL Position Detail"
     fieldgroups
     {
     }
+
     //TODO //Codeunit 
     // var
     //     Position_Cu: Codeunit "50022";
+
 }
 

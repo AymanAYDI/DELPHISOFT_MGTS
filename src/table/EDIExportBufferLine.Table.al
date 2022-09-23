@@ -1,5 +1,7 @@
+
 table 50078 "DEL EDI Export Buffer Line"
 {
+
     Caption = 'EDI Export Buffer';
 
     fields
@@ -16,14 +18,17 @@ table 50078 "DEL EDI Export Buffer Line"
         {
             Caption = 'N° Source';
         }
+
         field(4; "Document Type"; Enum "DEL DocTYPE")
         {
             Caption = 'Document Type';
+
 
         }
         field(5; "Document No."; Code[20])
         {
             Caption = 'Document No.';
+
             TableRelation = "Purchase Header"."No." WHERE("Document Type" = FIELD("Document Type"));
         }
         field(6; "Document Line No."; Integer)
@@ -93,6 +98,7 @@ table 50078 "DEL EDI Export Buffer Line"
             Caption = 'VAT %';
         }
         field(22; "Net Price"; Decimal)
+
         {
             Caption = 'Net Price';
         }
@@ -100,14 +106,17 @@ table 50078 "DEL EDI Export Buffer Line"
 
     keys
     {
+
         key(Key1; "Document Enty No.", "Line No.")
         {
             Clustered = true;
         }
         key(Key2; "Document Type", "Document No.", "Document Line No.")
+
         {
         }
     }
+
 
 }
 

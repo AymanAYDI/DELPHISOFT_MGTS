@@ -9,7 +9,9 @@ table 50006 "DEL ItemCategory_Translation"
         field(10; CategoryCode; Code[10])
         {
             TableRelation = "Item Category";
+
             Caption = 'CategoryCode';
+
         }
         field(20; Language_Code; Code[10])
         {
@@ -19,7 +21,9 @@ table 50006 "DEL ItemCategory_Translation"
         }
         field(30; Translation; Text[50])
         {
+
             Caption = 'Translation';
+
         }
     }
 

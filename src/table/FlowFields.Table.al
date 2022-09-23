@@ -1,4 +1,6 @@
+
 table 50044 "DEL FlowFields"
+
 {
     Caption = 'FlowFields';
 
@@ -6,6 +8,7 @@ table 50044 "DEL FlowFields"
     {
         field(1; "Primary Key"; Code[10])
         {
+
             Caption = 'Primary Key';
         }
         field(10; "Provision Planned Amount"; Decimal)
@@ -29,6 +32,7 @@ table 50044 "DEL FlowFields"
         field(100; USER_ID; Code[20])
         {
             Caption = 'USER_ID';
+
         }
     }
 

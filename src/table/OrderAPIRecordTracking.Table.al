@@ -1,3 +1,4 @@
+
 table 50074 "DEL Order API Record Tracking"
 {
     Caption = 'Order API Record Tracking';
@@ -7,11 +8,14 @@ table 50074 "DEL Order API Record Tracking"
         field(1; "Deal ID"; Code[20])
         {
             Caption = 'Deal ID';
+
             TableRelation = "DEL Deal".ID;
+
         }
         field(2; "ACO No."; Code[20])
         {
             Caption = 'ACO No.';
+
             TableRelation = "Purchase Header"."No." WHERE("Document Type" = CONST(Order));
         }
         field(3; "ACO Date"; Date)
@@ -31,19 +35,23 @@ table 50074 "DEL Order API Record Tracking"
         field(6; "ACO Supplier ERP Name"; Text[100])
         {
             CalcFormula = Lookup(Vendor.Name WHERE("No." = FIELD("ACO Supplier ERP Code")));
+
             Caption = 'ACO Supplier ERP Name';
             Editable = false;
             FieldClass = FlowField;
         }
+
         field(7; "ACO Supplier base code"; Text[10])
         {
             Caption = 'ACO Supplier Base Code';
         }
         field(8; "ACO Transport Mode"; Option)
+
         {
             Caption = 'ACO Transport Mode';
             OptionMembers = "Air Flight","Sea Vessel","Sea/Air",Truck,Train;
         }
+
         field(9; "ACO Departure Port"; Text[30])
         {
             Caption = 'ACO Departure Port';
@@ -65,15 +73,18 @@ table 50074 "DEL Order API Record Tracking"
             Caption = 'ACO ETD';
         }
         field(14; "ACO Incoterm"; Code[10])
+
         {
             Caption = 'ACO Incoterm';
             TableRelation = "Shipment Method";
         }
+
         field(15; "ACO Amount"; Decimal)
         {
             Caption = 'ACO Amount';
         }
         field(16; "ACO Currency Code"; Code[10])
+
         {
             Caption = 'ACO Currency Code';
             TableRelation = Currency;
@@ -104,6 +115,7 @@ table 50074 "DEL Order API Record Tracking"
             Caption = 'Sent Deal';
         }
         field(23; Completed; Boolean)
+
         {
             Caption = 'Completed';
             Description = 'MGTS10.00.012';
@@ -112,11 +124,13 @@ table 50074 "DEL Order API Record Tracking"
 
     keys
     {
+
         key(Key1; "Deal ID")
         {
             Clustered = true;
         }
         key(Key2; "Sent Deal")
+
         {
         }
     }
@@ -127,10 +141,12 @@ table 50074 "DEL Order API Record Tracking"
 
     trigger OnDelete()
     var
+
         ACOLinesAPIRecordTracking: Record "DEL ACO Lines API Rec. Track.";
     begin
         ACOLinesAPIRecordTracking.SETRANGE("Deal ID", "Deal ID");
         ACOLinesAPIRecordTracking.DELETEALL();
+
     end;
 }
 

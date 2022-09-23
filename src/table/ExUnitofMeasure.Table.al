@@ -1,16 +1,18 @@
+
 table 99206 "DEL Ex_Unit of Measure"
 {
     Caption = 'Unit of Measure';
     DataCaptionFields = "Code", Description;
     DrillDownPageID = "Units of Measure";
     LookupPageID = "Units of Measure";
+7001464a5622ca
 
     fields
     {
         field(1; "Code"; Code[10])
         {
             Caption = 'Code';
-            NotBlank = true;
+            NotBlank = tru
         }
         field(2; Description; Text[10])
         {

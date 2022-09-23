@@ -1,4 +1,6 @@
+
 table 50072 "DEL DocMatrix Customer FTP"
+
 {
     Caption = 'DocMatrix Customer FTP';
     // DEL/PD/20190306/LOP003 : object created

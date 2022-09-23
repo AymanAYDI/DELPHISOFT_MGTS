@@ -1,16 +1,6 @@
 table 50056 "DEL Item Quality forms"
 {
-    // +---------------------------------------------------------------+
-    // | Logico SA                                                     |
-    // | Status:                                                       |
-    // | Customer/Project:                                             |
-    // +---------------------------------------------------------------+
-    // Requirement UserID   Date       Where   Description
-    // -----------------------------------------------------------------
-    // T-00716      THM     27.08.15           Create Object
-    // T-00747      THM     17.11.15           change name in fields
-    // T-00755      THM     04.01.16           delete field
-    // T-00757      THM     07.01.16           add and modify Field
+
 
     Caption = 'Quality forms';
 
@@ -24,7 +14,8 @@ table 50056 "DEL Item Quality forms"
         field(3; "Type / Nature Enregistrement"; Code[20])
         {
             Caption = 'Type of forms';
-            TableRelation = "Type/Nature Enregistrement";
+
+            TableRelation = "DEL Type/Nature Enregistrement";
 
             trigger OnValidate()
             begin
@@ -33,7 +24,9 @@ table 50056 "DEL Item Quality forms"
         }
         field(4; Description; Text[50])
         {
-            CalcFormula = Lookup("Type/Nature Enregistrement".Description WHERE(Code = FIELD(Type / Nature Enregistrement)));
+
+            CalcFormula = Lookup("DEL Type/Nature Enregistrement".Description WHERE(Code = FIELD("Type / Nature Enregistrement")));
+
             Caption = 'Description';
             Editable = false;
             FieldClass = FlowField;
@@ -62,7 +55,9 @@ table 50056 "DEL Item Quality forms"
 
     trigger OnInsert()
     begin
-        "Date of creation" := WORKDATE;
+
+        "Date of creation" := WORKDATE();
+
     end;
 }
 

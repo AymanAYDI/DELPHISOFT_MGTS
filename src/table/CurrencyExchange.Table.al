@@ -46,7 +46,7 @@ table 50028 "DEL Currency Exchange"
     {
     }
 
-    //
+    //[Scope('Internal')]
     [Scope('OnPrem')]
     procedure FNC_Convert(Deal_ID_Co_Par: Code[20]; Amount_Dec_Par: Decimal; From_Currency_Co_Par: Code[10]; To_Currency_Co_Par: Code[10]) Amount_Dec_Ret: Decimal
     begin

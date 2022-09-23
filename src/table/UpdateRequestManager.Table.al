@@ -1,3 +1,4 @@
+
 table 50039 "DEL Update Request Manager"
 {
     Caption = 'DEL Update Request Manager';
@@ -6,16 +7,19 @@ table 50039 "DEL Update Request Manager"
     {
         field(1; ID; Code[20])
         {
+
             Caption = 'ID';
         }
         field(10; Request_For_Deal_ID; Code[20])
         {
             TableRelation = "DEL Deal".ID;
             Caption = 'Request_For_Deal_ID';
+
         }
         field(15; Requested_By_User; Code[50])
         {
             Description = 'Mgts10.00.06.01';
+
             Caption = 'Requested_By_User';
         }
         field(20; Requested_By_Type; enum "DEL Requested By Type")
@@ -25,11 +29,11 @@ table 50039 "DEL Update Request Manager"
         field(30; "Requested_By_Type No."; Code[20])
         {
             Caption = 'Requested_By_Type No.';
-            //The property 'ValidateTableRelation' can only be set if the property 'TableRelation' is set
-            //ValidateTableRelation = false;
+
         }
         field(40; Requested_At; DateTime)
         {
+
             Caption = 'Requested_At';
         }
         field(50; Request_Status; Enum "DEL Request_Status")
@@ -44,6 +48,7 @@ table 50039 "DEL Update Request Manager"
         field(70; Description; Text[250])
         {
             Caption = 'Description';
+
         }
     }
 

@@ -1,3 +1,4 @@
+
 table 99200 "DEL Ex_Currency"
 {
     Caption = 'Currency';
@@ -116,15 +117,17 @@ table 99200 "DEL Ex_Currency"
         }
         field(24; "Cust. Ledg. Entries in Filter"; Boolean)
         {
-            CalcFormula = Exist("Cust. Ledger Entry" WHERE(Customer No.=            Caption = 'Cust. Ledg. Entries in Filter';
-FIELD(Customer     Caption = 'Customer';
-Filter),
+
+            CalcFormula = Exist("Cust. Ledger Entry" WHERE(Customer No.=FIELD(Customer Filter),
+
                                                             Currency Code=FIELD(Code)));
             Caption = 'Cust. Ledg. Entries in Filter';
             Editable = false;
             FieldClass = FlowField;
         }
+
         field(25; "Customer Balance"; Decimal)
+>
         {
             AutoFormatExpression = Code;
             AutoFormatType = 1;
@@ -137,7 +140,9 @@ Filter),
             Editable = false;
             FieldClass = FlowField;
         }
+
         field(26; "Customer Outstanding Orders"; Decimal)
+
         {
             AutoFormatExpression = Code;
             AutoFormatType = 1;
@@ -150,7 +155,9 @@ Filter),
             Editable = false;
             FieldClass = FlowField;
         }
+
         field(27; "Customer Shipped Not Invoiced"; Decimal)
+
         {
             AutoFormatExpression = Code;
             AutoFormatType = 1;
@@ -163,7 +170,9 @@ Filter),
             Editable = false;
             FieldClass = FlowField;
         }
+
         field(28; "Customer Balance Due"; Decimal)
+>>>>>>> 4bb440cd5e9a735e45eff15bec7001464a5622ca
         {
             AutoFormatExpression = Code;
             AutoFormatType = 1;
@@ -177,7 +186,11 @@ Filter),
             Editable = false;
             FieldClass = FlowField;
         }
+<<<<<<< HEAD
         field(29; "Vendor Ledg. Entries in Filter"; Boolean)
+=======
+        field(29; "Vendor Ledg. Entries in Filter"; Boolean)
+>>>>>>> 4bb440cd5e9a735e45eff15bec7001464a5622ca
         {
             CalcFormula = Exist("Vendor Ledger Entry" WHERE (Vendor No.=FIELD(Vendor Filter),
                                                              Currency Code=FIELD(Code)));
@@ -185,7 +198,11 @@ Filter),
             Editable = false;
             FieldClass = FlowField;
         }
+<<<<<<< HEAD
         field(30; "Vendor Balance"; Decimal)
+=======
+        field(30; "Vendor Balance"; Decimal)
+>>>>>>> 4bb440cd5e9a735e45eff15bec7001464a5622ca
         {
             AutoFormatExpression = Code;
             AutoFormatType = 1;
@@ -198,7 +215,11 @@ Filter),
             Editable = false;
             FieldClass = FlowField;
         }
+<<<<<<< HEAD
         field(31; "Vendor Outstanding Orders"; Decimal)
+=======
+        field(31; "Vendor Outstanding Orders"; Decimal)
+>>>>>>> 4bb440cd5e9a735e45eff15bec7001464a5622ca
         {
             AutoFormatExpression = Code;
             AutoFormatType = 1;
@@ -211,7 +232,11 @@ Filter),
             Editable = false;
             FieldClass = FlowField;
         }
+<<<<<<< HEAD
         field(32; "Vendor Amt. Rcd. Not Invoiced"; Decimal)
+=======
+        field(32; "Vendor Amt. Rcd. Not Invoiced"; Decimal)
+>>>>>>> 4bb440cd5e9a735e45eff15bec7001464a5622ca
         {
             AutoFormatExpression = Code;
             AutoFormatType = 1;
@@ -224,7 +249,11 @@ Filter),
             Editable = false;
             FieldClass = FlowField;
         }
+<<<<<<< HEAD
         field(33; "Vendor Balance Due"; Decimal)
+=======
+        field(33; "Vendor Balance Due"; Decimal)
+>>>>>>> 4bb440cd5e9a735e45eff15bec7001464a5622ca
         {
             AutoFormatExpression = Code;
             AutoFormatType = 1;
@@ -238,7 +267,11 @@ Filter),
             Editable = false;
             FieldClass = FlowField;
         }
+<<<<<<< HEAD
         field(34; "Customer Balance (LCY)"; Decimal)
+=======
+        field(34; "Customer Balance (LCY)"; Decimal)
+>>>>>>> 4bb440cd5e9a735e45eff15bec7001464a5622ca
         {
             AutoFormatType = 1;
             CalcFormula = Sum("Detailed Cust. Ledg. Entry"."Amount (LCY)" WHERE (Customer No.=FIELD(Customer Filter),
@@ -250,7 +283,11 @@ Filter),
             Editable = false;
             FieldClass = FlowField;
         }
+<<<<<<< HEAD
         field(35; "Vendor Balance (LCY)"; Decimal)
+=======
+        field(35; "Vendor Balance (LCY)"; Decimal)
+>>>>>>> 4bb440cd5e9a735e45eff15bec7001464a5622ca
         {
             AutoFormatType = 1;
             CalcFormula = -Sum("Detailed Vendor Ledg. Entry"."Amount (LCY)" WHERE (Vendor No.=FIELD(Vendor Filter),
@@ -262,66 +299,114 @@ Filter),
             Editable = false;
             FieldClass = FlowField;
         }
+<<<<<<< HEAD
         field(40; "Realized G/L Gains Account"; Code[20])
+=======
+        field(40; "Realized G/L Gains Account"; Code[20])
+>>>>>>> 4bb440cd5e9a735e45eff15bec7001464a5622ca
         {
             Caption = 'Realized G/L Gains Account';
             TableRelation = "G/L Account";
         }
+<<<<<<< HEAD
         field(41; "Realized G/L Losses Account"; Code[20])
+=======
+        field(41; "Realized G/L Losses Account"; Code[20])
+>>>>>>> 4bb440cd5e9a735e45eff15bec7001464a5622ca
         {
             Caption = 'Realized G/L Losses Account';
             TableRelation = "G/L Account";
         }
+<<<<<<< HEAD
         field(44; "Appln. Rounding Precision"; Decimal)
+=======
+        field(44; "Appln. Rounding Precision"; Decimal)
+>>>>>>> 4bb440cd5e9a735e45eff15bec7001464a5622ca
         {
             AutoFormatExpression = Code;
             AutoFormatType = 1;
             Caption = 'Appln. Rounding Precision';
             MinValue = 0;
         }
+<<<<<<< HEAD
         field(45; "EMU Currency"; Boolean)
         {
             Caption = 'EMU Currency';
         }
         field(46; "Currency Factor"; Decimal)
+=======
+        field(45; "EMU Currency"; Boolean)
+        {
+            Caption = 'EMU Currency';
+        }
+        field(46; "Currency Factor"; Decimal)
+>>>>>>> 4bb440cd5e9a735e45eff15bec7001464a5622ca
         {
             Caption = 'Currency Factor';
             DecimalPlaces = 0:5;
             Editable = false;
         }
+<<<<<<< HEAD
         field(47; "Residual Gains Account"; Code[20])
+=======
+        field(47; "Residual Gains Account"; Code[20])
+>>>>>>> 4bb440cd5e9a735e45eff15bec7001464a5622ca
         {
             Caption = 'Residual Gains Account';
             TableRelation = "G/L Account";
         }
+<<<<<<< HEAD
         field(48; "Residual Losses Account"; Code[20])
+=======
+        field(48; "Residual Losses Account"; Code[20])
+>>>>>>> 4bb440cd5e9a735e45eff15bec7001464a5622ca
         {
             Caption = 'Residual Losses Account';
             TableRelation = "G/L Account";
         }
+<<<<<<< HEAD
         field(50; "Conv. LCY Rndg. Debit Acc."; Code[20])
+=======
+        field(50; "Conv. LCY Rndg. Debit Acc."; Code[20])
+>>>>>>> 4bb440cd5e9a735e45eff15bec7001464a5622ca
         {
             Caption = 'Conv. LCY Rndg. Debit Acc.';
             TableRelation = "G/L Account";
         }
+<<<<<<< HEAD
         field(51; "Conv. LCY Rndg. Credit Acc."; Code[20])
+=======
+        field(51; "Conv. LCY Rndg. Credit Acc."; Code[20])
+>>>>>>> 4bb440cd5e9a735e45eff15bec7001464a5622ca
         {
             Caption = 'Conv. LCY Rndg. Credit Acc.';
             TableRelation = "G/L Account";
         }
+<<<<<<< HEAD
         field(52; "Max. VAT Difference Allowed"; Decimal)
+=======
+        field(52; "Max. VAT Difference Allowed"; Decimal)
+>>>>>>> 4bb440cd5e9a735e45eff15bec7001464a5622ca
         {
             AutoFormatExpression = Code;
             AutoFormatType = 1;
             Caption = 'Max. VAT Difference Allowed';
         }
+<<<<<<< HEAD
         field(53; "VAT Rounding Type"; Option)
+=======
+        field(53; "VAT Rounding Type"; Option)
+>>>>>>> 4bb440cd5e9a735e45eff15bec7001464a5622ca
         {
             Caption = 'VAT Rounding Type';
             OptionCaption = 'Nearest,Up,Down';
             OptionMembers = Nearest,Up,Down;
         }
+<<<<<<< HEAD
         field(54; "Payment Tolerance %"; Decimal)
+=======
+        field(54; "Payment Tolerance %"; Decimal)
+>>>>>>> 4bb440cd5e9a735e45eff15bec7001464a5622ca
         {
             Caption = 'Payment Tolerance %';
             DecimalPlaces = 0:5;
@@ -329,7 +414,11 @@ Filter),
             MaxValue = 100;
             MinValue = 0;
         }
+<<<<<<< HEAD
         field(55; "Max. Payment Tolerance Amount"; Decimal)
+=======
+        field(55; "Max. Payment Tolerance Amount"; Decimal)
+>>>>>>> 4bb440cd5e9a735e45eff15bec7001464a5622ca
         {
             AutoFormatExpression = Code;
             AutoFormatType = 1;
@@ -337,12 +426,20 @@ Filter),
             Editable = false;
             MinValue = 0;
         }
+<<<<<<< HEAD
         field(3010541; "ISO Currency Code"; Code[3])
+=======
+        field(3010541; "ISO Currency Code"; Code[3])
+>>>>>>> 4bb440cd5e9a735e45eff15bec7001464a5622ca
         {
             Caption = 'ISO Currency Code';
             CharAllowed = 'AZ';
         }
+<<<<<<< HEAD
         field(4006497; Kennzeichen; Text[10])
+=======
+        field(4006497; Kennzeichen; Text[10])
+>>>>>>> 4bb440cd5e9a735e45eff15bec7001464a5622ca
         {
             Description = 'AL.KVK5.0';
         }

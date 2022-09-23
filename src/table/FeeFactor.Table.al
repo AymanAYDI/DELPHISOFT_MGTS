@@ -1,16 +1,20 @@
 table 50043 "DEL Fee Factor"
 {
 
+
     Caption = 'Fee Factor';
     //TODO
     // LookupPageID = 50049;
+
 
     fields
     {
         field(1; Fee_ID; Code[20])
         {
-            TableRelation = Fee.ID;
+            TableRelation = "DEL Fee".ID;
+
             Caption = 'Fee_ID';
+
         }
         field(10; "Allow From"; Date)
         {

@@ -30,7 +30,7 @@ table 50041 "DEL Element Update"
             ELSE
             IF (Type = CONST(VCO)) "Sales Header"."No." WHERE("Document Type" = CONST(Order))
             ELSE
-            IF (Type = CONST(Fee)) Fee.ID
+            IF (Type = CONST(Fee)) "DEL Fee".ID
             ELSE
             IF (Type = CONST(BR)) "Purch. Rcpt. Header"."No."
             ELSE
@@ -57,7 +57,7 @@ table 50041 "DEL Element Update"
         }
         field(8; Fee_ID; Code[20])
         {
-            TableRelation = Fee.ID;
+            TableRelation = "DEL Fee".ID;
             Caption = 'Fee_ID';
         }
         field(9; Fee_Connection_ID; Code[20])

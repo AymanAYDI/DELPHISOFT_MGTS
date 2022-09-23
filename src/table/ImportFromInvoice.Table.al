@@ -1,6 +1,8 @@
+
 table 50035 "DEL Import From Invoice"
 {
     Caption = 'DEL Import From Invoice';
+
 
     fields
     {
@@ -23,6 +25,7 @@ table 50035 "DEL Import From Invoice"
         field(40; Rate; Decimal)
         {
             Caption = 'Rate';
+
         }
     }
 
@@ -33,7 +36,6 @@ table 50035 "DEL Import From Invoice"
             Clustered = true;
         }
     }
-
 
 }
 

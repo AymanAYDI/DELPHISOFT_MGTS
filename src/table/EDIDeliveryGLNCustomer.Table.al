@@ -1,9 +1,11 @@
+
 table 50081 "DEL EDI Delivery GLN Customer"
+
 {
     // MGTSEDI10.00.00.21 | 18.01.2021 | EDI Management : Create Table
 
     Caption = 'EDI Delivery GLN Customer';
-    LookupPageID = 50145;
+    //TODO //LookupPageID = 50145;
 
     fields
     {

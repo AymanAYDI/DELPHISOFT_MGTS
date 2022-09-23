@@ -1,3 +1,4 @@
+
 table 50003 "DEL Web_Order_Line"
 {
     Caption = 'Web_Order_Line';
@@ -43,7 +44,9 @@ table 50003 "DEL Web_Order_Line"
         {
             Caption = 'Max_Date';
         }
+
         field(70; "Date"; Text[10])
+
         {
             Caption = 'Date';
         }

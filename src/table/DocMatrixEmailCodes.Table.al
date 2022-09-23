@@ -1,6 +1,5 @@
 table 50070 "DEL DocMatrix Email Codes"
 {
-    // 20190227/DEL/PD/LOP003 - object created
 
     Caption = 'Email Item';
 
@@ -74,8 +73,8 @@ table 50070 "DEL DocMatrix Email Codes"
 
     procedure GetBodyText(pCode: Code[20]; pLanguage: Code[10]) Value: Text
     var
-        TempBlob: Record "99008535";
-        FileManagement: Codeunit "419";
+        // TODO TempBlob: Record "TempBlob"; //99008535
+        // FileManagement: Codeunit "File Management"; //419
         DataStream: InStream;
         BodyOutStream: OutStream;
         BodyText: BigText;

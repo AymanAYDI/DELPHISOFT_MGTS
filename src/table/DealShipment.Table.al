@@ -26,7 +26,9 @@ table 50030 "DEL Deal Shipment"
             TableRelation = "DEL Deal".ID;
             Caption = 'Deal_ID';
         }
-        field(20; "Date"; Date)
+
+        field(20; Date; Date)
+
         {
             Caption = 'Date';
         }

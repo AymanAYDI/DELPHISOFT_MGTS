@@ -1,8 +1,6 @@
 table 50069 "DEL DocMatrix Setup"
 {
     Caption = 'DocMatrix Setup';
-    // DEL/PD/20190127/LOP003 : object created
-    // DEL/PD/20191101/LOP003 : MultiLanguage Caption correction
 
 
     fields
@@ -19,7 +17,7 @@ table 50069 "DEL DocMatrix Setup"
 
             trigger OnValidate()
             begin
-                GeneralMgt.CheckFolderName("Sales File Folder");
+                //TODO  GeneralMgt.CheckFolderName("Sales File Folder");
             end;
         }
         field(11; "Purchase File Folder"; Text[250])
@@ -29,7 +27,7 @@ table 50069 "DEL DocMatrix Setup"
 
             trigger OnValidate()
             begin
-                GeneralMgt.CheckFolderName("Purchase File Folder");
+                //TODO GeneralMgt.CheckFolderName("Purchase File Folder");
             end;
         }
         field(20; "Default E-Mail From"; Text[80])
@@ -67,7 +65,7 @@ table 50069 "DEL DocMatrix Setup"
     }
 
     var
-        GeneralMgt: Codeunit "11501";
+        GeneralMgt: Codeunit "GeneralMgt";
 
 
     procedure GetStorageLocation(Type: Option Customer,Vendor): Text[250]

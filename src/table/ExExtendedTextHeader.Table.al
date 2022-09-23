@@ -1,8 +1,10 @@
+
 table 99208 "DEL Ex_Extended Text Header"
 {
     Caption = 'Extended Text Header';
     DataCaptionFields = "No.", "Language Code", "Text No.";
     LookupPageID = "Extended Text List";
+
 
     fields
     {
@@ -276,8 +278,8 @@ table 99208 "DEL Ex_Extended Text Header"
     var
         Text000: Label 'You cannot rename an %1.';
         Text001: Label 'You cannot purchase resources.';
-        ExtTextHeader2: Record "279";
-        ExtTextLine: Record "280";
+        ExtTextHeader2: Record 279;
+        ExtTextLine: Record 280;
 
     local procedure NoResourcePurch()
     begin

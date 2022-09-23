@@ -64,11 +64,11 @@ table 99202 "DEL Ex_Country/Region"
     fieldgroups
     {
     }
-
-    trigger OnDelete()
-    var
-        VATRegNoFormat: Record "381";
-    begin
-    end;
+    //TODO
+    // trigger OnDelete()
+    // var
+    //     VATRegNoFormat: Record "381";
+    // begin
+    // end;
 }
 

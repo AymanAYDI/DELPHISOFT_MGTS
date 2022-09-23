@@ -1,34 +1,33 @@
 table 50027 "DEL Element Connection"
 {
-    LookupPageID = 50026;
+    //TODO LookupPageID = 50026;
     Caption = 'Element Connection';
 
     fields
     {
         field(1; Deal_ID; Code[20])
         {
-            TableRelation = Deal.ID;
-            Caption = 'Deal_ID';
+
+            TableRelation = "DEL Deal".ID;
         }
         field(2; Element_ID; Code[20])
         {
-            TableRelation = Element.ID;
-            Caption = 'Element_ID';
+            TableRelation = "DEL Element".ID;
         }
         field(3; "Apply To"; Code[20])
         {
-            TableRelation = Element.ID;
-            Caption = 'Apply To';
+            TableRelation = "DEL Element".ID;
+
         }
         field(4; Instance; Option)
         {
             OptionCaption = 'Planned,Real';
             OptionMembers = planned,real;
-            Caption = 'Instance';
+
         }
         field(10; "Split Index"; Integer)
         {
-            Caption = 'Split Index';
+
         }
     }
 

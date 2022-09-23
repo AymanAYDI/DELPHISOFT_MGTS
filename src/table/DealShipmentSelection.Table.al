@@ -8,7 +8,7 @@ table 50031 "DEL Deal Shipment Selection"
     {
         field(1; "Document Type"; Enum "DEL Document Type")
         {
-            Caption = 'Document Type';
+
 
         }
         field(10; "Document No."; Code[20])
@@ -37,20 +37,25 @@ table 50031 "DEL Deal Shipment Selection"
         }
         field(13; "Account Entry No."; Integer)
         {
+
             Caption = 'Account Entry No.';
         }
         field(20; Deal_ID; Code[20])
         {
             Caption = 'Deal_ID';
+
         }
         field(50; "Shipment No."; Code[20])
         {
             TableRelation = "DEL Deal Shipment".ID;
+
             Caption = 'Shipment No.';
+
         }
         field(60; "BR No."; Code[20])
         {
             TableRelation = "Purch. Rcpt. Header"."No.";
+
             Caption = 'BR No.';
 
             trigger OnValidate()
@@ -64,17 +69,23 @@ table 50031 "DEL Deal Shipment Selection"
         field(70; "Purchase Invoice No."; Code[20])
         {
             TableRelation = "Purch. Inv. Header"."No.";
+
             Caption = 'Purchase Invoice No.';
+
         }
         field(80; "Sales Invoice No."; Code[20])
         {
             TableRelation = "Sales Invoice Header"."No.";
+
             Caption = 'Sales Invoice No.';
+
         }
         field(90; "Fee Connection"; Code[20])
         {
             TableRelation = "DEL Fee Connection".ID;
+
             Caption = 'Fee Connection';
+
         }
         field(95; "Connected Fee Description"; Text[50])
         {
@@ -82,6 +93,7 @@ table 50031 "DEL Deal Shipment Selection"
         }
         field(100; Checked; Boolean)
         {
+
             Caption = 'Checked';
         }
         field(110; "Journal Template Name"; Code[10])
@@ -99,6 +111,7 @@ table 50031 "DEL Deal Shipment Selection"
         field(140; USER_ID; Code[50])
         {
             Caption = 'USER_ID';
+
 
         }
     }

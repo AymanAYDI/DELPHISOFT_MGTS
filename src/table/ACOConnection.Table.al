@@ -1,7 +1,6 @@
 table 50026 "DEL ACO Connection"
 {
 
-
     Caption = 'ACO Connection';
 
     fields

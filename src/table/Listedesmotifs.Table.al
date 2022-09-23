@@ -1,19 +1,24 @@
 table 50064 "DEL Liste des motifs"
 {
-    DrillDownPageID = 50123;
-    LookupPageID = 50123;
+
+    // DrillDownPageID = 50123;
+    // LookupPageID = 50123;
     Caption = 'Liste des motifs';
+    DataClassification = CustomerContent;
+
 
     fields
     {
         field(1; No; Integer)
         {
             AutoIncrement = false;
-            Caption = 'No';
+
+            DataClassification = CustomerContent;
         }
         field(2; Motif; Text[100])
         {
-            Caption = 'Motif';
+            DataClassification = CustomerContent;
+
         }
     }
 

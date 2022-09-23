@@ -1,3 +1,4 @@
+
 table 50079 "DEL Type Order EDI"
 {
 

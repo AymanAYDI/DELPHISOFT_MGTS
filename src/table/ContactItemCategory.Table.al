@@ -9,7 +9,6 @@ table 50005 "DEL Contact_ItemCategory"
         field(10; contactNo; Code[10])
         {
             TableRelation = Contact;
-            Caption = 'contactNo';
         }
         field(20; ItemCategory; Code[10])
         {

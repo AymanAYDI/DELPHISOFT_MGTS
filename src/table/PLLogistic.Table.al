@@ -1,11 +1,14 @@
+
 table 50036 "DEL P&L Logistic"
 {
     Caption = 'DEL P&L Logistic';
+
 
     fields
     {
         field(1; "Planned Element ID"; Code[20])
         {
+
             TableRelation = "DEL Element".ID;
             Caption = 'Planned Element ID';
         }
@@ -33,6 +36,7 @@ table 50036 "DEL P&L Logistic"
         field(40; Delta; Decimal)
         {
             Caption = 'Delta';
+
         }
     }
 
