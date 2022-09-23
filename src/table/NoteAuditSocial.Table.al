@@ -11,8 +11,8 @@ table 50017 "DEL Note Audit Social"
         field(1; "No."; Code[20])
         {
             Caption = 'No.';
-            //TODO
-            // TableRelation = "Audit social";
+
+            TableRelation = "DEL Audit social";
 
             trigger OnValidate()
             begin
@@ -20,8 +20,8 @@ table 50017 "DEL Note Audit Social"
             end;
         }
         field(2; Axe; Text[60])
-        {//TODO
-            // CalcFormula = Lookup ("Audit social".Axe WHERE ("No."=FIELD("No.")));
+        {
+            CalcFormula = Lookup("DEL Audit social".Axe WHERE("No." = FIELD("No.")));
             Caption = 'Dimension';
             Editable = false;
             FieldClass = FlowField;

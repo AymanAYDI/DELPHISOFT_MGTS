@@ -17,7 +17,7 @@ table 50020 "DEL Deal"
         }
 
 
-        field(3; Date; Date)
+        field(3; "Date"; Date)
 
         {
             Caption = 'Date';
@@ -73,13 +73,6 @@ table 50020 "DEL Deal"
         }
     }
 
-    fieldgroups
-    {
-    }
 
-    var
-        NoSeriesMgt: Codeunit NoSeriesManagement;
-        Setup: Record "DEL General Setup";
-        ERROR_TXT: Label 'ERREUR\Source : %1\Function : %2\Reason : %3';
 }
 

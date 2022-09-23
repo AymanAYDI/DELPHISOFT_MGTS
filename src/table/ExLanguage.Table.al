@@ -23,22 +23,22 @@ table 99201 "DEL Ex_Language"
         field(7; "Windows Language Name"; Text[80])
         {
 
-            CalcFormula = Lookup("Windows Language".Name WHERE(Language ID=FIELD(Windows Language ID)));
-                Caption = 'Windows Language Name';
-                Editable = false;
-                FieldClass = FlowField;
+            CalcFormula = Lookup("Windows Language".Name WHERE("Language ID" = FIELD("Windows Language ID")));
+            Caption = 'Windows Language Name';
+            Editable = false;
+            FieldClass = FlowField;
 
         }
         field(4006496; Katalogsprache; Boolean)
         {
-            Description = 'AL.KVK5.0';
+
 
             Caption = 'Katalogsprache';
 
         }
         field(4006497; "ISO Code"; Text[3])
         {
-            Description = 'AL.KVK5.0';
+
             Caption = 'ISO Code';
 
         }

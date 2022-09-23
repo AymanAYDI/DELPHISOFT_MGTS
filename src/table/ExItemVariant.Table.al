@@ -28,46 +28,46 @@ table 99211 "DEL Ex_Item Variant"
         field(4006496; ZeilenID; Integer)
         {
             Caption = 'Line ID';
-            Description = 'AL.FRS1.0';
+
         }
         field(4006497; ZeilenIDCode; Code[20])
         {
             Caption = 'Line ID Code';
-            Description = 'AL.FRS1.0';
+
         }
         field(4006498; "Bilddokument ID"; Code[20])
         {
             Caption = 'Picture Document ID';
-            TableRelation = "Dokument Katalog" WHERE(Art = CONST(Bild));
+            //TODO TableRelation = "Dokument Katalog" WHERE(Art = CONST(Bild));
 
-            trigger OnLookup()
-            begin
-                CLEAR(gpagDoklisteB);
+            //  //TODO trigger OnLookup()
+            // begin
+            //     CLEAR(gpagDoklisteB);
 
-                // --- Filter setzen --- //
-                gpagDoklisteB.FilterSetzen(goptQuellenart::Variante, ZeilenIDCode, 0);
+            //     // --- Filter setzen --- //
+            //     gpagDoklisteB.FilterSetzen(goptQuellenart::Variante, ZeilenIDCode, 0);
 
-                gpagDoklisteB.LOOKUPMODE(TRUE);
-                IF gpagDoklisteB.RUNMODAL = ACTION::LookupOK THEN BEGIN
-                    gpagDoklisteB.GETRECORD(grecKatDok);
-                    IF grecKatDok.Nummer <> "Bilddokument ID" THEN
-                        VALIDATE("Bilddokument ID", grecKatDok.Nummer);
-                END;
-            end;
+            //     gpagDoklisteB.LOOKUPMODE(TRUE);
+            //     IF gpagDoklisteB.RUNMODAL = ACTION::LookupOK THEN BEGIN
+            //         gpagDoklisteB.GETRECORD(grecKatDok);
+            //         IF grecKatDok.Nummer <> "Bilddokument ID" THEN
+            //             VALIDATE("Bilddokument ID", grecKatDok.Nummer);
+            //     END;
+            // end;
 
-            trigger OnValidate()
-            begin
-                IF Rec."Bilddokument ID" <> '' THEN BEGIN
-                    // --- Katalogdokument --- //
-                    grecKatDok.RESET;
-                    grecKatDok.SETRANGE(Quelle, grecKatDok.Quelle::Variante);
-                    grecKatDok.SETRANGE(Art, grecKatDok.Art::Bild);
-                    grecKatDok.SETRANGE(Code, ZeilenIDCode);
-                    grecKatDok.SETRANGE(Nummer, "Bilddokument ID");
-                    IF NOT grecKatDok.FIND('-') THEN
-                        ERROR(AL0001);
-                END;
-            end;
+            // //TODO  trigger OnValidate()
+            // begin
+            //     IF Rec."Bilddokument ID" <> '' THEN BEGIN
+            //         // --- Katalogdokument --- //
+            //         grecKatDok.RESET;
+            //         grecKatDok.SETRANGE(Quelle, grecKatDok.Quelle::Variante);
+            //         grecKatDok.SETRANGE(Art, grecKatDok.Art::Bild);
+            //         grecKatDok.SETRANGE(Code, ZeilenIDCode);
+            //         grecKatDok.SETRANGE(Nummer, "Bilddokument ID");
+            //         IF NOT grecKatDok.FIND('-') THEN
+            //             ERROR(AL0001);
+            //     END;
+            // end;
         }
         field(4006499; "Vererbung Beschreibungen"; Boolean)
         {
@@ -103,70 +103,70 @@ table 99211 "DEL Ex_Item Variant"
         }
         field(4006507; Sprache_01; Code[10])
         {
-            CalcFormula = Lookup("Katalog Einrichtung"."Sprache 01" WHERE(Primaerschluessel = CONST()));
+            //TODO   CalcFormula = Lookup("Katalog Einrichtung"."Sprache 01" WHERE(Primaerschluessel = CONST()));
             Caption = 'Language 1';
             Editable = false;
             FieldClass = FlowField;
         }
         field(4006508; Sprache_02; Code[10])
         {
-            CalcFormula = Lookup("Katalog Einrichtung"."Sprache 02" WHERE(Primaerschluessel = CONST()));
+            //TODO    CalcFormula = Lookup("Katalog Einrichtung"."Sprache 02" WHERE(Primaerschluessel = CONST()));
             Caption = 'Language 1';
             Editable = false;
             FieldClass = FlowField;
         }
         field(4006509; Sprache_03; Code[10])
         {
-            CalcFormula = Lookup("Katalog Einrichtung"."Sprache 03" WHERE(Primaerschluessel = CONST()));
+            //TODO   CalcFormula = Lookup("Katalog Einrichtung"."Sprache 03" WHERE(Primaerschluessel = CONST()));
             Caption = 'Language 3';
             Editable = false;
             FieldClass = FlowField;
         }
         field(4006510; Sprache_04; Code[10])
         {
-            CalcFormula = Lookup("Katalog Einrichtung"."Sprache 04" WHERE(Primaerschluessel = CONST()));
+            //TODO   CalcFormula = Lookup("Katalog Einrichtung"."Sprache 04" WHERE(Primaerschluessel = CONST()));
             Caption = 'Language 4';
             Editable = false;
             FieldClass = FlowField;
         }
         field(4006511; Sprache_05; Code[10])
         {
-            CalcFormula = Lookup("Katalog Einrichtung"."Sprache 05" WHERE(Primaerschluessel = CONST()));
+            //TODO    CalcFormula = Lookup("Katalog Einrichtung"."Sprache 05" WHERE(Primaerschluessel = CONST()));
             Caption = 'Language 5';
             Editable = false;
             FieldClass = FlowField;
         }
         field(4006512; Sprache_06; Code[10])
         {
-            CalcFormula = Lookup("Katalog Einrichtung"."Sprache 06" WHERE(Primaerschluessel = CONST()));
+            //TODO   CalcFormula = Lookup("Katalog Einrichtung"."Sprache 06" WHERE(Primaerschluessel = CONST()));
             Caption = 'Language 6';
             Editable = false;
             FieldClass = FlowField;
         }
         field(4006513; Sprache_07; Code[10])
         {
-            CalcFormula = Lookup("Katalog Einrichtung"."Sprache 07" WHERE(Primaerschluessel = CONST()));
+            //TODO   CalcFormula = Lookup("Katalog Einrichtung"."Sprache 07" WHERE(Primaerschluessel = CONST()));
             Caption = 'Language 7';
             Editable = false;
             FieldClass = FlowField;
         }
         field(4006514; Sprache_08; Code[10])
         {
-            CalcFormula = Lookup("Katalog Einrichtung"."Sprache 08" WHERE(Primaerschluessel = CONST()));
+            //TODO   CalcFormula = Lookup("Katalog Einrichtung"."Sprache 08" WHERE(Primaerschluessel = CONST()));
             Caption = 'Language 8';
             Editable = false;
             FieldClass = FlowField;
         }
         field(4006515; Sprache_09; Code[10])
         {
-            CalcFormula = Lookup("Katalog Einrichtung"."Sprache 09" WHERE(Primaerschluessel = CONST()));
+            //TODO   CalcFormula = Lookup("Katalog Einrichtung"."Sprache 09" WHERE(Primaerschluessel = CONST()));
             Caption = 'Language 9';
             Editable = false;
             FieldClass = FlowField;
         }
         field(4006516; Sprache_10; Code[10])
         {
-            CalcFormula = Lookup("Katalog Einrichtung"."Sprache 10" WHERE(Primaerschluessel = CONST()));
+            //TODO  CalcFormula = Lookup("Katalog Einrichtung"."Sprache 10" WHERE(Primaerschluessel = CONST()));
             Caption = 'Language 10';
             Editable = false;
             FieldClass = FlowField;
@@ -180,7 +180,7 @@ table 99211 "DEL Ex_Item Variant"
         field(4006518; "Checklistennr."; Code[20])
         {
             Caption = 'Checklist Number';
-            TableRelation = Checklistkopf WHERE(Klasse = CONST(Artikelgruppe));
+            //TODO TableRelation = Checklistkopf WHERE(Klasse = CONST(Artikelgruppe));
 
             trigger OnValidate()
             begin
@@ -190,7 +190,7 @@ table 99211 "DEL Ex_Item Variant"
         }
         field(4006519; "Systemstatus pruefen"; Boolean)
         {
-            CalcFormula = Lookup(Checklistkopf."Systemstatus pruefen" WHERE(Code = FIELD(Checklistennr.)));
+            //TODO CalcFormula = Lookup(Checklistkopf."Systemstatus pruefen" WHERE(Code = FIELD("Checklistennr.")));
             Caption = 'Check System Status';
             Editable = false;
             FieldClass = FlowField;
@@ -198,7 +198,7 @@ table 99211 "DEL Ex_Item Variant"
         field(4006520; Publikationsgruppe; Code[20])
         {
             Caption = 'Publication Group';
-            TableRelation = Publikationsgruppe;
+            //TODO TableRelation = Publikationsgruppe;
         }
         field(4006521; ZertifizierungID; BigInteger)
         {
@@ -207,7 +207,7 @@ table 99211 "DEL Ex_Item Variant"
         field(4006522; Vorlagencode; Code[20])
         {
             Caption = 'Template Code';
-            TableRelation = Vorlage.Code WHERE(Dokumententyp = CONST(InDesign));
+            //TODO  TableRelation = Vorlage.Code WHERE(Dokumententyp = CONST(InDesign));
         }
         field(4006523; Uebersetzung; Boolean)
         {
@@ -232,36 +232,40 @@ table 99211 "DEL Ex_Item Variant"
 
     trigger OnDelete()
     var
-        ItemTranslation: Record "30";
-        SKU: Record "5700";
-        ItemIdent: Record "7704";
-        ItemCrossReference: Record "5717";
-        SalesPrice: Record "7002";
-        SalesLineDiscount: Record "7004";
-        PurchasePrice: Record "7012";
-        PurchaseLineDiscount: Record "7014";
-        BOMComp: Record "90";
-        ItemJnlLine: Record "83";
-        RequisitionLine: Record "246";
-        PurchOrderLine: Record "39";
-        SalesOrderLine: Record "37";
-        ProdOrderComp: Record "5407";
-        TransLine: Record "5741";
-        ServiceLine: Record "5902";
-        ProdBOMLine: Record "99000772";
-        ServiceContractLine: Record "5964";
-        ServiceItem: Record "5940";
-        AssemblyHeader: Record "900";
-        ItemSubstitution: Record "5715";
-        ItemVend: Record "99";
-        PlanningAssignment: Record "99000850";
-        ServiceItemComponent: Record "5941";
-        BinContent: Record "7302";
-        ItemLedgerEntry: Record "32";
-        ValueEntry: Record "5802";
-        AssemblyLine: Record "901";
+        ItemTranslation: Record "Item Translation";
+        SKU: Record "Stockkeeping Unit";
+        ItemIdent: Record "Item Identifier";
+#pragma warning disable AL0432
+        ItemCrossReference: Record "Item Cross Reference";
+#pragma warning restore AL0432
+#pragma warning disable AL0432
+        SalesPrice: Record "Sales Price";
+#pragma warning restore AL0432
+        SalesLineDiscount: Record "Sales Line Discount";
+        PurchasePrice: Record "Purchase Price";
+        PurchaseLineDiscount: Record "Purchase Line Discount";
+        BOMComp: Record "BOM Component";
+        ItemJnlLine: Record "Item Journal Line";
+        RequisitionLine: Record "Requisition Line";
+        PurchOrderLine: Record "Purchase Line";
+        SalesOrderLine: Record "Sales Line";
+        ProdOrderComp: Record "Prod. Order Component";
+        TransLine: Record "Transfer Line";
+        ServiceLine: Record "Service Line";
+        ProdBOMLine: Record "Production BOM Line";
+        ServiceContractLine: Record "Service Contract Line";
+        ServiceItem: Record "Service Item";
+        AssemblyHeader: Record "Assembly Header";
+        ItemSubstitution: Record "Item Substitution";
+        ItemVend: Record "Item Vendor";
+        PlanningAssignment: Record "Planning Assignment";
+        ServiceItemComponent: Record "Service Item Component";
+        BinContent: Record "Bin Content";
+        ItemLedgerEntry: Record "Item Ledger Entry";
+        ValueEntry: Record "Value Entry";
+        AssemblyLine: Record "Assembly Line";
     begin
-        BOMComp.RESET;
+        BOMComp.RESET();
         BOMComp.SETCURRENTKEY(Type, "No.");
         BOMComp.SETRANGE(Type, BOMComp.Type::Item);
         BOMComp.SETRANGE("No.", "Item No.");
@@ -269,7 +273,7 @@ table 99211 "DEL Ex_Item Variant"
         IF NOT BOMComp.ISEMPTY THEN
             ERROR(Text001, Code, BOMComp.TABLECAPTION);
 
-        ProdBOMLine.RESET;
+        ProdBOMLine.RESET();
         ProdBOMLine.SETCURRENTKEY(Type, "No.");
         ProdBOMLine.SETRANGE(Type, ProdBOMLine.Type::Item);
         ProdBOMLine.SETRANGE("No.", "Item No.");
@@ -277,45 +281,45 @@ table 99211 "DEL Ex_Item Variant"
         IF NOT ProdBOMLine.ISEMPTY THEN
             ERROR(Text001, Code, ProdBOMLine.TABLECAPTION);
 
-        ProdOrderComp.RESET;
+        ProdOrderComp.RESET();
         ProdOrderComp.SETCURRENTKEY(Status, "Item No.");
         ProdOrderComp.SETRANGE("Item No.", "Item No.");
         ProdOrderComp.SETRANGE("Variant Code", Code);
         IF NOT ProdOrderComp.ISEMPTY THEN
             ERROR(Text001, Code, ProdOrderComp.TABLECAPTION);
 
-        IF ProdOrderExist THEN
+        IF ProdOrderExist() THEN
             ERROR(Text002, "Item No.");
 
-        AssemblyHeader.RESET;
+        AssemblyHeader.RESET();
         AssemblyHeader.SETCURRENTKEY("Document Type", "Item No.");
         AssemblyHeader.SETRANGE("Item No.", "Item No.");
         AssemblyHeader.SETRANGE("Variant Code", Code);
         IF NOT AssemblyHeader.ISEMPTY THEN
             ERROR(Text001, Code, AssemblyHeader.TABLECAPTION);
 
-        AssemblyLine.RESET;
+        AssemblyLine.RESET();
         AssemblyLine.SETCURRENTKEY("Document Type", Type, "No.");
         AssemblyLine.SETRANGE("No.", "Item No.");
         AssemblyLine.SETRANGE("Variant Code", Code);
         IF NOT AssemblyLine.ISEMPTY THEN
             ERROR(Text001, Code, AssemblyLine.TABLECAPTION);
 
-        BinContent.RESET;
+        BinContent.RESET();
         BinContent.SETCURRENTKEY("Item No.");
         BinContent.SETRANGE("Item No.", "Item No.");
         BinContent.SETRANGE("Variant Code", Code);
         IF NOT BinContent.ISEMPTY THEN
             ERROR(Text001, Code, BinContent.TABLECAPTION);
 
-        TransLine.RESET;
+        TransLine.RESET();
         TransLine.SETCURRENTKEY("Item No.");
         TransLine.SETRANGE("Item No.", "Item No.");
         TransLine.SETRANGE("Variant Code", Code);
         IF NOT TransLine.ISEMPTY THEN
             ERROR(Text001, Code, TransLine.TABLECAPTION);
 
-        RequisitionLine.RESET;
+        RequisitionLine.RESET();
         RequisitionLine.SETCURRENTKEY(Type, "No.");
         RequisitionLine.SETRANGE(Type, RequisitionLine.Type::Item);
         RequisitionLine.SETRANGE("No.", "Item No.");
@@ -323,7 +327,7 @@ table 99211 "DEL Ex_Item Variant"
         IF NOT RequisitionLine.ISEMPTY THEN
             ERROR(Text001, Code, RequisitionLine.TABLECAPTION);
 
-        PurchOrderLine.RESET;
+        PurchOrderLine.RESET();
         PurchOrderLine.SETCURRENTKEY(Type, "No.");
         PurchOrderLine.SETRANGE(Type, PurchOrderLine.Type::Item);
         PurchOrderLine.SETRANGE("No.", "Item No.");
@@ -331,7 +335,7 @@ table 99211 "DEL Ex_Item Variant"
         IF NOT PurchOrderLine.ISEMPTY THEN
             ERROR(Text001, Code, PurchOrderLine.TABLECAPTION);
 
-        SalesOrderLine.RESET;
+        SalesOrderLine.RESET();
         SalesOrderLine.SETCURRENTKEY(Type, "No.");
         SalesOrderLine.SETRANGE(Type, SalesOrderLine.Type::Item);
         SalesOrderLine.SETRANGE("No.", "Item No.");
@@ -339,14 +343,14 @@ table 99211 "DEL Ex_Item Variant"
         IF NOT SalesOrderLine.ISEMPTY THEN
             ERROR(Text001, Code, SalesOrderLine.TABLECAPTION);
 
-        ServiceItem.RESET;
+        ServiceItem.RESET();
         ServiceItem.SETCURRENTKEY("Item No.", "Serial No.");
         ServiceItem.SETRANGE("Item No.", "Item No.");
         ServiceItem.SETRANGE("Variant Code", Code);
         IF NOT ServiceItem.ISEMPTY THEN
             ERROR(Text001, Code, ServiceItem.TABLECAPTION);
 
-        ServiceLine.RESET;
+        ServiceLine.RESET();
         ServiceLine.SETCURRENTKEY(Type, "No.");
         ServiceLine.SETRANGE(Type, ServiceLine.Type::Item);
         ServiceLine.SETRANGE("No.", "Item No.");
@@ -354,33 +358,33 @@ table 99211 "DEL Ex_Item Variant"
         IF NOT ServiceLine.ISEMPTY THEN
             ERROR(Text001, Code, ServiceLine.TABLECAPTION);
 
-        ServiceContractLine.RESET;
+        ServiceContractLine.RESET();
         ServiceContractLine.SETRANGE("Item No.", "Item No.");
         ServiceContractLine.SETRANGE("Variant Code", Code);
         IF NOT ServiceContractLine.ISEMPTY THEN
             ERROR(Text001, Code, ServiceContractLine.TABLECAPTION);
 
-        ServiceItemComponent.RESET;
+        ServiceItemComponent.RESET();
         ServiceItemComponent.SETRANGE(Type, ServiceItemComponent.Type::Item);
         ServiceItemComponent.SETRANGE("No.", "Item No.");
         ServiceItemComponent.SETRANGE("Variant Code", Code);
         ServiceItemComponent.MODIFYALL("Variant Code", '');
 
-        ItemJnlLine.RESET;
+        ItemJnlLine.RESET();
         ItemJnlLine.SETCURRENTKEY("Item No.");
         ItemJnlLine.SETRANGE("Item No.", "Item No.");
         ItemJnlLine.SETRANGE("Variant Code", Code);
         IF NOT ItemJnlLine.ISEMPTY THEN
             ERROR(Text001, Code, ItemJnlLine.TABLECAPTION);
 
-        ItemLedgerEntry.RESET;
+        ItemLedgerEntry.RESET();
         ItemLedgerEntry.SETCURRENTKEY("Item No.");
         ItemLedgerEntry.SETRANGE("Item No.", "Item No.");
         ItemLedgerEntry.SETRANGE("Variant Code", Code);
         IF NOT ItemLedgerEntry.ISEMPTY THEN
             ERROR(Text001, Code, ItemLedgerEntry.TABLECAPTION);
 
-        ValueEntry.RESET;
+        ValueEntry.RESET();
         ValueEntry.SETCURRENTKEY("Item No.");
         ValueEntry.SETRANGE("Item No.", "Item No.");
         ValueEntry.SETRANGE("Variant Code", Code);
@@ -389,88 +393,88 @@ table 99211 "DEL Ex_Item Variant"
 
         ItemTranslation.SETRANGE("Item No.", "Item No.");
         ItemTranslation.SETRANGE("Variant Code", Code);
-        ItemTranslation.DELETEALL;
+        ItemTranslation.DELETEALL();
 
-        ItemIdent.RESET;
+        ItemIdent.RESET();
         ItemIdent.SETCURRENTKEY("Item No.");
         ItemIdent.SETRANGE("Item No.", "Item No.");
         ItemIdent.SETRANGE("Variant Code", Code);
-        ItemIdent.DELETEALL;
+        ItemIdent.DELETEALL();
 
         ItemCrossReference.SETRANGE("Item No.", "Item No.");
         ItemCrossReference.SETRANGE("Variant Code", Code);
-        ItemCrossReference.DELETEALL;
+        ItemCrossReference.DELETEALL();
 
-        ItemSubstitution.RESET;
+        ItemSubstitution.RESET();
         ItemSubstitution.SETRANGE(Type, ItemSubstitution.Type::Item);
         ItemSubstitution.SETRANGE("No.", "Item No.");
         ItemSubstitution.SETRANGE("Substitute Type", ItemSubstitution."Substitute Type"::Item);
         ItemSubstitution.SETRANGE("Variant Code", Code);
-        ItemSubstitution.DELETEALL;
+        ItemSubstitution.DELETEALL();
 
-        ItemVend.RESET;
+        ItemVend.RESET();
         ItemVend.SETCURRENTKEY("Item No.");
         ItemVend.SETRANGE("Item No.", "Item No.");
         ItemVend.SETRANGE("Variant Code", Code);
-        ItemVend.DELETEALL;
+        ItemVend.DELETEALL();
 
-        SalesPrice.RESET;
+        SalesPrice.RESET();
         SalesPrice.SETRANGE("Item No.", "Item No.");
         SalesPrice.SETRANGE("Variant Code", Code);
-        SalesPrice.DELETEALL;
+        SalesPrice.DELETEALL();
 
-        SalesLineDiscount.RESET;
+        SalesLineDiscount.RESET();
         SalesLineDiscount.SETRANGE(Code, "Item No.");
         SalesLineDiscount.SETRANGE("Variant Code", Code);
-        SalesLineDiscount.DELETEALL;
+        SalesLineDiscount.DELETEALL();
 
-        PurchasePrice.RESET;
+        PurchasePrice.RESET();
         PurchasePrice.SETRANGE("Item No.", "Item No.");
         PurchasePrice.SETRANGE("Variant Code", Code);
-        PurchasePrice.DELETEALL;
+        PurchasePrice.DELETEALL();
 
-        PurchaseLineDiscount.RESET;
+        PurchaseLineDiscount.RESET();
         PurchaseLineDiscount.SETRANGE("Item No.", "Item No.");
         PurchaseLineDiscount.SETRANGE("Variant Code", Code);
-        PurchaseLineDiscount.DELETEALL;
+        PurchaseLineDiscount.DELETEALL();
 
         SKU.SETRANGE("Item No.", "Item No.");
         SKU.SETRANGE("Variant Code", Code);
         SKU.DELETEALL(TRUE);
 
-        PlanningAssignment.RESET;
+        PlanningAssignment.RESET();
         PlanningAssignment.SETRANGE("Item No.", "Item No.");
         PlanningAssignment.SETRANGE("Variant Code", Code);
-        PlanningAssignment.DELETEALL;
+        PlanningAssignment.DELETEALL();
     end;
 
     trigger OnInsert()
     begin
         // --- AL.KVK4.5, Katalog Einr. --- //
-        grecKatEinr.GET;
+        //TODO grecKatEinr.GET;
 
-        // --- ZeilenID --- //
-        grecArtikelVar.RESET;
-        grecArtikelVar.SETCURRENTKEY(ZeilenID);
-        IF grecArtikelVar.FIND('+') THEN
-            ZeilenID := grecArtikelVar.ZeilenID + 1
-        ELSE
-            ZeilenID := 1;
-        ZeilenIDCode := FORMAT(ZeilenID);
+        // // --- ZeilenID --- //
+        // grecArtikelVar.RESET;
+        // grecArtikelVar.SETCURRENTKEY(ZeilenID);
+        // IF grecArtikelVar.FIND('+') THEN
+        //     ZeilenID := grecArtikelVar.ZeilenID + 1
+        // ELSE
+        //     ZeilenID := 1;
+        // ZeilenIDCode := FORMAT(ZeilenID);
 
-        // --- Defaultwerte --- //
-        Vorlagencode := grecKatEinr."Standardvorlage Artikel";
-        "Checklistennr." := grecKatEinr."Checkliste Variante";
-        Publikationsgruppe := grecKatEinr."Publikationsgrp. Artikel";
+        // TODO--- Defaultwerte --- //
+        // Vorlagencode := grecKatEinr."Standardvorlage Artikel";
+        // "Checklistennr." := grecKatEinr."Checkliste Variante";
+        // Publikationsgruppe := grecKatEinr."Publikationsgrp. Artikel";
 
-        // --- Vererbungen --- //
-        "Vererbung Beschreibungen" := grecKatEinr."Vererbung Beschreibungen";
-        "Vererbung Merkmale" := grecKatEinr."Vererbung Merkmale";
-        "Vererbung Referenzen" := grecKatEinr."Vererbung Merkmale";
-        "Vererbung Schlagworte" := grecKatEinr."Vererbung Schlagworte";
-        "Vererbung Bilder" := grecKatEinr."Vererbung Bilder";
-        "Vererbung Dokumente" := grecKatEinr."Vererbung Dokumente";
-        "Vererbung Grafik" := grecKatEinr."Vererbung Grafik";
+        // TODO--- Vererbungen --- //
+        // "Vererbung Beschreibungen" := grecKatEinr."Vererbung Beschreibungen";
+        // "Vererbung Merkmale" := grecKatEinr."Vererbung Merkmale";
+        // "Vererbung Referenzen" := grecKatEinr."Vererbung Merkmale";
+        // "Vererbung Schlagworte" := grecKatEinr."Vererbung Schlagworte";
+        // "Vererbung Bilder" := grecKatEinr."Vererbung Bilder";
+        // "Vererbung Dokumente" := grecKatEinr."Vererbung Dokumente";
+        // "Vererbung Grafik" := grecKatEinr."Vererbung Grafik";
         Uebersetzung := TRUE;
         // --- AL.KVK4.5, END --- //
     end;
@@ -479,19 +483,20 @@ table 99211 "DEL Ex_Item Variant"
         Text001: Label 'You cannot delete item variant %1 because there is at least one %2 that includes this Variant Code.';
         Text002: Label 'You cannot delete item variant %1 because there are one or more outstanding production orders that include this item.';
         "--- AL.KVK5.0 ---": Integer;
-        grecKatEinr: Record "4006541";
-        grecArtikelVar: Record "5401";
-        grecBeschrText: Record "4006511";
-        grecKatDok: Record "4006515";
-        grecKatMerkmal: Record "4006501";
-        grecZuordZeile: Record "4006572";
-        gpagDoklisteB: Page "4024073";
+        //TODO: spécifique pays---------//
+        // grecKatEinr: Record "4006541";
+        // grecArtikelVar: Record "5401";
+        // grecBeschrText: Record "4006511";
+        // grecKatDok: Record "4006515";
+        // grecKatMerkmal: Record "4006501";
+        // grecZuordZeile: Record "4006572";
+        // gpagDoklisteB: Page "4024073";
         goptQuellenart: Option Artikel,Artikelgruppe,Warengruppe,Kapitel,Kataloggruppe,Textbaustein,Variante;
         AL0001: Label 'Bildokument %1 ist nicht vorhanden.';
 
     local procedure ProdOrderExist(): Boolean
     var
-        ProdOrderLine: Record "5406";
+        ProdOrderLine: Record "Prod. Order Line";
     begin
         ProdOrderLine.SETCURRENTKEY(Status, "Item No.");
         ProdOrderLine.SETRANGE("Item No.", "Item No.");

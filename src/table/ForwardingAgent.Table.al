@@ -1,6 +1,6 @@
 table 50011 "DEL Forwarding Agent"
 {
-    // T-00799         THM       22.06.16        Add field 4   Departure port
+
 
     Caption = 'Forwarding Agent';
 
@@ -11,12 +11,12 @@ table 50011 "DEL Forwarding Agent"
             Caption = 'Vendor No.';
             NotBlank = true;
             TableRelation = Vendor;
-            //TODO //unused
-            // trigger OnValidate()
-            // var
-            //     TempDocDim: Record "357" temporary;
-            // begin
-            // end;
+
+            trigger OnValidate()
+            var
+                TempDocDim: Record "Gen. Jnl. Dim. Filter" temporary;
+            begin
+            end;
         }
         field(2; "Location Code"; Code[10])
         {
@@ -26,7 +26,7 @@ table 50011 "DEL Forwarding Agent"
         field(3; "Forwarding Agent"; Code[20])
         {
             Caption = 'Forwarding Agent';
-            //TODO   TableRelation = "Forwarding agent 2";
+            TableRelation = "DEL Forwarding agent 2";
         }
         field(4; "Departure port"; Code[20])
         {
@@ -46,11 +46,11 @@ table 50011 "DEL Forwarding Agent"
     fieldgroups
     {
     }
-    //TODO //unused
-    // trigger OnDelete()
-    // var
-    //     TransferRoute: Record "5742";
-    // begin
-    // end;
+
+    trigger OnDelete()
+    var
+        TransferRoute: Record "Transfer Route";
+    begin
+    end;
 }
 

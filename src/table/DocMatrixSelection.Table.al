@@ -60,11 +60,9 @@ table 50071 "DEL DocMatrix Selection"
 
             trigger OnValidate()
             begin
-                IF xRec."Save PDF" AND NOT "Save PDF" THEN BEGIN
-                    IF NOT "Save PDF" THEN BEGIN
+                IF xRec."Save PDF" AND NOT "Save PDF" THEN
+                    IF NOT "Save PDF" THEN
                         "Save PDF" := TRUE;
-                    END;
-                END;
             end;
         }
         field(11; "Send to FTP 2"; Boolean)
@@ -74,11 +72,9 @@ table 50071 "DEL DocMatrix Selection"
 
             trigger OnValidate()
             begin
-                IF xRec."Save PDF" AND NOT "Save PDF" THEN BEGIN
-                    IF NOT "Save PDF" THEN BEGIN
+                IF xRec."Save PDF" AND NOT "Save PDF" THEN
+                    IF NOT "Save PDF" THEN
                         "Save PDF" := TRUE;
-                    END;
-                END;
             end;
         }
         field(20; "E-Mail To 1"; Text[80])
@@ -86,59 +82,57 @@ table 50071 "DEL DocMatrix Selection"
             Caption = 'E-Mail To 1';
             DataClassification = ToBeClassified;
 
-            // trigger OnValidate()
-            // begin
-            //     IF (xRec."E-Mail To 1" = '') AND ("E-Mail To 1" <> '') THEN BEGIN
-            //         IF NOT "Save PDF" THEN BEGIN
-            //             "Save PDF" := TRUE;
-            //         //     IF "E-Mail From" = '' THEN
-            //         //        //TODO "E-Mail From" := CheckEmailFromAddress;
-            //         // END;
-            //     END;
-            // end;
+            trigger OnValidate()
+            begin
+                IF (xRec."E-Mail To 1" = '') AND ("E-Mail To 1" <> '') THEN
+                    IF NOT "Save PDF" THEN BEGIN
+                        "Save PDF" := TRUE;
+                        IF "E-Mail From" = '' THEN
+                            "E-Mail From" := CheckEmailFromAddress();
+                    END;
+            end;
         }
         field(21; "E-Mail To 2"; Text[80])
         {
             Caption = 'E-Mail To 2';
             DataClassification = ToBeClassified;
 
-            // trigger OnValidate()
-            // begin
-            //     IF (xRec."E-Mail To 2" = '') AND ("E-Mail To 2" <> '') THEN BEGIN
-            //         IF NOT "Save PDF" THEN BEGIN
-            //             "Save PDF" := TRUE;
-            //         // TODO    IF "E-Mail From" = '' THEN
-            //         //         "E-Mail From" := CheckEmailFromAddress;
-            //         // END;
-            //     END;
-            // end;
+            trigger OnValidate()
+            begin
+                IF (xRec."E-Mail To 2" = '') AND ("E-Mail To 2" <> '') THEN
+                    IF NOT "Save PDF" THEN BEGIN
+                        "Save PDF" := TRUE;
+                        IF "E-Mail From" = '' THEN
+                            //  "E-Mail From" := CheckEmailFromAddress();
+                            "E-Mail From" := CopyStr(CheckEmailFromAddress(), 1, MaxStrLen("E-Mail From"));
+                    END;
+            end;
         }
-        field(22; "E-Mail To 3"; Text[80])
+        field(22; "E-Mail To 3"; Text[250])
         {
             Caption = 'E-Mail To 3';
             DataClassification = ToBeClassified;
 
-            //TODO trigger OnValidate()
-            // begin
-            //     IF (xRec."E-Mail To 3" = '') AND ("E-Mail To 3" <> '') THEN BEGIN
-            //         IF NOT "Save PDF" THEN BEGIN
-            //             "Save PDF" := TRUE;
-            //             IF "E-Mail From" = '' THEN
-            //                 "E-Mail From" := CheckEmailFromAddress;
-            //         END;
-            //     END;
-            // end;
+            trigger OnValidate()
+            begin
+                IF (xRec."E-Mail To 3" = '') AND ("E-Mail To 3" <> '') THEN
+                    IF NOT "Save PDF" THEN BEGIN
+                        "Save PDF" := TRUE;
+                        IF "E-Mail From" = '' THEN
+                            "E-Mail From" := CopyStr(CheckEmailFromAddress(), 1, MaxStrLen("E-Mail From"));
+                    END;
+            end;
         }
         field(23; "E-Mail From"; Text[80])
         {
             Caption = 'E-Mail From';
             DataClassification = ToBeClassified;
 
-            //TODO trigger OnValidate()
-            // begin
-            //     IF EMailAddresExists AND (xRec."E-Mail From" <> '') AND ("E-Mail From" = '') THEN
-            //         ERROR(Err003);
-            // end;
+            trigger OnValidate()
+            begin
+                IF EMailAddresExists() AND (xRec."E-Mail From" <> '') AND ("E-Mail From" = '') THEN
+                    ERROR(Err003);
+            end;
         }
         field(30; "Save PDF"; Boolean)
         {
@@ -147,8 +141,8 @@ table 50071 "DEL DocMatrix Selection"
 
             trigger OnValidate()
             begin
-                //IF SavePDFmandatory AND ("Save PDF" = FALSE) AND (xRec."Save PDF" = TRUE) THEN
-                //  ERROR(Err002);
+                //TODO IF SavePDFmandatory AND ("Save PDF" = FALSE) AND (xRec."Save PDF" = TRUE) THEN
+                ERROR(Err002);
             end;
         }
         field(40; "Print PDF"; Boolean)
@@ -160,7 +154,7 @@ table 50071 "DEL DocMatrix Selection"
         {
             Caption = 'Mail Text Code';
             DataClassification = ToBeClassified;
-            TableRelation = "DEL DocMatrix Email Codes" WHERE("Language Code" = FILTER("MAIL TEXT LANGAUGE CODE" | ''));
+            //TODO TableRelation = "DEL DocMatrix Email Codes" WHERE("Language Code" = FILTER("MAIL TEXT LANGAUGE CODE" | ''));
         }
         field(51; "Mail Text Langauge Code"; Code[10])
         {
@@ -180,12 +174,11 @@ table 50071 "DEL DocMatrix Selection"
 
             trigger OnValidate()
             begin
-                IF (Post IN [1, 2, 3]) AND (Usage <> Usage::"S.Order") THEN BEGIN
+                IF (Post IN [1, 2, 3]) AND (Usage <> Usage::"S.Order") THEN
                     IF Usage = Usage::"S.Cr.Memo" THEN
                         ERROR(Err007, FORMAT(Usage::"S.Cr.Memo"))
                     ELSE
                         ERROR(Err005, FORMAT(Usage));
-                END;
 
                 IF (Usage <> Usage::"S.Cr.Memo") AND (Post = Post::Yes) THEN
                     ERROR(Err006, FORMAT(Usage::"S.Cr.Memo"));
@@ -218,9 +211,12 @@ table 50071 "DEL DocMatrix Selection"
     }
 
     var
-        //TODO: documentMatrix lors de la creation des codeunits
-        DocumentMatrixMgt: Codeunit 50015;
+        //-------------Unused global variable------------//
+
         DocumentMatrixSetup: Record "DEL DocMatrix Setup";
+        //TODO: documentMatrix lors de la creation des codeunits
+        // DocumentMatrixMgt: Codeunit 50015;
+
         boNotificationAlreadySent: Boolean;
         Err001: Label 'Please enter the Document Matrix Setup first.';
         Err002: Label 'You can not desactivate "Save PDF" if EMail or FTP is active, or if "Process Type" is "Automatic".';
@@ -242,8 +238,8 @@ table 50071 "DEL DocMatrix Selection"
     var
         ltxText001: Label 'You can enter a "Default E-Mail From" Address in the Document Matrix Setup.';
     begin
-        IF EMailAddresExists THEN BEGIN
-            IF (DocumentMatrixSetup.GET) AND (DocumentMatrixSetup."Default E-Mail From" = '') THEN
+        IF EMailAddresExists() THEN BEGIN
+            IF (DocumentMatrixSetup.GET()) AND (DocumentMatrixSetup."Default E-Mail From" = '') THEN
                 SendNotificationInfo(ltxText001);
             EXIT(DocumentMatrixSetup."Default E-Mail From");
         END;
@@ -253,17 +249,17 @@ table 50071 "DEL DocMatrix Selection"
     var
         MyNotification: Notification;
     begin
-        IF boNotificationAlreadySent AND NOT NotificationsActive THEN
+        IF boNotificationAlreadySent AND NOT NotificationsActive() THEN
             EXIT;
         MyNotification.MESSAGE := ptxNotificationText;
         MyNotification.SCOPE := NOTIFICATIONSCOPE::LocalScope;
-        MyNotification.SEND;
+        MyNotification.SEND();
         boNotificationAlreadySent := TRUE;
     end;
 
     local procedure NotificationsActive(): Boolean
     begin
-        IF DocumentMatrixSetup.GET THEN
+        IF DocumentMatrixSetup.GET() THEN
             EXIT(DocumentMatrixSetup."Show Notifications");
     end;
 }

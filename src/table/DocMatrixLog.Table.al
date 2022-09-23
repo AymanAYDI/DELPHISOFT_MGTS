@@ -1,22 +1,16 @@
 table 50068 "DEL DocMatrix Log"
 {
-
-
-
-    // LookupPageID = 50138;
-
     Caption = 'DocMatrix Log';
 
     fields
     {
 
 
-        field(1; Type; Option)
+        field(1; Type; Enum type)
 
         {
-          
-            OptionCaption = 'Customer,Vendor';
-            OptionMembers = Customer,Vendor;
+
+            Caption = 'Type';
 
         }
         field(2; "No."; Code[20])
@@ -30,40 +24,36 @@ table 50068 "DEL DocMatrix Log"
             IF (Type = CONST(Vendor)) Vendor."No.";
 
         }
-        field(3; "Process Type"; Option)
+        field(3; "Process Type"; Enum "DEL Process Type")
         {
             Caption = 'Process Type';
             DataClassification = ToBeClassified;
             Editable = false;
-            OptionCaption = 'Manual,Automatic';
-            OptionMembers = Manual,Automatic;
+
         }
         field(4; "Report ID"; Integer)
         {
             Caption = 'Report ID';
             Editable = false;
 
-            TableRelation = AllObjWithCaption."Object ID" WHERE(Object Type=CONST(Report    Caption = '';
+            TableRelation = AllObjWithCaption."Object ID" WHERE("Object Type" = CONST(Report));
 
         }
         field(5; "Report Caption"; Text[250])
         {
 
-            CalcFormula = Lookup(AllObjWithCaption."Object Caption" WHERE (Object Type=CONST(Report    Caption = '';
+            CalcFormula = Lookup(AllObjWithCaption."Object Caption" WHERE("Object Type" = CONST(Report),
 
-),
-                                                                           Object ID=FIELD(Report ID    Caption = 'ID';
-)));
+            "Object ID" = FIELD("Report ID")));
+
             Caption = 'Report Caption';
             Editable = false;
             FieldClass = FlowField;
         }
-        field(6; Usage; Option)
+        field(6; Usage; Enum "DEL Usage DocMatrix Selection")
         {
             Caption = 'Usage';
             Editable = false;
-            OptionCaption = ',S.Order,S.Invoice,S.Cr.Memo,,,P.Order,P.Invoice,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,C.Statement';
-            OptionMembers = ,"S.Order","S.Invoice","S.Cr.Memo",,,"P.Order","P.Invoice",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"C.Statement";
         }
         field(7; Name; Text[50])
         {
@@ -136,7 +126,7 @@ table 50068 "DEL DocMatrix Log"
             Caption = 'Mail Text Code';
             DataClassification = ToBeClassified;
             Editable = false;
-            TableRelation = "DocMatrix Email Codes";
+            TableRelation = "DEL DocMatrix Email Codes";
         }
         field(51; "Mail Text Langauge Code"; Code[10])
         {
@@ -145,33 +135,30 @@ table 50068 "DEL DocMatrix Log"
             Editable = false;
             TableRelation = Language;
         }
-        field(70; Post; Option)
+        field(70; Post; Enum "DEL Post DocMatrix")
         {
             Caption = 'Post';
             DataClassification = ToBeClassified;
             Editable = false;
-            OptionCaption = ' ,Ship,Invoice,Ship and Invoice,Yes';
-            OptionMembers = " ",Ship,Invoice,"Ship and Invoice",Yes;
+
         }
         field(75; "E-Mail from Sales Order"; Boolean)
         {
             Caption = 'E-Mail from Sales Order';
-            Description = 'CR100';
+
 
             trigger OnValidate()
             begin
-                //20200915/DEL/PD/CR100.begin
-                TESTFIELD(Type,Type::Customer);
-                //20200915/DEL/PD/CR100.end
+
+                TESTFIELD(Type, Type::Customer);
+
             end;
         }
-        field(100; "Action"; Option)
+        field(100; "Action"; Enum Action100)
         {
             Caption = 'Action';
             DataClassification = ToBeClassified;
             Editable = false;
-            OptionCaption = 'Print,Save,Mail,FTP1,FTP2,,,,,,JobQueueEntry';
-            OptionMembers = Print,Save,Mail,FTP1,FTP2,,,,,,JobQueueEntry;
         }
         field(101; "Date Time Stamp"; DateTime)
         {
@@ -211,14 +198,14 @@ table 50068 "DEL DocMatrix Log"
 
     keys
     {
-        key(Key1;Type,"No.","Process Type",Usage,"Line No.")
+        key(Key1; Type, "No.", "Process Type", Usage, "Line No.")
         {
             Clustered = true;
         }
-        key(Key2;"Date Time Stamp")
+        key(Key2; "Date Time Stamp")
         {
         }
-        key(Key3;"Line No.")
+        key(Key3; "Line No.")
         {
         }
     }
@@ -228,15 +215,16 @@ table 50068 "DEL DocMatrix Log"
     }
 
     var
-        DocumentMatrixMgt: Codeunit "50015";
-        DocumentMatrixSetup: Record "50069";
-        Err001: Label 'Please enter the Document Matrix Setup first.';
-        Err002: Label 'You can not desactivate "Save PDF" if EMail or FTP is active, or if "Process Type" is "Automatic".';
-        Err003: Label 'You can not delete the "E-Mail From" Address, if a E-Mail Address is entered. First you have to delete all the E-Mail Addresses.';
-        Err004: Label 'You can not activate "Print" if the "Process Type" is set to "Automatic"!';
-        Text001: Label 'The field "Save PDF" was set to TRUE to fit the Business Logic.';
-        Text002: Label 'The field "Process Type" might have changed to fit the Business Logic.';
-        Text003: Label 'Please check if you have to change the field "Usage".';
-        boNotificationAlreadySent: Boolean;
+    //TODO DocumentMatrixMgt: Codeunit "50015";
+    //-------------Global variables are not used-------------------------//
+    // DocumentMatrixSetup: Record "DEL DocMatrix Setup";
+    // Err001: Label 'Please enter the Document Matrix Setup first.';
+    // Err002: Label 'You can not desactivate "Save PDF" if EMail or FTP is active, or if "Process Type" is "Automatic".';
+    // Err003: Label 'You can not delete the "E-Mail From" Address, if a E-Mail Address is entered. First you have to delete all the E-Mail Addresses.';
+    // Err004: Label 'You can not activate "Print" if the "Process Type" is set to "Automatic"!';
+    // Text001: Label 'The field "Save PDF" was set to TRUE to fit the Business Logic.';
+    // Text002: Label 'The field "Process Type" might have changed to fit the Business Logic.';
+    // Text003: Label 'Please check if you have to change the field "Usage".';
+    // boNotificationAlreadySent: Boolean;
 }
 

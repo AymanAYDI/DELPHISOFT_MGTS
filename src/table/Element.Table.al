@@ -1,15 +1,7 @@
 table 50021 "DEL Element"
 {
     Caption = 'DEL Element';
-    // +-------------------------------------------------------------------------------+
-    // | Logico SA - Logiciels & Conseils                                              |
-    // | Stand: 20.04.09                                                               |
-    // |                                                                               |
-    // +-------------------------------------------------------------------------------+
-    // 
-    // ID     Version     Story-Card    Date       Description
-    // ---------------------------------------------------------------------------------
-    // CHG01                            20.04.09   added "Add DateTime" field, FNC_Date2DateTime and FNC_DateTime2Date
+
     //TODO
     // LookupPageID = 50021;
 
@@ -37,7 +29,7 @@ table 50021 "DEL Element"
             var
                 Purchaseline: Record "Purchase Line";
                 SalesHeader: Record "Sales Header";
-                //TODO DealShpmentConnection: Record 50032;
+                DealShpmentConnection: Record "DEL Deal Shipment Connection";
                 Deal: Record "DEL Deal";
             begin
             end;
@@ -47,7 +39,8 @@ table 50021 "DEL Element"
             TableRelation = IF (Type = CONST(ACO)) "Purchase Header"."No." WHERE("Document Type" = CONST(Order))
             ELSE
             IF (Type = CONST(VCO)) "Sales Header"."No." WHERE("Document Type" = CONST(Order))
-            //TODO  ELSE IF (Type=CONST(Fee)) Fee.ID
+            ELSE
+            IF (Type = CONST(Fee)) "DEL Fee".ID
             ELSE
             IF (Type = CONST(BR)) "Purch. Rcpt. Header"."No."
             ELSE
@@ -75,12 +68,12 @@ table 50021 "DEL Element"
         field(8; Fee_ID; Code[20])
         {
             Caption = 'Fee_ID';
-            //TODO   TableRelation = Fee.ID;
+            TableRelation = "DEL Fee".ID;
         }
         field(9; Fee_Connection_ID; Code[20])
         {
             Caption = 'Fee_Connection_ID';
-            //TODO  TableRelation = "Fee Connection".ID;
+            TableRelation = "DEL Fee Connection".ID;
         }
         field(10; "Subject Type"; Enum "DEL Subject Type")
         {
@@ -110,13 +103,13 @@ table 50021 "DEL Element"
         }
         field(100; Amount; Decimal)
         {
-            //TODO      CalcFormula = Sum(Position."Line Amount" WHERE (Element_ID=FIELD(FILTER(ID))));
+            CalcFormula = Sum("DEL Position"."Line Amount" WHERE(Element_ID = FIELD(FILTER(ID))));
             FieldClass = FlowField;
             Caption = 'Amount';
         }
         field(110; "Amount(EUR)"; Decimal)
         {
-            //TODO  CalcFormula = Sum(Position."Line Amount (EUR)" WHERE (Element_ID=FIELD(FILTER(ID))));
+            CalcFormula = Sum("DEL Position"."Line Amount (EUR)" WHERE(Element_ID = FIELD(FILTER(ID))));
             FieldClass = FlowField;
             Caption = 'Amount(EUR)';
         }
@@ -166,19 +159,19 @@ table 50021 "DEL Element"
     var
         myDT: DateTime;
     begin
-        /*
+
         RESET();
         FIND('-');
         REPEAT
-          myDT := 0DT;
-          IF EVALUATE(myDT, FORMAT(Date)) THEN BEGIN
-            DateTime := myDT;
-            //Date := 0D;
-            MODIFY();
-          END ELSE
-            ERROR('Evaluate exception with rec >%1<', ID);
+            myDT := 0DT;
+            IF EVALUATE(myDT, FORMAT(Date)) THEN BEGIN
+                //TODO DateTime := myDT;
+                Date := 0D;
+                MODIFY();
+            END ELSE
+                ERROR('Evaluate exception with rec >%1<', ID);
         UNTIL NEXT() = 0;
-        */
+
 
     end;
 
@@ -187,22 +180,22 @@ table 50021 "DEL Element"
     var
         myD: Date;
     begin
-        /*
+
         //transforme les DateTime en Date
         RESET();
         FIND('-');
         REPEAT
-        
-          myD := 0D;
-          IF EVALUATE(myD, COPYSTR(FORMAT("Add DateTime"),1,8)) THEN BEGIN
-            Date := myD;
-            //DateTime := 0DT;
-            MODIFY();
-          END ELSE
-            ERROR('Evaluate exception with rec >%1<', ID);
-        
+
+            myD := 0D;
+            IF EVALUATE(myD, COPYSTR(FORMAT("Add DateTime"), 1, 8)) THEN BEGIN
+                Date := myD;
+                //TODO DateTime := 0DT;
+                MODIFY();
+            END ELSE
+                ERROR('Evaluate exception with rec >%1<', ID);
+
         UNTIL NEXT() = 0;
-        */
+
 
     end;
 }

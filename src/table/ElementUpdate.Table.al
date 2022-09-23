@@ -63,7 +63,7 @@ table 50041 "DEL Element Update"
         field(9; Fee_Connection_ID; Code[20])
         {
             Caption = 'Fee_Connection_ID';
-            //todo    TableRelation = "DEL Fee Connection".ID;
+            TableRelation = "DEL Fee Connection".ID;
         }
         field(10; "Subject Type"; Enum "DEL Subject Type")
         {
@@ -128,19 +128,19 @@ table 50041 "DEL Element Update"
     var
         myDT: DateTime;
     begin
-        /*
-        RESET();
-        FIND('-');
-        REPEAT
-          myDT := 0DT;
-          IF EVALUATE(myDT, FORMAT(Date)) THEN BEGIN
-            DateTime := myDT;
-            //Date := 0D;
-            MODIFY();
-          END ELSE
-            ERROR('Evaluate exception with rec >%1<', ID);
-        UNTIL NEXT() = 0;
-        */
+        /*TODO
+       RESET();
+       FIND('-');
+       REPEAT
+         myDT := 0DT;
+         IF EVALUATE(myDT, FORMAT(Date)) THEN BEGIN
+           DateTime := myDT;
+           //Date := 0D;
+           MODIFY();
+         END ELSE
+           ERROR('Evaluate exception with rec >%1<', ID);
+       UNTIL NEXT() = 0;
+       */
 
     end;
 
@@ -149,7 +149,7 @@ table 50041 "DEL Element Update"
     var
         myD: Date;
     begin
-        /*
+        /*TODO
         //transforme les DateTime en Date
         RESET();
         FIND('-');

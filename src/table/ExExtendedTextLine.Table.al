@@ -6,19 +6,20 @@ table 99209 "DEL Ex_Extended Text Line"
 
     fields
     {
-        field(1; "Table Name"; Option)
+        field(1; "Table Name"; Enum "DEL Table Namevend/customer")
         {
             Caption = 'Table Name';
-            OptionCaption = 'Standard Text,G/L Account,Item,Resource';
-            OptionMembers = "Standard Text","G/L Account",Item,Resource;
         }
         field(2; "No."; Code[20])
         {
             Caption = 'No.';
-            TableRelation = IF (Table Name=CONST(Standard Text)) "Standard Text"
-                            ELSE IF (Table Name=CONST(G/L Account)) "G/L Account"
-                            ELSE IF (Table Name=CONST(Item)) Item
-                            ELSE IF (Table Name=CONST(Resource)) Resource;
+            TableRelation = IF ("Table Name" = CONST("Standard Text")) "Standard Text"
+            ELSE
+            IF ("Table Name" = CONST("G/L Account")) "G/L Account"
+            ELSE
+            IF ("Table Name" = CONST(Item)) Item
+            ELSE
+            IF ("Table Name" = CONST(Resource)) Resource;
         }
         field(3; "Language Code"; Code[10])
         {
@@ -41,14 +42,12 @@ table 99209 "DEL Ex_Extended Text Line"
         field(4006496; Vererbt; Boolean)
         {
             Caption = 'Inherited';
-            Description = 'AL.KVK4.5';
+
         }
-        field(4006497; Separator; Option)
+        field(4006497; Separator; Enum "Separator ")
         {
             Caption = 'Separator';
-            Description = 'AL.KVK4.5';
-            OptionCaption = ' ,Space,Carriage Return';
-            OptionMembers = " ",Space,"Carriage Return";
+
         }
     }
 
@@ -60,9 +59,7 @@ table 99209 "DEL Ex_Extended Text Line"
         }
     }
 
-    fieldgroups
-    {
-    }
+
 
     trigger OnInsert()
     begin
@@ -70,6 +67,6 @@ table 99209 "DEL Ex_Extended Text Line"
     end;
 
     var
-        ExtendedTextHeader: Record "279";
+        ExtendedTextHeader: Record "Extended Text Header";
 }
 

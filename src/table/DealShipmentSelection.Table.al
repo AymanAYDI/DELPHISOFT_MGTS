@@ -9,7 +9,7 @@ table 50031 "DEL Deal Shipment Selection"
         field(1; "Document Type"; Enum "DEL Document Type")
         {
 
-
+            Caption = 'Document Type';
         }
         field(10; "Document No."; Code[20])
         {

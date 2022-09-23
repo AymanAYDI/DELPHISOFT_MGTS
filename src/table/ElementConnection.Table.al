@@ -9,24 +9,28 @@ table 50027 "DEL Element Connection"
         {
 
             TableRelation = "DEL Deal".ID;
+            Caption = 'Deal_ID';
         }
         field(2; Element_ID; Code[20])
         {
             TableRelation = "DEL Element".ID;
+            Caption = 'Element_ID';
         }
         field(3; "Apply To"; Code[20])
         {
             TableRelation = "DEL Element".ID;
+            Caption = 'Apply To';
 
         }
-        field(4; Instance; Option)
+        field(4; Instance; Enum "DEL Apply To")
         {
-            OptionCaption = 'Planned,Real';
-            OptionMembers = planned,real;
+
+            Caption = 'Instance';
 
         }
         field(10; "Split Index"; Integer)
         {
+            Caption = 'Split Index';
 
         }
     }

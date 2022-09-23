@@ -1,4 +1,4 @@
-enum 50019 "DEL Shipment mode"
+enum 50052 "DEL Shipment mode"
 {
     Extensible = true;
 
