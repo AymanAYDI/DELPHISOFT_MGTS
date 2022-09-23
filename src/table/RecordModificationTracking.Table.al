@@ -1,9 +1,6 @@
 table 50083 "Record Modification Tracking"
 {
     Caption = 'Record Modification Tracking';
-    // Mgts10.00.04.00      07.12.2021 : Record Modification Tracking : Create object
-
-
     fields
     {
         field(1; "Table ID"; Integer)
@@ -37,8 +34,6 @@ table 50083 "Record Modification Tracking"
         field(7; "Last Synchronized state"; Option)
         {
             Caption = 'Last Synchronized state';
-            OptionCaption = 'Insert,Modify,Delete,Rename';
-            OptionMembers = Insert,Modify,Delete,Rename;
         }
         field(8; Deleted; Boolean)
         {

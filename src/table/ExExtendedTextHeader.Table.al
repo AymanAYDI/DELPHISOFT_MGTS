@@ -287,4 +287,3 @@ table 99208 "DEL Ex_Extended Text Header"
             ERROR(Text001);
     end;
 }
-

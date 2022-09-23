@@ -3,7 +3,7 @@ table 99210 "DEL Ex_Campaign"
 {
     Caption = 'Campaign';
     DataCaptionFields = "No.", Description;
-    LookupPageID = 5087;
+    LookupPageID = "Campaign List";
 
     fields
     {
@@ -26,15 +26,14 @@ table 99210 "DEL Ex_Campaign"
         field(5; "Salesperson Code"; Code[10])
         {
             Caption = 'Salesperson Code';
-            TableRelation = Salesperson/Purchaser;
+            TableRelation = "Salesperson/Purchaser";
         }
 
         field(6; Comment; Boolean)
 
         {
-            CalcFormula = Exist("Rlshp. Mgt. Comment Line" WHERE (Table Name    Caption = 'Name';
-=CONST(Campaign),
-                                                                  No.=FIELD(No.)));
+            CalcFormula = Exist("Rlshp. Mgt. Comment Line" WHERE("Table Name" = CONST(Campaign),
+                                                                  "No." = FIELD("No.")));
             Caption = 'Comment';
             Editable = false;
             FieldClass = FlowField;
@@ -60,7 +59,7 @@ table 99210 "DEL Ex_Campaign"
         {
             CaptionClass = '1,1,1';
             Caption = 'Global Dimension 1 Code';
-            TableRelation = "Dimension Value".Code WHERE (Global Dimension No.=CONST(1));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(1));
         }
 
         field(10; "Global Dimension 2 Code"; Code[20])
@@ -68,7 +67,7 @@ table 99210 "DEL Ex_Campaign"
         {
             CaptionClass = '1,1,2';
             Caption = 'Global Dimension 2 Code';
-            TableRelation = "Dimension Value".Code WHERE (Global Dimension No.=CONST(2));
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2));
         }
 
         field(11; "Status Code"; Code[10])
@@ -82,11 +81,11 @@ table 99210 "DEL Ex_Campaign"
         field(12; "Target Contacts Contacted"; Integer)
 
         {
-            CalcFormula = Count("Interaction Log Entry" WHERE (Campaign No.=FIELD(No.),
-                                                               Campaign Target=CONST(Yes),
-                                                               Canceled=CONST(No),
-                                                               Date=FIELD(Date Filter),
-                                                               Postponed=CONST(No)));
+            CalcFormula = Count("Interaction Log Entry" WHERE("Campaign No." = FIELD("No."),
+                                                               "Campaign Target" = CONST(true),
+                                                               Canceled = CONST(false),
+                                                               Date = FIELD("Date Filter"),
+                                                               Postponed = CONST(false)));
             Caption = 'Target Contacts Contacted';
             Editable = false;
             FieldClass = FlowField;
@@ -95,11 +94,11 @@ table 99210 "DEL Ex_Campaign"
         field(13; "Contacts Responded"; Integer)
 
         {
-            CalcFormula = Count("Interaction Log Entry" WHERE (Campaign No.=FIELD(No.),
-                                                               Campaign Response=CONST(Yes),
-                                                               Canceled=CONST(No),
-                                                               Date=FIELD(Date Filter),
-                                                               Postponed=CONST(No)));
+            CalcFormula = Count("Interaction Log Entry" WHERE("Campaign No." = FIELD("No."),
+                                                               "Campaign Response" = CONST(true),
+                                                               Canceled = CONST(false),
+                                                               Date = FIELD("Date Filter"),
+                                                               Postponed = CONST(false)));
             Caption = 'Contacts Responded';
             Editable = false;
             FieldClass = FlowField;
@@ -107,12 +106,12 @@ table 99210 "DEL Ex_Campaign"
 
         field(14; "Duration (Min.)"; Decimal)
         {
-            CalcFormula = Sum("Interaction Log Entry"."Duration (Min.)" WHERE (Campaign No.=FIELD(No.),
-                                                                               Canceled=CONST(No),
-                                                                               Date=FIELD(Date Filter),
-                                                                               Postponed=CONST(No)));
+            CalcFormula = Sum("Interaction Log Entry"."Duration (Min.)" WHERE("Campaign No." = FIELD("No."),
+                                                                               Canceled = CONST(false),
+                                                                               Date = FIELD("Date Filter"),
+                                                                               Postponed = CONST(false)));
             Caption = 'Duration (Min.)';
-            DecimalPlaces = 0:0;
+            DecimalPlaces = 0 : 0;
             Editable = false;
             FieldClass = FlowField;
         }
@@ -121,10 +120,10 @@ table 99210 "DEL Ex_Campaign"
 
         {
             AutoFormatType = 1;
-            CalcFormula = Sum("Interaction Log Entry"."Cost (LCY)" WHERE (Campaign No.=FIELD(No.),
-                                                                          Canceled=CONST(No),
-                                                                          Date=FIELD(Date Filter),
-                                                                          Postponed=CONST(No)));
+            CalcFormula = Sum("Interaction Log Entry"."Cost (LCY)" WHERE("Campaign No." = FIELD("No."),
+                                                                          Canceled = CONST(false),
+                                                                          Date = FIELD("Date Filter"),
+                                                                          Postponed = CONST(true)));
             Caption = 'Cost (LCY)';
             Editable = false;
             FieldClass = FlowField;
@@ -132,8 +131,8 @@ table 99210 "DEL Ex_Campaign"
 
         field(17; "No. of Opportunities"; Integer)
         {
-            CalcFormula = Count("Opportunity Entry" WHERE (Campaign No.=FIELD(No.),
-                                                           Active=CONST(Yes)));
+            CalcFormula = Count("Opportunity Entry" WHERE("Campaign No." = FIELD("No."),
+                                                           Active = CONST(true)));
             Caption = 'No. of Opportunities';
             Editable = false;
             FieldClass = FlowField;
@@ -143,8 +142,8 @@ table 99210 "DEL Ex_Campaign"
 
         {
             AutoFormatType = 1;
-            CalcFormula = Sum("Opportunity Entry"."Estimated Value (LCY)" WHERE (Campaign No.=FIELD(No.),
-                                                                                 Active=CONST(Yes)));
+            CalcFormula = Sum("Opportunity Entry"."Estimated Value (LCY)" WHERE("Campaign No." = FIELD("No."),
+                                                                                 Active = CONST(true)));
             Caption = 'Estimated Value (LCY)';
             Editable = false;
             FieldClass = FlowField;
@@ -153,8 +152,8 @@ table 99210 "DEL Ex_Campaign"
         field(19; "Calcd. Current Value (LCY)"; Decimal)
         {
             AutoFormatType = 1;
-            CalcFormula = Sum("Opportunity Entry"."Calcd. Current Value (LCY)" WHERE (Campaign No.=FIELD(No.),
-                                                                                      Active=CONST(Yes)));
+            CalcFormula = Sum("Opportunity Entry"."Calcd. Current Value (LCY)" WHERE("Campaign No." = FIELD("No."),
+                                                                                      Active = CONST(true)));
             Caption = 'Calcd. Current Value (LCY)';
             Editable = false;
             FieldClass = FlowField;
@@ -166,12 +165,10 @@ table 99210 "DEL Ex_Campaign"
             FieldClass = FlowFilter;
         }
 
-        field(23; "Action Taken Filter"; Option)
+        field(23; "Action Taken Filter"; Enum "DEL Action Taken Filter")
         {
             Caption = 'Action Taken Filter';
             FieldClass = FlowFilter;
-            OptionCaption = ' ,Next,Previous,Updated,Jumped,Won,Lost';
-            OptionMembers = " ",Next,Previous,Updated,Jumped,Won,Lost;
         }
 
         field(24; "Sales Cycle Filter"; Code[10])
@@ -186,13 +183,13 @@ table 99210 "DEL Ex_Campaign"
         {
             Caption = 'Sales Cycle Stage Filter';
             FieldClass = FlowFilter;
-            TableRelation = "Sales Cycle Stage".Stage WHERE (Sales Cycle Code=FIELD(Sales Cycle Filter));
+            TableRelation = "Sales Cycle Stage".Stage WHERE("Sales Cycle Code" = FIELD("Sales Cycle Filter"));
         }
 
         field(26; "Probability % Filter"; Decimal)
         {
             Caption = 'Probability % Filter';
-            DecimalPlaces = 1:1;
+            DecimalPlaces = 1 : 1;
             FieldClass = FlowFilter;
             MaxValue = 100;
             MinValue = 0;
@@ -201,7 +198,7 @@ table 99210 "DEL Ex_Campaign"
         field(27; "Completed % Filter"; Decimal)
         {
             Caption = 'Completed % Filter';
-            DecimalPlaces = 1:1;
+            DecimalPlaces = 1 : 1;
             FieldClass = FlowFilter;
             MaxValue = 100;
             MinValue = 0;
@@ -217,7 +214,7 @@ table 99210 "DEL Ex_Campaign"
         {
             Caption = 'Contact Company Filter';
             FieldClass = FlowFilter;
-            TableRelation = Contact WHERE (Type=CONST(Company));
+            TableRelation = Contact WHERE(Type = CONST(Company));
         }
 
         field(30; "Estimated Value Filter"; Decimal)
@@ -238,18 +235,16 @@ table 99210 "DEL Ex_Campaign"
         field(32; "Chances of Success % Filter"; Decimal)
         {
             Caption = 'Chances of Success % Filter';
-            DecimalPlaces = 0:0;
+            DecimalPlaces = 0 : 0;
             FieldClass = FlowFilter;
             MaxValue = 100;
             MinValue = 0;
         }
 
-        field(33; "To-do Status Filter"; Option)
+        field(33; "To-do Status Filter"; Enum "DEL TODOStatus")
         {
             Caption = 'To-do Status Filter';
             FieldClass = FlowFilter;
-            OptionCaption = 'Not Started,In Progress,Completed,Waiting,Postponed';
-            OptionMembers = "Not Started","In Progress",Completed,Waiting,Postponed;
         }
 
         field(34; "To-do Closed Filter"; Boolean)
@@ -258,12 +253,10 @@ table 99210 "DEL Ex_Campaign"
             FieldClass = FlowFilter;
         }
 
-        field(35; "Priority Filter"; Option)
+        field(35; "Priority Filter"; Enum "Priority Filter ")
         {
             Caption = 'Priority Filter';
             FieldClass = FlowFilter;
-            OptionCaption = 'Low,Normal,High';
-            OptionMembers = Low,Normal,High;
         }
 
         field(36; "Team Filter"; Code[10])
@@ -277,43 +270,43 @@ table 99210 "DEL Ex_Campaign"
         {
             Caption = 'Salesperson Filter';
             FieldClass = FlowFilter;
-            TableRelation = Salesperson/Purchaser;
+            TableRelation = "Salesperson/Purchaser";
         }
 
         field(38; "Opportunity Entry Exists"; Boolean)
 
         {
-            CalcFormula = Exist("Opportunity Entry" WHERE (Campaign No.=FIELD(No.),
-                                                           Active=CONST(Yes),
-                                                           Salesperson Code=FIELD(Salesperson Filter),
-                                                           Contact No.=FIELD(Contact Filter),
-                                                           Contact Company No.=FIELD(Contact Company Filter),
-                                                           Sales Cycle Code=FIELD(Sales Cycle Filter),
-                                                           Sales Cycle Stage=FIELD(Sales Cycle Stage Filter),
-                                                           Action Taken=FIELD(Action Taken Filter),
-                                                           Estimated Value (LCY)=FIELD(Estimated Value Filter),
-                                                           Calcd. Current Value (LCY)=FIELD(Calcd. Current Value Filter),
-                                                           Completed %=FIELD(Completed % Filter),
-                                                           Chances of Success %=FIELD(Chances of Success % Filter),
-                                                           Probability %=FIELD(Probability % Filter),
-                                                           Estimated Close Date=FIELD(Date Filter),
-                                                           Close Opportunity Code=FIELD(Close Opportunity Filter)));
+            CalcFormula = Exist("Opportunity Entry" WHERE("Campaign No." = FIELD("No."),
+                                                           Active = CONST(true),
+                                                           "Salesperson Code" = FIELD("Salesperson Filter"),
+                                                           "Contact No." = FIELD("Contact Filter"),
+                                                           "Contact Company No." = FIELD("Contact Company Filter"),
+                                                           "Sales Cycle Code" = FIELD("Sales Cycle Filter"),
+                                                           "Sales Cycle Stage" = FIELD("Sales Cycle Stage Filter"),
+                                                           "Action Taken" = FIELD("Action Taken Filter"),
+                                                           "Estimated Value (LCY)" = FIELD("Estimated Value Filter"),
+                                                           "Calcd. Current Value (LCY)" = FIELD("Calcd. Current Value Filter"),
+                                                           "Completed %" = FIELD("Completed % Filter"),
+                                                           "Chances of Success %" = FIELD("Chances of Success % Filter"),
+                                                           "Probability %" = FIELD("Probability % Filter"),
+                                                          "Estimated Close Date" = FIELD("Date Filter"),
+                                                           "Close Opportunity Code" = FIELD("Close Opportunity Filter")));
             Caption = 'Opportunity Entry Exists';
             Editable = false;
             FieldClass = FlowField;
         }
         field(39; "To-do Entry Exists"; Boolean)
->>>>>>> 4bb440cd5e9a735e45eff15bec7001464a5622ca
+
         {
-            CalcFormula = Exist(To-do WHERE (Campaign No.=FIELD(No.),
-                                             Contact No.=FIELD(Contact Filter),
-                                             Contact Company No.=FIELD(Contact Company Filter),
-                                             Salesperson Code=FIELD(Salesperson Filter),
-                                             Team Code=FIELD(Team Filter),
-                                             Status=FIELD(To-do Status Filter),
-                                             Closed=FIELD(To-do Closed Filter),
-                                             Priority=FIELD(Priority Filter),
-                                             Date=FIELD(Date Filter)));
+            CalcFormula = Exist("To-do" WHERE("Campaign No." = FIELD("No."),
+                                             "Contact No." = FIELD("Contact Filter"),
+                                             "Contact Company No." = FIELD("Contact Company Filter"),
+                                             "Salesperson Code" = FIELD("Salesperson Filter"),
+                                             "Team Code" = FIELD("Team Filter"),
+                                             Status = FIELD("To-do Status Filter"),
+                                             Closed = FIELD("To-do Closed Filter"),
+                                             Priority = FIELD("Priority Filter"),
+                                             Date = FIELD("Date Filter")));
             Caption = 'To-do Entry Exists';
             Editable = false;
             FieldClass = FlowField;
@@ -329,7 +322,7 @@ table 99210 "DEL Ex_Campaign"
 
         field(41; Activated; Boolean)
         {
-            CalcFormula = Exist("Campaign Target Group" WHERE (Campaign No.=FIELD(No.)));
+            CalcFormula = Exist("Campaign Target Group" WHERE("Campaign No." = FIELD("No.")));
             Caption = 'Activated';
             Editable = false;
             FieldClass = FlowField;
@@ -368,44 +361,44 @@ table 99210 "DEL Ex_Campaign"
 
     keys
     {
-        key(Key1;"No.")
+        key(Key1; "No.")
         {
             Clustered = true;
         }
-        key(Key2;"Salesperson Code")
+        key(Key2; "Salesperson Code")
         {
         }
-        key(Key3;Hauptkampagne)
+        key(Key3; Hauptkampagne)
         {
         }
-        key(Key4;eCommerce)
+        key(Key4; eCommerce)
         {
         }
     }
 
     fieldgroups
     {
-        fieldgroup(DropDown;"No.",Description,"Starting Date","Ending Date","Status Code")
+        fieldgroup(DropDown; "No.", Description, "Starting Date", "Ending Date", "Status Code")
         {
         }
     }
 
-    trigger OnDelete()
-    var
-        SalesPrice: Record "7002";
-        SalesLineDisc: Record "7004";
-    begin
-    end;
+    // trigger OnDelete()
+    // var
+    //     SalesPrice: Record "7002";
+    //     SalesLineDisc: Record "7004";
+    // begin
+    // end;
 
     var
+        Campaign: Record Campaign;
+        CampaignEntry: Record "Campaign Entry";
+        RMCommentLine: Record "Rlshp. Mgt. Comment Line";
+        RMSetup: Record "Marketing Setup";
+        CampaignMgmt: Codeunit "Campaign Target Group Mgt";
+        DimMgt: Codeunit DimensionManagement;
+        NoSeriesMgt: Codeunit NoSeriesManagement;
         Text000: Label '%1 must be before %2.';
         Text001: Label '%1 must be after %2.';
-        RMSetup: Record "5079";
-        Campaign: Record "5071";
-        RMCommentLine: Record "5061";
-        CampaignEntry: Record "5072";
-        NoSeriesMgt: Codeunit "396";
-        DimMgt: Codeunit "408";
-        CampaignMgmt: Codeunit "7030";
 }
 
