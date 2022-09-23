@@ -1,21 +1,23 @@
-enum 50050 "DEL Table Namevend/customer"
-{
-    Extensible = false;
 
-    value(0; "Standard Text")
+enum 50001 "DEL Table Namevend/customer"
+{
+    Extensible = true;
+
+    value(0; "")
     {
-        Caption = 'Standard Text';
+        Caption = ' ';
     }
-    value(1; "G/L Account")
+    value(1; "Vendor")
     {
-        Caption = 'G/L Account';
+        Caption = 'Vendor';
     }
-    value(2; Item)
+    value(2; "Contact")
     {
-        Caption = 'Item';
+        Caption = 'Contact';
     }
-    value(3; Resource)
+    value(3; "Customer")
     {
-        Caption = 'Resource';
+        Caption = 'Customer';
+
     }
 }

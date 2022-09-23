@@ -1,9 +1,6 @@
-table 50083 "Record Modification Tracking"
+table 50083 "DEL Record Modifs. Tracking"
 {
     Caption = 'Record Modification Tracking';
-    // Mgts10.00.04.00      07.12.2021 : Record Modification Tracking : Create object
-
-
     fields
     {
         field(1; "Table ID"; Integer)
@@ -34,11 +31,9 @@ table 50083 "Record Modification Tracking"
             Caption = 'Last Date Synchronized';
             Editable = false;
         }
-        field(7; "Last Synchronized state"; Option)
+        field(7; "Last Synchronized state"; Enum "DEL Last Synchronized State")
         {
             Caption = 'Last Synchronized state';
-            OptionCaption = 'Insert,Modify,Delete,Rename';
-            OptionMembers = Insert,Modify,Delete,Rename;
         }
         field(8; Deleted; Boolean)
         {
@@ -60,8 +55,5 @@ table 50083 "Record Modification Tracking"
         }
     }
 
-    fieldgroups
-    {
-    }
 }
 

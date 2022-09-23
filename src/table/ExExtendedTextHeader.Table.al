@@ -1,26 +1,25 @@
-
 table 99208 "DEL Ex_Extended Text Header"
 {
     Caption = 'Extended Text Header';
     DataCaptionFields = "No.", "Language Code", "Text No.";
     LookupPageID = "Extended Text List";
 
-
     fields
     {
-        field(1; "Table Name"; Option)
+        field(1; "Table Name"; Enum "DEL Table Name")
         {
             Caption = 'Table Name';
-            OptionCaption = 'Standard Text,G/L Account,Item,Resource';
-            OptionMembers = "Standard Text","G/L Account",Item,Resource;
         }
         field(2; "No."; Code[20])
         {
             Caption = 'No.';
-            TableRelation = IF (Table Name=CONST(Standard Text)) "Standard Text"
-                            ELSE IF (Table Name=CONST(G/L Account)) "G/L Account"
-                            ELSE IF (Table Name=CONST(Item)) Item
-                            ELSE IF (Table Name=CONST(Resource)) Resource;
+            TableRelation = IF ("Table Name" = CONST("Standard Text")) "Standard Text"
+            ELSE
+            IF ("Table Name" = CONST("G/L Account")) "G/L Account"
+            ELSE
+            IF ("Table Name" = CONST("Item")) Item
+            ELSE
+            IF ("Table Name" = CONST("Resource")) Resource;
         }
         field(3; "Language Code"; Code[10])
         {
@@ -84,7 +83,7 @@ table 99208 "DEL Ex_Extended Text Header"
             trigger OnValidate()
             begin
                 IF "Purchase Quote" THEN
-                    NoResourcePurch;
+                    NoResourcePurch();
             end;
         }
         field(16; "Purchase Invoice"; Boolean)
@@ -95,7 +94,7 @@ table 99208 "DEL Ex_Extended Text Header"
             trigger OnValidate()
             begin
                 IF "Purchase Invoice" THEN
-                    NoResourcePurch;
+                    NoResourcePurch();
             end;
         }
         field(17; "Purchase Order"; Boolean)
@@ -106,7 +105,7 @@ table 99208 "DEL Ex_Extended Text Header"
             trigger OnValidate()
             begin
                 IF "Purchase Order" THEN
-                    NoResourcePurch;
+                    NoResourcePurch();
             end;
         }
         field(18; "Purchase Credit Memo"; Boolean)
@@ -117,7 +116,7 @@ table 99208 "DEL Ex_Extended Text Header"
             trigger OnValidate()
             begin
                 IF "Purchase Credit Memo" THEN
-                    NoResourcePurch;
+                    NoResourcePurch();
             end;
         }
         field(19; Reminder; Boolean)
@@ -143,7 +142,7 @@ table 99208 "DEL Ex_Extended Text Header"
             trigger OnValidate()
             begin
                 IF "Purchase Blanket Order" THEN
-                    NoResourcePurch;
+                    NoResourcePurch();
             end;
         }
         field(23; "Prepmt. Sales Invoice"; Boolean)
@@ -254,7 +253,7 @@ table 99208 "DEL Ex_Extended Text Header"
             ExtTextHeader2.SETRANGE("Table Name", "Table Name");
             ExtTextHeader2.SETRANGE("No.", "No.");
             ExtTextHeader2.SETRANGE("Language Code", "Language Code");
-            IF ExtTextHeader2.FINDLAST THEN
+            IF ExtTextHeader2.FINDLAST() THEN
                 "Text No." := ExtTextHeader2."Text No." + 1
             ELSE
                 "Text No." := 1;
@@ -287,4 +286,3 @@ table 99208 "DEL Ex_Extended Text Header"
             ERROR(Text001);
     end;
 }
-

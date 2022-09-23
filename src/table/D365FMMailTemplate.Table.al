@@ -45,20 +45,18 @@ table 50082 "DEL D365FM Mail Template"
         {
             Caption = 'Reminder Level';
             DataClassification = ToBeClassified;
-            TableRelation = "Reminder Level".No. WHERE (Reminder Terms Code=FIELD(Reminder Terms Code));
+            TableRelation = "Reminder Level"."No." WHERE("Reminder Terms Code" = FIELD("Reminder Terms Code"));
         }
-        field(10; "Document Type"; Option)
+        field(10; "Document Type"; Enum "DoC Facture Type")
         {
             Caption = 'Type document';
             DataClassification = ToBeClassified;
-            OptionCaption = ' ,Facture service,Avoir service,Relance émise';
-            OptionMembers = " ","Service Invoice","Service Credit Memo","Issued Reminder";
         }
     }
 
     keys
     {
-        key(Key1;"Parameter String","Language Code")
+        key(Key1; "Parameter String", "Language Code")
         {
             Clustered = true;
         }
@@ -72,53 +70,53 @@ table 50082 "DEL D365FM Mail Template"
         CstG001: Label 'Do you want to replace the existing template %1 %2?';
         CstG002: Label 'Do you want to delete the template %1 %2 ?';
 
-    
-    procedure SetHtmlTemplate() TxtRRecupients: Text[1024]
-    var
-        BooLTemplateExists: Boolean;
-        RBAutoMgt: Codeunit "419";
-        BLOBRef: Record "99008535";
-    begin
-        CALCFIELDS("Template mail");
+    //TODO
+    //procedure SetHtmlTemplate() TxtRRecupients: Text[1024]
+    // var
+    //     BooLTemplateExists: Boolean;
+    //     RBAutoMgt: Codeunit 419;
+    //     BLOBRef: Record 99008535;
+    // begin
+    //     CALCFIELDS("Template mail");
 
-        IF "Template mail".HASVALUE THEN
-          BooLTemplateExists := TRUE;
+    //     IF "Template mail".HASVALUE THEN
+    //         BooLTemplateExists := TRUE;
 
-        IF RBAutoMgt.BLOBImport(BLOBRef,'*.html') = '' THEN
-          EXIT;
+    //     IF RBAutoMgt.BLOBImport(BLOBRef, '*.html') = '' THEN
+    //         EXIT;
 
-        "Template mail" := BLOBRef.Blob;
+    //     "Template mail" := BLOBRef.Blob;
 
-        IF BooLTemplateExists THEN
-          IF NOT CONFIRM(CstG001,FALSE,"Parameter String","Language Code") THEN
-            ERROR('');
+    //     IF BooLTemplateExists THEN
+    //         IF NOT CONFIRM(CstG001, FALSE, "Parameter String", "Language Code") THEN
+    //             ERROR('');
 
-        MODIFY;
-    end;
+    //     MODIFY;
+    // end;
 
-    
-    procedure ExportHtmlTemplate()
-    var
-        RBAutoMgt: Codeunit "419";
-        BLOBRef: Record "99008535";
-    begin
-        CALCFIELDS("Template mail");
-        IF "Template mail".HASVALUE THEN BEGIN
-          BLOBRef.Blob := "Template mail";
-          RBAutoMgt.BLOBExport(BLOBRef,'*.html',TRUE);
-        END;
-    end;
 
-    
+    // procedure ExportHtmlTemplate()
+    // var
+    //     RBAutoMgt: Codeunit "419";
+    //     BLOBRef: Record "99008535";
+    // begin
+    //     CALCFIELDS("Template mail");
+    //     IF "Template mail".HASVALUE THEN BEGIN
+    //         BLOBRef.Blob := "Template mail";
+    //         RBAutoMgt.BLOBExport(BLOBRef, '*.html', TRUE);
+    //     END;
+    // end;
+
+
     procedure DeleteHtmlTemplate()
     begin
         CALCFIELDS("Template mail");
-        IF "Template mail".HASVALUE THEN BEGIN
-          IF CONFIRM(CstG002,FALSE,"Parameter String","Language Code") THEN BEGIN
-            CLEAR("Template mail");
-            MODIFY;
-          END;
-        END;
+        IF "Template mail".HASVALUE THEN
+            IF CONFIRM(CstG002, FALSE, "Parameter String", "Language Code") THEN BEGIN
+                CLEAR("Template mail");
+                MODIFY();
+            END;
+
     end;
 }
 
