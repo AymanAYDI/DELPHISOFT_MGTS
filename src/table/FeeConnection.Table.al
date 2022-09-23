@@ -28,7 +28,7 @@ table 50025 "DEL Fee Connection"
         }
         field(4; "Fee ID"; Code[20])
         {
-            TableRelation = Fee.ID;
+            TableRelation = "DEL Fee".ID;
             Caption = 'Fee ID';
             DataClassification = CustomerContent;
         }
@@ -54,7 +54,7 @@ table 50025 "DEL Fee Connection"
         }
         field(20; "Related Account No."; Text[20])
         {
-            CalcFormula = Lookup(Fee."No compte" WHERE(ID = FIELD("Fee ID")));
+            CalcFormula = Lookup("DEL Fee"."No compte" WHERE(ID = FIELD("Fee ID")));
             Editable = false;
             FieldClass = FlowField;
             Caption = 'Related Account No.';

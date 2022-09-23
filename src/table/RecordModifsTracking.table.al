@@ -1,4 +1,4 @@
-table 50083 "Record Modification Tracking"
+table 50083 "DEL Record Modifs. Tracking"
 {
     Caption = 'Record Modification Tracking';
     fields
@@ -31,7 +31,7 @@ table 50083 "Record Modification Tracking"
             Caption = 'Last Date Synchronized';
             Editable = false;
         }
-        field(7; "Last Synchronized state"; Option)
+        field(7; "Last Synchronized state"; Enum "DEL Last Synchronized State")
         {
             Caption = 'Last Synchronized state';
         }
@@ -55,8 +55,5 @@ table 50083 "Record Modification Tracking"
         }
     }
 
-    fieldgroups
-    {
-    }
 }
 

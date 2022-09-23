@@ -1,7 +1,7 @@
-enum 50019 "DEL Field"
+enum 50046 "DEL Field"
 {
     Extensible = true;
-    
+
     value(0; "0")
     {
         Caption = 'Net Weight';

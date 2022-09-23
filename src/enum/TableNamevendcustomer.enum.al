@@ -1,4 +1,4 @@
-enum 50001 "DEL Table Name"
+enum 50001 "DEL Table Namevend/customer"
 {
     Extensible = true;
 

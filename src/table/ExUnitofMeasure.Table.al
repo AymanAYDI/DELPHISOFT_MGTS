@@ -5,7 +5,7 @@ table 99206 "DEL Ex_Unit of Measure"
     DataCaptionFields = "Code", Description;
     DrillDownPageID = "Units of Measure";
     LookupPageID = "Units of Measure";
-7001464a5622ca
+
 
     fields
     {

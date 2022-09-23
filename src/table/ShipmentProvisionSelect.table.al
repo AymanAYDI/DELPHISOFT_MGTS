@@ -29,11 +29,11 @@ table 50042 "DEL Shipment Provision Select."
         field(35; Fee_ID; Code[20])
         {
             Caption = 'Fee';
-            TableRelation = Fee.ID;
+            TableRelation = "DEL Fee".ID;
 
             trigger OnValidate()
             var
-                fee_Re_Loc: Record Fee;
+                fee_Re_Loc: Record "DEL Fee";
             begin
                 IF fee_Re_Loc.GET(Fee_ID) THEN BEGIN
                     VALIDATE("Fee Description", fee_Re_Loc.Description);
@@ -189,9 +189,8 @@ table 50042 "DEL Shipment Provision Select."
 
     trigger OnDelete()
     var
-        spsp_Re_Loc: Record "Ship. Prov. Sele. Params";
+        spsp_Re_Loc: Record "DEL Ship. Prov. Sele. Params";
     begin
-        // Lorsqu'on supprime le dernier enregistrement d'un user, alors on vide les paramètres enregistrés dans la tables associée
         RESET();
         SETRANGE(USER_ID, USERID);
         IF COUNT() = 1 THEN
