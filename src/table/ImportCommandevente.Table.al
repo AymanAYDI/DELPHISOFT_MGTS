@@ -104,8 +104,8 @@ table 50002 "DEL Import Commande vente"
         ErrorImportvente.SETRANGE(ErrorImportvente."Document No.", "Document No.");
         ErrorImportvente.SETRANGE(ErrorImportvente."Line No.", "Line No.");
         ErrorImportvente.SETRANGE(ErrorImportvente.Position, Position);
-        IF ErrorImportvente.FINDFIRST THEN
-            ErrorImportvente.DELETE;
+        IF ErrorImportvente.FINDFIRST() THEN
+            ErrorImportvente.DELETE();
     end;
 
     var
