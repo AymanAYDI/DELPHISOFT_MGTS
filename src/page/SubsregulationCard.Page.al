@@ -1,0 +1,114 @@
+page 50103 "Subs. regulation Card"
+{
+    // +---------------------------------------------------------------+
+    // | Logico SA                                                     |
+    // | Status:                                                       |
+    // | Customer/Project:                                             |
+    // +---------------------------------------------------------------+
+    // Requirement UserID   Date       Where   Description
+    // -----------------------------------------------------------------
+    // T-00716      THM     27.08.15           Create Object
+    // T-00757      THM     07.01.16           add and modify Field
+    // T-00758      THM     12.01.16           add new field
+    //              THM     03.05.16           add "Description Usage"
+
+    Caption = 'Substance regulation Card';
+    PageType = Card;
+    SourceTable = Table50057;
+    SourceTableView = SORTING (No., Type)
+                      ORDER(Ascending)
+                      WHERE (Type = FILTER (Materials));
+
+    layout
+    {
+        area(content)
+        {
+            group("Général")
+            {
+                Caption = 'Record details';
+                field(Type; Type)
+                {
+                    Editable = false;
+                }
+                field("No."; "No.")
+                {
+                }
+                field("Description pays"; "Description pays")
+                {
+
+                    trigger OnLookup(var Text: Text): Boolean
+                    begin
+                        Pays_Rec.RESET;
+                        CLEAR(Pays_Page);
+                        Pays_Page.SETTABLEVIEW(Pays_Rec);
+                        Pays_Page.LOOKUPMODE := TRUE;
+                        IF Pays_Page.RUNMODAL = ACTION::LookupOK THEN BEGIN
+                            Pays_Page.GETRECORD(Pays_Rec);
+                            IF Pays = '' THEN BEGIN
+                                Pays := Pays_Rec.Code;
+                                "Description pays" := Pays_Rec.Description;
+                            END
+                            ELSE BEGIN
+                                Pays := Pays + ',' + Pays_Rec.Code;
+                                "Description pays" := "Description pays" + ',' + Pays_Rec.Description;
+                            END;
+                        END;
+                    end;
+
+                    trigger OnValidate()
+                    begin
+                        IF Pays = '' THEN
+                            "Description pays" := '';
+                    end;
+                }
+                field("Type of material"; "Type of material")
+                {
+                }
+                field(Usage; Usage)
+                {
+                }
+                field("Description Usage in French"; "Description Usage in French")
+                {
+                }
+                field("Description Usage in English"; "Description Usage in English")
+                {
+                }
+                field("Substance - CAS / EINECS"; "Substance - CAS / EINECS")
+                {
+                }
+                field("Substance - nom"; "Substance - nom")
+                {
+                    MultiLine = true;
+                }
+                field(Source; Source)
+                {
+                }
+                field("Starting date"; "Starting date")
+                {
+                }
+                field("Date Fin"; "Date Fin")
+                {
+                }
+                field("Norm of testing"; "Norm of testing")
+                {
+                    MultiLine = true;
+                }
+                field(Statut; Statut)
+                {
+                }
+                field("Texte de remplacement"; "Texte de remplacement")
+                {
+                }
+            }
+        }
+    }
+
+    actions
+    {
+    }
+
+    var
+        Pays_Rec: Record "50052";
+        Pays_Page: Page "50088";
+}
+

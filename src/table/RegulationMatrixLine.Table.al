@@ -410,8 +410,5 @@ table 50051 "DEL Regulation Matrix Line"
         }
     }
 
-    fieldgroups
-    {
-    }
 }
 
