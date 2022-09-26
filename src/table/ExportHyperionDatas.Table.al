@@ -50,13 +50,5 @@ table 50049 "DEL Export Hyperion Datas"
         }
     }
 
-    fieldgroups
-    {
-    }
-
-    //TODO //unused 
-    // procedure InsertLines_Fo(GLAccount_Re: Record 15; GLEntry_Re: Record 17)
-    // begin
-    // end;
 }
 

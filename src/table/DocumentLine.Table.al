@@ -8,7 +8,7 @@ table 50008 "DEL Document Line"
 
     fields
     {
-        field(1; "Table Name"; Enum "DEL Table Name vend/customer")
+        field(1; "Table Name"; Enum "DEL Table Namevend/customer")
         {
             Caption = 'Table Name';
 
