@@ -6,7 +6,7 @@ table 99209 "DEL Ex_Extended Text Line"
 
     fields
     {
-        field(1; "Table Name"; Enum "DEL Table Namevend/customer")
+        field(1; "Table Name"; Enum "DEL Table Name")
         {
             Caption = 'Table Name';
         }

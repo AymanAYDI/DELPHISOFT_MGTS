@@ -1,4 +1,4 @@
-enum 50037 Action100
+enum 50054 "DEL Action100"
 {
     Extensible = false;
 
