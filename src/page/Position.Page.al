@@ -2,20 +2,17 @@ page 50022 "DEL Position"
 {
     PageType = List;
     SourceTable = "DEL Position";
-<<<<<<< HEAD
-=======
+
     Caption = 'DEL Position';
->>>>>>> 8d113b0bda394e3303b103dd3cc7b666f630f0d6
+
 
     layout
     {
         area(content)
         {
-<<<<<<< HEAD
-            repeater(Control1)
-=======
+
             repeater(Controle1)
->>>>>>> 8d113b0bda394e3303b103dd3cc7b666f630f0d6
+
             {
                 field(ID; Rec.ID)
                 {

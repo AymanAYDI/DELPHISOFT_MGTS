@@ -7,11 +7,10 @@ page 50023 "DEL Deal Item"
     {
         area(content)
         {
-<<<<<<< HEAD
+
             repeater(Control1)
-=======
-            repeater(Controle1)
->>>>>>> 8d113b0bda394e3303b103dd3cc7b666f630f0d6
+
+
             {
                 field("Item No."; Rec."Item No.")
                 {
