@@ -1,57 +1,48 @@
-page 50021 Element
+page 50021 "DEL Element"
 {
-    // +-------------------------------------------------------------------------------+
-    // | Logico SA - Logiciels & Conseils                                              |
-    // | Stand: 20.04.09                                                               |
-    // |                                                                               |
-    // +-------------------------------------------------------------------------------+
-    // 
-    // ID     Version     Story-Card    Date       Description
-    // ---------------------------------------------------------------------------------
-    // CHG01                            20.04.09   Update field Date
 
     PageType = List;
-    SourceTable = Table50021;
+    SourceTable = "DEL Element";
 
     layout
     {
         area(content)
         {
-            repeater()
+            repeater(Controle1)
             {
-                field(ID; ID)
+                field(ID; Rec.ID)
                 {
                 }
-                field(Deal_ID; Deal_ID)
+                field(Deal_ID; Rec.Deal_ID)
                 {
                 }
-                field(Instance; Instance)
+                field(Instance; Rec.Instance)
                 {
                 }
-                field(Type; Type)
+                field(Type; Rec.Type)
                 {
                 }
-                field("Type No."; "Type No.")
+                field("Type No."; Rec."Type No.")
                 {
                 }
-                field(Fee_ID; Fee_ID)
+                field(Fee_ID; Rec.Fee_ID)
                 {
                 }
-                field(Fee_Cu.FNC_Get_Description(Fee_ID);
-                    Fee_Cu.FNC_Get_Description(Fee_ID))
-                {
-                    Caption = 'Description';
-                }
-                field(Fee_Connection_ID; Fee_Connection_ID)
-                {
-                }
-                field("Subject Type"; "Subject Type")
+                //TODO
+                // field(Fee_Cu.FNC_Get_Description(Fee_ID);
+                //     Fee_Cu.FNC_Get_Description(Fee_ID))
+                // {
+                // }
+                field(Fee_Connection_ID; Rec.Fee_Connection_ID)
                 {
                 }
-                field("Subject No."; "Subject No.")
+                field("Subject Type"; Rec."Subject Type")
                 {
                 }
-                field(Date; Date)
+                field("Subject No."; Rec."Subject No.")
+                {
+                }
+                field("Date"; Rec.Date)
                 {
                 }
             }
@@ -63,7 +54,8 @@ page 50021 Element
     }
 
     var
-        Element_Cu: Codeunit "50021";
-        Fee_Cu: Codeunit "50023";
+    //TODO CodeUnit 
+    // Element_Cu: Codeunit "50021";
+    // Fee_Cu: Codeunit "50023";
 }
 

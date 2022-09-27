@@ -1,13 +1,9 @@
-page 50044 Logistic
+page 50044 "DEL Logistic"
 {
-    // ngts/loco/grc1    15.04.10  add code under Bl N. pour la gestion des tracking transitaire
-    // RBO       20.08.19       remove fields "Original doc sending date" + "Doc to client date"
-    // RBO       20.08.19       field name change "Payment date"
-
     DataCaptionFields = ID, "BR No.";
     InsertAllowed = false;
     PageType = Card;
-    SourceTable = Table50034;
+    SourceTable = "DEL Logistic";
 
     layout
     {
@@ -16,77 +12,77 @@ page 50044 Logistic
             group("P R O F O R M A  I N V O I C E")
             {
                 Caption = 'P R O F O R M A  I N V O I C E';
-                field("Supplier Name"; "Supplier Name")
+                field("Supplier Name"; Rec."Supplier Name")
                 {
                     Editable = false;
                 }
-                field("N° PI"; "N° PI")
+                field("N° PI"; Rec."N° PI")
                 {
                 }
-                field("Date PI"; "Date PI")
+                field("Date PI"; Rec."Date PI")
                 {
                 }
-                field("PI approved by"; "PI approved by")
+                field("PI approved by"; Rec."PI approved by")
                 {
                 }
-                field("PI approval date"; "PI approval date")
+                field("PI approval date"; Rec."PI approval date")
                 {
                 }
             }
             group("B A N K I N G  I N F O R M A T I O N")
             {
                 Caption = 'B A N K I N G  I N F O R M A T I O N';
-                field("Payment Terms Code"; "Payment Terms Code")
+                field("Payment Terms Code"; Rec."Payment Terms Code")
                 {
                 }
-                field("Bank dossier"; "Bank dossier")
+                field("Bank dossier"; Rec."Bank dossier")
                 {
                 }
-                field("Original Doc Receipt date"; "Original Doc Receipt date")
+                field("Original Doc Receipt date"; Rec."Original Doc Receipt date")
                 {
                     Caption = 'Payment date';
                 }
-                field("OK UBS date"; "OK UBS date")
+                field("OK UBS date"; Rec."OK UBS date")
                 {
                 }
-                field("LC expiry date"; "LC expiry date")
+                field("LC expiry date"; Rec."LC expiry date")
                 {
                 }
             }
             group("F O R W A R D E R")
             {
                 Caption = 'F O R W A R D E R';
-                field("Forwarder Name"; "Forwarder Name")
+                field("Forwarder Name"; Rec."Forwarder Name")
                 {
                 }
             }
             group("C U S T O M S  C L E A R A N C E")
             {
                 Caption = 'C U S T O M S  C L E A R A N C E';
-                field("C.Clearance Co.Name"; "C.Clearance Co.Name")
+                field("C.Clearance Co.Name"; Rec."C.Clearance Co.Name")
                 {
                 }
             }
             group("D E G R O U P A G E")
             {
                 Caption = 'D E G R O U P A G E';
-                field(Applicable; Applicable)
+                field(Applicable; Rec.Applicable)
                 {
                 }
-                field("Company Name"; "Company Name")
+                field("Company Name"; Rec."Company Name")
                 {
                 }
             }
             group("S H I P M E N T")
             {
                 Caption = 'S H I P M E N T';
-                field("Shipping company"; "Shipping company")
+                field("Shipping company"; Rec."Shipping company")
                 {
                 }
-                field("Booking Done"; "Booking Done")
+                field("Booking Done"; Rec."Booking Done")
                 {
                 }
-                field("BL N°"; "BL N°")
+                field("BL N°"; Rec."BL N°")
                 {
 
                     trigger OnLookup(var Text: Text): Boolean
@@ -96,35 +92,35 @@ page 50044 Logistic
                         IF PAGE.RUNMODAL(PAGE::"Propostition tracking", TrackingGeneral) = ACTION::LookupOK THEN BEGIN
 
 
-                            "BL N°" := TrackingGeneral.Booking_no;
-                            "Forwarder Name" := TrackingGeneral.Forwading_agent_no;
-                            "Supplier Name" := TrackingGeneral.Vendor_no;
-                            "Departure Port" := TrackingGeneral.Origine_port;
-                            "ETD Requested" := TrackingGeneral.Etd;
-                            "Revised ETD" := TrackingGeneral.Actual_Reception_date;
-                            "Actual departure date" := TrackingGeneral.Shipping_date;
-                            "Arrival port" := TrackingGeneral.Unloading_port;
-                            "Shipping company" := TrackingGeneral.Carrier;
-                            "Vessel name" := TrackingGeneral.Vessel;
-                            "Actual Arrival date" := TrackingGeneral.ActualDischarge;
-                            "Customer Delivery date" := TrackingGeneral.ActualDeliveryDate;
+                            Rec."BL N°" := TrackingGeneral.Booking_no;
+                            Rec."Forwarder Name" := TrackingGeneral.Forwading_agent_no;
+                            Rec."Supplier Name" := TrackingGeneral.Vendor_no;
+                            Rec."Departure Port" := TrackingGeneral.Origine_port;
+                            Rec."ETD Requested" := TrackingGeneral.Etd;
+                            Rec."Revised ETD" := TrackingGeneral.Actual_Reception_date;
+                            Rec."Actual departure date" := TrackingGeneral.Shipping_date;
+                            Rec."Arrival port" := TrackingGeneral.Unloading_port;
+                            Rec."Shipping company" := TrackingGeneral.Carrier;
+                            Rec."Vessel name" := TrackingGeneral.Vessel;
+                            Rec."Actual Arrival date" := TrackingGeneral.ActualDischarge;
+                            Rec."Customer Delivery date" := TrackingGeneral.ActualDeliveryDate;
+                            //TODO
 
-
-                            TrackingGeneral2.SETRANGE(Booking_no, TrackingGeneral.Booking_no);
-                            TrackingGeneral2.SETRANGE(Order_no, TrackingGeneral.Order_no);
-                            IF TrackingGeneral2.FINDFIRST THEN BEGIN
+                            // TrackingGeneral2.SETRANGE(Booking_no, TrackingGeneral.Booking_no);
+                            // TrackingGeneral2.SETRANGE(Order_no, TrackingGeneral.Order_no);
+                            IF TrackingGeneral2.FINDFIRST THEN
                                 REPEAT
-                                    TrackingGeneral2.Statut := ID;
+                                    TrackingGeneral2.Statut := Rec.ID;
                                     TrackingGeneral2.MODIFY();
                                 UNTIL TrackingGeneral2.NEXT = 0;
-                            END;
+
 
 
                             TrackingDetail.SETRANGE(Booking_no, TrackingGeneral.Booking_no);
                             TrackingDetail.SETRANGE(Order_no, TrackingGeneral.Order_no);
                             IF TrackingDetail.FINDFIRST THEN BEGIN
                                 REPEAT
-                                    TrackingDetail.Statut := ID;
+                                    TrackingDetail.Statut := Rec.ID;
                                     TrackingDetail.MODIFY();
                                 UNTIL TrackingDetail.NEXT = 0;
                             END;
@@ -147,114 +143,114 @@ page 50044 Logistic
                         BLN176OnAfterValidate;
                     end;
                 }
-                field("Vessel name"; "Vessel name")
+                field("Vessel name"; Rec."Vessel name")
                 {
                 }
-                field("N° Container"; "N° Container")
+                field("N° Container"; Rec."N° Container")
                 {
                 }
-                field("N° Container 2"; "N° Container 2")
+                field("N° Container 2"; Rec."N° Container 2")
                 {
                 }
-                field("N° Container 3"; "N° Container 3")
+                field("N° Container 3"; Rec."N° Container 3")
                 {
                 }
-                field("N° Container 4"; "N° Container 4")
+                field("N° Container 4"; Rec."N° Container 4")
                 {
                 }
-                field("Loading Mode"; "Loading Mode")
+                field("Loading Mode"; Rec."Loading Mode")
                 {
                 }
             }
             group("Q U A L I T Y")
             {
                 Caption = 'Q U A L I T Y';
-                field("Quality Company"; "Quality Company")
+                field("Quality Company"; Rec."Quality Company")
                 {
                 }
-                field("Quality inspection date"; "Quality inspection date")
+                field("Quality inspection date"; Rec."Quality inspection date")
                 {
                 }
-                field("Certificate N°"; "Certificate N°")
+                field("Certificate N°"; Rec."Certificate N°")
                 {
                 }
             }
-            group("T R A N S P O R T A T I O N ")
+            group("T R A N S P O R T A T I O N")
             {
                 Caption = 'T R A N S P O R T A T I O N ';
-                field("Shipment mode"; "Shipment mode")
+                field("Shipment mode"; Rec."Shipment mode")
                 {
                 }
-                field("B/C client"; "B/C client")
+                field("B/C client"; Rec."B/C client")
                 {
                 }
-                field("Departure Port"; "Departure Port")
+                field("Departure Port"; Rec."Departure Port")
                 {
                 }
-                field("ETD Requested"; "ETD Requested")
+                field("ETD Requested"; Rec."ETD Requested")
                 {
                 }
-                field("Actual departure date"; "Actual departure date")
+                field("Actual departure date"; Rec."Actual departure date")
                 {
                 }
-                field("Arrival port"; "Arrival port")
+                field("Arrival port"; Rec."Arrival port")
                 {
                 }
-                field("ETA date"; "ETA date")
+                field("ETA date"; Rec."ETA date")
                 {
                 }
-                field("C.Clearance date"; "C.Clearance date")
+                field("C.Clearance date"; Rec."C.Clearance date")
                 {
                 }
-                field("Customer Delivery date"; "Customer Delivery date")
+                field("Customer Delivery date"; Rec."Customer Delivery date")
                 {
                 }
-                field("Estimated CTNS"; "Estimated CTNS")
+                field("Estimated CTNS"; Rec."Estimated CTNS")
                 {
                 }
-                field("Estimated volume"; "Estimated volume")
+                field("Estimated volume"; Rec."Estimated volume")
                 {
                 }
-                field("Estimated Weight"; "Estimated Weight")
+                field("Estimated Weight"; Rec."Estimated Weight")
                 {
                 }
-                field("Effective Booking date"; "Effective Booking date")
+                field("Effective Booking date"; Rec."Effective Booking date")
                 {
                 }
-                field("CTR 20'"; "CTR 20'")
+                field("CTR 20'"; Rec."CTR 20'")
                 {
                 }
-                field("qty CTR 20'"; "qty CTR 20'")
+                field("qty CTR 20'"; Rec."qty CTR 20'")
                 {
                 }
-                field("CTR 40'"; "CTR 40'")
+                field("CTR 40'"; Rec."CTR 40'")
                 {
                 }
-                field("qty CTR 40'"; "qty CTR 40'")
+                field("qty CTR 40'"; Rec."qty CTR 40'")
                 {
                 }
-                field("CTR 40'HQ"; "CTR 40'HQ")
+                field("CTR 40'HQ"; Rec."CTR 40'HQ")
                 {
                 }
-                field("qty CTR 40'HQ"; "qty CTR 40'HQ")
+                field("qty CTR 40'HQ"; Rec."qty CTR 40'HQ")
                 {
                 }
-                field("Revised ETD"; "Revised ETD")
+                field("Revised ETD"; Rec."Revised ETD")
                 {
                 }
-                field("Actual Arrival date"; "Actual Arrival date")
+                field("Actual Arrival date"; Rec."Actual Arrival date")
                 {
                 }
-                field("Requested Cust. Delivery date"; "Requested Cust. Delivery date")
+                field("Requested Cust. Delivery date"; Rec."Requested Cust. Delivery date")
                 {
                 }
-                field("Real CTNS"; "Real CTNS")
+                field("Real CTNS"; Rec."Real CTNS")
                 {
                 }
-                field("Actual Volume"; "Actual Volume")
+                field("Actual Volume"; Rec."Actual Volume")
                 {
                 }
-                field("Actual Weight"; "Actual Weight")
+                field("Actual Weight"; Rec."Actual Weight")
                 {
                 }
             }
@@ -276,13 +272,13 @@ page 50044 Logistic
                     PromotedCategory = Process;
                     PromotedIsBig = true;
 
-                    trigger OnAction()
-                    begin
-
-                        TrackingDetail2.SETRANGE(Booking_no, "BL N°");
-                        TrackingDetail2.SETRANGE(Statut, ID);
-                        PAGE.RUN(50056, TrackingDetail2);
-                    end;
+                    // trigger OnAction()
+                    // begin
+                    //TODO
+                    //     TrackingDetail2.SETRANGE(Booking_no, "BL N°");
+                    //     TrackingDetail2.SETRANGE(Statut, ID);
+                    //     PAGE.RUN(50056, TrackingDetail2);
+                    // end;
                 }
                 action("Affaire Non affectée")
                 {
@@ -296,23 +292,23 @@ page 50044 Logistic
             }
         }
     }
+    //todo
+    // trigger OnClosePage()
+    // begin
+    //     AlertMgt_Cu.FNC_GlobalCheck(Deal_ID);
+    // end;
 
-    trigger OnClosePage()
-    begin
-        AlertMgt_Cu.FNC_GlobalCheck(Deal_ID);
-    end;
-
-    trigger OnOpenPage()
-    begin
-        AlertMgt_Cu.FNC_GlobalCheck(Deal_ID);
-    end;
+    // trigger OnOpenPage()
+    // begin
+    //     AlertMgt_Cu.FNC_GlobalCheck(Deal_ID);
+    // end;
 
     var
-        AlertMgt_Cu: Codeunit "50028";
-        TrackingGeneral: Record "50013";
-        TrackingDetail: Record "50014";
-        TrackingGeneral2: Record "50013";
-        TrackingDetail2: Record "50014";
+        //TODO  //CODE UNIT // AlertMgt_Cu: Codeunit 50028;
+        TrackingGeneral: Record 50013;
+        TrackingDetail: Record 50014;
+        TrackingGeneral2: Record 50013;
+        TrackingDetail2: Record 50014;
         Text19032713: Label 'P R O F O R M A  I N V O I C E';
         Text19071703: Label 'B A N K';
         Text19008693: Label 'F O R W A R D E R';
@@ -325,19 +321,19 @@ page 50044 Logistic
     local procedure BLN176OnAfterValidate()
     begin
 
-        IF "BL N°" = '' THEN BEGIN
-            "BL N°" := '';
-            "Forwarder Name" := '';
-            "Supplier Name" := '';
-            "Departure Port" := '';
-            "ETD Requested" := 0D;
-            "Revised ETD" := 0D;
-            "Actual departure date" := 0D;
-            "Arrival port" := '';
-            "Shipping company" := '';
-            "Vessel name" := '';
-            "Actual Arrival date" := 0D;
-            "Customer Delivery date" := 0D;
+        IF Rec."BL N°" = '' THEN BEGIN
+            Rec."BL N°" := '';
+            Rec."Forwarder Name" := '';
+            Rec."Supplier Name" := '';
+            Rec."Departure Port" := '';
+            Rec."ETD Requested" := 0D;
+            Rec."Revised ETD" := 0D;
+            Rec."Actual departure date" := 0D;
+            Rec."Arrival port" := '';
+            Rec."Shipping company" := '';
+            Rec."Vessel name" := '';
+            Rec."Actual Arrival date" := 0D;
+            Rec."Customer Delivery date" := 0D;
         END;
     end;
 }

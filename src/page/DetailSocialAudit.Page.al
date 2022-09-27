@@ -1,8 +1,8 @@
-page 50019 "Detail Social Audit"
+page 50019 "DEL Detail Social Audit"
 {
     Caption = 'Detail Social Audit';
     PageType = ListPart;
-    SourceTable = Table50017;
+    SourceTable = "DEL Note Audit Social";
 
     layout
     {
@@ -50,6 +50,6 @@ page 50019 "Detail Social Audit"
     }
 
     var
-        Auditsocial: Record "50018";
+        Auditsocial: Record "DEL Audit social";
 }
 

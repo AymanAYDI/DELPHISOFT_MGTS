@@ -1,64 +1,64 @@
-page 50035 "Subform P&L Details"
+page 50035 "DEL Subform P&L Details"
 {
     DeleteAllowed = false;
     Editable = true;
     InsertAllowed = false;
     ModifyAllowed = false;
     PageType = CardPart;
-    SourceTable = Table50029;
+    SourceTable = "DEL Position Summary";
 
     layout
     {
         area(content)
         {
-            repeater()
+            repeater(Control1)
             {
-                field("Item No."; "Item No.")
+                field("Item No."; Rec."Item No.")
                 {
                 }
-                field(Description; Description)
+                field(Description; Rec.Description)
                 {
                 }
-                field("Planned Sales"; "Planned Sales")
+                field("Planned Sales"; Rec."Planned Sales")
                 {
                 }
-                field("Planned Purchases"; "Planned Purchases")
+                field("Planned Purchases"; Rec."Planned Purchases")
                 {
                 }
-                field("Planned Fees"; "Planned Fees")
+                field("Planned Fees"; Rec."Planned Fees")
                 {
                 }
-                field("Planned Gross Margin"; "Planned Gross Margin")
+                field("Planned Gross Margin"; Rec."Planned Gross Margin")
                 {
                 }
-                field("Planned Final Margin"; "Planned Final Margin")
+                field("Planned Final Margin"; Rec."Planned Final Margin")
                 {
                 }
-                field("Planned % Of Gross Margin"; "Planned % Of Gross Margin")
+                field("Planned % Of Gross Margin"; Rec."Planned % Of Gross Margin")
                 {
                 }
-                field("Planned % Of Final Margin"; "Planned % Of Final Margin")
+                field("Planned % Of Final Margin"; Rec."Planned % Of Final Margin")
                 {
                 }
-                field("Real Sales"; "Real Sales")
+                field("Real Sales"; Rec."Real Sales")
                 {
                 }
-                field("Real Purchases"; "Real Purchases")
+                field("Real Purchases"; Rec."Real Purchases")
                 {
                 }
-                field("Real Fees"; "Real Fees")
+                field("Real Fees"; Rec."Real Fees")
                 {
                 }
-                field("Real Gross Margin"; "Real Gross Margin")
+                field("Real Gross Margin"; Rec."Real Gross Margin")
                 {
                 }
-                field("Real Final Margin"; "Real Final Margin")
+                field("Real Final Margin"; Rec."Real Final Margin")
                 {
                 }
-                field("Real % Of Gross Margin"; "Real % Of Gross Margin")
+                field("Real % Of Gross Margin"; Rec."Real % Of Gross Margin")
                 {
                 }
-                field("Real % Of Final Margin"; "Real % Of Final Margin")
+                field("Real % Of Final Margin"; Rec."Real % Of Final Margin")
                 {
                 }
             }
@@ -97,25 +97,25 @@ page 50035 "Subform P&L Details"
     end;
 
     var
-        PositionSummary_Re_Temp: Record "50029" temporary;
+        PositionSummary_Re_Temp: Record "DEL Position Summary" temporary;
 
-    [Scope('Internal')]
+
     procedure ModifyRec()
     begin
         PositionSummary_Re_Temp := Rec;
         PositionSummary_Re_Temp.MODIFY;
     end;
 
-    [Scope('Internal')]
-    procedure SetTempRecord(var rRecIn: Record "50029" temporary)
+
+    procedure SetTempRecord(var rRecIn: Record "DEL Position Summary" temporary)
     begin
-        PositionSummary_Re_Temp.DELETEALL;
-        IF rRecIn.FINDFIRST THEN
+        PositionSummary_Re_Temp.DELETEALL();
+        IF rRecIn.FINDFIRST() THEN
             REPEAT
                 PositionSummary_Re_Temp.COPY(rRecIn);
-                IF PositionSummary_Re_Temp.INSERT THEN;
-            UNTIL rRecIn.NEXT = 0;
-        CurrPage.UPDATE;
+                IF PositionSummary_Re_Temp.INSERT() THEN;
+            UNTIL rRecIn.NEXT() = 0;
+        CurrPage.UPDATE();
     end;
 }
 

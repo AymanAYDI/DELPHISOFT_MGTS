@@ -1,17 +1,17 @@
-page 50043 "Position Detail"
+page 50043 "DEL Position Detail"
 {
     DeleteAllowed = true;
     Editable = false;
     InsertAllowed = false;
     ModifyAllowed = false;
     PageType = List;
-    SourceTable = Table50033;
+    SourceTable = "DEL Position Detail";
 
     layout
     {
         area(content)
         {
-            repeater()
+            repeater(Control1)
             {
                 field(ID; ID)
                 {

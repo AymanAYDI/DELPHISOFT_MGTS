@@ -1,16 +1,16 @@
-page 50017 "Reporting Dimension 2 Code"
+page 50017 "DEL Reporting Dimension 2 Code"
 {
     Caption = 'Reporting Dimension 2 Code';
     PageType = List;
-    SourceTable = Table50016;
+    SourceTable = "DEL Reporting Dimension 2 Code";
 
     layout
     {
         area(content)
         {
-            repeater()
+            repeater(Control1)
             {
-                field(Code; Code)
+                field("Code"; Code)
                 {
                 }
                 field(Description; Description)

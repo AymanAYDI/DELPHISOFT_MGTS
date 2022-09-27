@@ -1,51 +1,51 @@
-page 50023 "Deal Item"
+page 50023 "DEL Deal Item"
 {
     PageType = List;
-    SourceTable = Table50023;
+    SourceTable = "DEL Deal Item";
 
     layout
     {
         area(content)
         {
-            repeater()
+            repeater(Controle1)
             {
-                field("Item No."; "Item No.")
+                field("Item No."; Rec."Item No.")
                 {
                 }
-                field(Deal_ID; Deal_ID)
+                field(Deal_ID; Rec.Deal_ID)
                 {
                 }
-                field("Unit Price"; "Unit Price")
+                field("Unit Price"; Rec."Unit Price")
                 {
                 }
-                field("Currency Price"; "Currency Price")
+                field("Currency Price"; Rec."Currency Price")
                 {
                 }
-                field("Unit Cost"; "Unit Cost")
+                field("Unit Cost"; Rec."Unit Cost")
                 {
                 }
-                field("Currency Cost"; "Currency Cost")
+                field("Currency Cost"; Rec."Currency Cost")
                 {
                 }
-                field("Net Weight"; "Net Weight")
+                field("Net Weight"; Rec."Net Weight")
                 {
                 }
-                field("Gross Weight"; "Gross Weight")
+                field("Gross Weight"; Rec."Gross Weight")
                 {
                 }
-                field("Volume CMB"; "Volume CMB")
+                field("Volume CMB"; Rec."Volume CMB")
                 {
                 }
-                field("Volume CMB carton transport"; "Volume CMB carton transport")
+                field("Volume CMB carton transport"; Rec."Volume CMB carton transport")
                 {
                 }
-                field(PCB; PCB)
+                field(PCB; Rec.PCB)
                 {
                 }
-                field("Container No."; "Container No.")
+                field("Container No."; Rec."Container No.")
                 {
                 }
-                field("Droit de douane reduit"; "Droit de douane reduit")
+                field("Droit de douane reduit"; Rec."Droit de douane reduit")
                 {
                 }
             }

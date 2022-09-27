@@ -1,16 +1,16 @@
-page 50011 "Forwarding Agents"
+page 50011 "DEL Forwarding Agents"
 {
     // T-00799     THM       22.06.16        add "Departure port"
 
     Caption = 'Forwarding Agents';
     PageType = List;
-    SourceTable = Table50011;
+    SourceTable = "DEL Forwarding Agent";
 
     layout
     {
         area(content)
         {
-            repeater()
+            repeater(Controle1)
             {
                 field("Vendor No."; "Vendor No.")
                 {

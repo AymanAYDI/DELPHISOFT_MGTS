@@ -1,26 +1,15 @@
-page 50024 Fee
+page 50024 "DEL Fee"
 {
-    // +-------------------------------------------------------------------------------+
-    // | Logico SA - Logiciels & Conseils                                              |
-    // | Stand: 16.03.09                                                               |
-    // |                                                                               |
-    // +-------------------------------------------------------------------------------+
-    // 
-    // ID     Version     Story-Card    Date       Description
-    // ---------------------------------------------------------------------------------
-    // CHG01                            16.03.09   Renommé le label du champ 'Used for import' selon DEV13
-    // CHG02                            16.06.09   Ajout bouton "Facteur"
-    // GRC                              20.07.09   code onOpenForm
 
     Caption = 'Fee';
     PageType = List;
-    SourceTable = Table50024;
+    SourceTable = "DEL Fee";
 
     layout
     {
         area(content)
         {
-            repeater()
+            repeater(Controle1)
             {
                 field(ID; ID)
                 {
@@ -62,11 +51,11 @@ page 50024 Fee
 
                     trigger OnValidate()
                     begin
-                        IF Field = Field::Douane THEN BEGIN
-                            FormCurrencyEnable := FALSE;
-                        END ELSE BEGIN
+                        IF Field = Field::Douane THEN
+                            FormCurrencyEnable := FALSE
+                        ELSE
                             FormCurrencyEnable := TRUE;
-                        END;
+
                     end;
                 }
                 field(FormFactor; Factor)
@@ -102,7 +91,7 @@ page 50024 Fee
                 Promoted = true;
                 PromotedCategory = Process;
                 RunObject = Page 50049;
-                RunPageLink = Fee_ID = FIELD (ID);
+                //TODO // RunPageLink = Fee_ID = FIELD(ID);
             }
         }
     }
@@ -139,7 +128,7 @@ page 50024 Fee
         [InDataSet]
         FormCurrencyEnable: Boolean;
 
-    [Scope('Internal')]
+
     procedure UpdateForm()
     begin
     end;

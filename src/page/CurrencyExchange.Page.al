@@ -1,36 +1,36 @@
-page 50039 "Currency Exchange"
+page 50039 "DEL Currency Exchange"
 {
     Caption = 'Currency exchange';
     PageType = List;
-    SourceTable = Table50028;
+    SourceTable = "DEL Currency Exchange";
 
     layout
     {
         area(content)
         {
-            repeater()
+            repeater(Control1)
             {
-                field(Deal_ID; Deal_ID)
+                field(Deal_ID; Rec.Deal_ID)
                 {
                     Caption = 'Deal ID';
                 }
-                field("Currency 1"; "Currency 1")
+                field("Currency 1"; Rec."Currency 1")
                 {
                     Caption = 'Currency';
                 }
-                field("Currency 2"; "Currency 2")
+                field("Currency 2"; Rec."Currency 2")
                 {
                     Caption = 'Budget currency';
                 }
-                field("Rate C2/C1"; "Rate C2/C1")
+                field("Rate C2/C1"; Rec."Rate C2/C1")
                 {
                     Caption = 'Rate C2/C1';
                 }
-                field("Valid From"; "Valid From")
+                field("Valid From"; Rec."Valid From")
                 {
                     Caption = 'Valid from';
                 }
-                field("Valid To"; "Valid To")
+                field("Valid To"; Rec."Valid To")
                 {
                     Caption = 'To';
                 }

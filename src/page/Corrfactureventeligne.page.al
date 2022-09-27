@@ -1,34 +1,18 @@
-page 50014 "Correction facture vente ligne"
+page 50014 "DEL Corr. facture vente ligne"
 {
-    // <changelog>
-    //   <add id="CH2500" dev="SRYSER" request="CH-START-370" date="2004-02-25" area="QU"
-    //   releaseversion="CH3.70A">New Fields Position,Title No,Classification (all invisible) /
-    //   Code Description,Line Amount,Amount incl. VAT OnFormat, Line Amount HorizAlign changed</add>
-    //   <remove id="CH1910" dev="SRYSER" request="CH-START-400" date="2004-09-15" area="SWS91"
-    //     baseversion="CH3.70A" releaseversion="CH4.00">layout changes</remove>
-    //   <add id="dach0001"
-    //        dev="mnommens"
-    //        date="2004-08-01"
-    //        area="ENHARCHDOC"
-    //        releaseversion="DACH4.00"
-    //        request="DACH-START-40">
-    //        Enhanced Arch. Doc Mgmt.
-    //   </add>
-    // </changelog>
-
     AutoSplitKey = true;
     Caption = 'Posted Sales Invoice Subform';
     Editable = true;
     InsertAllowed = false;
     PageType = ListPart;
     Permissions = TableData 113 = rim;
-    SourceTable = Table113;
+    SourceTable = "Sales Invoice Line";
 
     layout
     {
         area(content)
         {
-            repeater()
+            repeater(Controle1)
             {
                 IndentationColumn = DescriptionIndent;
                 IndentationControls = Description;
@@ -101,7 +85,7 @@ page 50014 "Correction facture vente ligne"
                 }
                 field(LineAmountText; LineAmountText)
                 {
-                    BlankZero = true;
+                    //TODO    // BlankZero = true;
                     CaptionClass = FIELDCAPTION("Line Amount");
                     Editable = false;
                 }
@@ -170,7 +154,7 @@ page 50014 "Correction facture vente ligne"
     trigger OnAfterGetRecord()
     begin
         DescriptionIndent := 0;
-        DescriptionOnFormat;
+        //TODO   DescriptionOnFormat;
         LineAmountText := FORMAT("Line Amount");
         LineAmountTextOnFormat(LineAmountText);
         AmountIncludingVATText := FORMAT("Amount Including VAT");
@@ -190,30 +174,31 @@ page 50014 "Correction facture vente ligne"
         "Amount Including VATEmphasize": Boolean;
         [InDataSet]
         AmountIncludingVATText: Text[1024];
-        DocumentLineTracking: Page "5005399";
+    //TODO //  DocumentLineTracking: Page "5005399";
 
-    [Scope('Internal')]
+
     procedure ShowDimensions()
     begin
         Rec.ShowDimensions;
     end;
 
-    [Scope('Internal')]
+
     procedure ShowItemTrackingLines()
     begin
         Rec.ShowItemTrackingLines;
     end;
 
-    [Scope('Internal')]
-    procedure ShowDocumentLineTracking()
-    begin
-        // dach0001.begin
-        CLEAR(DocumentLineTracking);
-        DocumentLineTracking.SetDoc(6, "Document No.", "Line No.", "Blanket Order No.", "Blanket Order Line No.", "Order No.", "Order Line No.")
-        ;
-        DocumentLineTracking.RUNMODAL;
-        // dach001.end
-    end;
+
+    //TODO 
+    // procedure ShowDocumentLineTracking()
+    // begin
+    //     // dach0001.begin
+    //     CLEAR(DocumentLineTracking);
+    //     DocumentLineTracking.SetDoc(6, "Document No.", "Line No.", "Blanket Order No.", "Blanket Order Line No.", "Order No.", "Order Line No.")
+    //     ;
+    //     DocumentLineTracking.RUNMODAL;
+    //     // dach001.end
+    // end;
 
     local procedure DescriptionOnFormat()
     begin

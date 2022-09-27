@@ -1,14 +1,14 @@
-page 50012 "Tracked product follow up"
+page 50012 "DEL Tracked product follow up"
 {
     Caption = 'Tracked product follow up';
     DeleteAllowed = false;
     InsertAllowed = false;
     LinksAllowed = false;
     PageType = List;
-    SourceTable = Table39;
-    SourceTableView = SORTING (Document Type, Document No., Line No.)
-                      WHERE (Risk Item=CONST(Yes),
-                            Photo Risk Item Taked=CONST(No));
+    SourceTable = "Purchase Line";
+    SourceTableView = SORTING("Document Type", "Document No.", "Line No.")
+                      WHERE("Risk Item" = CONST(true),
+                            "Photo Risk Item Taked" = CONST(false));
 
     layout
     {
@@ -91,8 +91,8 @@ page 50012 "Tracked product follow up"
 
                 trigger OnAction()
                 var
-                    PageManagement: Codeunit "700";
-                    PurchHeader: Record "38";
+                    PageManagement: Codeunit 700;
+                    PurchHeader: Record 38;
                 begin
                     PurchHeader.GET("Document Type", "Document No.");
                     PageManagement.PageRun(PurchHeader);
@@ -128,14 +128,14 @@ page 50012 "Tracked product follow up"
     end;
 
     var
-        PurchHeader: Record "38";
+        PurchHeader: Record 38;
         BuyfromVendorName: Text;
-        Vendor_Rec: Record "23";
-        PurchaseHeader_Rec: Record "38";
+        Vendor_Rec: Record 23;
+        PurchaseHeader_Rec: Record 38;
         PurchCode: Code[10];
         motif: Text[100];
-        Listedesmotifs: Record "50064";
-        Item: Record "27";
+        Listedesmotifs: Record 50064;
+        Item: Record 27;
         DateRecCalc: Date;
 }
 

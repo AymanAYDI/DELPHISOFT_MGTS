@@ -1,16 +1,16 @@
-page 50018 "Group Reporting"
+page 50018 "DEL Group Reporting"
 {
     Caption = 'Group Reporting';
     DeleteAllowed = false;
     InsertAllowed = false;
     PageType = Card;
-    SourceTable = Table15;
+    SourceTable = "G/L Account";
 
     layout
     {
         area(content)
         {
-            repeater()
+            repeater(Control1)
             {
                 field("Reporting Dimension 1 Code"; "Reporting Dimension 1 Code")
                 {
@@ -53,7 +53,7 @@ page 50018 "Group Reporting"
 
                 trigger OnValidate()
                 var
-                    ApplicationManagement: Codeunit "1";
+                    ApplicationManagement: Codeunit 1;
                 begin
                     SETFILTER("Date Filter", DateFilterBalance);
                     UpdateAmount;
@@ -65,7 +65,7 @@ page 50018 "Group Reporting"
 
                 trigger OnValidate()
                 var
-                    ApplicationManagement: Codeunit "1";
+                    ApplicationManagement: Codeunit 1;
                 begin
                     SETFILTER("Date Filter", DateFilterIncome);
                     UpdateAmount;
@@ -85,7 +85,7 @@ page 50018 "Group Reporting"
 
     trigger OnOpenPage()
     var
-        GLAccount: Record "15";
+        GLAccount: Record 5;
     begin
         SETRANGE("Account Type", "Account Type"::Posting);
         SETFILTER("Reporting Dimension 1 Code", '<>%1', '');
@@ -101,7 +101,7 @@ page 50018 "Group Reporting"
         Filename: File;
         Text000: Label 'File %1 Written.';
 
-    [Scope('Internal')]
+
     procedure CalcBalance(): Decimal
     begin
         SETRANGE("Date Filter");
@@ -118,10 +118,10 @@ page 50018 "Group Reporting"
         EXIT("Net Change");
     end;
 
-    [Scope('Internal')]
+
     procedure UpdateAmount()
     var
-        GLAccount: Record "15";
+        GLAccount: Record 15;
     begin
         TotalAmount := 0;
 
@@ -143,10 +143,10 @@ page 50018 "Group Reporting"
             UNTIL GLAccount.NEXT = 0;
     end;
 
-    [Scope('Internal')]
+
     procedure PrepareFile()
     var
-        GeneralSetup: Record "50000";
+        GeneralSetup: Record 50000;
     begin
         GeneralSetup.GET;
 
@@ -155,15 +155,15 @@ page 50018 "Group Reporting"
         Filename.QUERYREPLACE := TRUE;
         Filename.CREATE(GeneralSetup."Reporting File");
         WriteData;
-        Filename.CLOSE;
+        Filename.CLOSE();
 
         MESSAGE(Text000, GeneralSetup."Reporting File");
     end;
 
-    [Scope('Internal')]
+
     procedure WriteData()
     var
-        GLAccount: Record "15";
+        GLAccount: Record 15;
         ExportData: Text[250];
     begin
         GLAccount.SETRANGE("Account Type", "Account Type"::Posting);
