@@ -1,24 +1,12 @@
-page 50030 "Deal Mainboard"
+page 50030 "DEL Deal Mainboard"
 {
-    // +-------------------------------------------------------------------------------+
-    // | Logico SA - Logiciels & Conseils                                              |
-    // | Stand: 23.03.09                                                               |
-    // |                                                                               |
-    // +-------------------------------------------------------------------------------+
-    // 
-    // ID     Version     Story-Card    Date       Description
-    // ---------------------------------------------------------------------------------
-    // CHG01                            23.03.09   Affichage du % vente sur marge final en négatif selon DEV12
-    // CHG02                            06.04.09   adapté l'appel de fonction de création de l'affaire
-    // CHG03                            26.09.11   adapted deal update function with "updatePlanned" parameter
-    // THM                              24.10.2013  change ShipmentList_Te length 30 to 50
 
     Caption = 'Deal Card';
     DeleteAllowed = false;
     Editable = true;
     InsertAllowed = false;
     PageType = Card;
-    SourceTable = Table50020;
+    SourceTable = "DEL Deal";
 
     layout
     {
@@ -27,45 +15,45 @@ page 50030 "Deal Mainboard"
             group(General)
             {
                 Caption = 'General';
-                field(ID; ID)
+                field(ID; Rec.ID)
                 {
                     Importance = Promoted;
                 }
-                field(Status; Status)
+                field(Status; Rec.Status)
                 {
                 }
-                field("Purchaser Code"; "Purchaser Code")
+                field("Purchaser Code"; Rec."Purchaser Code")
                 {
                     Editable = false;
                 }
             }
-            part(ACO; 50031)
+            part(ACO; "DEL Subform ACO")
             {
                 Caption = 'ACO';
-                SubPageLink = Deal_ID = FIELD (ID),
-                              Type = CONST (ACO),
-                              Instance = FILTER (planned);
+                SubPageLink = Deal_ID = FIELD(ID),
+                              Type = CONST(ACO),
+                              Instance = FILTER(planned);
             }
-            part(VCO; 50032)
+            part(VCO; "DEL Subform VCO")
             {
                 Caption = 'VCO';
-                SubPageLink = Deal_ID = FIELD (ID),
-                              Type = CONST (VCO),
-                              Instance = CONST (planned);
+                SubPageLink = Deal_ID = FIELD(ID),
+                              Type = CONST(VCO),
+                              Instance = CONST(planned);
             }
             part("Subpage Logistic"; 50037)
             {
                 Caption = 'Logistique';
-                SubPageLink = Deal_ID = FIELD (ID);
+                SubPageLink = Deal_ID = FIELD(ID);
             }
             field(ItemDetailShipmentNo_Co; ItemDetailShipmentNo_Co)
             {
                 Caption = 'Shipment';
-                TableRelation = "Deal Shipment".ID;
+                TableRelation = "DEL Deal Shipment".ID;
 
                 trigger OnLookup(var Text: Text): Boolean
                 var
-                    dealShipment_Re_Loc: Record "50030";
+                    dealShipment_Re_Loc: Record "DEL Deal Shipment";
                     mypage: Page "50040";
                 begin
                     dealShipment_Re_Loc.RESET();
@@ -90,7 +78,7 @@ page 50030 "Deal Mainboard"
 
                 trigger OnValidate()
                 var
-                    dealShipment_Re_Loc: Record "50030";
+                    dealShipment_Re_Loc: Record "DEL Deal Shipment";
                 begin
                     IF dealShipment_Re_Loc.GET(ItemDetailShipmentNo_Co) THEN
                         CurrPage.ShipmentSubpage.PAGE.FNC_SetFilters(ID, dealShipment_Re_Loc."BR No.")
@@ -105,24 +93,24 @@ page 50030 "Deal Mainboard"
             part("Prévu"; 50033)
             {
                 Caption = 'Prévu';
-                SubPageLink = Deal_ID = FIELD (ID),
-                              Instance = CONST (planned);
+                SubPageLink = Deal_ID = FIELD(ID),
+                              Instance = CONST(planned);
             }
             part("Réalisé"; 50034)
             {
                 Caption = 'Réalisé';
-                SubPageLink = Deal_ID = FIELD (ID),
-                              Instance = CONST (real),
-                              Type = FILTER (<> BR);
+                SubPageLink = Deal_ID = FIELD(ID),
+                              Instance = CONST(real),
+                              Type = FILTER(<> BR);
             }
             field(PLLogisticShipmentNo_Co; PLLogisticShipmentNo_Co)
             {
                 Caption = 'Shipment';
-                TableRelation = "Deal Shipment".ID;
+                TableRelation = "DEL Deal Shipment".ID;
 
                 trigger OnLookup(var Text: Text): Boolean
                 var
-                    dealShipment_Re_Loc: Record "50030";
+                    dealShipment_Re_Loc: Record "DEL Deal Shipment";
                     myPage: Page "50040";
                 begin
                     dealShipment_Re_Loc.RESET();
@@ -143,10 +131,9 @@ page 50030 "Deal Mainboard"
 
                 trigger OnValidate()
                 var
-                    dealShipment_Re_Loc: Record "50030";
+                    dealShipment_Re_Loc: Record "DEL Deal Shipment";
                 begin
-                    //dealShipment_Re_Loc.GET(ItemDetailShipmentNo_Co);
-                    //Currpage.ShipmentSubpage.page.UpdateFilters(dealShipment_Re_Loc."BR No.");
+
                     PLLogisticShipmentNoCoOnAfterV;
                 end;
             }
@@ -158,11 +145,11 @@ page 50030 "Deal Mainboard"
             field(PLDetailShipmentNo_Co; PLDetailShipmentNo_Co)
             {
                 Caption = 'Shipment';
-                TableRelation = "Deal Shipment".ID;
+                TableRelation = "DEL Deal Shipment".ID;
 
                 trigger OnLookup(var Text: Text): Boolean
                 var
-                    dealShipment_Re_Loc: Record "50030";
+                    dealShipment_Re_Loc: Record "DEL Deal Shipment";
                     myPage: Page "50040";
                 begin
                     dealShipment_Re_Loc.RESET();
@@ -183,7 +170,7 @@ page 50030 "Deal Mainboard"
 
                 trigger OnValidate()
                 var
-                    dealShipment_Re_Loc: Record "50030";
+                    dealShipment_Re_Loc: Record "DEL Deal Shipment";
                 begin
                     //dealShipment_Re_Loc.GET(ItemDetailShipmentNo_Co);
                     //Currpage.ShipmentSubpage.page.UpdateFilters(dealShipment_Re_Loc."BR No.");
@@ -217,7 +204,7 @@ page 50030 "Deal Mainboard"
 
                     trigger OnAction()
                     var
-                        DealShip_Re_Loc: Record "50030";
+                        DealShip_Re_Loc: Record "DEL Deal Shipment";
                         DealShipList_Fo_Loc: Page "50040";
                         CurrencyExchange_page_Loc: Page "50039";
                     begin
@@ -342,7 +329,7 @@ page 50030 "Deal Mainboard"
         realElement_Re_Loc: Record "50021";
         position_Re_Loc: Record "50022";
         item_Re_Loc: Record "27";
-        dealShipment_Re_Loc: Record "50030";
+        dealShipment_Re_Loc: Record "DEL Deal Shipment";
         BR_Header_Re_Loc: Record "120";
         purchRcptLine_Re_Loc: Record "121";
         element_Re_Loc: Record "50021";
@@ -612,84 +599,43 @@ page 50030 "Deal Mainboard"
                     END;
 
 
-                    /*
-                    //on regarde si il y a des invoice pour cette livraison
-                    dealShipmentConnection_Re_Loc.RESET();
-                    dealShipmentConnection_Re_Loc.SETRANGE(Deal_ID, ID);
-                    dealShipmentConnection_Re_Loc.SETRANGE(Shipment_ID, PLShipmentNo_Co);
-                    IF dealShipmentConnection_Re_Loc.Findfirst THEN BEGIN
-                      REPEAT
+                /*
+                //on regarde si il y a des invoice pour cette livraison
+                dealShipmentConnection_Re_Loc.RESET();
+                dealShipmentConnection_Re_Loc.SETRANGE(Deal_ID, ID);
+                dealShipmentConnection_Re_Loc.SETRANGE(Shipment_ID, PLShipmentNo_Co);
+                IF dealShipmentConnection_Re_Loc.Findfirst THEN BEGIN
+                  REPEAT
 
-                        Element_Cu.FNC_Set_Element(element_Re_Loc, dealShipmentConnection_Re_Loc.Element_ID);
+                    Element_Cu.FNC_Set_Element(element_Re_Loc, dealShipmentConnection_Re_Loc.Element_ID);
 
-                        //on regarde sur quel(s) Element(s) l'invoice a été dispatché
-                        IF element_Re_Loc.Type = element_Re_Loc.Type::Invoice THEN BEGIN
+                    //on regarde sur quel(s) Element(s) l'invoice a été dispatché
+                    IF element_Re_Loc.Type = element_Re_Loc.Type::Invoice THEN BEGIN
 
-                          elementConnection_Re_Loc.RESET();
-                          elementConnection_Re_Loc.SETRANGE(Deal_ID, ID);
-                          elementConnection_Re_Loc.SETRANGE(Element_ID, element_Re_Loc.ID);
-                          elementConnection_Re_Loc.SETRANGE("Apply To", plannedElement_Re_Loc.ID);
-                          IF elementConnection_Re_Loc.Findfirst THEN BEGIN
-                            REPEAT
-                              //on regarde si l'élément sur lequel a été dispatché une invoice apparatient à la livraison en cours
-                              //IF dealShipCon_Re_Loc.GET(ID, PLShipmentNo_Co, elementConnection_Re_Loc."Apply To") THEN BEGIN
+                      elementConnection_Re_Loc.RESET();
+                      elementConnection_Re_Loc.SETRANGE(Deal_ID, ID);
+                      elementConnection_Re_Loc.SETRANGE(Element_ID, element_Re_Loc.ID);
+                      elementConnection_Re_Loc.SETRANGE("Apply To", plannedElement_Re_Loc.ID);
+                      IF elementConnection_Re_Loc.Findfirst THEN BEGIN
+                        REPEAT
+                          //on regarde si l'élément sur lequel a été dispatché une invoice apparatient à la livraison en cours
+                          //IF dealShipCon_Re_Loc.GET(ID, PLShipmentNo_Co, elementConnection_Re_Loc."Apply To") THEN BEGIN
 
-                                //filtre sur les positions avec element id et sub element id correspondant
-                                position_Re_Loc.RESET();
-                                position_Re_Loc.SETRANGE(Deal_ID, ID);
-                                position_Re_Loc.SETRANGE(Element_ID, element_Re_Loc.ID);
-                                position_Re_Loc.SETRANGE("Sub Element_ID", elementConnection_Re_Loc."Apply To");
-                                IF position_Re_Loc.Findfirst THEN
-                                  REPEAT
+                            //filtre sur les positions avec element id et sub element id correspondant
+                            position_Re_Loc.RESET();
+                            position_Re_Loc.SETRANGE(Deal_ID, ID);
+                            position_Re_Loc.SETRANGE(Element_ID, element_Re_Loc.ID);
+                            position_Re_Loc.SETRANGE("Sub Element_ID", elementConnection_Re_Loc."Apply To");
+                            IF position_Re_Loc.Findfirst THEN
+                              REPEAT
 
-                                    //PLLogistic_Re_Temp."Real Element ID" := realElement_Re_Loc.ID;
-                                    PLLogistic_Re_Temp."Real Amount" += position_Re_Loc."Line Amount (EUR)";
+                                //PLLogistic_Re_Temp."Real Element ID" := realElement_Re_Loc.ID;
+                                PLLogistic_Re_Temp."Real Amount" += position_Re_Loc."Line Amount (EUR)";
 
-                                  UNTIL(position_Re_Loc.NEXT() = 0);
-                              //END
-                            UNTIL(elementConnection_Re_Loc.NEXT() = 0);
-                          END;
-
-                        END ELSE BEGIN
-
-                          PLLogistic_Re_Temp.Delta := PLLogistic_Re_Temp."Real Amount" - PLLogistic_Re_Temp."Planned Amount";
-                          IF NOT PLLogistic_Re_Temp.INSERT(FALSE) THEN;
-
-                        END;
-
-                      UNTIL(dealShipmentConnection_Re_Loc.NEXT() = 0);
-                    END;
-                    //-----------------------------------------------------------------------------------
-                       */
-
-                    /*
-                    //on cherche les éléments réalisés pour un élément prévu
-                    realElement_Re_Loc.RESET();
-                    realElement_Re_Loc.SETCURRENTKEY(Deal_ID, Type);
-                    realElement_Re_Loc.SETRANGE(Deal_ID, ID);
-                    realElement_Re_Loc.SETRANGE(Type, realElement_Re_Loc.Type::Invoice); //CHG-DEV-PROVISION filter sur invoice|provision
-                    realElement_Re_Loc.SETRANGE(Fee_ID, plannedElement_Re_Loc.Fee_ID);
-                    realElement_Re_Loc.SETRANGE(Fee_Connection_ID, plannedElement_Re_Loc.Fee_Connection_ID);
-                    //on boucle sur tous les elements de type Fee
-                    IF realElement_Re_Loc.Findfirst THEN BEGIN
-                      REPEAT
-
-                        IF NOT PLLogistic_Re_Temp.GET(plannedElement_Re_Loc.ID, realElement_Re_Loc.ID) THEN BEGIN
-
-                          //si realElement est enregistré pour cette livraison
-                          IF dealShipmentConnection_Re_Loc.GET(ID, PLLogisticShipmentNo_Co, realElement_Re_Loc.ID) THEN BEGIN
-
-                            PLLogistic_Re_Temp."Real Element ID" := realElement_Re_Loc.ID;
-                            PLLogistic_Re_Temp."Real Amount" += Element_Cu.FNC_Get_Amount_From_Positions(realElement_Re_Loc.ID);
-
-                          END;
-
-                       END;
-
-                      UNTIL(realElement_Re_Loc.NEXT()=0);
-
-                      PLLogistic_Re_Temp.Delta := PLLogistic_Re_Temp."Real Amount" - PLLogistic_Re_Temp."Planned Amount";
-                      IF NOT PLLogistic_Re_Temp.INSERT(FALSE) THEN;
+                              UNTIL(position_Re_Loc.NEXT() = 0);
+                          //END
+                        UNTIL(elementConnection_Re_Loc.NEXT() = 0);
+                      END;
 
                     END ELSE BEGIN
 
@@ -697,7 +643,48 @@ page 50030 "Deal Mainboard"
                       IF NOT PLLogistic_Re_Temp.INSERT(FALSE) THEN;
 
                     END;
-                    */
+
+                  UNTIL(dealShipmentConnection_Re_Loc.NEXT() = 0);
+                END;
+                //-----------------------------------------------------------------------------------
+                   */
+
+                /*
+                //on cherche les éléments réalisés pour un élément prévu
+                realElement_Re_Loc.RESET();
+                realElement_Re_Loc.SETCURRENTKEY(Deal_ID, Type);
+                realElement_Re_Loc.SETRANGE(Deal_ID, ID);
+                realElement_Re_Loc.SETRANGE(Type, realElement_Re_Loc.Type::Invoice); //CHG-DEV-PROVISION filter sur invoice|provision
+                realElement_Re_Loc.SETRANGE(Fee_ID, plannedElement_Re_Loc.Fee_ID);
+                realElement_Re_Loc.SETRANGE(Fee_Connection_ID, plannedElement_Re_Loc.Fee_Connection_ID);
+                //on boucle sur tous les elements de type Fee
+                IF realElement_Re_Loc.Findfirst THEN BEGIN
+                  REPEAT
+
+                    IF NOT PLLogistic_Re_Temp.GET(plannedElement_Re_Loc.ID, realElement_Re_Loc.ID) THEN BEGIN
+
+                      //si realElement est enregistré pour cette livraison
+                      IF dealShipmentConnection_Re_Loc.GET(ID, PLLogisticShipmentNo_Co, realElement_Re_Loc.ID) THEN BEGIN
+
+                        PLLogistic_Re_Temp."Real Element ID" := realElement_Re_Loc.ID;
+                        PLLogistic_Re_Temp."Real Amount" += Element_Cu.FNC_Get_Amount_From_Positions(realElement_Re_Loc.ID);
+
+                      END;
+
+                   END;
+
+                  UNTIL(realElement_Re_Loc.NEXT()=0);
+
+                  PLLogistic_Re_Temp.Delta := PLLogistic_Re_Temp."Real Amount" - PLLogistic_Re_Temp."Planned Amount";
+                  IF NOT PLLogistic_Re_Temp.INSERT(FALSE) THEN;
+
+                END ELSE BEGIN
+
+                  PLLogistic_Re_Temp.Delta := PLLogistic_Re_Temp."Real Amount" - PLLogistic_Re_Temp."Planned Amount";
+                  IF NOT PLLogistic_Re_Temp.INSERT(FALSE) THEN;
+
+                END;
+                */
 
                 UNTIL (plannedElement_Re_Loc.NEXT() = 0);
 

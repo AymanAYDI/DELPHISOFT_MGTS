@@ -1,90 +1,79 @@
-page 50024 Fee
+page 50024 "DEL Fee"
 {
-    // +-------------------------------------------------------------------------------+
-    // | Logico SA - Logiciels & Conseils                                              |
-    // | Stand: 16.03.09                                                               |
-    // |                                                                               |
-    // +-------------------------------------------------------------------------------+
-    // 
-    // ID     Version     Story-Card    Date       Description
-    // ---------------------------------------------------------------------------------
-    // CHG01                            16.03.09   Renommé le label du champ 'Used for import' selon DEV13
-    // CHG02                            16.06.09   Ajout bouton "Facteur"
-    // GRC                              20.07.09   code onOpenForm
 
     Caption = 'Fee';
     PageType = List;
-    SourceTable = Table50024;
+    SourceTable = "DEL Fee";
 
     layout
     {
         area(content)
         {
-            repeater()
+            repeater(Control1)
             {
-                field(ID; ID)
+                field(ID; Rec.ID)
                 {
                 }
-                field(Description; Description)
+                field(Description; Rec.Description)
                 {
                 }
-                field("No compte"; "No compte")
+                field("No compte"; Rec."No compte")
                 {
                 }
-                field("Amount Type"; "Amount Type")
+                field("Amount Type"; Rec."Amount Type")
                 {
 
                     trigger OnValidate()
                     begin
-                        AmountTypeOnAfterValidate;
+                        AmountTypeOnAfterValidate();
                     end;
                 }
-                field("Ventilation Element"; "Ventilation Element")
+                field("Ventilation Element"; Rec."Ventilation Element")
                 {
                 }
-                field("Ventilation Position"; "Ventilation Position")
+                field("Ventilation Position"; Rec."Ventilation Position")
                 {
                 }
-                field(FormCurrency; Currency)
+                field(FormCurrency; Rec.Currency)
                 {
                     Caption = 'Currency';
                     Enabled = FormCurrencyEnable;
                 }
-                field(FormAmount; Amount)
+                field(FormAmount; Rec.Amount)
                 {
                     Caption = 'Default Amount';
                     Enabled = FormAmountEnable;
                 }
-                field(FormField; Field)
+                field(FormField; Rec.Field)
                 {
                     Caption = 'Field';
                     Enabled = FormFieldEnable;
 
                     trigger OnValidate()
+                    var
                     begin
-                        IF Field = Field::Douane THEN BEGIN
-                            FormCurrencyEnable := FALSE;
-                        END ELSE BEGIN
+                        IF Rec.Field = Rec.Field::Douane THEN
+                            FormCurrencyEnable := FALSE
+                        ELSE
                             FormCurrencyEnable := TRUE;
-                        END;
                     end;
                 }
-                field(FormFactor; Factor)
+                field(FormFactor; Rec.Factor)
                 {
                     Caption = 'Default Factor';
                     Enabled = FormFactorEnable;
                 }
-                field("Factor by date"; "Factor by date")
+                field("Factor by date"; Rec."Factor by date")
                 {
                     Editable = false;
                 }
-                field(Destination; Destination)
+                field(Destination; Rec.Destination)
                 {
                 }
-                field(Axe; Axe)
+                field(Axe; Rec.Axe)
                 {
                 }
-                field("Used For Import"; "Used For Import")
+                field("Used For Import"; Rec."Used For Import")
                 {
                     Caption = 'Used for import / Contrôle feuille comptable';
                 }
@@ -101,15 +90,15 @@ page 50024 Fee
                 Caption = 'Factor';
                 Promoted = true;
                 PromotedCategory = Process;
-                RunObject = Page 50049;
-                RunPageLink = Fee_ID = FIELD (ID);
+                RunObject = Page "DEL Fee Factor";
+                // RunPageLink = Fee_ID = FIELD(ID);
             }
         }
     }
 
     trigger OnAfterGetRecord()
     begin
-        OnAfterGetCurrRecord;
+        OnAfterGetCurrRecord();
     end;
 
     trigger OnInit()
@@ -119,14 +108,14 @@ page 50024 Fee
 
     trigger OnNewRecord(BelowxRec: Boolean)
     begin
-        OnAfterGetCurrRecord;
+        OnAfterGetCurrRecord();
     end;
 
     trigger OnOpenPage()
     begin
-        //GRC begin
-        UpdateFactor();
-        //GRC end
+
+        Rec.UpdateFactor();
+
     end;
 
     var
@@ -139,14 +128,14 @@ page 50024 Fee
         [InDataSet]
         FormCurrencyEnable: Boolean;
 
-    [Scope('Internal')]
+
     procedure UpdateForm()
     begin
     end;
 
     local procedure AmountTypeOnAfterValidate()
     begin
-        IF "Amount Type" = "Amount Type"::fixed THEN BEGIN
+        IF Rec."Amount Type" = Rec."Amount Type"::fixed THEN BEGIN
             FormAmountEnable := TRUE;
             FormFieldEnable := FALSE;
             FormFactorEnable := FALSE;
@@ -160,7 +149,7 @@ page 50024 Fee
     local procedure OnAfterGetCurrRecord()
     begin
         xRec := Rec;
-        IF "Amount Type" = "Amount Type"::fixed THEN BEGIN
+        IF Rec."Amount Type" = Rec."Amount Type"::fixed THEN BEGIN
 
             FormAmountEnable := TRUE;
             FormFieldEnable := FALSE;
@@ -175,11 +164,10 @@ page 50024 Fee
 
         END;
 
-        IF Field = Field::Douane THEN BEGIN
-            FormCurrencyEnable := FALSE;
-        END ELSE BEGIN
+        IF rec.Field = rec.Field::Douane THEN
+            FormCurrencyEnable := FALSE
+        ELSE
             FormCurrencyEnable := TRUE;
-        END;
     end;
 }
 

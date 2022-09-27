@@ -1,22 +1,24 @@
-page 50005 Contact_ItemCategory
+page 50005 "DEL Contact_ItemCategory"
 {
     Caption = 'Product Groups';
     Editable = false;
     PageType = List;
-    SourceTable = Table50005;
+    SourceTable = "DEL Contact_ItemCategory";
 
     layout
     {
         area(content)
         {
-            repeater()
+            repeater(Contact1)
             {
-                field(contactNo; contactNo)
+                field(contactNo; Rec.contactNo)
                 {
                     Visible = false;
+                    Caption = 'contactNo';
                 }
-                field("Groupe de produits"; ItemCategory)
+                field("Groupe de produits"; Rec.ItemCategory)
                 {
+                    Caption = 'Product Group';
                 }
             }
         }

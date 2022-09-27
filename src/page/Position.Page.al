@@ -1,46 +1,57 @@
-page 50022 Position
+page 50022 "DEL Position"
 {
     PageType = List;
-    SourceTable = Table50022;
+    SourceTable = "DEL Position";
 
     layout
     {
         area(content)
         {
-            repeater()
+            repeater(Control1)
             {
-                field(ID; ID)
+                field(ID; Rec.ID)
                 {
+                    Caption = 'ID';
                 }
-                field(Deal_ID; Deal_ID)
+                field(Deal_ID; Rec.Deal_ID)
                 {
+                    Caption = 'Deal_ID';
                 }
-                field(Element_ID; Element_ID)
+                field(Element_ID; Rec.Element_ID)
                 {
+                    Caption = 'Element_ID';
                 }
-                field("Sub Element_ID"; "Sub Element_ID")
+                field("Sub Element_ID"; Rec."Sub Element_ID")
                 {
+                    Caption = 'Sub Element_ID';
                 }
-                field(Instance; Instance)
+                field(Instance; Rec.Instance)
                 {
+                    Caption = 'Instance';
                 }
-                field("Deal Item No."; "Deal Item No.")
+                field("Deal Item No."; Rec."Deal Item No.")
                 {
+                    Caption = 'Deal Item No.';
                 }
-                field(Quantity; Quantity)
+                field(Quantity; Rec.Quantity)
                 {
+                    Caption = 'Quantity';
                 }
-                field(Currency; Currency)
+                field(Currency; Rec.Currency)
                 {
+                    Caption = 'Currency';
                 }
-                field(Amount; Amount)
+                field(Amount; Rec.Amount)
                 {
+                    Caption = 'Amount';
                 }
-                field("Line Amount"; "Line Amount")
+                field("Line Amount"; Rec."Line Amount")
                 {
+                    Caption = 'Line Amount';
                 }
-                field("Line Amount (EUR)"; "Line Amount (EUR)")
+                field("Line Amount (EUR)"; Rec."Line Amount (EUR)")
                 {
+                    Caption = 'Line Amount (EUR)';
                 }
             }
         }

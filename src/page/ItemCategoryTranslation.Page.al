@@ -1,24 +1,24 @@
-page 50006 "Item Category Translation"
+page 50006 "DEL Item Category Translation"
 {
     Caption = 'Item category translation';
     DataCaptionFields = CategoryCode;
     PageType = List;
-    SourceTable = Table50006;
+    SourceTable = "DEL ItemCategory_Translation";
 
     layout
     {
         area(content)
         {
-            repeater()
+            repeater(Control1)
             {
-                field(CategoryCode; CategoryCode)
+                field(CategoryCode; Rec.CategoryCode)
                 {
                     Visible = false;
                 }
-                field(Language_Code; Language_Code)
+                field(Language_Code; Rec.Language_Code)
                 {
                 }
-                field(Translation; Translation)
+                field(Translation; Rec.Translation)
                 {
                 }
             }

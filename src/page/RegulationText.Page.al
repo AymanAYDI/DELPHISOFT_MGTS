@@ -1,17 +1,10 @@
-page 50001 "Regulation Text"
+page 50001 "DEL Regulation Text"
 {
-    // +---------------------------------------------------------------+
-    // | Logico SA                                                     |
-    // | Status:                                                       |
-    // | Customer/Project:                                             |
-    // +---------------------------------------------------------------+
-    // Requirement UserID   Date       Where   Description
-    // -----------------------------------------------------------------
-    // T-00783      THM     27.04.16           Create Object
+
 
     Caption = 'Matrix Text';
     PageType = Worksheet;
-    SourceTable = Table50001;
+    SourceTable = "DEL Texte Regulation";
 
     layout
     {
@@ -19,27 +12,27 @@ page 50001 "Regulation Text"
         {
             repeater(Group)
             {
-                field("No."; "No.")
+                field("No."; Rec."No.")
                 {
                     Editable = false;
                     Visible = false;
                 }
-                field(Type; Type)
+                field(Type; Rec.Type)
                 {
                     Editable = false;
                     Visible = false;
                 }
-                field(Champs; Champs)
+                field(Champs; Rec.Champs)
                 {
                     Editable = false;
                     Visible = false;
                 }
-                field("Line No."; "Line No.")
+                field("Line No."; Rec."Line No.")
                 {
                     Editable = false;
                     Visible = false;
                 }
-                field(Text; Text)
+                field("Text"; Rec.Text)
                 {
                 }
             }
@@ -60,7 +53,7 @@ page 50001 "Regulation Text"
 
                 trigger OnAction()
                 begin
-                    EditText;
+                    //TODO EditText;
                 end;
             }
         }
@@ -71,32 +64,26 @@ page 50001 "Regulation Text"
         GetNextLineNo(Rec, FALSE);
     end;
 
-    [Scope('Internal')]
-    procedure EditText()
-    var
-        RecRef: RecordRef;
-        TextEdit: Codeunit "50010";
-        Text00001: Label 'Edit Document Text';
-    begin
-        /*
-        IF NOT(GET("Attached to Line No.",Type,"Line No.")) THEN BEGIN
-          INIT;
-          INSERT;
-          COMMIT;
-        END;
-        
-        */
-        RecRef.GETTABLE(Rec);
-        TextEdit.EditTextLines(RecRef,
-                               'Text',
-                               '',
-                               '',
-                               'Attached to Line No.',
-                               'Line No.',
-                               FALSE,
-                               '',
-                               'Edit Text');
 
-    end;
+    // procedure EditText()
+    // var
+    //     RecRef: RecordRef;
+    //    //TODO:until we merge the codeunit
+    //    // TextEdit: Codeunit "50010";
+    //     Text00001: Label 'Edit Document Text';
+    // begin
+
+    //     RecRef.GETTABLE(Rec);
+    //     TextEdit.EditTextLines(RecRef,
+    //                            'Text',
+    //                            '',
+    //                            '',
+    //                            'Attached to Line No.',
+    //                            'Line No.',
+    //                            FALSE,
+    //                            '',
+    //                            'Edit Text');
+
+    // end;
 }
 

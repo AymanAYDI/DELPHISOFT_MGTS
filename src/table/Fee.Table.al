@@ -104,9 +104,6 @@ table 50024 "DEL Fee"
         }
     }
 
-    fieldgroups
-    {
-    }
 
     trigger OnDelete()
     begin
@@ -137,15 +134,15 @@ table 50024 "DEL Fee"
         IsAccountExistingErr: Label 'The account no. %1 is alrealdy attributed with fee id %2';
         IsNotUsedErr: Label 'The fee %1 is still in use in deal %2 !';
 
-    // [Scope('Internal')]
+
     procedure UpdateFactor()
     begin
 
-        IF Rec.FIND('-') THEN BEGIN
+        IF Rec.FIND('-') THEN
             REPEAT
                 FeeFactor.SETFILTER(Fee_ID, ID);
-                FeeFactor.SETFILTER("Allow From", '<=%1', WORKDATE);
-                FeeFactor.SETFILTER("Allow To", '>=%1', WORKDATE);
+                FeeFactor.SETFILTER("Allow From", '<=%1', WORKDATE());
+                FeeFactor.SETFILTER("Allow To", '>=%1', WORKDATE());
                 IF FeeFactor.FIND('-') THEN BEGIN
                     "Factor by date" := FeeFactor.Factor;
                     Rec.MODIFY();
@@ -155,12 +152,11 @@ table 50024 "DEL Fee"
 
 
                 END;
-            UNTIL Rec.NEXT = 0;
-        END;
+            UNTIL Rec.NEXT() = 0;
 
     end;
 
-    //[Scope('Internal')]
+
     procedure IsAccountNoExisting_FNC(AccountNo_Co_Par: Code[20]; UsedForImport_Bo_Par: Boolean; var ErrorMsg_Te_Par: Text[250]): Boolean
     var
         Fee_Re_Loc: Record "DEL Fee";
@@ -176,7 +172,7 @@ table 50024 "DEL Fee"
             EXIT(FALSE);
     end;
 
-    //  [Scope('Internal')]
+
     procedure IsInUse_FNC(FeeID_Co_Par: Code[20]; var ErrorMsg_Te_Par: Text[250]): Boolean
     var
         Element_Re_Loc: Record "DEL Element";

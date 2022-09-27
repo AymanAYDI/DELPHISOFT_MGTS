@@ -70,14 +70,13 @@ table 50082 "DEL D365FM Mail Template"
         CstG001: Label 'Do you want to replace the existing template %1 %2?';
         CstG002: Label 'Do you want to delete the template %1 %2 ?';
 
-    //TODO
+
     procedure SetHtmlTemplate() TxtRRecupients: Text[1024]
     var
         RBAutoMgt: Codeunit "File Management";
         BLOBRef: Codeunit "Temp Blob";
+        RecRef: RecordRef;
         BooLTemplateExists: Boolean;
-
-
     begin
         CALCFIELDS("Template mail");
 
@@ -86,8 +85,9 @@ table 50082 "DEL D365FM Mail Template"
 
         IF RBAutoMgt.BLOBImport(BLOBRef, '*.html') = '' THEN
             EXIT;
-
-        //TODO"Template mail" := BLOBRef.Blob;
+        RecRef.GetTable(Rec);
+        BLOBRef.ToRecordRef(RecRef, FieldNo("Template mail"));
+        RecRef.SetTable(Rec);
 
         IF BooLTemplateExists THEN
             IF NOT CONFIRM(CstG001, FALSE, "Parameter String", "Language Code") THEN
@@ -104,7 +104,8 @@ table 50082 "DEL D365FM Mail Template"
     begin
         CALCFIELDS("Template mail");
         IF "Template mail".HASVALUE THEN BEGIN
-            //TODO BLOBRef.Blob := "Template mail";
+
+            BLOBRef.FromRecord(Rec, FieldNo("Template mail"));
             RBAutoMgt.BLOBExport(BLOBRef, '*.html', TRUE);
         END;
     end;

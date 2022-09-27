@@ -1,7 +1,7 @@
 table 50034 "DEL Logistic"
 {
     DataCaptionFields = ID, "BR No.";
-    Caption = 'DEL Logistic';
+    Caption = 'Logistic';
 
     fields
     {
@@ -371,15 +371,13 @@ table 50034 "DEL Logistic"
                 ELSE
                     IF Logistic_Re_Par."ETD Requested" <> 0D THEN
                         Logistic_Re_Par."Revised ETD" := CALCDATE('<30D>', Logistic_Re_Par."ETD Requested");
-        END ELSE BEGIN
+        END ELSE
             IF Logistic_Re_Par."Revised ETD" = 0D THEN
                 IF Logistic_Re_Par."ETD Requested" <> 0D THEN
                     Logistic_Re_Par."ETA date" := CALCDATE('<1D>', Logistic_Re_Par."ETD Requested")
                 ELSE
                     IF Logistic_Re_Par."ETD Requested" <> 0D THEN
                         Logistic_Re_Par."Revised ETD" := CALCDATE('<1D>', Logistic_Re_Par."ETD Requested");
-
-        END;
 
         Logistic_Re_Par."Estimated CTNS" := PackNumber_De_Loc;
         Logistic_Re_Par."Estimated volume" := Cubic_De_Loc;
@@ -388,7 +386,7 @@ table 50034 "DEL Logistic"
 
         Logistic_Re_Par.VALIDATE(Deal_ID);//grc new
 
-        Logistic_Re_Par.INSERT;
+        Logistic_Re_Par.INSERT();
     end;
 
 
@@ -401,15 +399,13 @@ table 50034 "DEL Logistic"
                 ELSE
                     IF "ETD Requested" <> 0D THEN
                         "Revised ETD" := CALCDATE('<30D>', "ETD Requested");
-        END ELSE BEGIN
+        END ELSE
             IF "Revised ETD" = 0D THEN
                 IF "ETD Requested" <> 0D THEN
                     "ETA date" := CALCDATE('<1D>', "ETD Requested")
                 ELSE
                     IF "ETD Requested" <> 0D THEN
                         "Revised ETD" := CALCDATE('<1D>', "ETD Requested");
-
-        END;
     end;
 
 
@@ -449,7 +445,7 @@ table 50034 "DEL Logistic"
                 //     ELSE
                 //         Weight_De_Loc := Weight_De_Loc + PurchRcptLine_Re.Quantity;
                 // END;
-                UNTIL PurchRcptLine_Re.NEXT = 0;
+                UNTIL PurchRcptLine_Re.NEXT() = 0;
 
         END;
 

@@ -1,9 +1,9 @@
-page 50002 "Import Commande vente"
+page 50002 "DEL Import Commande vente"
 {
     Caption = 'Sales Order Import';
     InsertAllowed = false;
     PageType = List;
-    SourceTable = Table50002;
+    SourceTable = "DEL Import Commande vente";
 
     layout
     {
@@ -11,40 +11,40 @@ page 50002 "Import Commande vente"
         {
             repeater(Group)
             {
-                field("Document No."; "Document No.")
+                field("Document No."; Rec."Document No.")
                 {
                 }
-                field("Line No."; "Line No.")
+                field("Line No."; Rec."Line No.")
                 {
                 }
-                field(Position; Position)
+                field(Position; Rec.Position)
                 {
                 }
-                field("No."; "No.")
+                field("No."; Rec."No.")
                 {
                 }
-                field(Description; Description)
+                field(Description; Rec.Description)
                 {
                 }
-                field(Quantity; Quantity)
+                field(Quantity; Rec.Quantity)
                 {
                 }
-                field("Unit Price"; "Unit Price")
+                field("Unit Price"; Rec."Unit Price")
                 {
                 }
-                field(Amount; Amount)
+                field(Amount; Rec.Amount)
                 {
                 }
             }
         }
         area(factboxes)
         {
-            part(; 50003)
+            part(List; "DEL Error Import")
             {
-                SubPageLink = Document No.=FIELD(Document No.),
-                              Line No.=FIELD(Line No.),
-                              Position=FIELD(Position);
-                SubPageView = SORTING(Document No.,Line No.,Position)
+                SubPageLink = "Document No." = FIELD("Document No."),
+                              "Line No." = FIELD("Line No."),
+                              Position = FIELD(Position);
+                SubPageView = SORTING("Document No.", "Line No.", Position)
                               ORDER(Ascending);
             }
         }
@@ -64,14 +64,14 @@ page 50002 "Import Commande vente"
 
                 trigger OnAction()
                 begin
-                    ImportCommandevente.SETRANGE(ImportCommandevente."Document No.","Document No.");
-                    REPORT.RUN(50016,FALSE,FALSE,ImportCommandevente);
+                    ImportCommandevente.SETRANGE(ImportCommandevente."Document No.", "Document No.");
+                    REPORT.RUN(50016, FALSE, FALSE, ImportCommandevente);
                 end;
             }
         }
     }
 
     var
-        ImportCommandevente: Record "50002";
+        ImportCommandevente: Record "DEL Import Commande vente";
 }
 

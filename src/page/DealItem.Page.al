@@ -1,52 +1,65 @@
-page 50023 "Deal Item"
+page 50023 "DEL Deal Item"
 {
     PageType = List;
-    SourceTable = Table50023;
+    SourceTable = "DEL Deal Item";
 
     layout
     {
         area(content)
         {
-            repeater()
+            repeater(Control1)
             {
-                field("Item No."; "Item No.")
+                field("Item No."; Rec."Item No.")
                 {
+                    Caption = 'Item No.';
                 }
-                field(Deal_ID; Deal_ID)
+                field(Deal_ID; Rec.Deal_ID)
                 {
+                    Caption = 'Deal_ID';
                 }
-                field("Unit Price"; "Unit Price")
+                field("Unit Price"; Rec."Unit Price")
                 {
+                    Caption = 'Unit Price';
                 }
-                field("Currency Price"; "Currency Price")
+                field("Currency Price"; Rec."Currency Price")
                 {
+                    Caption = 'Currency Price';
                 }
-                field("Unit Cost"; "Unit Cost")
+                field("Unit Cost"; Rec."Unit Cost")
                 {
+                    Caption = 'Unit Cost';
                 }
-                field("Currency Cost"; "Currency Cost")
+                field("Currency Cost"; Rec."Currency Cost")
                 {
+                    Caption = 'Currency Cost';
                 }
-                field("Net Weight"; "Net Weight")
+                field("Net Weight"; Rec."Net Weight")
                 {
+                    Caption = 'Net Weight';
                 }
-                field("Gross Weight"; "Gross Weight")
+                field("Gross Weight"; Rec."Gross Weight")
                 {
+                    Caption = 'Gross Weight';
                 }
-                field("Volume CMB"; "Volume CMB")
+                field("Volume CMB"; Rec."Volume CMB")
                 {
+                    Caption = 'Volume CMB';
                 }
-                field("Volume CMB carton transport"; "Volume CMB carton transport")
+                field("Volume CMB carton transport"; Rec."Volume CMB carton transport")
                 {
+                    Caption = 'Volume CMB carton transport';
                 }
-                field(PCB; PCB)
+                field(PCB; Rec.PCB)
                 {
+                    Caption = 'PCB';
                 }
-                field("Container No."; "Container No.")
+                field("Container No."; Rec."Container No.")
                 {
+                    Caption = 'Container No.';
                 }
-                field("Droit de douane reduit"; "Droit de douane reduit")
+                field("Droit de douane reduit"; Rec."Droit de douane reduit")
                 {
+                    Caption = 'Droit de douane reduit';
                 }
             }
         }

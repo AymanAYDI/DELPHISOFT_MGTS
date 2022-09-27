@@ -1,4 +1,4 @@
-page 50049 "Fee Factor"
+page 50049 "DEL Fee Factor"
 {
     // +-------------------------------------------------------------------------------+
     // | Logico SA - Logiciels & Conseils                                              |
@@ -27,6 +27,9 @@ page 50049 "Fee Factor"
                 {
                 }
                 field(Factor; Factor)
+                {
+                }
+                field(Fee_ID; Fee_ID)
                 {
                 }
             }

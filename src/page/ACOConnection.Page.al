@@ -1,26 +1,24 @@
-page 50026 "ACO Connection"
+page 50026 "DEL ACO Connection"
 {
     PageType = List;
-    SourceTable = Table50026;
+    SourceTable = "DEL ACO Connection";
 
     layout
     {
         area(content)
         {
-            repeater()
+            repeater(Control1)
             {
-                field(Deal_ID; Deal_ID)
+                field(Deal_ID; Rec.Deal_ID)
                 {
                 }
-                field("ACO No."; "ACO No.")
+                field("ACO No."; Rec."ACO No.")
                 {
                 }
             }
         }
     }
 
-    actions
-    {
-    }
+
 }
 

@@ -1,32 +1,21 @@
-page 50032 "Subform VCO"
+page 50032 "DEL Subform VCO"
 {
-    // +-------------------------------------------------------------------------------+
-    // | Logico SA - Logiciels & Conseils                                              |
-    // | Stand: 20.04.09                                                               |
-    // |                                                                               |
-    // +-------------------------------------------------------------------------------+
-    // 
-    // ID     Version     Story-Card    Date       Description
-    // ---------------------------------------------------------------------------------
-    // CHG01                            20.04.09   Update field Date
-    // THM                              30.07.13   length ExternalDocNo_Co-->35
-    // THM                              24.10.2013 change CustomerName_Te length 30 to 50
 
     Editable = false;
     PageType = ListPart;
-    SourceTable = Table50021;
+    SourceTable = "DEL Element";
 
     layout
     {
         area(content)
         {
-            repeater()
+            repeater(Control1)
             {
                 Editable = false;
-                field("Type No."; "Type No.")
+                field("Type No."; Rec."Type No.")
                 {
                 }
-                field("Subject No."; "Subject No.")
+                field("Subject No."; Rec."Subject No.")
                 {
                     Caption = 'No.';
                 }
@@ -42,37 +31,34 @@ page 50032 "Subform VCO"
                 {
                     Caption = 'Campaign No.';
                 }
-                field(Date; Date)
+                field("Date"; Rec.Date)
                 {
                 }
-                field("Bill-to Customer No."; "Bill-to Customer No.")
+                field("Bill-to Customer No."; Rec."Bill-to Customer No.")
                 {
                 }
             }
         }
     }
 
-    actions
-    {
-    }
 
     trigger OnAfterGetRecord()
     var
-        customer_Re_Loc: Record "18";
-        salesHeader_Re_Loc: Record "36";
+        customer_Re_Loc: Record Customer;
+        salesHeader_Re_Loc: Record "Sales Header";
     begin
-        IF customer_Re_Loc.GET("Subject No.") THEN
+        IF customer_Re_Loc.GET(Rec."Subject No.") THEN
             CustomerName_Te := customer_Re_Loc.Name;
         ExternalDocNo_Co := '';
         CampaignNo_Co := '';
-        IF salesHeader_Re_Loc.GET(salesHeader_Re_Loc."Document Type"::Order, "Type No.") THEN BEGIN
+        IF salesHeader_Re_Loc.GET(salesHeader_Re_Loc."Document Type"::Order, Rec."Type No.") THEN BEGIN
             ExternalDocNo_Co := salesHeader_Re_Loc."External Document No.";
             CampaignNo_Co := salesHeader_Re_Loc."Campaign No.";
         END;
-        SalesHeaderArchive.RESET;
+        SalesHeaderArchive.RESET();
         SalesHeaderArchive.SETRANGE(SalesHeaderArchive."Document Type", SalesHeaderArchive."Document Type"::Order);
-        SalesHeaderArchive.SETRANGE(SalesHeaderArchive."No.", "Type No.");
-        IF SalesHeaderArchive.FINDFIRST THEN BEGIN
+        SalesHeaderArchive.SETRANGE(SalesHeaderArchive."No.", Rec."Type No.");
+        IF SalesHeaderArchive.FINDFIRST() THEN BEGIN
             ExternalDocNo_Co := SalesHeaderArchive."External Document No.";
             CampaignNo_Co := SalesHeaderArchive."Campaign No.";
 
@@ -80,9 +66,10 @@ page 50032 "Subform VCO"
     end;
 
     var
+        SalesHeaderArchive: Record "Sales Header Archive";
         CustomerName_Te: Text[50];
         ExternalDocNo_Co: Code[35];
         CampaignNo_Co: Code[20];
-        SalesHeaderArchive: Record "5107";
+
 }
 

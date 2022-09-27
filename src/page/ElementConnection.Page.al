@@ -1,32 +1,29 @@
-page 50027 "Element Connection"
+page 50027 "DEL Element Connection"
 {
     PageType = List;
-    SourceTable = Table50027;
+    SourceTable = "DEL Element Connection";
 
     layout
     {
         area(content)
         {
-            repeater()
+            repeater(Control1)
             {
-                field(Deal_ID; Deal_ID)
+                field(Deal_ID; Rec.Deal_ID)
                 {
                 }
-                field(Element_ID; Element_ID)
+                field(Element_ID; Rec.Element_ID)
                 {
                 }
-                field("Apply To"; "Apply To")
+                field("Apply To"; Rec."Apply To")
                 {
                 }
-                field(Instance; Instance)
+                field(Instance; Rec.Instance)
                 {
                 }
             }
         }
     }
 
-    actions
-    {
-    }
 }
 

@@ -1,52 +1,52 @@
-page 50025 "Fee Connection"
+page 50025 "DEL Fee Connection"
 {
     Caption = 'Fee connection';
     PageType = List;
-    SourceTable = Table50025;
+    SourceTable = "DEL Fee Connection";
 
     layout
     {
         area(content)
         {
-            repeater()
+            repeater(Control1)
             {
-                field(ID; ID)
+                field(ID; Rec.ID)
                 {
                 }
-                field(Type; Type)
+                field(Type; Rec.Type)
                 {
                 }
-                field("No."; "No.")
+                field("No."; Rec."No.")
                 {
                 }
-                field("Deal ID"; "Deal ID")
+                field("Deal ID"; Rec."Deal ID")
                 {
                     Caption = 'Deal ID';
                 }
-                field("Fee ID"; "Fee ID")
+                field("Fee ID"; Rec."Fee ID")
                 {
                     Caption = 'Fee ID';
 
                     trigger OnValidate()
                     var
-                        fee_Re_Loc: Record "50024";
+                        fee_Re_Loc: Record "DEL Fee";
                     begin
-                        IF (("Fee ID" <> '') AND (fee_Re_Loc.GET("Fee ID"))) THEN BEGIN
-                            "Fee Description" := fee_Re_Loc.Description;
-                            MODIFY;
+                        IF ((Rec."Fee ID" <> '') AND (fee_Re_Loc.GET(Rec."Fee ID"))) THEN BEGIN
+                            Rec."Fee Description" := fee_Re_Loc.Description;
+                            Rec.MODIFY();
                         END
                     end;
                 }
-                field("Fee Description"; "Fee Description")
+                field("Fee Description"; Rec."Fee Description")
                 {
                     Caption = 'Désignation';
                 }
-                field(FormAmount; "Default Amount")
+                field(FormAmount; Rec."Default Amount")
                 {
                     Caption = 'Specific amount';
                     Enabled = FormAmountEnable;
                 }
-                field(FormFactor; "Default Factor")
+                field(FormFactor; Rec."Default Factor")
                 {
                     Caption = 'Specific factor';
                     Enabled = FormFactorEnable;
@@ -61,15 +61,11 @@ page 50025 "Fee Connection"
 
     trigger OnAfterGetRecord()
     var
-        fee_Re_Loc: Record "50024";
+        fee_Re_Loc: Record "DEL Fee";
     begin
-        /*
-        FeeDescription_Te := '';
-        IF (("Fee ID" <> '') AND (fee_Re_Loc.GET("Fee ID"))) THEN
-          FeeDescription_Te := fee_Re_Loc.Description
-        */
 
-        IF (("Fee ID" <> '') AND (fee_Re_Loc.GET("Fee ID"))) THEN BEGIN
+
+        IF ((Rec."Fee ID" <> '') AND (fee_Re_Loc.GET(Rec."Fee ID"))) THEN
             IF fee_Re_Loc."Amount Type" = fee_Re_Loc."Amount Type"::fixed THEN BEGIN
                 FormAmountEnable := TRUE;
                 FormFactorEnable := FALSE;
@@ -77,7 +73,6 @@ page 50025 "Fee Connection"
                 FormAmountEnable := FALSE;
                 FormFactorEnable := TRUE;
             END;
-        END;
 
     end;
 
@@ -90,10 +85,10 @@ page 50025 "Fee Connection"
     trigger OnInsertRecord(BelowxRec: Boolean): Boolean
     begin
         IF (Type_Op = Type_Op::Vendor) OR (Type_Op = Type_Op::Customer) THEN
-            VALIDATE(Type, Type_Op);
+            Rec.VALIDATE(Type, Type_Op);
 
         IF No_Co <> '' THEN
-            VALIDATE("No.", No_Co);
+            Rec.VALIDATE("No.", No_Co);
     end;
 
     var
@@ -104,7 +99,7 @@ page 50025 "Fee Connection"
         [InDataSet]
         FormFactorEnable: Boolean;
 
-    [Scope('Internal')]
+
     procedure FNC_Set_Type(Type_Op_Par: Option Vendor,Customer; No_Co_Par: Code[20])
     begin
         Type_Op := Type_Op_Par;

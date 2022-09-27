@@ -1,31 +1,23 @@
-page 50031 "Subform ACO"
+page 50031 "DEL Subform ACO"
 {
-    // +-------------------------------------------------------------------------------+
-    // | Logico SA - Logiciels & Conseils                                              |
-    // | Stand: 20.04.09                                                               |
-    // |                                                                               |
-    // +-------------------------------------------------------------------------------+
-    // 
-    // ID     Version     Story-Card    Date       Description
-    // ---------------------------------------------------------------------------------
-    // CHG01                            20.04.09   Update field Date
-    // THM                              24.10.2013 change VendorName_Te length 30 to 50
+
 
     Editable = false;
     PageType = ListPart;
-    SourceTable = Table50021;
+    SourceTable = "DEL Element";
 
     layout
     {
         area(content)
         {
-            repeater()
+            repeater(Control1)
             {
                 Editable = false;
-                field("Type No."; "Type No.")
+                field("Type No."; Rec."Type No.")
                 {
+                    Caption = 'Type No.';
                 }
-                field("Subject No."; "Subject No.")
+                field("Subject No."; Rec."Subject No.")
                 {
                     Caption = 'No.';
                 }
@@ -33,8 +25,9 @@ page 50031 "Subform ACO"
                 {
                     Caption = 'Name';
                 }
-                field(Date; Date)
+                field("Date"; Rec.Date)
                 {
+                    Caption = 'Date';
                 }
             }
         }
@@ -46,9 +39,9 @@ page 50031 "Subform ACO"
 
     trigger OnAfterGetRecord()
     var
-        vendor_Re_Loc: Record "23";
+        vendor_Re_Loc: Record Vendor;
     begin
-        IF vendor_Re_Loc.GET("Subject No.") THEN
+        IF vendor_Re_Loc.GET(Rec."Subject No.") THEN
             VendorName_Te := vendor_Re_Loc.Name
     end;
 

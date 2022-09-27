@@ -1,37 +1,10 @@
-page 50000 "General Setup"
+page 50000 "DEL General Setup"
 {
-    // EDI       22.05.13/LOCO/ChC- Page Created
-    // +-------------------------------------------------------------------------------------------------+
-    // | Logico SA                                                                                       |
-    // | Status: 10.12.13                                                                                |
-    // | Customer: NGTS                                                                                  |
-    // +-------------------------------------------------------------------------------------------------+
-    // 
-    // Requirement     UserID   Date       Where                                   Description
-    // -----------------------------------------------------------------------------------------------------
-    // THS             THS     10.12.13    Layout-Reporting                        Add field "Hyperion File"
-    // THS             THS     12.12.13    Layout-Reporting                        Add field "Hyperion Company Code"
-    // THM             THM     02,10,14                                            add "Sales File","Purchase File"
-    // T-00737         SAZ     01.10.15                                            Add field  ""Dernier num séq maj Dev Init""
-    // 
-    // Mgts10.00.01.00 | 11.01.2020 | JSON WS Mgt
-    //                          Add Fields : "Vendor Template"
-    //                                       "API URL"
-    //                                       "API KEY"
-    // 
-    // Mgts10.00.03.00 | 07.04.2020 | JSON WS Mgt
-    //                          Add Fields : "Item Template"
-    // 
-    // MGTSEDI10.00.00.23 | 21.05.2021 | EDI Management : Add fields
-    //                                                     Worksheet Template Name,
-    //                                                     Journal Batch Name,
-    // MGTS10.00.06.00    | 07.01.2022 | Send Payment Advice : List of changes:
-    //                                              Added new field: 50013 "Sender Email Payment Advice"
-    //                                              Added new field: 50014 "Default Email Template"
+
 
     Caption = 'General Setup';
     PageType = Card;
-    SourceTable = Table50000;
+    SourceTable = "DEL General Setup";
 
     layout
     {
@@ -40,17 +13,17 @@ page 50000 "General Setup"
             group(General)
             {
                 Caption = 'General';
-                field("Dernier num séq maj Dev Init"; "Dernier num séq maj Dev Init")
+                field("Dernier num séq maj Dev Init"; Rec."Dernier num séq maj Dev Init")
                 {
                 }
             }
             group(Axes)
             {
                 Caption = 'Axes';
-                field("Code Axe Achat"; "Code Axe Achat")
+                field("Code Axe Achat"; Rec."Code Axe Achat")
                 {
                 }
-                label()
+                label(LabelAxe)
                 {
                     CaptionClass = Text19036189;
                     MultiLine = true;
@@ -59,129 +32,129 @@ page 50000 "General Setup"
             group(Transitaire)
             {
                 Caption = 'Transitaire';
-                field("Nom emetteur"; "Nom emetteur")
+                field("Nom emetteur"; Rec."Nom emetteur")
                 {
                 }
-                field("Nom achat commande transitaire"; "Nom achat commande transitaire")
+                field("Nom achat commande transitaire"; Rec."Nom achat commande transitaire")
                 {
                 }
-                field("IC Forwarding Agent Code"; "IC Forwarding Agent Code")
+                field("IC Forwarding Agent Code"; Rec."IC Forwarding Agent Code")
                 {
                 }
             }
             group(Deal)
             {
                 Caption = 'Deal';
-                field("Element Nos."; "Element Nos.")
+                field("Element Nos."; Rec."Element Nos.")
                 {
                 }
-                field("Position Nos."; "Position Nos.")
+                field("Position Nos."; Rec."Position Nos.")
                 {
                 }
-                field("Fee Nos."; "Fee Nos.")
+                field("Fee Nos."; Rec."Fee Nos.")
                 {
                 }
-                field("Fee Connection Nos."; "Fee Connection Nos.")
+                field("Fee Connection Nos."; Rec."Fee Connection Nos.")
                 {
                 }
-                field("Provision Nos."; "Provision Nos.")
+                field("Provision Nos."; Rec."Provision Nos.")
                 {
                 }
             }
             group("Special Order")
             {
                 Caption = 'Special Order';
-                field("Default Purchasing Code"; "Default Purchasing Code")
+                field("Default Purchasing Code"; Rec."Default Purchasing Code")
                 {
                 }
             }
             group(Tracking)
             {
                 Caption = 'Tracking';
-                field("Folder Expeditors"; "Folder Expeditors")
+                field("Folder Expeditors"; Rec."Folder Expeditors")
                 {
                 }
-                field("Folder Expeditors Archive"; "Folder Expeditors Archive")
+                field("Folder Expeditors Archive"; Rec."Folder Expeditors Archive")
                 {
                 }
-                field("Folder Maersk"; "Folder Maersk")
+                field("Folder Maersk"; Rec."Folder Maersk")
                 {
                 }
-                field("Folder Maersk Archive"; "Folder Maersk Archive")
+                field("Folder Maersk Archive"; Rec."Folder Maersk Archive")
                 {
                 }
             }
             group(Reporting)
             {
                 Caption = 'Reporting';
-                field("Reporting File"; "Reporting File")
+                field("Reporting File"; Rec."Reporting File")
                 {
                 }
-                field("Hyperion Company Code"; "Hyperion Company Code")
+                field("Hyperion Company Code"; Rec."Hyperion Company Code")
                 {
                 }
-                field("Hyperion File"; "Hyperion File")
+                field("Hyperion File"; Rec."Hyperion File")
                 {
                 }
-                field("Sales File"; "Sales File")
+                field("Sales File"; Rec."Sales File")
                 {
                 }
-                field("Purchase File"; "Purchase File")
+                field("Purchase File"; Rec."Purchase File")
                 {
                 }
             }
             group("Coefficient Of Item Quality")
             {
                 Caption = 'Coefficient Of Item Quality';
-                field("Risque Securitaire"; "Risque Securitaire")
+                field("Risque Securitaire"; Rec."Risque Securitaire")
                 {
                 }
-                field("Risque Reglementaire"; "Risque Reglementaire")
+                field("Risque Reglementaire"; Rec."Risque Reglementaire")
                 {
                 }
-                field("Marque Produit"; "Marque Produit")
+                field("Marque Produit"; Rec."Marque Produit")
                 {
                 }
-                field("Origine Fournisseur"; "Origine Fournisseur")
+                field("Origine Fournisseur"; Rec."Origine Fournisseur")
                 {
                 }
-                field("Coefficient Of Quality Rating"; "Coefficient Of Quality Rating")
+                field("Coefficient Of Quality Rating"; Rec."Coefficient Of Quality Rating")
                 {
                 }
             }
             group("JSON Interface")
             {
                 Caption = 'JSON Interface';
-                field("Vendor Template"; "Vendor Template")
+                field("Vendor Template"; Rec."Vendor Template")
                 {
                 }
-                field("API URL"; "API URL")
+                field("API URL"; Rec."API URL")
                 {
                 }
-                field("API KEY"; "API KEY")
+                field("API KEY"; Rec."API KEY")
                 {
                 }
-                field("Item Template"; "Item Template")
+                field("Item Template"; Rec."Item Template")
                 {
                 }
             }
             group(EDI)
             {
                 Caption = 'EDI';
-                field("Worksheet Template Name"; "Worksheet Template Name")
+                field("Worksheet Template Name"; Rec."Worksheet Template Name")
                 {
                 }
-                field("Journal Batch Name"; "Journal Batch Name")
+                field("Journal Batch Name"; Rec."Journal Batch Name")
                 {
                 }
             }
             group("Vendor Payment Advice")
             {
                 Caption = 'Vendor Payment Advice';
-                field("Sender Email Payment Advice"; "Sender Email Payment Advice")
+                field("Sender Email Payment Advice"; Rec."Sender Email Payment Advice")
                 {
                 }
-                field("Default Email Template"; "Default Email Template")
+                field("Default Email Template"; Rec."Default Email Template")
                 {
                 }
             }

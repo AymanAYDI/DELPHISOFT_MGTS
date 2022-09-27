@@ -1,7 +1,7 @@
-page 50028 "Audit Social"
+page 50028 "DEL Audit Social"
 {
     PageType = ListPlus;
-    SourceTable = Table50018;
+    SourceTable = "DEL Audit social";
 
     layout
     {
@@ -9,18 +9,15 @@ page 50028 "Audit Social"
         {
             repeater(Group)
             {
-                field("No."; "No.")
+                field("No."; Rec."No.")
                 {
                 }
-                field(Axe; Axe)
+                field(Axe; Rec.Axe)
                 {
                 }
             }
         }
     }
 
-    actions
-    {
-    }
 }
 

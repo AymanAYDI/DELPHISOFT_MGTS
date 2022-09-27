@@ -1,7 +1,7 @@
-page 50003 "Error Import"
+page 50003 "DEL Error Import"
 {
     PageType = List;
-    SourceTable = Table50062;
+    SourceTable = "DEL Error Import vente";
 
     layout
     {
@@ -9,7 +9,7 @@ page 50003 "Error Import"
         {
             repeater(Group)
             {
-                field(Error; Error)
+                field("Error"; Rec.Error)
                 {
                 }
             }
