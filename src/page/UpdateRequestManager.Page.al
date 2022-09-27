@@ -1,61 +1,48 @@
-page 50048 "Update Request Manager"
+page 50048 "DEL Update Request Manager"
 {
-    // +-------------------------------------------------------------------------------+
-    // | Logico SA - Logiciels & Conseils                                              |
-    // | Stand: 06.04.09                                                               |
-    // |                                                                               |
-    // +-------------------------------------------------------------------------------+
-    // 
-    // ID     Version     Story-Card    Date       Description
-    // ---------------------------------------------------------------------------------
-    // CHG01                            06.04.09   created Form
-    // CHG02                            20.04.09   added "Import Button" on form
-    // CHG03                            04.05.09   modified and added function to the Import Button
-    // CHG04                            26.09.11   adapted deal update function with "updatePlanned" parameter
-    // T-00759                          13.01.16   Modify PageActions
 
     InsertAllowed = false;
     ModifyAllowed = true;
     PageType = List;
-    SourceTable = Table50039;
+    SourceTable = "DEL Update Request Manager";
 
     layout
     {
         area(content)
         {
-            repeater()
+            repeater(Controle)
             {
-                field(ID; ID)
+                field(ID; Rec.ID)
                 {
                 }
-                field(Requested_By_User; Requested_By_User)
+                field(Requested_By_User; Rec.Requested_By_User)
                 {
                 }
-                field(Request_For_Deal_ID; Request_For_Deal_ID)
+                field(Request_For_Deal_ID; Rec.Request_For_Deal_ID)
                 {
                     Caption = 'Affaire';
                 }
-                field(Requested_By_Type; Requested_By_Type)
+                field(Requested_By_Type; Rec.Requested_By_Type)
                 {
                     Caption = 'Type';
                 }
-                field("Requested_By_Type No."; "Requested_By_Type No.")
+                field("Requested_By_Type No."; Rec."Requested_By_Type No.")
                 {
                     Caption = 'No.';
                 }
-                field(Requested_At; Requested_At)
+                field(Requested_At; Rec.Requested_At)
                 {
                     Caption = 'Date';
                 }
-                field(Request_Status; Request_Status)
+                field(Request_Status; Rec.Request_Status)
                 {
                     Caption = 'Statut';
                 }
-                field("To be ignored"; "To be ignored")
+                field("To be ignored"; Rec."To be ignored")
                 {
                     Caption = 'Ignorer';
                 }
-                field(Description; Description)
+                field(Description; Rec.Description)
                 {
                 }
             }
@@ -79,7 +66,7 @@ page 50048 "Update Request Manager"
 
                     trigger OnAction()
                     begin
-                        DealItemCompleter_Cu.CompleteDeal_FNC(Request_For_Deal_ID);
+                        // TODO  //DealItemCompleter_Cu.CompleteDeal_FNC(Rec.Request_For_Deal_ID);
 
                         MESSAGE('Done !');
                     end;
@@ -98,7 +85,7 @@ page 50048 "Update Request Manager"
 
                     trigger OnAction()
                     begin
-                        UpdateRequestManager_Cu.FNC_Import_BlankInvoices();
+                        // TODO //UpdateRequestManager_Cu.FNC_Import_BlankInvoices();
                     end;
                 }
                 action(All)
@@ -111,7 +98,7 @@ page 50048 "Update Request Manager"
 
                     trigger OnAction()
                     begin
-                        UpdateRequestManager_Cu.FNC_Import_All();
+                        // TODO // UpdateRequestManager_Cu.FNC_Import_All();
                     end;
                 }
             }
@@ -129,7 +116,7 @@ page 50048 "Update Request Manager"
 
                     trigger OnAction()
                     begin
-                        UpdateRequestManager_Cu.FNC_Process_Requests(Rec, FALSE, FALSE, TRUE);
+                        // TODO // UpdateRequestManager_Cu.FNC_Process_Requests(Rec, FALSE, FALSE, TRUE);
                     end;
                 }
                 action("Mise à jour (y compris le prévu)")
@@ -143,25 +130,26 @@ page 50048 "Update Request Manager"
 
                     trigger OnAction()
                     begin
-                        UpdateRequestManager_Cu.FNC_Process_Requests(Rec, FALSE, TRUE, TRUE);
+                        // TODO //  UpdateRequestManager_Cu.FNC_Process_Requests(Rec, FALSE, TRUE, TRUE);
                     end;
                 }
-                action(Update)
+                action("Update")
                 {
                     Caption = 'Update';
                     Image = Approve;
                     Promoted = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
-                    RunObject = Report 50003;
+                    // RunObject = Report 50003;
                 }
             }
         }
     }
 
     var
-        UpdateRequestManager_Cu: Codeunit "50032";
-        DealItemCompleter_Cu: Codeunit "50038";
+        // TODO 
+        // UpdateRequestManager_Cu: Codeunit 50032;
+        //DealItemCompleter_Cu: Codeunit "50038";
         Text19018791: Label 'U P D A T E   R E Q U E S T   M A N A G E R';
 }
 

@@ -1,47 +1,47 @@
-page 50040 "Deal Ship. Sele."
+page 50040 "DEL Deal Ship. Sele."
 {
     Caption = 'Shipment list';
     Editable = false;
     PageType = List;
-    SourceTable = Table50030;
+    SourceTable = "DEL Deal Shipment";
 
     layout
     {
         area(content)
         {
-            repeater()
+            repeater(Control1)
             {
                 Editable = false;
-                field(Deal_ID; Deal_ID)
+                field(Deal_ID; Rec.Deal_ID)
                 {
                     Caption = 'Deal ID';
                 }
-                field(ID; ID)
+                field(ID; Rec.ID)
                 {
                     Caption = 'Shipment ID';
                 }
-                field("BR No."; "BR No.")
+                field("BR No."; Rec."BR No.")
                 {
                 }
-                field(Fournisseur; Fournisseur)
+                field(Fournisseur; Rec.Fournisseur)
                 {
                 }
-                field(Date; Date)
+                field("Date"; Rec.Date)
                 {
                 }
-                field(Status; Status)
+                field(Status; Rec.Status)
                 {
                 }
-                field(PI; PI)
+                field(PI; Rec.PI)
                 {
                 }
-                field("A facturer"; "A facturer")
+                field("A facturer"; Rec."A facturer")
                 {
                 }
-                field("Depart shipment"; "Depart shipment")
+                field("Depart shipment"; Rec."Depart shipment")
                 {
                 }
-                field("Arrival ship"; "Arrival ship")
+                field("Arrival ship"; Rec."Arrival ship")
                 {
                 }
             }
@@ -60,12 +60,12 @@ page 50040 "Deal Ship. Sele."
     var
         Deal_Cu: Codeunit "50020";
 
-    [Scope('Internal')]
+
     procedure FNC_InitData()
     var
-        DealShip_Re_Loc: Record "50030";
-        Deal_Re_Loc: Record "50020";
-        Element_Re_Loc: Record "50021";
+        DealShip_Re_Loc: Record "DEL Deal Shipment";
+        Deal_Re_Loc: Record "DEL Deal";
+        Element_Re_Loc: Record "DEL Element";
     begin
         //DealShip_Re_Loc.LOCKTABLE;
         /*

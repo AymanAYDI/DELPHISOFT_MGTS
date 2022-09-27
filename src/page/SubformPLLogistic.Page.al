@@ -1,32 +1,32 @@
-page 50045 "Subform P&L Logistic"
+page 50045 "DEL Subform P&L Logistic"
 {
     PageType = ListPart;
-    SourceTable = Table50036;
+    SourceTable = "DEL P&L Logistic";
 
     layout
     {
         area(content)
         {
-            repeater()
+            repeater(Control1)
             {
-                field("Planned Element Type No."; "Planned Element Type No.")
+                field("Planned Element Type No."; Rec."Planned Element Type No.")
                 {
                     Caption = 'Code de frais planifié';
                 }
-                field("Planned Amount"; "Planned Amount")
+                field("Planned Amount"; Rec."Planned Amount")
                 {
                     Caption = 'Montant planifié';
                 }
-                field("Real Element Type No."; "Real Element Type No.")
+                field("Real Element Type No."; Rec."Real Element Type No.")
                 {
                     Caption = 'Montant réalisé';
                     Visible = false;
                 }
-                field("Real Amount"; "Real Amount")
+                field("Real Amount"; Rec."Real Amount")
                 {
                     Caption = 'Montant réalisé';
                 }
-                field(Delta; Delta)
+                field(Delta; Rec.Delta)
                 {
                 }
             }
@@ -65,25 +65,25 @@ page 50045 "Subform P&L Logistic"
     end;
 
     var
-        PLLogistic_Re_Temp: Record "50036" temporary;
+        PLLogistic_Re_Temp: Record "DEL P&L Logistic" temporary;
 
-    [Scope('Internal')]
+
     procedure ModifyRec()
     begin
         PLLogistic_Re_Temp := Rec;
         PLLogistic_Re_Temp.MODIFY;
     end;
 
-    [Scope('Internal')]
-    procedure SetTempRecord(var rRecIn: Record "50036" temporary)
+
+    procedure SetTempRecord(var rRecIn: Record "DEL P&L Logistic" temporary)
     begin
-        PLLogistic_Re_Temp.DELETEALL;
-        IF rRecIn.FINDFIRST THEN
+        PLLogistic_Re_Temp.DELETEALL();
+        IF rRecIn.FINDFIRST() THEN
             REPEAT
                 PLLogistic_Re_Temp.COPY(rRecIn);
-                IF PLLogistic_Re_Temp.INSERT THEN;
-            UNTIL rRecIn.NEXT = 0;
-        CurrPage.UPDATE;
+                IF PLLogistic_Re_Temp.INSERT() THEN;
+            UNTIL rRecIn.NEXT() = 0;
+        CurrPage.UPDATE();
     end;
 }
 

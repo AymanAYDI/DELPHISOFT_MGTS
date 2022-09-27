@@ -1,18 +1,8 @@
-page 50046 "Quality forms"
+page 50046 "DEL Quality forms"
 {
-    // +---------------------------------------------------------------+
-    // | Logico SA                                                     |
-    // | Status:                                                       |
-    // | Customer/Project:                                             |
-    // +---------------------------------------------------------------+
-    // Requirement UserID   Date       Where   Description
-    // -----------------------------------------------------------------
-    // T-00716      THM     27.08.15           Create Object
-    // T-00757      THM     07.01.16           add and modify Field
-
     Caption = 'Quality forms';
     PageType = ListPart;
-    SourceTable = Table50056;
+    SourceTable = "DEL Item Quality forms";
 
     layout
     {
@@ -20,21 +10,21 @@ page 50046 "Quality forms"
         {
             repeater(Group)
             {
-                field("Item No."; "Item No.")
+                field("Item No."; Rec."Item No.")
                 {
                     Editable = false;
                     Visible = false;
                 }
-                field("Type / Nature Enregistrement"; "Type / Nature Enregistrement")
+                field("Type / Nature Enregistrement"; Rec."Type / Nature Enregistrement")
                 {
                 }
-                field(Description; Description)
+                field(Description; Rec.Description)
                 {
                 }
-                field("Description Supplementaire"; "Description Supplementaire")
+                field("Description Supplementaire"; Rec."Description Supplementaire")
                 {
                 }
-                field("Date of creation"; "Date of creation")
+                field("Date of creation"; Rec."Date of creation")
                 {
                 }
             }

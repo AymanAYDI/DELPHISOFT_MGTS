@@ -1,21 +1,21 @@
-page 50042 "Deal Shipment connection"
+page 50042 "DEL Deal Shipment connection"
 {
     PageType = List;
-    SourceTable = Table50032;
+    SourceTable = "DEL Deal Shipment Connection";
 
     layout
     {
         area(content)
         {
-            repeater()
+            repeater(Controle1)
             {
-                field(Deal_ID; Deal_ID)
+                field(Deal_ID; Rec.Deal_ID)
                 {
                 }
-                field(Shipment_ID; Shipment_ID)
+                field(Shipment_ID; Rec.Shipment_ID)
                 {
                 }
-                field(Element_ID; Element_ID)
+                field(Element_ID; Rec.Element_ID)
                 {
                 }
             }

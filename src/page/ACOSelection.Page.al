@@ -1,18 +1,18 @@
-page 50036 "ACO Selection"
+page 50036 "DEL ACO Selection"
 {
     PageType = List;
-    SourceTable = Table38;
+    SourceTable = "Purchase Header";
 
     layout
     {
         area(content)
         {
-            repeater()
+            repeater(Control1)
             {
-                field("No."; "No.")
+                field("No."; Rec."No.")
                 {
                 }
-                field("Buy-from Vendor Name"; "Buy-from Vendor Name")
+                field("Buy-from Vendor Name"; Rec."Buy-from Vendor Name")
                 {
                 }
             }
@@ -23,10 +23,10 @@ page 50036 "ACO Selection"
     {
     }
 
-    [Scope('Internal')]
+
     procedure FNC_Get_ACO_No(): Code[20]
     begin
-        EXIT("No.")
+        EXIT(Rec."No.")
     end;
 }
 

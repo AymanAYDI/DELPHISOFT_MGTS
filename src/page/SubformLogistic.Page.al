@@ -1,39 +1,39 @@
-page 50037 "Subform Logistic"
+page 50037 "DEL Subform Logistic"
 {
     Editable = false;
     PageType = ListPart;
-    SourceTable = Table50030;
+    SourceTable = "DEL Deal Shipment";
 
     layout
     {
         area(content)
         {
-            repeater()
+            repeater(Control1)
             {
-                field(ID; ID)
+                field(ID; Rec.ID)
                 {
                 }
-                field(Deal_ID; Deal_ID)
+                field(Deal_ID; Rec.Deal_ID)
                 {
                     Visible = false;
                 }
-                field(Date; Date)
+                field("Date"; Rec.Date)
                 {
                 }
-                field("BR No."; "BR No.")
+                field("BR No."; Rec."BR No.")
                 {
                     Editable = false;
                 }
-                field(PI; PI)
+                field(PI; Rec.PI)
                 {
                 }
-                field("A facturer"; "A facturer")
+                field("A facturer"; Rec."A facturer")
                 {
                 }
-                field("Depart shipment"; "Depart shipment")
+                field("Depart shipment"; Rec."Depart shipment")
                 {
                 }
-                field("Arrival ship"; "Arrival ship")
+                field("Arrival ship"; Rec."Arrival ship")
                 {
                     Editable = false;
                 }
@@ -50,11 +50,11 @@ page 50037 "Subform Logistic"
                 Caption = 'Create';
                 Promoted = true;
                 PromotedCategory = Process;
-
-                trigger OnAction()
-                begin
-                    DealShipment_Cu.FNC_Insert(Deal_ID_Co, 0D, '');
-                end;
+                //TODO //   
+                // trigger OnAction()
+                // begin
+                //    DealShipment_Cu.FNC_Insert(Deal_ID_Co, 0D, '');
+                // end;
             }
             action(Card)
             {
@@ -73,61 +73,64 @@ page 50037 "Subform Logistic"
 
     trigger OnInsertRecord(BelowxRec: Boolean): Boolean
     var
-        deal_Re_Loc: Record "50020";
+        deal_Re_Loc: Record "DEL Deal";
     begin
-        VALIDATE(ID, DealShipment_Cu.FNC_GetNextShipmentNo(Deal_ID_Co));
-        VALIDATE(Deal_ID, Deal_ID_Co);
-        VALIDATE(Date, TODAY);
+        //TODO
+        //  VALIDATE(ID, DealShipment_Cu.FNC_GetNextShipmentNo(Deal_ID_Co));
+        Rec.VALIDATE(Deal_ID, Deal_ID_Co);
+        Rec.VALIDATE(Date, TODAY);
     end;
 
     var
         Deal_ID_Co: Code[20];
-        AlertMgt: Codeunit "50028";
-        DealShipment_Cu: Codeunit "50029";
 
-    [Scope('Internal')]
+    //Todo codeunit 
+    // AlertMgt: Codeunit 50028;
+    // DealShipment_Cu: Codeunit 50029;
+
+
     procedure FNC_Set_Deal_ID(Deal_ID_Co_Par: Code[20])
     begin
         Deal_ID_Co := Deal_ID_Co_Par;
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_OpenLogisticCard()
     var
-        Logistic_Re_Loc: Record "50034";
+        Logistic_Re_Loc: Record "DEL Logistic";
     begin
-        Logistic_Re_Loc.SETRANGE(ID, ID);
-        Logistic_Re_Loc.SETRANGE(Deal_ID, Deal_ID);
+        Logistic_Re_Loc.SETRANGE(ID, Rec.ID);
+        Logistic_Re_Loc.SETRANGE(Deal_ID, Rec.Deal_ID);
         //Logistic_Re_Loc.SETRANGE("BR No.","BR No.");
 
         IF Logistic_Re_Loc.ISEMPTY THEN BEGIN
             Logistic_Re_Loc.INIT();
-            Logistic_Re_Loc.ID := ID;
-            Logistic_Re_Loc.Deal_ID := Deal_ID;
-            Logistic_Re_Loc."BR No." := "BR No.";
+            Logistic_Re_Loc.ID := Rec.ID;
+            Logistic_Re_Loc.Deal_ID := Rec.Deal_ID;
+            Logistic_Re_Loc."BR No." := Rec."BR No.";
             Logistic_Re_Loc.FNC_GetInfo(Logistic_Re_Loc);
 
         END;
-        Logistic_Re_Loc.SETRANGE(ID, ID);
-        Logistic_Re_Loc.SETRANGE(Deal_ID, Deal_ID);
+        Logistic_Re_Loc.SETRANGE(ID, Rec.ID);
+        Logistic_Re_Loc.SETRANGE(Deal_ID, Rec.Deal_ID);
         //Logistic_Re_Loc.SETrange("BR No.","BR No.");
-        Logistic_Re_Loc.FINDFIRST;
+        Logistic_Re_Loc.FINDFIRST();
 
-        IF "BR No." <> '' THEN BEGIN
-            Logistic_Re_Loc."BR No." := "BR No.";
+        IF Rec."BR No." <> '' THEN BEGIN
+            Logistic_Re_Loc."BR No." := Rec."BR No.";
             Logistic_Re_Loc.FNC_PackEstim(Logistic_Re_Loc);
         END;
         //test ou récup les valeures par défault !
-        Logistic_Re_Loc.FNC_DateValidate;
+        Logistic_Re_Loc.FNC_DateValidate();
         COMMIT();
         Logistic_Re_Loc.RESET();
         Logistic_Re_Loc.FILTERGROUP(6);
-        Logistic_Re_Loc.SETRANGE(ID, ID);
-        Logistic_Re_Loc.SETRANGE(Deal_ID, Deal_ID);
-        Logistic_Re_Loc.SETRANGE("BR No.", "BR No.");
+        Logistic_Re_Loc.SETRANGE(ID, Rec.ID);
+        Logistic_Re_Loc.SETRANGE(Deal_ID, Rec.Deal_ID);
+        Logistic_Re_Loc.SETRANGE("BR No.", Rec."BR No.");
         Logistic_Re_Loc.FILTERGROUP(0);
 
-        IF PAGE.RUNMODAL(50044, Logistic_Re_Loc) = ACTION::LookupOK THEN;
+        IF PAGE.RUNMODAL(Page::Logistic, Logistic_Re_Loc) = ACTION::LookupOK THEN;
     end;
 }
 

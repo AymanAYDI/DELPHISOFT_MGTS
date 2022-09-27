@@ -1,22 +1,11 @@
-page 50015 "Correctif Facture enregistée"
+page 50015 "DEL Corr. Facture enregistée"
 {
-    // <changelog>
-    //   <add id="dach0001"
-    //        dev="mnommens"
-    //        date="2004-08-01"
-    //        area="ENHARCHDOC"
-    //        releaseversion="DACH4.00"
-    //        request="DACH-START-40">
-    //        Enhanced Arch. Doc Mgmt.
-    //   </add>
-    // </changelog>
-    // NTO    23.12.05/LOCO/WIC- add field "Repr. fiscal" for use in doc.layout
 
     Caption = 'Posted Sales Invoice';
     InsertAllowed = false;
     PageType = Card;
     RefreshOnActivate = true;
-    SourceTable = Table112;
+    SourceTable = "Sales Invoice Header";
 
     layout
     {
@@ -86,10 +75,11 @@ page 50015 "Correctif Facture enregistée"
                 {
                     Editable = false;
                 }
-                field("Fiscal Repr."; "Fiscal Repr.")
-                {
-                    Editable = false;
-                }
+                //TODO
+                // field("Fiscal Repr."; "Fiscal Repr.")
+                // {
+                //     Editable = false;
+                // }
                 field("No. Printed"; "No. Printed")
                 {
                     Editable = false;
@@ -97,7 +87,7 @@ page 50015 "Correctif Facture enregistée"
             }
             part(SalesInvLines; 50014)
             {
-                SubPageLink = Document No.=FIELD(No.);
+                SubPageLink = "Document No." = FIELD("No.");
             }
             group(Invoicing)
             {
@@ -243,8 +233,8 @@ page 50015 "Correctif Facture enregistée"
     }
 
     var
-        SalesInvHeader: Record "112";
+        SalesInvHeader: Record "Sales Invoice Header";
         Text19027897: Label 'N''oubliez pas de recalculer l''affaire une fois les valeurs modifiées';
-        ChangeExchangeRate: Page "511";
+        ChangeExchangeRate: Page 511;
 }
 

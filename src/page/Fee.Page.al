@@ -9,7 +9,11 @@ page 50024 "DEL Fee"
     {
         area(content)
         {
+<<<<<<< HEAD
             repeater(Control1)
+=======
+            repeater(Controle1)
+>>>>>>> 8d113b0bda394e3303b103dd3cc7b666f630f0d6
             {
                 field(ID; Rec.ID)
                 {
@@ -52,10 +56,18 @@ page 50024 "DEL Fee"
                     trigger OnValidate()
                     var
                     begin
+<<<<<<< HEAD
                         IF Rec.Field = Rec.Field::Douane THEN
                             FormCurrencyEnable := FALSE
                         ELSE
                             FormCurrencyEnable := TRUE;
+=======
+                        IF Field = Field::Douane THEN
+                            FormCurrencyEnable := FALSE
+                        ELSE
+                            FormCurrencyEnable := TRUE;
+
+>>>>>>> 8d113b0bda394e3303b103dd3cc7b666f630f0d6
                     end;
                 }
                 field(FormFactor; Rec.Factor)
@@ -90,8 +102,13 @@ page 50024 "DEL Fee"
                 Caption = 'Factor';
                 Promoted = true;
                 PromotedCategory = Process;
+<<<<<<< HEAD
                 RunObject = Page "DEL Fee Factor";
                 // RunPageLink = Fee_ID = FIELD(ID);
+=======
+                RunObject = Page 50049;
+                //TODO // RunPageLink = Fee_ID = FIELD(ID);
+>>>>>>> 8d113b0bda394e3303b103dd3cc7b666f630f0d6
             }
         }
     }

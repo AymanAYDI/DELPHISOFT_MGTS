@@ -1,7 +1,5 @@
-page 50020 Deal
+page 50020 "DEL Deal"
 {
-    // THM       14,09,17      add "Vendor No."
-
     Caption = 'Shipment/Deal list';
     CardPageID = "Deal Mainboard";
     DeleteAllowed = false;
@@ -9,39 +7,39 @@ page 50020 Deal
     InsertAllowed = false;
     ModifyAllowed = false;
     PageType = List;
-    SourceTable = Table50020;
-    SourceTableView = SORTING (ID)
+    SourceTable = "DEL Deal";
+    SourceTableView = SORTING(ID)
                       ORDER(Descending);
 
     layout
     {
         area(content)
         {
-            repeater()
+            repeater(Control1)
             {
-                field(ID; ID)
+                field(ID; Rec.ID)
                 {
                 }
-                field(Status; Status)
+                field(Status; Rec.Status)
                 {
                 }
-                field(Date; Date)
+                field("Date"; Rec.Date)
                 {
                 }
-                field("Purchaser Code"; "Purchaser Code")
+                field("Purchaser Code"; Rec."Purchaser Code")
                 {
                 }
-                field("Last Update"; "Last Update")
+                field("Last Update"; Rec."Last Update")
                 {
                     Visible = false;
                 }
-                field("ACO Document Date"; "ACO Document Date")
+                field("ACO Document Date"; Rec."ACO Document Date")
                 {
                 }
-                field("Bill-to Customer No."; "Bill-to Customer No.")
+                field("Bill-to Customer No."; Rec."Bill-to Customer No.")
                 {
                 }
-                field("Vendor No."; "Vendor No.")
+                field("Vendor No."; Rec."Vendor No.")
                 {
                 }
                 field(VendorName_Te; VendorName_Te)
@@ -59,15 +57,15 @@ page 50020 Deal
 
     trigger OnAfterGetRecord()
     begin
-        CALCFIELDS("Vendor No.");
-        IF vendor_Re_Loc.GET("Vendor No.") THEN
+        Rec.CALCFIELDS("Vendor No.");
+        IF vendor_Re_Loc.GET(Rec."Vendor No.") THEN
             VendorName_Te := vendor_Re_Loc.Name
         ELSE
             VendorName_Te := '';
     end;
 
     var
-        vendor_Re_Loc: Record "23";
+        vendor_Re_Loc: Record Vendor;
         VendorName_Te: Text;
 }
 

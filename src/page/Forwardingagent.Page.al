@@ -1,16 +1,14 @@
-page 50013 "Forwarding agent"
+page 50013 "DEL Forwarding agent"
 {
-    // EDI       22.05.13/LOCO/ChC- Page Created
-
     Caption = 'Forwarding agent';
     PageType = List;
-    SourceTable = Table50009;
+    SourceTable = "DEL Forwarding agent 2";
 
     layout
     {
         area(content)
         {
-            repeater()
+            repeater(Control1)
             {
                 field("Forwarding Agent Code"; "Forwarding Agent Code")
                 {

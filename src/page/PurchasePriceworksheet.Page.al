@@ -1,49 +1,49 @@
-page 50047 "Purchase Price worksheet"
+page 50047 "DEL Purchase Price worksheet"
 {
     // NGTS/LOCO/GRC 13.03.09 create form
 
     Caption = 'Purchase Price worksheet';
     PageType = List;
-    SourceTable = Table50038;
+    SourceTable = "DEL Purchase Price Worksheet";
 
     layout
     {
         area(content)
         {
-            repeater()
+            repeater(Controle1)
             {
-                field("Item No."; "Item No.")
+                field("Item No."; Rec."Item No.")
                 {
                 }
-                field("Vendor No."; "Vendor No.")
+                field("Vendor No."; Rec."Vendor No.")
                 {
                 }
-                field("Currency Code"; "Currency Code")
+                field("Currency Code"; Rec."Currency Code")
                 {
                 }
-                field("Starting Date"; "Starting Date")
+                field("Starting Date"; Rec."Starting Date")
                 {
                 }
-                field("Direct Unit Cost"; "Direct Unit Cost")
+                field("Direct Unit Cost"; Rec."Direct Unit Cost")
                 {
                     Editable = false;
                 }
-                field("New Unit Price"; "New Unit Price")
+                field("New Unit Price"; Rec."New Unit Price")
                 {
                 }
-                field("Minimum Quantity"; "Minimum Quantity")
+                field("Minimum Quantity"; Rec."Minimum Quantity")
                 {
                 }
-                field("Ending Date"; "Ending Date")
+                field("Ending Date"; Rec."Ending Date")
                 {
                 }
-                field("Unit of Measure Code"; "Unit of Measure Code")
+                field("Unit of Measure Code"; Rec."Unit of Measure Code")
                 {
                 }
-                field("Variant Code"; "Variant Code")
+                field("Variant Code"; Rec."Variant Code")
                 {
                 }
-                field("Qty. optimale"; "Qty. optimale")
+                field("Qty. optimale"; Rec."Qty. optimale")
                 {
                 }
             }
@@ -54,13 +54,14 @@ page 50047 "Purchase Price worksheet"
     {
         area(navigation)
         {
-            group(Update)
+            group("Update")
             {
                 Caption = 'Update';
                 action("Export excel")
                 {
                     Caption = 'Export excel';
-                    RunObject = Report 50012;
+                    //TODO //Report
+                    // RunObject = Report 50012;
                 }
                 action("Import excel")
                 {
@@ -71,8 +72,8 @@ page 50047 "Purchase Price worksheet"
 
                         IF CONFIRM('L''import va supprimer les lignes de la feuille prix d''achat. Voulez-vous continuer ?', TRUE) THEN BEGIN
                             Rec.DELETEALL;
-
-                            ReportImport.RUN;
+                            //TODO Report
+                            // ReportImport.RUN;
                             CurrPage.UPDATE;
                         END;
                     end;
@@ -109,6 +110,7 @@ page 50047 "Purchase Price worksheet"
     }
 
     var
-        ReportImport: Report "50013";
+    //TODO // Report    
+    // ReportImport: Report "50013";
 }
 
