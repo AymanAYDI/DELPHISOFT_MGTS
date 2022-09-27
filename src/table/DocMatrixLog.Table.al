@@ -154,7 +154,7 @@ table 50068 "DEL DocMatrix Log"
 
             end;
         }
-        field(100; "Action"; Enum Action100)
+        field(100; "Action"; Enum "DEL Action100")
         {
             Caption = 'Action';
             DataClassification = ToBeClassified;

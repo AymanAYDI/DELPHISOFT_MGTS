@@ -1,132 +1,121 @@
-page 50054 "Tracking administration"
+#pragma implicitwith disable
+page 50054 "DEL Tracking administration"
 {
-    // 
-    // ------------------------------------------------------------------------------------------
-    // Sign    : Maria Hr. Hristova = mhh
-    // Version : MGTS10.016
-    // 
-    // ------------------------------------------------------------------------------------------
-    // No.    Version          Date        Sign    Description
-    // ------------------------------------------------------------------------------------------
-    // 001     MGTS10.016       23.11.20    mhh     List of changes:
-    //                                              Added new action: 1000000002 "File recovery/NAV update"
-    // ------------------------------------------------------------------------------------------
-
     Editable = true;
     InsertAllowed = false;
     PageType = Card;
-    SourceTable = Table50012;
+    SourceTable = "DEL Tracking non traité";
 
     layout
     {
         area(content)
         {
-            repeater()
+            repeater(Control1)
             {
                 Editable = false;
-                field(key;key)
+                field("key"; Rec."key")
                 {
                 }
-                field(Forwading_agent_no;Forwading_agent_no)
+                field(Forwading_agent_no; Rec.Forwading_agent_no)
                 {
                 }
-                field(Order_no;Order_no)
+                field(Order_no; Rec.Order_no)
                 {
                 }
-                field(Item_no;Item_no)
+                field(Item_no; Rec.Item_no)
                 {
                 }
-                field(Description;Description)
+                field(Description; Rec.Description)
                 {
                 }
-                field(Event_no;Event_no)
+                field(Event_no; Rec.Event_no)
                 {
                 }
-                field(Booking_no;Booking_no)
+                field(Booking_no; Rec.Booking_no)
                 {
                 }
-                field(Booking_date;Booking_date)
+                field(Booking_date; Rec.Booking_date)
                 {
                 }
-                field(Ordered_qty;Ordered_qty)
+                field(Ordered_qty; Rec.Ordered_qty)
                 {
                 }
-                field(Booked_qty;Booked_qty)
+                field(Booked_qty; Rec.Booked_qty)
                 {
                 }
-                field(Received_qty;Received_qty)
+                field(Received_qty; Rec.Received_qty)
                 {
                 }
-                field(Shipped_qty;Shipped_qty)
+                field(Shipped_qty; Rec.Shipped_qty)
                 {
                 }
-                field(Vendor_no;Vendor_no)
+                field(Vendor_no; Rec.Vendor_no)
                 {
                 }
-                field(Origine_port;Origine_port)
+                field(Origine_port; Rec.Origine_port)
                 {
                 }
-                field(Etd;Etd)
+                field(Etd; Rec.Etd)
                 {
                 }
-                field(Actual_Reception_date;Actual_Reception_date)
+                field(Actual_Reception_date; Rec.Actual_Reception_date)
                 {
                 }
-                field(Loading_date;Loading_date)
+                field(Loading_date; Rec.Loading_date)
                 {
                 }
-                field(Shipping_date;Shipping_date)
+                field(Shipping_date; Rec.Shipping_date)
                 {
                 }
-                field(Unloading_port;Unloading_port)
+                field(Unloading_port; Rec.Unloading_port)
                 {
                 }
-                field(Carrier;Carrier)
+                field(Carrier; Rec.Carrier)
                 {
                 }
-                field(Vessel;Vessel)
+                field(Vessel; Rec.Vessel)
                 {
                 }
-                field(Container_no;Container_no)
+                field(Container_no; Rec.Container_no)
                 {
                 }
-                field(Stuffing_no;Stuffing_no)
+                field(Stuffing_no; Rec.Stuffing_no)
                 {
                 }
-                field(Size;Size)
+                field(Size; Rec.Size)
                 {
                 }
-                field(Type;Type)
+                field(Type; Rec.Type)
                 {
                 }
-                field(EstimatedDischarge;EstimatedDischarge)
+                field(EstimatedDischarge; Rec.EstimatedDischarge)
                 {
                 }
-                field(Estimated_delivery_date;Estimated_delivery_date)
+                field(Estimated_delivery_date; Rec.Estimated_delivery_date)
                 {
                 }
-                field(ActualDischarge;ActualDischarge)
+                field(ActualDischarge; Rec.ActualDischarge)
                 {
                 }
-                field(ActualDeliveryDate;ActualDeliveryDate)
+                field(ActualDeliveryDate; Rec.ActualDeliveryDate)
                 {
                 }
-                field(Delivery_gate_out;Delivery_gate_out)
+                field(Delivery_gate_out; Rec.Delivery_gate_out)
                 {
                 }
-                field(Container_returned_date;Container_returned_date)
+                field(Container_returned_date; Rec.Container_returned_date)
                 {
                 }
-                field(Date_chargement_fichier;Date_chargement_fichier)
+                field(Date_chargement_fichier; Rec.Date_chargement_fichier)
                 {
                 }
-                field(Heure_chargement_fichier;Heure_chargement_fichier)
+                field(Heure_chargement_fichier; Rec.Heure_chargement_fichier)
                 {
                 }
-                field(Nom_Fichier;Nom_Fichier)
+                field(Nom_Fichier; Rec.Nom_Fichier)
                 {
                 }
-                field(Statut;Statut)
+                field(Statut; Rec.Statut)
                 {
                 }
             }
@@ -168,9 +157,9 @@ page 50054 "Tracking administration"
                     trigger OnAction()
                     begin
 
-                          //MGTS10.016; 001; mhh; entire trigger
-                          CODEUNIT.RUN(50003);
-                          CODEUNIT.RUN(50006);
+                        //MGTS10.016; 001; mhh; entire trigger
+                        CODEUNIT.RUN(50003);
+                        CODEUNIT.RUN(50006);
                     end;
                 }
             }
@@ -178,12 +167,14 @@ page 50054 "Tracking administration"
     }
 
     var
-        CuTracking: Codeunit "50006";
+    //TODO  // CuTracking: Codeunit "50006";
 
-    local procedure Control1000000071OnDeactivate()
-    begin
+    // local procedure Control1000000071OnDeactivate()
+    // begin
 
-        CuTracking.RUN();
-    end;
+    //     CuTracking.RUN();
+    // end;
 }
+
+#pragma implicitwith restore
 

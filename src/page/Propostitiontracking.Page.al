@@ -1,54 +1,55 @@
-page 50055 "Propostition tracking"
+#pragma implicitwith disable
+page 50055 "DEL Propostition tracking"
 {
     PageType = List;
-    SourceTable = Table50013;
+    SourceTable = "DEL Tracking général";
 
     layout
     {
         area(content)
         {
-            repeater()
+            repeater(Control1)
             {
-                field(Order_no; Order_no)
+                field(Order_no; Rec.Order_no)
                 {
                 }
-                field(Booking_no; Booking_no)
+                field(Booking_no; Rec.Booking_no)
                 {
                 }
-                field(Item_no; Item_no)
+                field(Item_no; Rec.Item_no)
                 {
                 }
-                field(Container_no; Container_no)
+                field(Container_no; Rec.Container_no)
                 {
                 }
-                field(Vendor_no; Vendor_no)
+                field(Vendor_no; Rec.Vendor_no)
                 {
                 }
-                field(Booking_date; Booking_date)
+                field(Booking_date; Rec.Booking_date)
                 {
                 }
-                field(Origine_port; Origine_port)
+                field(Origine_port; Rec.Origine_port)
                 {
                 }
-                field(Unloading_port; Unloading_port)
+                field(Unloading_port; Rec.Unloading_port)
                 {
                 }
-                field(Carrier; Carrier)
+                field(Carrier; Rec.Carrier)
                 {
                 }
-                field(Vessel; Vessel)
+                field(Vessel; Rec.Vessel)
                 {
                 }
-                field(Ordered_qty; Ordered_qty)
+                field(Ordered_qty; Rec.Ordered_qty)
                 {
                 }
-                field(Booked_qty; Booked_qty)
+                field(Booked_qty; Rec.Booked_qty)
                 {
                 }
-                field(Received_qty; Received_qty)
+                field(Received_qty; Rec.Received_qty)
                 {
                 }
-                field(Shipped_qty; Shipped_qty)
+                field(Shipped_qty; Rec.Shipped_qty)
                 {
                 }
             }
@@ -65,4 +66,6 @@ page 50055 "Propostition tracking"
         Rec.SETRANGE(Statut, '');
     end;
 }
+
+#pragma implicitwith restore
 

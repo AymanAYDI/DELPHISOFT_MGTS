@@ -1,20 +1,11 @@
-page 50050 "Shipment Provision Selection"
+#pragma implicitwith disable
+page 50050 "DEL Shipment Provision Select."
 {
-    // 
-    // +-------------------------------------------------------------------------------+
-    // | Logico SA - Logiciels & Conseils                                              |
-    // |                                                                               |
-    // |                                                                               |
-    // +-------------------------------------------------------------------------------+
-    // 
-    // ID     Version     Story-Card    Date       Description
-    // ---------------------------------------------------------------------------------
-    // T-00577                THM      16.08.13    Desactivé FILTERGROUP (BUG)
 
     DeleteAllowed = false;
     InsertAllowed = false;
     PageType = List;
-    SourceTable = Table50042;
+    SourceTable = "DEL Shipment Provision Select.";
 
     layout
     {
@@ -23,6 +14,7 @@ page 50050 "Shipment Provision Selection"
             group(General)
             {
                 Caption = 'General';
+
                 field(lineNumber; lineNumber)
                 {
                     Caption = 'Nombre de lignes';
@@ -43,30 +35,30 @@ page 50050 "Shipment Provision Selection"
                     Caption = 'Year';
                     Editable = false;
                 }
-                field(monthLastWorkingDay;monthLastWorkingDay)
+                field(monthLastWorkingDay; monthLastWorkingDay)
                 {
                     Caption = 'Last Working Day';
                 }
-                field(monthFirstWorkingDay;monthFirstWorkingDay)
+                field(monthFirstWorkingDay; monthFirstWorkingDay)
                 {
                     Caption = 'First Working Day';
                 }
-                field(totalPlannedAmount;totalPlannedAmount)
+                field(totalPlannedAmount; totalPlannedAmount)
                 {
                     Caption = 'Total Planned Amount';
                     Editable = false;
                 }
-                field(totalRealAmount;totalRealAmount)
+                field(totalRealAmount; totalRealAmount)
                 {
                     Caption = 'Total Real Amount';
                     Editable = false;
                 }
-                field(totalProvisionAmount;totalProvisionAmount)
+                field(totalProvisionAmount; totalProvisionAmount)
                 {
                     Caption = 'Total Provision Amount';
                     Editable = false;
                 }
-                field(totalPlannedAmount - totalRealAmount;totalPlannedAmount - totalRealAmount)
+                field("totalPlannedAmount - totalRealAmount"; totalPlannedAmount - totalRealAmount)
                 {
                     Caption = 'Total Delta';
                     Editable = false;
@@ -74,39 +66,39 @@ page 50050 "Shipment Provision Selection"
             }
             repeater("table")
             {
-                field(Period;Period)
+                field(Period; Rec.Period)
                 {
                     Editable = false;
                 }
-                field(Deal_ID;Deal_ID)
+                field(Deal_ID; Rec.Deal_ID)
                 {
                     Editable = false;
                 }
-                field(Deal_Shipment_ID;Deal_Shipment_ID)
+                field(Deal_Shipment_ID; Rec.Deal_Shipment_ID)
                 {
                     Editable = false;
                 }
-                field(Fee_ID;Fee_ID)
+                field(Fee_ID; Rec.Fee_ID)
                 {
                     Editable = false;
                 }
-                field("Fee Description";"Fee Description")
+                field("Fee Description"; Rec."Fee Description")
                 {
                     Editable = false;
                 }
-                field("Planned Amount";"Planned Amount")
+                field("Planned Amount"; Rec."Planned Amount")
                 {
                     Editable = false;
                 }
-                field("Real Amount";"Real Amount")
+                field("Real Amount"; Rec."Real Amount")
                 {
                     Editable = false;
                 }
-                field(Delta;Delta)
+                field(Delta; Rec.Delta)
                 {
                     Editable = false;
                 }
-                field("Provision Amount";"Provision Amount")
+                field("Provision Amount"; Rec."Provision Amount")
                 {
                 }
             }
@@ -130,10 +122,10 @@ page 50050 "Shipment Provision Selection"
 
                     trigger OnAction()
                     var
-                        provision_Report: Report "50014";
+                    //TODO //Report   // provision_Report: Report "50014";
                     begin
                         //dans le report, on défini et enregistre dans une table la date de la période à traiter
-                        provision_Report.RUNMODAL();
+                        //TODO //codeunit // provision_Report.RUNMODAL();
 
                         //quand on appelle cette fonction, elle va voir dans la table la période qui a été définie par le report
                         //et va l'appliquer au form
@@ -143,7 +135,7 @@ page 50050 "Shipment Provision Selection"
                         FNC_UpdateTotals();
                     end;
                 }
-                separator()
+                separator(sep2)
                 {
                 }
                 action(Comptabiliser)
@@ -159,15 +151,15 @@ page 50050 "Shipment Provision Selection"
                     var
                         selected_Int_Loc: Integer;
                     begin
-                         totalProvisionAmount:="Total Provision Amount";
+                        totalProvisionAmount := Rec."Total Provision Amount";
                         IF totalProvisionAmount > 0 THEN BEGIN
 
-                          // Sets the default to option 3
-                          //selected_Int_Loc := DIALOG.STRMENU('a,b,c', 3);
-                          Provision_Cu.FNC_TransferToJournal(monthLastWorkingDay, monthFirstWorkingDay, isCurrentPeriod_Bo)
+                            // Sets the default to option 3
+                            //selected_Int_Loc := DIALOG.STRMENU('a,b,c', 3);
+                            //TODO //codeunit //    Provision_Cu.FNC_TransferToJournal(monthLastWorkingDay, monthFirstWorkingDay, isCurrentPeriod_Bo)
 
                         END ELSE
-                          ERROR('Le montant total à provisionner est égal à zéro !');
+                            ERROR('Le montant total à provisionner est égal à zéro !');
                     end;
                 }
                 action(Imprimer)
@@ -180,7 +172,7 @@ page 50050 "Shipment Provision Selection"
 
                     trigger OnAction()
                     begin
-                        REPORT.RUNMODAL(50015);
+                        //TODO //Report    REPORT.RUNMODAL(50015);
                     end;
                 }
                 action("Exporter Excel")
@@ -189,10 +181,10 @@ page 50050 "Shipment Provision Selection"
 
                     trigger OnAction()
                     begin
-                        REPORT.RUNMODAL(50016);
+                        //TODO //Report     REPORT.RUNMODAL(50016);
                     end;
                 }
-                separator()
+                separator(Sep)
                 {
                 }
                 action("Purger > 3 mois")
@@ -201,10 +193,10 @@ page 50050 "Shipment Provision Selection"
 
                     trigger OnAction()
                     begin
-                         Provision_Cu.FNC_Prune();
+                        //TODO //codeunit //   Provision_Cu.FNC_Prune();
                     end;
                 }
-                separator()
+                separator(sep1)
                 {
                 }
                 action(Tester)
@@ -214,7 +206,7 @@ page 50050 "Shipment Provision Selection"
 
                     trigger OnAction()
                     begin
-                        Provision_Cu.FNC_RunTest();
+                        //TODO //codeunit //   Provision_Cu.FNC_RunTest();
                     end;
                 }
                 action("Supprimer toutes les provisions")
@@ -228,7 +220,7 @@ page 50050 "Shipment Provision Selection"
 
                     trigger OnAction()
                     begin
-                        Provision_Cu.FNC_DeleteProvisions()
+                        //TODO //codeunit //  Provision_Cu.FNC_DeleteProvisions()
                     end;
                 }
             }
@@ -244,7 +236,7 @@ page 50050 "Shipment Provision Selection"
 
     trigger OnAfterGetRecord()
     begin
-        Delta := "Planned Amount" - "Real Amount";
+        Rec.Delta := Rec."Planned Amount" - Rec."Real Amount";
     end;
 
     trigger OnInit()
@@ -257,16 +249,16 @@ page 50050 "Shipment Provision Selection"
         FNC_UpdateTotals();
 
         //FILTERGROUP(6);
-        SETRANGE(USER_ID, USERID);
+        Rec.SETRANGE(USER_ID, USERID);
         //FILTERGROUP(0);
 
         FNC_SetPeriod();
 
         //dernier jour de la période
-        monthLastWorkingDay := Deal_Cu.FNC_GetMonthLastWorkDay(date_Da);
+        //TODO //codeunit //  monthLastWorkingDay := Deal_Cu.FNC_GetMonthLastWorkDay(date_Da);
 
         //premier jour de la période suivante
-        monthFirstWorkingDay := Deal_Cu.FNC_GetMonthFirstWorkDay(CALCDATE('<+1M>', date_Da));
+        //TODO //codeunit //  monthFirstWorkingDay := Deal_Cu.FNC_GetMonthFirstWorkDay(CALCDATE('<+1M>', date_Da));
     end;
 
     var
@@ -274,26 +266,26 @@ page 50050 "Shipment Provision Selection"
         totalRealAmount: Decimal;
         totalProvisionAmount: Decimal;
         lineNumber: Integer;
-        flowFields_Re: Record "50044";
+        flowFields_Re: Record "DEL FlowFields";
         actual: Code[20];
         isColored: Boolean;
         color: Integer;
         stopColoring: Boolean;
-        Provision_Cu: Codeunit "50033";
+        //TODO //CODEUNIT // Provision_Cu: Codeunit "50033";
         date_Da: Date;
         monthLastWorkingDay: Date;
         monthFirstWorkingDay: Date;
-        Deal_Cu: Codeunit "50020";
+        //TODO //codeunit // Deal_Cu: Codeunit "50020";
         isCurrentPeriod_Te: Boolean;
         isCurrentPeriod_Bo: Boolean;
-        [InDataSet]
+
         "Provision AmountEmphasize": Boolean;
         Text19037295: Label 'P R O V I S I O N S';
 
-    [Scope('Internal')]
+
     procedure FNC_UpdateTotals()
     var
-        sps_Re_Loc: Record "50042";
+        sps_Re_Loc: Record 50042;
     begin
         FNC_InitVars();
 
@@ -302,15 +294,15 @@ page 50050 "Shipment Provision Selection"
         //flowFields_Re.MODIFY();
         flowFields_Re.CALCFIELDS("Provision Planned Amount", "Provision Real Amount", "Provision Amount");
 
-        totalPlannedAmount   := flowFields_Re."Provision Planned Amount";
-        totalRealAmount      := flowFields_Re."Provision Real Amount";
+        totalPlannedAmount := flowFields_Re."Provision Planned Amount";
+        totalRealAmount := flowFields_Re."Provision Real Amount";
         totalProvisionAmount := flowFields_Re."Provision Amount";
 
-        IF totalPlannedAmount   < 0 THEN totalPlannedAmount   := 0;
-        IF totalRealAmount      < 0 THEN totalRealAmount      := 0;
+        IF totalPlannedAmount < 0 THEN totalPlannedAmount := 0;
+        IF totalRealAmount < 0 THEN totalRealAmount := 0;
         IF totalProvisionAmount < 0 THEN totalProvisionAmount := 0;
 
-        lineNumber := COUNT;
+        lineNumber := Rec.COUNT;
 
         //CurrPage.totalPlannedAmountLabel.UPDATE();
         //CurrPage.totalRealAmountLabel.UPDATE();
@@ -318,25 +310,25 @@ page 50050 "Shipment Provision Selection"
         //CurrPage.lineNumber.UPDATE();
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_InitVars()
     begin
-        totalPlannedAmount   := 0;
-        totalRealAmount      := 0;
+        totalPlannedAmount := 0;
+        totalRealAmount := 0;
         totalProvisionAmount := 0;
-        lineNumber           := 0;
-        color                := 8421376;
+        lineNumber := 0;
+        color := 8421376;
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_SetPeriod()
     var
-        spsp_Re_Loc: Record "50045";
+        spsp_Re_Loc: Record "DEL Ship. Prov. Sele. Params";
     begin
         date_Da := TODAY;
         isCurrentPeriod_Te := FALSE;
         isCurrentPeriod_Bo := TRUE;
-        
+
         /*
         flowFields_Re.GET('KEY');
         
@@ -347,68 +339,37 @@ page 50050 "Shipment Provision Selection"
           flowFields_Re.MODIFY();
         END;
         */
-        
+
         IF spsp_Re_Loc.GET(USERID) THEN BEGIN
-        
-          date_Da := spsp_Re_Loc.period;
-        
-          IF spsp_Re_Loc.isCurrentPeriod THEN BEGIN
-        
-           // isCurrentPeriod_Te := 'Oui';  // THM
-            isCurrentPeriod_Te :=TRUE;
-            isCurrentPeriod_Bo := TRUE;
-            SETCURRENTKEY(Deal_ID, Deal_Shipment_ID, Fee_ID, USER_ID);
-        
-          END ELSE BEGIN
-        
-         //   isCurrentPeriod_Te := 'Non';  // THM
-            isCurrentPeriod_Te :=FALSE;
-            isCurrentPeriod_Bo := FALSE;
-            SETCURRENTKEY(Period, Deal_ID, Deal_Shipment_ID);
-        
-          END;
-        
+
+            date_Da := spsp_Re_Loc.period;
+
+            IF spsp_Re_Loc.isCurrentPeriod THEN BEGIN
+
+                // isCurrentPeriod_Te := 'Oui';  // THM
+                isCurrentPeriod_Te := TRUE;
+                isCurrentPeriod_Bo := TRUE;
+                Rec.SETCURRENTKEY(Deal_ID, Deal_Shipment_ID, Fee_ID, USER_ID);
+
+            END ELSE BEGIN
+
+                //   isCurrentPeriod_Te := 'Non';  // THM
+                isCurrentPeriod_Te := FALSE;
+                isCurrentPeriod_Bo := FALSE;
+                Rec.SETCURRENTKEY(Period, Deal_ID, Deal_Shipment_ID);
+
+            END;
+
         END;
-        
+        //TODO //codeunit //
         //dernier jour de la période
-        monthLastWorkingDay := Deal_Cu.FNC_GetMonthLastWorkDay(date_Da);
-        
-        //premier jour de la période suivante
-        monthFirstWorkingDay := Deal_Cu.FNC_GetMonthFirstWorkDay(CALCDATE('<+1M>', date_Da));
+        // monthLastWorkingDay := Deal_Cu.FNC_GetMonthLastWorkDay(date_Da);
+
+        // //premier jour de la période suivante
+        // monthFirstWorkingDay := Deal_Cu.FNC_GetMonthFirstWorkDay(CALCDATE('<+1M>', date_Da));
 
     end;
 
-    local procedure PeriodOnFormat()
-    begin
-    end;
-
-    local procedure DealIDOnFormat()
-    begin
-    end;
-
-    local procedure DealShipmentIDOnFormat()
-    begin
-    end;
-
-    local procedure FeeIDOnFormat()
-    begin
-    end;
-
-    local procedure FeeDescriptionOnFormat()
-    begin
-    end;
-
-    local procedure PlannedAmountOnFormat()
-    begin
-    end;
-
-    local procedure RealAmountOnFormat()
-    begin
-    end;
-
-    local procedure DeltaOnFormat()
-    begin
-    end;
 
     local procedure ProvisionAmountOnFormat()
     begin
@@ -416,4 +377,6 @@ page 50050 "Shipment Provision Selection"
         "Provision AmountEmphasize" := TRUE;
     end;
 }
+
+#pragma implicitwith restore
 
