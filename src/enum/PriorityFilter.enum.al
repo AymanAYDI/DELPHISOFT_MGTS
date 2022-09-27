@@ -1,4 +1,6 @@
-enum 50055 "Priority Filter "
+
+enum 50055 "DEL Priority Filter"
+
 {
     Extensible = false;
 

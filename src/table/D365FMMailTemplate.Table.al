@@ -71,41 +71,43 @@ table 50082 "DEL D365FM Mail Template"
         CstG002: Label 'Do you want to delete the template %1 %2 ?';
 
     //TODO
-    //procedure SetHtmlTemplate() TxtRRecupients: Text[1024]
-    // var
-    //     BooLTemplateExists: Boolean;
-    //     RBAutoMgt: Codeunit 419;
-    //     BLOBRef: Record 99008535;
-    // begin
-    //     CALCFIELDS("Template mail");
-
-    //     IF "Template mail".HASVALUE THEN
-    //         BooLTemplateExists := TRUE;
-
-    //     IF RBAutoMgt.BLOBImport(BLOBRef, '*.html') = '' THEN
-    //         EXIT;
-
-    //     "Template mail" := BLOBRef.Blob;
-
-    //     IF BooLTemplateExists THEN
-    //         IF NOT CONFIRM(CstG001, FALSE, "Parameter String", "Language Code") THEN
-    //             ERROR('');
-
-    //     MODIFY;
-    // end;
+    procedure SetHtmlTemplate() TxtRRecupients: Text[1024]
+    var
+        RBAutoMgt: Codeunit "File Management";
+        BLOBRef: Codeunit "Temp Blob";
+        BooLTemplateExists: Boolean;
 
 
-    // procedure ExportHtmlTemplate()
-    // var
-    //     RBAutoMgt: Codeunit "419";
-    //     BLOBRef: Record "99008535";
-    // begin
-    //     CALCFIELDS("Template mail");
-    //     IF "Template mail".HASVALUE THEN BEGIN
-    //         BLOBRef.Blob := "Template mail";
-    //         RBAutoMgt.BLOBExport(BLOBRef, '*.html', TRUE);
-    //     END;
-    // end;
+    begin
+        CALCFIELDS("Template mail");
+
+        IF "Template mail".HASVALUE THEN
+            BooLTemplateExists := TRUE;
+
+        IF RBAutoMgt.BLOBImport(BLOBRef, '*.html') = '' THEN
+            EXIT;
+
+        //TODO"Template mail" := BLOBRef.Blob;
+
+        IF BooLTemplateExists THEN
+            IF NOT CONFIRM(CstG001, FALSE, "Parameter String", "Language Code") THEN
+                ERROR('');
+
+        MODIFY();
+    end;
+
+
+    procedure ExportHtmlTemplate()
+    var
+        RBAutoMgt: Codeunit "File Management";
+        BLOBRef: Codeunit "Temp Blob";
+    begin
+        CALCFIELDS("Template mail");
+        IF "Template mail".HASVALUE THEN BEGIN
+            //TODO BLOBRef.Blob := "Template mail";
+            RBAutoMgt.BLOBExport(BLOBRef, '*.html', TRUE);
+        END;
+    end;
 
 
     procedure DeleteHtmlTemplate()
