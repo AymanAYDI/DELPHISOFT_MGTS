@@ -1,18 +1,10 @@
-page 50067 "Contact Notation Card"
+page 50067 "DEL Contact Notation Card"
 {
-    // NTO    02.08.05/LOCO/JMO- Div. modifications
-    // +------------------------------------------------------------------------------------------+
-    // | Logico SA                                                                                |
-    // | Status:                                                                                  |
-    // | Customer/Project:                                                                        |
-    // +------------------------------------------------------------------------------------------+
-    // Requirement  UserID   Date       Where             Description
-    // -------------------------------------------------------------------------------------------+
-    // T-00705      THM     19.06.15    PageAction        Modify CaptionML
+
 
     Caption = 'Contact Card';
     PageType = Card;
-    SourceTable = Table5050;
+    SourceTable = Contact;
 
     layout
     {
@@ -152,41 +144,41 @@ page 50067 "Contact Notation Card"
                 field("Revision Date Soc"; "Revision Date Soc")
                 {
                 }
-                part(; 50068)
+                part("Detail Social Audit Contact"; "DEL Detail Social Audit Contact")
                 {
-                    SubPageLink = Vendor/Contact No.=FIELD(No.),
-                                  Type=FILTER(Contact);
+                    SubPageLink = "Vendor/Contact No." = FIELD("No."),
+                                  Type = FILTER(Contact);
                 }
             }
             group("Environmental Audit")
             {
                 Caption = 'Environmental Audit';
-                field("URL Environmental";"URL Environmental")
+                field("URL Environmental"; "URL Environmental")
                 {
                 }
-                field("Note Env";"Note Env")
+                field("Note Env"; "Note Env")
                 {
                     Importance = Promoted;
                 }
-                field("Realisation Date Env";"Realisation Date Env")
+                field("Realisation Date Env"; "Realisation Date Env")
                 {
                 }
-                field("Revision Date env";"Revision Date env")
+                field("Revision Date env"; "Revision Date env")
                 {
                 }
             }
-            part(;5072)
+            part("Rlshp. Mgt. Comment Sheet"; "Rlshp. Mgt. Comment Sheet")
             {
-                SubPageLink = Table Name=FILTER(Contact),
-                              No.=FIELD(No.);
+                SubPageLink = "Table Name" = FILTER(Contact),
+                              "No." = FIELD("No.");
             }
         }
         area(factboxes)
         {
-            systempart(;Links)
+            systempart(Links; Links)
             {
             }
-            systempart(;Notes)
+            systempart(Notes; Notes)
             {
             }
         }
@@ -206,10 +198,10 @@ page 50067 "Contact Notation Card"
                     Image = ViewComments;
                     Promoted = true;
                     PromotedIsBig = true;
-                    RunObject = Page 5072;
-                                    RunPageLink = Table Name=CONST(Contact),
-                                  No.=FIELD(No.),
-                                  Sub No.=CONST(0);
+                    RunObject = Page "Rlshp. Mgt. Comment Sheet";
+                    RunPageLink = "Table Name" = CONST(Contact),
+                                  "No." = FIELD("No."),
+                                  "Sub No." = CONST(0);
                 }
                 action("Online Map")
                 {
@@ -228,10 +220,10 @@ page 50067 "Contact Notation Card"
                     Promoted = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
-                    RunObject = Page 50065;
-                                    RunPageLink = No.=FIELD(No.);
-                    RunPageView = SORTING(Table Name,No.,Comment Entry No.,Line No.)
-                                  WHERE(Table Name=CONST(Contact));
+                    RunObject = Page "DEL Document Sheet";
+                    RunPageLink = "No." = FIELD("No.");
+                    RunPageView = SORTING("Table Name", "No.", "Comment Entry No.", "Line No.")
+                                  WHERE("Table Name" = CONST(Contact));
                 }
                 group("Comp&any")
                 {
@@ -245,11 +237,11 @@ page 50067 "Contact Notation Card"
 
                         trigger OnAction()
                         var
-                            ContactBusinessRelationRec: Record "5054";
+                            ContactBusinessRelationRec: Record "Contact Business Relation";
                         begin
-                            TESTFIELD(Type,Type::Company);
-                            ContactBusinessRelationRec.SETRANGE("Contact No.","Company No.");
-                            PAGE.RUN(PAGE::"Contact Business Relations",ContactBusinessRelationRec);
+                            TESTFIELD(Type, Type::Company);
+                            ContactBusinessRelationRec.SETRANGE("Contact No.", "Company No.");
+                            PAGE.RUN(PAGE::"Contact Business Relations", ContactBusinessRelationRec);
                         end;
                     }
                     action("Industry Groups")
@@ -259,11 +251,11 @@ page 50067 "Contact Notation Card"
 
                         trigger OnAction()
                         var
-                            ContactIndustryGroupRec: Record "5058";
+                            ContactIndustryGroupRec: Record "Contact Industry Group";
                         begin
-                            TESTFIELD(Type,Type::Company);
-                            ContactIndustryGroupRec.SETRANGE("Contact No.","Company No.");
-                            PAGE.RUN(PAGE::"Contact Industry Groups",ContactIndustryGroupRec);
+                            TESTFIELD(Type, Type::Company);
+                            ContactIndustryGroupRec.SETRANGE("Contact No.", "Company No.");
+                            PAGE.RUN(PAGE::"Contact Industry Groups", ContactIndustryGroupRec);
                         end;
                     }
                     action("Web Sources")
@@ -273,11 +265,11 @@ page 50067 "Contact Notation Card"
 
                         trigger OnAction()
                         var
-                            ContactWebSourceRec: Record "5060";
+                            ContactWebSourceRec: Record "Contact Web Source";
                         begin
-                            TESTFIELD(Type,Type::Company);
-                            ContactWebSourceRec.SETRANGE("Contact No.","Company No.");
-                            PAGE.RUN(PAGE::"Contact Web Sources",ContactWebSourceRec);
+                            TESTFIELD(Type, Type::Company);
+                            ContactWebSourceRec.SETRANGE("Contact No.", "Company No.");
+                            PAGE.RUN(PAGE::"Contact Web Sources", ContactWebSourceRec);
                         end;
                     }
                 }
@@ -293,11 +285,11 @@ page 50067 "Contact Notation Card"
 
                         trigger OnAction()
                         var
-                            ContJobResp: Record "5067";
+                            ContJobResp: Record "Contact Job Responsibility";
                         begin
-                            TESTFIELD(Type,Type::Person);
-                            ContJobResp.SETRANGE("Contact No.","No.");
-                            PAGE.RUNMODAL(PAGE::"Contact Job Responsibilities",ContJobResp);
+                            TESTFIELD(Type, Type::Person);
+                            ContJobResp.SETRANGE("Contact No.", "No.");
+                            PAGE.RUNMODAL(PAGE::"Contact Job Responsibilities", ContJobResp);
                         end;
                     }
                 }
@@ -308,26 +300,26 @@ page 50067 "Contact Notation Card"
 
                     trigger OnAction()
                     var
-                        ProfileManagement: Codeunit "5059";
+                        ProfileManagement: Codeunit ProfileManagement;
                     begin
-                        ProfileManagement.ShowContactQuestionnaireCard(Rec,'',0);
+                        ProfileManagement.ShowContactQuestionnaireCard(Rec, '', 0);
                     end;
                 }
                 action("&Picture")
                 {
                     Caption = '&Picture';
                     Image = Picture;
-                    RunObject = Page 5104;
-                                    RunPageLink = No.=FIELD(No.);
+                    RunObject = Page "Contact Picture";
+                    RunPageLink = "No." = FIELD("No.");
                 }
                 action("Co&mments")
                 {
                     Caption = 'Co&mments';
                     Image = ViewComments;
-                    RunObject = Page 5072;
-                                    RunPageLink = Table Name=CONST(Contact),
-                                  No.=FIELD(No.),
-                                  Sub No.=CONST(0);
+                    RunObject = Page "Rlshp. Mgt. Comment Sheet";
+                    RunPageLink = "Table Name" = CONST(Contact),
+                                  "No." = FIELD("No."),
+                                  "Sub No." = CONST(0);
                 }
                 group("Alternati&ve Address")
                 {
@@ -337,21 +329,18 @@ page 50067 "Contact Notation Card"
                     {
                         Caption = 'Card';
                         Image = EditLines;
-                        RunObject = Page 5057;
-                                        RunPageLink = Contact No.=FIELD(No.);
+                        RunObject = Page "Contact Alt. Address List";
+                        RunPageLink = "Contact No." = FIELD("No.");
                     }
                     action("Date Ranges")
                     {
                         Caption = 'Date Ranges';
                         Image = DateRange;
-                        RunObject = Page 5059;
-                                        RunPageLink = Contact No.=FIELD(No.);
+                        RunObject = Page "Contact Alt. Addr. Date Ranges";
+                        RunPageLink = "Contact No." = FIELD("No.");
                     }
                 }
-                separator()
-                {
-                    Caption = '';
-                }
+
             }
             group("Related Information")
             {
@@ -361,8 +350,8 @@ page 50067 "Contact Notation Card"
                 {
                     Caption = 'Relate&d Contacts';
                     Image = Users;
-                    RunObject = Page 5052;
-                                    RunPageLink = Company No.=FIELD(Company No.);
+                    RunObject = Page "Contact List";
+                    RunPageLink = Company No.=FIELD(Company No.);
                 }
                 action("Segmen&ts")
                 {

@@ -1,23 +1,14 @@
-page 50060 "Correctif Purchase Invoice"
+page 50060 "DEL Correctif Purchase Invoice"
 {
-    // 
-    // +-------------------------------------------------------------------------------+
-    // | Logico SA - Logiciels & Conseils                                              |
-    // | Stand: 06.04.09                                                               |
-    // |                                                                               |
-    // +-------------------------------------------------------------------------------+
-    // 
-    // ID     Version     Story-Card    Date       Description
-    // ---------------------------------------------------------------------------------
-    // CHG01                            06.04.09   adapté l'appel de fonction de création de l'affaire
+
 
     Caption = 'Posted Purchase Invoice';
     InsertAllowed = false;
     PageType = Document;
-    Permissions = TableData 122 = rimd,
-                  TableData 123 = rimd;
+    Permissions = TableData "Purch. Inv. Header" = rimd,
+                  TableData "Purch. Inv. Line" = rimd;
     RefreshOnActivate = true;
-    SourceTable = Table122;
+    SourceTable = "Purch. Inv. Header";
 
     layout
     {
@@ -26,96 +17,117 @@ page 50060 "Correctif Purchase Invoice"
             group(General)
             {
                 Caption = 'General';
-                field("No."; "No.")
+                field("No."; Rec."No.")
                 {
                     Editable = false;
                     Importance = Promoted;
+                    Caption = 'No.';
                 }
-                field("Buy-from Vendor No."; "Buy-from Vendor No.")
+                field("Buy-from Vendor No."; Rec."Buy-from Vendor No.")
                 {
                     Editable = false;
                     Importance = Promoted;
+                    Caption = 'Buy-from Vendor No.';
                 }
-                field("Buy-from Contact No."; "Buy-from Contact No.")
+                field("Buy-from Contact No."; Rec."Buy-from Contact No.")
                 {
                     Editable = false;
+                    Caption = 'Buy-from Contact No.';
                 }
-                field("Buy-from Vendor Name"; "Buy-from Vendor Name")
+                field("Buy-from Vendor Name"; Rec."Buy-from Vendor Name")
                 {
                     Editable = false;
+                    Caption = 'Buy-from Vendor Name';
                 }
-                field("Buy-from Address"; "Buy-from Address")
+                field("Buy-from Address"; Rec."Buy-from Address")
                 {
                     Editable = false;
+                    Caption = 'Buy-from Address';
                 }
-                field("Buy-from Address 2"; "Buy-from Address 2")
+                field("Buy-from Address 2"; Rec."Buy-from Address 2")
                 {
                     Editable = false;
+                    Caption = 'Buy-from Address 2';
                 }
-                field("Buy-from Post Code"; "Buy-from Post Code")
+                field("Buy-from Post Code"; Rec."Buy-from Post Code")
                 {
                     Editable = false;
+                    Caption = 'Buy-from Post Code';
                 }
-                field("Buy-from City"; "Buy-from City")
+                field("Buy-from City"; Rec."Buy-from City")
                 {
                     Editable = false;
+                    Caption = 'Buy-from City';
                 }
-                field("Buy-from Contact"; "Buy-from Contact")
+                field("Buy-from Contact"; Rec."Buy-from Contact")
                 {
                     Editable = false;
+                    Caption = 'Buy-from Contact';
                 }
-                field("No. Printed"; "No. Printed")
+                field("No. Printed"; Rec."No. Printed")
                 {
                     Editable = false;
+                    Caption = 'No. Printed';
                 }
-                field("Posting Date"; "Posting Date")
-                {
-                    Editable = false;
-                    Importance = Promoted;
-                }
-                field("Document Date"; "Document Date")
-                {
-                    Editable = false;
-                }
-                field("Quote No."; "Quote No.")
-                {
-                }
-                field("Order No."; "Order No.")
-                {
-                    Editable = false;
-                }
-                field("Pre-Assigned No."; "Pre-Assigned No.")
-                {
-                    Editable = false;
-                }
-                field("Vendor Order No."; "Vendor Order No.")
-                {
-                    Editable = false;
-                }
-                field("Vendor Invoice No."; "Vendor Invoice No.")
+                field("Posting Date"; Rec."Posting Date")
                 {
                     Editable = false;
                     Importance = Promoted;
+                    Caption = 'Posting Date';
                 }
-                field("Order Address Code"; "Order Address Code")
+                field("Document Date"; Rec."Document Date")
                 {
                     Editable = false;
+                    Caption = 'Document Date';
                 }
-                field("Purchaser Code"; "Purchaser Code")
+                field("Quote No."; Rec."Quote No.")
+                {
+                    Caption = 'Quote No.';
+                }
+                field("Order No."; Rec."Order No.")
                 {
                     Editable = false;
+                    Caption = 'Order No.';
                 }
-                field("Responsibility Center"; "Responsibility Center")
+                field("Pre-Assigned No."; Rec."Pre-Assigned No.")
                 {
                     Editable = false;
+                    Caption = 'Pre-Assigned No.';
                 }
-                field("Shortcut Dimension 1 Code"; "Shortcut Dimension 1 Code")
+                field("Vendor Order No."; Rec."Vendor Order No.")
                 {
+                    Editable = false;
+                    Caption = 'Vendor Order No.';
+                }
+                field("Vendor Invoice No."; Rec."Vendor Invoice No.")
+                {
+                    Editable = false;
+                    Importance = Promoted;
+                    Caption = 'Vendor Invoice No.';
+                }
+                field("Order Address Code"; Rec."Order Address Code")
+                {
+                    Editable = false;
+                    Caption = 'Order Address Code';
+                }
+                field("Purchaser Code"; Rec."Purchaser Code")
+                {
+                    Editable = false;
+                    Caption = 'Purchaser Code';
+                }
+                field("Responsibility Center"; Rec."Responsibility Center")
+                {
+                    Editable = false;
+                    Caption = 'Responsibility Center';
+                }
+                field("Shortcut Dimension 1 Code"; Rec."Shortcut Dimension 1 Code")
+                {
+                    Caption = 'Shortcut Dimension 1 Code';
                 }
             }
-            part(PurchInvLines; 50061)
+            part(PurchInvLines; "DEL Correct Purch. Inv Subform")
             {
-                SubPageLink = Document No.=FIELD(No.);
+                SubPageLink = "Document No." = FIELD("No.");
             }
         }
     }
@@ -134,18 +146,18 @@ page 50060 "Correctif Purchase Invoice"
                     Image = Statistics;
                     Promoted = true;
                     PromotedCategory = Process;
-                    RunObject = Page 400;
-                    RunPageLink = No.=FIELD(No.);
+                    RunObject = Page "Purchase Invoice Statistics";
+                    RunPageLink = "No." = FIELD("No.");
                     ShortCutKey = 'F7';
                 }
                 action("Co&mments")
                 {
                     Caption = 'Co&mments';
                     Image = ViewComments;
-                    RunObject = Page 66;
-                                    RunPageLink = Document Type=CONST(Posted Invoice),
-                                  No.=FIELD(No.),
-                                  Document Line No.=CONST(0);
+                    RunObject = Page "Purch. Comment Sheet";
+                    RunPageLink = "Document Type" = CONST("Posted Invoice"),
+                                  "No." = FIELD("No."),
+                                  "Document Line No." = CONST(0);
                 }
                 action(Dimensions)
                 {
@@ -155,7 +167,7 @@ page 50060 "Correctif Purchase Invoice"
 
                     trigger OnAction()
                     begin
-                        ShowDimensions;
+                        ShowDimensions();
                     end;
                 }
             }
@@ -185,7 +197,7 @@ page 50060 "Correctif Purchase Invoice"
 
                 trigger OnAction()
                 begin
-                    Navigate;
+                    Navigate();
                 end;
             }
             action("Mise à jour affaire")
@@ -198,68 +210,48 @@ page 50060 "Correctif Purchase Invoice"
 
                 trigger OnAction()
                 var
-                    element_Re_Loc: Record "50021";
-                    Setup: Record "50000";
-                    NoSeriesMgt_Cu: Codeunit "396";
+                    element_Re_Loc: Record "DEL Element";
+                    NoSeriesMgt_Cu: Codeunit NoSeriesManagement;
+
+                    Setup: Record "DEL General Setup";
+                    urm_Re_Loc: Record "DEL Update Request Manager";
+
                     element_ID_Ret: Code[20];
                     requestID_Co_Loc: Code[20];
-                    urm_Re_Loc: Record "50039";
-                    UpdateRequestManager_Cu: Codeunit "50032";
+
+                    //TODO UpdateRequestManager_Cu: Codeunit 50032;
                     ID_num: Code[20];
                     Text: Text;
                 begin
-                    //MESSAGE ('Ok');
-                    PurchInvLine.SETRANGE(PurchInvLine."Document No.","No.");
-                    IF PurchInvLine.FINDFIRST THEN
-                    REPEAT
-                      PurchInvLine."Shortcut Dimension 1 Code":="Shortcut Dimension 1 Code";
-                      PurchInvLine.MODIFY;
-                    UNTIL PurchInvLine.NEXT=0;
-                    
-                    Text:=COPYSTR("Shortcut Dimension 1 Code",STRPOS("Shortcut Dimension 1 Code",'-'),20);
-                    Text:='AFF'+Text;
-                    //ERROR(Text);
-                    ID_num:=Text;
-                    requestID_Co_Loc := UpdateRequestManager_Cu.FNC_Add_Request(
-                      ID_num,
-                      urm_Re_Loc.Requested_By_Type::CUSTOM,
-                      USERID,
-                      CURRENTDATETIME
-                    );
-                    
+
+                    PurchInvLine.SETRANGE(PurchInvLine."Document No.", Rec."No.");
+                    IF PurchInvLine.FINDFIRST() THEN
+                        REPEAT
+                            PurchInvLine."Shortcut Dimension 1 Code" := Rec."Shortcut Dimension 1 Code";
+                            PurchInvLine.MODIFY();
+                        UNTIL PurchInvLine.NEXT() = 0;
+
+                    Text := COPYSTR(Rec."Shortcut Dimension 1 Code", STRPOS(Rec."Shortcut Dimension 1 Code", '-'), 20);
+                    Text := 'AFF' + Text;
+
+                    ID_num := Text;
+                    //TODO requestID_Co_Loc := UpdateRequestManager_Cu.FNC_Add_Request(
+                    //   ID_num,
+                    //   urm_Re_Loc.Requested_By_Type::CUSTOM,
+                    //   USERID,
+                    //   CURRENTDATETIME
+                    // );
+
                     urm_Re_Loc.GET(requestID_Co_Loc);
-                    
-                    //begin THM optimisation
-                      //UpdateRequestManager_Cu.FNC_Process_Requests(urm_Re_Loc,FALSE,FALSE,TRUE);
-                    
-                      UpdateRequestManager_Cu.FNC_Process_RequestsDeal(urm_Re_Loc,FALSE,FALSE,TRUE,requestID_Co_Loc);
-                      urm_Re_Loc.SETRANGE(urm_Re_Loc.ID,requestID_Co_Loc);
-                      IF urm_Re_Loc.FINDFIRST THEN
-                      urm_Re_Loc.DELETE;
-                    
-                    
-                    
-                    /*
-                      Setup.GET();
-                      element_ID_Ret := NoSeriesMgt_Cu.GetNextNo(Setup."Element Nos.", TODAY, TRUE);
-                      element_Re_Loc.INIT();
-                      element_Re_Loc.ID := element_ID_Ret;
-                      element_Re_Loc.VALIDATE(Deal_ID, Deal_ID_Co_Par);
-                      element_Re_Loc.VALIDATE(Instance, Instance_Op_Par);
-                      element_Re_Loc.VALIDATE(Type, Type_Op_Par);
-                      element_Re_Loc.VALIDATE("Type No.", "No._Co_Par");
-                      element_Re_Loc.VALIDATE("Subject No.", SubjectNo_Co_Par);
-                      element_Re_Loc.VALIDATE("Subject Type", SubjectType_Op_Par);
-                      element_Re_Loc.VALIDATE(Fee_ID, Fee_ID_Co_Par);
-                      element_Re_Loc.VALIDATE(Fee_Connection_ID, Fee_Connection_ID_Co_Par);
-                      element_Re_Loc.Date := Element_Date_Par;
-                      element_Re_Loc.VALIDATE("Entry No.", EntryNo_Int_Par);
-                      element_Re_Loc.VALIDATE("Bill-to Customer No.", BillToCustomerNo_Co_Par);
-                      element_Re_Loc."Add DateTime" := CURRENTDATETIME;
-                      element_Re_Loc.Period := Period_Da_Par;
-                      element_Re_Loc."Splitt Index" := SplittIndex_Int_Par;
-                      element_Re_Loc.INSERT();
-                    */
+
+
+
+                    UpdateRequestManager_Cu.FNC_Process_RequestsDeal(urm_Re_Loc, FALSE, FALSE, TRUE, requestID_Co_Loc);
+                    urm_Re_Loc.SETRANGE(urm_Re_Loc.ID, requestID_Co_Loc);
+                    IF urm_Re_Loc.FINDFIRST() THEN
+                        urm_Re_Loc.DELETE();
+
+
 
                 end;
             }
@@ -268,13 +260,13 @@ page 50060 "Correctif Purchase Invoice"
 
     trigger OnOpenPage()
     begin
-        SetSecurityFilterOnRespCenter;
+        SetSecurityFilterOnRespCenter();
     end;
 
     var
-        PurchInvHeader: Record "122";
-        ChangeExchangeRate: Page "511";
-                                Deal_Cu: Codeunit "50020";
-                                PurchInvLine: Record "123";
+        PurchInvHeader: Record "Purch. Inv. Header";
+        ChangeExchangeRate: Page "Change Exchange Rate";
+        //TODO Deal_Cu: Codeunit 50020;
+        PurchInvLine: Record "Purch. Inv. Line";
 }
 

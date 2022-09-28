@@ -1,4 +1,4 @@
-page 50068 "Detail Social Audit Contact"
+page 50068 "DEL Detail Social Audit Contact"
 {
     Caption = 'Detail Social Audit';
     PageType = ListPart;
