@@ -2,28 +2,27 @@ tableextension 50002 "DEL SalesShipmentLine" extends "Sales Shipment Line"
 {
 
     fields
-    {
-        modify("Customer Price Group")
-        {
+    { //TODO 
+        // modify("Customer Price Group")
+        // {
 
-            //Unsupported feature: Property Modification (Data type) on ""Customer Price Group"(Field 42)".
+        //     //Unsupported feature: Property Modification (Data type) on ""Customer Price Group"(Field 42)".
 
-            Description = 'MGTS0124';
-        }
+        // }
         field(50001; "DEL Qty. Init. Client"; Decimal)
         {
-            Description = 'T-00551-WEBSHOP';
+      
         }
         field(50008; "DEL Ship-to Code"; Code[10])
         {
             Caption = 'Ship-to Code';
-            Description = 'MGTS10.014';
+
             TableRelation = "Ship-to Address".Code WHERE("Customer No." = FIELD("Sell-to Customer No."));
         }
         field(50009; "DEL Ship-to Name"; Text[50])
         {
             Caption = 'Ship-to Name';
-            Description = 'MGTS10.014';
+
         }
     }
 

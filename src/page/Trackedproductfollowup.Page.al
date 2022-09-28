@@ -7,8 +7,8 @@ page 50012 "DEL Tracked product follow up"
     PageType = List;
     SourceTable = "Purchase Line";
     SourceTableView = SORTING("Document Type", "Document No.", "Line No.")
-                      WHERE("Risk Item" = CONST(true),
-                            "Photo Risk Item Taked" = CONST(false));
+                      WHERE("DEL Risk Item" = CONST(true),
+                            "DEL Photo Risk Item Taked" = CONST(false));
 
     layout
     {
@@ -16,7 +16,7 @@ page 50012 "DEL Tracked product follow up"
         {
             repeater(Group)
             {
-                field("Buy-from Vendor No."; "Buy-from Vendor No.")
+                field("Buy-from Vendor No."; Rec."Buy-from Vendor No.")
                 {
                 }
                 field(BuyfromVendorName; BuyfromVendorName)
@@ -25,40 +25,40 @@ page 50012 "DEL Tracked product follow up"
                     Editable = false;
                     ToolTip = 'Vendor name';
                 }
-                field("Document No."; "Document No.")
+                field("Document No."; Rec."Document No.")
                 {
                     Editable = false;
                 }
-                field("No."; "No.")
+                field("No."; Rec."No.")
                 {
                     Editable = false;
                 }
-                field(Description; Description)
+                field(Description; Rec.Description)
                 {
                     Editable = false;
                 }
-                field("Order Date"; "Order Date")
+                field("Order Date"; Rec."Order Date")
                 {
                     Editable = false;
                 }
-                field("Expected Receipt Date"; "Expected Receipt Date")
+                field("Expected Receipt Date"; Rec."Expected Receipt Date")
                 {
                     Caption = 'PI delivery date';
                 }
-                field(Quantity; Quantity)
+                field(Quantity; Rec.Quantity)
                 {
                     Editable = false;
                 }
-                field("Photo Risk Item Taked"; "Photo Risk Item Taked")
+                field("Photo Risk Item Taked"; Rec."DEL Photo Risk Item Taked")
                 {
                     Caption = 'Tracking Completed';
                 }
-                field("Photo Risk Item Date"; "Photo Risk Item Date")
+                field("Photo Risk Item Date"; Rec."DEL Photo Risk Item Date")
                 {
                     Caption = 'tracking completed on';
                     Editable = true;
                 }
-                field("Photo Risk Item Taked By"; "Photo Risk Item Taked By")
+                field("Photo Risk Item Taked By"; Rec."DEL Photo Risk Item Taked By")
                 {
                     Caption = 'tracking completed by';
                 }
@@ -91,10 +91,10 @@ page 50012 "DEL Tracked product follow up"
 
                 trigger OnAction()
                 var
-                    PageManagement: Codeunit 700;
-                    PurchHeader: Record 38;
+                    PurchHeader: Record "Purchase Header";
+                    PageManagement: Codeunit "Page Management";
                 begin
-                    PurchHeader.GET("Document Type", "Document No.");
+                    PurchHeader.GET(Rec."Document Type", Rec."Document No.");
                     PageManagement.PageRun(PurchHeader);
                 end;
             }
@@ -104,16 +104,16 @@ page 50012 "DEL Tracked product follow up"
     trigger OnAfterGetRecord()
     begin
         BuyfromVendorName := '';
-        IF Vendor_Rec.GET("Buy-from Vendor No.") THEN
+        IF Vendor_Rec.GET(Rec."Buy-from Vendor No.") THEN
             BuyfromVendorName := Vendor_Rec.Name;
-        PurchaseHeader_Rec.SETRANGE("No.", "Document No.");
-        IF PurchaseHeader_Rec.FINDFIRST THEN
+        PurchaseHeader_Rec.SETRANGE("No.", Rec."Document No.");
+        IF PurchaseHeader_Rec.FINDFIRST() THEN
             PurchCode := PurchaseHeader_Rec."Purchaser Code"
         ELSE
             PurchCode := '';
         //DEL.SAZ 17.09.2018
         motif := '';
-        IF Item.GET("No.") THEN
+        IF Item.GET(Rec."No.") THEN
             IF Listedesmotifs.GET(Item."Code motif de suivi") THEN
                 motif := Listedesmotifs.Motif;
     end;
@@ -122,20 +122,20 @@ page 50012 "DEL Tracked product follow up"
     begin
         //DEL.SAZ 17.09.2018
         //afficher dans la liste toutes les commandes pour lesquelles la date de reception prevue + 5 jours < date système
-        DateRecCalc := CALCDATE('<-5D>', WORKDATE);
-        SETFILTER("Expected Receipt Date", '>%1', DateRecCalc);
+        DateRecCalc := CALCDATE('<-5D>', WORKDATE());
+        Rec.SETFILTER("Expected Receipt Date", '>%1', DateRecCalc);
         //END DEL.SAZ 17.09.2018
     end;
 
     var
-        PurchHeader: Record 38;
-        BuyfromVendorName: Text;
-        Vendor_Rec: Record 23;
-        PurchaseHeader_Rec: Record 38;
+        Listedesmotifs: Record "DEL Liste des motifs";
+        Item: Record Item;
+        PurchaseHeader_Rec: Record "Purchase Header";
+        PurchHeader: Record "Purchase Header";
+        Vendor_Rec: Record Vendor;
         PurchCode: Code[10];
-        motif: Text[100];
-        Listedesmotifs: Record 50064;
-        Item: Record 27;
         DateRecCalc: Date;
+        BuyfromVendorName: Text;
+        motif: Text[100];
 }
 

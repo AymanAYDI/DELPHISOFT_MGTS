@@ -1,4 +1,4 @@
-tableextension 50026 tableextension50026 extends "Sales Header"
+tableextension 50026 "DEL SalesHeader" extends "Sales Header"
 {
     // THM       16.03.17      add field 50001,50002,50003
     // THM160317 16.03.17      OnInsert
@@ -301,351 +301,161 @@ tableextension 50026 tableextension50026 extends "Sales Header"
         //END DEL.SAZ
         */
         //end;
-        field(50000; "Fiscal Repr."; Code[10])
+        field(50000; "DEL Fiscal Repr."; Code[10])
         {
             Caption = 'Fiscal Repr.';
-            Description = 'T-00551-SPEC35';
+
             TableRelation = Contact;
         }
-        field(50001; "Create By"; Text[50])
+        field(50001; "DEL Create By"; Text[50])
         {
             Caption = 'Create By';
             Editable = false;
         }
-        field(50002; "Create Date"; Date)
+        field(50002; "DEL Create Date"; Date)
         {
             Caption = 'Create Date';
             Editable = false;
         }
-        field(50003; "Create Time"; Time)
+        field(50003; "DEL Create Time"; Time)
         {
             Caption = 'Create Time';
             Editable = false;
         }
-        field(50004; "Event Code"; Option)
+        field(50004; "DEL Event Code"; Option)
         {
             Caption = 'Event Code';
             Description = 'EDI,MGTS10.025';
             OptionCaption = 'NORM,TYRE,SPARE,SMOOVE,ISP,CANCELLED';
             OptionMembers = NORM,TYRE,SPARE,SMOOVE,ISP,CANCELLED;
         }
-        field(50005; "Estimated Delivery Date"; Date)
+        field(50005; "DEL Estimated Delivery Date"; Date)
         {
             Caption = 'Estimated delivery date';
 
             trigger OnValidate()
             var
-                SalesLine_Rec: Record "37";
+                SalesLine_Rec: Record "Sales Line";
             begin
                 SalesLine_Rec.SETRANGE(SalesLine_Rec."Document Type", "Document Type");
                 SalesLine_Rec.SETRANGE(SalesLine_Rec."Document No.", "No.");
-                IF SalesLine_Rec.FINDSET THEN BEGIN
+                IF SalesLine_Rec.FINDSET() THEN
                     REPEAT
-                        SalesLine_Rec."Estimated Delivery Date" := "Estimated Delivery Date";
-                        SalesLine_Rec.MODIFY;
-                    UNTIL SalesLine_Rec.NEXT = 0;
-                END;
+                        SalesLine_Rec."DEL Estimated Delivery Date" := "DEL Estimated Delivery Date";
+                        SalesLine_Rec.MODIFY();
+                    UNTIL SalesLine_Rec.NEXT() = 0;
+
             end;
         }
-        field(50006; "Type Order EDI"; Code[20])
+        field(50006; "DEL Type Order EDI"; Code[20])
         {
             Caption = 'Type Order EDI';
-            Description = 'MGTS10.009';
-            TableRelation = "Type Order EDI";
+
+            //TODO // TableRelation = "Type Order EDI";
         }
-        field(50007; GLN; Text[30])
+        field(50007; "DEL GLN"; Text[30])
         {
             Caption = 'Delivery GLN';
-            Description = 'MGTS10.010';
-            TableRelation = "EDI Delivery GLN Customer";
+
+            //TODO //   TableRelation = "EDI Delivery GLN Customer";
             //This property is currently not supported
             //TestTableRelation = false;
-            ValidateTableRelation = false;
+            //TODO    ValidateTableRelation = false;
         }
-        field(50008; "Type Order EDI Description"; Text[50])
+        field(50008; "DEL Type Order EDI Description"; Text[50])
         {
-            CalcFormula = Lookup ("Type Order EDI".Description WHERE (Code = FIELD (Type Order EDI)));
+            // TODO //   CalcFormula = Lookup("Type Order EDI".Description WHERE(Code = FIELD("Type Order EDI")));
             Caption = 'Type Order EDI Description';
-            Description = 'MGTS10.009';
+
             Editable = false;
             FieldClass = FlowField;
         }
-        field(50009; "Has Spec. Purch. Order"; Boolean)
+        field(50009; "DEL Has Spec. Purch. Order"; Boolean)
         {
             Caption = 'Has special purch. order';
-            Description = 'MGTS10.015';
+
             Editable = false;
         }
-        field(50010; "Export With EDI"; Boolean)
+        field(50010; "DEL Export With EDI"; Boolean)
         {
-            Description = 'MGTS10.019';
+
         }
-        field(50011; "Shipment No."; Text[50])
+        field(50011; "DEL Shipment No."; Text[50])
         {
             Caption = 'Shipment No.';
         }
-        field(50020; "To Create Purchase Order"; Boolean)
+        field(50020; "DEL To Create Purchase Order"; Boolean)
         {
             Caption = 'Commande d''achat a créer';
-            Description = 'MGTSEDI10.00.00.23';
+
         }
-        field(50021; "Purchase Order Create Date"; DateTime)
+        field(50021; "DEL Purchase Order Create Date"; DateTime)
         {
             Caption = 'Date création commande d''achat';
-            Description = 'MGTSEDI10.00.00.23';
+
             Editable = false;
         }
-        field(50022; "Status Purchase Order Create"; Option)
+        field(50022; "DEL Status Purchase Order Create"; Option)
         {
             Caption = 'Statut création commande achat';
-            Description = 'MGTSEDI10.00.00.23';
+
             OptionCaption = ' ,Création demande d''achat,Création affaire,Commande créée';
             OptionMembers = " ","Create Req. Worksheet","Create Deal",Created;
         }
-        field(50023; "Error Text Purch. Order Create"; Text[250])
+        field(50023; "DEL Error Text Purch. Order Create"; Text[250])
         {
             Caption = 'Texte erreur création commande achat';
-            Description = 'MGTSEDI10.00.00.23';
+
             Editable = false;
         }
-        field(50024; "Error Purch. Order Create"; Boolean)
+        field(50024; "DEL Error Purch. Order Create"; Boolean)
         {
             Caption = 'En erreur création commande achat';
-            Description = 'MGTSEDI10.00.00.23';
+
 
             trigger OnValidate()
             var
                 TextCst001: Label 'This change will reset the purchase order creation status. Do you want to continue?';
             begin
                 IF NOT HideValidationDialog THEN
-                    IF ("Error Purch. Order Create" = FALSE) AND ("Status Purchase Order Create" <> "Status Purchase Order Create"::Created) THEN
+                    IF ("DEL Error Purch. Order Create" = FALSE) AND ("DEL Status Purchase Order Create" <> "DEL Status Purchase Order Create"::Created) THEN
                         IF CONFIRM(TextCst001, FALSE) THEN BEGIN
-                            "Error Text Purch. Order Create" := '';
-                            "To Create Purchase Order" := TRUE;
+                            "DEL Error Text Purch. Order Create" := '';
+                            "DEL To Create Purchase Order" := TRUE;
                         END;
             end;
         }
-        field(50050; "Mention Under Total"; Text[250])
+        field(50050; "DEL Mention Under Total"; Text[250])
         {
             Caption = 'Mention Under Total';
-            Description = 'MGTS10.030';
+
         }
-        field(50051; "Amount Mention Under Total"; Text[30])
+        field(50051; "DEL Amount Mention Under Total"; Text[30])
         {
             Caption = 'Amount Mention Under Total';
-            Description = 'MGTS10.030';
+
         }
     }
 
 
-    //Unsupported feature: Code Modification on "OnInsert".
 
-    //trigger OnInsert()
-    //>>>> ORIGINAL CODE:
-    //begin
-    /*
-    InitInsert;
-    InsertMode := TRUE;
-
-    SetSellToCustomerFromFilter;
-
-    IF GetFilterContNo <> '' THEN
-      VALIDATE("Sell-to Contact No.",GetFilterContNo);
-    */
-    //end;
-    //>>>> MODIFIED CODE:
-    //begin
-    /*
-    #1..7
-    //MIG2017
-    //START THM160317
-      "Create By":=USERID;
-      "Create Date":=TODAY;
-      "Create Time":=TIME;
-    //END THM160317
-    //MIG2017
-    */
-    //end;
-
-    //Unsupported feature: Variable Insertion (Variable: SpecSalesLine) (VariableCollection) on "RecreateSalesLines(PROCEDURE 4)".
-
-
-
-    //Unsupported feature: Code Modification on "RecreateSalesLines(PROCEDURE 4)".
-
-    //procedure RecreateSalesLines();
-    //Parameters and return type have not been exported.
-    //>>>> ORIGINAL CODE:
-    //begin
-    /*
-    IF SalesLinesExist THEN BEGIN
-      IF HideValidationDialog OR NOT GUIALLOWED THEN
-        Confirmed := TRUE
-      ELSE
-        Confirmed :=
-          CONFIRM(
-            Text015,FALSE,ChangedFieldName);
-      IF Confirmed THEN BEGIN
-        SalesLine.LOCKTABLE;
-        ItemChargeAssgntSales.LOCKTABLE;
-        ReservEntry.LOCKTABLE;
-        MODIFY;
-        SalesLine.RESET;
-        SalesLine.SETRANGE("Document Type","Document Type");
-        SalesLine.SETRANGE("Document No.","No.");
-    #16..18
-          ItemChargeAssgntSales.SETRANGE("Document Type","Document Type");
-          ItemChargeAssgntSales.SETRANGE("Document No.","No.");
-          TransferItemChargeAssgntSalesToTemp(ItemChargeAssgntSales,TempItemChargeAssgntSales);
-          SalesLine.DELETEALL(TRUE);
-          SalesLine.INIT;
-          SalesLine."Line No." := 0;
-    #25..81
-          Text017,ChangedFieldName);
-    END;
-    SalesLine.BlockDynamicTracking(FALSE);
-    */
-    //end;
-    //>>>> MODIFIED CODE:
-    //begin
-    /*
-    #1..4
-
-        //MGTS10.013; 004; mhh; begin
-        IF ChangedFieldName = FIELDCAPTION("VAT Bus. Posting Group") THEN
-          Confirmed := TRUE
-        ELSE
-          //MGTS10.013; 004; mhh; end
-
-          Confirmed :=
-            CONFIRM(
-              Text015,FALSE,ChangedFieldName);
-    #8..12
-
-    #13..21
-
-          //MGTS10.013; 004; mhh; begin
-          IF ChangedFieldName = FIELDCAPTION("VAT Bus. Posting Group") THEN BEGIN
-            SpecSalesLine.RESET;
-            SpecSalesLine.SETRANGE("Document Type","Document Type");
-            SpecSalesLine.SETRANGE("Document No.","No.");
-            IF SpecSalesLine.FINDSET THEN
-              REPEAT
-                SpecSalesLine."Special Order Purch. Line No." := 0;
-                SpecSalesLine."Purch. Order Line No." := 0;
-                SpecSalesLine.MODIFY;
-              UNTIL SpecSalesLine.NEXT = 0;
-          END;
-          //MGTS10.013; 004; mhh; end
-
-    #22..84
-    */
-    //end;
-
-
-    //Unsupported feature: Code Modification on "UpdateSalesLines(PROCEDURE 15)".
-
-    //procedure UpdateSalesLines();
-    //Parameters and return type have not been exported.
-    //>>>> ORIGINAL CODE:
-    //begin
-    /*
-    IF NOT SalesLinesExist THEN
-      EXIT;
-
-    #4..14
-        IF NotRunningOnSaaS THEN
-          IF DIALOG.CONFIRM(Question,TRUE) THEN
-            CASE ChangedFieldName OF
-              FIELDCAPTION("Shipment Date"),
-              FIELDCAPTION("Shipping Agent Code"),
-              FIELDCAPTION("Shipping Agent Service Code"),
-    #21..88
-        SalesLineReserve.AssignForPlanning(SalesLine);
-        SalesLine.MODIFY(TRUE);
-      UNTIL SalesLine.NEXT = 0;
-    */
-    //end;
-    //>>>> MODIFIED CODE:
-    //begin
-    /*
-    #1..17
-
-          //MIG2017
-          // LOCO/ChC/T-00551-SPEC40 -
-          FIELDCAPTION("Campaign No.") : BEGIN
-            SalesLine.VALIDATE(SalesLine."Campaign Code","Campaign No.");
-            SalesLine.VALIDATE(SalesLine."No.");
-          END;
-          // LOCO/ChC/T-00551-SPEC40 +
-          //MIG2017 END
-
-    #18..91
-    */
-    //end;
-
-
-    //Unsupported feature: Code Modification on "CreateSalesLine(PROCEDURE 78)".
-
-    //procedure CreateSalesLine();
-    //Parameters and return type have not been exported.
-    //>>>> ORIGINAL CODE:
-    //begin
-    /*
-    SalesLine.INIT;
-    SalesLine."Line No." := SalesLine."Line No." + 10000;
-    SalesLine.VALIDATE(Type,TempSalesLine.Type);
-    #4..14
-        END;
-        SalesLine."Purchase Order No." := TempSalesLine."Purchase Order No.";
-        SalesLine."Purch. Order Line No." := TempSalesLine."Purch. Order Line No.";
-        SalesLine."Drop Shipment" := SalesLine."Purch. Order Line No." <> 0;
-      END;
-      SalesLine.VALIDATE("Shipment Date",TempSalesLine."Shipment Date");
-    END;
-    SalesLine.INSERT;
-    */
-    //end;
-    //>>>> MODIFIED CODE:
-    //begin
-    /*
-    #1..17
-
-        //MGTS10.013; 004; mhh; begin
-        SalesLine."Special Order Purchase No." := TempSalesLine."Special Order Purchase No.";
-        SalesLine."Special Order Purch. Line No." := TempSalesLine."Special Order Purch. Line No.";
-        //MGTS10.013; 004; mhh; end
-
-        //MGTS10.014; 005; mhh; begin
-        SalesLine."Ship-to Code" := TempSalesLine."Ship-to Code";
-        SalesLine."Ship-to Name" := TempSalesLine."Ship-to Name";
-        //MGTS10.014; 005; mhh; end
-
-    #18..22
-
-    //MGTS10.022; 008; mhh; begin
-    SalesLine.VALIDATE("Purchasing Code", TempSalesLine."Purchasing Code");
-    SalesLine.MODIFY;
-    //MGTS10.022; 008; mhh; end
-    */
-    //end;
 
     procedure SelectGLEntryForReverse()
     var
-        GLEntry: Record "17";
-        GLEntries: Page "20";
-        ReverseGLEntry: Record "17";
-        GLSetup: Record "98";
+        GLEntry: Record "G/L Entry";
+        GLEntries: Page "General Ledger Entries";
+        ReverseGLEntry: Record "G/L Entry";
+        GLSetup: Record "General Ledger Setup";
     begin
 
         //MGTS10.00.001; 001; mhh; entire function
-        IF NOT GLSetup.GET THEN
-            GLSetup.INIT;
+        IF NOT GLSetup.GET() THEN
+            GLSetup.INIT();
 
         GLSetup.TESTFIELD("Provision Source Code");
         GLSetup.TESTFIELD("Provision Journal Batch");
 
-        GLEntry.RESET;
+        GLEntry.RESET();
         GLEntry.SETCURRENTKEY("Document No.", "Posting Date");
         GLEntry.FILTERGROUP(2);
         GLEntry.SETRANGE("Source Code", GLSetup."Provision Source Code");
@@ -657,26 +467,26 @@ tableextension 50026 tableextension50026 extends "Sales Header"
         CLEAR(GLEntries);
         GLEntries.SETTABLEVIEW(GLEntry);
         GLEntries.LOOKUPMODE(TRUE);
-        IF GLEntries.RUNMODAL = ACTION::LookupOK THEN BEGIN
+        IF GLEntries.RUNMODAL() = ACTION::LookupOK THEN BEGIN
             GLEntries.SetGLEntry(ReverseGLEntry);
-            IF ReverseGLEntry.FINDSET THEN
+            IF ReverseGLEntry.FINDSET() THEN
                 REPEAT
                     ReverseGLEntry."Reverse With Doc. No." := "No.";
-                    ReverseGLEntry.MODIFY;
-                UNTIL ReverseGLEntry.NEXT = 0;
+                    ReverseGLEntry.MODIFY();
+                UNTIL ReverseGLEntry.NEXT() = 0;
         END;
     end;
 
     procedure ShowSelectedEntriesForReverse()
     var
-        GLEntry: Record "17";
-        GLEntriesForReverse: Page "50126";
+        GLEntry: Record "G/L Entry";
+        GLEntriesForReverse: Page "GL Entries For Reverse";
     begin
 
         //MGTS10.00.001; 001; mhh; entire function
         TESTFIELD("No.");
 
-        GLEntry.RESET;
+        GLEntry.RESET();
         GLEntry.SETCURRENTKEY("Reverse With Doc. No.");
         GLEntry.FILTERGROUP(2);
         GLEntry.SETRANGE("Reverse With Doc. No.", "No.");
@@ -685,11 +495,11 @@ tableextension 50026 tableextension50026 extends "Sales Header"
         CLEAR(GLEntriesForReverse);
         GLEntriesForReverse.SetRelatedOrder(Rec);
         GLEntriesForReverse.SETTABLEVIEW(GLEntry);
-        GLEntriesForReverse.RUN;
+        GLEntriesForReverse.RUN();
     end;
 
     var
-        CustPriceGroup: Record "6";
+        CustPriceGroup: Record "Customer Price Group";
         Text50000: Label '%1|%2';
         Text50001: Label '''''';
 }
