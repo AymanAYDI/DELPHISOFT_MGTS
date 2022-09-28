@@ -1,20 +1,9 @@
-page 50051 "Outils de Corrections"
+page 50051 "DEL Outils de Corrections"
 {
-    // 
-    // +------------------------------------------------------------------------------------------+
-    // | Logico SA                                                                                |
-    // | Status:                                                                                  |
-    // | Customer/Project:                                                                        |
-    // +------------------------------------------------------------------------------------------+
-    // Requirement  UserID   Date       Where             Description
-    // -------------------------------------------------------------------------------------------+
-    //             THM      23.09.13          ADD Page Correctif Purchase Invoice
-    // T-00664     THM      02.06.14          Add Update deal status
-    //             THM      21.04.18          add 2 pages actions
 
     Caption = 'Outils de Correction';
     PageType = Card;
-    SourceTable = Table2000000026;
+    SourceTable = Integer;
 
     layout
     {
@@ -34,7 +23,7 @@ page 50051 "Outils de Corrections"
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
-                RunObject = Report 50017;
+                //TODO //Report //  RunObject = Report 50017;
             }
             action("Re-assigner une NC Vente à une affaire/shipment")
             {
@@ -88,7 +77,7 @@ page 50051 "Outils de Corrections"
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
-                RunObject = Report 50022;
+                //TODO //    RunObject = Report 50022;
             }
             action("Update facture vente/Affaire")
             {
@@ -96,7 +85,7 @@ page 50051 "Outils de Corrections"
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
-                RunObject = Report 50018;
+                //TODO //  RunObject = Report 50018;
             }
             action("Add Item To Deal")
             {
@@ -106,7 +95,7 @@ page 50051 "Outils de Corrections"
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 PromotedOnly = true;
-                RunObject = Report 50030;
+                //TODO //   RunObject = Report 50030;
             }
             action("Mise à 0 qte Fact et Liv base")
             {
@@ -114,7 +103,7 @@ page 50051 "Outils de Corrections"
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
-                RunObject = Report 50045;
+                //TODO // RunObject = Report 50045;
             }
         }
     }

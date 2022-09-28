@@ -1,27 +1,13 @@
-page 50073 "Suivi des contrats"
+
+page 50073 "DEL Suivi des contrats"
 {
-    // 
-    // +---------------------------------------------------------------+
-    // | Logico SA                                                     |
-    // | Status:                                                       |
-    // | Customer/Project:                                             |
-    // +---------------------------------------------------------------+
-    // Requirement UserID   Date       Where   Description
-    // -----------------------------------------------------------------
-    // T-00738      YAL     14.10.15           add 12months condition + change conditions values to match with option field
-    // T-00767      THM     16.02.16           add Field  and add Open page
-    // T-00767      THM     18.02.16
-    // T-00784      THM     06.04.16           add Field
-    //              THM     08.05.17           Add Field
-    // S160001_20   JUH     10.07.17           OnOpenPage Comment Code
-    // DEL.SAZ              26.07.18           Add function : "Commentaires Contrat"
 
     Caption = 'Follow contracts';
     DeleteAllowed = false;
     InsertAllowed = false;
     PageType = Card;
     RefreshOnActivate = true;
-    SourceTable = Table18;
+    SourceTable = Customer;
 
     layout
     {
@@ -30,55 +16,55 @@ page 50073 "Suivi des contrats"
             group("Général")
             {
                 Caption = 'General';
-                field("No."; "No.")
+                field("No."; Rec."No.")
                 {
                     Editable = false;
                 }
-                field(Name; Name)
+                field(Name; Rec.Name)
                 {
                     Editable = false;
                 }
-                field(Address; Address)
+                field(Address; Rec.Address)
                 {
                     Enabled = false;
                 }
-                field("Post Code"; "Post Code")
+                field("Post Code"; Rec."Post Code")
                 {
                     Editable = false;
                 }
-                field(City; City)
+                field(City; Rec.City)
                 {
                     Editable = false;
                 }
-                field("Country/Region Code"; "Country/Region Code")
+                field("Country/Region Code"; Rec."Country/Region Code")
                 {
                     Editable = false;
                 }
-                field("Salesperson Code"; "Salesperson Code")
+                field("Salesperson Code"; Rec."Salesperson Code")
                 {
                     Editable = false;
                 }
-                field("Gen. Bus. Posting Group"; "Gen. Bus. Posting Group")
+                field("Gen. Bus. Posting Group"; Rec."Gen. Bus. Posting Group")
                 {
                     Editable = false;
                 }
-                field("Primary Contact No."; "Primary Contact No.")
+                field("Primary Contact No."; Rec."Primary Contact No.")
                 {
                     Editable = false;
                 }
-                field(Contact; Contact)
+                field(Contact; Rec.Contact)
                 {
                     Editable = false;
                 }
-                field("Phone No."; "Phone No.")
+                field("Phone No."; Rec."Phone No.")
                 {
                     Editable = false;
                 }
-                field("E-Mail"; "E-Mail")
+                field("E-Mail"; Rec."E-Mail")
                 {
                     Editable = false;
                 }
-                field("Language Code"; "Language Code")
+                field("Language Code"; Rec."Language Code")
                 {
                     Editable = false;
                 }
@@ -129,7 +115,7 @@ page 50073 "Suivi des contrats"
                         CLEAR(DocumentLine);
                         DocumentLine.RESET;
                         DocumentLine.SETRANGE(DocumentLine."Table Name", DocumentLine."Table Name"::Customer);
-                        DocumentLine.SETRANGE(DocumentLine."No.", "No.");
+                        DocumentLine.SETRANGE(DocumentLine."No.", Rec."No.");
                         DocumentLine.SETRANGE(DocumentLine."Type contrat", DocumentLine."Type contrat"::Partnership);
                         DocumentContrat.SETTABLEVIEW(DocumentLine);
                         DocumentContrat.RUN;
@@ -171,7 +157,7 @@ page 50073 "Suivi des contrats"
                             CLEAR(DocumentLine);
                             DocumentLine.RESET;
                             DocumentLine.SETRANGE(DocumentLine."Table Name", DocumentLine."Table Name"::Customer);
-                            DocumentLine.SETRANGE(DocumentLine."No.", "No.");
+                            DocumentLine.SETRANGE(DocumentLine."No.", Rec."No.");
                             DocumentLine.SETRANGE(DocumentLine."Type contrat", DocumentLine."Type contrat"::Service);
                             DocumentContrat.SETTABLEVIEW(DocumentLine);
                             DocumentContrat.RUN;
@@ -405,7 +391,7 @@ page 50073 "Suivi des contrats"
                         begin
                             CustLedgerEntry2.RESET;
                             CustLedgerEntry2.FILTERGROUP(2);
-                            CustLedgerEntry2.SETRANGE(CustLedgerEntry2."Customer No.", "No.");
+                            CustLedgerEntry2.SETRANGE(CustLedgerEntry2."Customer No.", Rec."No.");
                             CustLedgerEntry2.SETFILTER(CustLedgerEntry2."Sales (LCY)", '<>0');
                             CustLedgerEntry2.SETFILTER(CustLedgerEntry2."Posting Date", DateFilter1);
 
@@ -420,7 +406,7 @@ page 50073 "Suivi des contrats"
                         begin
                             CustLedgerEntry2.RESET;
                             CustLedgerEntry2.FILTERGROUP(2);
-                            CustLedgerEntry2.SETRANGE(CustLedgerEntry2."Customer No.", "No.");
+                            CustLedgerEntry2.SETRANGE(CustLedgerEntry2."Customer No.", Rec."No.");
                             CustLedgerEntry2.SETFILTER(CustLedgerEntry2."Sales (LCY)", '<>0');
                             CustLedgerEntry2.SETFILTER(CustLedgerEntry2."Posting Date", DateFilter2);
                             PAGE.RUN(25, CustLedgerEntry2);
@@ -434,7 +420,7 @@ page 50073 "Suivi des contrats"
                         begin
                             CustLedgerEntry2.RESET;
                             CustLedgerEntry2.FILTERGROUP(2);
-                            CustLedgerEntry2.SETRANGE(CustLedgerEntry2."Customer No.", "No.");
+                            CustLedgerEntry2.SETRANGE(CustLedgerEntry2."Customer No.", Rec."No.");
                             CustLedgerEntry2.SETFILTER(CustLedgerEntry2."Sales (LCY)", '<>0');
                             CustLedgerEntry2.SETFILTER(CustLedgerEntry2."Posting Date", DateFilter3);
                             PAGE.RUN(25, CustLedgerEntry2);
@@ -555,7 +541,7 @@ page 50073 "Suivi des contrats"
                         CLEAR(DocumentLine);
                         DocumentLine.RESET;
                         DocumentLine.SETRANGE(DocumentLine."Table Name", DocumentLine."Table Name"::Customer);
-                        DocumentLine.SETRANGE(DocumentLine."No.", "No.");
+                        DocumentLine.SETRANGE(DocumentLine."No.", Rec."No.");
                         DocumentLine.SETRANGE(DocumentLine."Type contrat", DocumentLine."Type contrat"::"Charte ethique");
                         DocumentContrat.SETTABLEVIEW(DocumentLine);
                         DocumentContrat.RUN;
@@ -600,8 +586,8 @@ page 50073 "Suivi des contrats"
             {
                 Caption = 'Contact';
                 Editable = false;
-                SubPageLink = Customer No.=FIELD(No.);
-                    SubPageView = SORTING(No.)
+                SubPageLink = "Customer No." = FIELD("No.");
+                SubPageView = SORTING("No.")
                               ORDER(Ascending);
             }
         }
@@ -623,7 +609,7 @@ page 50073 "Suivi des contrats"
                     PromotedCategory = Process;
                     PromotedIsBig = true;
                     RunObject = Page 21;
-                    RunPageLink = No.=FIELD(No.);
+                    RunPageLink = "No." = FIELD("No.");
                 }
                 action("<Page Document Sheet>")
                 {
@@ -633,11 +619,11 @@ page 50073 "Suivi des contrats"
                     PromotedCategory = Process;
                     PromotedIsBig = true;
                     RunObject = Page 50075;
-                                    RunPageLink = No.=FIELD(No.);
-                    RunPageView = SORTING(Table Name,No.,Comment Entry No.,Line No.)
-                                  WHERE(Table Name=CONST(Customer),
-                                        Notation Type=FILTER(' '),
-                                        Type liasse=FILTER(' '));
+                    RunPageLink = "No." = FIELD("No.");
+                    RunPageView = SORTING("Table Name", "No.", "Comment Entry No.", "Line No.")
+                                  WHERE("Table Name" = CONST(Customer),
+                                        "Notation Type" = FILTER(' '),
+                                        "Type liasse" = FILTER(' '));
                 }
                 action("Co&mments")
                 {
@@ -647,7 +633,7 @@ page 50073 "Suivi des contrats"
                     PromotedCategory = Process;
                     PromotedIsBig = true;
                     RunObject = Page 50076;
-                                    RunPageLink = Table Name=CONST(Customer),
+                    RunPageLink = Table Name=CONST(Customer),
                                   No.=FIELD(No.);
                 }
                 action(Contact)
@@ -680,8 +666,8 @@ page 50073 "Suivi des contrats"
                     PromotedCategory = Process;
                     PromotedIsBig = true;
                     RunObject = Page 50119;
-                                    RunPageLink = No.=FIELD(No.);
-                    RunPageView = SORTING(No.,Line No.);
+                                    RunPageLink = "No."=FIELD("No.");
+                    RunPageView = SORTING("No.","Line No.");
                 }
             }
         }
@@ -783,14 +769,14 @@ page 50073 "Suivi des contrats"
     end;
 
     var
-        DocumentLine: Record "50008";
-        DocumentContrat: Page "50075";
-                             Customer: Record "18";
-                             CustLedgerEntry: Record "21";
-                             SalesInvoiceHeader: Record "112";
+        DocumentLine: Record 50008;
+        DocumentContrat: Page 50075;
+                             Customer: Record 18;
+                             CustLedgerEntry: Record 21;
+                             SalesInvoiceHeader: Record 112;
                              Editablefield: Boolean;
-                             PDimensionValue: Page "560";
-                             DimensionValue_Rec: Record "349";
+                             PDimensionValue: Page 560;
+                             DimensionValue_Rec: Record 349;
                              CustSalesLCY: array [4] of Decimal;
                              CustDateFilter: array [4] of Text[30];
                              i: Integer;

@@ -20,7 +20,7 @@ page 50049 "DEL Fee Factor"
                 field(Factor; Rec.Factor)
                 {
                 }
-                field(Fee_ID; Fee_ID)
+                field(Fee_ID; Rec.Fee_ID)
                 {
                 }
             }
