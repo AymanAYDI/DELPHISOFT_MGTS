@@ -1,4 +1,4 @@
-tableextension 50019 tableextension50019 extends "Vendor Ledger Entry"
+tableextension 50019 "DEL VendorLedgerEntry" extends "Vendor Ledger Entry"
 {
     // DEL_QR1.00.00.01/02.11.2020  C\AL : Payment Reference - OnValidate()
     fields

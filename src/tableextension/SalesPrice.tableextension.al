@@ -1,7 +1,5 @@
-tableextension 50040 tableextension50040 extends "Sales Price"
+tableextension 50040 "DEL SalesPrice" extends "Sales Price"
 {
-    // THM010218       THM     01.02.18
-    // Mgts10.00.04.00      07.12.2021 : Add field(50002)
     fields
     {
 
@@ -36,21 +34,21 @@ tableextension 50040 tableextension50040 extends "Sales Price"
         #5..13
         */
         //end;
-        field(50000; "Vendor No."; Code[20])
+        field(50000; "DEL Vendor No."; Code[20])
         {
             Caption = 'Vendor No.';
             Editable = false;
             TableRelation = Vendor;
             ValidateTableRelation = true;
         }
-        field(50001; "Vendor Name"; Text[50])
+        field(50001; "DEL Vendor Name"; Text[50])
         {
-            CalcFormula = Lookup (Vendor.Name WHERE (No.=FIELD(Vendor No.)));
+            CalcFormula = Lookup(Vendor.Name WHERE("No." = FIELD("DEL Vendor No.")));
             Caption = 'Vendor Name';
             Editable = false;
             FieldClass = FlowField;
         }
-        field(50002;"Entry No.";BigInteger)
+        field(50002; "DEL Entry No."; BigInteger)
         {
             Caption = 'Entry No.';
             Description = 'Mgts10.00.04.00';
@@ -58,10 +56,10 @@ tableextension 50040 tableextension50040 extends "Sales Price"
     }
     keys
     {
-        key(Key1;"Entry No.")
+        key(Key5; "DEL Entry No.")
         {
         }
-        key(Key2;"Starting Date","Ending Date")
+        key(Key6; "Starting Date", "Ending Date")
         {
         }
     }

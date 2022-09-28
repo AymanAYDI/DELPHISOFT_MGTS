@@ -1,29 +1,14 @@
-tableextension 50033 tableextension50033 extends Contact
+tableextension 50033 "DEL Contact" extends Contact
 {
-    // EDI       22.05.13/LOCO/ChC- New field 50002, Disable Code IC Partner Code - OnValidate()
-    // +---------------------------------------------------------------+
-    // | Logico SA                                                     |
-    // | Status:                                                       |
-    // | Customer/Project:                                             |
-    // +---------------------------------------------------------------+
-    // Requirement UserID   Date       Where   Description
-    // -----------------------------------------------------------------
-    // T-00652     THM      24.03.14           add fields 60001..60017
-    // T-00705     THM      17.06.15           add Caption ML Field 60001..60017
-    // THM080517   THM      08.05.17           add field "First Name Contact","Name Contact"  and add Code
-    //             THM      15.05.17           Modify optionString field "Type Contact"
-    //             THM      01.06.17           Change Field 60018 to 70000
-    // 
-    // MGTSEDI10.00.00.00 | 08.10.2020 | EDI Management : Add field : GLN
     fields
     {
-        field(50000; Password_webAccess; Text[30])
+        field(50000; "DEL Password_webAccess"; Text[30])
         {
             Description = 'Temp400';
         }
-        field(50001; Categories; Integer)
+        field(50001; "DEL Categories"; Integer)
         {
-            CalcFormula = Count (Contact_ItemCategory WHERE (contactNo = FIELD (No.)));
+            CalcFormula = Count("DEL Contact_ItemCategory" WHERE(contactNo = FIELD("No.")));
             Description = 'Temp400';
             Editable = false;
             FieldClass = FlowField;
@@ -38,11 +23,11 @@ tableextension 50033 tableextension50033 extends Contact
 
             end;
         }
-        field(50002; Commande_web; Boolean)
+        field(50002; "DEL Commande_web"; Boolean)
         {
             Description = 'Temp400';
         }
-        field(50003; adv; Boolean)
+        field(50003; "DEL adv"; Boolean)
         {
             Caption = 'Administration des vents';
             Description = 'Temp400';
@@ -51,23 +36,23 @@ tableextension 50033 tableextension50033 extends Contact
         {
             Description = 'Temp400';
         }
-        field(50005; GLN; Code[13])
+        field(50005; "DEL GLN"; Code[13])
         {
             Caption = 'GLN';
             Numeric = true;
 
             trigger OnValidate()
             var
-                GLNCalculator: Codeunit "1607";
+                GLNCalculator: Codeunit "GLN Calculator";
             begin
-                IF GLN <> '' THEN
-                    GLNCalculator.AssertValidCheckDigit13(GLN);
+                IF "DEL GLN" <> '' THEN
+                    GLNCalculator.AssertValidCheckDigit13("DEL GLN");
             end;
         }
-        field(60001; "Note Quality"; Code[10])
+        field(60001; "DEL Note Quality"; Code[10])
         {
             Caption = 'Quality rating';
-            TableRelation = Note.Code WHERE (Type audit=FILTER(Quality));
+            TableRelation = "DEL Note".Code WHERE("Type audit" = FILTER(Quality));
 
             trigger OnValidate()
             begin
@@ -97,37 +82,33 @@ tableextension 50033 tableextension50033 extends Contact
 
             end;
         }
-        field(60002;"Realisation Date Quality";Date)
+        field(60002; "DEL Realisation Date Quality"; Date)
         {
             Caption = 'Creation Date';
 
             trigger OnValidate()
             begin
-                IF "Realisation Date Quality"<>0D THEN
-                BEGIN
-                  TESTFIELD("Note Quality");
-                  Note_Rec.RESET;
-                  IF Note_Rec.GET("Note Quality",Note_Rec."Type audit"::Quality) THEN
-                  BEGIN
-                  IF  FORMAT(Note_Rec."Revision Calculation")='' THEN
-                     VALIDATE("Revision Date quality",0D)
-                    ELSE
-                    BEGIN
-                    "Revision Date quality":=CALCDATE(Note_Rec."Revision Calculation","Realisation Date Quality");
-                    VALIDATE("Revision Date quality");
-                    END;
-                  END;
+                IF "DEL Realisation Date Quality" <> 0D THEN BEGIN
+                    TESTFIELD("DEL Note Quality");
+                    Note_Rec.RESET;
+                    IF Note_Rec.GET("DEL Note Quality", Note_Rec."Type audit"::Quality) THEN
+                        IF FORMAT(Note_Rec."Revision Calculation") = '' THEN
+                            VALIDATE("DEL Revision Date quality", 0D)
+                        ELSE BEGIN
+                            "DEL Revision Date quality" := CALCDATE(Note_Rec."Revision Calculation", "DEL Realisation Date Quality");
+                            VALIDATE("DEL Revision Date quality");
+                        END;
                 END;
             end;
         }
-        field(60003;"Revision Date quality";Date)
+        field(60003; "DEL Revision Date quality"; Date)
         {
             Caption = 'Expired Date';
         }
-        field(60004;"Note Soc";Code[10])
+        field(60004; "DEL Note Soc"; Code[10])
         {
             Caption = 'Social rating';
-            TableRelation = Note.Code WHERE (Type audit=FILTER(social));
+            TableRelation = "DEL Note".Code WHERE("Type audit" = FILTER(social));
 
             trigger OnValidate()
             begin
@@ -158,37 +139,33 @@ tableextension 50033 tableextension50033 extends Contact
 
             end;
         }
-        field(60005;"Realisation Date Soc";Date)
+        field(60005; "DEL Realisation Date Soc"; Date)
         {
             Caption = 'Creation Date Soc';
 
             trigger OnValidate()
             begin
-                IF "Realisation Date Soc"<>0D THEN
-                BEGIN
-                  TESTFIELD("Note Soc");
-                  Note_Rec.RESET;
-                  IF Note_Rec.GET("Note Soc",Note_Rec."Type audit"::social) THEN
-                  BEGIN
-                  IF  FORMAT(Note_Rec."Revision Calculation")='' THEN
-                     VALIDATE("Revision Date Soc",0D)
-                    ELSE
-                    BEGIN
-                    "Revision Date Soc":=CALCDATE(Note_Rec."Revision Calculation","Realisation Date Soc");
-                    VALIDATE("Revision Date Soc");
-                    END;
-                  END;
+                IF "DEL Realisation Date Soc" <> 0D THEN BEGIN
+                    TESTFIELD("Note Soc");
+                    Note_Rec.RESET;
+                    IF Note_Rec.GET("DEL Note Soc", Note_Rec."Type audit"::social) THEN
+                        IF FORMAT(Note_Rec."Revision Calculation") = '' THEN
+                            VALIDATE("DEL Revision Date Soc", 0D)
+                        ELSE BEGIN
+                            "DEL Revision Date Soc" := CALCDATE(Note_Rec."Revision Calculation", "DEL Realisation Date Soc");
+                            VALIDATE("DEL Revision Date Soc");
+                        END;
                 END;
             end;
         }
-        field(60006;"Revision Date Soc";Date)
+        field(60006; "DEL Revision Date Soc"; Date)
         {
             Caption = 'Expired Date Soc';
         }
-        field(60007;"Note Env";Code[10])
+        field(60007; "DEL Note Env"; Code[10])
         {
             Caption = 'Environmental rating';
-            TableRelation = Note.Code WHERE (Type audit=FILTER(Environmental));
+            TableRelation = "DEL Note".Code WHERE("Type audit" = FILTER(Environmental));
 
             trigger OnValidate()
             begin
@@ -219,113 +196,109 @@ tableextension 50033 tableextension50033 extends Contact
 
             end;
         }
-        field(60008;"Realisation Date Env";Date)
+        field(60008; "DEL Realisation Date Env"; Date)
         {
             Caption = 'Creation Date Env';
 
             trigger OnValidate()
             begin
-                IF "Realisation Date Env"<>0D THEN
-                BEGIN
-                  TESTFIELD("Note Env");
-                  Note_Rec.RESET;
-                  IF Note_Rec.GET("Note Env",Note_Rec."Type audit"::Environmental) THEN
-                  BEGIN
-                  IF  FORMAT(Note_Rec."Revision Calculation")='' THEN
-                     VALIDATE("Revision Date env",0D)
-                    ELSE
-                    BEGIN
-                    "Revision Date env":=CALCDATE(Note_Rec."Revision Calculation","Realisation Date Env");
-                    VALIDATE("Revision Date env");
-                    END;
-                  END;
+                IF "DEL Realisation Date Env" <> 0D THEN BEGIN
+                    TESTFIELD("DEL Note Env");
+                    Note_Rec.RESET;
+                    IF Note_Rec.GET("DEL Note Env", Note_Rec."Type audit"::Environmental) THEN
+                        IF FORMAT(Note_Rec."Revision Calculation") = '' THEN
+                            VALIDATE("DEL Revision Date env", 0D)
+                        ELSE BEGIN
+                            "DEL Revision Date env" := CALCDATE(Note_Rec."Revision Calculation", "DEL Realisation Date Env");
+                            VALIDATE("DEL Revision Date env");
+                        END;
                 END;
             end;
         }
-        field(60009;"Revision Date env";Date)
+        field(60009; "DEL Revision Date env"; Date)
         {
             Caption = 'Expired Date Env';
         }
-        field(60012;"URL Quality";Text[60])
+        field(60012; "DEL URL Quality"; Text[250])
         {
-            CalcFormula = Lookup("Document Line"."File Name" WHERE (Table Name=FILTER(Contact),
-                                                                    No.=FIELD(No.),
-                                                                    Notation Type=FILTER(Quality)));
+            CalcFormula = Lookup("DEL Document Line"."File Name" WHERE("Table Name" = FILTER(Contact),
+                                                                    "No." = FIELD("No."),
+                                                                    "Notation Type" = FILTER(Quality)));
             Caption = 'URL Quality';
             Editable = false;
             FieldClass = FlowField;
         }
-        field(60013;"URL social";Text[60])
+        field(60013; "DEL URL social"; Text[250])
         {
-            CalcFormula = Lookup("Document Line"."File Name" WHERE (Table Name=FILTER(Contact),
-                                                                    No.=FIELD(No.),
-                                                                    Notation Type=FILTER(Social)));
+            CalcFormula = Lookup("DEL Document Line"."File Name" WHERE("Table Name" = FILTER(Contact),
+                                                                    "No." = FIELD("No."),
+                                                                    "Notation Type" = FILTER(Social)));
             Editable = false;
             FieldClass = FlowField;
         }
-        field(60014;"URL Environmental";Text[60])
+        field(60014; "DEL URL Environmental"; Text[250])
         {
-            CalcFormula = Lookup("Document Line"."File Name" WHERE (Table Name=FILTER(Contact),
-                                                                    No.=FIELD(No.),
-                                                                    Notation Type=FILTER(Environmental)));
+            CalcFormula = Lookup("DEL Document Line"."File Name" WHERE("Table Name" = FILTER(Contact),
+                                                                    "No." = FIELD("No."),
+                                                                    "Notation Type" = FILTER(Environmental)));
             Caption = 'URL Environmental';
             Editable = false;
             FieldClass = FlowField;
         }
-        field(60015;"Quality status";Option)
+        field(60015; "DEL Quality status"; Option)
         {
             Caption = 'Quality status';
             OptionCaption = ' ,Inactif,Actif';
             OptionMembers = " ",Inactif,Actif;
         }
-        field(60016;"Social status";Option)
+        field(60016; "DEL Social status"; Option)
         {
             Caption = 'Social status';
             OptionCaption = ' ,Inactif,Actif';
             OptionMembers = " ",Inactif,Actif;
         }
-        field(60017;"Environmental status";Option)
+        field(60017; "DEL Environmental status"; Option)
         {
             Caption = 'Environmental status';
             OptionCaption = ' ,Inactif,Actif';
             OptionMembers = " ",Inactif,Actif;
         }
-        field(70000;"Type Contact";Option)
+        field(70000; "DEL Type Contact"; Option)
         {
             Caption = 'Contact Type';
             OptionCaption = 'Commercial,Juridical,Accountant,Quality';
             OptionMembers = Commercial,Juridical,Accountant,Quality;
         }
-        field(70001;"Customer No.";Code[20])
+        field(70001; "DEL Customer No."; Code[20])
         {
             Caption = 'Customer No.';
             TableRelation = Customer;
         }
-        field(70002;"Name Contact";Text[20])
+        field(70002; "DEL Name Contact"; Text[20])
         {
             Caption = 'Name';
 
             trigger OnValidate()
             begin
                 //START THM080517
-                Name:="Name Contact"+' '+"First Name Contact";
+                Name := "DEL Name Contact" + ' ' + "DEL First Name Contact";
                 //END THM080517
             end;
         }
-        field(70003;"First Name Contact";Text[30])
+        field(70003; "DEL First Name Contact"; Text[30])
         {
             Caption = 'First Name';
 
             trigger OnValidate()
             begin
                 //START THM080517
-                Name:="Name Contact"+' '+"First Name Contact";
+                Name := "DEL Name Contact" + ' ' + "DEL First Name Contact";
                 //END THM080517
             end;
         }
     }
 
     var
-        Note_Rec: Record "50019";
+    // Note_Rec: Record "Vendor Ledger Entry"; TODO still in process
 }
 
