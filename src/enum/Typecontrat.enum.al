@@ -14,4 +14,9 @@ enum 50004 "DEL Type contrat"
     {
         Caption = 'Service';
     }
+    value(3; "Denunciation")
+    {
+        Caption = 'Denunciation';
+    }
+
 }
