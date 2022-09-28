@@ -1,6 +1,6 @@
-page 50059 "DEL Tracking traité"
+page 50058 "DEL Tracking non traité"
 {
-    Caption = 'Tracking Recu XML et déjà traité';
+    Caption = 'Tracking recu par XML mais non traité dans Nav';
     Editable = false;
     PageType = List;
     SourceTable = "DEL Tracking général";
@@ -157,7 +157,7 @@ page 50059 "DEL Tracking traité"
 
     trigger OnOpenPage()
     begin
-        Rec.SETFILTER(Statut, '<>%1', '');
+        Rec.SETRANGE(Statut, '');
     end;
 }
 

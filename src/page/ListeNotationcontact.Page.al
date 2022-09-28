@@ -1,10 +1,10 @@
-page 50066 "Liste Notation contact"
+page 50066 "DEL Liste Notation contact"
 {
     Caption = 'Rating contracts List';
     CardPageID = "Contact Notation Card";
     Editable = false;
     PageType = List;
-    SourceTable = Table5050;
+    SourceTable = Contact;
 
     layout
     {
@@ -12,42 +12,42 @@ page 50066 "Liste Notation contact"
         {
             repeater(Group)
             {
-                field("No."; "No.")
+                field("No."; Rec."No.")
                 {
                 }
-                field(Name; Name)
+                field(Name; Rec.Name)
                 {
                 }
-                field(Type; Type)
+                field(Type; Rec.Type)
                 {
                 }
-                field("Note Quality"; "Note Quality")
-                {
-                }
-                field("Realisation Date Quality"; "Realisation Date Quality")
-                {
-                }
-                field("Revision Date quality"; "Revision Date quality")
-                {
-                }
-                field("Note Soc"; "Note Soc")
-                {
-                }
-                field("Realisation Date Soc"; "Realisation Date Soc")
-                {
-                }
-                field("Revision Date Soc"; "Revision Date Soc")
-                {
-                }
-                field("Note Env"; "Note Env")
-                {
-                }
-                field("Realisation Date Env"; "Realisation Date Env")
-                {
-                }
-                field("Revision Date env"; "Revision Date env")
-                {
-                }
+                //TODO field("Note Quality"; "Note Quality")
+                // {
+                // }
+                // field("Realisation Date Quality"; "Realisation Date Quality")
+                // {
+                // }
+                // field("Revision Date quality"; "Revision Date quality")
+                // {
+                // }
+                // field("Note Soc"; "Note Soc")
+                // {
+                // }
+                // field("Realisation Date Soc"; "Realisation Date Soc")
+                // {
+                // }
+                // field("Revision Date Soc"; "Revision Date Soc")
+                // {
+                // }
+                // field("Note Env"; "Note Env")
+                // {
+                // }
+                // field("Realisation Date Env"; "Realisation Date Env")
+                // {
+                // }
+                // field("Revision Date env"; "Revision Date env")
+                // {
+                // }
             }
         }
     }
@@ -69,22 +69,22 @@ page 50066 "Liste Notation contact"
                     {
                         Caption = 'Business Relations';
                         Image = BusinessRelation;
-                        RunObject = Page 5061;
-                        RunPageLink = Contact No.=FIELD(Company No.);
+                        RunObject = Page "Contact Business Relations";
+                        RunPageLink = "Contact No." = FIELD("Company No.");
                     }
                     action("Industry Groups")
                     {
                         Caption = 'Industry Groups';
                         Image = IndustryGroups;
-                        RunObject = Page 5067;
-                                        RunPageLink = Contact No.=FIELD(Company No.);
+                        RunObject = Page "Contact Industry Groups";
+                        RunPageLink = "Contact No." = FIELD("Company No.");
                     }
                     action("Web Sources")
                     {
                         Caption = 'Web Sources';
                         Image = Web;
-                        RunObject = Page 5070;
-                                        RunPageLink = Contact No.=FIELD(Company No.);
+                        RunObject = Page "Contact Web Sources";
+                        RunPageLink = "Contact No." = FIELD("Company No.");
                     }
                 }
                 group("P&erson")
@@ -99,11 +99,11 @@ page 50066 "Liste Notation contact"
 
                         trigger OnAction()
                         var
-                            ContJobResp: Record "5067";
+                            ContJobResp: Record "Contact Job Responsibility";
                         begin
-                            TESTFIELD(Type,Type::Person);
-                            ContJobResp.SETRANGE("Contact No.","No.");
-                            PAGE.RUNMODAL(PAGE::"Contact Job Responsibilities",ContJobResp);
+                            Rec.TESTFIELD(Type, Rec.Type::Person);
+                            ContJobResp.SETRANGE("Contact No.", Rec."No.");
+                            PAGE.RUNMODAL(PAGE::"Contact Job Responsibilities", ContJobResp);
                         end;
                     }
                 }
@@ -114,26 +114,27 @@ page 50066 "Liste Notation contact"
 
                     trigger OnAction()
                     var
-                        ProfileManagement: Codeunit "5059";
+                        ProfileManagement: Codeunit ProfileManagement;
                     begin
-                        ProfileManagement.ShowContactQuestionnaireCard(Rec,'',0);
+                        ProfileManagement.ShowContactQuestionnaireCard(Rec, '', 0);
                     end;
                 }
                 action("&Picture")
                 {
                     Caption = '&Picture';
                     Image = Picture;
-                    RunObject = Page 5104;
-                                    RunPageLink = No.=FIELD(No.);
+                    RunObject = Page "Contact Picture";
+
+                    RunPageLink = "No." = FIELD("No.");
                 }
                 action("Co&mments")
                 {
-                    Caption = 'Co&mments';
-                    Image = ViewComments;
-                    RunObject = Page 5072;
-                                    RunPageLink = Table Name=CONST(Contact),
-                                  No.=FIELD(No.),
-                                  Sub No.=CONST(0);
+                    //TODO Caption = 'Co&mments';
+                    // Image = ViewComments;
+                    // RunObject = Page "Rlshp. Mgt. Comment Sheet"
+                    // RunPageLink = "Table Name" = CONST(Contact),
+                    //               "No." = FIELD("No."),
+                    //               "Sub No." = CONST(0);
                 }
                 group("Alternati&ve Address")
                 {
@@ -143,21 +144,18 @@ page 50066 "Liste Notation contact"
                     {
                         Caption = 'Card';
                         Image = EditLines;
-                        RunObject = Page 5057;
-                                        RunPageLink = Contact No.=FIELD(No.);
+                        RunObject = Page "Contact Alt. Address List";
+                        RunPageLink = "Contact No." = FIELD("No.");
                     }
                     action("Date Ranges")
                     {
                         Caption = 'Date Ranges';
                         Image = DateRange;
-                        RunObject = Page 5059;
-                                        RunPageLink = Contact No.=FIELD(No.);
+                        RunObject = Page "Contact Alt. Addr. Date Ranges";
+                        RunPageLink = "Contact No." = FIELD("No.");
                     }
                 }
-                separator()
-                {
-                    Caption = '';
-                }
+
             }
             group("Related Information")
             {
@@ -167,25 +165,25 @@ page 50066 "Liste Notation contact"
                 {
                     Caption = 'Relate&d Contacts';
                     Image = Users;
-                    RunObject = Page 5052;
-                                    RunPageLink = Company No.=FIELD(Company No.);
+                    RunObject = Page "Contact List";
+                    RunPageLink = "Company No." = FIELD("Company No.");
                 }
                 action("Segmen&ts")
                 {
                     Caption = 'Segmen&ts';
                     Image = Segment;
-                    RunObject = Page 5150;
-                                    RunPageLink = Contact Company No.=FIELD(Company No.),
-                                  Contact No.=FILTER(<>''),
-                                  Contact No.=FIELD(FILTER(Lookup Contact No.));
-                    RunPageView = SORTING(Contact No.,Segment No.);
+                    RunObject = Page "Contact Segment List";
+                    RunPageLink = "Contact Company No." = FIELD("Company No."),
+                                  "Contact No." = FILTER(<> ''),
+                                  "Contact No." = FIELD(FILTER("Lookup Contact No."));
+                    RunPageView = SORTING("Contact No.", "Segment No.");
                 }
                 action("Mailing &Groups")
                 {
                     Caption = 'Mailing &Groups';
                     Image = DistributionGroup;
-                    RunObject = Page 5064;
-                                    RunPageLink = Contact No.=FIELD(No.);
+                    RunObject = Page "Contact Mailing Groups";
+                    RunPageLink = "Contact No." = FIELD("No.");
                 }
                 action("C&ustomer/Vendor/Bank Acc.")
                 {
@@ -194,7 +192,7 @@ page 50066 "Liste Notation contact"
 
                     trigger OnAction()
                     begin
-                        ShowCustVendBank;
+                        ShowCustVendBank();
                     end;
                 }
             }
@@ -206,26 +204,23 @@ page 50066 "Liste Notation contact"
                 {
                     Caption = 'T&o-dos';
                     Image = TaskList;
-                    RunObject = Page 5096;
-                                    RunPageLink = Contact Company No.=FIELD(Company No.),
-                                  Contact No.=FIELD(FILTER(Lookup Contact No.)),
-                                  System To-do Type=FILTER(Contact Attendee);
-                    RunPageView = SORTING(Contact Company No.,Contact No.);
+                    RunObject = Page "Task List";
+                    RunPageLink = "Contact Company No." = FIELD("Company No."),
+                                  "Contact No." = FIELD(FILTER("Lookup Contact No.")),
+                                  "System To-do Type" = FILTER("Contact Attendee");
+                    RunPageView = SORTING("Contact Company No.", "Contact No.");
                 }
                 action("Oppo&rtunities")
                 {
                     Caption = 'Oppo&rtunities';
                     Image = OpportunityList;
-                    RunObject = Page 5123;
-                                    RunPageLink = Contact Company No.=FIELD(Company No.),
-                                  Contact No.=FILTER(<>''),
-                                  Contact No.=FIELD(FILTER(Lookup Contact No.));
-                    RunPageView = SORTING(Contact Company No.,Contact No.);
+                    RunObject = Page "Opportunity List";
+                    RunPageLink = "Contact Company No." = FIELD("Company No."),
+                                  "Contact No." = FILTER(<> ''),
+                                  "Contact No." = FIELD(FILTER("Lookup Contact No."));
+                    RunPageView = SORTING("Contact Company No.", "Contact No.");
                 }
-                separator()
-                {
-                    Caption = '';
-                }
+
             }
             group(Documents)
             {
@@ -235,13 +230,11 @@ page 50066 "Liste Notation contact"
                 {
                     Caption = 'Sales &Quotes';
                     Image = Quote;
-                    RunObject = Page 9300;
-                                    RunPageLink = Sell-to Contact No.=FIELD(No.);
-                    RunPageView = SORTING(Document Type,Sell-to Contact No.);
+                    RunObject = Page "Sales Quotes";
+                    RunPageLink = "Sell-to Contact No." = FIELD("No.");
+                    RunPageView = SORTING("Document Type", "Sell-to Contact No.");
                 }
-                separator()
-                {
-                }
+
             }
             group(History)
             {
@@ -251,21 +244,21 @@ page 50066 "Liste Notation contact"
                 {
                     Caption = 'Postponed &Interactions';
                     Image = PostponedInteractions;
-                    RunObject = Page 5082;
-                                    RunPageLink = Contact Company No.=FIELD(Company No.),
-                                  Contact No.=FILTER(<>''),
-                                  Contact No.=FIELD(FILTER(Lookup Contact No.));
-                    RunPageView = SORTING(Contact Company No.,Contact No.);
+                    RunObject = Page "Postponed Interactions";
+                    RunPageLink = "Contact Company No." = FIELD("Company No."),
+                                  "Contact No." = FILTER(<> ''),
+                                  "Contact No." = FIELD(FILTER("Lookup Contact No."));
+                    RunPageView = SORTING("Contact Company No.", "Contact No.");
                 }
                 action("Interaction Log E&ntries")
                 {
                     Caption = 'Interaction Log E&ntries';
                     Image = InteractionLog;
-                    RunObject = Page 5076;
-                                    RunPageLink = Contact Company No.=FIELD(Company No.),
-                                  Contact No.=FILTER(<>''),
-                                  Contact No.=FIELD(FILTER(Lookup Contact No.));
-                    RunPageView = SORTING(Contact Company No.,Contact No.);
+                    RunObject = Page "Interaction Log Entries";
+                    RunPageLink = "Contact Company No." = FIELD("Company No."),
+                                  "Contact No." = FILTER(<> ''),
+                                  "Contact No." = FIELD(FILTER("Lookup Contact No."));
+                    RunPageView = SORTING("Contact Company No.", "Contact No.");
                     ShortCutKey = 'Ctrl+F7';
                 }
                 action(Statistics)
@@ -274,8 +267,8 @@ page 50066 "Liste Notation contact"
                     Image = Statistics;
                     Promoted = true;
                     PromotedCategory = Process;
-                    RunObject = Page 5053;
-                                    RunPageLink = No.=FIELD(No.);
+                    RunObject = Page "Contact Statistics";
+                    RunPageLink = "No." = FIELD("No.");
                     ShortCutKey = 'F7';
                 }
             }
@@ -293,9 +286,9 @@ page 50066 "Liste Notation contact"
 
                     trigger OnAction()
                     var
-                        TAPIManagement: Codeunit "5053";
+                        TAPIManagement: Codeunit "TAPIManagement";
                     begin
-                        TAPIManagement.DialContCustVendBank(DATABASE::Contact,"No.","Phone No.",'');
+                        TAPIManagement.DialContCustVendBank(DATABASE::Contact, Rec."No.", Rec."Phone No.", '');
                     end;
                 }
                 action("Launch &Web Source")
@@ -305,11 +298,11 @@ page 50066 "Liste Notation contact"
 
                     trigger OnAction()
                     var
-                        ContactWebSource: Record "5060";
+                        ContactWebSource: Record "Contact Web Source";
                     begin
-                        ContactWebSource.SETRANGE("Contact No.","Company No.");
-                        IF PAGE.RUNMODAL(PAGE::"Web Source Launch",ContactWebSource) = ACTION::LookupOK THEN
-                          ContactWebSource.Launch;
+                        ContactWebSource.SETRANGE("Contact No.", Rec."Company No.");
+                        IF PAGE.RUNMODAL(PAGE::"Web Source Launch", ContactWebSource) = ACTION::LookupOK THEN
+                            ContactWebSource.Launch();
                     end;
                 }
                 action("Print Cover &Sheet")
@@ -319,45 +312,45 @@ page 50066 "Liste Notation contact"
 
                     trigger OnAction()
                     var
-                        Cont: Record "5050";
+                        Cont: Record "Contact";
                     begin
                         Cont := Rec;
-                        Cont.SETRECFILTER;
-                        REPORT.RUN(REPORT::"Contact - Cover Sheet",TRUE,FALSE,Cont);
+                        Cont.SETRECFILTER();
+                        REPORT.RUN(REPORT::"Contact - Cover Sheet", TRUE, FALSE, Cont);
                     end;
                 }
                 group("Create as")
                 {
                     Caption = 'Create as';
                     Image = CustomerContact;
-                    action(Customer)
+                    action(MgtsCustomer)
                     {
                         Caption = 'Customer';
                         Image = Customer;
 
                         trigger OnAction()
                         begin
-                            CreateCustomer(ChooseCustomerTemplate);
+                            CreateCustomer(Rec.ChooseCustomerTemplate());
                         end;
                     }
-                    action(Vendor)
+                    action(MgtsVendor)
                     {
                         Caption = 'Vendor';
                         Image = Vendor;
 
                         trigger OnAction()
                         begin
-                            CreateVendor;
+                            Rec.CreateVendor();
                         end;
                     }
-                    action(Bank)
+                    action(MgtsBank)
                     {
                         Caption = 'Bank';
                         Image = Bank;
 
                         trigger OnAction()
                         begin
-                            CreateBankAccount;
+                            Rec.CreateBankAccount();
                         end;
                     }
                 }
@@ -372,7 +365,7 @@ page 50066 "Liste Notation contact"
 
                         trigger OnAction()
                         begin
-                            CreateCustomerLink;
+                            Rec.CreateCustomerLink();
                         end;
                     }
                     action(Vendor)
@@ -382,7 +375,7 @@ page 50066 "Liste Notation contact"
 
                         trigger OnAction()
                         begin
-                            CreateVendorLink;
+                            Rec.CreateVendorLink();
                         end;
                     }
                     action(Bank)
@@ -392,7 +385,7 @@ page 50066 "Liste Notation contact"
 
                         trigger OnAction()
                         begin
-                            CreateBankAccountLink;
+                            Rec.CreateBankAccountLink();
                         end;
                     }
                 }
@@ -406,7 +399,7 @@ page 50066 "Liste Notation contact"
 
                 trigger OnAction()
                 begin
-                    CreateInteraction;
+                    Rec.CreateInteraction();
                 end;
             }
         }
@@ -418,8 +411,8 @@ page 50066 "Liste Notation contact"
                 Image = Quote;
                 Promoted = true;
                 PromotedCategory = New;
-                RunObject = Page 41;
-                                RunPageLink = Sell-to Contact No.=FIELD(No.);
+                RunObject = Page "Sales Quote";
+                RunPageLink = "Sell-to Contact No." = FIELD("No.");
                 RunPageMode = Create;
             }
         }
@@ -430,14 +423,13 @@ page 50066 "Liste Notation contact"
                 Caption = 'Contact Cover Sheet';
                 Image = "Report";
                 Promoted = false;
-                //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
-                //PromotedCategory = "Report";
+
 
                 trigger OnAction()
                 begin
                     Cont := Rec;
-                    Cont.SETRECFILTER;
-                    REPORT.RUN(REPORT::"Contact - Cover Sheet",TRUE,FALSE,Cont);
+                    Cont.SETRECFILTER();
+                    REPORT.RUN(REPORT::"Contact - Cover Sheet", TRUE, FALSE, Cont);
                 end;
             }
             action("Contact Company Summary")
@@ -453,18 +445,16 @@ page 50066 "Liste Notation contact"
                 Caption = 'Contact Labels';
                 Image = "Report";
                 Promoted = false;
-                //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
-                //PromotedCategory = "Report";
-                RunObject = Report 5056;
+                ;
+                RunObject = Report "Contact - Labels";
             }
             action("Questionnaire Handout")
             {
                 Caption = 'Questionnaire Handout';
                 Image = "Report";
                 Promoted = false;
-                //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
-                //PromotedCategory = "Report";
-                RunObject = Report 5066;
+
+                RunObject = Report "Questionnaire - Handouts";
             }
             action("Sales Cycle Analysis")
             {
@@ -472,24 +462,22 @@ page 50066 "Liste Notation contact"
                 Image = "Report";
                 Promoted = true;
                 PromotedCategory = "Report";
-                RunObject = Report 5062;
+                RunObject = Report "Sales Cycle - Analysis";
             }
         }
     }
 
     var
-        Cont: Record "5050";
-        [InDataSet]
-        StyleIsStrong: Boolean;
-        [InDataSet]
-        NameIndent: Integer;
+        Cont: Record "Contact";
+
+
         CompanyGroupEnabled: Boolean;
         PersonGroupEnabled: Boolean;
 
     local procedure EnableFields()
     begin
-        CompanyGroupEnabled := Type = Type::Company;
-        PersonGroupEnabled := Type = Type::Person;
+        CompanyGroupEnabled := Rec.Type = Rec.Type::Company;
+        PersonGroupEnabled := Rec.Type = Rec.Type::Person;
     end;
 }
 

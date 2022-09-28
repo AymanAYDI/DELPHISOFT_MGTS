@@ -1,4 +1,3 @@
-#pragma implicitwith disable
 page 50055 "DEL Propostition tracking"
 {
     PageType = List;

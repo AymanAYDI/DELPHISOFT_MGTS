@@ -1,88 +1,18 @@
 tableextension 50013 "DEL Customer" extends Customer
 {
-    // +---------------------------------------------------------------+
-    // | Logico SA                                                     |
-    // | Status:                                                       |
-    // | Customer/Project:                                             |
-    // +---------------------------------------------------------------+
-    // Requirement UserID   Date       Where   Description
-    // -----------------------------------------------------------------
-    // T-00678      THM     30.09.14   field   add fields 50100..50126
-    // T-00678      THM     03,10,14           modify table relation N° facture
-    // T-00678      THM     12.11.14           change caption field 50116
-    // T-00705      THM     15.06.15  field    add captionML fields 50000..
-    // T-00738      YAL     14.10.15           add 12months condition + change conditions values to match with option field
-    // T-00767      THM     16.02.16           Add new Fields
-    // T-00767      THM     16.02.16           Date de fin SSA - OnValidate()
-    // T-00767      THM     18.02.16
-    // T-00784      THM     06.04.16           add Field
-    // THM          THM     08.05.17           Add fields
-    //              THM     15.05.17           add field 50146,50147
-    //              THM     16.06.17           add 60118..60149
-    // +----------------------------------------------------------------------------------------------------------------+
-    // |DBE                                                                                                             |
-    // |http://www.dbexcellence.ch/                                                                                     |
-    // +----------------------------------------------------------------------------------------------------------------+
-    // MGTS:EDD001.01 :TU 24/05/2018 : Minimisation des clics :
-    //   #Added new Fields 50002"FTP Save"[Boolean]
-    // 
-    // MGTS:EDD001.02 :TU 06/06/2018: Minimisation des clics :
-    //                               - Add new field (ID 50003) "FTP Save 2" [Boolean]
-    // +----------------------------------------------------------------------------------------------------------------+
-    // 
-    // ------------------------------------------------------------------------------------------
-    // Sign    : Maria Hr. Hristova = mhh
-    // Version : MGTS0124,MGTS10.00.005,MGTS10.009
-    // 
-    // ------------------------------------------------------------------------------------------
-    // No.    Version          Date        Sign    Description
-    // ------------------------------------------------------------------------------------------
-    // 001     MGTS0124         23.07.19    mhh     List of changes:
-    //                                              Changed field: "Customer Price Group" (Properties: TableRelation, Lenght)
-    //                                              Changed trigger: Customer Price Group - OnLookup()
-    // 
-    // 002    MGTS10.00.005    04.02.20    mhh     List of changes:
-    //                                              Added new field: 50148 "Change VAT Registration Place"
-    // 
-    // 003    MGTS10.009       09.09.20    ehh     List of changes:
-    //                                              Added new field: 50149 ODI
-    // 004    MGTS10.032       30.07.21    ehh     List of changes:
-    //                                              Added new field: 50150 Show TVA In Invoice
-    // 
-    // ------------------------------------------------------------------------------------------
-    // 
-    // MGTS10.033 :  11.02.2022  Add Fields  :  "Mention Under Total","Amount Mention Under Total"
-    // 
+    //Unsupported feature: Property Deletion (TableRelation) on ""Customer Price Group"(Field 23)".
+
+
     fields
     {
-        modify("Customer Price Group")
-        {
+        // TODO    modify("Customer Price Group")
+        //     {
 
-            //Unsupported feature: Property Modification (Data type) on ""Customer Price Group"(Field 23)".
+        // //Unsupported feature: Property Modification (Data type) on ""Customer Price Group"(Field 23)".
 
-            Description = 'MGTS0124';
-        }
+        //         Description = 'MGTS0124';
+        //     }
 
-
-        //Unsupported feature: Code Insertion on ""Customer Price Group"(Field 23)".
-
-        //trigger OnLookup(var Text: Text): Boolean
-        //begin
-        /*
-
-          //MGTS0124; MHH; begin
-          CustPriceGroup.RESET;
-          IF PAGE.RUNMODAL(0, CustPriceGroup) = ACTION::LookupOK THEN BEGIN
-            IF "Customer Price Group" = '' THEN
-              "Customer Price Group" := CustPriceGroup.Code
-            ELSE
-              "Customer Price Group" := STRSUBSTNO(Text50000, "Customer Price Group", CustPriceGroup.Code);
-          END;
-          //MGTS0124; MHH; end
-        */
-        //end;
-
-        //Unsupported feature: Property Deletion (TableRelation) on ""Customer Price Group"(Field 23)".
 
         field(50000; "DEL No TVA intracomm. NGTS"; Code[30])
         {
@@ -90,69 +20,77 @@ tableextension 50013 "DEL Customer" extends Customer
         field(50001; "DEL Fiscal Repr."; Code[10])
         {
             Caption = 'Fiscal Repr.';
-            Description = 'T-00551-SPEC35';
+
             TableRelation = Contact;
         }
         field(50002; "DEL FTP Save"; Boolean)
         {
             Caption = 'FTP Save';
-            Description = 'MGTS:EDD001.01';
+
+
 
             trigger OnValidate()
             begin
-                TESTFIELD("FTP Save 2", FALSE)
+                TESTFIELD("DEL FTP Save 2", FALSE)
+
             end;
         }
         field(50003; "DEL FTP Save 2"; Boolean)
         {
             Caption = 'FTP Save 2';
-            Description = 'MGTS:EDD001.02';
+
+
 
             trigger OnValidate()
             begin
-                TESTFIELD("FTP Save", FALSE)
+                TESTFIELD("DEL FTP Save", FALSE)
+
             end;
         }
         field(50050; "DEL Mention Under Total"; Text[250])
         {
             Caption = 'Mention Under Total';
-            Description = 'MGTS10.033';
+
         }
         field(50051; "DEL Amount Mention Under Total"; Text[30])
         {
             Caption = 'Amount Mention Under Total';
-            Description = 'MGTS10.033';
+
         }
         field(50100; "DEL Partnership agreement"; Boolean)
         {
         }
-        field(50101; "Libellé PA"; Text[60])
+
+        field(50101; "DEL Libellé PA"; Text[60])
+
         {
             Caption = 'Partnership agreement description';
 
             trigger OnValidate()
             begin
-                TESTFIELD("Partnership agreement", TRUE);
+
+                TESTFIELD("DEL Partnership agreement", TRUE);
             end;
         }
-        field(50102; "DEL Statut PA"; Option)
+        field(50102; "DEL Statut PA"; Enum "DEL Statut PA")
         {
             Caption = 'Partnership agreement status';
-            OptionCaption = ' ,Draft, Signed,Expired,Extented';
-            OptionMembers = " ",Draft,"Signé","Échu","Prolongé";
 
             trigger OnValidate()
             begin
-                TESTFIELD("Partnership agreement", TRUE);
+                TESTFIELD("DEL Partnership agreement", TRUE);
             end;
         }
-        field(50103; "Date de début PA"; Date)
+        field(50103; "DEL Date de début PA"; Date)
+
         {
             Caption = 'Starting date PA';
 
             trigger OnValidate()
             begin
-                TESTFIELD("Partnership agreement", TRUE);
+
+                TESTFIELD("DEL Partnership agreement", TRUE);
+
             end;
         }
         field(50104; "DEL Date de fin PA"; Date)
@@ -161,40 +99,47 @@ tableextension 50013 "DEL Customer" extends Customer
 
             trigger OnValidate()
             begin
-                TESTFIELD("Partnership agreement", TRUE);
+
+                TESTFIELD("DEL Partnership agreement", TRUE);
+
             end;
         }
         field(50105; "DEL Service agreement"; Boolean)
         {
             Caption = 'Service agreement';
         }
-        field(50106; "Libellé SSA"; Text[60])
+
+        field(50106; "DEL Libellé SSA"; Text[60])
+
         {
             Caption = 'Service agreement description';
 
             trigger OnValidate()
             begin
-                TESTFIELD("Service agreement", TRUE);
+
+                TESTFIELD("DEL Service agreement", TRUE);
             end;
         }
-        field(50107; "DEL Statut SSA"; Option)
+        field(50107; "DEL Statut SSA"; Enum "DEL Statut PA")
         {
             Caption = 'Status SSA';
-            OptionCaption = ' ,Draft,Signed,Expired,Extented';
-            OptionMembers = " ",Draft,"Signé","Échu","Prolongé";
+
 
             trigger OnValidate()
             begin
-                TESTFIELD("Service agreement", TRUE);
+                TESTFIELD("DEL Service agreement", TRUE);
             end;
         }
-        field(50108; "Date de début SSA"; Date)
+        field(50108; "DEL Date de début SSA"; Date)
+
         {
             Caption = 'Starting date SSA';
 
             trigger OnValidate()
             begin
-                TESTFIELD("Service agreement", TRUE);
+
+                TESTFIELD("DEL Service agreement", TRUE);
+
             end;
         }
         field(50109; "DEL Date de fin SSA"; Date)
@@ -203,43 +148,41 @@ tableextension 50013 "DEL Customer" extends Customer
 
             trigger OnValidate()
             begin
-                TESTFIELD("Service agreement", TRUE);
-                //START  T-00767
-                IF "Date de fin SSA" <> 0D THEN
-                    "Period of denunciation" := CALCDATE('<-25M>', "Date de fin SSA")
+
+                TESTFIELD("DEL Service agreement", TRUE);
+
+                IF "DEL Date de fin SSA" <> 0D THEN
+                    "DEL Period of denunciation" := CALCDATE('<-25M>', "DEL Date de fin SSA")
                 ELSE
-                    "Period of denunciation" := 0D;
-                // STOP T-00767
+                    "DEL Period of denunciation" := 0D;
+
             end;
         }
-        field(50110; "Fréquence de facturation"; Option)
+        field(50110; "DEL Fréquence de facturation"; Enum "DEL Fréquence de facturation")
         {
             Caption = 'Frequency of invoicing';
-            OptionCaption = ' ,3 months,4 months,6 months,12 months';
-            OptionMembers = " ","3 mois","4 mois","6 mois","12 mois";
 
             trigger OnValidate()
             begin
-                TESTFIELD("Service agreement", TRUE);
+                TESTFIELD("DEL Service agreement", TRUE);
             end;
         }
-        field(50111; "DEL Date de prochaine facturation"; Date)
+        field(50111; "DEL Date de proch. fact."; Date)
         {
             Caption = 'Next invoice date';
         }
-        field(50112; "DEL Nbre jour avant proch. fact."; Integer)
+        field(50112; "DEL Nbr jr avant proch. fact."; Integer)
         {
             Caption = 'Nb of days before invoicing';
         }
-        field(50113; "DEL Level"; Option)
+        field(50113; "DEL Level"; Enum "DEL Level")
         {
             Caption = 'Level';
-            OptionCaption = 'Standard,Intermediate Premium';
-            OptionMembers = Standard,"Intermédiaire",Premium;
 
             trigger OnValidate()
             begin
-                TESTFIELD("Service agreement", TRUE);
+                TESTFIELD("DEL Service agreement", TRUE);
+
             end;
         }
         field(50114; "DEL Reporting vente"; Boolean)
@@ -248,7 +191,9 @@ tableextension 50013 "DEL Customer" extends Customer
 
             trigger OnValidate()
             begin
-                TESTFIELD("Service agreement", TRUE);
+
+                TESTFIELD("DEL Service agreement", TRUE);
+
             end;
         }
         field(50115; "DEL Last Accounting Date"; Date)
@@ -267,63 +212,73 @@ tableextension 50013 "DEL Customer" extends Customer
         {
             Caption = 'Pending amount';
         }
-        field(50120; "DEL Statut CE"; Option)
+
+        field(50120; "DEL Statut CE"; Enum "DEL Statut CE")
         {
             Caption = 'Ethical Charter status';
-            OptionCaption = ',Sent,Signed';
-            OptionMembers = " ","Charte envoyée","Charte signée";
+
         }
         field(50121; "DEL Date Signature CE"; Date)
         {
             Caption = 'Date of signature EC';
         }
-        field(50122; "DEL URL document CE"; Text[60])
+
+        field(50122; "DEL URL document CE"; Text[250])
         {
-            CalcFormula = Lookup ("Document Line"."File Name" WHERE (Table Name=FILTER(Customer),
-                                                                    No.=FIELD(No.),
-                                                                    Notation Type=FILTER(' '),
-                                                                    Type liasse=FILTER(' '),
-                                                                    Type contrat=FILTER(Charte ethique)));
+            CalcFormula = Lookup("DEL Document Line"."File Name" WHERE("Table Name" = FILTER(Customer),
+                                                                    "No." = FIELD("No."),
+                                                                    "Notation Type" = FILTER(' '),
+                                                                    "Type liasse" = FILTER(' '),
+                                                                    "Type contrat" = FILTER('Charte ethique')));
+
             Caption = 'URL document CE';
             Editable = false;
             FieldClass = FlowField;
         }
-        field(50123; "DEL URL document PA"; Text[60])
+
+        field(50123; "DEL URL document PA"; Text[250])
         {
-            CalcFormula = Lookup("Document Line"."File Name" WHERE (Table Name=FILTER(Customer),
-                                                                    No.=FIELD(No.),
-                                                                    Notation Type=FILTER(' '),
-                                                                    Type liasse=FILTER(' '),
-                                                                    Type contrat=FILTER(Partnership)));
+            CalcFormula = Lookup("DEL Document Line"."File Name" WHERE("Table Name" = FILTER(Customer),
+                                                                    "No." = FIELD("No."),
+                                                                    "Notation Type" = FILTER(' '),
+                                                                    "Type liasse" = FILTER(' '),
+                                                                    "Type contrat" = FILTER(Partnership)));
+
             Caption = 'URL document PA';
             Editable = false;
             FieldClass = FlowField;
         }
-        field(50124; "DEL URL document SSA"; Text[60])
+
+        field(50124; "DEL URL document SSA"; Text[250])
         {
-            CalcFormula = Lookup("Document Line"."File Name" WHERE (Table Name=FILTER(Customer),
-                                                                    No.=FIELD(No.),
-                                                                    Notation Type=FILTER(' '),
-                                                                    Type liasse=FILTER(' '),
-                                                                    Type contrat=FILTER(Service)));
+            CalcFormula = Lookup("DEL Document Line"."File Name" WHERE("Table Name" = FILTER(Customer),
+                                                                    "No." = FIELD("No."),
+                                                                    "Notation Type" = FILTER(' '),
+                                                                    "Type liasse" = FILTER(' '),
+                                                                    "Type contrat" = FILTER(Service)));
+
             Caption = 'URL document SSA';
             Editable = false;
             FieldClass = FlowField;
         }
         field(50125; "DEL Comment PA"; Text[80])
         {
-            CalcFormula = Lookup("Comment Line".Comment WHERE (Table Name=CONST(Customer),
-                                                               No.=FIELD(No.),
-                                                               Type contrat=FILTER(Partnership)));
+
+            CalcFormula = Lookup("Comment Line".Comment WHERE("Table Name" = CONST(Customer),
+                                                               "No." = FIELD("No."),
+                                                   "DEL Type contrat" = FILTER(Partnership)));
+
             Caption = 'Comment PA';
             Editable = false;
             FieldClass = FlowField;
         }
         field(50126; "DEL Comment SSA"; Text[80])
         {
-            CalcFormula = Lookup("Comment Line".Comment WHERE (Table Name=CONST(Customer),
-                                                               No.=FIELD(No.),
-                                                               Type contrat=FILTER(Service)));
+
+            CalcFormula = Lookup("Comment Line".Comment WHERE("Table Name" = CONST(Customer),
+                                                               "No." = FIELD("No."),
+                                                               "DEL Type contrat" = FILTER(Service)));
+
             Caption = 'Comment SSA';
             Editable = false;
             FieldClass = FlowField;
@@ -342,14 +297,14 @@ tableextension 50013 "DEL Customer" extends Customer
 
             trigger OnValidate()
             begin
-                //START  T-00767
-                IF "Denunciation Replanned" THEN
-                BEGIN
-                "Denunciation to analyze":=FALSE;
-                 "Denunciation realised":=FALSE;
-                 "Not denunciation":=FALSE;
+
+
+                IF "DEL Denunciation Replanned" THEN BEGIN
+                    "DEL Denunciation to analyze" := FALSE;
+                    "DEL Denunciation realised" := FALSE;
+                    "DEL Not denunciation" := FALSE;
                 END;
-                //STOP  T-00767
+
             end;
         }
         field(50130; "DEL Denunciation realised"; Boolean)
@@ -358,15 +313,16 @@ tableextension 50013 "DEL Customer" extends Customer
 
             trigger OnValidate()
             begin
-                //START  T-00767
-                IF "Denunciation realised" THEN
-                BEGIN
-                  "Period of denunciation":=0D;
-                  "Denunciation to analyze":=FALSE;
-                  "Denunciation Replanned":=FALSE;
-                  "Not denunciation":=FALSE;
+
+
+                IF "DEL Denunciation realised" THEN BEGIN
+                    "DEL Period of denunciation" := 0D;
+                    "DEL Denunciation to analyze" := FALSE;
+                    "DEL Denunciation Replanned" := FALSE;
+                    "DEL Not denunciation" := FALSE;
                 END;
-                //STOP  T-00767
+
+
             end;
         }
         field(50131; "DEL Denunciation date"; Date)
@@ -379,16 +335,16 @@ tableextension 50013 "DEL Customer" extends Customer
 
             trigger OnValidate()
             begin
-                //START  T-00767
-                IF "Not denunciation" THEN
-                BEGIN
-                  "Period of denunciation":=0D;
-                  "Denunciation to analyze":=FALSE;
-                  "Denunciation Replanned":=FALSE;
-                  "Denunciation date":=0D;
-                  "Denunciation realised":=FALSE;
+
+
+                IF "DEL Not denunciation" THEN BEGIN
+                    "DEL Period of denunciation" := 0D;
+                    "DEL Denunciation to analyze" := FALSE;
+                    "DEL Denunciation Replanned" := FALSE;
+                    "DEL Denunciation date" := 0D;
+                    "DEL Denunciation realised" := FALSE;
                 END;
-                //STOP  T-00767
+
             end;
         }
         field(50133; "DEL Annexe A PA"; Boolean)
@@ -421,14 +377,18 @@ tableextension 50013 "DEL Customer" extends Customer
         }
         field(50140; "DEL Comment denunciation"; Text[80])
         {
-            CalcFormula = Lookup("Comment Line".Comment WHERE (Table Name=CONST(Customer),
-                                                               No.=FIELD(No.),
-                                                               Type contrat=FILTER(Denunciation)));
+
+            CalcFormula = Lookup("Comment Line".Comment WHERE("Table Name" = CONST(Customer),
+                                                              "No." = FIELD("No."),
+                                                               "DEL Type contrat" = FILTER(Denunciation)));
+
             Caption = 'Comment denunciation';
             Editable = false;
             FieldClass = FlowField;
         }
-        field(50141; "DEL Starting date of Relationship"; Date)
+
+        field(50141; "DEL Start date of Relationship"; Date)
+
         {
             Caption = 'Starting date of Relationship';
         }
@@ -440,11 +400,13 @@ tableextension 50013 "DEL Customer" extends Customer
         {
             Caption = 'Quote part 2 Mobivia/CA %';
         }
-        field(50144; "DEL Quote part 1 Mobivia/CA Year"; Integer)
+
+        field(50144; "DEL Qte part 1 Mobivia/CA Year"; Integer)
         {
             Caption = 'Quote part 1 Mobivia/CA Year';
         }
-        field(50145; "DEL Quote part 2 Mobivia/CA Year"; Integer)
+        field(50145; "DEL Qte part 2 Mobivia/CA Year"; Integer)
+
         {
             Caption = 'Quote part 2 Mobivia/CA Year';
         }
@@ -456,25 +418,29 @@ tableextension 50013 "DEL Customer" extends Customer
         {
             Caption = 'Renewal by endorsement';
         }
-        field(50148; "DEL Change VAT Registration Place"; Boolean)
+
+        field(50148; "DEL Change VAT Reg. Place"; Boolean)
         {
             Caption = 'Change VAT Registration Place';
-            Description = 'MGTS10.00.005';
+
         }
         field(50149; "DEL EDI"; Boolean)
         {
             Caption = 'EDI';
-            Description = 'MGTS10.009';
+
+
         }
         field(50150; "DEL Show VAT In Invoice"; Boolean)
         {
             Caption = 'Show VAT In Invoice';
-            Description = 'MGTS10.032';
+
         }
         field(60001; "DEL Note Quality"; Code[10])
         {
             Caption = 'Quality rating';
-            TableRelation = Note.Code WHERE (Type audit=FILTER(Quality));
+
+            TableRelation = "DEL Note".Code WHERE("Type audit" = FILTER(Quality));
+
         }
         field(60002; "DEL Realisation Date Quality"; Date)
         {
@@ -483,7 +449,9 @@ tableextension 50013 "DEL Customer" extends Customer
         field(60100; "DEL Note Soc"; Code[10])
         {
             Caption = 'Social rating';
-            TableRelation = Note.Code WHERE (Type audit=FILTER(social));
+
+            TableRelation = "DEL Note".Code WHERE("Type audit" = FILTER(social));
+
         }
         field(60101; "DEL Realisation Date Soc"; Date)
         {
@@ -492,7 +460,9 @@ tableextension 50013 "DEL Customer" extends Customer
         field(60102; "DEL Note Env"; Code[10])
         {
             Caption = 'Environmental rating';
-            TableRelation = Note.Code WHERE (Type audit=FILTER(Environmental));
+
+            TableRelation = "DEL Note".Code WHERE("Type audit" = FILTER(Environmental));
+
         }
         field(60103; "DEL Realisation Date Env"; Date)
         {
@@ -548,7 +518,9 @@ tableextension 50013 "DEL Customer" extends Customer
         field(60117; "DEL Segmentation Description"; Text[250])
         {
             Caption = 'Segmentation Description';
-            TableRelation = "Dimension Value".Name WHERE (Dimension Code=FILTER(SEGMENT));
+
+            TableRelation = "Dimension Value".Name WHERE("Dimension Code" = FILTER('SEGMENT'));
+
             ValidateTableRelation = false;
         }
         field(60118; "DEL Shruvat"; Boolean)
@@ -565,7 +537,9 @@ tableextension 50013 "DEL Customer" extends Customer
         {
             Caption = 'Sales data report';
         }
-        field(60122; "DEL Assist in relat. with the BU"; Boolean)
+
+        field(60122; "DEL Ass. in relat. with the BU"; Boolean)
+
         {
             Caption = 'Assist in relations with the BU (Blue Helmets)';
         }
@@ -577,15 +551,17 @@ tableextension 50013 "DEL Customer" extends Customer
         {
             Caption = 'Vision and Market Analysis';
         }
-        field(60125; "DEL Presentation provider strategy"; Boolean)
+
+        field(60125; "DEL Pres. provider strategy"; Boolean)
         {
             Caption = 'Presentation provider strategy';
         }
-        field(60126; "DEL Presentation MOBIVIA strategy"; Boolean)
+        field(60126; "DEL Pres. MOBIVIA strategy"; Boolean)
         {
             Caption = 'Presentation MOBIVIA strategy';
         }
-        field(60127; "DEL Adv on the adapt. of the offer"; Boolean)
+        field(60127; "DEL Adv on the adapt.of the offer"; Boolean)
+
         {
             Caption = 'Advising on the adaptation of the offer';
         }
@@ -597,149 +573,115 @@ tableextension 50013 "DEL Customer" extends Customer
         {
             Caption = 'Forecast';
         }
-        field(60130; "DEL Frequency of delivery 1"; Option)
+
+        field(60130; "DEL Frequency of delivery 1"; Enum "DEL Frequency of delivery 1")
         {
             Caption = 'Frequency of delivery';
-            Description = 'for field 60120';
-            OptionCaption = ' ,Monthly,Quarterly,Semi-annual,Annual,No frequency';
-            OptionMembers = " ",Monthly,Quarterly,"Semi-annual",Annual,"No frequency";
+
         }
-        field(60131; "DEL Invoicing Frequency 1"; Option)
+        field(60131; "DEL Invoicing Frequency 1"; Enum "DEL Frequency of delivery 1")
         {
             Caption = 'Invoicing Frequency';
-            Description = 'for field 60120';
-            OptionCaption = ' ,Monthly,Quarterly,Semi-annual,Annual,No frequency';
-            OptionMembers = " ",Monthly,Quarterly,"Semi-annual",Annual,"No frequency";
+
+
         }
-        field(60132; "DEL Frequency of delivery 2"; Option)
+        field(60132; "DEL Frequency of delivery 2"; Enum "DEL Frequency of delivery 1")
         {
             Caption = 'Frequency of delivery';
-            Description = 'for field 60121';
-            OptionCaption = ' ,Monthly,Quarterly,Semi-annual,Annual,No frequency';
-            OptionMembers = " ",Monthly,Quarterly,"Semi-annual",Annual,"No frequency";
+
+
         }
-        field(60133; "DEL Invoicing Frequency 2"; Option)
+        field(60133; "DEL Invoicing Frequency 2"; Enum "DEL Frequency of delivery 1")
         {
             Caption = 'Invoicing Frequency';
-            Description = 'for field 60121';
-            OptionCaption = ' ,Monthly,Quarterly,Semi-annual,Annual,No frequency';
-            OptionMembers = " ",Monthly,Quarterly,"Semi-annual",Annual,"No frequency";
+
+
         }
-        field(60134; "DEL Frequency of delivery 3"; Option)
+        field(60134; "DEL Frequency of delivery 3"; Enum "DEL Frequency of delivery 1")
         {
             Caption = 'Frequency of delivery';
-            Description = 'for field 60122';
-            OptionCaption = ' ,Monthly,Quarterly,Semi-annual,Annual,No frequency';
-            OptionMembers = " ",Monthly,Quarterly,"Semi-annual",Annual,"No frequency";
+
         }
-        field(60135; "DEL Invoicing Frequency 3"; Option)
+        field(60135; "DEL Invoicing Frequency 3"; Enum "DEL Frequency of delivery 1")
         {
             Caption = 'Invoicing Frequency';
-            Description = 'for field 60122';
-            OptionCaption = ' ,Monthly,Quarterly,Semi-annual,Annual,No frequency';
-            OptionMembers = " ",Monthly,Quarterly,"Semi-annual",Annual,"No frequency";
+
         }
-        field(60136; "DEL Frequency of delivery 4"; Option)
+        field(60136; "DEL Frequency of delivery 4"; Enum "DEL Frequency of delivery 1")
         {
             Caption = 'Frequency of delivery';
-            Description = 'for field 60123';
-            OptionCaption = ' ,Monthly,Quarterly,Semi-annual,Annual,No frequency';
-            OptionMembers = " ",Monthly,Quarterly,"Semi-annual",Annual,"No frequency";
+
         }
-        field(60137; "DEL Invoicing Frequency 4"; Option)
+        field(60137; "DEL Invoicing Frequency 4"; Enum "DEL Frequency of delivery 1")
         {
             Caption = 'Invoicing Frequency';
-            Description = 'for field 60123';
-            OptionCaption = ' ,Monthly,Quarterly,Semi-annual,Annual,No frequency';
-            OptionMembers = " ",Monthly,Quarterly,"Semi-annual",Annual,"No frequency";
+
         }
-        field(60138; "DEL Frequency of delivery 5"; Option)
+        field(60138; "DEL Frequency of delivery 5"; Enum "DEL Frequency of delivery 1")
         {
             Caption = 'Frequency of delivery';
-            Description = 'for field 60124';
-            OptionCaption = ' ,Monthly,Quarterly,Semi-annual,Annual,No frequency';
-            OptionMembers = " ",Monthly,Quarterly,"Semi-annual",Annual,"No frequency";
+
         }
-        field(60139; "DEL Invoicing Frequency 5"; Option)
+        field(60139; "DEL Invoicing Frequency 5"; Enum "DEL Frequency of delivery 1")
         {
             Caption = 'Invoicing Frequency';
-            Description = 'for field 60124';
-            OptionCaption = ' ,Monthly,Quarterly,Semi-annual,Annual,No frequency';
-            OptionMembers = " ",Monthly,Quarterly,"Semi-annual",Annual,"No frequency";
+
         }
-        field(60140; "DEL Frequency of delivery 6"; Option)
+        field(60140; "DEL Frequency of delivery 6"; Enum "DEL Frequency of delivery 1")
         {
             Caption = 'Frequency of delivery';
-            Description = 'for field 60125';
-            OptionCaption = ' ,Monthly,Quarterly,Semi-annual,Annual,No frequency';
-            OptionMembers = " ",Monthly,Quarterly,"Semi-annual",Annual,"No frequency";
+
         }
-        field(60141; "DEL Invoicing Frequency 6"; Option)
+        field(60141; "DEL Invoicing Frequency 6"; Enum "DEL Frequency of delivery 1")
         {
             Caption = 'Invoicing Frequency';
-            Description = 'for field 60125';
-            OptionCaption = ' ,Monthly,Quarterly,Semi-annual,Annual,No frequency';
-            OptionMembers = " ",Monthly,Quarterly,"Semi-annual",Annual,"No frequency";
+
         }
-        field(60142; "DEL Frequency of delivery 7"; Option)
+        field(60142; "DEL Frequency of delivery 7"; Enum "DEL Frequency of delivery 1")
         {
             Caption = 'Frequency of delivery';
-            Description = 'for field 60126';
-            OptionCaption = ' ,Monthly,Quarterly,Semi-annual,Annual,No frequency';
-            OptionMembers = " ",Monthly,Quarterly,"Semi-annual",Annual,"No frequency";
+
         }
-        field(60143; "DEL Invoicing Frequency 7"; Option)
+        field(60143; "DEL Invoicing Frequency 7"; Enum "DEL Frequency of delivery 1")
         {
             Caption = 'Invoicing Frequency';
-            Description = 'for field 60126';
-            OptionCaption = ' ,Monthly,Quarterly,Semi-annual,Annual,No frequency';
-            OptionMembers = " ",Monthly,Quarterly,"Semi-annual",Annual,"No frequency";
+
         }
-        field(60144; "DEL Frequency of delivery 8"; Option)
+        field(60144; "DEL Frequency of delivery 8"; Enum "DEL Frequency of delivery 1")
         {
             Caption = 'Frequency of delivery';
-            Description = 'for field 60127';
-            OptionCaption = ' ,Monthly,Quarterly,Semi-annual,Annual,No frequency';
-            OptionMembers = " ",Monthly,Quarterly,"Semi-annual",Annual,"No frequency";
+
         }
-        field(60145; "DEL Invoicing Frequency 8"; Option)
+        field(60145; "DEL Invoicing Frequency 8"; Enum "DEL Frequency of delivery 1")
         {
             Caption = 'Invoicing Frequency';
-            Description = 'for field 60127';
-            OptionCaption = ' ,Monthly,Quarterly,Semi-annual,Annual,No frequency';
-            OptionMembers = " ",Monthly,Quarterly,"Semi-annual",Annual,"No frequency";
+
         }
-        field(60146; "DEL Frequency of delivery 9"; Option)
+        field(60146; "DEL Frequency of delivery 9"; Enum "DEL Frequency of delivery 1")
         {
             Caption = 'Frequency of delivery';
-            Description = 'for field 60128';
-            OptionCaption = ' ,Monthly,Quarterly,Semi-annual,Annual,No frequency';
-            OptionMembers = " ",Monthly,Quarterly,"Semi-annual",Annual,"No frequency";
+
         }
-        field(60147; "DEL Invoicing Frequency 9"; Option)
+        field(60147; "DEL Invoicing Frequency 9"; Enum "DEL Frequency of delivery 1")
         {
             Caption = 'Invoicing Frequency';
-            Description = 'for field 60128';
-            OptionCaption = ' ,Monthly,Quarterly,Semi-annual,Annual,No frequency';
-            OptionMembers = " ",Monthly,Quarterly,"Semi-annual",Annual,"No frequency";
+
         }
-        field(60148; "DEL Frequency of delivery 10"; Option)
+        field(60148; "DEL Frequency of delivery 10"; Enum "DEL Frequency of delivery 1")
         {
             Caption = 'Frequency of delivery';
-            Description = 'for field 60129';
-            OptionCaption = ' ,Monthly,Quarterly,Semi-annual,Annual,No frequency';
-            OptionMembers = " ",Monthly,Quarterly,"Semi-annual",Annual,"No frequency";
+
         }
-        field(60149; "DEL Invoicing Frequency 10"; Option)
+        field(60149; "DEL Invoicing Frequency 10"; Enum "DEL Frequency of delivery 1")
         {
             Caption = 'Invoicing Frequency';
-            Description = 'for field 60129';
-            OptionCaption = ' ,Monthly,Quarterly,Semi-annual,Annual,No frequency';
-            OptionMembers = " ",Monthly,Quarterly,"Semi-annual",Annual,"No frequency";
+
+
         }
     }
 
 
+<<<<<<< HEAD
     //Unsupported feature: Code Modification on "OnModify".
 
     //trigger OnModify()
@@ -785,5 +727,6 @@ tableextension 50013 "DEL Customer" extends Customer
     var
         CustPriceGroup: Record "6";
         Text50000: Label '%1|%2';
+
 }
 

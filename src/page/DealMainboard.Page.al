@@ -41,7 +41,7 @@ page 50030 "DEL Deal Mainboard"
                               Type = CONST(VCO),
                               Instance = CONST(planned);
             }
-            part("Subpage Logistic"; 50037)
+            part("Subpage Logistic"; "DEL Subform Logistic")
             {
                 Caption = 'Logistique';
                 SubPageLink = Deal_ID = FIELD(ID);
@@ -54,7 +54,7 @@ page 50030 "DEL Deal Mainboard"
                 trigger OnLookup(var Text: Text): Boolean
                 var
                     dealShipment_Re_Loc: Record "DEL Deal Shipment";
-                    mypage: Page "50040";
+                    mypage: Page "DEL Deal Ship. Sele.";
                 begin
                     dealShipment_Re_Loc.RESET();
                     dealShipment_Re_Loc.SETRANGE(Deal_ID, ID);
@@ -86,17 +86,17 @@ page 50030 "DEL Deal Mainboard"
                         CurrPage.ShipmentSubpage.PAGE.FNC_SetFilters(ID, '');
                 end;
             }
-            part(ShipmentSubpage; 50041)
+            part(ShipmentSubpage; "Deal Posted Purch. Rcpt. Sub.")
             {
                 Caption = 'Détail Articles';
             }
-            part("Prévu"; 50033)
+            part("Prévu"; "DEL Subform Planned")
             {
                 Caption = 'Prévu';
                 SubPageLink = Deal_ID = FIELD(ID),
                               Instance = CONST(planned);
             }
-            part("Réalisé"; 50034)
+            part("Réalisé"; "DEL Subform Real")
             {
                 Caption = 'Réalisé';
                 SubPageLink = Deal_ID = FIELD(ID),
@@ -111,10 +111,10 @@ page 50030 "DEL Deal Mainboard"
                 trigger OnLookup(var Text: Text): Boolean
                 var
                     dealShipment_Re_Loc: Record "DEL Deal Shipment";
-                    myPage: Page "50040";
+                    myPage: Page "DEL Deal Ship. Sele.";
                 begin
                     dealShipment_Re_Loc.RESET();
-                    dealShipment_Re_Loc.SETRANGE(Deal_ID, ID);
+                    dealShipment_Re_Loc.SETRANGE(Deal_ID, Rec.ID);
 
                     CLEAR(myPage);
                     myPage.SETTABLEVIEW(dealShipment_Re_Loc);
@@ -137,7 +137,7 @@ page 50030 "DEL Deal Mainboard"
                     PLLogisticShipmentNoCoOnAfterV;
                 end;
             }
-            part(PLLogistic; 50045)
+            part(PLLogistic; "DEL Subform P&L Logistic")
             {
                 Caption = 'P&&L Logistique';
                 Editable = false;
@@ -150,10 +150,10 @@ page 50030 "DEL Deal Mainboard"
                 trigger OnLookup(var Text: Text): Boolean
                 var
                     dealShipment_Re_Loc: Record "DEL Deal Shipment";
-                    myPage: Page "50040";
+                    myPage: Page "DEL Deal Ship. Sele.";
                 begin
                     dealShipment_Re_Loc.RESET();
-                    dealShipment_Re_Loc.SETRANGE(Deal_ID, ID);
+                    dealShipment_Re_Loc.SETRANGE(Deal_ID, Rec.ID);
 
                     CLEAR(myPage);
                     myPage.SETTABLEVIEW(dealShipment_Re_Loc);
@@ -172,12 +172,11 @@ page 50030 "DEL Deal Mainboard"
                 var
                     dealShipment_Re_Loc: Record "DEL Deal Shipment";
                 begin
-                    //dealShipment_Re_Loc.GET(ItemDetailShipmentNo_Co);
-                    //Currpage.ShipmentSubpage.page.UpdateFilters(dealShipment_Re_Loc."BR No.");
+
                     PLDetailShipmentNoCoOnAfterVal;
                 end;
             }
-            part(PositionDetails; 50035)
+            part(PositionDetails; "DEL Subform P&L Details")
             {
                 Caption = 'P&&L Détail';
                 Editable = false;
@@ -205,8 +204,8 @@ page 50030 "DEL Deal Mainboard"
                     trigger OnAction()
                     var
                         DealShip_Re_Loc: Record "DEL Deal Shipment";
-                        DealShipList_Fo_Loc: Page "50040";
-                        CurrencyExchange_page_Loc: Page "50039";
+                        DealShipList_Fo_Loc: Page "DEL Deal Ship. Sele.";
+                        CurrencyExchange_page_Loc: Page "DEL Currency Exchange";
                     begin
                         DealShipList_Fo_Loc.LOOKUPMODE := TRUE;
                         IF DealShipList_Fo_Loc.RUNMODAL = ACTION::LookupOK THEN BEGIN
@@ -225,11 +224,10 @@ page 50030 "DEL Deal Mainboard"
 
                     trigger OnAction()
                     var
-                        CurrencyExchange_Re_Loc: Record "50028";
-                        CurrencyExchange_page_Loc: Page "50039";
+                        CurrencyExchange_Re_Loc: Record "DEL Currency Exchange";
+                        CurrencyExchange_page_Loc: Page "DEL Currency Exchange";
                     begin
-                        //obsolet 05.08.08
-                        //page.RUNMODAL(page::"Currency Exchange");
+
 
                         CLEAR(CurrencyExchange_page_Loc);
 
@@ -257,11 +255,9 @@ page 50030 "DEL Deal Mainboard"
                     trigger OnAction()
                     var
                         requestID_Co_Loc: Code[20];
-                        urm_Re_Loc: Record "50039";
+                        urm_Re_Loc: Record "DEL Update Request Manager";
                     begin
-                        //START CHG02
-                        //Deal_Cu.FNC_Reinit_Deal(ID,FALSE,FALSE);
-                        //STOP CHG02
+
 
                         requestID_Co_Loc := UpdateRequestManager_Cu.FNC_Add_Request(
                           ID,
@@ -272,8 +268,7 @@ page 50030 "DEL Deal Mainboard"
 
                         urm_Re_Loc.GET(requestID_Co_Loc);
 
-                        //begin THM optimisation
-                        //UpdateRequestManager_Cu.FNC_Process_Requests(urm_Re_Loc,FALSE,FALSE,TRUE);
+
 
                         UpdateRequestManager_Cu.FNC_Process_RequestsDeal(urm_Re_Loc, FALSE, FALSE, TRUE, requestID_Co_Loc);
                         urm_Re_Loc.SETRANGE(urm_Re_Loc.ID, requestID_Co_Loc);
@@ -294,7 +289,7 @@ page 50030 "DEL Deal Mainboard"
                     trigger OnAction()
                     var
                         requestID_Co_Loc: Code[20];
-                        urm_Re_Loc: Record "50039";
+                        urm_Re_Loc: Record "DEL Update Request Manager";
                     begin
 
                         requestID_Co_Loc := UpdateRequestManager_Cu.FNC_Add_Request(
@@ -306,15 +301,12 @@ page 50030 "DEL Deal Mainboard"
 
                         urm_Re_Loc.GET(requestID_Co_Loc);
 
-                        //begin THM optimisation
-
-                        //UpdateRequestManager_Cu.FNC_Process_Requests(urm_Re_Loc,FALSE,TRUE,TRUE);
 
                         UpdateRequestManager_Cu.FNC_Process_RequestsDeal(urm_Re_Loc, FALSE, TRUE, TRUE, requestID_Co_Loc);
                         urm_Re_Loc.SETRANGE(urm_Re_Loc.ID, requestID_Co_Loc);
                         IF urm_Re_Loc.FINDFIRST THEN
                             urm_Re_Loc.DELETE;
-                        // end THM
+
 
                         CurrPage.UPDATE();
                     end;
@@ -325,146 +317,31 @@ page 50030 "DEL Deal Mainboard"
 
     trigger OnAfterGetRecord()
     var
-        plannedElement_Re_Loc: Record "50021";
-        realElement_Re_Loc: Record "50021";
-        position_Re_Loc: Record "50022";
-        item_Re_Loc: Record "27";
+        plannedElement_Re_Loc: Record "DEL Element";
+        realElement_Re_Loc: Record "DEL Element";
+        position_Re_Loc: Record "DEL Position";
+        item_Re_Loc: Record Item;
         dealShipment_Re_Loc: Record "DEL Deal Shipment";
-        BR_Header_Re_Loc: Record "120";
-        purchRcptLine_Re_Loc: Record "121";
-        element_Re_Loc: Record "50021";
+        BR_Header_Re_Loc: Record "Purch. Rcpt. Header";
+        purchRcptLine_Re_Loc: Record "Purch. Rcpt. Line";
+        element_Re_Loc: Record "DEL Element";
         amount_Dec_Loc: Decimal;
-        dealShipmentConnection_Re_Loc: Record "50032";
-        elementConnection_Re_Loc: Record "50027";
-        dealShipCon_Re_Loc: Record "50032";
+        dealShipmentConnection_Re_Loc: Record "DEL Deal Shipment Connection";
+        elementConnection_Re_Loc: Record "DEL Element Connection";
+        dealShipCon_Re_Loc: Record "DEL Deal Shipment Connection";
     begin
         FNC_InitVars();
 
-        //------------------------------------------
-        /*ONGLET LOGISTIQUE*/
-        //------------------------------------------
+
         CurrPage."Subpage Logistic".PAGE.FNC_Set_Deal_ID(ID);
 
-        //------------------------------------------
-        /*ONGLET ITEMS DETAIL*/
-        //------------------------------------------
+
         IF ItemDetailShipmentNo_Co = '' THEN
             CurrPage.ShipmentSubpage.PAGE.FNC_SetFilters(ID, '');
 
-        //------------------------------------------
-        /*ONGLET P&L*/
-        //------------------------------------------
 
-        /*
-        P = Planned
-        R = Real
-        D = Delta
-        */
-
-        //PLANNED
-        /*
-          P_Sales_Dec     := Deal_Cu.FNC_Get_VCO_Amount(ID, PLShipmentNo_Co);
-          P_Purchases_Dec := Deal_Cu.FNC_Get_ACO_Amount(ID, PLShipmentNo_Co);
-          P_Fees_Dec      := Deal_Cu.FNC_Get_Fee_Amount(ID, PLShipmentNo_Co);
-        
-          P_Gross_Margin_Dec := P_Sales_Dec + P_Purchases_Dec;
-          P_Final_Margin_Dec := P_Gross_Margin_Dec + P_Fees_Dec;
-        
-          IF P_Sales_Dec <> 0 THEN BEGIN
-            P_Percent_Gross_Margin_Dec := ((P_Gross_Margin_Dec * 100) / P_Sales_Dec) / 100;
-        
-            //START CHG01
-            //si la marge est positive, on affiche l'indicateur (barre pourcentage) et on cache le label
-            IF (((P_Final_Margin_Dec * 100) / P_Sales_Dec) / 100 > 0) THEN BEGIN
-              P_Percent_Final_Margin_Dec := ((P_Final_Margin_Dec * 100) / P_Sales_Dec) / 100;
-              PPercFinalMarginCtrlVisible := TRUE;
-              PNegPercFinalMarginCtrlVisible := FALSE;
-            //sinon on masque l'indicateur (car il ne peut pas afficher de % négatifs) et on affiche le label avec le pourcentage négatif
-            END ELSE BEGIN
-              P_Neg_Perc_Final_Margin_Dec := ((P_Final_Margin_Dec * 100) / P_Sales_Dec);
-              PPercFinalMarginCtrlVisible := FALSE;
-              PNegPercFinalMarginCtrlVisible := TRUE;
-            END;
-            //STOP CHG01
-        
-            //MESSAGE(pageAT(((P_Final_Margin_Dec * 100) / P_Sales_Dec) / 100));
-          END;
-        
-        //REAL
-          R_Sales_Dec     := Deal_Cu.FNC_Get_SalesInvoice_Amount(ID, PLShipmentNo_Co)
-                             + Deal_Cu.FNC_Get_SalesCrMemo_Amount(ID, PLShipmentNo_Co);
-          R_Purchases_Dec := Deal_Cu.FNC_Get_PurchInvoice_Amount(ID, PLShipmentNo_Co)
-                             + Deal_Cu.FNC_Get_PurchCrMemo_Amount(ID, PLShipmentNo_Co);
-          R_Fees_Dec      := Deal_Cu.FNC_Get_Invoice_Amount(ID, PLShipmentNo_Co);
-        
-          R_Gross_Margin_Dec := R_Sales_Dec + R_Purchases_Dec;
-          R_Final_Margin_Dec := R_Gross_Margin_Dec + R_Fees_Dec;
-        
-          IF R_Sales_Dec <> 0 THEN BEGIN
-            R_Percent_Gross_Margin_Dec := ((R_Gross_Margin_Dec * 100) / R_Sales_Dec) / 100;
-        
-            //START CHG01
-            //si la marge est positive, on affiche l'indicateur (barre pourcentage) et on cache le label
-            IF (((R_Final_Margin_Dec * 100) / R_Sales_Dec) / 100 > 0) THEN BEGIN
-              R_Percent_Final_Margin_Dec := ((R_Final_Margin_Dec * 100) / R_Sales_Dec) / 100;
-              RPercFinalMarginCtrlVisible := TRUE;
-              RNegPercFinalMarginCtrlVisible := FALSE;
-            //sinon on masque l'indicateur (car il ne peut pas afficher de % négatifs) et on affiche le label avec le pourcentage négatif
-            END ELSE BEGIN
-              R_Neg_Perc_Final_Margin_Dec := ((R_Final_Margin_Dec * 100) / R_Sales_Dec);
-              RPercFinalMarginCtrlVisible := FALSE;
-              RNegPercFinalMarginCtrlVisible := TRUE;
-            END;
-            //STOP CHG01
-        
-          END ELSE BEGIN
-            RPercFinalMarginCtrlVisible := TRUE;
-            RNegPercFinalMarginCtrlVisible := FALSE;
-          END;
-        
-        //PROJECTED
-          Pro_Sales_Dec     := Deal_Cu.FNC_Get_ProSales_Amount(ID, PLShipmentNo_Co);
-          Pro_Purchases_Dec := Deal_Cu.FNC_Get_ProPurch_Amount(ID, PLShipmentNo_Co);
-          Pro_Fees_Dec      := Deal_Cu.FNC_Get_ProLog_Amount(ID, PLShipmentNo_Co);
-        
-          Pro_Gross_Margin_Dec := Pro_Sales_Dec + Pro_Purchases_Dec;
-          Pro_Final_Margin_Dec := Pro_Gross_Margin_Dec + Pro_Fees_Dec;
-        
-          IF Pro_Sales_Dec <> 0 THEN BEGIN
-            Pro_Percent_Gross_Margin_Dec := ((Pro_Gross_Margin_Dec * 100) / Pro_Sales_Dec) / 100;
-            //Pro_Percent_Final_Margin_Dec := ((Pro_Final_Margin_Dec * 100) / Pro_Sales_Dec) / 100;
-        
-            //START CHG01
-            //si la marge est positive, on affiche l'indicateur (barre pourcentage) et on cache le label
-            IF (((Pro_Final_Margin_Dec * 100) / Pro_Sales_Dec) / 100 > 0) THEN BEGIN
-              Pro_Percent_Final_Margin_Dec := ((Pro_Final_Margin_Dec * 100) / Pro_Sales_Dec) / 100;
-              ProPercFinalMarginCtrlVisible := TRUE;
-              ProNegPercFinalMarginCtrlVisib := FALSE;
-            //sinon on masque l'indicateur (car il ne peut pas afficher de % négatifs) et on affiche le label avec le pourcentage négatif
-            END ELSE BEGIN
-              Pro_Neg_Perc_Final_Margin_Dec := ((Pro_Final_Margin_Dec * 100) / Pro_Sales_Dec);
-              ProPercFinalMarginCtrlVisible := FALSE;
-              ProNegPercFinalMarginCtrlVisib := TRUE;
-            END;
-            //STOP CHG01
-        
-          END;
-        
-        
-        //DELTA
-          D_Sales_Dec        := R_Sales_Dec        - P_Sales_Dec;
-          D_Purchases_Dec    := R_Purchases_Dec    - P_Purchases_Dec;
-          D_Fees_Dec         := R_Fees_Dec         - P_Fees_Dec;
-          D_Gross_Margin_Dec := R_Gross_Margin_Dec - P_Gross_Margin_Dec;
-          D_Final_Margin_Dec := R_Final_Margin_Dec - P_Final_Margin_Dec;
-        */
-        //------------------------------------------
-        /*ONGLET P&L Logistic*/
-        //------------------------------------------
-        // don't forget to check 1000x that PLLogistic_Re_Temp is REALY set Temporary
-        // before you start to test your solution :o)
         PLLogistic_Re_Temp.DELETEALL;
-        //CLEARALL;
+
 
         IF PLLogisticShipmentNo_Co = '' THEN BEGIN
 
@@ -599,190 +476,90 @@ page 50030 "DEL Deal Mainboard"
                     END;
 
 
-                /*
-                //on regarde si il y a des invoice pour cette livraison
-                dealShipmentConnection_Re_Loc.RESET();
-                dealShipmentConnection_Re_Loc.SETRANGE(Deal_ID, ID);
-                dealShipmentConnection_Re_Loc.SETRANGE(Shipment_ID, PLShipmentNo_Co);
-                IF dealShipmentConnection_Re_Loc.Findfirst THEN BEGIN
-                  REPEAT
 
-                    Element_Cu.FNC_Set_Element(element_Re_Loc, dealShipmentConnection_Re_Loc.Element_ID);
+                    PositionSummary_Re_Temp.DELETEALL;
 
-                    //on regarde sur quel(s) Element(s) l'invoice a été dispatché
-                    IF element_Re_Loc.Type = element_Re_Loc.Type::Invoice THEN BEGIN
 
-                      elementConnection_Re_Loc.RESET();
-                      elementConnection_Re_Loc.SETRANGE(Deal_ID, ID);
-                      elementConnection_Re_Loc.SETRANGE(Element_ID, element_Re_Loc.ID);
-                      elementConnection_Re_Loc.SETRANGE("Apply To", plannedElement_Re_Loc.ID);
-                      IF elementConnection_Re_Loc.Findfirst THEN BEGIN
+                    position_Re_Loc.RESET();
+                    position_Re_Loc.SETFILTER(Deal_ID, ID);
+
+                    IF position_Re_Loc.FINDFIRST THEN
                         REPEAT
-                          //on regarde si l'élément sur lequel a été dispatché une invoice apparatient à la livraison en cours
-                          //IF dealShipCon_Re_Loc.GET(ID, PLShipmentNo_Co, elementConnection_Re_Loc."Apply To") THEN BEGIN
+                            //on controle si cet article a déjà été ajouté (si oui, on skip, si non on calcule et ajoute)
+                            IF NOT PositionSummary_Re_Temp.GET(position_Re_Loc."Deal Item No.") THEN BEGIN
 
-                            //filtre sur les positions avec element id et sub element id correspondant
-                            position_Re_Loc.RESET();
-                            position_Re_Loc.SETRANGE(Deal_ID, ID);
-                            position_Re_Loc.SETRANGE(Element_ID, element_Re_Loc.ID);
-                            position_Re_Loc.SETRANGE("Sub Element_ID", elementConnection_Re_Loc."Apply To");
-                            IF position_Re_Loc.Findfirst THEN
-                              REPEAT
+                                //insertion dans la table temporaire
 
-                                //PLLogistic_Re_Temp."Real Element ID" := realElement_Re_Loc.ID;
-                                PLLogistic_Re_Temp."Real Amount" += position_Re_Loc."Line Amount (EUR)";
+                                PositionSummary_Re_Temp.INIT();
 
-                              UNTIL(position_Re_Loc.NEXT() = 0);
-                          //END
-                        UNTIL(elementConnection_Re_Loc.NEXT() = 0);
-                      END;
+                                PositionSummary_Re_Temp.VALIDATE("Item No.", position_Re_Loc."Deal Item No.");
 
-                    END ELSE BEGIN
+                                IF item_Re_Loc.GET(position_Re_Loc."Deal Item No.") THEN
+                                    PositionSummary_Re_Temp.Description := item_Re_Loc.Description;
 
-                      PLLogistic_Re_Temp.Delta := PLLogistic_Re_Temp."Real Amount" - PLLogistic_Re_Temp."Planned Amount";
-                      IF NOT PLLogistic_Re_Temp.INSERT(FALSE) THEN;
+                                //PLANNED
 
-                    END;
+                                PositionSummary_Re_Temp."Planned Sales" :=
+                                  Deal_Item_Cu.FNC_Get_Sales_Amount(
+                                    Rec.ID, PLDetailShipmentNo_Co, position_Re_Loc."Deal Item No.", position_Re_Loc.Instance::Planned);
 
-                  UNTIL(dealShipmentConnection_Re_Loc.NEXT() = 0);
-                END;
-                //-----------------------------------------------------------------------------------
-                   */
+                                PositionSummary_Re_Temp."Planned Purchases" :=
+                                  Deal_Item_Cu.FNC_Get_Purchases_Amount(
+                                    Rec.ID, PLDetailShipmentNo_Co, position_Re_Loc."Deal Item No.", position_Re_Loc.Instance::Planned);
 
-                /*
-                //on cherche les éléments réalisés pour un élément prévu
-                realElement_Re_Loc.RESET();
-                realElement_Re_Loc.SETCURRENTKEY(Deal_ID, Type);
-                realElement_Re_Loc.SETRANGE(Deal_ID, ID);
-                realElement_Re_Loc.SETRANGE(Type, realElement_Re_Loc.Type::Invoice); //CHG-DEV-PROVISION filter sur invoice|provision
-                realElement_Re_Loc.SETRANGE(Fee_ID, plannedElement_Re_Loc.Fee_ID);
-                realElement_Re_Loc.SETRANGE(Fee_Connection_ID, plannedElement_Re_Loc.Fee_Connection_ID);
-                //on boucle sur tous les elements de type Fee
-                IF realElement_Re_Loc.Findfirst THEN BEGIN
-                  REPEAT
+                                PositionSummary_Re_Temp."Planned Fees" :=
+                                  Deal_Item_Cu.FNC_Get_Fees_Amount(
+                                    Rec.ID, PLDetailShipmentNo_Co, position_Re_Loc."Deal Item No.", position_Re_Loc.Instance::Planned);
 
-                    IF NOT PLLogistic_Re_Temp.GET(plannedElement_Re_Loc.ID, realElement_Re_Loc.ID) THEN BEGIN
+                                PositionSummary_Re_Temp."Planned Gross Margin" :=
+                                  PositionSummary_Re_Temp."Planned Sales" + PositionSummary_Re_Temp."Planned Purchases";
 
-                      //si realElement est enregistré pour cette livraison
-                      IF dealShipmentConnection_Re_Loc.GET(ID, PLLogisticShipmentNo_Co, realElement_Re_Loc.ID) THEN BEGIN
+                                PositionSummary_Re_Temp."Planned Final Margin" :=
+                                  PositionSummary_Re_Temp."Planned Gross Margin" + PositionSummary_Re_Temp."Planned Fees";
 
-                        PLLogistic_Re_Temp."Real Element ID" := realElement_Re_Loc.ID;
-                        PLLogistic_Re_Temp."Real Amount" += Element_Cu.FNC_Get_Amount_From_Positions(realElement_Re_Loc.ID);
+                                IF PositionSummary_Re_Temp."Planned Sales" <> 0 THEN BEGIN
+                                    PositionSummary_Re_Temp."Planned % Of Gross Margin" :=
+                                      ((PositionSummary_Re_Temp."Planned Gross Margin" * 100) / PositionSummary_Re_Temp."Planned Sales") / 100;
 
-                      END;
+                                    PositionSummary_Re_Temp."Planned % Of Final Margin" :=
+                                      ((PositionSummary_Re_Temp."Planned Final Margin" * 100) / PositionSummary_Re_Temp."Planned Sales") / 100;
+                                END;
 
-                   END;
+                                //REAL
 
-                  UNTIL(realElement_Re_Loc.NEXT()=0);
+                                PositionSummary_Re_Temp."Real Sales" :=
+                                  Deal_Item_Cu.FNC_Get_Sales_Amount(
+                                   Rec.ID, PLDetailShipmentNo_Co, position_Re_Loc."Deal Item No.", position_Re_Loc.Instance::Real);
 
-                  PLLogistic_Re_Temp.Delta := PLLogistic_Re_Temp."Real Amount" - PLLogistic_Re_Temp."Planned Amount";
-                  IF NOT PLLogistic_Re_Temp.INSERT(FALSE) THEN;
+                                PositionSummary_Re_Temp."Real Purchases" :=
+                                  Deal_Item_Cu.FNC_Get_Purchases_Amount(
+                                   Rec.ID, PLDetailShipmentNo_Co, position_Re_Loc."Deal Item No.", position_Re_Loc.Instance::Real);
 
-                END ELSE BEGIN
+                                PositionSummary_Re_Temp."Real Fees" :=
+                                  Deal_Item_Cu.FNC_Get_Fees_Amount(
+                                    Rec.ID, PLDetailShipmentNo_Co, position_Re_Loc."Deal Item No.", position_Re_Loc.Instance::Real);
 
-                  PLLogistic_Re_Temp.Delta := PLLogistic_Re_Temp."Real Amount" - PLLogistic_Re_Temp."Planned Amount";
-                  IF NOT PLLogistic_Re_Temp.INSERT(FALSE) THEN;
+                                PositionSummary_Re_Temp."Real Gross Margin" :=
+                                  PositionSummary_Re_Temp."Real Sales" + PositionSummary_Re_Temp."Real Purchases";
 
-                END;
-                */
+                                PositionSummary_Re_Temp."Real Final Margin" :=
+                                  PositionSummary_Re_Temp."Real Gross Margin" + PositionSummary_Re_Temp."Real Fees";
 
-                UNTIL (plannedElement_Re_Loc.NEXT() = 0);
+                                IF PositionSummary_Re_Temp."Real Sales" <> 0 THEN BEGIN
+                                    PositionSummary_Re_Temp."Real % Of Gross Margin" :=
+                                      ((PositionSummary_Re_Temp."Real Gross Margin" * 100) / PositionSummary_Re_Temp."Real Sales") / 100;
 
-        END;
+                                    PositionSummary_Re_Temp."Real % Of Final Margin" :=
+                                      ((PositionSummary_Re_Temp."Real Final Margin" * 100) / PositionSummary_Re_Temp."Real Sales") / 100;
+                                END;
 
-        // Call our Subpage update function
-        CurrPage.PLLogistic.PAGE.SetTempRecord(PLLogistic_Re_Temp);
+                                IF NOT PositionSummary_Re_Temp.INSERT(FALSE) THEN;
 
+                            END;
+                        UNTIL (position_Re_Loc.NEXT() = 0);
 
-        //------------------------------------------
-        /*ONGLET P&L Details*/
-        //------------------------------------------
-
-        // don't forget to check 1000x that PositionSummary_Re_Temp is REALY set Temporary
-        // before you start to test your solution :o)
-        PositionSummary_Re_Temp.DELETEALL;
-        //CLEARALL;
-
-        position_Re_Loc.RESET();
-        position_Re_Loc.SETFILTER(Deal_ID, ID);
-        //on boucle sur toutes les positions, comme ca on est sur d'avoir tous les articles
-        IF position_Re_Loc.FINDFIRST THEN
-            REPEAT
-                //on controle si cet article a déjà été ajouté (si oui, on skip, si non on calcule et ajoute)
-                IF NOT PositionSummary_Re_Temp.GET(position_Re_Loc."Deal Item No.") THEN BEGIN
-
-                    //insertion dans la table temporaire
-
-                    PositionSummary_Re_Temp.INIT();
-
-                    PositionSummary_Re_Temp.VALIDATE("Item No.", position_Re_Loc."Deal Item No.");
-
-                    IF item_Re_Loc.GET(position_Re_Loc."Deal Item No.") THEN
-                        PositionSummary_Re_Temp.Description := item_Re_Loc.Description;
-
-                    //PLANNED
-
-                    PositionSummary_Re_Temp."Planned Sales" :=
-                      Deal_Item_Cu.FNC_Get_Sales_Amount(
-                        ID, PLDetailShipmentNo_Co, position_Re_Loc."Deal Item No.", position_Re_Loc.Instance::Planned);
-
-                    PositionSummary_Re_Temp."Planned Purchases" :=
-                      Deal_Item_Cu.FNC_Get_Purchases_Amount(
-                        ID, PLDetailShipmentNo_Co, position_Re_Loc."Deal Item No.", position_Re_Loc.Instance::Planned);
-
-                    PositionSummary_Re_Temp."Planned Fees" :=
-                      Deal_Item_Cu.FNC_Get_Fees_Amount(
-                        ID, PLDetailShipmentNo_Co, position_Re_Loc."Deal Item No.", position_Re_Loc.Instance::Planned);
-
-                    PositionSummary_Re_Temp."Planned Gross Margin" :=
-                      PositionSummary_Re_Temp."Planned Sales" + PositionSummary_Re_Temp."Planned Purchases";
-
-                    PositionSummary_Re_Temp."Planned Final Margin" :=
-                      PositionSummary_Re_Temp."Planned Gross Margin" + PositionSummary_Re_Temp."Planned Fees";
-
-                    IF PositionSummary_Re_Temp."Planned Sales" <> 0 THEN BEGIN
-                        PositionSummary_Re_Temp."Planned % Of Gross Margin" :=
-                          ((PositionSummary_Re_Temp."Planned Gross Margin" * 100) / PositionSummary_Re_Temp."Planned Sales") / 100;
-
-                        PositionSummary_Re_Temp."Planned % Of Final Margin" :=
-                          ((PositionSummary_Re_Temp."Planned Final Margin" * 100) / PositionSummary_Re_Temp."Planned Sales") / 100;
-                    END;
-
-                    //REAL
-
-                    PositionSummary_Re_Temp."Real Sales" :=
-                      Deal_Item_Cu.FNC_Get_Sales_Amount(
-                        ID, PLDetailShipmentNo_Co, position_Re_Loc."Deal Item No.", position_Re_Loc.Instance::Real);
-
-                    PositionSummary_Re_Temp."Real Purchases" :=
-                      Deal_Item_Cu.FNC_Get_Purchases_Amount(
-                        ID, PLDetailShipmentNo_Co, position_Re_Loc."Deal Item No.", position_Re_Loc.Instance::Real);
-
-                    PositionSummary_Re_Temp."Real Fees" :=
-                      Deal_Item_Cu.FNC_Get_Fees_Amount(
-                        ID, PLDetailShipmentNo_Co, position_Re_Loc."Deal Item No.", position_Re_Loc.Instance::Real);
-
-                    PositionSummary_Re_Temp."Real Gross Margin" :=
-                      PositionSummary_Re_Temp."Real Sales" + PositionSummary_Re_Temp."Real Purchases";
-
-                    PositionSummary_Re_Temp."Real Final Margin" :=
-                      PositionSummary_Re_Temp."Real Gross Margin" + PositionSummary_Re_Temp."Real Fees";
-
-                    IF PositionSummary_Re_Temp."Real Sales" <> 0 THEN BEGIN
-                        PositionSummary_Re_Temp."Real % Of Gross Margin" :=
-                          ((PositionSummary_Re_Temp."Real Gross Margin" * 100) / PositionSummary_Re_Temp."Real Sales") / 100;
-
-                        PositionSummary_Re_Temp."Real % Of Final Margin" :=
-                          ((PositionSummary_Re_Temp."Real Final Margin" * 100) / PositionSummary_Re_Temp."Real Sales") / 100;
-                    END;
-
-                    IF NOT PositionSummary_Re_Temp.INSERT(FALSE) THEN;
-
-                END;
-            UNTIL (position_Re_Loc.NEXT() = 0);
-
-        // Call our Subpage update function
-        CurrPage.PositionDetails.PAGE.SetTempRecord(PositionSummary_Re_Temp);
+                    // Call our Subpage update function
+                    CurrPage.PositionDetails.PAGE.SetTempRecord(PositionSummary_Re_Temp);
 
     end;
 
@@ -798,12 +575,13 @@ page 50030 "DEL Deal Mainboard"
     end;
 
     var
-        Deal_Item_Cu: Codeunit "50024";
-        Element_Cu: Codeunit "50021";
-        Deal_Cu: Codeunit "50020";
-        Position_Cu: Codeunit "50022";
-        DealShipment_Cu: Codeunit "50029";
-        UpdateRequestManager_Cu: Codeunit "50032";
+        //TODO
+        // Deal_Item_Cu: Codeunit "50024";
+        // Element_Cu: Codeunit "50021";
+        // Deal_Cu: Codeunit "50020";
+        // Position_Cu: Codeunit "50022";
+        // DealShipment_Cu: Codeunit "50029";
+        // UpdateRequestManager_Cu: Codeunit "50032";
         Comment: Boolean;
         Pro_Sales_Dec: Decimal;
         Pro_Purchases_Dec: Decimal;
@@ -834,13 +612,13 @@ page 50030 "DEL Deal Mainboard"
         D_Fees_Dec: Decimal;
         D_Gross_Margin_Dec: Decimal;
         D_Final_Margin_Dec: Decimal;
-        PositionSummary_Re_Temp: Record "50029" temporary;
+        PositionSummary_Re_Temp: Record "DEL Position Summary" temporary;
         ShipmentList_Te: Text[50];
         ItemDetailShipmentNo_Co: Code[20];
         PLDetailShipmentNo_Co: Code[20];
         PLShipmentNo_Co: Code[20];
         PLLogisticShipmentNo_Co: Code[20];
-        PLLogistic_Re_Temp: Record "50036" temporary;
+        PLLogistic_Re_Temp: Record "DEL P&L Logistic" temporary;
         [InDataSet]
         PPercFinalMarginCtrlVisible: Boolean;
         [InDataSet]
@@ -869,7 +647,7 @@ page 50030 "DEL Deal Mainboard"
         Text19042911: Label 'Delta';
         Text19010011: Label 'N G T S';
 
-    [Scope('Internal')]
+
     procedure FNC_InitVars()
     begin
         D_Sales_Dec := 0;

@@ -1,14 +1,6 @@
-page 50065 "Document Sheet"
+page 50065 "DEL Document Sheet"
 {
-    // +---------------------------------------------------------------+
-    // | Logico SA                                                     |
-    // | Status:                                                       |
-    // | Customer/Project:                                             |
-    // +---------------------------------------------------------------+
-    // Requirement UserID   Date       Where   Description
-    // -----------------------------------------------------------------
-    // T-00652                                 create object
-    // T-00678     THM      12.09.14          modify SourceTableView
+
 
     Caption = 'Document Sheet';
     DataCaptionFields = "No.";
@@ -16,44 +8,50 @@ page 50065 "Document Sheet"
     InsertAllowed = false;
     PageType = Worksheet;
     PopulateAllFields = true;
-    SourceTable = Table50008;
-    SourceTableView = SORTING (Table Name, No., Comment Entry No., Line No.)
+    SourceTable = "DEL Document Line";
+    SourceTableView = SORTING("Table Name", "No.", "Comment Entry No.", "Line No.")
                       ORDER(Ascending)
-                      WHERE (Type liasse=FILTER(' '));
+                      WHERE("Type liasse" = FILTER(' '));
 
     layout
     {
         area(content)
         {
-            repeater()
+            repeater(Control1)
             {
-                field("Insert Date";"Insert Date")
+                field("Insert Date"; Rec."Insert Date")
                 {
+                    Caption = 'Date';
                 }
-                field("Insert Time";"Insert Time")
+                field("Insert Time"; Rec."Insert Time")
                 {
+                    Caption = 'Time';
                 }
-                field(Path;Path)
+                field(Path; Rec.Path)
                 {
+                    Caption = 'Path';
                 }
-                field("File Name";"File Name")
+                field("File Name"; Rec."File Name")
                 {
+                    Caption = 'File Name';
                 }
-                field("Notation Type";"Notation Type")
+                field("Notation Type"; Rec."Notation Type")
                 {
+                    Caption = 'Rating type';
                 }
-                field("User ID";"User ID")
+                field("User ID"; Rec."User ID")
                 {
+                    Caption = 'User ID';
                 }
             }
         }
         area(factboxes)
         {
-            systempart(;Links)
+            systempart(Links; Links)
             {
                 Visible = false;
             }
-            systempart(;Notes)
+            systempart(Notes; Notes)
             {
                 Visible = false;
             }
@@ -64,7 +62,7 @@ page 50065 "Document Sheet"
     {
         area(processing)
         {
-            action(Add)
+            action(MgtsAdd)
             {
                 Caption = 'Add';
                 Ellipsis = true;
@@ -78,7 +76,7 @@ page 50065 "Document Sheet"
                     Add;
                 end;
             }
-            action(Open)
+            action(MgtsOpen)
             {
                 Caption = 'Open';
                 Image = View;
@@ -89,7 +87,7 @@ page 50065 "Document Sheet"
 
                 trigger OnAction()
                 begin
-                    Open;
+                    Open();
                 end;
             }
         }
@@ -105,7 +103,7 @@ page 50065 "Document Sheet"
 
     local procedure Add()
     var
-        DocumentLine: Record "50008";
+        DocumentLine: Record "DEL Document Line";
         oFile: File;
         InStr: InStream;
         OutStr: OutStream;
@@ -114,32 +112,32 @@ page 50065 "Document Sheet"
         LastLineNo: Integer;
     begin
         IF NOT Document_CU.OpenFile(ImportFileName, ServerFileName) THEN
-          EXIT;
+            EXIT;
 
         IF ServerFileName = '' THEN
-          EXIT;
+            EXIT;
 
-        DocumentLine.SETRANGE("Table Name", "Table Name");
-        DocumentLine.SETRANGE("No.", "No.");
+        DocumentLine.SETRANGE(Rec."Table Name", Rec."Table Name");
+        DocumentLine.SETRANGE(Rec."No.", Rec."No.");
         IF DocumentLine.FINDLAST THEN
-          LastLineNo := DocumentLine."Line No.";
+            LastLineNo := DocumentLine."Line No.";
 
-        INIT;
-        "Line No." := LastLineNo + 10000;
+        Rec.INIT();
+        Rec."Line No." := LastLineNo + 10000;
 
         oFile.OPEN(ServerFileName);
         oFile.CREATEINSTREAM(InStr);
-        Document.CREATEOUTSTREAM(OutStr);
+        Rec.Document.CREATEOUTSTREAM(OutStr);
         COPYSTREAM(OutStr, InStr);
         oFile.CLOSE;
 
-        "Insert Date" := TODAY;
-        "Insert Time" := TIME;
+        Rec."Insert Date" := TODAY;
+        Rec."Insert Time" := TIME;
 
-        Path := Document_CU.GetDirectoryName(ImportFileName);
-        "File Name" := Document_CU.GetFileName(ImportFileName);
+        Rec.Path := Document_CU.GetDirectoryName(ImportFileName);
+        Rec."File Name" := Document_CU.GetFileName(ImportFileName);
 
-        INSERT(TRUE);
+        Rec.INSERT(TRUE);
         CurrPage.UPDATE(FALSE);
     end;
 
@@ -163,22 +161,20 @@ page 50065 "Document Sheet"
         ExportFileName: Text;
         cNoDocument: Label 'No document found.';
     begin
-        //CALCFIELDS(Document);
-        //IF NOT Document.HASVALUE THEN
-         // ERROR(cNoDocument);
 
 
-          Directory := Document_CU.TempDirectory;
 
-          oFile.CREATE(Directory + "File Name");
-          oFile.CREATEOUTSTREAM(OutStr);
+        Directory := Document_CU.TempDirectory;
 
-          Document.CREATEINSTREAM(InStr);
-          COPYSTREAM(OutStr, InStr);
+        oFile.CREATE(Directory + Rec."File Name");
+        oFile.CREATEOUTSTREAM(OutStr);
 
-          oFile.CLOSE;
+        Rec.Document.CREATEINSTREAM(InStr);
+        COPYSTREAM(OutStr, InStr);
 
-          HYPERLINK(Directory + "File Name");
+        oFile.CLOSE;
+
+        HYPERLINK(Directory + Rec."File Name");
     end;
 }
 

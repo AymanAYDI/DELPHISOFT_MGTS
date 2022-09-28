@@ -1,39 +1,31 @@
-page 50033 "Subform Planned"
+page 50033 "DEL Subform Planned"
 {
-    // +-------------------------------------------------------------------------------+
-    // | Logico SA - Logiciels & Conseils                                              |
-    // | Stand: 20.04.09                                                               |
-    // |                                                                               |
-    // +-------------------------------------------------------------------------------+
-    // 
-    // ID     Version     Story-Card    Date       Description
-    // ---------------------------------------------------------------------------------
-    // CHG01                            20.04.09   Update field Date
+
 
     Editable = false;
     PageType = ListPart;
-    SourceTable = Table50021;
+    SourceTable = "DEL Element";
 
     layout
     {
         area(content)
         {
-            repeater()
+            repeater(Control1)
             {
                 Editable = false;
-                field(Deal_ID; Deal_ID)
+                field(Deal_ID; Rec.Deal_ID)
                 {
                     Caption = 'Deal ID';
                     Visible = false;
                 }
-                field(Type; Type)
+                field(Type; Rec.Type)
                 {
                     Caption = 'Type';
                 }
-                field("Type No."; "Type No.")
+                field("Type No."; Rec."Type No.")
                 {
                 }
-                field(Fee_ID; Fee_ID)
+                field(Fee_ID; Rec.Fee_ID)
                 {
                     Caption = 'Fee ID';
                 }
@@ -41,10 +33,10 @@ page 50033 "Subform Planned"
                 {
                     Caption = 'Fee Description';
                 }
-                field(Amount; Amount)
+                field(Amount; Rec.Amount)
                 {
                     Caption = 'Amount';
-                    DrillDownPageID = Position;
+                    DrillDownPageID = "DEL Position";
                 }
                 field("<Currency Code>"; Currency_Code)
                 {
@@ -54,12 +46,12 @@ page 50033 "Subform Planned"
                 {
                     Caption = 'Currency Rate';
                 }
-                field("Amount(EUR)"; "Amount(EUR)")
+                field("Amount(EUR)"; Rec."Amount(EUR)")
                 {
                     Caption = 'Amount (EUR)';
-                    DrillDownPageID = Position;
+                    DrillDownPageID = "DEL Position";
                 }
-                field(Date; Date)
+                field("Date"; Rec.Date)
                 {
                 }
             }
@@ -79,30 +71,29 @@ page 50033 "Subform Planned"
 
                 trigger OnAction()
                 var
-                    purchHeader_Re_Loc: Record "38";
-                    purchHeaderArch_Re_Loc: Record "5109";
-                    salesHeader_Re_Loc: Record "36";
-                    salesHeaderArch_Re_Loc: Record "5107";
+                    purchHeader_Re_Loc: Record "Purchase Header";
+                    purchHeaderArch_Re_Loc: Record "Purchase Header Archive";
+                    salesHeader_Re_Loc: Record "Sales Header";
+                    salesHeaderArch_Re_Loc: Record "Sales Header Archive";
                 begin
-                    //MESSAGE(pageAT(Type));
 
-                    CASE Type OF
-                        Type::ACO:
+
+                    CASE Rec.Type OF
+                        Rec.Type::ACO:
                             BEGIN
-                                //on cherche si une version courante existe
+
                                 IF purchHeader_Re_Loc.GET(purchHeader_Re_Loc."Document Type"::Order, "Type No.") THEN BEGIN
-                                    //MESSAGE('ok');
+
                                     PAGE.RUN(PAGE::"Purchase Order", purchHeader_Re_Loc);
                                     EXIT
                                 END;
 
-                                //on cherche si une version archivée existe
                                 purchHeaderArch_Re_Loc.RESET();
                                 purchHeaderArch_Re_Loc.SETRANGE("Document Type", purchHeader_Re_Loc."Document Type"::Order);
-                                purchHeaderArch_Re_Loc.SETFILTER("No.", "Type No.");
-                                //on cherche la dernière occurence dans sa dernière version
+                                purchHeaderArch_Re_Loc.SETFILTER("No.", Rec."Type No.");
+
                                 IF purchHeaderArch_Re_Loc.FIND('+') THEN BEGIN
-                                    //MESSAGE('archive');
+
                                     PAGE.RUN(PAGE::"Purchase Order Archive", purchHeaderArch_Re_Loc);
                                     EXIT
                                 END;
@@ -110,22 +101,22 @@ page 50033 "Subform Planned"
                                 MESSAGE('Document non trouvé..');
 
                             END;
-                        Type::VCO:
+                        Rec.Type::VCO:
                             BEGIN
-                                //on cherche si une version courante existe
+
                                 IF salesHeader_Re_Loc.GET(salesHeader_Re_Loc."Document Type"::Order, "Type No.") THEN BEGIN
-                                    //MESSAGE('ok');
+
                                     PAGE.RUN(PAGE::"Sales Order", salesHeader_Re_Loc);
                                     EXIT
                                 END;
 
-                                //on cherche si une version archivée existe
+
                                 salesHeaderArch_Re_Loc.RESET();
                                 salesHeaderArch_Re_Loc.SETRANGE("Document Type", salesHeader_Re_Loc."Document Type"::Order);
-                                salesHeaderArch_Re_Loc.SETFILTER("No.", "Type No.");
-                                //on cherche la dernière occurence dans sa dernière version
+                                salesHeaderArch_Re_Loc.SETFILTER("No.", Rec."Type No.");
+
                                 IF salesHeaderArch_Re_Loc.FIND('+') THEN BEGIN
-                                    //MESSAGE('archive');
+
                                     PAGE.RUN(PAGE::"Sales Order Archive", salesHeaderArch_Re_Loc);
                                     EXIT
                                 END;
@@ -142,35 +133,27 @@ page 50033 "Subform Planned"
 
     trigger OnAfterGetRecord()
     var
-        currency_Exchange_Re_Loc: Record "50028";
-        position_Re_Loc: Record "50022";
+        currency_Exchange_Re_Loc: Record "DEL Currency Exchange";
+        position_Re_Loc: Record "DEL Position";
     begin
         FeeDescription_Te := '';
-        IF Fee_ID <> '' THEN
-            FeeDescription_Te := Fee_Cu.FNC_Get_Description(Fee_ID);
+        IF Rec.Fee_ID <> '' THEN
+            //TODO  FeeDescription_Te := Fee_Cu.FNC_Get_Description(Fee_ID);
 
-        //18.06.09 obsolet since we work with flowfields
-        /*
-        Amount_Dec := 0;
-        Amount_Dec := Element_Cu.FNC_Get_Amount_From_Positions(ID);
-        
-        Raw_Amount_Dec := 0;
-        Raw_Amount_Dec := Element_Cu.FNC_Get_Raw_Amount_From_Pos(ID);
-        */
 
-        Currency_Code := '';
+            Currency_Code := '';
         Currency_Rate_Dec := 0;
 
         position_Re_Loc.RESET();
-        position_Re_Loc.SETRANGE(Element_ID, ID);
-        IF position_Re_Loc.FINDFIRST THEN BEGIN
+        position_Re_Loc.SETRANGE(Element_ID, Rec.ID);
+        IF position_Re_Loc.FINDFIRST() THEN BEGIN
 
             Currency_Code := position_Re_Loc.Currency;
             Currency_Rate_Dec := position_Re_Loc.Rate;
 
         END;
 
-        IF Type = Type::Fee THEN
+        IF Rec.Type = Rec.Type::Fee THEN
             SeeButtonEnable := FALSE
         ELSE
             SeeButtonEnable := TRUE
@@ -183,9 +166,9 @@ page 50033 "Subform Planned"
     end;
 
     var
-        Fee_Cu: Codeunit "50023";
+        //TODO Fee_Cu: Codeunit 50023;
         FeeDescription_Te: Text[50];
-        Element_Cu: Codeunit "50021";
+        //TODO Element_Cu: Codeunit 50021;
         Amount_Dec: Decimal;
         Raw_Amount_Dec: Decimal;
         Currency_Code: Code[10];
