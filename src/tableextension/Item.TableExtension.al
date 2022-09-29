@@ -233,8 +233,10 @@ tableextension 50020 "DEL Item" extends Item
         }
         field(60002; "DEL Product Group Label"; Text[50])
         {
-            CalcFormula = Lookup("Product Group".Description WHERE(Code = FIELD("Product Group Code"),
-                                                                    "Item Category Code" = FIELD("Item Category Code")));
+            //TODO:Product group is no longer here
+            // CalcFormula = Lookup("Product Group".Description 
+            // WHERE(Code = FIELD("Product Group Code"),
+            // "Item Category Code" = FIELD("Item Category Code")));
             Caption = 'Product Group Description';
 
             Editable = false;
@@ -252,38 +254,39 @@ tableextension 50020 "DEL Item" extends Item
             Editable = false;
             FieldClass = FlowField;
         }
-        field(60005; "DEL NGTS Quality Expert"; Option)
+        field(60005; "DEL NGTS Quality Expert"; Enum "DEL NGTS Quality Expert")
 
         {
             FieldClass = FlowField;
-            CalcFormula = Lookup("DEL Regulation Matrix"."NGTS Quality Expert"
-             WHERE("Item Category Code" = FIELD("Item Category Code"),
-                             "Product Group Code" = FIELD("Product Group Code"),
-                             Mark = FIELD("Marque Produi"t),
-                         "Product Description"=FIELD("Product Description")));
+            //TODO:Product group is no longer here
+            // CalcFormula = Lookup("DEL Regulation Matrix"."NGTS Quality Expert"
+            //  WHERE("Item Category Code" = FIELD("Item Category Code"),
+            //                  "Product Group Code" = FIELD("Product Group Code"),
+            //                  Mark = FIELD("Marque Produi"t),
+            //              "Product Description"=FIELD("Product Description")));
             Caption = 'NGTS Quality Expert';
-          
+
             Editable = false;
-           
-            OptionMembers = " ",JPD,FC,SM,EV,"à definir ";
         }
         field(60006; "DEL Regl. Generale"; Boolean)
         {
-            CalcFormula = Lookup("Regulation Matrix"."Regl. Generale" WHERE (Item Category Code=FIELD(Item Category Code),
-                                                                             Product Group Code=FIELD(Product Group Code),
-                                                                             Mark=FIELD(Marque Produit),
-                                                                             Product Description=FIELD(Product Description)));
-            Caption = 'General Product Regulation';
-            Description = 'T-00716';
-            Editable = false;
             FieldClass = FlowField;
+            //TODO: CalcFormula = Lookup("DEL Regulation Matrix"."Regl. Generale" 
+            // WHERE ("Item Category Code"=FIELD("Item Category Code"),
+
+            //        "DEL Mark"=FIELD("Marque Produit"),
+            //        "Product Description"=FIELD("Product Description")));
+            Caption = 'General Product Regulation';
+
+            Editable = false;
+
         }
         field(60007; "DEL Regl. Matiere"; Boolean)
         {
-            CalcFormula = Lookup("Regulation Matrix"."Regl. Matiere" WHERE (Item Category Code=FIELD(Item Category Code),
-                                                                            Product Group Code=FIELD(Product Group Code),
-                                                                            Mark=FIELD(Marque Produit),
-                                                                            Product Description=FIELD(Product Description)));
+            //TODO CalcFormula = Lookup("Regulation Matrix"."Regl. Matiere" WHERE (Item Category Code=FIELD(Item Category Code),
+            //  Product Group Code=FIELD(Product Group Code),
+            //   Mark=FIELD(Marque Produit),
+            //          Product Description=FIELD(Product Description)));
             Caption = 'Subtance Regulation';
             Description = 'T-00716';
             Editable = false;
@@ -291,34 +294,31 @@ tableextension 50020 "DEL Item" extends Item
         }
         field(60008; "DEL Checklist by item"; Integer)
         {
-            CalcFormula = Count("Regulation Matrix Line" WHERE (Item Category Code=FIELD(Item Category Code),
-                                                                Product Group Code=FIELD(Product Group Code),
-                                                                Product Description=FIELD(Product Description),
-                                                                Mark=FIELD(Marque Produit),
-                                                                Type=FIELD(Regl. Type Filter),
-                                                                No.=FIELD(Regl. No. Filter)));
+            //TODO CalcFormula = Count("Regulation Matrix Line" WHERE (Item Category Code=FIELD(Item Category Code),
+            //                                                     Product Group Code=FIELD(Product Group Code),
+            //                                                     Product Description=FIELD(Product Description),
+            //                                                     Mark=FIELD(Marque Produit),
+            //                                                     Type=FIELD(Regl. Type Filter),
+            //                                                     No.=FIELD(Regl. No. Filter)));
             Caption = 'Checklist by item';
-            Description = 'T-00716';
+
             Editable = false;
             FieldClass = FlowField;
         }
-        field(60010; "DEL Marque Produit"; Option)
+        field(60010; "DEL Marque Produit"; Enum "DEL Marque Produit")
         {
             Caption = 'Brand Type';
-            Description = 'T-00716';
-            OptionCaption = ' ,Own brand,Supplier brand,Licence,No Name,Premium Brand,NC,NA,?,All Marks';
-            OptionMembers = " ",MDD,"Marque Fournisseur",Licence,"Sans Marque","Marque Prestige",NC,NA,"?","All Marks";
 
             trigger OnValidate()
             begin
-                CALCFIELDS("Risque Securitaire","NGTS Quality Expert","Regl. Generale","Regl. Matiere","Nombre Regl. Generale","Nombre Regl. Matiere","Regl. Plan Control","Nbre Regl. Plan control");
-                IF "Marque Produit"<> xRec."Marque Produit" THEN
-                VALIDATE("Product Description",'');
+                CALCFIELDS("DEL Risque Securitaire", "NGTS Quality Expert", "Regl. Generale", "Regl. Matiere", "Nombre Regl. Generale", "Nombre Regl. Matiere", "Regl. Plan Control", "Nbre Regl. Plan control");
+                IF "DEL Marque Produit" <> xRec."Marque Produit" THEN
+                    VALIDATE("DEL Product Description", '');
             end;
         }
         field(60014; "DEL Nombre Regl. Generale"; Integer)
         {
-            CalcFormula = Count("Regulation Matrix Line" WHERE (Item Category Code=FIELD(Item Category Code),
+            CalcFormula = Count("Regulation Matrix Line" WHERE(Item Category Code=FIELD(Item Category Code),
                                                                 Product Group Code=FIELD(Product Group Code),
                                                                 Type=FILTER(General product),
                                                                 Mark=FIELD(Marque Produit),
