@@ -1,77 +1,7 @@
-tableextension 50028 tableextension50028 extends "Purchase Header"
+tableextension 50028 "DEL PurchaseHeader" extends "Purchase Header"
 {
-    // EDI       22.05.13/LOCO/ChC- New fields 50000..50005
-    // +---------------------------------------------------------------+
-    // Requirement UserID   Date       Where   Description
-    // -----------------------------------------------------------------
-    // T-00652     THM     16.04.14           Test qualifier si group compta. fournisseur= march
-    //             THM     23.04.14           add  derogation
-    // T-00799     THM     22.06.16   NTO_UpdateForwardingAgent()   add "Port de départ"
-    //             THM     16.03.17           Add Field 50008,50009,50010
-    //             THM     16.03.17           Add OnInsert
-    //             THM     08.09.17           MIG2017
-    // THM150118   THM     15.01.18            masquer le msg mise à jour taux de change
-    // THM160318   THM     16.03.18           Ship-to Code - OnValidate()
-    // GAP2018-002 : MES 18/06/2018 : Requested Delivery Date
-    // DEL:SAZ             02.07.19           Add filed 50012
-    // DEL.SAZ             12.07.19           Modify Onvalidate "Currency Code"
-    // DEL.SAZ             17.07.19           Modify Onvalidate "Posting Date"
-    // DEL.SAZ             27.12.19           Modify option field 50000 add option Train
-    // 
-    // ------------------------------------------------------------------------------------------
-    // Sign    : Maria Hr. Hristova = mhh
-    // Sign    : Emil Hr. Hristov = ehh
-    // 
-    // Version : MGTS10.00.002,MGTS10.00.006,MGTS10.009,MGTS10.010,MGTS10.013,MGTS10.023,MGTS10.024,
-    //           MGTS10.025
-    // 
-    // ------------------------------------------------------------------------------------------
-    // No.    Version          Date        Sign    Description
-    // ------------------------------------------------------------------------------------------
-    // 001    MGTS10.00.002    08.01.20    mhh     List of changes:
-    //                                              Added new field: 50013 "Vendor Shipment Date"
-    // 
-    // 002     MGTS10.00.006    04.02.20    mhh     List of changes:
-    //                                              Created function: UpdateSalesEstimatedDelivery()
-    //                                              Changed trigger: Ship Per - OnValidate()
-    // -     DEL_QR            30.06.2020  THS      Add Field From 11510 To 11515
-    // 
-    // 003    MGTS10.009       09.09.20    ehh     List of changes:
-    //                                              Added new field: 50014 Type Order ODI
-    //                                              Added new field: 50016 Type Order ODI Description
-    // 
-    // 004    MGTS10.010       09.09.20    ehh     List of changes:
-    //                                              Added new field: 50015 GLN
-    // 
-    // 005     MGTS10.013       09.11.20    mhh     List of changes:
-    //                                              Changed function: RecreatePurchLines()
-    //                                              Changed function: TransferSavedFieldsSpecialOrder()
-    // 
-    // 006     MGTS10.023       28.01.21    mhh     List of changes:
-    //                                              Changed function: CopyBuyFromVendorAddressFieldsFromVendor()
-    //                          02.03.21    mhh     Changed function: UpdateSalesEstimatedDelivery()
-    // 
-    // 007     MGTS10.024       09.02.21    mhh     List of changes:
-    //                                              Added new field: 50017 "Due Date Calculation"
-    //                                              Changed function: InitRecord()
-    //                                              Changed trigger: Payment Terms Code - OnValidate()
-    //                                              Changed trigger: Prepmt. Payment Terms Code - OnValidate()
-    //                                              Changed trigger: Posting Date - OnValidate()
-    //                          28.04.21    mhh     Changed trigger:
-    // 
-    // 008     MGTS10.025       17.02.21    mhh     List of changes:
-    //                                              Changed type of field: 50004 "Code événement"
-    // ------------------------------------------------------------------------------------------
-    // 
-    // 
-    // MGTSEDI10.00.00.00 | 08.10.2020 | EDI Management : C\AL in :  Buy-from Vendor No. - OnValidate(), UpdateSalesEstimatedDelivery
-    // 
-    // MGTSEDI10.00.00.23 | 21.05.2021 | EDI Management : Add C/AL code function NTO_UpdateForwardingAgent
-    //                                                     Add hidedialog condition
     fields
     {
-
-
         //Unsupported feature: Code Modification on ""Buy-from Vendor No."(Field 2).OnValidate".
 
         //trigger "(Field 2)()
@@ -454,60 +384,23 @@ tableextension 50028 tableextension50028 extends "Purchase Header"
         //<<DEL_QR
         */
         //end;
-        field(11510; "Swiss QRBill"; Boolean)
+
+        field(50000; "DEL Ship Per"; enum "DEL Ship Per")
         {
-            Caption = 'Swiss QRBill';
-            Description = 'DEL_QR';
-            Editable = false;
-        }
-        field(11511; "Swiss QRBill IBAN"; Code[50])
-        {
-            Caption = 'IBAN/QR-IBAN';
-            Description = 'DEL_QR';
-            Editable = false;
-        }
-        field(11512; "Swiss QRBill Bill Info"; Text[140])
-        {
-            Caption = 'Billing Information';
-            Description = 'DEL_QR';
-            Editable = false;
-        }
-        field(11513; "Swiss QRBill Unstr. Message"; Text[140])
-        {
-            Caption = 'Unstructured Message';
-            Description = 'DEL_QR';
-            Editable = false;
-        }
-        field(11514; "Swiss QRBill Amount"; Decimal)
-        {
-            Caption = 'Amount';
-            Description = 'DEL_QR';
-            Editable = false;
-        }
-        field(11515; "Swiss QRBill Currency"; Code[10])
-        {
-            Caption = 'Currency';
-            Description = 'DEL_QR';
-            Editable = false;
-        }
-        field(50000; "Ship Per"; Option)
-        {
-            Description = 'EDI';
-            OptionMembers = "Air Flight","Sea Vessel","Sea/Air",Truck,Train;
 
             trigger OnValidate()
             begin
 
                 //MGTS10.00.006; 002; mhh; single
-                IF NOT (xRec."Ship Per" = "Ship Per") THEN
+                IF NOT (xRec."DEL Ship Per" = "DEL Ship Per") THEN
                     UpdateSalesEstimatedDelivery();
             end;
         }
-        field(50002; "Forwarding Agent Code"; Code[20])
+        field(50002; "DEL Forwarding Agent Code"; Code[20])
         {
             Caption = 'Forwarding Agent Code';
             Description = 'EDI';
-            TableRelation = "Forwarding agent 2";
+            TableRelation = "DEL Forwarding agent 2";
         }
         field(50003; "Port de départ"; Text[30])
         {
@@ -528,61 +421,61 @@ tableextension 50028 tableextension50028 extends "Purchase Header"
         {
             TableRelation = Location.Code;
         }
-        field(50007; DealNeedsUpdate; Boolean)
+        field(50007; "DEL DealNeedsUpdate"; Boolean)
         {
             Description = 'Temp400';
         }
-        field(50008; "Create By"; Text[50])
+        field(50008; "DEL Create By"; Text[50])
         {
             Caption = 'Create By';
             Editable = false;
         }
-        field(50009; "Create Date"; Date)
+        field(50009; "DEL Create Date"; Date)
         {
             Caption = 'Create Date';
             Editable = false;
         }
-        field(50010; "Create Time"; Time)
+        field(50010; "DEL Create Time"; Time)
         {
             Caption = 'Create Time';
             Editable = false;
         }
-        field(50011; "Requested Delivery Date"; Date)
+        field(50011; "DEL Requested Delivery Date"; Date)
         {
-            AccessByPermission = TableData 99000880 = R;
+            AccessByPermission = TableData "Order Promising Line" = R;
             Caption = 'Requested Delivery Date';
             Description = 'GAP2018-002';
         }
-        field(50012; "Relational Exch. Rate Amount"; Decimal)
+        field(50012; "DEL Relational Exch. Rate Amount"; Decimal)
         {
             Caption = 'Relational Exch. Rate Amount';
             DecimalPlaces = 1 : 6;
         }
-        field(50013; "Vendor Shipment Date"; Date)
+        field(50013; "DEL Vendor Shipment Date"; Date)
         {
             Caption = 'Vendor Shipment Date';
             Description = 'MGTS10.00.002';
         }
-        field(50014; "Type Order EDI"; Code[20])
+        field(50014; "DEL Type Order EDI"; Code[20])
         {
             Caption = 'Type Order EDI';
             Description = 'MGTS10.009';
-            TableRelation = "Type Order EDI";
+            //TODO //  TableRelation = "Type Order EDI";
         }
-        field(50015; GLN; Text[30])
+        field(50015; "DEL GLN"; Text[30])
         {
             Caption = 'GLN';
             Description = 'MGTS10.010';
         }
-        field(50016; "Type Order EDI Description"; Text[50])
+        field(50016; "DEL Type Order EDI Description"; Text[50])
         {
-            CalcFormula = Lookup ("Type Order EDI".Description WHERE (Code = FIELD (Type Order EDI)));
+            // TODO CalcFormula = Lookup("Type Order EDI".Description WHERE(Code = FIELD("Type Order EDI")));
             Caption = 'Type Order EDI Description';
             Description = 'MGTS10.009';
             Editable = false;
             FieldClass = FlowField;
         }
-        field(50017; "Due Date Calculation"; Date)
+        field(50017; "DEL Due Date Calculation"; Date)
         {
             Caption = 'Due Date Calculation';
             Description = 'MGTS10.024';
@@ -860,8 +753,8 @@ tableextension 50028 tableextension50028 extends "Purchase Header"
 
     procedure NTO_UpdateForwardingAgent()
     var
-        _Vendor: Record "23";
-        _ForwardingAgent: Record "50011";
+        _Vendor: Record Vendor;
+        _ForwardingAgent: Record "DEL Forwarding Agent";
         Text001: Label 'Do you want update the Forwarding Agent from "%1" to "%2" ?';
     begin
         // LOCO/ChC
@@ -872,15 +765,15 @@ tableextension 50028 tableextension50028 extends "Purchase Header"
         //IF (_ForwardingAgent."Forwarding Agent" = "Forwarding Agent Code" THEN
         //  EXIT;
 
-        IF "Forwarding Agent Code" <> _ForwardingAgent."Forwarding Agent" THEN
+        IF "DEL Forwarding Agent Code" <> _ForwardingAgent."Forwarding Agent" THEN
             //T-00799
             //>>MGTSEDI10.00.00.23
             IF NOT HideValidationDialog THEN
                 //>>MGTSEDI10.00.00.23
-                IF NOT CONFIRM(STRSUBSTNO(Text001, "Forwarding Agent Code", _ForwardingAgent."Forwarding Agent")) THEN
+                IF NOT CONFIRM(STRSUBSTNO(Text001, "DEL Forwarding Agent Code", _ForwardingAgent."Forwarding Agent")) THEN
                     EXIT;
 
-        "Forwarding Agent Code" := _ForwardingAgent."Forwarding Agent";
+        "DEL Forwarding Agent Code" := _ForwardingAgent."Forwarding Agent";
         //T-00799
         "Port de départ" := _ForwardingAgent."Departure port";
         //T-00799
@@ -888,37 +781,37 @@ tableextension 50028 tableextension50028 extends "Purchase Header"
 
     procedure NTO_SetPurchDim()
     var
-        NTO_DocDim: Record "357";
-        NTO_DimVal: Record "349";
+        NTO_DocDim: Record "Gen. Jnl. Dim. Filter";
+        NTO_DimVal: Record "Dimension Value";
     begin
-        NTO_GenSetup.GET;
+        NTO_GenSetup.GET();
         // Créer nouvelle Dimension Value
-        NTO_DimVal.INIT;
+        NTO_DimVal.INIT();
         NTO_DimVal."Dimension Code" := NTO_GenSetup."Code Axe Achat";
         NTO_DimVal.Code := "No.";
         NTO_DimVal."Global Dimension No." := 1; // JMO correction
-        IF NTO_DimVal.INSERT THEN;
+        IF NTO_DimVal.INSERT() THEN;
 
         // Créer nouveau Axe Document
-        NTO_DocDim.INIT;
+        NTO_DocDim.INIT();
         NTO_DocDim."Table ID" := 38;
         NTO_DocDim."Document Type" := "Document Type";
         NTO_DocDim."Document No." := "No.";
         NTO_DocDim."Dimension Code" := NTO_GenSetup."Code Axe Achat";
         NTO_DocDim."Dimension Value Code" := "No.";
-        IF NTO_DocDim.INSERT THEN;
+        IF NTO_DocDim.INSERT() THEN;
     end;
 
-    procedure NTO_ReportPurchDim2SalesLines(NTO_PurchHead: Record "38")
+    procedure NTO_ReportPurchDim2SalesLines(NTO_PurchHead: Record 38)
     var
-        NTO_PurchLine: Record "39";
-        NTO_ResEntryPurch: Record "337";
-        NTO_SalesLine: Record "37";
-        NTO_ResEntrySale: Record "337";
-        NTO_DocDim: Record "357";
+        NTO_PurchLine: Record "Purchase Line";
+        NTO_ResEntryPurch: Record "Reservation Entry";
+        NTO_SalesLine: Record "Sales Line";
+        NTO_ResEntrySale: Record "Reservation Entry";
+        NTO_DocDim: Record "Gen. Jnl. Dim. Filter";
     begin
 
-        NTO_GenSetup.GET;
+        NTO_GenSetup.GET();
         NTO_PurchLine.SETRANGE("Document Type", NTO_PurchHead."Document Type");
         NTO_PurchLine.SETFILTER("Document No.", NTO_PurchHead."No.");
         IF NTO_PurchLine.FIND('-') THEN
@@ -934,159 +827,159 @@ tableextension 50028 tableextension50028 extends "Purchase Header"
                             IF NTO_SalesLine.GET(NTO_SalesLine."Document Type"::Order,
                                NTO_ResEntrySale."Source ID", NTO_ResEntrySale."Source Ref. No.") THEN BEGIN
                                 // Créer Axe Document
-                                NTO_DocDim.INIT;
+                                NTO_DocDim.INIT();
                                 NTO_DocDim."Table ID" := 37;
                                 NTO_DocDim."Document Type" := NTO_DocDim."Document Type"::Order;
                                 NTO_DocDim."Document No." := NTO_ResEntrySale."Source ID";
                                 NTO_DocDim."Dimension Code" := NTO_GenSetup."Code Axe Achat";
                                 NTO_DocDim."Dimension Value Code" := NTO_ResEntryPurch."Source ID";
                                 NTO_DocDim."Line No." := NTO_ResEntrySale."Source Ref. No.";
-                                IF NTO_DocDim.INSERT THEN NTO_DocDim.MODIFY;
+                                IF NTO_DocDim.INSERT() THEN NTO_DocDim.MODIFY();
                                 NTO_SalesLine."Shortcut Dimension 1 Code" := NTO_ResEntryPurch."Source ID";
                                 NTO_SalesLine.MODIFY();
                             END;
                             NTO_PurchLine."Shortcut Dimension 1 Code" := NTO_ResEntryPurch."Source ID";
                             NTO_PurchLine.MODIFY();
                         END;
-                    UNTIL NTO_ResEntryPurch.NEXT = 0;
-            UNTIL NTO_PurchLine.NEXT = 0;
+                    UNTIL NTO_ResEntryPurch.NEXT() = 0;
+            UNTIL NTO_PurchLine.NEXT() = 0;
     end;
 
     procedure UpdateSalesEstimatedDelivery()
     var
-        PurchLine: Record "39";
-        SalesLine: Record "37";
-        Vendor: Record "23";
+        PurchLine: Record "Purchase Line";
+        SalesLine: Record "Sales Line";
+        Vendor: Record Vendor;
     begin
 
         //>>MGTSEDI10.00.00.00
         Vendor.GET("Buy-from Vendor No.");
-        IF Vendor."Lead Time Not Allowed" THEN
+        IF Vendor."DEL Lead Time Not Allowed" THEN
             EXIT;
         //<<MGTSEDI10.00.00.00
 
         //MGTS10.00.006; 002; mhh; entire function
-        IF NOT PurchSetup.GET THEN
-            PurchSetup.INIT;
+        IF NOT PurchSetup.GET() THEN
+            PurchSetup.INIT();
 
-        PurchLine.RESET;
+        PurchLine.RESET();
         PurchLine.SETRANGE("Document Type", "Document Type");
         PurchLine.SETRANGE("Document No.", "No.");
         PurchLine.SETFILTER("Special Order Sales No.", Text50000);
         PurchLine.SETFILTER("Special Order Sales Line No.", Text50001);
-        IF PurchLine.FINDSET THEN
+        IF PurchLine.FINDSET() THEN
             REPEAT
-                SalesLine.RESET;
+                SalesLine.RESET();
                 SalesLine.SETRANGE("Document Type", SalesLine."Document Type"::Order);
                 SalesLine.SETRANGE("Document No.", PurchLine."Special Order Sales No.");
                 SalesLine.SETRANGE("Line No.", PurchLine."Special Order Sales Line No.");
-                IF SalesLine.FINDFIRST THEN BEGIN
-                    CASE "Ship Per" OF
-                        "Ship Per"::"Air Flight":
+                IF SalesLine.FINDFIRST() THEN
+                    CASE "DEL Ship Per" OF
+                        "DEL Ship Per"::"Air Flight":
                             BEGIN
 
                                 //MGTS10.023; 006; mhh; begin
-                                IF "Requested Delivery Date" <> 0D THEN BEGIN
-                                    "Expected Receipt Date" := CALCDATE(PurchSetup."Sales Ship Time By Air Flight", "Requested Delivery Date");
-                                    MODIFY;
+                                IF "DEL Requested Delivery Date" <> 0D THEN BEGIN
+                                    "Expected Receipt Date" := CALCDATE(PurchSetup."Sales Ship Time By Air Flight", "DEL Requested Delivery Date");
+                                    MODIFY();
 
                                     PurchLine."Expected Receipt Date" := "Expected Receipt Date";
-                                    PurchLine.MODIFY;
+                                    PurchLine.MODIFY();
                                 END;
                                 //MGTS10.023; 006; mhh; end
 
                                 IF NOT (PurchLine."Expected Receipt Date" = 0D) THEN BEGIN
-                                    SalesLine."Estimated Delivery Date" := CALCDATE(PurchSetup."Sales Ship Time By Air Flight", PurchLine."Expected Receipt Date");
-                                    SalesLine.MODIFY;
+                                    SalesLine."DEL Estimated Delivery Date" := CALCDATE(PurchSetup."Sales Ship Time By Air Flight", PurchLine."Expected Receipt Date");
+                                    SalesLine.MODIFY();
                                 END;
                             END;
 
-                        "Ship Per"::"Sea Vessel":
+                        "DEL Ship Per"::"Sea Vessel":
                             BEGIN
 
                                 //MGTS10.023; 006; mhh; begin
-                                IF "Requested Delivery Date" <> 0D THEN BEGIN
-                                    "Expected Receipt Date" := CALCDATE(PurchSetup."Sales Ship Time By Sea Vessel", "Requested Delivery Date");
-                                    MODIFY;
+                                IF "DEL Requested Delivery Date" <> 0D THEN BEGIN
+                                    "Expected Receipt Date" := CALCDATE(PurchSetup."Sales Ship Time By Sea Vessel", "DEL Requested Delivery Date");
+                                    MODIFY();
 
                                     PurchLine."Expected Receipt Date" := "Expected Receipt Date";
-                                    PurchLine.MODIFY;
+                                    PurchLine.MODIFY();
                                 END;
                                 //MGTS10.023; 006; mhh; end
 
                                 IF NOT (PurchLine."Expected Receipt Date" = 0D) THEN BEGIN
-                                    SalesLine."Estimated Delivery Date" := CALCDATE(PurchSetup."Sales Ship Time By Sea Vessel", PurchLine."Expected Receipt Date");
-                                    SalesLine.MODIFY;
+                                    SalesLine."DEL Estimated Delivery Date" := CALCDATE(PurchSetup."Sales Ship Time By Sea Vessel", PurchLine."Expected Receipt Date");
+                                    SalesLine.MODIFY();
                                 END;
                             END;
 
-                        "Ship Per"::"Sea/Air":
+                        "DEL Ship Per"::"Sea/Air":
                             BEGIN
 
                                 //MGTS10.023; 006; mhh; begin
-                                IF "Requested Delivery Date" <> 0D THEN BEGIN
-                                    "Expected Receipt Date" := CALCDATE(PurchSetup."Sales Ship Time By Sea/Air", "Requested Delivery Date");
-                                    MODIFY;
+                                IF "DEL Requested Delivery Date" <> 0D THEN BEGIN
+                                    "Expected Receipt Date" := CALCDATE(PurchSetup."Sales Ship Time By Sea/Air", "DEL Requested Delivery Date");
+                                    MODIFY();
 
                                     PurchLine."Expected Receipt Date" := "Expected Receipt Date";
-                                    PurchLine.MODIFY;
+                                    PurchLine.MODIFY();
                                 END;
                                 //MGTS10.023; 006; mhh; end
 
                                 IF NOT (PurchLine."Expected Receipt Date" = 0D) THEN BEGIN
-                                    SalesLine."Estimated Delivery Date" := CALCDATE(PurchSetup."Sales Ship Time By Sea/Air", PurchLine."Expected Receipt Date");
-                                    SalesLine.MODIFY;
+                                    SalesLine."DEL Estimated Delivery Date" := CALCDATE(PurchSetup."Sales Ship Time By Sea/Air", PurchLine."Expected Receipt Date");
+                                    SalesLine.MODIFY();
                                 END;
                             END;
 
-                        "Ship Per"::Train:
+                        "DEL Ship Per"::Train:
                             BEGIN
 
                                 //MGTS10.023; 006; mhh; begin
-                                IF "Requested Delivery Date" <> 0D THEN BEGIN
-                                    "Expected Receipt Date" := CALCDATE(PurchSetup."Sales Ship Time By Train", "Requested Delivery Date");
-                                    MODIFY;
+                                IF "DEL Requested Delivery Date" <> 0D THEN BEGIN
+                                    "Expected Receipt Date" := CALCDATE(PurchSetup."Sales Ship Time By Train", "DEL Requested Delivery Date");
+                                    MODIFY();
 
                                     PurchLine."Expected Receipt Date" := "Expected Receipt Date";
-                                    PurchLine.MODIFY;
+                                    PurchLine.MODIFY();
                                 END;
                                 //MGTS10.023; 006; mhh; end
 
                                 IF NOT (PurchLine."Expected Receipt Date" = 0D) THEN BEGIN
-                                    SalesLine."Estimated Delivery Date" := CALCDATE(PurchSetup."Sales Ship Time By Train", PurchLine."Expected Receipt Date");
-                                    SalesLine.MODIFY;
+                                    SalesLine."DEL Estimated Delivery Date" := CALCDATE(PurchSetup."Sales Ship Time By Train", PurchLine."Expected Receipt Date");
+                                    SalesLine.MODIFY();
                                 END;
                             END;
 
-                        "Ship Per"::Truck:
+                        "DEL Ship Per"::Truck:
                             BEGIN
 
                                 //MGTS10.023; 006; mhh; begin
-                                IF "Requested Delivery Date" <> 0D THEN BEGIN
-                                    "Expected Receipt Date" := CALCDATE(PurchSetup."Sales Ship Time By Truck", "Requested Delivery Date");
-                                    MODIFY;
+                                IF "DEL Requested Delivery Date" <> 0D THEN BEGIN
+                                    "Expected Receipt Date" := CALCDATE(PurchSetup."Sales Ship Time By Truck", "DEL Requested Delivery Date");
+                                    MODIFY();
 
                                     PurchLine."Expected Receipt Date" := "Expected Receipt Date";
-                                    PurchLine.MODIFY;
+                                    PurchLine.MODIFY();
                                 END;
                                 //MGTS10.023; 006; mhh; end
 
                                 IF NOT (PurchLine."Expected Receipt Date" = 0D) THEN BEGIN
-                                    SalesLine."Estimated Delivery Date" := CALCDATE(PurchSetup."Sales Ship Time By Truck", PurchLine."Expected Receipt Date");
-                                    SalesLine.MODIFY;
+                                    SalesLine."DEL Estimated Delivery Date" := CALCDATE(PurchSetup."Sales Ship Time By Truck", PurchLine."Expected Receipt Date");
+                                    SalesLine.MODIFY();
                                 END;
                             END;
+
                     END;
-                END;
-            UNTIL PurchLine.NEXT = 0;
+            UNTIL PurchLine.NEXT() = 0;
     end;
 
     var
-        NTO_DocDim: Record "357";
-        SalesLine: Record "37";
+        NTO_DocDim: Record "Gen. Jnl. Dim. Filter";
+        SalesLine: Record "Sales Line";
 
     var
-        NTO_GenSetup: Record "50000";
+        NTO_GenSetup: Record "DEL General Setup";
         NameAddressDetails: Text[512];
         NameAddressDetails2: Text[512];
         Text50000: Label '<>''''';

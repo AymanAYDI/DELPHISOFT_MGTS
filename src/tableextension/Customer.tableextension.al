@@ -1,5 +1,6 @@
 tableextension 50013 "DEL Customer" extends Customer
 {
+    //Unsupported feature: Property Deletion (TableRelation) on ""Customer Price Group"(Field 23)".
 
 
     fields
@@ -11,8 +12,6 @@ tableextension 50013 "DEL Customer" extends Customer
 
         //         Description = 'MGTS0124';
         //     }
-
-
 
 
         field(50000; "DEL No TVA intracomm. NGTS"; Code[30])
@@ -29,9 +28,11 @@ tableextension 50013 "DEL Customer" extends Customer
             Caption = 'FTP Save';
 
 
+
             trigger OnValidate()
             begin
                 TESTFIELD("DEL FTP Save 2", FALSE)
+
             end;
         }
         field(50003; "DEL FTP Save 2"; Boolean)
@@ -39,9 +40,11 @@ tableextension 50013 "DEL Customer" extends Customer
             Caption = 'FTP Save 2';
 
 
+
             trigger OnValidate()
             begin
                 TESTFIELD("DEL FTP Save", FALSE)
+
             end;
         }
         field(50050; "DEL Mention Under Total"; Text[250])
@@ -57,12 +60,15 @@ tableextension 50013 "DEL Customer" extends Customer
         field(50100; "DEL Partnership agreement"; Boolean)
         {
         }
+
         field(50101; "DEL Libellé PA"; Text[60])
+
         {
             Caption = 'Partnership agreement description';
 
             trigger OnValidate()
             begin
+
                 TESTFIELD("DEL Partnership agreement", TRUE);
             end;
         }
@@ -76,12 +82,15 @@ tableextension 50013 "DEL Customer" extends Customer
             end;
         }
         field(50103; "DEL Date de début PA"; Date)
+
         {
             Caption = 'Starting date PA';
 
             trigger OnValidate()
             begin
+
                 TESTFIELD("DEL Partnership agreement", TRUE);
+
             end;
         }
         field(50104; "DEL Date de fin PA"; Date)
@@ -90,19 +99,24 @@ tableextension 50013 "DEL Customer" extends Customer
 
             trigger OnValidate()
             begin
+
                 TESTFIELD("DEL Partnership agreement", TRUE);
+
             end;
         }
         field(50105; "DEL Service agreement"; Boolean)
         {
             Caption = 'Service agreement';
         }
+
         field(50106; "DEL Libellé SSA"; Text[60])
+
         {
             Caption = 'Service agreement description';
 
             trigger OnValidate()
             begin
+
                 TESTFIELD("DEL Service agreement", TRUE);
             end;
         }
@@ -117,12 +131,15 @@ tableextension 50013 "DEL Customer" extends Customer
             end;
         }
         field(50108; "DEL Date de début SSA"; Date)
+
         {
             Caption = 'Starting date SSA';
 
             trigger OnValidate()
             begin
+
                 TESTFIELD("DEL Service agreement", TRUE);
+
             end;
         }
         field(50109; "DEL Date de fin SSA"; Date)
@@ -131,6 +148,7 @@ tableextension 50013 "DEL Customer" extends Customer
 
             trigger OnValidate()
             begin
+
                 TESTFIELD("DEL Service agreement", TRUE);
 
                 IF "DEL Date de fin SSA" <> 0D THEN
@@ -164,6 +182,7 @@ tableextension 50013 "DEL Customer" extends Customer
             trigger OnValidate()
             begin
                 TESTFIELD("DEL Service agreement", TRUE);
+
             end;
         }
         field(50114; "DEL Reporting vente"; Boolean)
@@ -172,7 +191,9 @@ tableextension 50013 "DEL Customer" extends Customer
 
             trigger OnValidate()
             begin
+
                 TESTFIELD("DEL Service agreement", TRUE);
+
             end;
         }
         field(50115; "DEL Last Accounting Date"; Date)
@@ -191,14 +212,17 @@ tableextension 50013 "DEL Customer" extends Customer
         {
             Caption = 'Pending amount';
         }
+
         field(50120; "DEL Statut CE"; Enum "DEL Statut CE")
         {
             Caption = 'Ethical Charter status';
+
         }
         field(50121; "DEL Date Signature CE"; Date)
         {
             Caption = 'Date of signature EC';
         }
+
         field(50122; "DEL URL document CE"; Text[250])
         {
             CalcFormula = Lookup("DEL Document Line"."File Name" WHERE("Table Name" = FILTER(Customer),
@@ -206,10 +230,12 @@ tableextension 50013 "DEL Customer" extends Customer
                                                                     "Notation Type" = FILTER(' '),
                                                                     "Type liasse" = FILTER(' '),
                                                                     "Type contrat" = FILTER('Charte ethique')));
+
             Caption = 'URL document CE';
             Editable = false;
             FieldClass = FlowField;
         }
+
         field(50123; "DEL URL document PA"; Text[250])
         {
             CalcFormula = Lookup("DEL Document Line"."File Name" WHERE("Table Name" = FILTER(Customer),
@@ -217,10 +243,12 @@ tableextension 50013 "DEL Customer" extends Customer
                                                                     "Notation Type" = FILTER(' '),
                                                                     "Type liasse" = FILTER(' '),
                                                                     "Type contrat" = FILTER(Partnership)));
+
             Caption = 'URL document PA';
             Editable = false;
             FieldClass = FlowField;
         }
+
         field(50124; "DEL URL document SSA"; Text[250])
         {
             CalcFormula = Lookup("DEL Document Line"."File Name" WHERE("Table Name" = FILTER(Customer),
@@ -228,24 +256,29 @@ tableextension 50013 "DEL Customer" extends Customer
                                                                     "Notation Type" = FILTER(' '),
                                                                     "Type liasse" = FILTER(' '),
                                                                     "Type contrat" = FILTER(Service)));
+
             Caption = 'URL document SSA';
             Editable = false;
             FieldClass = FlowField;
         }
         field(50125; "DEL Comment PA"; Text[80])
         {
+
             CalcFormula = Lookup("Comment Line".Comment WHERE("Table Name" = CONST(Customer),
                                                                "No." = FIELD("No."),
                                                    "DEL Type contrat" = FILTER(Partnership)));
+
             Caption = 'Comment PA';
             Editable = false;
             FieldClass = FlowField;
         }
         field(50126; "DEL Comment SSA"; Text[80])
         {
+
             CalcFormula = Lookup("Comment Line".Comment WHERE("Table Name" = CONST(Customer),
                                                                "No." = FIELD("No."),
                                                                "DEL Type contrat" = FILTER(Service)));
+
             Caption = 'Comment SSA';
             Editable = false;
             FieldClass = FlowField;
@@ -265,6 +298,7 @@ tableextension 50013 "DEL Customer" extends Customer
             trigger OnValidate()
             begin
 
+
                 IF "DEL Denunciation Replanned" THEN BEGIN
                     "DEL Denunciation to analyze" := FALSE;
                     "DEL Denunciation realised" := FALSE;
@@ -280,12 +314,14 @@ tableextension 50013 "DEL Customer" extends Customer
             trigger OnValidate()
             begin
 
+
                 IF "DEL Denunciation realised" THEN BEGIN
                     "DEL Period of denunciation" := 0D;
                     "DEL Denunciation to analyze" := FALSE;
                     "DEL Denunciation Replanned" := FALSE;
                     "DEL Not denunciation" := FALSE;
                 END;
+
 
             end;
         }
@@ -299,6 +335,7 @@ tableextension 50013 "DEL Customer" extends Customer
 
             trigger OnValidate()
             begin
+
 
                 IF "DEL Not denunciation" THEN BEGIN
                     "DEL Period of denunciation" := 0D;
@@ -340,14 +377,18 @@ tableextension 50013 "DEL Customer" extends Customer
         }
         field(50140; "DEL Comment denunciation"; Text[80])
         {
+
             CalcFormula = Lookup("Comment Line".Comment WHERE("Table Name" = CONST(Customer),
                                                               "No." = FIELD("No."),
                                                                "DEL Type contrat" = FILTER(Denunciation)));
+
             Caption = 'Comment denunciation';
             Editable = false;
             FieldClass = FlowField;
         }
+
         field(50141; "DEL Start date of Relationship"; Date)
+
         {
             Caption = 'Starting date of Relationship';
         }
@@ -359,11 +400,13 @@ tableextension 50013 "DEL Customer" extends Customer
         {
             Caption = 'Quote part 2 Mobivia/CA %';
         }
+
         field(50144; "DEL Qte part 1 Mobivia/CA Year"; Integer)
         {
             Caption = 'Quote part 1 Mobivia/CA Year';
         }
         field(50145; "DEL Qte part 2 Mobivia/CA Year"; Integer)
+
         {
             Caption = 'Quote part 2 Mobivia/CA Year';
         }
@@ -375,6 +418,7 @@ tableextension 50013 "DEL Customer" extends Customer
         {
             Caption = 'Renewal by endorsement';
         }
+
         field(50148; "DEL Change VAT Reg. Place"; Boolean)
         {
             Caption = 'Change VAT Registration Place';
@@ -383,6 +427,7 @@ tableextension 50013 "DEL Customer" extends Customer
         field(50149; "DEL EDI"; Boolean)
         {
             Caption = 'EDI';
+
 
         }
         field(50150; "DEL Show VAT In Invoice"; Boolean)
@@ -393,7 +438,9 @@ tableextension 50013 "DEL Customer" extends Customer
         field(60001; "DEL Note Quality"; Code[10])
         {
             Caption = 'Quality rating';
+
             TableRelation = "DEL Note".Code WHERE("Type audit" = FILTER(Quality));
+
         }
         field(60002; "DEL Realisation Date Quality"; Date)
         {
@@ -402,7 +449,9 @@ tableextension 50013 "DEL Customer" extends Customer
         field(60100; "DEL Note Soc"; Code[10])
         {
             Caption = 'Social rating';
+
             TableRelation = "DEL Note".Code WHERE("Type audit" = FILTER(social));
+
         }
         field(60101; "DEL Realisation Date Soc"; Date)
         {
@@ -411,7 +460,9 @@ tableextension 50013 "DEL Customer" extends Customer
         field(60102; "DEL Note Env"; Code[10])
         {
             Caption = 'Environmental rating';
+
             TableRelation = "DEL Note".Code WHERE("Type audit" = FILTER(Environmental));
+
         }
         field(60103; "DEL Realisation Date Env"; Date)
         {
@@ -467,7 +518,9 @@ tableextension 50013 "DEL Customer" extends Customer
         field(60117; "DEL Segmentation Description"; Text[250])
         {
             Caption = 'Segmentation Description';
+
             TableRelation = "Dimension Value".Name WHERE("Dimension Code" = FILTER('SEGMENT'));
+
             ValidateTableRelation = false;
         }
         field(60118; "DEL Shruvat"; Boolean)
@@ -484,7 +537,9 @@ tableextension 50013 "DEL Customer" extends Customer
         {
             Caption = 'Sales data report';
         }
+
         field(60122; "DEL Ass. in relat. with the BU"; Boolean)
+
         {
             Caption = 'Assist in relations with the BU (Blue Helmets)';
         }
@@ -496,6 +551,7 @@ tableextension 50013 "DEL Customer" extends Customer
         {
             Caption = 'Vision and Market Analysis';
         }
+
         field(60125; "DEL Pres. provider strategy"; Boolean)
         {
             Caption = 'Presentation provider strategy';
@@ -505,6 +561,7 @@ tableextension 50013 "DEL Customer" extends Customer
             Caption = 'Presentation MOBIVIA strategy';
         }
         field(60127; "DEL Adv on the adapt.of the offer"; Boolean)
+
         {
             Caption = 'Advising on the adaptation of the offer';
         }
@@ -516,6 +573,7 @@ tableextension 50013 "DEL Customer" extends Customer
         {
             Caption = 'Forecast';
         }
+
         field(60130; "DEL Frequency of delivery 1"; Enum "DEL Frequency of delivery 1")
         {
             Caption = 'Frequency of delivery';
@@ -618,9 +676,57 @@ tableextension 50013 "DEL Customer" extends Customer
         {
             Caption = 'Invoicing Frequency';
 
+
         }
     }
 
+
+<<<<<<< HEAD
+    //Unsupported feature: Code Modification on "OnModify".
+
+    //trigger OnModify()
+    //>>>> ORIGINAL CODE:
+    //begin
+        /*
+        "Last Date Modified" := TODAY;
+
+        IF (Name <> xRec.Name) OR
+        #4..28
+            IF FIND THEN;
+          END;
+        END;
+        */
+    //end;
+    //>>>> MODIFIED CODE:
+    //begin
+        /*
+        #1..31
+
+
+        //START T-00678
+        IF "Last Accounting Date"<>0D THEN
+        BEGIN
+        //START T-00738
+          IF "Fréquence de facturation"="Fréquence de facturation"::"12 mois" THEN
+            "Date de prochaine facturation":=CALCDATE('<+12M>',"Last Accounting Date");
+          IF "Fréquence de facturation"="Fréquence de facturation"::"6 mois" THEN
+           "Date de prochaine facturation":=   CALCDATE('<+6M>',"Last Accounting Date");
+          IF "Fréquence de facturation"="Fréquence de facturation"::"4 mois" THEN
+           "Date de prochaine facturation":=   CALCDATE('<+4M>',"Last Accounting Date");
+          IF "Fréquence de facturation"="Fréquence de facturation"::"3 mois" THEN
+          "Date de prochaine facturation":=   CALCDATE('<+3M>',"Last Accounting Date");
+          IF "Fréquence de facturation"="Fréquence de facturation"::" " THEN
+          "Date de prochaine facturation":=   CALCDATE('<+0M>',"Last Accounting Date");
+        //STOP T-00738
+          "Nbre jour avant proch. fact.":="Date de prochaine facturation"-TODAY;
+        END;
+        // STOP T-00678
+        */
+    //end;
+
+    var
+        CustPriceGroup: Record "6";
+        Text50000: Label '%1|%2';
 
 }
 

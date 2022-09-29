@@ -1,10 +1,13 @@
 tableextension 50041 "DEL PurchasePrice" extends "Purchase Price"
 {
+
+
     fields
     {
         field(50000; "DEL Entry No."; BigInteger)
         {
             Caption = 'Entry No.';
+
         }
         field(50092; "DEL Qty. optimale"; Decimal)
         {
@@ -28,6 +31,7 @@ tableextension 50041 "DEL PurchasePrice" extends "Purchase Price"
         {
         }
         key(Key6; "Starting Date", "Ending Date")
+
         {
         }
     }

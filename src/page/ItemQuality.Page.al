@@ -1,20 +1,6 @@
-page 50077 "Item Quality"
+page 50077 "DEL Item Quality"
 {
-    // +---------------------------------------------------------------+
-    // | Logico SA                                                     |
-    // | Status:                                                       |
-    // | Customer/Project:                                             |
-    // +---------------------------------------------------------------+
-    // Requirement UserID   Date       Where   Description
-    // -----------------------------------------------------------------
-    // T-00716      THM     27.08.15           Create Object
-    // T-00474      THM     17.11.15
-    // T-00474      THM     19.11.15
-    // T-00755      THM     04.01.16          comment Code
-    // T-00757      THM     07.01.16          add and modify Field
-    // T-00758      THM     12.01.16          Change Page Action
-    //              THM     29.04.16          Add fields
-
+   
     Caption = 'Item Quality';
     DeleteAllowed = false;
     InsertAllowed = false;

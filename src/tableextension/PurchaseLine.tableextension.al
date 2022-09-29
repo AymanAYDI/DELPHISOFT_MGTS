@@ -1,39 +1,6 @@
-tableextension 50029 tableextension50029 extends "Purchase Line"
+tableextension 50029 "DEL PurchaseLine" extends "Purchase Line"
 {
-    // 
-    // NGTS 1      02.12.2005/LOCO/JMO  -  Field planning flexibility default value set to "none"
-    // 
-    // Interne1   T-00051       STG  23.06.2008  Change Multiples Sales Order Lines on deleting purchase lines     // DESACTIVE
-    // 
-    // +-------------------------------------------------------------------------------+
-    // 
-    // ID     Version     Story-Card    Date       Description
-    // ---------------------------------------------------------------------------------
-    // CHG01                            29.01.09   added deal item handling onInsert and onDelete trigger
-    // MIK01                            15.09.09   added key "Document Type", "Document No.", "No."
-    // STG01                            15.09.09   delete "Shortcut Dimension 1 Code" on Sales Line
-    // CHG02                            26.09.11   adapted deal update function with "updatePlanned" parameter
-    // THM0001                          09.07.13   suppression contrôle liaison commande vente /achat
-    // SAZ                              04.06.14   Ajout champs total volume et "External reference NGTS"
-    // THM0002                          03.07.14   Ajout PCB dans le calcul
-    // THM0003                          03.07.14   modification  "External reference NGTS"
-    // THM                              11.09.17   Mig2017
-    // FirstPurch                       11.06.18   Add fileds 50003..50016
-    // 
-    // ------------------------------------------------------------------------------------------
-    // Sign    : Maria Hr. Hristova = mhh
-    // Version : MGTS10.00.006,MGTS10.013
-    // 
-    // ------------------------------------------------------------------------------------------
-    // No.    Version          Date        Sign    Description
-    // ------------------------------------------------------------------------------------------
-    // 001    MGTS10.00.006    04.02.20    mhh     List of changes:
-    //                                              Created function: UpdateSalesEstimatedDelivery()
-    //                                              Changed trigger: Expected Receipt Date - OnValidate()
-    // 
-    // 002    MGTS10.013        09.11.20    mhh     List of changes:
-    //                                              Changed trigger: OnDelete()
-    // ------------------------------------------------------------------------------------------
+
     fields
     {
 
@@ -284,123 +251,123 @@ tableextension 50029 tableextension50029 extends "Purchase Line"
         //END MIG2017
         */
         //end;
-        field(50001; "Total volume"; Decimal)
+        field(50001; "DEL Total volume"; Decimal)
         {
             Caption = 'Total volume';
             DecimalPlaces = 2 : 5;
         }
-        field(50002; "External reference NGTS"; Text[30])
+        field(50002; "DEL External reference NGTS"; Text[30])
         {
             Caption = 'External reference NGTS';
         }
-        field(50003; "First Purch. Order"; Boolean)
+        field(50003; "DEL First Purch. Order"; Boolean)
         {
             Caption = 'New product';
             Editable = false;
         }
-        field(50004; "Sample Collected"; Boolean)
+        field(50004; "DEL Sample Collected"; Boolean)
         {
             Caption = 'Sample picked';
 
             trigger OnValidate()
             begin
-                IF ("Sample Collected" = TRUE) AND (Type = Type::Item) THEN BEGIN
-                    "Collected Date" := WORKDATE;
-                    "Sample Collected by" := USERID;
+                IF ("DEL Sample Collected" = TRUE) AND (Type = Type::Item) THEN BEGIN
+                    "DEL Collected Date" := WORKDATE();
+                    "DEL Sample Collected by" := USERID;
                     //IF "Photo Taked" THEN "Photo And DDoc" := TRUE;//SAZ 30.10.18
                 END
                 ELSE
-                    IF ("Sample Collected" = FALSE) AND (Type = Type::Item) THEN BEGIN
-                        "Collected Date" := 0D;
-                        "Sample Collected by" := '';
+                    IF ("DEL Sample Collected" = FALSE) AND (Type = Type::Item) THEN BEGIN
+                        "DEL Collected Date" := 0D;
+                        "DEL Sample Collected by" := '';
                         //"Photo And DDoc" := FALSE; //SAZ 30.10.18
                     END;
             end;
         }
-        field(50005; "Collected Date"; Date)
+        field(50005; "DEL Collected Date"; Date)
         {
             Caption = 'Collected Date';
             Editable = false;
         }
-        field(50006; "Sample Collected by"; Code[50])
+        field(50006; "DEL Sample Collected by"; Code[50])
         {
             Caption = 'Sample Collected by';
             Editable = false;
         }
-        field(50007; "Photo Taked"; Boolean)
+        field(50007; "DEL Photo Taked"; Boolean)
         {
             Caption = 'Picture Taken';
 
             trigger OnValidate()
             begin
-                IF ("Photo Taked" = TRUE) AND (Type = Type::Item) THEN BEGIN
-                    "Photo Date" := WORKDATE;
-                    "Photo Taked By" := USERID;
+                IF ("DEL Photo Taked" = TRUE) AND (Type = Type::Item) THEN BEGIN
+                    "DEL Photo Date" := WORKDATE();
+                    "DEL Photo Taked By" := USERID;
                     //IF "Sample Collected" THEN "Photo And DDoc" := TRUE;//SAZ 30.10.18
                 END
                 ELSE
-                    IF ("Photo Taked" = FALSE) AND (Type = Type::Item) THEN BEGIN
-                        "Photo Date" := 0D;
-                        "Photo Taked By" := '';
+                    IF ("DEL Photo Taked" = FALSE) AND (Type = Type::Item) THEN BEGIN
+                        "DEL Photo Date" := 0D;
+                        "DEL Photo Taked By" := '';
                         //"Photo And DDoc" := FALSE; //SAZ 30.10.18
                     END;
             end;
         }
-        field(50008; "Photo Date"; Date)
+        field(50008; "DEL Photo Date"; Date)
         {
             Caption = 'Photo Date';
             Editable = false;
         }
-        field(50009; "Photo Taked By"; Code[50])
+        field(50009; "DEL Photo Taked By"; Code[50])
         {
             Caption = 'Photo Taked By';
             Editable = false;
         }
-        field(50010; "Risk Item"; Boolean)
+        field(50010; "DEL Risk Item"; Boolean)
         {
             Caption = 'Traked item';
             Editable = false;
         }
-        field(50011; "Photo Risk Item Taked"; Boolean)
+        field(50011; "DEL Photo Risk Item Taked"; Boolean)
         {
             Caption = 'Follow-up effect';
 
             trigger OnValidate()
             begin
-                IF ("Photo Risk Item Taked" = TRUE) AND (Type = Type::Item) THEN BEGIN
-                    "Photo Risk Item Date" := WORKDATE;
-                    "Photo Risk Item Taked By" := USERID;
+                IF ("DEL Photo Risk Item Taked" = TRUE) AND (Type = Type::Item) THEN BEGIN
+                    "DEL Photo Risk Item Date" := WORKDATE();
+                    "DEL Photo Risk Item Taked By" := USERID;
                 END
                 ELSE
-                    IF ("Photo Risk Item Taked" = FALSE) AND (Type = Type::Item) THEN BEGIN
-                        "Photo Risk Item Date" := 0D;
-                        "Photo Risk Item Taked By" := '';
+                    IF ("DEL Photo Risk Item Taked" = FALSE) AND (Type = Type::Item) THEN BEGIN
+                        "DEL Photo Risk Item Date" := 0D;
+                        "DEL Photo Risk Item Taked By" := '';
                     END;
             end;
         }
-        field(50012; "Photo Risk Item Date"; Date)
+        field(50012; "DEL Photo Risk Item Date"; Date)
         {
             Caption = 'Traked item Date';
             Editable = false;
         }
-        field(50013; "Photo Risk Item Taked By"; Code[50])
+        field(50013; "DEL Photo Risk Item Taked By"; Code[50])
         {
             Caption = 'Traked item Taked By';
             Editable = false;
         }
-        field(50014; "Photo And DDoc"; Boolean)
+        field(50014; "DEL Photo And DDoc"; Boolean)
         {
         }
     }
     keys
     {
-        key(Key1; "Document Type", "Document No.", "No.")
+        key(Key19; "Document Type", "Document No.", "No.")
         {
         }
     }
 
 
-    //Unsupported feature: Code Insertion (VariableCollection) on "OnDelete".
+    //Unsupported feature   //Unsupported feature (VariableCollection) on "OnDelete".
 
     //trigger (Variable: requestID_Co_Loc)()
     //Parameters and return type have not been exported.
@@ -568,8 +535,8 @@ tableextension 50029 tableextension50029 extends "Purchase Line"
 
     local procedure ExistOldPurch(ItemNo: Code[20]; DocNo: Code[20]): Boolean
     var
-        PurchaseLine: Record "39";
-        PurchInvLine: Record "123";
+        PurchaseLine: Record "Purchase Line";
+        PurchInvLine: Record "Purch. Inv. Line";
     begin
         PurchaseLine.SETRANGE("Document Type", PurchaseLine."Document Type"::Order);
         PurchaseLine.SETRANGE(Type, PurchaseLine.Type::Item);
@@ -577,7 +544,7 @@ tableextension 50029 tableextension50029 extends "Purchase Line"
         PurchaseLine.SETFILTER("Document No.", '<>%1', DocNo);
         PurchInvLine.SETRANGE("No.", ItemNo);
         PurchInvLine.SETRANGE(Type, PurchInvLine.Type::Item);
-        IF (PurchaseLine.FINDFIRST OR PurchInvLine.FINDFIRST) THEN
+        IF (PurchaseLine.FINDFIRST() OR PurchInvLine.FINDFIRST()) THEN
             EXIT(FALSE)
         ELSE
             EXIT(TRUE);
@@ -585,105 +552,101 @@ tableextension 50029 tableextension50029 extends "Purchase Line"
 
     procedure UpdateSalesEstimatedDelivery()
     var
-        SalesLine: Record "37";
+        SalesLine: Record "Sales Line";
     begin
 
         //MGTS10.00.006; 001; mhh; entire function
         IF ("Special Order Sales No." = '') OR ("Special Order Sales Line No." = 0) OR ("Expected Receipt Date" = 0D) THEN
             EXIT;
 
-        IF NOT PurchSetup.GET THEN
-            PurchSetup.INIT;
+        IF NOT PurchSetup.GET() THEN
+            PurchSetup.INIT();
 
         GetPurchHeader();
 
-        SalesLine.RESET;
+        SalesLine.RESET();
         SalesLine.SETRANGE("Document Type", SalesLine."Document Type"::Order);
         SalesLine.SETRANGE("Document No.", "Special Order Sales No.");
         SalesLine.SETRANGE("Line No.", "Special Order Sales Line No.");
-        IF SalesLine.FINDFIRST THEN BEGIN
+        IF SalesLine.FINDFIRST() THEN
             CASE PurchHeader."Ship Per" OF
                 PurchHeader."Ship Per"::"Air Flight":
                     BEGIN
-                        SalesLine."Estimated Delivery Date" := CALCDATE(PurchSetup."Sales Ship Time By Air Flight", "Expected Receipt Date");
-                        SalesLine.MODIFY;
+                        SalesLine."DEL Estimated Delivery Date" := CALCDATE(PurchSetup."Sales Ship Time By Air Flight", "Expected Receipt Date");
+                        SalesLine.MODIFY();
                     END;
 
                 PurchHeader."Ship Per"::"Sea Vessel":
                     BEGIN
-                        SalesLine."Estimated Delivery Date" := CALCDATE(PurchSetup."Sales Ship Time By Sea Vessel", "Expected Receipt Date");
-                        SalesLine.MODIFY;
+                        SalesLine."DEL Estimated Delivery Date" := CALCDATE(PurchSetup."Sales Ship Time By Sea Vessel", "Expected Receipt Date");
+                        SalesLine.MODIFY();
                     END;
 
                 PurchHeader."Ship Per"::"Sea/Air":
                     BEGIN
-                        SalesLine."Estimated Delivery Date" := CALCDATE(PurchSetup."Sales Ship Time By Sea/Air", "Expected Receipt Date");
-                        SalesLine.MODIFY;
+                        SalesLine."DEL Estimated Delivery Date" := CALCDATE(PurchSetup."Sales Ship Time By Sea/Air", "Expected Receipt Date");
+                        SalesLine.MODIFY();
                     END;
 
                 PurchHeader."Ship Per"::Train:
                     BEGIN
-                        SalesLine."Estimated Delivery Date" := CALCDATE(PurchSetup."Sales Ship Time By Train", "Expected Receipt Date");
-                        SalesLine.MODIFY;
+                        SalesLine."DEL Estimated Delivery Date" := CALCDATE(PurchSetup."Sales Ship Time By Train", "Expected Receipt Date");
+                        SalesLine.MODIFY();
                     END;
 
                 PurchHeader."Ship Per"::Truck:
                     BEGIN
-                        SalesLine."Estimated Delivery Date" := CALCDATE(PurchSetup."Sales Ship Time By Truck", "Expected Receipt Date");
-                        SalesLine.MODIFY;
+                        SalesLine."DEL Estimated Delivery Date" := CALCDATE(PurchSetup."Sales Ship Time By Truck", "Expected Receipt Date");
+                        SalesLine.MODIFY();
                     END;
             END;
-        END;
+
     end;
 
     var
-        ACOConnection_Re_Loc: Record "50026";
-        DealItem_Cu: Codeunit "50024";
-        Deal_Cu: Codeunit "50020";
 
-    var
+        //TODO //CODEUNIT 
+        // DealItem_Cu: Codeunit 50024;
+        // Deal_Cu: Codeunit 50020;
+
+
         requestID_Co_Loc: Code[20];
-        element_Re_Loc: Record "50021";
-        urm_Re_Loc: Record "50039";
-        ACOConnection_Re_Loc: Record "50026";
+        element_Re_Loc: Record "DEL Element";
+
+
+        ACOConnection_Re_Loc: Record "DEL ACO Connection";
+
+
+        urm_Re_Loc: Record "DEL Update Request Manager";
+
+
+    //Unsupported feature: Property Modification (Id) on "UpdateFromVAT(Variable 1000000004)".
+
+    //var
+    //>>>> ORIGINAL VALUE:
+    //UpdateFromVAT : 1087;
+    //Variable type has not been exported.
+    //>>>> MODIFIED VALUE:
+    //UpdateFromVAT : 1000000004;
+    //Variable type has not been exported.
+
+
+    //Unsupported feature: Property Modification (Id) on "PrePaymentLineAmountEntered(Variable 1000000003)".
+
+    //var
+    //>>>> ORIGINAL VALUE:
+    //PrePaymentLineAmountEntered : 1042;
+    //Variable type has not been exported.
+    //>>>> MODIFIED VALUE:
+    //PrePaymentLineAmountEntered : 1000000003;
+    //Variable type has not been exported.
 
     var
-        ACOConnection_Re_Loc: Record "50026";
-        DealItem_Cu: Codeunit "50024";
-        requestID_Co_Loc: Code[20];
-        element_Re_Loc: Record "50021";
-        urm_Re_Loc: Record "50039";
 
-
-        //Unsupported feature: Property Modification (Id) on "UpdateFromVAT(Variable 1000000004)".
-
-        //var
-        //>>>> ORIGINAL VALUE:
-        //UpdateFromVAT : 1087;
-        //Variable type has not been exported.
-        //>>>> MODIFIED VALUE:
-        //UpdateFromVAT : 1000000004;
-        //Variable type has not been exported.
-
-
-        //Unsupported feature: Property Modification (Id) on "PrePaymentLineAmountEntered(Variable 1000000003)".
-
-        //var
-        //>>>> ORIGINAL VALUE:
-        //PrePaymentLineAmountEntered : 1042;
-        //Variable type has not been exported.
-        //>>>> MODIFIED VALUE:
-        //PrePaymentLineAmountEntered : 1000000003;
-        //Variable type has not been exported.
-
-    var
-        Deal_Cu: Codeunit "50020";
-        DealItem_Cu: Codeunit "50024";
-        UpdateRequestManager_Cu: Codeunit "50032";
-
-    var
-        Item_Rec: Record "27";
-        SalesHeader_Rec: Record "36";
-        ItemCrossReference: Record "5717";
+        //TODO     
+        // UpdateRequestManager_Cu: Codeunit 50032;
+        Item_Rec: Record Item;
+        SalesHeader_Rec: Record "Sales Header";
+        ItemCrossReference: Record "Item Cross Reference";
 }
 
