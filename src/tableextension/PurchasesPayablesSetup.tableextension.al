@@ -1,6 +1,6 @@
 tableextension 50025 "DEL PurchasesPayablesSetup" extends "Purchases & Payables Setup"
 {
-   
+
     fields
     {
         field(50000; "DEL PDF Registration Vendor Path"; Text[50])

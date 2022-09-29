@@ -1,10 +1,10 @@
-page 50115 "Control list by category"
+page 50115 "DEL Control list by category"
 {
     Caption = 'Control list by category';
     Editable = false;
     PageType = List;
     ShowFilter = true;
-    SourceTable = Table50051;
+    SourceTable = "DEL Regulation Matrix Line";
 
     layout
     {
@@ -12,126 +12,126 @@ page 50115 "Control list by category"
         {
             repeater(Group)
             {
-                field("Item Category Code"; "Item Category Code")
+                field("Item Category Code"; Rec."Item Category Code")
                 {
                 }
-                field("Product Group Code"; "Product Group Code")
+                field("Product Group Code"; Rec."Product Group Code")
                 {
                 }
-                field("Item Category Label"; "Item Category Label")
+                field("Item Category Label"; Rec."Item Category Label")
                 {
                 }
-                field("Product Group Label"; "Product Group Label")
+                field("Product Group Label"; Rec."Product Group Label")
                 {
                 }
-                field("No."; "No.")
+                field("No."; Rec."No.")
                 {
                 }
-                field(Type; Type)
+                field(Type; Rec.Type)
                 {
                 }
-                field(Nature; Nature)
+                field(Nature; Rec.Nature)
                 {
                 }
-                field("Title in French"; "Title in French")
+                field("Title in French"; Rec."Title in French")
                 {
                 }
-                field(Description; Description)
+                field(Description; Rec.Description)
                 {
                 }
-                field("Starting date"; "Starting date")
+                field("Starting date"; Rec."Starting date")
                 {
                 }
-                field("Date Fin"; "Date Fin")
+                field("Date Fin"; Rec."Date Fin")
                 {
                 }
-                field("Texte rattachement"; "Texte rattachement")
+                field("Texte rattachement"; Rec."Texte rattachement")
                 {
                 }
-                field(Statut; Statut)
+                field(Statut; Rec.Statut)
                 {
                 }
-                field("Texte de remplacement"; "Texte de remplacement")
+                field("Texte de remplacement"; Rec."Texte de remplacement")
                 {
                 }
-                field("Type of material"; "Type of material")
+                field("Type of material"; Rec."Type of material")
                 {
                 }
-                field(Usage; Usage)
+                field(Usage; Rec.Usage)
                 {
                 }
-                field("Substance - CAS / EINECS"; "Substance - CAS / EINECS")
+                field("Substance - CAS / EINECS"; Rec."Substance - CAS / EINECS")
                 {
                 }
-                field("Substance - nom"; "Substance - nom")
+                field("Substance - nom"; Rec."Substance - nom")
                 {
                 }
-                field(Source; Source)
+                field(Source; Rec.Source)
                 {
                 }
-                field("Description Usage in French"; "Description Usage in French")
+                field("Description Usage in French"; Rec."Description Usage in French")
                 {
                 }
-                field("List Items Associated"; "List Items Associated")
+                field("List Items Associated"; Rec."List Items Associated")
                 {
                     DrillDown = true;
                     DrillDownPageID = "Item Quality List";
                 }
-                field("Norm of testing"; "Norm of testing")
+                field("Norm of testing"; Rec."Norm of testing")
                 {
                 }
-                field(Pays; Pays)
+                field(Pays; Rec.Pays)
                 {
                 }
-                field(Checked; Checked)
+                field(Checked; Rec.Checked)
                 {
                 }
-                field("Livrables 1"; "Livrables 1")
+                field("Livrables 1"; Rec."Livrables 1")
                 {
                 }
-                field(Scope; Scope)
+                field(Scope; Rec.Scope)
                 {
                 }
-                field("Test Type"; "Test Type")
+                field("Test Type"; Rec."Test Type")
                 {
                 }
-                field(Descriptive; Descriptive)
+                field(Descriptive; Rec.Descriptive)
                 {
                 }
-                field("Support Text"; "Support Text")
+                field("Support Text"; Rec."Support Text")
                 {
                 }
-                field("Control Type"; "Control Type")
+                field("Control Type"; Rec."Control Type")
                 {
                 }
-                field(Frequency; Frequency)
+                field(Frequency; Rec.Frequency)
                 {
                 }
-                field("Referent Laboratory"; "Referent Laboratory")
+                field("Referent Laboratory"; Rec."Referent Laboratory")
                 {
                 }
-                field("Product Description"; "Product Description")
+                field("Product Description"; Rec."Product Description")
                 {
                 }
-                field(Mark; Mark)
+                field(Mark; Rec.Mark)
                 {
                 }
-                field("Description pays"; "Description pays")
+                field("Description pays"; Rec."Description pays")
                 {
                 }
-                field("Publication date"; "Publication date")
+                field("Publication date"; Rec."Publication date")
                 {
                 }
-                field("Date limit of the application"; "Date limit of the application")
+                field("Date limit of the application"; Rec."Date limit of the application")
                 {
                 }
-                field("Description Plan of control"; "Description Plan of control")
+                field("Description Plan of control"; Rec."Description Plan of control")
                 {
                 }
-                field("Title in English"; "Title in English")
+                field("Title in English"; Rec."Title in English")
                 {
                 }
-                field("Description Usage in English"; "Description Usage in English")
+                field("Description Usage in English"; Rec."Description Usage in English")
                 {
                 }
             }
@@ -144,8 +144,8 @@ page 50115 "Control list by category"
 
     trigger OnOpenPage()
     begin
-        SETFILTER(Type, '<>%1', 0);
-        SETFILTER("No.", '<>%1', '');
+        Rec.SETFILTER(Type, '<>%1', 0);
+        Rec.SETFILTER("No.", '<>%1', '');
     end;
 }
 

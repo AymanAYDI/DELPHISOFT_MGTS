@@ -15,9 +15,9 @@ page 50110 "Plan of Control 2"
     InsertAllowed = false;
     PageType = List;
     SourceTable = Table50057;
-    SourceTableView = SORTING (No., Type)
+    SourceTableView = SORTING(No., Type)
                       ORDER(Ascending)
-                      WHERE (Type = FILTER (Plan of control));
+                      WHERE(Type = FILTER(Plan of control));
 
     layout
     {

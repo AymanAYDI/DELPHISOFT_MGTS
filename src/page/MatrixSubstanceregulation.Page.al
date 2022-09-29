@@ -17,9 +17,9 @@ page 50091 "Matrix Substance regulation"
     ModifyAllowed = false;
     PageType = List;
     SourceTable = Table50051;
-    SourceTableView = SORTING (Item Category Code, Product Group Code, Mark, Product Description, No., Type)
+    SourceTableView = SORTING(Item Category Code, Product Group Code, Mark, Product Description, No., Type)
                       ORDER(Ascending)
-                      WHERE (Type = FILTER (Materials));
+                      WHERE(Type = FILTER(Materials));
 
     layout
     {

@@ -10,10 +10,10 @@ page 50016 "DEL Reporting Dimension 1 Code"
         {
             repeater(Control1)
             {
-                field("Code"; Code)
+                field("Code"; Rec.Code)
                 {
                 }
-                field(Description; Description)
+                field(Description; Rec.Description)
                 {
                 }
             }

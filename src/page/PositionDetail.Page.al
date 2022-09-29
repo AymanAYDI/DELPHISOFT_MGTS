@@ -13,40 +13,40 @@ page 50043 "DEL Position Detail"
         {
             repeater(Control1)
             {
-                field(ID; ID)
+                field(ID; Rec.ID)
                 {
                     Visible = false;
                 }
-                field(Type; Type)
+                field(Type; Rec.Type)
                 {
                 }
-                field("Type No."; "Type No.")
+                field("Type No."; Rec."Type No.")
                 {
                     Visible = "Type No.Visible";
                 }
-                field(Fee_ID; Fee_ID)
+                field(Fee_ID; Rec.Fee_ID)
                 {
                     Caption = 'Fee ID';
                     Visible = Fee_IDVisible;
                 }
-                field("Deal Item"; "Deal Item")
+                field("Deal Item"; Rec."Deal Item")
                 {
                     Caption = 'Item No';
                 }
-                field(Quantity; Quantity)
+                field(Quantity; Rec.Quantity)
                 {
                     Caption = 'Quantité';
                 }
-                field(Amount; Amount)
+                field(Amount; Rec.Amount)
                 {
                     Caption = 'Amount';
                     DecimalPlaces = 2 : 3;
                 }
-                field(Currency; Currency)
+                field(Currency; Rec.Currency)
                 {
                     Caption = 'Currency';
                 }
-                field("Line Amount"; "Line Amount")
+                field("Line Amount"; Rec."Line Amount")
                 {
                     Caption = 'Amount (EUR)';
                 }
@@ -66,7 +66,7 @@ page 50043 "DEL Position Detail"
 
     trigger OnOpenPage()
     begin
-        IF Type = Type::Fee THEN BEGIN
+        IF Rec.Type = Rec.Type::Fee THEN BEGIN
             "Type No.Visible" := FALSE;
             Fee_IDVisible := TRUE;
         END ELSE BEGIN

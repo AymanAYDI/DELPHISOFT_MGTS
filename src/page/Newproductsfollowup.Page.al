@@ -122,7 +122,7 @@ page 50004 "DEL New products follow up"
                     PageManagement: Codeunit "Page Management";
 
                 begin
-                    PurchHeader.GET("Document Type", Rec."Document No.");
+                    PurchHeader.GET(Rec."Document Type", Rec."Document No.");
                     PageManagement.PageRun(PurchHeader);
                 end;
             }

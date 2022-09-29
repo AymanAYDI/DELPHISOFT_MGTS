@@ -26,10 +26,10 @@ tableextension 50036 "DEL ProductGroup" extends "Product Group"
             begin
                 //START THM
                 IF VendeurRec.GET("DEL Salesperson Code") THEN
-                    "DEL Responsible Code" := VendeurRec."Responsible Code"
+                    "DEL Responsible Code" := VendeurRec."DEL Responsible Code"
                 ELSE
                     "DEL Responsible Code" := '';
-                CALCFIELDS(Salesperson, Responsible);
+                CALCFIELDS("DEL Salesperson Code", "DEL Responsible Code");
                 //END THM
             end;
         }

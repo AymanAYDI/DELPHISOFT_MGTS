@@ -14,9 +14,9 @@ page 50070 "Liste suivi liasse doc"
     Editable = false;
     PageType = List;
     SourceTable = Table23;
-    SourceTableView = SORTING (No.)
+    SourceTableView = SORTING(No.)
                       ORDER(Ascending)
-                      WHERE (Vendor Posting Group=FILTER(MARCH));
+                      WHERE(Vendor Posting Group=FILTER(MARCH));
 
     layout
     {

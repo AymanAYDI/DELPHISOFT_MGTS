@@ -9,9 +9,9 @@ page 50144 "EDI Import Erreurs"
     PageType = List;
     ShowFilter = false;
     SourceTable = Table5327322;
-    SourceTableView = SORTING (Entry No.)
+    SourceTableView = SORTING(Entry No.)
                       ORDER(Ascending)
-                      WHERE (Status = CONST (Failed),
+                      WHERE(Status = CONST(Failed),
                             Processing Type=FILTER(<>Test Convert));
 
     layout

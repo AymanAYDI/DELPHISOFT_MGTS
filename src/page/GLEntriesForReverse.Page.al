@@ -19,7 +19,7 @@ page 50126 "GL Entries For Reverse"
     PageType = List;
     Permissions = TableData 17 = rm;
     SourceTable = Table17;
-    SourceTableView = SORTING (G/L Account No., Posting Date)
+    SourceTableView = SORTING(G/L Account No., Posting Date)
                       ORDER(Descending);
 
     layout

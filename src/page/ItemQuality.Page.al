@@ -1,12 +1,13 @@
+#pragma implicitwith disable
 page 50077 "DEL Item Quality"
 {
-   
+
     Caption = 'Item Quality';
     DeleteAllowed = false;
     InsertAllowed = false;
     PageType = Card;
     RefreshOnActivate = true;
-    SourceTable = Table27;
+    SourceTable = Item;
 
     layout
     {
@@ -15,19 +16,19 @@ page 50077 "DEL Item Quality"
             group("Général")
             {
                 Caption = 'General';
-                field("No."; "No.")
+                field("No."; Rec."No.")
                 {
                     Editable = false;
                 }
-                field(Description; Description)
+                field(Description; Rec.Description)
                 {
                     Editable = false;
                 }
-                field("Base Unit of Measure"; "Base Unit of Measure")
+                field("Base Unit of Measure"; Rec."Base Unit of Measure")
                 {
                     Editable = false;
                 }
-                field(Blocked; Blocked)
+                field(Blocked; Rec.Blocked)
                 {
                     Caption = 'Quality Blocked';
                     Editable = false;
@@ -35,20 +36,20 @@ page 50077 "DEL Item Quality"
                 field("Checklist by item"; "Checklist by item")
                 {
                     DrillDown = true;
-                    DrillDownPageID = "Control list by category";
+                    DrillDownPageID = "DEL Control list by category";
                 }
             }
             group("General quality product ID")
             {
                 Caption = 'General quality product ID';
-                field("Item Category Code"; "Item Category Code")
+                field("Item Category Code"; Rec."Item Category Code")
                 {
                     Editable = false;
                 }
                 field("Item Category Label"; "Item Category Label")
                 {
                 }
-                field("Product Group Code"; "Product Group Code")
+                field("Product Group Code"; Rec."Product Group Code")
                 {
                     Editable = false;
                 }
@@ -63,7 +64,7 @@ page 50077 "DEL Item Quality"
                         CurrPage.UPDATE;
                     end;
                 }
-                field("Product Description"; "Product Description")
+                field("Product Description"; Rec."Product Description")
                 {
 
                     trigger OnValidate()
@@ -124,9 +125,9 @@ page 50077 "DEL Item Quality"
                     DrillDownPageID = "Matrix Plan of Control List";
                 }
             }
-            part(; 50046)
+            part(Quality_status; "DEL Quality forms")
             {
-                SubPageLink = Item No.=FIELD(No.);
+                SubPageLink = "Item No." = FIELD("No.");
             }
             group("Quality status")
             {
@@ -154,13 +155,11 @@ page 50077 "DEL Item Quality"
                     Editable = false;
                 }
             }
-            part(; 124)
+            part("Comment Sheet"; "Comment Sheet")
             {
                 Editable = false;
-                SubPageLink = Table Name=FILTER(Item),
-                              No.=FIELD(No.);
-                SubPageView = SORTING(Table Name,No.,Line No.)
-                              ORDER(Descending);
+                SubPageLink = "Table Name" = FILTER(Item), "No." = FIELD("No.");
+                SubPageView = SORTING("Table Name", "No.", "Line No.") ORDER(Descending);
             }
         }
     }
@@ -178,14 +177,9 @@ page 50077 "DEL Item Quality"
                     Promoted = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
-                    RunObject = Page 50111;
-                                    RunPageLink = Item Category Code=FIELD(Item Category Code),
-                                  Product Group Code=FIELD(Product Group Code),
-                                  Mark=FIELD(Marque Produit),
-                                  Product Description=FIELD(Product Description);
-                    RunPageView = SORTING(Item Category Code,Product Group Code,Mark,Product Description,No.,Type)
-                                  ORDER(Ascending)
-                                  WHERE(Type=FILTER(General product));
+                    RunObject = Page "Matrix General regulation List";
+                    RunPageLink = "Item Category Code" = FIELD("Item Category Code"), "Product Group Code" = FIELD("Product Group Code"), Mark = FIELD("Marque Produit"), "Product Description" = FIELD("Product Description");
+                    RunPageView = SORTING("Item Category Code", "Product Group Code", Mark, "Product Description", "No.", Type) ORDER(Ascending) WHERE(Type = FILTER("General product"));
                     Visible = RegGenerale;
                 }
                 action("Régl. Matière")
@@ -195,14 +189,9 @@ page 50077 "DEL Item Quality"
                     Promoted = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
-                    RunObject = Page 50112;
-                                    RunPageLink = Item Category Code=FIELD(Item Category Code),
-                                  Product Group Code=FIELD(Product Group Code),
-                                  Mark=FIELD(Marque Produit),
-                                  Product Description=FIELD(Product Description);
-                    RunPageView = SORTING(Item Category Code,Product Group Code,Mark,Product Description,No.,Type)
-                                  ORDER(Ascending)
-                                  WHERE(Type=FILTER(Materials));
+                    RunObject = Page "Matrix Substance regul List";
+                    RunPageLink = "Item Category Code" = FIELD("Item Category Code"), "Product Group Code" = FIELD("Product Group Code"), Mark = FIELD("Marque Produit"), "Product Description" = FIELD("Product Description");
+                    RunPageView = SORTING("Item Category Code", "Product Group Code", Mark, "Product Description", "No.", Type) ORDER(Ascending) WHERE(Type = FILTER(Materials));
                     Visible = RegMat;
                 }
                 action("Reg. plan of control")
@@ -212,15 +201,12 @@ page 50077 "DEL Item Quality"
                     Promoted = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
-                    RunObject = Page 50113;
-                                    RunPageLink = Item Category Code=FIELD(Item Category Code),
-                                  Product Group Code=FIELD(Product Group Code),
-                                  Mark=FIELD(Marque Produit),
-                                  Product Description=FIELD(Product Description);
+                    RunObject = Page "Matrix Plan of Control List";
+                    RunPageLink = "Item Category Code" = FIELD("Item Category Code"), "Product Group Code" = FIELD("Product Group Code"), Mark = FIELD("Marque Produit"), "Product Description" = FIELD("Product Description");
                     RunPageMode = View;
-                    RunPageView = SORTING(Item Category Code,Product Group Code,Mark,Product Description,No.,Type)
+                    RunPageView = SORTING("Item Category Code", "Product Group Code", Mark, "Product Description", "No.", Type)
                                   ORDER(Ascending)
-                                  WHERE(Type=FILTER(Plan of control));
+                                  WHERE(Type = FILTER("Plan of control"));
                     Visible = RegPlan;
                 }
                 action("Co&mments")
@@ -229,9 +215,8 @@ page 50077 "DEL Item Quality"
                     Image = ViewComments;
                     Promoted = true;
                     PromotedIsBig = true;
-                    RunObject = Page 124;
-                                    RunPageLink = Table Name=CONST(Item),
-                                  No.=FIELD(No.);
+                    RunObject = Page "Comment Sheet";
+                    RunPageLink = "Table Name" = CONST(Item), "No." = FIELD("No.");
                 }
             }
         }
@@ -240,10 +225,10 @@ page 50077 "DEL Item Quality"
     trigger OnAfterGetRecord()
     begin
 
-        CALCFIELDS("Regl. Generale","Regl. Matiere","Regl. Plan Control");
-        RegGenerale:="Regl. Generale";
-        RegMat:="Regl. Matiere";
-        RegPlan:="Regl. Plan Control";
+        CALCFIELDS("Regl. Generale", "Regl. Matiere", "Regl. Plan Control");
+        RegGenerale := "Regl. Generale";
+        RegMat := "Regl. Matiere";
+        RegPlan := "Regl. Plan Control";
     end;
 
     var
@@ -251,15 +236,15 @@ page 50077 "DEL Item Quality"
         RegMat: Boolean;
         RegPlan: Boolean;
         Regelect: Boolean;
-        Item_Rec: Record "27";
-        LiaisseProduit: Record "50056";
+        Item_Rec: Record "Purch. Cr. Memo Hdr.";
+        LiaisseProduit: Record "DEL Item Quality forms";
         i: Integer;
-        regArticle: Record "50058";
+        regArticle: Record "DEL Test Type";
         RegGenerale2: Boolean;
         RegMat2: Boolean;
         RegMachine2: Boolean;
         Regelect2: Boolean;
-        GeneralSetup: Record "50000";
+        GeneralSetup: Record "DEL General Setup";
         Cat1: Decimal;
         Cat2: Decimal;
         Cat3: Decimal;

@@ -11,7 +11,7 @@ page 50079 "Type / Nature Enregistrement"
 
     Caption = 'Type of forms';
     PageType = List;
-    SourceTable = Table50055;
+    SourceTable = "DEL Type/Nature Enregistrement";
 
     layout
     {
@@ -19,10 +19,10 @@ page 50079 "Type / Nature Enregistrement"
         {
             repeater(Group)
             {
-                field(Code; Code)
+                field("Code"; Rec.Code)
                 {
                 }
-                field(Description; Description)
+                field(Description; Rec.Description)
                 {
                 }
             }

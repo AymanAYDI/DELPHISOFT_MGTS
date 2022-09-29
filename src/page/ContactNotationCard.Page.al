@@ -91,7 +91,7 @@ page 50067 "DEL Contact Notation Card"
                             CompanyDetails.SETRECORD(Cont);
                             CompanyDetails.RUNMODAL();
                         END;
-                        GET(Rec."No.");
+                        Rec.GET(Rec."No.");
                         CurrPage.UPDATE();
                     end;
                 }
@@ -516,7 +516,7 @@ page 50067 "DEL Contact Notation Card"
 
                         trigger OnAction()
                         begin
-                            CreateCustomer(ChooseCustomerTemplate());
+                            Rec.CreateCustomer(Rec.ChooseCustomerTemplate());
                         end;
                     }
                     action(MgtsVendor)

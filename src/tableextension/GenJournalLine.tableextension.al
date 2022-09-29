@@ -93,7 +93,6 @@ tableextension 50044 "DEL GenJournalLine" extends "Gen. Journal Line"
         field(11510; "DEL Swiss QRBill"; Boolean)
         {
             Caption = 'Swiss QRBill';
-            Description = 'DEL|QR';
             Editable = false;
         }
         field(50001; "DEL Shipment Selection"; Integer)
@@ -105,7 +104,6 @@ tableextension 50044 "DEL GenJournalLine" extends "Gen. Journal Line"
                                                                  "Journal Batch Name" = FIELD(FILTER("Journal Batch Name")),
                                                                  "Line No." = FIELD("Line No."),
                                                                  USER_ID = FIELD("DEL User ID Filter")));
-            Description = 'Temp400';
             Editable = false;
 
         }
@@ -119,14 +117,12 @@ tableextension 50044 "DEL GenJournalLine" extends "Gen. Journal Line"
         field(50003; "DEL Customer Provision"; Code[20])
         {
             Caption = 'Customer Provision';
-            Description = 'MGTS10.00.001';
             TableRelation = Customer."No.";
         }
         field(50010; "DEL Shortcut Dim 3 Code"; Code[20])
         {
             CaptionClass = '1,2,3';
             Caption = 'Shortcut Dimension 3 Code';
-            Description = 'MGTS10.00.06.00';
 
             trigger OnValidate()
             begin
@@ -137,7 +133,6 @@ tableextension 50044 "DEL GenJournalLine" extends "Gen. Journal Line"
         {
             CaptionClass = '1,2,4';
             Caption = 'Shortcut Dimension 4 Code';
-            Description = 'MGTS10.00.06.00';
 
             trigger OnValidate()
             begin
@@ -148,7 +143,6 @@ tableextension 50044 "DEL GenJournalLine" extends "Gen. Journal Line"
         {
             CaptionClass = '1,2,5';
             Caption = 'Shortcut Dimension 5 Code';
-            Description = 'MGTS10.00.06.00';
 
             trigger OnValidate()
             begin
@@ -159,7 +153,6 @@ tableextension 50044 "DEL GenJournalLine" extends "Gen. Journal Line"
         {
             CaptionClass = '1,2,6';
             Caption = 'Shortcut Dimension 6 Code';
-            Description = 'MGTS10.00.06.00';
 
             trigger OnValidate()
             begin
@@ -170,7 +163,6 @@ tableextension 50044 "DEL GenJournalLine" extends "Gen. Journal Line"
         {
             CaptionClass = '1,2,7';
             Caption = 'Shortcut Dimension 7 Code';
-            Description = 'MGTS10.00.06.00';
 
             trigger OnValidate()
             begin
@@ -181,7 +173,6 @@ tableextension 50044 "DEL GenJournalLine" extends "Gen. Journal Line"
         {
             CaptionClass = '1,2,8';
             Caption = 'Shortcut Dimension 8 Code';
-            Description = 'MGTS10.00.06.00';
 
             trigger OnValidate()
             begin
@@ -342,9 +333,8 @@ tableextension 50044 "DEL GenJournalLine" extends "Gen. Journal Line"
     //end;
 
     var
-        dealShipmentSelection_Re_Loc: Record "50031";
+        dealShipmentSelection_Re_Loc: Record "IC Outbox Purchase Header";
 
-    var
-        dealShipmentSelection_Re_Loc: Record "50031";
+
 }
 

@@ -51,7 +51,6 @@ tableextension 50040 "DEL SalesPrice" extends "Sales Price"
         field(50002; "DEL Entry No."; BigInteger)
         {
             Caption = 'Entry No.';
-            Description = 'Mgts10.00.04.00';
         }
     }
     keys

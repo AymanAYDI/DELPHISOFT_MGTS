@@ -769,21 +769,31 @@ page 50073 "DEL Suivi des contrats"
     end;
 
     var
-        DocumentLine: Record 50008;
-        DocumentContrat: Page 50075;
-                             Customer: Record 18;
-                             CustLedgerEntry: Record 21;
-                             SalesInvoiceHeader: Record 112;
+        // DocumentLine: Record 50008;
+        DocumentLine: Record "DEL Document Line";
+        // Customer: Record 18;
+        Customer: Record Customer;
+        // CustLedgerEntry: Record 21;
+        CustLedgerEntry: Record "Cust. Ledger Entry";
+        // SalesInvoiceHeader: Record 112;
+        SalesInvoiceHeader: Record "Sales Invoice Header";
+        // DimensionValue_Rec: Record 349;
+        DimensionValue_Rec: Record "Dimension Value";
+        // CustLedgerEntry2: Record "21";
+        CustLedgerEntry2: Record "Cust. Ledger Entry";
+        // DocumentContrat: Page 50075;
+        DocumentContrat: Page "Document Sheet Contrats";
+                             // PDimensionValue: Page 560;
+                             PDimensionValue: Page "Dimension Value List";
                              Editablefield: Boolean;
-                             PDimensionValue: Page 560;
-                             DimensionValue_Rec: Record 349;
                              CustSalesLCY: array [4] of Decimal;
                              CustDateFilter: array [4] of Text[30];
                              i: Integer;
                              Text001: Label 'Sales (LCY)';
-        CustLedgerEntry2: Record "21";
         DateFilter1: Text;
         DateFilter2: Text;
         DateFilter3: Text;
+
+
 }
 

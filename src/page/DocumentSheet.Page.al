@@ -95,7 +95,7 @@ page 50065 "DEL Document Sheet"
 
     trigger OnNewRecord(BelowxRec: Boolean)
     begin
-        SetUpNewLine(BelowxRec);
+        Rec.SetUpNewLine(BelowxRec);
     end;
 
     var

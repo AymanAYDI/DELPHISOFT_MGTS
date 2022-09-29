@@ -1,4 +1,4 @@
-page 50075 "Document Sheet Contrats"
+page 50075 "DEL Document Sheet Contrats"
 {
     // +---------------------------------------------------------------+
     // | Logico SA                                                     |
@@ -16,9 +16,9 @@ page 50075 "Document Sheet Contrats"
     PageType = Worksheet;
     PopulateAllFields = true;
     SourceTable = Table50008;
-    SourceTableView = SORTING (Table Name, No., Comment Entry No., Line No.)
+    SourceTableView = SORTING(Table Name, No., Comment Entry No., Line No.)
                       ORDER(Ascending)
-                      WHERE (Notation Type=FILTER(' '),
+                      WHERE(Notation Type=FILTER(' '),
                             Type liasse=FILTER(' '));
 
     layout
@@ -27,22 +27,22 @@ page 50075 "Document Sheet Contrats"
         {
             repeater()
             {
-                field("Insert Date";"Insert Date")
+                field("Insert Date"; "Insert Date")
                 {
                 }
-                field("Insert Time";"Insert Time")
+                field("Insert Time"; "Insert Time")
                 {
                 }
-                field(Path;Path)
+                field(Path; Path)
                 {
                 }
-                field("File Name";"File Name")
+                field("File Name"; "File Name")
                 {
                 }
-                field("Type contrat";"Type contrat")
+                field("Type contrat"; "Type contrat")
                 {
                 }
-                field("User ID";"User ID")
+                field("User ID"; "User ID")
                 {
                 }
             }

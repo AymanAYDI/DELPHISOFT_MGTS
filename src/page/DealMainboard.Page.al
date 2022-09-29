@@ -57,7 +57,7 @@ page 50030 "DEL Deal Mainboard"
                     mypage: Page "DEL Deal Ship. Sele.";
                 begin
                     dealShipment_Re_Loc.RESET();
-                    dealShipment_Re_Loc.SETRANGE(Deal_ID, ID);
+                    dealShipment_Re_Loc.SETRANGE(Deal_ID, Rec.ID);
 
                     CLEAR(mypage);
                     mypage.SETTABLEVIEW(dealShipment_Re_Loc);
@@ -69,9 +69,9 @@ page 50030 "DEL Deal Mainboard"
                         ItemDetailShipmentNo_Co := dealShipment_Re_Loc.ID;
 
                         IF dealShipment_Re_Loc.GET(ItemDetailShipmentNo_Co) THEN
-                            CurrPage.ShipmentSubpage.PAGE.FNC_SetFilters(ID, dealShipment_Re_Loc."BR No.")
+                            CurrPage.ShipmentSubpage.PAGE.FNC_SetFilters(Rec.ID, dealShipment_Re_Loc."BR No.")
                         ELSE
-                            CurrPage.ShipmentSubpage.PAGE.FNC_SetFilters(ID, '');
+                            CurrPage.ShipmentSubpage.PAGE.FNC_SetFilters(Rec.ID, '');
 
                     END
                 end;
@@ -81,9 +81,9 @@ page 50030 "DEL Deal Mainboard"
                     dealShipment_Re_Loc: Record "DEL Deal Shipment";
                 begin
                     IF dealShipment_Re_Loc.GET(ItemDetailShipmentNo_Co) THEN
-                        CurrPage.ShipmentSubpage.PAGE.FNC_SetFilters(ID, dealShipment_Re_Loc."BR No.")
+                        CurrPage.ShipmentSubpage.PAGE.FNC_SetFilters(Rec.ID, dealShipment_Re_Loc."BR No.")
                     ELSE
-                        CurrPage.ShipmentSubpage.PAGE.FNC_SetFilters(ID, '');
+                        CurrPage.ShipmentSubpage.PAGE.FNC_SetFilters(Rec.ID, '');
                 end;
             }
             part(ShipmentSubpage; "Deal Posted Purch. Rcpt. Sub.")
@@ -232,7 +232,7 @@ page 50030 "DEL Deal Mainboard"
                         CLEAR(CurrencyExchange_page_Loc);
 
                         CurrencyExchange_Re_Loc.RESET();
-                        CurrencyExchange_Re_Loc.SETFILTER(Deal_ID, '%1 | %2', '', ID);
+                        CurrencyExchange_Re_Loc.SETFILTER(Deal_ID, '%1 | %2', '', Rec.ID);
                         CurrencyExchange_Re_Loc.SETFILTER("Valid From", '<=%1', TODAY);
                         CurrencyExchange_Re_Loc.SETFILTER("Valid To", '>=%1', TODAY);
 
@@ -260,7 +260,7 @@ page 50030 "DEL Deal Mainboard"
 
 
                         requestID_Co_Loc := UpdateRequestManager_Cu.FNC_Add_Request(
-                          ID,
+                          Rec.ID,
                           urm_Re_Loc.Requested_By_Type::CUSTOM,
                           USERID,
                           CURRENTDATETIME
@@ -293,7 +293,7 @@ page 50030 "DEL Deal Mainboard"
                     begin
 
                         requestID_Co_Loc := UpdateRequestManager_Cu.FNC_Add_Request(
-                          ID,
+                          Rec.ID,
                           urm_Re_Loc.Requested_By_Type::CUSTOM,
                           USERID,
                           CURRENTDATETIME
@@ -333,11 +333,11 @@ page 50030 "DEL Deal Mainboard"
         FNC_InitVars();
 
 
-        CurrPage."Subpage Logistic".PAGE.FNC_Set_Deal_ID(ID);
+        CurrPage."Subpage Logistic".PAGE.FNC_Set_Deal_ID(Rec.ID);
 
 
         IF ItemDetailShipmentNo_Co = '' THEN
-            CurrPage.ShipmentSubpage.PAGE.FNC_SetFilters(ID, '');
+            CurrPage.ShipmentSubpage.PAGE.FNC_SetFilters(Rec.ID, '');
 
 
         PLLogistic_Re_Temp.DELETEALL;
@@ -347,7 +347,7 @@ page 50030 "DEL Deal Mainboard"
 
             plannedElement_Re_Loc.RESET();
             plannedElement_Re_Loc.SETCURRENTKEY(Deal_ID, Type, Instance);
-            plannedElement_Re_Loc.SETRANGE(Deal_ID, ID);
+            plannedElement_Re_Loc.SETRANGE(Deal_ID, Rec.ID);
             plannedElement_Re_Loc.SETRANGE(Type, plannedElement_Re_Loc.Type::Fee);
             plannedElement_Re_Loc.SETRANGE(Instance, plannedElement_Re_Loc.Instance::planned);
             //on boucle sur toutes les elements de type Fee
@@ -363,7 +363,7 @@ page 50030 "DEL Deal Mainboard"
                     //on cherche les éléments réalisés pour un élément prévu
                     realElement_Re_Loc.RESET();
                     realElement_Re_Loc.SETCURRENTKEY(Deal_ID, Type);
-                    realElement_Re_Loc.SETRANGE(Deal_ID, ID);
+                    realElement_Re_Loc.SETRANGE(Deal_ID, Rec.ID);
                     realElement_Re_Loc.SETRANGE(Type, realElement_Re_Loc.Type::Invoice); //CHG-DEV-PROVISION filter sur invoice|provision
                     realElement_Re_Loc.SETRANGE(Fee_ID, plannedElement_Re_Loc.Fee_ID);
                     realElement_Re_Loc.SETRANGE(Fee_Connection_ID, plannedElement_Re_Loc.Fee_Connection_ID);
@@ -402,7 +402,7 @@ page 50030 "DEL Deal Mainboard"
 
             plannedElement_Re_Loc.RESET();
             plannedElement_Re_Loc.SETCURRENTKEY(Deal_ID, Type, Instance);
-            plannedElement_Re_Loc.SETRANGE(Deal_ID, ID);
+            plannedElement_Re_Loc.SETRANGE(Deal_ID, Rec.ID);
             plannedElement_Re_Loc.SETRANGE(Type, plannedElement_Re_Loc.Type::Fee);
             plannedElement_Re_Loc.SETRANGE(Instance, plannedElement_Re_Loc.Instance::planned);
             IF plannedElement_Re_Loc.FINDFIRST THEN
@@ -441,7 +441,7 @@ page 50030 "DEL Deal Mainboard"
                     //on cherche les éléments réalisés pour un élément prévu
                     realElement_Re_Loc.RESET();
                     realElement_Re_Loc.SETCURRENTKEY(Deal_ID, Type);
-                    realElement_Re_Loc.SETRANGE(Deal_ID, ID);
+                    realElement_Re_Loc.SETRANGE(Deal_ID, Rec.ID);
                     realElement_Re_Loc.SETRANGE(Type, realElement_Re_Loc.Type::Invoice); //CHG-DEV-PROVISION filter sur invoice|provision
                     realElement_Re_Loc.SETRANGE(Fee_ID, plannedElement_Re_Loc.Fee_ID);
                     realElement_Re_Loc.SETRANGE(Fee_Connection_ID, plannedElement_Re_Loc.Fee_Connection_ID);
@@ -451,12 +451,12 @@ page 50030 "DEL Deal Mainboard"
 
                             //filtre sur les positions avec element id correspondant
                             position_Re_Loc.RESET();
-                            position_Re_Loc.SETRANGE(Deal_ID, ID);
+                            position_Re_Loc.SETRANGE(Deal_ID, Rec.ID);
                             position_Re_Loc.SETRANGE(Element_ID, realElement_Re_Loc.ID);
                             IF position_Re_Loc.FINDFIRST THEN
                                 REPEAT
 
-                                    IF dealShipCon_Re_Loc.GET(ID, PLLogisticShipmentNo_Co, position_Re_Loc."Sub Element_ID") THEN BEGIN
+                                    IF dealShipCon_Re_Loc.GET(Rec.ID, PLLogisticShipmentNo_Co, position_Re_Loc."Sub Element_ID") THEN BEGIN
                                         //PLLogistic_Re_Temp."Real Element ID" := realElement_Re_Loc.ID;
                                         PLLogistic_Re_Temp."Real Amount" += position_Re_Loc."Line Amount (EUR)";
                                     END
@@ -481,7 +481,7 @@ page 50030 "DEL Deal Mainboard"
 
 
                     position_Re_Loc.RESET();
-                    position_Re_Loc.SETFILTER(Deal_ID, ID);
+                    position_Re_Loc.SETFILTER(Deal_ID, Rec.ID);
 
                     IF position_Re_Loc.FINDFIRST THEN
                         REPEAT

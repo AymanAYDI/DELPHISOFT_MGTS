@@ -10,19 +10,19 @@ page 50013 "DEL Forwarding agent"
         {
             repeater(Control1)
             {
-                field("Forwarding Agent Code"; "Forwarding Agent Code")
+                field("Forwarding Agent Code"; Rec."Forwarding Agent Code")
                 {
                 }
-                field(Description; Description)
+                field(Description; Rec.Description)
                 {
                 }
-                field("Folder for file"; "Folder for file")
+                field("Folder for file"; Rec."Folder for file")
                 {
                 }
-                field("HSCODE Enable"; "HSCODE Enable")
+                field("HSCODE Enable"; Rec."HSCODE Enable")
                 {
                 }
-                field("URL Address"; "URL Address")
+                field("URL Address"; Rec."URL Address")
                 {
                 }
             }

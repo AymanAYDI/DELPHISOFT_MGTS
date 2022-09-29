@@ -11,7 +11,7 @@ tableextension 50002 "DEL SalesShipmentLine" extends "Sales Shipment Line"
         // }
         field(50001; "DEL Qty. Init. Client"; Decimal)
         {
-      
+
         }
         field(50008; "DEL Ship-to Code"; Code[10])
         {

@@ -14,9 +14,9 @@ page 50107 "Plan of Control Card"
     Caption = 'Plan of Control Card';
     PageType = Card;
     SourceTable = Table50057;
-    SourceTableView = SORTING (No., Type)
+    SourceTableView = SORTING(No., Type)
                       ORDER(Ascending)
-                      WHERE (Type = FILTER (Plan of control));
+                      WHERE(Type = FILTER(Plan of control));
 
     layout
     {

@@ -20,23 +20,23 @@ page 50018 "DEL Group Reporting"
                 {
                     Editable = false;
                 }
-                field("No. 2"; "No. 2")
+                field("No. 2"; Rec."No. 2")
                 {
                     Editable = false;
                 }
-                field("No."; "No.")
+                field("No."; Rec."No.")
                 {
                     Editable = false;
                 }
-                field(Name; Name)
+                field(Name; Rec.Name)
                 {
                     Editable = false;
                 }
-                field("Income/Balance"; "Income/Balance")
+                field("Income/Balance"; Rec."Income/Balance")
                 {
                     Editable = false;
                 }
-                field("Net Change"; "Net Change")
+                field("Net Change"; Rec."Net Change")
                 {
                     Editable = false;
                     Visible = false;
@@ -55,7 +55,7 @@ page 50018 "DEL Group Reporting"
                 var
                     ApplicationManagement: Codeunit 1;
                 begin
-                    SETFILTER("Date Filter", DateFilterBalance);
+                    Rec.SETFILTER("Date Filter", DateFilterBalance);
                     UpdateAmount;
                 end;
             }
@@ -67,7 +67,7 @@ page 50018 "DEL Group Reporting"
                 var
                     ApplicationManagement: Codeunit 1;
                 begin
-                    SETFILTER("Date Filter", DateFilterIncome);
+                    Rec.SETFILTER("Date Filter", DateFilterIncome);
                     UpdateAmount;
                 end;
             }
@@ -87,9 +87,9 @@ page 50018 "DEL Group Reporting"
     var
         GLAccount: Record 5;
     begin
-        SETRANGE("Account Type", "Account Type"::Posting);
-        SETFILTER("Reporting Dimension 1 Code", '<>%1', '');
-        SETFILTER("Reporting Dimension 2 Code", '<>%1', '');
+        Rec.SETRANGE("Account Type", Rec."Account Type"::Posting);
+        Rec.SETFILTER("Reporting Dimension 1 Code", '<>%1', '');
+        Rec.SETFILTER("Reporting Dimension 2 Code", '<>%1', '');
         UpdateAmount;
     end;
 
@@ -104,18 +104,18 @@ page 50018 "DEL Group Reporting"
 
     procedure CalcBalance(): Decimal
     begin
-        SETRANGE("Date Filter");
+        Rec.SETRANGE("Date Filter");
 
-        IF "Income/Balance" = "Income/Balance"::"Income Statement" THEN BEGIN
+        IF Rec."Income/Balance" = Rec."Income/Balance"::"Income Statement" THEN BEGIN
             IF DateFilterIncome <> '' THEN
-                SETFILTER("Date Filter", DateFilterIncome)
+                Rec.SETFILTER("Date Filter", DateFilterIncome)
         END ELSE BEGIN
             IF DateFilterBalance <> '' THEN
-                SETFILTER("Date Filter", DateFilterBalance)
+                Rec.SETFILTER("Date Filter", DateFilterBalance)
         END;
 
-        CALCFIELDS("Net Change");
-        EXIT("Net Change");
+        Rec.CALCFIELDS("Net Change");
+        EXIT(Rec."Net Change");
     end;
 
 
@@ -125,7 +125,7 @@ page 50018 "DEL Group Reporting"
     begin
         TotalAmount := 0;
 
-        GLAccount.SETRANGE("Account Type", "Account Type"::Posting);
+        GLAccount.SETRANGE("Account Type", Rec."Account Type"::Posting);
         GLAccount.SETFILTER("Reporting Dimension 1 Code", '<>%1', '');
         GLAccount.SETFILTER("Reporting Dimension 2 Code", '<>%1', '');
         IF GLAccount.FINDFIRST THEN
@@ -166,7 +166,7 @@ page 50018 "DEL Group Reporting"
         GLAccount: Record 15;
         ExportData: Text[250];
     begin
-        GLAccount.SETRANGE("Account Type", "Account Type"::Posting);
+        GLAccount.SETRANGE("Account Type", Rec."Account Type"::Posting);
         GLAccount.SETFILTER("Reporting Dimension 1 Code", '<>%1', '');
         GLAccount.SETFILTER("Reporting Dimension 2 Code", '<>%1', '');
         IF GLAccount.FINDFIRST THEN

@@ -10,7 +10,7 @@ page 50140 "JSON Requests logs"
     ModifyAllowed = false;
     PageType = List;
     SourceTable = Table50073;
-    SourceTableView = SORTING (Date)
+    SourceTableView = SORTING(Date)
                       ORDER(Descending);
 
     layout
@@ -96,7 +96,7 @@ page 50140 "JSON Requests logs"
                         'api/order':
                             DIALOG.MESSAGE('Not implemented.');
 
-                            //>>Mgts10.00.04.00
+                        //>>Mgts10.00.04.00
                         'GetItemCrossReferences':
                             JSONWebService.GetItemCrossReferences(Data);
                         'GetSalesPricess':
@@ -121,7 +121,7 @@ page 50140 "JSON Requests logs"
                             JSONWebService.UpdateItemCrossReferences(Data);
                         'DeleteItemCrossReferences':
                             JSONWebService.DeleteItemCrossReferences(Data);
-                            //<<Mgts10.00.04.00
+                    //<<Mgts10.00.04.00
 
                     END;
                     Win.CLOSE;

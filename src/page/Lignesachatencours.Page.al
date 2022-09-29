@@ -568,7 +568,7 @@ page 50010 "DEL Lignes achat en cours"
                 {
                     Caption = 'Work Center No.';
                 }
-                field(Finished; Finished)
+                field(Finished; Rec.Finished)
                 {
                     Caption = 'Finished';
                 }

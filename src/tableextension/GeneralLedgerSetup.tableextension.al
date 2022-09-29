@@ -12,25 +12,23 @@ tableextension 50046 "DEL GeneralLedgerSetup" extends "General Ledger Setup"
         field(50000; "DEL Provision Source Code"; Code[20])
         {
             Caption = 'Provision Source Code';
-            Description = 'MGTS10.00.001';
             TableRelation = "Source Code".Code;
         }
         field(50001; "DEL Provision Journal Batch"; Text[250])
         {
             Caption = 'Provision Journal Batch';
-            Description = 'MGTS10.00.001';
 
             trigger OnLookup()
             var
-                GenJournalBatchPage: Page "General Journal Batches";
                 GenJournalBatch: Record "Gen. Journal Batch";
+                GenJournalBatchPage: Page "General Journal Batches";
             begin
 
                 //MGTS10.00.001; 001; mhh; begin
                 CLEAR(GenJournalBatchPage);
                 GenJournalBatchPage.LOOKUPMODE(TRUE);
-                // GenJournalBatchPage.SetProvBatchChoice(TRUE); TODO: 'Page "General Journal Batches"' does not contain a definition for 'SetProvBatchChoice'
-                IF GenJournalBatchPage.RUNMODAL = ACTION::LookupOK THEN BEGIN
+                GenJournalBatchPage.SetProvBatchChoice(TRUE);
+                IF GenJournalBatchPage.RUNMODAL() = ACTION::LookupOK THEN BEGIN
                     GenJournalBatchPage.GETRECORD(GenJournalBatch);
                     IF "DEL Provision Journal Batch" = '' THEN
                         "DEL Provision Journal Batch" := GenJournalBatch.Name
