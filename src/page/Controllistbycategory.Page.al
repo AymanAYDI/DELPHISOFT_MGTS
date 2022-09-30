@@ -5,6 +5,8 @@ page 50115 "DEL Control list by category"
     PageType = List;
     ShowFilter = true;
     SourceTable = "DEL Regulation Matrix Line";
+    UsageCategory = Lists; // a verifier
+    ApplicationArea = All;
 
     layout
     {
@@ -75,7 +77,7 @@ page 50115 "DEL Control list by category"
                 field("List Items Associated"; Rec."List Items Associated")
                 {
                     DrillDown = true;
-                    DrillDownPageID = "Item Quality List";
+                    DrillDownPageID = "DEL Item Quality List";
                 }
                 field("Norm of testing"; Rec."Norm of testing")
                 {

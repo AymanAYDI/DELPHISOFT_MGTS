@@ -17,7 +17,7 @@ page 50078 "DEL Item Quality List"
 
     Caption = 'Item Quality List';
     CardPageID = "DEL Item Quality";
-    DataCaptionFields = "Regl. Type Filter", "Regl. No. Filter";
+    DataCaptionFields = "DEL Regl. Type Filter", "DEL Regl. No. Filter";
     DeleteAllowed = false;
     Editable = false;
     InsertAllowed = false;
@@ -69,7 +69,7 @@ page 50078 "DEL Item Quality List"
                 field("Marque Produit"; "Marque Produit")
                 {
                 }
-                field("Product Description"; Rec."Product Description")
+                field("Product Description"; "Product Description")
                 {
                 }
                 field("NGTS Quality Expert"; "NGTS Quality Expert")
@@ -139,7 +139,7 @@ page 50078 "DEL Item Quality List"
     {
         area(processing)
         {
-            group()
+            group(group)
             {
                 action("Régl. Générale")
                 {
@@ -208,12 +208,12 @@ page 50078 "DEL Item Quality List"
     end;
 
     var
+        Item_Rec: Record "Item";
+        LiaisseProduit: Record "DEL Item Quality forms";
         RegGenerale: Boolean;
         RegMat: Boolean;
         RegPlan: Boolean;
         Regelect: Boolean;
-        Item_Rec: Record "Item";
-        LiaisseProduit: Record "DEL Item Quality forms";
         i: Integer;
 }
 

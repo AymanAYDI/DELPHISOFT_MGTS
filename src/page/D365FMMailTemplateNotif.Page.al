@@ -7,7 +7,9 @@ page 50146 "D365FM Mail Template Notif."
 
     Caption = 'D365FM Mail Template Notif.';
     PageType = List;
-    SourceTable = Table50082;
+    SourceTable = "DEL D365FM Mail Template";
+    UsageCategory = Lists; // a verifier
+    ApplicationArea = All;
 
     layout
     {
@@ -15,19 +17,19 @@ page 50146 "D365FM Mail Template Notif."
         {
             repeater(Group)
             {
-                field("Parameter String"; "Parameter String")
+                field("Parameter String"; Rec."Parameter String")
                 {
                 }
-                field("Template mail"; "Template mail")
+                field("Template mail"; Rec."Template mail")
                 {
                 }
-                field(Title; Title)
+                field(Title; Rec.Title)
                 {
                 }
-                field("Sender Address"; "Sender Address")
+                field("Sender Address"; Rec."Sender Address")
                 {
                 }
-                field(Cci; Cci)
+                field(Cci; Rec.Cci)
                 {
                 }
             }
@@ -38,7 +40,7 @@ page 50146 "D365FM Mail Template Notif."
     {
         area(processing)
         {
-            action("Import template")
+            action("Import template1")
             {
                 Caption = 'Import template';
                 Image = Import;
@@ -49,10 +51,10 @@ page 50146 "D365FM Mail Template Notif."
 
                 trigger OnAction()
                 begin
-                    SetHtmlTemplate();
+                    Rec.SetHtmlTemplate();
                 end;
             }
-            action("Import template")
+            action("Import template2")
             {
                 Caption = 'Import template';
                 Image = Export;
@@ -63,7 +65,7 @@ page 50146 "D365FM Mail Template Notif."
 
                 trigger OnAction()
                 begin
-                    ExportHtmlTemplate();
+                    Rec.ExportHtmlTemplate();
                 end;
             }
             action("Import template")
@@ -77,7 +79,7 @@ page 50146 "D365FM Mail Template Notif."
 
                 trigger OnAction()
                 begin
-                    DeleteHtmlTemplate();
+                    Rec.DeleteHtmlTemplate();
                 end;
             }
         }

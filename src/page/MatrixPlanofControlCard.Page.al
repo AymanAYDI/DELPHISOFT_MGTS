@@ -13,10 +13,10 @@ page 50093 "Matrix Plan of Control Card"
     Caption = 'Plan of Control Card';
     Editable = false;
     PageType = Card;
-    SourceTable = Table50051;
-    SourceTableView = SORTING(Item Category Code, Product Group Code, Mark, Product Description, No., Type)
+    SourceTable = "DEL Regulation Matrix Line";
+    SourceTableView = SORTING("Item Category Code", "Product Group Code", Mark, "Product Description", "No.", Type)
                       ORDER(Ascending)
-                      WHERE(Type = FILTER(Plan of control));
+                      WHERE(Type = FILTER("Plan of control"));
 
     layout
     {
@@ -25,40 +25,40 @@ page 50093 "Matrix Plan of Control Card"
             group(Group)
             {
                 Caption = 'Record details';
-                field("Item Category Code"; "Item Category Code")
+                field("Item Category Code"; Rec."Item Category Code")
                 {
                 }
-                field("Product Group Code"; "Product Group Code")
+                field("Product Group Code"; Rec."Product Group Code")
                 {
                 }
-                field("Item Category Label"; "Item Category Label")
+                field("Item Category Label"; Rec."Item Category Label")
                 {
                 }
-                field("Product Group Label"; "Product Group Label")
+                field("Product Group Label"; Rec."Product Group Label")
                 {
                 }
-                field(Type; Type)
+                field(Type; Rec.Type)
                 {
                 }
-                field("Test Type"; "Test Type")
+                field("Test Type"; Rec."Test Type")
                 {
                 }
-                field(Descriptive; Descriptive)
+                field(Descriptive; Rec.Descriptive)
                 {
                 }
-                field("Support Text"; "Support Text")
+                field("Support Text"; Rec."Support Text")
                 {
                 }
-                field("Control Type"; "Control Type")
+                field("Control Type"; Rec."Control Type")
                 {
                 }
-                field(Frequency; Frequency)
+                field(Frequency; Rec.Frequency)
                 {
                 }
-                field("Referent Laboratory"; "Referent Laboratory")
+                field("Referent Laboratory"; Rec."Referent Laboratory")
                 {
                 }
-                field("Livrables 1"; "Livrables 1")
+                field("Livrables 1"; Rec."Livrables 1")
                 {
                 }
             }
@@ -69,4 +69,5 @@ page 50093 "Matrix Plan of Control Card"
     {
     }
 }
+
 

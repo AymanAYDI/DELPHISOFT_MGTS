@@ -1,31 +1,31 @@
-page 50135 "DocMatrix Email Body"
+page 50135 "DEL DocMatrix Email Body"
 {
     // 20190227/DEL/PD/LOP003 - object created (adapted form P9700 "Email Dialog")
 
     Caption = 'Email Text';
     PageType = StandardDialog;
     SaveValues = true;
-    SourceTable = Table50070;
+    SourceTable = "DEL DocMatrix Email Codes";
 
     layout
     {
         area(content)
         {
-            field(Code; Code)
+            field("Code"; Rec.Code)
             {
                 Editable = false;
             }
-            field("Language Code"; "Language Code")
+            field("Language Code"; Rec."Language Code")
             {
                 Editable = false;
             }
-            field("All Language Codes"; "All Language Codes")
+            field("All Language Codes"; Rec."All Language Codes")
             {
                 Editable = false;
             }
-            group()
+            group(group)
             {
-                group()
+                group(group1)
                 {
                     field(BodyText; BodyText)
                     {
@@ -54,7 +54,7 @@ page 50135 "DocMatrix Email Body"
     var
         BLOBBodyText: Text;
     begin
-        BLOBBodyText := DocMatrixEmailText.GetBodyText(Code, "Language Code");
+        BLOBBodyText := DocMatrixEmailText.GetBodyText(Rec.Code, Rec."Language Code");
         IF BLOBBodyText <> '' THEN
             BodyText := BLOBBodyText
         ELSE
@@ -74,8 +74,9 @@ page 50135 "DocMatrix Email Body"
     end;
 
     var
-        DocMatrixEmailText: Record "50070";
+        DocMatrixEmailText: Record "DEL DocMatrix Email Codes";
         BodyText: Text;
         PreviousBodyText: Text;
 }
+
 

@@ -236,7 +236,7 @@ page 50077 "DEL Item Quality"
         RegMat: Boolean;
         RegPlan: Boolean;
         Regelect: Boolean;
-        Item_Rec: Record "Purch. Cr. Memo Hdr.";
+        Item_Rec: Record Item;
         LiaisseProduit: Record "DEL Item Quality forms";
         i: Integer;
         regArticle: Record "DEL Test Type";

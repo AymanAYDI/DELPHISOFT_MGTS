@@ -1,3 +1,4 @@
+#pragma implicitwith disable
 page 50121 "Artikelkarte Katalog St. NGTS"
 {
     // AL.KVK4.0
@@ -6,7 +7,7 @@ page 50121 "Artikelkarte Katalog St. NGTS"
     PageType = Document;
     PromotedActionCategories = 'New,Process,Reports,Catalog';
     RefreshOnActivate = true;
-    SourceTable = Table27;
+    SourceTable = Item;
 
     layout
     {
@@ -15,13 +16,13 @@ page 50121 "Artikelkarte Katalog St. NGTS"
             group(Allgemein)
             {
                 Caption = 'General';
-                field("No."; "No.")
+                field("No."; Rec."No.")
                 {
                     Editable = "No.Editable";
 
                     trigger OnAssistEdit()
                     begin
-                        IF AssistEdit THEN
+                        IF Rec.AssistEdit THEN
                             CurrPage.UPDATE;
                     end;
                 }
@@ -29,11 +30,11 @@ page 50121 "Artikelkarte Katalog St. NGTS"
                 {
                     Visible = KatalogbezeichnungVisible;
                 }
-                field(Bezeichnung; Description)
+                field(Bezeichnung; Rec.Description)
                 {
                     Visible = BezeichnungVisible;
                 }
-                field(Bezeichnung2; "Description 2")
+                field(Bezeichnung2; Rec."Description 2")
                 {
                     Visible = Bezeichnung2Visible;
                 }
@@ -41,16 +42,16 @@ page 50121 "Artikelkarte Katalog St. NGTS"
                 {
                     Visible = Katalogbezeichnung2Visible;
                 }
-                field("Search Description"; "Search Description")
+                field("Search Description"; Rec."Search Description")
                 {
                 }
-                field("Base Unit of Measure"; "Base Unit of Measure")
+                field("Base Unit of Measure"; Rec."Base Unit of Measure")
                 {
                 }
-                field("Assembly BOM"; "Assembly BOM")
+                field("Assembly BOM"; Rec."Assembly BOM")
                 {
                 }
-                field("Sales Unit of Measure"; "Sales Unit of Measure")
+                field("Sales Unit of Measure"; Rec."Sales Unit of Measure")
                 {
                 }
                 field(Systemstatus; Systemstatus)
@@ -76,46 +77,46 @@ page 50121 "Artikelkarte Katalog St. NGTS"
             {
                 Caption = 'Translations';
                 SubPageLink = Art = CONST(Artikel),
-                              Code = FIELD(No.);
+                              Code = FIELD("No.");
             }
             part(Beschreibungen; 4006555)
             {
                 Caption = 'Descriptions';
                 SubPageLink = Art = CONST(Artikel),
-                              Nummer = FIELD(No.);
+                              Nummer = FIELD("No.");
             }
             part(Merkmale; 4006560)
             {
                 Caption = 'Features';
                 SubPageLink = Zeilenart = CONST(Merkmal),
-                              Code = FIELD(No.);
+                              Code = FIELD("No.");
             }
             part(Bilddokumente; 4006557)
             {
                 Caption = 'Picture Documents';
                 SubPageLink = Quelle = CONST(Artikel),
                               Art = CONST(Bild),
-                              Code = FIELD(No.);
+                              Code = FIELD("No.");
             }
             part(Verwendungen; 4006499)
             {
                 Caption = 'Usages';
                 Editable = false;
                 SubPageLink = Zeilenart = CONST(Artikel),
-                              Nummer = FIELD(No.);
+                              Nummer = FIELD("No.");
                 SubPageView = SORTING(Zeilenart, Nummer)
                               WHERE(Zeilenart = CONST(Artikel));
             }
             group(Zuordnungen)
             {
                 Caption = 'Allocations';
-                field("Unit Price"; "Unit Price")
+                field("Unit Price"; Rec."Unit Price")
                 {
                 }
                 field("<Katalogartikelnr.2>"; "Katalogartikelnr.")
                 {
                 }
-                field("<Sales Unit of Measure2>"; "Sales Unit of Measure")
+                field("<Sales Unit of Measure2>"; Rec."Sales Unit of Measure")
                 {
                 }
                 field("EAN Code Katalog"; "EAN Code Katalog")
@@ -126,10 +127,10 @@ page 50121 "Artikelkarte Katalog St. NGTS"
                 {
                     Caption = 'Manufacturer';
                 }
-                field("Vendor Item No."; "Vendor Item No.")
+                field("Vendor Item No."; Rec."Vendor Item No.")
                 {
                 }
-                field("Vendor No."; "Vendor No.")
+                field("Vendor No."; Rec."Vendor No.")
                 {
                 }
                 field("Checklistennr."; "Checklistennr.")
@@ -145,7 +146,7 @@ page 50121 "Artikelkarte Katalog St. NGTS"
                 field("Bilddokument ID"; "Bilddokument ID")
                 {
                 }
-                field(Blocked; Blocked)
+                field(Blocked; Rec.Blocked)
                 {
                 }
                 field(Uebersetzung; Uebersetzung)
@@ -214,7 +215,7 @@ page 50121 "Artikelkarte Katalog St. NGTS"
             {
                 SubPageLink = Quelle = CONST(Artikel),
                               Art = CONST(Bild),
-                              Code = FIELD(No.);
+                              Code = FIELD("No.");
                 Visible = false;
             }
             part(DescriptionFactBox; 4043662)
@@ -222,16 +223,16 @@ page 50121 "Artikelkarte Katalog St. NGTS"
                 Caption = 'Descriptions';
                 Provider = Beschreibungen;
                 SubPageLink = Art = FIELD(Art),
-                              Zeilennr.=FIELD(Zeilennr.),
-                              Nummer=FIELD(Nummer),
-                              Basiszeilennr.=FIELD(Basiszeilennr.);
+                              "Zeilennr." = FIELD("Zeilennr."),
+                              Nummer = FIELD(Nummer),
+                              "Basiszeilennr." = FIELD("Basiszeilennr.");
                 Visible = false;
             }
-            systempart(;Links)
+            systempart(Links; Links)
             {
                 Visible = true;
             }
-            systempart(;Notes)
+            systempart(Notes; Notes)
             {
                 Visible = true;
             }
@@ -249,56 +250,55 @@ page 50121 "Artikelkarte Katalog St. NGTS"
                 {
                     Caption = 'Units';
                     Image = UnitOfMeasure;
-                    RunObject = Page 5404;
-                                    RunPageLink = Item No.=FIELD(No.);
+                    RunObject = Page "Item Units of Measure";
+                    RunPageLink = "Item No." = FIELD("No.");
                 }
                 action("Va&rianten")
                 {
                     Caption = 'Va&riants';
                     Image = ItemVariant;
-                    RunObject = Page 5401;
-                                    RunPageLink = Item No.=FIELD(No.);
+                    RunObject = Page "Item Variants";
+                    RunPageLink = "Item No." = FIELD("No.");
                 }
                 action("Ersat&zartikel")
                 {
                     Caption = 'Substituti&ons';
                     Image = ItemSubstitution;
-                    RunObject = Page 5716;
-                                    RunPageLink = Type=CONST(Item),
-                                  No.=FIELD(No.);
+                    RunObject = Page "Item Substitution Entry";
+                    RunPageLink = Type = CONST(Item), "No." = FIELD("No.");
                 }
                 action("&Textbausteine")
                 {
                     Caption = 'E&xtended Texts';
                     Image = Text;
-                    RunObject = Page 391;
-                                    RunPageLink = Table Name=CONST(Item),
-                                  No.=FIELD(No.);
-                    RunPageView = SORTING(Table Name,No.,Language Code,All Language Codes,Starting Date,Ending Date);
+                    RunObject = Page "Extended Text List";
+                    RunPageLink = "Table Name" = CONST(Item),
+                                  "No." = FIELD("No.");
+                    RunPageView = SORTING("Table Name", "No.", "Language Code", "All Language Codes", "Starting Date", "Ending Date");
                 }
                 action("Übersetzungen")
                 {
                     Caption = 'Translations';
                     Image = Translations;
-                    RunObject = Page 35;
-                                    RunPageLink = Item No.=FIELD(No.),
-                                  Variant Code=CONST();
+                    RunObject = Page "Item Translations";
+                    RunPageLink = "Item No." = FIELD("No."),
+                                  "Variant Code" = CONST();
                 }
                 action(Artikelbarcodes)
                 {
                     Caption = 'Identifiers';
                     Image = BarCode;
-                    RunObject = Page 7706;
-                                    RunPageLink = Item No.=FIELD(No.);
-                    RunPageView = SORTING(Item No.,Variant Code,Unit of Measure Code);
+                    RunObject = Page "Item Identifiers";
+                    RunPageLink = "Item No." = FIELD("No.");
+                    RunPageView = SORTING("Item No.", "Variant Code", "Unit of Measure Code");
                 }
                 action("<Action1100176002>")
                 {
                     Caption = 'Catalog Page References';
                     Image = ViewPage;
                     RunObject = Page 4006531;
-                                    RunPageLink = Artikelnr.=FIELD(No.);
-                    RunPageView = SORTING(Artikelnr.,Code)
+                    RunPageLink = "Artikelnr." = FIELD("No.");
+                    RunPageView = SORTING("Artikelnr.", Code)
                                   ORDER(Descending);
                 }
                 action("<Action1100168015>")
@@ -317,7 +317,7 @@ page 50121 "Artikelkarte Katalog St. NGTS"
                         gridRecordID := grefRecordRefQuelle.RECORDID;
 
                         // --- Filter --- //
-                        gpagZertProt.FilterSetzen(27,gridRecordID);
+                        gpagZertProt.FilterSetzen(27, gridRecordID);
                         gpagZertProt.RUNMODAL;
 
                         // --- Init --- //
@@ -329,7 +329,7 @@ page 50121 "Artikelkarte Katalog St. NGTS"
             {
                 Caption = 'History';
                 Image = History;
-                group("&Posten")
+                group("_&Posten")
                 {
                     Caption = 'E&ntries';
                     Image = Entries;
@@ -340,35 +340,35 @@ page 50121 "Artikelkarte Katalog St. NGTS"
                         Promoted = false;
                         //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
                         //PromotedCategory = Process;
-                        RunObject = Page 38;
-                                        RunPageLink = Item No.=FIELD(No.);
-                        RunPageView = SORTING(Item No.);
+                        RunObject = Page "Item Ledger Entries";
+                        RunPageLink = "Item No." = FIELD("No.");
+                        RunPageView = SORTING("Item No.");
                         ShortCutKey = 'Ctrl+F7';
                     }
                     action("&Reservierungsposten")
                     {
                         Caption = '&Reservation Entries';
                         Image = ReservationLedger;
-                        RunObject = Page 497;
-                                        RunPageLink = Reservation Status=CONST(Reservation),
-                                      Item No.=FIELD(No.);
-                        RunPageView = SORTING(Item No.,Variant Code,Location Code,Reservation Status);
+                        RunObject = Page "Reservation Entries";
+                        RunPageLink = "Reservation Status" = CONST(Reservation),
+                                      "Item No." = FIELD("No.");
+                        RunPageView = SORTING("Item No.", "Variant Code", "Location Code", "Reservation Status");
                     }
                     action("&Inventurposten")
                     {
                         Caption = '&Phys. Inventory Ledger Entries';
                         Image = PhysicalInventoryLedger;
-                        RunObject = Page 390;
-                                        RunPageLink = Item No.=FIELD(No.);
-                        RunPageView = SORTING(Item No.);
+                        RunObject = Page "Phys. Inventory Ledger Entries";
+                        RunPageLink = "Item No." = FIELD("No.");
+                        RunPageView = SORTING("Item No.");
                     }
                     action("&Wertposten")
                     {
                         Caption = '&Value Entries';
                         Image = ValueLedger;
-                        RunObject = Page 5802;
-                                        RunPageLink = Item No.=FIELD(No.);
-                        RunPageView = SORTING(Item No.);
+                        RunObject = Page "Value Entries";
+                        RunPageLink = "Item No." = FIELD("No.");
+                        RunPageView = SORTING("Item No.");
                     }
                     action("Artikel&verfolgungsposten")
                     {
@@ -377,7 +377,7 @@ page 50121 "Artikelkarte Katalog St. NGTS"
 
                         trigger OnAction()
                         var
-                            ItemTrackingMgt: Codeunit "6500";
+                            ItemTrackingMgt: Codeunit "Item Tracking Management";
                         begin
                             //ItemTrackingMgt.CallItemTrackingEntryForm(3,'',"No.",'','','','');
                         end;
@@ -386,16 +386,16 @@ page 50121 "Artikelkarte Katalog St. NGTS"
                     {
                         Caption = '&Warehouse Entries';
                         Image = BinLedger;
-                        RunObject = Page 7318;
-                                        RunPageLink = Item No.=FIELD(No.);
-                        RunPageView = SORTING(Item No.,Bin Code,Location Code,Variant Code,Unit of Measure Code,Lot No.,Serial No.,Entry Type,Dedicated);
+                        RunObject = Page "Warehouse Entries";
+                        RunPageLink = "Item No." = FIELD("No.");
+                        RunPageView = SORTING("Item No.", "Bin Code", "Location Code", "Variant Code", "Unit of Measure Code", "Lot No.", "Serial No.", "Entry Type", Dedicated);
                     }
                     action(Ausgleichsvorschlag)
                     {
                         Caption = 'Application Worksheet';
                         Image = ApplicationWorksheet;
-                        RunObject = Page 521;
-                                        RunPageLink = Item No.=FIELD(No.);
+                        RunObject = Page "Application Worksheet";
+                        RunPageLink = "Item No." = FIELD("No.");
                     }
                 }
                 group(Statistik)
@@ -412,7 +412,7 @@ page 50121 "Artikelkarte Katalog St. NGTS"
 
                         trigger OnAction()
                         var
-                            ItemStatistics: Page "5827";
+                            ItemStatistics: Page "Item Statistics";
                         begin
                             ItemStatistics.SetItem(Rec);
                             ItemStatistics.RUNMODAL;
@@ -422,42 +422,42 @@ page 50121 "Artikelkarte Katalog St. NGTS"
                     {
                         Caption = 'Entry Statistics';
                         Image = EntryStatistics;
-                        RunObject = Page 304;
-                                        RunPageLink = No.=FIELD(No.),
-                                      Date Filter=FIELD(Date Filter),
-                                      Global Dimension 1 Filter=FIELD(Global Dimension 1 Filter),
-                                      Global Dimension 2 Filter=FIELD(Global Dimension 2 Filter),
-                                      Location Filter=FIELD(Location Filter),
-                                      Drop Shipment Filter=FIELD(Drop Shipment Filter),
-                                      Variant Filter=FIELD(Variant Filter);
+                        RunObject = Page "Item Entry Statistics";
+                        RunPageLink = "No." = FIELD("No."),
+                                      "Date Filter" = FIELD("Date Filter"),
+                                      "Global Dimension 1 Filter" = FIELD("Global Dimension 1 Filter"),
+                                      "Global Dimension 2 Filter" = FIELD("Global Dimension 2 Filter"),
+                                      "Location Filter" = FIELD("Location Filter"),
+                                      "Drop Shipment Filter" = FIELD("Drop Shipment Filter"),
+                                      "Variant Filter" = FIELD("Variant Filter");
                     }
                     action("&Umsatz")
                     {
                         Caption = 'T&urnover';
                         Image = Turnover;
-                        RunObject = Page 158;
-                                        RunPageLink = No.=FIELD(No.),
-                                      Global Dimension 1 Filter=FIELD(Global Dimension 1 Filter),
-                                      Global Dimension 2 Filter=FIELD(Global Dimension 2 Filter),
-                                      Location Filter=FIELD(Location Filter),
-                                      Drop Shipment Filter=FIELD(Drop Shipment Filter),
-                                      Variant Filter=FIELD(Variant Filter);
+                        RunObject = Page "Item Turnover";
+                        RunPageLink = "No." = FIELD("No."),
+                                      "Global Dimension 1 Filter" = FIELD("Global Dimension 1 Filter"),
+                                      "Global Dimension 2 Filter" = FIELD("Global Dimension 2 Filter"),
+                                      "Location Filter" = FIELD("Location Filter"),
+                                      "Drop Shipment Filter" = FIELD("Drop Shipment Filter"),
+                                      "Variant Filter" = FIELD("Variant Filter");
                     }
                 }
                 action("Be&merkungen")
                 {
                     Caption = 'Co&mments';
                     Image = ViewComments;
-                    RunObject = Page 124;
-                                    RunPageLink = Table Name=CONST(Item),
-                                  No.=FIELD(No.);
+                    RunObject = Page "Comment Sheet";
+                    RunPageLink = "Table Name" = CONST(Item),
+                                  "No." = FIELD("No.");
                 }
             }
             group(Zuordnung)
             {
                 Caption = 'Master Data';
                 Image = DataEntry;
-                action("Übersetzungen")
+                action("Übersetzungen2")
                 {
                     Caption = 'Translations';
                     Image = Translations;
@@ -469,7 +469,7 @@ page 50121 "Artikelkarte Katalog St. NGTS"
                         // --- Init --- //
                         CLEAR(gpagArtikelÜber);
 
-                        gpagArtikelÜber.FilterSetzen(0,"No.");
+                        gpagArtikelÜber.FilterSetzen(0, Rec."No.");
                         gpagArtikelÜber.RUN;
                     end;
                 }
@@ -485,7 +485,7 @@ page 50121 "Artikelkarte Katalog St. NGTS"
                         // --- Init --- //
                         CLEAR(gpagZuordRef);
 
-                        gpagZuordRef.FilterSetzen(0,"No.");
+                        gpagZuordRef.FilterSetzen(0, Rec."No.");
                         gpagZuordRef.RUN;
                     end;
                 }
@@ -502,7 +502,7 @@ page 50121 "Artikelkarte Katalog St. NGTS"
                         // --- Init --- //
                         CLEAR(gpagTextKatalog);
 
-                        gpagTextKatalog.FilterSetzen(0,"No.");
+                        gpagTextKatalog.FilterSetzen(0, Rec."No.");
                         gpagTextKatalog.RUN;
                     end;
                 }
@@ -522,7 +522,7 @@ page 50121 "Artikelkarte Katalog St. NGTS"
                         // --- Init --- //
                         CLEAR(gpagKatalogmerkmale);
 
-                        gpagKatalogmerkmale.FilterSetzen(0,"No.");
+                        gpagKatalogmerkmale.FilterSetzen(0, Rec."No.");
                         gpagKatalogmerkmale.RUN;
                     end;
                 }
@@ -538,7 +538,7 @@ page 50121 "Artikelkarte Katalog St. NGTS"
                         // --- Init --- //
                         CLEAR(gpagKatalogschlagworte);
 
-                        gpagKatalogschlagworte.FilterSetzen(0,"No.");
+                        gpagKatalogschlagworte.FilterSetzen(0, Rec."No.");
                         gpagKatalogschlagworte.RUN;
                     end;
                 }
@@ -549,9 +549,9 @@ page 50121 "Artikelkarte Katalog St. NGTS"
                     Promoted = true;
                     PromotedCategory = Category4;
                     RunObject = Page 4006605;
-                                    RunPageLink = Art=CONST(Artikel),
-                                  Nummer=FIELD(No.);
-                    RunPageView = SORTING(Art,Nummer,Code);
+                    RunPageLink = Art = CONST(Artikel),
+                                  Nummer = FIELD("No.");
+                    RunPageView = SORTING(Art, Nummer, Code);
                 }
             }
             group(Dokumente)
@@ -569,7 +569,7 @@ page 50121 "Artikelkarte Katalog St. NGTS"
                         // --- Init --- //
                         CLEAR(gpagKatalogbild);
 
-                        gpagKatalogbild.FilterSetzen(0,0,"No.");
+                        gpagKatalogbild.FilterSetzen(0, 0, Rec."No.");
                         gpagKatalogbild.RUN;
                     end;
                 }
@@ -585,7 +585,7 @@ page 50121 "Artikelkarte Katalog St. NGTS"
                         // --- Init --- //
                         CLEAR(gpagKatalogdok);
 
-                        gpagKatalogdok.FilterSetzen(0,1,"No.");
+                        gpagKatalogdok.FilterSetzen(0, 1, Rec."No.");
                         gpagKatalogdok.RUN;
                     end;
                 }
@@ -601,7 +601,7 @@ page 50121 "Artikelkarte Katalog St. NGTS"
                         // --- Init --- //
                         CLEAR(gpagKataloggrafik);
 
-                        gpagKataloggrafik.FilterSetzen(0,3,"No.");
+                        gpagKataloggrafik.FilterSetzen(0, 3, Rec."No.");
                         gpagKataloggrafik.RUN;
                     end;
                 }
@@ -619,7 +619,7 @@ page 50121 "Artikelkarte Katalog St. NGTS"
 
                     trigger OnAction()
                     var
-                        ArtikelKopieren: Report "4006496";
+                        ArtikelKopieren: Report 4006496;
                     begin
                         ArtikelKopieren.ItemDef(Rec);
                         ArtikelKopieren.RUNMODAL;
@@ -633,23 +633,25 @@ page 50121 "Artikelkarte Katalog St. NGTS"
                     trigger OnAction()
                     begin
                         IF "EAN Code Katalog" <> '' THEN
-                          MESSAGE(AL0001)
+                            MESSAGE(AL0001)
                         ELSE BEGIN
-                          // --- EAN-Code generieren --- //
-                          IF CONFIRM(AL0002) THEN BEGIN
-                            CASE STRMENU('&1 Neutraler EAN Code,&2 Kunden EAN Code') - 1 OF
-                              0: BEGIN
-                                   // --- EAN-Code extern generieren --- //
-                                   "EAN Code Katalog" := gcouSystemVerw.ExtEANgenerieren(Rec);
-                                   MODIFY;
-                                 END;
-                              1: BEGIN
-                                   // --- EAN-Code intern generieren --- //
-                                   "EAN Code Katalog" := gcouSystemVerw.IntEANgenerieren(Rec);
-                                   MODIFY;
-                                 END;
+                            // --- EAN-Code generieren --- //
+                            IF CONFIRM(AL0002) THEN BEGIN
+                                CASE STRMENU('&1 Neutraler EAN Code,&2 Kunden EAN Code') - 1 OF
+                                    0:
+                                        BEGIN
+                                            // --- EAN-Code extern generieren --- //
+                                            "EAN Code Katalog" := gcouSystemVerw.ExtEANgenerieren(Rec);
+                                            Rec.MODIFY;
+                                        END;
+                                    1:
+                                        BEGIN
+                                            // --- EAN-Code intern generieren --- //
+                                            "EAN Code Katalog" := gcouSystemVerw.IntEANgenerieren(Rec);
+                                            Rec.MODIFY;
+                                        END;
+                                END;
                             END;
-                          END;
                         END;
                     end;
                 }
@@ -661,11 +663,11 @@ page 50121 "Artikelkarte Katalog St. NGTS"
                     trigger OnAction()
                     begin
                         IF CONFIRM(AL0003) THEN BEGIN
-                          // --- EAN Init. --- //
-                          gcouSystemVerw.EANinitialisieren("No.","EAN Code Katalog");
-                          // --- Artikel aktualisieren --- //
-                          "EAN Code Katalog" := '';
-                          MODIFY;
+                            // --- EAN Init. --- //
+                            gcouSystemVerw.EANinitialisieren(Rec."No.", "EAN Code Katalog");
+                            // --- Artikel aktualisieren --- //
+                            "EAN Code Katalog" := '';
+                            Rec.MODIFY;
                         END;
                     end;
                 }
@@ -680,15 +682,15 @@ page 50121 "Artikelkarte Katalog St. NGTS"
                         goptQuelle := goptQuelle::Artikel;
 
                         IF CONFIRM(AL0007) THEN BEGIN
-                          // --- Katalogmerkmal --- //
-                          grecKatMerk.RESET;
-                          grecKatMerk.SETRANGE(Quelle,grecKatMerk.Quelle::Artikel);
-                          grecKatMerk.SETRANGE(Code,"No.");
-                          grecKatMerk.SETRANGE(Vererbt,TRUE);
-                          IF grecKatMerk.FIND('-') THEN
-                            ERROR(AL0006);
-                          // --- Merkmale reorg. --- //
-                          gcouKatVerw.KatalogMerkmaleReorg(goptQuelle,"No.");
+                            // --- Katalogmerkmal --- //
+                            grecKatMerk.RESET;
+                            grecKatMerk.SETRANGE(Quelle, grecKatMerk.Quelle::Artikel);
+                            grecKatMerk.SETRANGE(Code, Rec."No.");
+                            grecKatMerk.SETRANGE(Vererbt, TRUE);
+                            IF grecKatMerk.FIND('-') THEN
+                                ERROR(AL0006);
+                            // --- Merkmale reorg. --- //
+                            gcouKatVerw.KatalogMerkmaleReorg(goptQuelle, Rec."No.");
                         END;
                     end;
                 }
@@ -703,7 +705,7 @@ page 50121 "Artikelkarte Katalog St. NGTS"
                         goptQuelle := goptQuelle::Artikel;
 
                         IF CONFIRM(AL0008) THEN
-                          gcouKatVerw.KatalogSchlagwortReorg(goptQuelle,"No.");
+                            gcouKatVerw.KatalogSchlagwortReorg(goptQuelle, Rec."No.");
                     end;
                 }
                 action("<Action1100168022>")
@@ -714,16 +716,17 @@ page 50121 "Artikelkarte Katalog St. NGTS"
                     trigger OnAction()
                     begin
                         IF CONFIRM(AL0011) THEN BEGIN
-                          grecKatUeber.RESET;
-                          grecKatUeber.SETCURRENTKEY(Uebersetzt);
-                          grecKatUeber.SETRANGE(Uebersetzt,TRUE);
-                          grecKatUeber.SETRANGE(Art,grecKatUeber.Art::Artikel);
-                          grecKatUeber.SETRANGE(Code,"No.");
-                          grecKatUeber.SETRANGE(Uebersetzungsmandant,'');
-                          IF grecKatUeber.FIND('-') THEN REPEAT
-                            grecKatUeber.VALIDATE(Aktivitaet,FALSE);
-                            grecKatUeber.MODIFY(TRUE);
-                          UNTIL grecKatUeber.NEXT = 0;
+                            grecKatUeber.RESET;
+                            grecKatUeber.SETCURRENTKEY(Uebersetzt);
+                            grecKatUeber.SETRANGE(Uebersetzt, TRUE);
+                            grecKatUeber.SETRANGE(Art, grecKatUeber.Art::Artikel);
+                            grecKatUeber.SETRANGE(Code, Rec."No.");
+                            grecKatUeber.SETRANGE(Uebersetzungsmandant, '');
+                            IF grecKatUeber.FIND('-') THEN
+                                REPEAT
+                                    grecKatUeber.VALIDATE(Aktivitaet, FALSE);
+                                    grecKatUeber.MODIFY(TRUE);
+                                UNTIL grecKatUeber.NEXT = 0;
                         END;
                     end;
                 }
@@ -738,7 +741,7 @@ page 50121 "Artikelkarte Katalog St. NGTS"
 
                     trigger OnAction()
                     var
-                        ConfigTemplateMgt: Codeunit "8612";
+                        ConfigTemplateMgt: Codeunit "Config. Template Management";
                         RecRef: RecordRef;
                     begin
                         RecRef.GETTABLE(Rec);
@@ -758,8 +761,8 @@ page 50121 "Artikelkarte Katalog St. NGTS"
                 begin
                     // --- Artikel --- /
                     grecArtikel.RESET;
-                    grecArtikel.SETRANGE("No.","No.");
-                    REPORT.RUNMODAL(REPORT::"RW Bericht / Artikel",TRUE,FALSE,grecArtikel);
+                    grecArtikel.SETRANGE("No.", Rec."No.");
+                    REPORT.RUNMODAL(REPORT::"RW Bericht / Artikel", TRUE, FALSE, grecArtikel);
                 end;
             }
         }
@@ -767,10 +770,10 @@ page 50121 "Artikelkarte Katalog St. NGTS"
 
     trigger OnAfterGetRecord()
     begin
-        IF "No." <> '' THEN
-          "No.Editable" := FALSE;
+        IF Rec."No." <> '' THEN
+            "No.Editable" := FALSE;
 
-        SETRANGE("No.");
+        Rec.SETRANGE("No.");
 
         gintBildTimer := 0;
         CLEAR(grecDokument);
@@ -817,65 +820,65 @@ page 50121 "Artikelkarte Katalog St. NGTS"
 
         // --- Bezeichnungen --- //
         IF grecKatEinr.Katalogbezeichnungen THEN BEGIN
-          BezeichnungVisible := FALSE;
-          Bezeichnung2Visible := FALSE;
-          KatalogbezeichnungVisible := TRUE;
-          Katalogbezeichnung2Visible := TRUE;
+            BezeichnungVisible := FALSE;
+            Bezeichnung2Visible := FALSE;
+            KatalogbezeichnungVisible := TRUE;
+            Katalogbezeichnung2Visible := TRUE;
         END
         ELSE BEGIN
-          KatalogbezeichnungVisible := FALSE;
-          Katalogbezeichnung2Visible := FALSE;
-          BezeichnungVisible := TRUE;
-          Bezeichnung2Visible := TRUE;
+            KatalogbezeichnungVisible := FALSE;
+            Katalogbezeichnung2Visible := FALSE;
+            BezeichnungVisible := TRUE;
+            Bezeichnung2Visible := TRUE;
         END;
 
         ControlSHowMendatory;
     end;
 
     var
-        grecBenEinr: Record "4006555";
-        grecKatEinr: Record "4006541";
-        grecBeschrText: Record "4006511";
-        grecBeschrTextUeber: Record "4006505";
-        grecDokument: Record "4024045";
-        grecZuordZeile: Record "4006572";
-        grecZuordZeileRef: Record "4006572";
-        grecKatMerk: Record "4006501";
-        grecArtikel: Record "27";
-        grecArtGrp: Record "4006519";
-        grecWarGrp: Record "4006578";
-        grecKatGrp: Record "4006509";
-        grecTextbaustein: Record "4006514";
-        grecKatDok: Record "4006515";
-        grecKatUeber: Record "4006510";
-        grecChecklistkopf: Record "4006523";
-        grecChecklistzeileSteuerung: Record "4024061";
-        gpagDokKarte: Page "4024049";
-                          gpagArtikelKarte: Page "30";
-                          gpagArtGrpKarte: Page "4006524";
-                          gpagWarGrpKarte: Page "4006539";
-                          gpagKatGrpKarte: Page "4006629";
-                          gpagTextbauKarte: Page "4006518";
-                          gpagProdGrp: Page "4006519";
-                          gpagBeschrArtGrpUeber: Page "4006540";
-                          gpagZeilenKarte: Page "4006525";
-                          gpagVerwKarte: Page "4006513";
-                          gpagArtikelListe: Page "4006545";
-                          gpagKatalogbild: Page "4024074";
-                          gpagKatalogdok: Page "4024210";
-                          gpagKataloggrafik: Page "4024211";
-                          gpagKatalogmerkmale: Page "4006640";
-                          gpagKatalogschlagworte: Page "4043478";
-                          "gpagArtikelÜber": Page "4043480";
-                          gpagTextKatalog: Page "4043479";
-                          gpagZuordRef: Page "4043481";
-                          gpagZertProt: Page "4024208";
-                          gcouSystemVerw: Codeunit "4006498";
-                          AL0001: Label 'EAN Code already exists.';
+        grecBenEinr: Record 4006555;
+        grecKatEinr: Record 4006541;
+        grecBeschrText: Record 4006511;
+        grecBeschrTextUeber: Record 4006505;
+        grecDokument: Record 4024045;
+        grecZuordZeile: Record 4006572;
+        grecZuordZeileRef: Record 4006572;
+        grecKatMerk: Record 4006501;
+        grecArtikel: Record Item;
+        grecArtGrp: Record 4006519;
+        grecWarGrp: Record 4006578;
+        grecKatGrp: Record 4006509;
+        grecTextbaustein: Record 4006514;
+        grecKatDok: Record 4006515;
+        grecKatUeber: Record 4006510;
+        grecChecklistkopf: Record 4006523;
+        grecChecklistzeileSteuerung: Record 4024061;
+        gpagDokKarte: Page 4024049;
+        gpagArtikelKarte: Page "Item Card";
+        gpagArtGrpKarte: Page 4006524;
+        gpagWarGrpKarte: Page 4006539;
+        gpagKatGrpKarte: Page 4006629;
+        gpagTextbauKarte: Page 4006518;
+        gpagProdGrp: Page 4006519;
+        gpagBeschrArtGrpUeber: Page 4006540;
+        gpagZeilenKarte: Page 4006525;
+        gpagVerwKarte: Page 4006513;
+        gpagArtikelListe: Page 4006545;
+        gpagKatalogbild: Page 4024074;
+        gpagKatalogdok: Page 4024210;
+        gpagKataloggrafik: Page 4024211;
+        gpagKatalogmerkmale: Page 4006640;
+        gpagKatalogschlagworte: Page 4043478;
+        "gpagArtikelÜber": Page 4043480;
+        gpagTextKatalog: Page 4043479;
+        gpagZuordRef: Page 4043481;
+        gpagZertProt: Page 4024208;
+        gcouSystemVerw: Codeunit 4006498;
+        AL0001: Label 'EAN Code already exists.';
         AL0002: Label 'Do you want to generate EAN Code for this item?';
         AL0003: Label 'Do you want to initialize EAN Code?';
         AL0004: Label 'No Description line present.';
-        gcouKatVerw: Codeunit "4006500";
+        gcouKatVerw: Codeunit 4006500;
         grefRecordRefQuelle: RecordRef;
         gridRecordID: RecordID;
         gintBildTimer: Integer;
@@ -1012,10 +1015,10 @@ page 50121 "Artikelkarte Katalog St. NGTS"
         [InDataSet]
         "gboML Beschrieb 05": Boolean;
         DotNetStr: DotNet String;
-                       DotNetArrayRecord: DotNet Array;
-                       DotNetArrayField: DotNet Array;
-                       ArrayofDel: DotNet Array;
-                       Char: Char;
+        DotNetArrayRecord: DotNet Array;
+        DotNetArrayField: DotNet Array;
+        ArrayofDel: DotNet Array;
+        Char: Char;
 
     local procedure OnTimer()
     begin
@@ -1266,4 +1269,6 @@ page 50121 "Artikelkarte Katalog St. NGTS"
         END;
     end;
 }
+
+#pragma implicitwith restore
 

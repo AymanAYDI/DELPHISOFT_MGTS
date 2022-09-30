@@ -1,4 +1,5 @@
-page 50081 "Manual Deal Item Update"
+#pragma implicitwith disable
+page 50081 "DEL Manual Deal Item Update"
 {
     // +-------------------------------------------------------------------------------+
     // | Logico SA - Logiciels & Conseils                                              |
@@ -15,37 +16,37 @@ page 50081 "Manual Deal Item Update"
 
     Editable = false;
     PageType = Card;
-    SourceTable = Table27;
+    SourceTable = Item;
 
     layout
     {
         area(content)
         {
-            field("No."; "No.")
+            field("No."; Rec."No.")
             {
             }
-            field(Description; Description)
+            field(Description; Rec.Description)
             {
                 Editable = false;
                 Enabled = true;
             }
-            field("Weight net"; "Weight net")
+            field("Weight net"; Rec."DEL Weight net")
             {
                 Editable = false;
             }
-            field("Weight brut"; "Weight brut")
+            field("Weight brut"; Rec."DEL Weight brut")
             {
                 Editable = false;
             }
-            field("Vol cbm"; GetVolCBM(TRUE))
+            field("Vol cbm"; Rec.GetVolCBM(TRUE))
             {
                 Caption = 'Vol cbm';
             }
-            field("Vol cbm carton transport"; "Vol cbm carton transport")
+            field("Vol cbm carton transport"; Rec."DEL Vol cbm carton transport")
             {
                 Editable = false;
             }
-            field(PCB; PCB)
+            field(PCB; Rec."DEL PCB")
             {
                 Editable = false;
             }
@@ -65,7 +66,7 @@ page 50081 "Manual Deal Item Update"
 
                 trigger OnAction()
                 begin
-                    DealItem_Cu.FNC_Manual_Update("No.");
+                    DealItem_Cu.FNC_Manual_Update(Rec."No.");
                 end;
             }
             action("Update Batch")
@@ -86,7 +87,9 @@ page 50081 "Manual Deal Item Update"
     }
 
     var
-        DealItem_Cu: Codeunit "50024";
+        // DealItem_Cu: Codeunit "50024"; TODO: 
         Text19021811: Label 'D E A L   I T E M   U P D A T E';
 }
+
+#pragma implicitwith restore
 

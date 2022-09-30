@@ -1,4 +1,4 @@
-page 50099 "Logistic CN"
+page 50099 "DEL Logistic CN"
 {
     Caption = 'Role Center';
     PageType = RoleCenter;
@@ -7,22 +7,22 @@ page 50099 "Logistic CN"
     {
         area(rolecenter)
         {
-            group()
+            group(group1)
             {
-                part(; 9175)
+                part(CopyProfile; "Copy Profile")
                 {
                 }
-                systempart(; Outlook)
+                systempart(Outlookv; Outlook)
                 {
                     Visible = false;
                 }
             }
-            group()
+            group(group2)
             {
-                systempart(; MyNotes)
+                systempart(MyNotes; MyNotes)
                 {
                 }
-                part(; 9152)
+                part(MyItems; "My Items")
                 {
                     Visible = false;
                 }
@@ -38,24 +38,24 @@ page 50099 "Logistic CN"
             {
                 Caption = 'Affair List';
                 Image = Quote;
-                RunObject = Page 50020;
+                RunObject = Page "DEL Deal";
             }
             action("Purchase Orders")
             {
                 Caption = 'Purchase Orders';
-                RunObject = Page 9307;
+                RunObject = Page "Purchase Order List";
             }
             action(Vendors)
             {
                 Caption = 'Vendors';
                 Image = Vendor;
-                RunObject = Page 27;
+                RunObject = Page "Vendor List";
             }
             action(Items)
             {
                 Caption = 'Items';
                 Image = Item;
-                RunObject = Page 31;
+                RunObject = Page "Item List";
             }
         }
         area(sections)

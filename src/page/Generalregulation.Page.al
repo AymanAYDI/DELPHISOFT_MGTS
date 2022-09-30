@@ -1,4 +1,4 @@
-page 50096 "General regulation"
+page 50096 "DEL General regulation"
 {
     // +---------------------------------------------------------------+
     // | Logico SA                                                     |
@@ -16,10 +16,10 @@ page 50096 "General regulation"
     CardPageID = "General regulation Card";
     Editable = false;
     PageType = List;
-    SourceTable = Table50057;
-    SourceTableView = SORTING(No., Type)
+    SourceTable = "DEL Regulation";
+    SourceTableView = SORTING("No.", Type)
                       ORDER(Ascending)
-                      WHERE(Type = FILTER(General product));
+                      WHERE(Type = FILTER("General product"));
 
     layout
     {
@@ -27,49 +27,49 @@ page 50096 "General regulation"
         {
             repeater(Group)
             {
-                field(Type; Type)
+                field(Type; Rec.Type)
                 {
                 }
-                field("No."; "No.")
+                field("No."; Rec."No.")
                 {
                 }
-                field("Description pays"; "Description pays")
+                field("Description pays"; Rec."Description pays")
                 {
                 }
-                field(Nature; Nature)
+                field(Nature; Rec.Nature)
                 {
                 }
-                field("Title in French"; "Title in French")
+                field("Title in French"; Rec."Title in French")
                 {
                 }
-                field("Title in English"; "Title in English")
+                field("Title in English"; Rec."Title in English")
                 {
                 }
-                field(Description; Description)
+                field(Description; Rec.Description)
                 {
                 }
-                field("Starting date"; "Starting date")
+                field("Starting date"; Rec."Starting date")
                 {
                 }
-                field("Date Fin"; "Date Fin")
+                field("Date Fin"; Rec."Date Fin")
                 {
                 }
-                field("Publication date"; "Publication date")
+                field("Publication date"; Rec."Publication date")
                 {
                 }
-                field("Date limit of the application"; "Date limit of the application")
+                field("Date limit of the application"; Rec."Date limit of the application")
                 {
                 }
-                field("Texte rattachement"; "Texte rattachement")
+                field("Texte rattachement"; Rec."Texte rattachement")
                 {
                 }
-                field(Statut; Statut)
+                field(Statut; Rec.Statut)
                 {
                 }
-                field("Texte de remplacement"; "Texte de remplacement")
+                field("Texte de remplacement"; Rec."Texte de remplacement")
                 {
                 }
-                field("Referent Laboratory"; "Referent Laboratory")
+                field("Referent Laboratory"; Rec."Referent Laboratory")
                 {
                     Caption = 'ICS';
                 }
