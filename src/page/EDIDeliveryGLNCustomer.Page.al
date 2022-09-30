@@ -1,10 +1,10 @@
-page 50145 "EDI Delivery GLN Customer"
+page 50145 "DEL EDI Delivery GLN Customer"
 {
-    // MGTSEDI10.00.00.21 | 18.01.2021 | EDI Management : Create Page
+
 
     Caption = 'EDI Delivery GLN Customer';
     PageType = List;
-    SourceTable = Table50081;
+    SourceTable = "DEL EDI Delivery GLN Customer";
 
     layout
     {
@@ -12,10 +12,10 @@ page 50145 "EDI Delivery GLN Customer"
         {
             repeater(Group)
             {
-                field(GLN; GLN)
+                field(GLN; Rec.GLN)
                 {
                 }
-                field("Bill-to Customer No."; "Bill-to Customer No.")
+                field("Bill-to Customer No."; Rec."Bill-to Customer No.")
                 {
                 }
             }

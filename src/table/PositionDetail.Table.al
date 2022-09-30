@@ -2,8 +2,7 @@
 table 50033 "DEL Position Detail"
 {
     Caption = 'DEL Position Detail';
-    //TODO //Page 
-    // LookupPageID = 50043;
+    LookupPageID = "DEL Position Detail";
 
     fields
     {

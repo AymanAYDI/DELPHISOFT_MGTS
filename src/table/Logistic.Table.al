@@ -318,19 +318,19 @@ table 50034 "DEL Logistic"
         IF Element_Re.FIND('-') THEN
             AcoNo_Co_Loc := Element_Re."Type No.";
 
-        //TODO // missng tabext
-        // IF PurchHead_Re.GET(PurchHead_Re."Document Type"::Order,AcoNo_Co_Loc) THEN BEGIN
-        //   IF Vendor_Re.GET(PurchHead_Re."Buy-from Vendor No.") THEN
-        //     Logistic_Re_Par."Supplier Name" := Vendor_Re.Name;
 
-        //   Logistic_Re_Par."Forwarder Name" := PurchHead_Re."Forwarding Agent Code";
-        //   Logistic_Re_Par.VALIDATE("Shipment mode",PurchHead_Re."Ship Per");
-        //   Logistic_Re_Par."ETD Requested" := PurchHead_Re."Requested Receipt Date";
-        //   //Changer port
-        //   Logistic_Re_Par."Arrival port" := PurchHead_Re."Port d'arrivée";
-        //   Logistic_Re_Par."Departure Port" := PurchHead_Re."Port de départ";
-        //   Logistic_Re_Par."Payment Terms Code" := PurchHead_Re."Payment Terms Code";
-        // END;
+        IF PurchHead_Re.GET(PurchHead_Re."Document Type"::Order, AcoNo_Co_Loc) THEN BEGIN
+            IF Vendor_Re.GET(PurchHead_Re."Buy-from Vendor No.") THEN
+                Logistic_Re_Par."Supplier Name" := Vendor_Re.Name;
+
+            Logistic_Re_Par."Forwarder Name" := PurchHead_Re."DEL Forwarding Agent Code";
+            Logistic_Re_Par.VALIDATE("Shipment mode", PurchHead_Re."DEL Ship Per");
+            Logistic_Re_Par."ETD Requested" := PurchHead_Re."Requested Receipt Date";
+            //Changer port
+            Logistic_Re_Par."Arrival port" := PurchHead_Re."Port d'arrivée";
+            Logistic_Re_Par."Departure Port" := PurchHead_Re."Port de départ";
+            Logistic_Re_Par."Payment Terms Code" := PurchHead_Re."Payment Terms Code";
+        END;
 
 
         // // + Pièce par cartons Total + calcul M3 + poids

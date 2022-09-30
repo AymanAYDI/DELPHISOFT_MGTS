@@ -2,6 +2,7 @@ page 50141 "DEL Message"
 {
 
 
+
     Caption = 'Message';
     Editable = false;
     PageType = CardPart;
@@ -22,11 +23,13 @@ page 50141 "DEL Message"
         }
     }
 
-    actions
-    {
-    }
+
 
     //TODO dotnet is not used on cloud trigger OnAfterGetRecord()
+
+    //TODO
+    // trigger OnAfterGetRecord()
+
     // var
     //     IStream: InStream;
     //     StreamReader: DotNet StreamReader;

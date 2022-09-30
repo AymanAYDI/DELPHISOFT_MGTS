@@ -1,12 +1,8 @@
 page 50134 "DEL DocMatrix Mail Codes"
 {
-    // 20190227/DEL/PD/LOP003 - object created
-    // 20200916/DEL/PD/CR101  - new action button "Mail Place Holders"
-    // 20201007/DEL/PD/CR100  : published to PROD
-
     Caption = 'Email Code';
     PageType = List;
-    SourceTable = Table50070;
+    SourceTable = "DEL DocMatrix Email Codes";
 
     layout
     {
@@ -14,16 +10,16 @@ page 50134 "DEL DocMatrix Mail Codes"
         {
             repeater(Group)
             {
-                field("Code"; Code)
+                field("Code"; Rec.Code)
                 {
                 }
-                field("Language Code"; "Language Code")
+                field("Language Code"; Rec."Language Code")
                 {
                 }
-                field("All Language Codes"; "All Language Codes")
+                field("All Language Codes"; Rec."All Language Codes")
                 {
                 }
-                field(Subject; Subject)
+                field(Subject; Rec.Subject)
                 {
                 }
             }
@@ -50,10 +46,10 @@ page 50134 "DEL DocMatrix Mail Codes"
 
                     trigger OnAction()
                     var
-                        lpgDocMatrixEmailText: Page "50135";
+                        lpgDocMatrixEmailText: Page "DocMatrix Email Body";
                     begin
                         lpgDocMatrixEmailText.SETRECORD(Rec);
-                        lpgDocMatrixEmailText.RUNMODAL;
+                        lpgDocMatrixEmailText.RUNMODAL();
                     end;
                 }
                 action("Mail Place Holders")
@@ -79,24 +75,18 @@ page 50134 "DEL DocMatrix Mail Codes"
         }
     }
 
-    trigger OnAfterGetRecord()
     var
-        OrigMailBodyText: Text;
-    begin
-    end;
-
-    var
-        DocMatrixEmailText: Record "50070";
+        DocMatrixEmailText: Record "DEL DocMatrix Email Codes";
         BodyText: Text;
         PreviousBodyText: Text;
 
 
     procedure ReadBLOB(pCode: Code[20]; pLanguage: Code[10])
     var
-        DocMatrixEmailCodes: Record "50070";
+        DocMatrixEmailCodes: Record "DEL DocMatrix Email Codes";
         MyBigText: BigText;
         BLOBInStream: InStream;
-        lpgDocMatrixEmailText: Page "50135";
+        lpgDocMatrixEmailText: Page "DocMatrix Email Body";
     begin
         /*--- Code obsolete ---
         //To stream a BLOB into a BigText variable use the command READ.

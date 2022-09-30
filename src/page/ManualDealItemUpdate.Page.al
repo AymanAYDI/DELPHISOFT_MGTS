@@ -1,4 +1,4 @@
-page 50081 "Manual Deal Item Update"
+page 50081 "DEL Manual Deal Item Update"
 {
     // +-------------------------------------------------------------------------------+
     // | Logico SA - Logiciels & Conseils                                              |

@@ -42,6 +42,5 @@ table 50011 "DEL Forwarding Agent"
     {
     }
 
-
 }
 
