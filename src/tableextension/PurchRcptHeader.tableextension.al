@@ -7,6 +7,7 @@ tableextension 50006 "DEL PurchRcptHeader" extends "Purch. Rcpt. Header"
             Caption = 'Type Order EDI';
 
             TableRelation = "DEL Type Order EDI";
+
         }
         field(50015; "DEL GLN"; Text[30])
         {
@@ -14,7 +15,9 @@ tableextension 50006 "DEL PurchRcptHeader" extends "Purch. Rcpt. Header"
         }
         field(50016; "DEL Type Order EDI Description"; Text[50])
         {
+
             CalcFormula = Lookup("DEL Type Order EDI".Description WHERE(Code = FIELD("DEL Type Order EDI")));
+
             Caption = 'Type Order EDI Description';
 
             Editable = false;

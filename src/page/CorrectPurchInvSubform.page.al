@@ -23,7 +23,7 @@ page 50061 "DEL Correct Purch. Inv Subform"
                     Editable = false;
                     Caption = 'No.';
                 }
-                field("Cross-Reference No."; "Cross-Reference No.")
+                field("Cross-Reference No."; Rec."Cross-Reference No.")
                 {
                     Editable = false;
                     Visible = false;

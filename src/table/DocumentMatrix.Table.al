@@ -352,13 +352,11 @@ table 50067 "DEL Document Matrix"
         XmlParameters: Text;
         OStream: OutStream;
     begin
-        WITH precDocumentMatrix DO BEGIN
-            XmlParameters := "REPORT".RUNREQUESTPAGE("Report ID");
-            SETAUTOCALCFIELDS("Request Page Parameters");
-            "Request Page Parameters".CREATEOUTSTREAM(OStream, TEXTENCODING::UTF8);
-            OStream.WRITETEXT(XmlParameters);
-            MODIFY();
-        END;
+        XmlParameters := "REPORT".RUNREQUESTPAGE(precDocumentMatrix."Report ID");
+        precDocumentMatrix.SETAUTOCALCFIELDS("Request Page Parameters");
+        precDocumentMatrix."Request Page Parameters".CREATEOUTSTREAM(OStream, TEXTENCODING::UTF8);
+        OStream.WRITETEXT(XmlParameters);
+        precDocumentMatrix.MODIFY();
     end;
 
 
@@ -369,13 +367,11 @@ table 50067 "DEL Document Matrix"
 
     begin
         // write text to the BLOB field
-        WITH precDocumentMatrix DO BEGIN
-            CLEAR("Request Page Parameters");
-            BodyText.ADDTEXT(Value);
-            "Request Page Parameters".CREATEOUTSTREAM(DataStream, TEXTENCODING::UTF8);
-            BodyText.WRITE(DataStream);
-            MODIFY(TRUE);
-        END;
+        CLEAR("Request Page Parameters");
+        BodyText.ADDTEXT(Value);
+        "Request Page Parameters".CREATEOUTSTREAM(DataStream, TEXTENCODING::UTF8);
+        BodyText.WRITE(DataStream);
+        precDocumentMatrix.MODIFY(TRUE);
     end;
 
 
@@ -390,16 +386,14 @@ table 50067 "DEL Document Matrix"
         BLOBInStream: InStream;
     begin
         // get the text from the BLOB field
-        WITH precDocumentMatrix DO BEGIN
-            //TODO CALCFIELDS("Request Page Parameters");
-            IF "Request Page Parameters".HASVALUE THEN BEGIN
-                CLEAR(MyBigText);
-                "Request Page Parameters".CREATEINSTREAM(BLOBInStream);
-                MyBigText.READ(BLOBInStream);
-                MyBigText.GETSUBTEXT(Value, 1);
-            END;
-            EXIT(Value);
+        //TODO CALCFIELDS("Request Page Parameters");
+        IF "Request Page Parameters".HASVALUE THEN BEGIN
+            CLEAR(MyBigText);
+            "Request Page Parameters".CREATEINSTREAM(BLOBInStream);
+            MyBigText.READ(BLOBInStream);
+            MyBigText.GETSUBTEXT(Value, 1);
         END;
+        EXIT(Value);
     end;
 
 
@@ -409,12 +403,10 @@ table 50067 "DEL Document Matrix"
         BodyText: BigText;
     begin
         // write text to the BLOB field
-        WITH precDocumentMatrix DO BEGIN
-            CLEAR("Request Page Parameters");
-            "Request Page Parameters".CREATEOUTSTREAM(DataStream, TEXTENCODING::UTF8);
-            pBigText.WRITE(DataStream);
-            MODIFY(TRUE);
-        END;
+        CLEAR("Request Page Parameters");
+        "Request Page Parameters".CREATEOUTSTREAM(DataStream, TEXTENCODING::UTF8);
+        pBigText.WRITE(DataStream);
+        precDocumentMatrix.MODIFY(TRUE);
     end;
 
 
@@ -428,13 +420,11 @@ table 50067 "DEL Document Matrix"
         BLOBInStream: InStream;
     begin
         // get the text from the BLOB field
-        WITH precDocumentMatrix DO BEGIN
-            //TODO CALCFIELDS("Request Page Parameters");
-            IF "Request Page Parameters".HASVALUE THEN BEGIN
-                CLEAR(pBigText);
-                "Request Page Parameters".CREATEINSTREAM(BLOBInStream);
-                pBigText.READ(BLOBInStream);
-            END;
+        //TODO CALCFIELDS("Request Page Parameters");
+        IF "Request Page Parameters".HASVALUE THEN BEGIN
+            CLEAR(pBigText);
+            "Request Page Parameters".CREATEINSTREAM(BLOBInStream);
+            pBigText.READ(BLOBInStream);
         END;
     end;
 

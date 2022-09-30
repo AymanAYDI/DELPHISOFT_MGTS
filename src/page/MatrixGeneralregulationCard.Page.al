@@ -17,9 +17,9 @@ page 50094 "Matrix General regulation Card"
     Editable = false;
     PageType = Card;
     SourceTable = Table50051;
-    SourceTableView = SORTING (Item Category Code, Product Group Code, Mark, Product Description, No., Type)
+    SourceTableView = SORTING(Item Category Code, Product Group Code, Mark, Product Description, No., Type)
                       ORDER(Ascending)
-                      WHERE (Type = FILTER (General product));
+                      WHERE(Type = FILTER(General product));
 
     layout
     {

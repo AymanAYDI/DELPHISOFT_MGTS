@@ -1,4 +1,4 @@
-page 50074 "Liste Suivi des contrats"
+page 50074 "DEL Liste Suivi des contrats"
 {
     // +---------------------------------------------------------------+
     // | Logico SA                                                     |
@@ -14,13 +14,13 @@ page 50074 "Liste Suivi des contrats"
     //              THM     15.05.17           Add Fields
 
     Caption = 'Follow contract List';
-    CardPageID = "Suivi des contrats";
+    CardPageID = "DEL Suivi des contrats";
     Editable = false;
     PageType = List;
-    SourceTable = Table18;
-    SourceTableView = SORTING (No.)
+    SourceTable = "VAT Clause";
+    SourceTableView = SORTING("No.")
                       ORDER(Ascending)
-                      WHERE (Customer Posting Group=FILTER(SERVICES));
+                      WHERE(Customer Posting Group=FILTER(SERVICES));
 
     layout
     {
@@ -28,139 +28,139 @@ page 50074 "Liste Suivi des contrats"
         {
             repeater(Group)
             {
-                field("No.";"No.")
+                field("No."; "No.")
                 {
                 }
-                field(Name;Name)
+                field(Name; Name)
                 {
                 }
-                field("Salesperson Code";"Salesperson Code")
+                field("Salesperson Code"; "Salesperson Code")
                 {
                 }
-                field(Contact;Contact)
+                field(Contact; Contact)
                 {
                 }
-                field("Partnership agreement";"Partnership agreement")
+                field("Partnership agreement"; "Partnership agreement")
                 {
                 }
                 field("Libellé PA";"Libellé PA")
                 {
                 }
-                field("Statut PA";"Statut PA")
+                field("Statut PA"; "Statut PA")
                 {
                 }
-                field("Annexe A PA";"Annexe A PA")
+                field("Annexe A PA"; "Annexe A PA")
                 {
                 }
-                field("Annexe B PA";"Annexe B PA")
+                field("Annexe B PA"; "Annexe B PA")
                 {
                 }
-                field("Annexe C PA";"Annexe C PA")
+                field("Annexe C PA"; "Annexe C PA")
                 {
                 }
-                field("Annexe D PA";"Annexe D PA")
+                field("Annexe D PA"; "Annexe D PA")
                 {
                 }
                 field("Date de début PA";"Date de début PA")
                 {
                 }
-                field("Date de fin PA";"Date de fin PA")
+                field("Date de fin PA"; "Date de fin PA")
                 {
                 }
-                field("Service agreement";"Service agreement")
+                field("Service agreement"; "Service agreement")
                 {
                 }
-                field("En facturation";"En facturation")
+                field("En facturation"; "En facturation")
                 {
                 }
                 field("Libellé SSA";"Libellé SSA")
                 {
                 }
-                field("Statut SSA";"Statut SSA")
+                field("Statut SSA"; "Statut SSA")
                 {
                 }
                 field("Date de début SSA";"Date de début SSA")
                 {
                 }
-                field("Date de fin SSA";"Date de fin SSA")
+                field("Date de fin SSA"; "Date de fin SSA")
                 {
                 }
                 field("Fréquence de facturation";"Fréquence de facturation")
                 {
                 }
-                field("Date de prochaine facturation";"Date de prochaine facturation")
+                field("Date de prochaine facturation"; "Date de prochaine facturation")
                 {
                 }
-                field("Nbre jour avant proch. fact.";"Nbre jour avant proch. fact.")
+                field("Nbre jour avant proch. fact."; "Nbre jour avant proch. fact.")
                 {
                 }
-                field(Level;Level)
+                field(Level; Level)
                 {
                 }
-                field("Annexe A SSA";"Annexe A SSA")
+                field("Annexe A SSA"; "Annexe A SSA")
                 {
                 }
-                field("Renouvellement tacite";"Renouvellement tacite")
+                field("Renouvellement tacite"; "Renouvellement tacite")
                 {
                 }
-                field("Reporting vente";"Reporting vente")
+                field("Reporting vente"; "Reporting vente")
                 {
                 }
-                field("Last Accounting Date";"Last Accounting Date")
+                field("Last Accounting Date"; "Last Accounting Date")
                 {
                 }
-                field(Facture;Facture)
+                field(Facture; Facture)
                 {
                 }
-                field(Montant;Montant)
+                field(Montant; Montant)
                 {
                 }
-                field("Montant ouvert";"Montant ouvert")
+                field("Montant ouvert"; "Montant ouvert")
                 {
                 }
-                field("Statut CE";"Statut CE")
+                field("Statut CE"; "Statut CE")
                 {
                 }
-                field("Date Signature CE";"Date Signature CE")
+                field("Date Signature CE"; "Date Signature CE")
                 {
                 }
-                field("Starting date of Relationship";"Starting date of Relationship")
+                field("Starting date of Relationship"; "Starting date of Relationship")
                 {
                 }
-                field("Quote part 1 Mobivia/CA %";"Quote part 1 Mobivia/CA %")
+                field("Quote part 1 Mobivia/CA %"; "Quote part 1 Mobivia/CA %")
                 {
                 }
-                field("Quote part 1 Mobivia/CA Year";"Quote part 1 Mobivia/CA Year")
+                field("Quote part 1 Mobivia/CA Year"; "Quote part 1 Mobivia/CA Year")
                 {
                 }
-                field("Quote part 2 Mobivia/CA %";"Quote part 2 Mobivia/CA %")
+                field("Quote part 2 Mobivia/CA %"; "Quote part 2 Mobivia/CA %")
                 {
                 }
-                field("Quote part 2 Mobivia/CA Year";"Quote part 2 Mobivia/CA Year")
+                field("Quote part 2 Mobivia/CA Year"; "Quote part 2 Mobivia/CA Year")
                 {
                 }
-                field("Period of denunciation";"Period of denunciation")
+                field("Period of denunciation"; "Period of denunciation")
                 {
                 }
-                field("Denunciation to analyze";"Denunciation to analyze")
+                field("Denunciation to analyze"; "Denunciation to analyze")
                 {
                 }
-                field("Denunciation Replanned";"Denunciation Replanned")
+                field("Denunciation Replanned"; "Denunciation Replanned")
                 {
                 }
-                field("Denunciation realised";"Denunciation realised")
+                field("Denunciation realised"; "Denunciation realised")
                 {
                 }
-                field("Denunciation date";"Denunciation date")
+                field("Denunciation date"; "Denunciation date")
                 {
                 }
-                field("Not denunciation";"Not denunciation")
+                field("Not denunciation"; "Not denunciation")
                 {
                 }
-                field("Comment denunciation";"Comment denunciation")
+                field("Comment denunciation"; "Comment denunciation")
                 {
                 }
-                field("Amount YTD";"Amount YTD")
+                field("Amount YTD"; "Amount YTD")
                 {
                     CaptionClass = '3,' +CustDateFilter[1];
 
@@ -175,7 +175,7 @@ page 50074 "Liste Suivi des contrats"
                         PAGE.RUN(25,CustLedgerEntry2);
                     end;
                 }
-                field("Amount YTD-1";"Amount YTD-1")
+                field("Amount YTD-1"; "Amount YTD-1")
                 {
                     CaptionClass = '3,' +CustDateFilter[2];
 
@@ -189,7 +189,7 @@ page 50074 "Liste Suivi des contrats"
                         PAGE.RUN(25,CustLedgerEntry2);
                     end;
                 }
-                field("Amount YTD-2";"Amount YTD-2")
+                field("Amount YTD-2"; "Amount YTD-2")
                 {
                     CaptionClass = '3,' +CustDateFilter[3];
 
@@ -203,53 +203,53 @@ page 50074 "Liste Suivi des contrats"
                         PAGE.RUN(25,CustLedgerEntry2);
                     end;
                 }
-                field("Parent Company";"Parent Company")
+                field("Parent Company"; "Parent Company")
                 {
                 }
-                field("Renewal by mail";"Renewal by mail")
+                field("Renewal by mail"; "Renewal by mail")
                 {
                 }
-                field("Renewal by endorsement";"Renewal by endorsement")
+                field("Renewal by endorsement"; "Renewal by endorsement")
                 {
                 }
-                field("Segmentation Prod Niveau";"Segmentation Prod Niveau")
+                field("Segmentation Prod Niveau"; "Segmentation Prod Niveau")
                 {
                 }
-                field("Segmentation Description";"Segmentation Description")
+                field("Segmentation Description"; "Segmentation Description")
                 {
                     Editable = false;
                 }
-                field("National Mark";"National Mark")
+                field("National Mark"; "National Mark")
                 {
                 }
-                field(MDD;MDD)
+                field(MDD; MDD)
                 {
                 }
-                field(NORAUTO;NORAUTO)
+                field(NORAUTO; NORAUTO)
                 {
                 }
-                field(MIDAS;MIDAS)
+                field(MIDAS; MIDAS)
                 {
                 }
-                field(ATU;ATU)
+                field(ATU; ATU)
                 {
                 }
-                field(ATYSE;ATYSE)
+                field(ATYSE; ATYSE)
                 {
                 }
-                field("CARTER CASH";"CARTER CASH")
+                field("CARTER CASH"; "CARTER CASH")
                 {
                 }
-                field(SYNCHRO;SYNCHRO)
+                field(SYNCHRO; SYNCHRO)
                 {
                 }
-                field(Shruvat;Shruvat)
+                field(Shruvat; Shruvat)
                 {
                 }
-                field(Bythjul;Bythjul)
+                field(Bythjul; Bythjul)
                 {
                 }
-                field("URL document CE";"URL document CE")
+                field("URL document CE"; "URL document CE")
                 {
 
                     trigger OnLookup(var Text: Text): Boolean
@@ -263,141 +263,141 @@ page 50074 "Liste Suivi des contrats"
                         DocumentContrat.RUN;
                     end;
                 }
-                field("Note Quality";"Note Quality")
+                field("Note Quality"; "Note Quality")
                 {
                 }
-                field("Realisation Date Quality";"Realisation Date Quality")
+                field("Realisation Date Quality"; "Realisation Date Quality")
                 {
                 }
-                field("Note Soc";"Note Soc")
+                field("Note Soc"; "Note Soc")
                 {
                 }
-                field("Realisation Date Soc";"Realisation Date Soc")
+                field("Realisation Date Soc"; "Realisation Date Soc")
                 {
                 }
-                field("Note Env";"Note Env")
+                field("Note Env"; "Note Env")
                 {
                 }
-                field("Realisation Date Env";"Realisation Date Env")
+                field("Realisation Date Env"; "Realisation Date Env")
                 {
                 }
-                field("Central trading";"Central trading")
-                {
-                    Visible = false;
-                }
-                field("Sales data report";"Sales data report")
+                field("Central trading"; "Central trading")
                 {
                     Visible = false;
                 }
-                field("Assist in relat. with the BU";"Assist in relat. with the BU")
+                field("Sales data report"; "Sales data report")
                 {
                     Visible = false;
                 }
-                field("Organization of visits";"Organization of visits")
+                field("Assist in relat. with the BU"; "Assist in relat. with the BU")
                 {
                     Visible = false;
                 }
-                field("Vision and Market Analysis";"Vision and Market Analysis")
+                field("Organization of visits"; "Organization of visits")
                 {
                     Visible = false;
                 }
-                field("Presentation provider strategy";"Presentation provider strategy")
+                field("Vision and Market Analysis"; "Vision and Market Analysis")
                 {
                     Visible = false;
                 }
-                field("Presentation MOBIVIA strategy";"Presentation MOBIVIA strategy")
+                field("Presentation provider strategy"; "Presentation provider strategy")
                 {
                     Visible = false;
                 }
-                field("Adv on the adapt. of the offer";"Adv on the adapt. of the offer")
+                field("Presentation MOBIVIA strategy"; "Presentation MOBIVIA strategy")
                 {
                     Visible = false;
                 }
-                field("Favorite referencing by BU";"Favorite referencing by BU")
+                field("Adv on the adapt. of the offer"; "Adv on the adapt. of the offer")
                 {
                     Visible = false;
                 }
-                field(Forecast;Forecast)
+                field("Favorite referencing by BU"; "Favorite referencing by BU")
                 {
                     Visible = false;
                 }
-                field("Frequency of delivery 1";"Frequency of delivery 1")
+                field(Forecast; Forecast)
                 {
                     Visible = false;
                 }
-                field("Invoicing Frequency 1";"Invoicing Frequency 1")
+                field("Frequency of delivery 1"; "Frequency of delivery 1")
                 {
                     Visible = false;
                 }
-                field("Frequency of delivery 2";"Frequency of delivery 2")
+                field("Invoicing Frequency 1"; "Invoicing Frequency 1")
                 {
                     Visible = false;
                 }
-                field("Invoicing Frequency 2";"Invoicing Frequency 2")
+                field("Frequency of delivery 2"; "Frequency of delivery 2")
                 {
                     Visible = false;
                 }
-                field("Frequency of delivery 3";"Frequency of delivery 3")
+                field("Invoicing Frequency 2"; "Invoicing Frequency 2")
                 {
                     Visible = false;
                 }
-                field("Invoicing Frequency 3";"Invoicing Frequency 3")
+                field("Frequency of delivery 3"; "Frequency of delivery 3")
                 {
                     Visible = false;
                 }
-                field("Frequency of delivery 4";"Frequency of delivery 4")
+                field("Invoicing Frequency 3"; "Invoicing Frequency 3")
                 {
                     Visible = false;
                 }
-                field("Invoicing Frequency 4";"Invoicing Frequency 4")
+                field("Frequency of delivery 4"; "Frequency of delivery 4")
                 {
                     Visible = false;
                 }
-                field("Frequency of delivery 5";"Frequency of delivery 5")
+                field("Invoicing Frequency 4"; "Invoicing Frequency 4")
                 {
                     Visible = false;
                 }
-                field("Invoicing Frequency 5";"Invoicing Frequency 5")
+                field("Frequency of delivery 5"; "Frequency of delivery 5")
                 {
                     Visible = false;
                 }
-                field("Frequency of delivery 6";"Frequency of delivery 6")
+                field("Invoicing Frequency 5"; "Invoicing Frequency 5")
                 {
                     Visible = false;
                 }
-                field("Invoicing Frequency 6";"Invoicing Frequency 6")
+                field("Frequency of delivery 6"; "Frequency of delivery 6")
                 {
                     Visible = false;
                 }
-                field("Frequency of delivery 7";"Frequency of delivery 7")
+                field("Invoicing Frequency 6"; "Invoicing Frequency 6")
                 {
                     Visible = false;
                 }
-                field("Invoicing Frequency 7";"Invoicing Frequency 7")
+                field("Frequency of delivery 7"; "Frequency of delivery 7")
                 {
                     Visible = false;
                 }
-                field("Frequency of delivery 8";"Frequency of delivery 8")
+                field("Invoicing Frequency 7"; "Invoicing Frequency 7")
                 {
                     Visible = false;
                 }
-                field("Invoicing Frequency 8";"Invoicing Frequency 8")
+                field("Frequency of delivery 8"; "Frequency of delivery 8")
                 {
                     Visible = false;
                 }
-                field("Frequency of delivery 9";"Frequency of delivery 9")
+                field("Invoicing Frequency 8"; "Invoicing Frequency 8")
                 {
                     Visible = false;
                 }
-                field("Invoicing Frequency 9";"Invoicing Frequency 9")
+                field("Frequency of delivery 9"; "Frequency of delivery 9")
                 {
                     Visible = false;
                 }
-                field("Frequency of delivery 10";"Frequency of delivery 10")
+                field("Invoicing Frequency 9"; "Invoicing Frequency 9")
                 {
                     Visible = false;
                 }
-                field("Invoicing Frequency 10";"Invoicing Frequency 10")
+                field("Frequency of delivery 10"; "Frequency of delivery 10")
+                {
+                    Visible = false;
+                }
+                field("Invoicing Frequency 10"; "Invoicing Frequency 10")
                 {
                     Visible = false;
                 }
@@ -428,9 +428,9 @@ page 50074 "Liste Suivi des contrats"
                     Promoted = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
-                    RunObject = Page 50119;
-                                    RunPageLink = No.=FIELD(No.);
-                    RunPageView = SORTING(No.,Line No.);
+                    RunObject = Page "Contract comment";
+                                    RunPageLink = "No."=FIELD("No.");
+                    RunPageView = SORTING("No.","Line No.");
                 }
             }
         }
@@ -517,8 +517,8 @@ page 50074 "Liste Suivi des contrats"
     end;
 
     var
-        Customer: Record "18";
-        CustLedgerEntry: Record "21";
+        Customer: Record Customer;
+        CustLedgerEntry: Record "Cust. Ledger Entry";
         CustSalesLCY: array [4] of Decimal;
         CustDateFilter: array [4] of Text[30];
         i: Integer;
@@ -526,8 +526,8 @@ page 50074 "Liste Suivi des contrats"
         DateFilter2: Text;
         DateFilter3: Text;
         Text001: Label 'Sales (LCY)';
-        CustLedgerEntry2: Record "21";
-        DocumentLine: Record "50008";
-        DocumentContrat: Page "50075";
+        CustLedgerEntry2: Record "Cust. Ledger Entry";
+        DocumentLine: Record "DEL Document Line";
+        DocumentContrat: Page "DEL Document Sheet Contrats";
 }
 

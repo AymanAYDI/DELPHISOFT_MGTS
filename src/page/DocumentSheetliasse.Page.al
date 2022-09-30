@@ -19,22 +19,22 @@ page 50072 "DEL Document Sheet liasse"
         {
             repeater(Controle1)
             {
-                field("Insert Date"; "Insert Date")
+                field("Insert Date"; Rec."Insert Date")
                 {
                 }
-                field("Insert Time"; "Insert Time")
+                field("Insert Time"; Rec."Insert Time")
                 {
                 }
-                field(Path; Path)
+                field(Path; Rec.Path)
                 {
                 }
-                field("File Name"; "File Name")
+                field("File Name"; Rec."File Name")
                 {
                 }
-                field("Type liasse"; "Type liasse")
+                field("Type liasse"; Rec."Type liasse")
                 {
                 }
-                field("User ID"; "User ID")
+                field("User ID"; Rec."User ID")
                 {
                 }
             }
@@ -78,7 +78,7 @@ page 50072 "DEL Document Sheet liasse"
 
     trigger OnNewRecord(BelowxRec: Boolean)
     begin
-        SetUpNewLine(BelowxRec);
+        Rec.SetUpNewLine(BelowxRec);
     end;
 
     var

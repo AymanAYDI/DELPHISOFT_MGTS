@@ -64,7 +64,7 @@ page 50002 "DEL Import Commande vente"
 
                 trigger OnAction()
                 begin
-                    ImportCommandevente.SETRANGE(ImportCommandevente."Document No.", "Document No.");
+                    ImportCommandevente.SETRANGE(ImportCommandevente."Document No.", Rec."Document No.");
                     REPORT.RUN(50016, FALSE, FALSE, ImportCommandevente);
                 end;
             }

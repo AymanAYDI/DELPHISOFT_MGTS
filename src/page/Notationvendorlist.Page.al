@@ -17,10 +17,10 @@ page 50063 "DEL Notation vendor list"
         {
             repeater(Group)
             {
-                field("No."; "No.")
+                field("No."; Rec."No.")
                 {
                 }
-                field(Name; Name)
+                field(Name; Rec.Name)
                 {
                 }
                 //-------------//TODO/ TABLEEXT-------------------
@@ -60,7 +60,7 @@ page 50063 "DEL Notation vendor list"
                 // field(Derogation; Derogation)
                 // {
                 // }
-                field("Purchaser Code"; "Purchaser Code")
+                field("Purchaser Code"; Rec."Purchaser Code")
                 {
                 }
             }

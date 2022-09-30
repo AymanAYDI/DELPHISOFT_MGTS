@@ -214,8 +214,13 @@ page 50014 "DEL Corr. facture vente ligne"
     local procedure LineAmountTextOnFormat(var Text: Text[1024])
     begin
         // CH2500.begin
+<<<<<<< HEAD
         IF (Rec.Type = Rec.Type::"End-Total") AND (Rec."Subtotal net" <> 0) THEN BEGIN
             Text := FORMAT(Rec."Subtotal net", 0, '<Sign><Integer Thousand><Decimals,3>');
+=======
+        IF (Rec.Type = Rec.Type::"End-Total") AND ("Subtotal net" <> 0) THEN BEGIN
+            Text := FORMAT("Subtotal net", 0, '<Sign><Integer Thousand><Decimals,3>');
+>>>>>>> 6398e30e48484289c51159594aa482bd913f25d9
             "Line AmountEmphasize" := TRUE;
         END;
         // CH2500.end
@@ -224,8 +229,13 @@ page 50014 "DEL Corr. facture vente ligne"
     local procedure AmountIncludingVATTextOnFormat(var Text: Text[1024])
     begin
         // CH2500.begin
+<<<<<<< HEAD
         IF (Rec.Type = Rec.Type::"End-Total") AND (Rec."Subtotal gross" <> 0) THEN BEGIN
             Text := FORMAT(Rec."Subtotal gross", 0, '<Sign><Integer Thousand><Decimals,3>');
+=======
+        IF (Rec.Type = Rec.Type::"End-Total") AND ("Subtotal gross" <> 0) THEN BEGIN
+            Text := FORMAT("Subtotal gross", 0, '<Sign><Integer Thousand><Decimals,3>');
+>>>>>>> 6398e30e48484289c51159594aa482bd913f25d9
             "Amount Including VATEmphasize" := TRUE;
         END;
         // CH2500.end

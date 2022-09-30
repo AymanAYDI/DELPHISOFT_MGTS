@@ -16,10 +16,10 @@ page 50111 "Matrix General regulation List"
     InsertAllowed = false;
     ModifyAllowed = false;
     PageType = List;
-    SourceTable = Table50051;
-    SourceTableView = SORTING (Item Category Code, Product Group Code, Mark, Product Description, No., Type)
+    SourceTable = "DEL Regulation Matrix Line";
+    SourceTableView = SORTING("Item Category Code", "Product Group Code", Mark, "Product Description", "No.", Type)
                       ORDER(Ascending)
-                      WHERE (Type = FILTER (General product));
+                      WHERE(Type = FILTER("General product"));
 
     layout
     {
@@ -104,13 +104,8 @@ page 50111 "Matrix General regulation List"
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
-                RunObject = Page 50094;
-                RunPageLink = Item Category Code=FIELD(Item Category Code),
-                              Product Group Code=FIELD(Product Group Code),
-                              No.=FIELD(No.),
-                              Type=FIELD(Type),
-                              Mark=FIELD(Mark),
-                              Product Description=FIELD(Product Description);
+                RunObject = Page "Matrix General regulation Card";
+                RunPageLink = "Item Category Code" = FIELD("Item Category Code"), "Product Group Code" = FIELD("Product Group Code"), "No." = FIELD("No."), Type = FIELD(Type), Mark = FIELD(Mark), "Product Description" = FIELD("Product Description");
             }
         }
     }

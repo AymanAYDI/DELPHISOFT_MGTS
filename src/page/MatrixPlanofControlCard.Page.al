@@ -14,9 +14,9 @@ page 50093 "Matrix Plan of Control Card"
     Editable = false;
     PageType = Card;
     SourceTable = Table50051;
-    SourceTableView = SORTING (Item Category Code, Product Group Code, Mark, Product Description, No., Type)
+    SourceTableView = SORTING(Item Category Code, Product Group Code, Mark, Product Description, No., Type)
                       ORDER(Ascending)
-                      WHERE (Type = FILTER (Plan of control));
+                      WHERE(Type = FILTER(Plan of control));
 
     layout
     {

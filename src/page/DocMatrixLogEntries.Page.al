@@ -8,7 +8,7 @@ page 50138 "DocMatrix Log Entries"
 
     PageType = List;
     SourceTable = Table50068;
-    SourceTableView = SORTING (Date Time Stamp)
+    SourceTableView = SORTING(Date Time Stamp)
                       ORDER(Descending);
 
     layout

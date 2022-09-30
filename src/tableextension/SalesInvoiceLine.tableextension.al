@@ -31,7 +31,7 @@ tableextension 50004 "DEL SalesInvoiceLine" extends "Sales Invoice Line"
     }
     keys
     {
-        key(Key10; "Shortcut Dimension 1 Code", Type, "Order No.")  
+        key(Key10; "Shortcut Dimension 1 Code", Type, "Order No.")
         {
         }
         key(Key11; "Shortcut Dimension 1 Code", Type, "Document No.")

@@ -82,7 +82,7 @@ page 50033 "DEL Subform Planned"
                         Rec.Type::ACO:
                             BEGIN
 
-                                IF purchHeader_Re_Loc.GET(purchHeader_Re_Loc."Document Type"::Order, "Type No.") THEN BEGIN
+                                IF purchHeader_Re_Loc.GET(purchHeader_Re_Loc."Document Type"::Order, Rec."Type No.") THEN BEGIN
 
                                     PAGE.RUN(PAGE::"Purchase Order", purchHeader_Re_Loc);
                                     EXIT
@@ -104,7 +104,7 @@ page 50033 "DEL Subform Planned"
                         Rec.Type::VCO:
                             BEGIN
 
-                                IF salesHeader_Re_Loc.GET(salesHeader_Re_Loc."Document Type"::Order, "Type No.") THEN BEGIN
+                                IF salesHeader_Re_Loc.GET(salesHeader_Re_Loc."Document Type"::Order, Rec."Type No.") THEN BEGIN
 
                                     PAGE.RUN(PAGE::"Sales Order", salesHeader_Re_Loc);
                                     EXIT

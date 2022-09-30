@@ -1,3 +1,4 @@
+#pragma implicitwith disable
 page 50080 "Manual Deal Invoice Linking"
 {
     // +-------------------------------------------------------------------------------+
@@ -16,13 +17,13 @@ page 50080 "Manual Deal Invoice Linking"
 
     Caption = 'Manual Deal Invoice Linking';
     PageType = Card;
-    SourceTable = Table50037;
+    SourceTable = "DEL Manual Deal Inv. Linking";
 
     layout
     {
         area(content)
         {
-            field("Entry No."; "Entry No.")
+            field("Entry No."; Rec."Entry No.")
             {
 
                 trigger OnValidate()
@@ -30,15 +31,15 @@ page 50080 "Manual Deal Invoice Linking"
                     EntryNoOnAfterValidate;
                 end;
             }
-            field("Document No."; "Document No.")
+            field("Document No."; Rec."Document No.")
             {
                 Editable = false;
             }
-            field("Account No."; "Account No.")
+            field("Account No."; Rec."Account No.")
             {
                 Editable = false;
             }
-            field("Shipment Selection"; "Shipment Selection")
+            field("Shipment Selection"; Rec."Shipment Selection")
             {
 
                 trigger OnDrillDown()
@@ -69,29 +70,29 @@ page 50080 "Manual Deal Invoice Linking"
 
                     trigger OnAction()
                     var
-                        dealShipmentSelection_Re_Loc: Record "50031";
-                        dealShipment_Re_Loc: Record "50030";
-                        feeConnection_Re_Loc: Record "50025";
+                        dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
+                        dealShipment_Re_Loc: Record "DEL Deal Shipment";
+                        feeConnection_Re_Loc: Record "DEL Fee Connection";
                         Add_Variant_Op_Loc: Option New,Existing;
                         nextEntry: Code[20];
                         myTab: array[100] of Code[20];
-                        dss_Re_Loc: Record "50031";
+                        dss_Re_Loc: Record "DEL Deal Shipment Selection";
                         element_ID_Co_Loc: Code[20];
                         i: Integer;
                         splittIndex: Integer;
                         elementConnectionSplitIndex: Integer;
                         ConnectionType_Op_Par: Option Element,Shipment;
                         myUpdateRequests: array[100] of Code[20];
-                        element_Re_Loc: Record "50021";
+                        element_Re_Loc: Record "DEL Element";
                     begin
-                        IF "Shipment Selection" = 0 THEN
+                        IF Rec."Shipment Selection" = 0 THEN
                             ERROR('Veuillez sélectionner au moins 1 livraison !');
 
                         //START CHG04
                         //On supprime les Elements existants associés à la facture qu'on veut répartir à nouveau
                         element_Re_Loc.RESET();
                         element_Re_Loc.SETCURRENTKEY("Entry No.", ID);
-                        element_Re_Loc.SETRANGE("Entry No.", "Entry No.");
+                        element_Re_Loc.SETRANGE("Entry No.", Rec."Entry No.");
                         IF element_Re_Loc.FIND('-') THEN
                             REPEAT
                                 Element_Cu.FNC_Delete_Element(element_Re_Loc.ID);
@@ -113,7 +114,7 @@ page 50080 "Manual Deal Invoice Linking"
                         //On cherche quelles livraisons ont été sélectionnées pour la facture
                         dealShipmentSelection_Re_Loc.RESET();
                         dealShipmentSelection_Re_Loc.SETRANGE(USER_ID, USERID);
-                        dealShipmentSelection_Re_Loc.SETRANGE("Account Entry No.", "Entry No.");
+                        dealShipmentSelection_Re_Loc.SETRANGE("Account Entry No.", Rec."Entry No.");
                         dealShipmentSelection_Re_Loc.SETRANGE(Checked, TRUE);
                         IF dealShipmentSelection_Re_Loc.FIND('-') THEN
                             REPEAT
@@ -133,7 +134,7 @@ page 50080 "Manual Deal Invoice Linking"
                                 elementConnectionSplitIndex := 1;
                                 dss_Re_Loc.RESET();
                                 dss_Re_Loc.SETRANGE(USER_ID, USERID);
-                                dss_Re_Loc.SETRANGE("Account Entry No.", "Entry No.");
+                                dss_Re_Loc.SETRANGE("Account Entry No.", Rec."Entry No.");
                                 dss_Re_Loc.SETRANGE(Checked, TRUE);
                                 IF dss_Re_Loc.FIND('-') THEN
                                     REPEAT
@@ -199,10 +200,10 @@ page 50080 "Manual Deal Invoice Linking"
 
     trigger OnOpenPage()
     begin
-        DELETEALL();
-        FILTERGROUP(3);
-        SETFILTER("User ID Filter", USERID);
-        FILTERGROUP(0);
+        Rec.DELETEALL();
+        Rec.FILTERGROUP(3);
+        Rec.SETFILTER("User ID Filter", USERID);
+        Rec.FILTERGROUP(0);
     end;
 
     var
@@ -214,7 +215,7 @@ page 50080 "Manual Deal Invoice Linking"
 
     procedure FNC_ShipmentLookup()
     var
-        deal_Re_Loc: Record "50020";
+        deal_Re_Loc: Record "DEL Deal";
         dealShipment_Re_Loc: Record "50030";
         dealShipmentSelection_Re_Loc: Record "50031";
         dealShipmentSelection_page_Loc: Page "50038";
@@ -225,11 +226,11 @@ page 50080 "Manual Deal Invoice Linking"
            -> Plus il y a d'affaires non terminées, plus le nombre de ligne est grand. Attention aux perpageances !
         _*/
 
-        IF "Entry No." = 0 THEN
+        IF Rec."Entry No." = 0 THEN
             ERROR('Choisir un document !');
 
         dealShipmentSelection_Re_Loc.SETCURRENTKEY("Account Entry No.");
-        dealShipmentSelection_Re_Loc.SETRANGE("Account Entry No.", "Entry No.");
+        dealShipmentSelection_Re_Loc.SETRANGE("Account Entry No.", Rec."Entry No.");
         dealShipmentSelection_Re_Loc.SETRANGE(dealShipmentSelection_Re_Loc.USER_ID, USERID);
         dealShipmentSelection_Re_Loc.DELETEALL();
 
@@ -245,9 +246,9 @@ page 50080 "Manual Deal Invoice Linking"
 
                         dealShipmentSelection_Re_Loc.INIT();
                         dealShipmentSelection_Re_Loc."Document Type" := dealShipmentSelection_Re_Loc."Document Type"::Invoice;
-                        dealShipmentSelection_Re_Loc."Document No." := "Document No.";
-                        dealShipmentSelection_Re_Loc."Account No." := "Account No.";
-                        dealShipmentSelection_Re_Loc."Account Entry No." := "Entry No.";
+                        dealShipmentSelection_Re_Loc."Document No." := Rec."Document No.";
+                        dealShipmentSelection_Re_Loc."Account No." := Rec."Account No.";
+                        dealShipmentSelection_Re_Loc."Account Entry No." := Rec."Entry No.";
                         dealShipmentSelection_Re_Loc.Deal_ID := deal_Re_Loc.ID;
                         dealShipmentSelection_Re_Loc."Shipment No." := dealShipment_Re_Loc.ID;
                         dealShipmentSelection_Re_Loc.USER_ID := USERID;
@@ -281,11 +282,13 @@ page 50080 "Manual Deal Invoice Linking"
 
     local procedure EntryNoOnAfterValidate()
     var
-        GLEntry_Re_Loc: Record "17";
+        GLEntry_Re_Loc: Record "G/L Entry";
     begin
-        GLEntry_Re_Loc.GET("Entry No.");
-        "Document No." := GLEntry_Re_Loc."Document No.";
-        "Account No." := GLEntry_Re_Loc."G/L Account No.";
+        GLEntry_Re_Loc.GET(Rec."Entry No.");
+        Rec."Document No." := GLEntry_Re_Loc."Document No.";
+        Rec."Account No." := GLEntry_Re_Loc."G/L Account No.";
     end;
 }
+
+#pragma implicitwith restore
 

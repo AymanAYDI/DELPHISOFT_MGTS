@@ -61,7 +61,7 @@ page 50001 "DEL Regulation Text"
 
     trigger OnNewRecord(BelowxRec: Boolean)
     begin
-        GetNextLineNo(Rec, FALSE);
+        Rec.GetNextLineNo(Rec, FALSE);
     end;
 
 
