@@ -25,7 +25,7 @@ page 50078 "DEL Item Quality List"
     RefreshOnActivate = true;
     SaveValues = true;
     ShowFilter = true;
-    SourceTable = Item;
+    SourceTable = "Item";
 
     layout
     {
@@ -51,13 +51,13 @@ page 50078 "DEL Item Quality List"
                     Caption = 'Quality Blocked';
                     Editable = false;
                 }
-                field("Item Category Code"; Rec."Item Category Code")
+                field("Item Category Code"; "DEL Item Category Code")
                 {
                 }
-                field("Item Category Label"; "Item Category Label")
+                field("Item Category Label"; "DEL Item Category Label")
                 {
                 }
-                field("Product Group Code"; Rec."Product Group Code")
+                field("Product Group Code"; "Product Group Code")
                 {
                 }
                 field("Product Group Label"; "Product Group Label")

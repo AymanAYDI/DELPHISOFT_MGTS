@@ -11,13 +11,12 @@ page 50003 "DEL Error Import"
             {
                 field("Error"; Rec.Error)
                 {
+                    Caption = 'Error';
                 }
             }
         }
     }
 
-    actions
-    {
-    }
+
 }
 

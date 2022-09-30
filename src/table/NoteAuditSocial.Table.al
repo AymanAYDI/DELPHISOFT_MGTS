@@ -2,9 +2,9 @@ table 50017 "DEL Note Audit Social"
 {
     Caption = 'DEL Note Audit Social';
 
-    //TODO //Page
-    // DrillDownPageID = 50019;
-    // LookupPageID = 50019;
+
+    DrillDownPageID = "DEL Detail Social Audit";
+    LookupPageID = "DEL Detail Social Audit";
 
     fields
     {

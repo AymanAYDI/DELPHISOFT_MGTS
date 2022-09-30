@@ -1,15 +1,9 @@
-page 50130 "Document Matrix"
+page 50130 "DEL Document Matrix"
 {
-    // DEL/PD/20190227/LOP003 : object created
-    // DEL/PD/20190305/LOP003 : changed action button "Show Request Page Parameters": make sure that the correct record is showed
-    // DEL/PD/20190306/LOP003 : new action button "Customer FTP Settings"
-    // DEL/PD/20190307/LOP003 : new action button "Show Error Log"
-    // 20200915/DEL/PD/CR100  : new field "E-Mail from Sales Order"
-    // 20201007/DEL/PD/CR100  : published to PROD
 
     DelayedInsert = true;
     PageType = List;
-    SourceTable = Table50067;
+    SourceTable = "DEL Document Matrix";
 
     layout
     {
@@ -17,83 +11,83 @@ page 50130 "Document Matrix"
         {
             repeater(Group)
             {
-                field(Type; Type)
+                field(Type; Rec.Type)
                 {
                 }
-                field("No."; "No.")
+                field("No."; Rec."No.")
                 {
                 }
-                field(Name; Name)
+                field(Name; Rec.Name)
                 {
                 }
-                field("Process Type"; "Process Type")
+                field("Process Type"; Rec."Process Type")
                 {
                 }
-                field(Usage; Usage)
+                field(Usage; Rec.Usage)
                 {
                 }
-                field("Report ID"; "Report ID")
+                field("Report ID"; Rec."Report ID")
                 {
                 }
-                field("Report Caption"; "Report Caption")
+                field("Report Caption"; Rec."Report Caption")
                 {
                 }
-                field(Post; Post)
+                field(Post; Rec.Post)
                 {
                 }
-                field("Send to FTP 1"; "Send to FTP 1")
+                field("Send to FTP 1"; Rec."Send to FTP 1")
                 {
                 }
-                field("Send to FTP 2"; "Send to FTP 2")
+                field("Send to FTP 2"; Rec."Send to FTP 2")
                 {
                 }
-                field("E-Mail from Sales Order"; "E-Mail from Sales Order")
+                field("E-Mail from Sales Order"; Rec."E-Mail from Sales Order")
                 {
                 }
-                field("E-Mail To 1"; "E-Mail To 1")
+                field("E-Mail To 1"; Rec."E-Mail To 1")
                 {
                 }
-                field("E-Mail To 2"; "E-Mail To 2")
+                field("E-Mail To 2"; Rec."E-Mail To 2")
                 {
                 }
-                field("E-Mail To 3"; "E-Mail To 3")
+                field("E-Mail To 3"; Rec."E-Mail To 3")
                 {
                 }
-                field("E-Mail From"; "E-Mail From")
+                field("E-Mail From"; Rec."E-Mail From")
                 {
                 }
-                field("Save PDF"; "Save PDF")
+                field("Save PDF"; Rec."Save PDF")
                 {
                 }
-                field("Print PDF"; "Print PDF")
+                field("Print PDF"; Rec."Print PDF")
                 {
                 }
-                field("Mail Text Code"; "Mail Text Code")
+                field("Mail Text Code"; Rec."Mail Text Code")
                 {
                     AssistEdit = false;
                     DrillDown = false;
-                    DrillDownPageID = 50132;
+                    //TODO DrillDownPageID = 50132;  //50132 n'existe pas 
                     Lookup = true;
 
                     trigger OnLookup(var Text: Text): Boolean
                     var
-                        lrecDocMatrixEmailCodes: Record "50070";
-                        lpgDocMatrixMailCodes: Page "50134";
+                        lrecDocMatrixEmailCodes: Record "DEL DocMatrix Email Codes";
+                        lpgDocMatrixMailCodes: Page 50134;
                     begin
                         lrecDocMatrixEmailCodes.RESET;
-                        IF "Mail Text Langauge Code" <> '' THEN
-                            lrecDocMatrixEmailCodes.SETFILTER("Language Code", '%1|%2', "Mail Text Langauge Code", '');
+                        IF Rec."Mail Text Langauge Code" <> '' THEN
+                            lrecDocMatrixEmailCodes.SETFILTER("Language Code", '%1|%2', Rec."Mail Text Langauge Code", '');
                         IF lrecDocMatrixEmailCodes.FINDSET THEN;
                         lpgDocMatrixMailCodes.SETTABLEVIEW(lrecDocMatrixEmailCodes);
                         lpgDocMatrixMailCodes.LOOKUPMODE := TRUE;
                         IF lpgDocMatrixMailCodes.RUNMODAL = ACTION::LookupOK THEN BEGIN
                             lpgDocMatrixMailCodes.GETRECORD(lrecDocMatrixEmailCodes);
-                            "Mail Text Code" := lrecDocMatrixEmailCodes.Code;
-                            MODIFY;
+                            Rec."Mail Text Code" := lrecDocMatrixEmailCodes.Code;
+                            Rec.MODIFY;
                         END;
                     end;
                 }
-                field("Mail Text Langauge Code"; "Mail Text Langauge Code")
+                field("Mail Text Langauge Code"; Rec."Mail Text Langauge Code")
                 {
                 }
             }
@@ -120,7 +114,7 @@ page 50130 "Document Matrix"
 
                     trigger OnAction()
                     var
-                        pgDocMatrixMailCodes: Page "50134";
+                        pgDocMatrixMailCodes: Page 50134;
                     begin
                         pgDocMatrixMailCodes.RUN;
                     end;
@@ -144,8 +138,8 @@ page 50130 "Document Matrix"
                     PromotedCategory = Process;
                     PromotedIsBig = true;
                     PromotedOnly = true;
-                    RunObject = Page 50139;
-                    RunPageLink = Customer No.=FIELD(No.);
+                    RunObject = Page "DEL DocMatrix FTP Custom. Card";
+                    RunPageLink = "Customer No." = FIELD("No.");
                     RunPageMode = Edit;
                 }
                 action("Create Request Page Parameters")
@@ -161,7 +155,7 @@ page 50130 "Document Matrix"
                     var
                         lText001: Label 'The parameters were set sucessfully.';
                     begin
-                        SaveRequestPageParameters(Rec);
+                        Rec.SaveRequestPageParameters(Rec);
                         MESSAGE(lText001);
                     end;
                 }
@@ -176,7 +170,7 @@ page 50130 "Document Matrix"
 
                     trigger OnAction()
                     var
-                        lpgDocMatrixRequestPagePar: Page "50136";
+                        lpgDocMatrixRequestPagePar: Page 50136;
                     begin
                         lpgDocMatrixRequestPagePar.LOOKUPMODE(TRUE);
                         lpgDocMatrixRequestPagePar.SETRECORD(Rec);
@@ -192,11 +186,11 @@ page 50130 "Document Matrix"
                     PromotedIsBig = true;
                     PromotedOnly = true;
                     RunObject = Page 50138;
-                                    RunPageLink = Type=FIELD(Type),
-                                  No.=FIELD(No.),
-                                  Process Type=FIELD(Process Type),
-                                  Usage=FIELD(Usage);
-                    RunPageView = SORTING(Date Time Stamp)
+                    RunPageLink = Type = FIELD(Type),
+                                  "No." = FIELD("No."),
+                                  "Process Type" = FIELD("Process Type"),
+                                  Usage = FIELD(Usage);
+                    RunPageView = SORTING("Date Time Stamp")
                                   ORDER(Descending);
                 }
                 action("Show Error Log")
@@ -208,10 +202,10 @@ page 50130 "Document Matrix"
                     PromotedIsBig = true;
                     PromotedOnly = true;
                     RunObject = Page 50138;
-                                    RunPageView = SORTING(Date Time Stamp)
+                    RunPageView = SORTING("Date Time Stamp")
                                   ORDER(Descending)
-                                  WHERE(Error=CONST(Yes),
-                                        Error Solved=CONST(No));
+                                  WHERE(Error = CONST(true),
+                                        "Error Solved" = CONST(false));
                 }
             }
         }
@@ -220,15 +214,15 @@ page 50130 "Document Matrix"
 
     procedure SetCustomerFilter(lCustNo: Code[20])
     begin
-        SETRANGE("No.", lCustNo);
-        SETRANGE(Type, Type::Customer);
+        Rec.SETRANGE("No.", lCustNo);
+        Rec.SETRANGE(Type, Rec.Type::Customer);
     end;
 
 
     procedure SetVendorFilter(lVendNo: Code[20])
     begin
-        SETRANGE("No.", lVendNo);
-        SETRANGE(Type, Type::Vendor);
+        Rec.SETRANGE("No.", lVendNo);
+        Rec.SETRANGE(Type, Rec.Type::Vendor);
     end;
 }
 

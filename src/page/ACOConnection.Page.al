@@ -11,9 +11,11 @@ page 50026 "DEL ACO Connection"
             {
                 field(Deal_ID; Rec.Deal_ID)
                 {
+                    Caption = 'Deal_ID';
                 }
                 field("ACO No."; Rec."ACO No.")
                 {
+                    Caption = 'ACO No.';
                 }
             }
         }

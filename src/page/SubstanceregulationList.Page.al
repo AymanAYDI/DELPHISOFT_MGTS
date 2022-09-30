@@ -1,22 +1,13 @@
-page 50109 "Substance regulation List"
+page 50109 "DEL Substance regulation List"
 {
-    // +---------------------------------------------------------------+
-    // | Logico SA                                                     |
-    // | Status:                                                       |
-    // | Customer/Project:                                             |
-    // +---------------------------------------------------------------+
-    // Requirement UserID   Date       Where   Description
-    // -----------------------------------------------------------------
-    // T-00716      THM     27.08.15           Create Object
-    // T-00757      THM     07.01.16           add and modify Field
-    //              THM     03.05.16           add"Description Usage"
+
 
     Caption = 'Substance regulation';
-    CardPageID = "Subs. regulation Card";
+    CardPageID = "DEL Subs. regulation Card";
     Editable = false;
     PageType = List;
-    SourceTable = Table50057;
-    SourceTableView = SORTING(No., Type)
+    SourceTable = "DEL Regulation";
+    SourceTableView = SORTING("No.", Type)
                       ORDER(Ascending)
                       WHERE(Type = FILTER(Materials));
 
@@ -26,57 +17,70 @@ page 50109 "Substance regulation List"
         {
             repeater(Group)
             {
-                field(Type; Type)
+                field(Type; Rec.Type)
                 {
+                    Caption = 'Type';
                 }
-                field("No."; "No.")
+                field("No."; Rec."No.")
                 {
+                    Caption = 'No.';
                 }
-                field("Description pays"; "Description pays")
+                field("Description pays"; Rec."Description pays")
                 {
+                    Caption = 'Country';
                 }
-                field("Type of material"; "Type of material")
+                field("Type of material"; Rec."Type of material")
                 {
+                    Caption = 'Type of material';
                 }
-                field(Usage; Usage)
+                field(Usage; Rec.Usage)
                 {
+                    Caption = 'Usage';
                 }
-                field("Description Usage in French"; "Description Usage in French")
+                field("Description Usage in French"; Rec."Description Usage in French")
                 {
+                    Caption = 'Description Usage in French';
                 }
-                field("Description Usage in English"; "Description Usage in English")
+                field("Description Usage in English"; Rec."Description Usage in English")
                 {
+                    Caption = 'Description Usage in English';
                 }
-                field("Substance - CAS / EINECS"; "Substance - CAS / EINECS")
+                field("Substance - CAS / EINECS"; Rec."Substance - CAS / EINECS")
                 {
+                    Caption = 'Substance ID';
                 }
-                field("Substance - nom"; "Substance - nom")
+                field("Substance - nom"; Rec."Substance - nom")
                 {
+                    Caption = 'Substance name';
                 }
-                field(Source; Source)
+                field(Source; Rec.Source)
                 {
+                    Caption = 'Origine';
                 }
-                field("Starting date"; "Starting date")
+                field("Starting date"; Rec."Starting date")
                 {
+                    Caption = 'Starting date';
                 }
-                field("Date Fin"; "Date Fin")
+                field("Date Fin"; Rec."Date Fin")
                 {
+                    Caption = 'End date';
                 }
-                field("Norm of testing"; "Norm of testing")
+                field("Norm of testing"; Rec."Norm of testing")
                 {
+                    Caption = 'Norm of testing';
                 }
-                field(Statut; Statut)
+                field(Statut; Rec.Statut)
                 {
+                    Caption = 'Status';
                 }
-                field("Texte de remplacement"; "Texte de remplacement")
+                field("Texte de remplacement"; Rec."Texte de remplacement")
                 {
+                    Caption = 'Text of substitution';
                 }
             }
         }
     }
 
-    actions
-    {
-    }
+
 }
 

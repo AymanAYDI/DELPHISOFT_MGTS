@@ -12,11 +12,6 @@ table 50011 "DEL Forwarding Agent"
             NotBlank = true;
             TableRelation = Vendor;
 
-            trigger OnValidate()
-            var
-                TempDocDim: Record "Gen. Jnl. Dim. Filter" temporary;
-            begin
-            end;
         }
         field(2; "Location Code"; Code[10])
         {
@@ -47,10 +42,5 @@ table 50011 "DEL Forwarding Agent"
     {
     }
 
-    trigger OnDelete()
-    var
-        TransferRoute: Record "Transfer Route";
-    begin
-    end;
 }
 

@@ -1,6 +1,6 @@
 table 50027 "DEL Element Connection"
 {
-    //TODO LookupPageID = 50026;
+    LookupPageID = "DEL ACO Connection";
     Caption = 'Element Connection';
 
     fields

@@ -3,7 +3,7 @@ page 50085 "DEL Regulation Matrix"
 
 
     Caption = 'Regulation Matrix';
-    CardPageID = "Regulation matrix Card";
+    CardPageID = "DEL Regulation matrix Card";
     Editable = false;
     PageType = List;
     SourceTable = "DEL Regulation Matrix";
@@ -14,67 +14,87 @@ page 50085 "DEL Regulation Matrix"
         {
             repeater(Group)
             {
-                field("Item Category Code"; "Item Category Code")
+                field("Item Category Code"; Rec."Item Category Code")
                 {
+                    Caption = 'Item Category Code';
                 }
-                field("Product Group Code"; "Product Group Code")
+                field("Product Group Code"; Rec."Product Group Code")
                 {
+                    Caption = 'Product Group Code';
                 }
-                field("Item Category Label"; "Item Category Label")
+                field("Item Category Label"; Rec."Item Category Label")
                 {
+                    Caption = 'Item Category Description';
                 }
-                field("Product Group Label"; "Product Group Label")
+                field("Product Group Label"; Rec."Product Group Label")
                 {
+                    Caption = 'Product Group Description';
                 }
-                field(Mark; Mark)
+                field(Mark; Rec.Mark)
                 {
+                    Caption = 'Mark';
                 }
-                field("Product Description"; "Product Description")
+                field("Product Description"; Rec."Product Description")
                 {
+                    Caption = 'Description produit';
                 }
-                field("Risque Quality"; "Risque Quality")
+                field("Risque Quality"; Rec."Risque Quality")
                 {
+                    Caption = 'Risk Quality';
                 }
-                field("NGTS Quality Expert"; "NGTS Quality Expert")
+                field("NGTS Quality Expert"; Rec."NGTS Quality Expert")
                 {
+                    Caption = 'NGTS Quality Expert';
                 }
-                field("Regl. Generale"; "Regl. Generale")
+                field("Regl. Generale"; Rec."Regl. Generale")
                 {
+                    Caption = 'General Product Regulation';
                 }
-                field("Regl. Matiere"; "Regl. Matiere")
+                field("Regl. Matiere"; Rec."Regl. Matiere")
                 {
+                    Caption = 'Substance Regulation';
                 }
-                field("Plan of control"; "Plan of control")
+                field("Plan of control"; Rec."Plan of control")
                 {
+                    Caption = 'Plan of control';
                 }
-                field("Manuel instruction"; "Manuel instruction")
+                field("Manuel instruction"; Rec."Manuel instruction")
                 {
+                    Caption = 'Manuel instruction';
                 }
-                field("Warning instruction in French"; "Warning instruction in French")
+                field("Warning instruction in French"; Rec."Warning instruction in French")
                 {
+                    Caption = 'Warning instruction in French';
                 }
-                field("Warning instruction in English"; "Warning instruction in English")
+                field("Warning instruction in English"; Rec."Warning instruction in English")
                 {
+                    Caption = 'Warning instruction in English';
                 }
-                field("Instruction manual + Warning"; "Instruction manual + Warning")
+                field("Instruction manual + Warning"; Rec."Instruction manual + Warning")
                 {
+                    Caption = 'Instruction manual (Yes/No) + Warning';
                 }
-                field("Marking in the product FR"; "Marking in the product FR")
+                field("Marking in the product FR"; Rec."Marking in the product FR")
                 {
+                    Caption = 'Marking in the product (warning) + Pictogram type in French';
                 }
-                field("Marking in the pack FR"; "Marking in the pack FR")
+                field("Marking in the pack FR"; Rec."Marking in the pack FR")
                 {
+                    Caption = 'Marking in the pack (warning + Pictogram) in French';
                 }
-                field("Marking in the product ENU"; "Marking in the product ENU")
+                field("Marking in the product ENU"; Rec."Marking in the product ENU")
                 {
+                    Caption = 'Marking in the product (warning) + Pictogram type in English';
                 }
-                field("Marking in the pack ENU"; "Marking in the pack ENU")
+                field("Marking in the pack ENU"; Rec."Marking in the pack ENU")
                 {
+                    Caption = 'Marking in the pack (warning + Pictogram) in English';
                 }
-                field("List Items Associated"; "List Items Associated")
+                field("List Items Associated"; Rec."List Items Associated")
                 {
                     DrillDown = true;
                     DrillDownPageID = "Item Quality List";
+                    Caption = 'List Items Associated';
                 }
             }
         }
@@ -127,14 +147,14 @@ page 50085 "DEL Regulation Matrix"
                     Promoted = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
-                    RunObject = Page "Matrix Plan of Control";
-                    RunPageLink = Item Category Code=FIELD(Item Category Code),
-                                  Product Group Code=FIELD(Product Group Code),
-                                  Mark=FIELD(Mark),
-                                  Product Description=FIELD(Product Description);
-                    RunPageView = SORTING(Item Category Code,Product Group Code,Mark,Product Description,No.,Type)
+                    RunObject = Page "DEL Matrix Plan of Control";
+                    RunPageLink = "Item Category Code" = FIELD("Item Category Code"),
+                                  "Product Group Code" = FIELD("Product Group Code"),
+                                  Mark = FIELD(Mark),
+                                  "Product Description" = FIELD("Product Description");
+                    RunPageView = SORTING("Item Category Code", "Product Group Code", Mark, "Product Description", "No.", Type)
                                   ORDER(Ascending)
-                                  WHERE(Type=FILTER(Plan of control));
+                                  WHERE(Type = FILTER("Plan of control"));
                     Visible = PlanControl;
                 }
             }
@@ -143,9 +163,9 @@ page 50085 "DEL Regulation Matrix"
 
     trigger OnAfterGetRecord()
     begin
-        RegGenerale:="Regl. Generale";
-        RegMat:="Regl. Matiere";
-        PlanControl:="Plan of control";
+        RegGenerale := Rec."Regl. Generale";
+        RegMat := Rec."Regl. Matiere";
+        PlanControl := Rec."Plan of control";
     end;
 
     var

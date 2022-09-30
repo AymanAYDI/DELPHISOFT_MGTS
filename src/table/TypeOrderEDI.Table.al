@@ -2,8 +2,8 @@
 table 50079 "DEL Type Order EDI"
 {
 
-    //TODO 
-    // LookupPageID = 50142;
+
+    LookupPageID = "Type Order EDI";
     Caption = 'Type Order EDI';
 
     fields

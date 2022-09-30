@@ -1,7 +1,7 @@
-page 50125 "Historique Kiriba"
+page 50125 "DEL Historique Kiriba"
 {
     PageType = List;
-    SourceTable = Table50066;
+    SourceTable = "DEL Historique import Kiriba";
 
     layout
     {
@@ -9,13 +9,13 @@ page 50125 "Historique Kiriba"
         {
             repeater(Group)
             {
-                field("No traitement"; "No traitement")
+                field("No traitement"; Rec."No traitement")
                 {
                 }
-                field(Date; Date)
+                field("Date"; Rec.Date)
                 {
                 }
-                field(Heure; Heure)
+                field(Heure; Rec.Heure)
                 {
                 }
             }

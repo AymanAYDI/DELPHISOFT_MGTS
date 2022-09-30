@@ -2,7 +2,7 @@ table 50025 "DEL Fee Connection"
 {
     Caption = 'Fee Connection';
     DataClassification = CustomerContent;
-    //TODO LookupPageID = 50025;
+    LookupPageID = "DEL Fee Connection";
 
     fields
     {

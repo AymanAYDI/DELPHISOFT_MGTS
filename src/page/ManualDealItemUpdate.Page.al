@@ -1,18 +1,6 @@
-#pragma implicitwith disable
+
 page 50081 "DEL Manual Deal Item Update"
 {
-    // +-------------------------------------------------------------------------------+
-    // | Logico SA - Logiciels & Conseils                                              |
-    // | Stand: 02.03.09                                                               |
-    // |                                                                               |
-    // +-------------------------------------------------------------------------------+
-    // 
-    // ID     Version     Story-Card    Date       Description
-    // ---------------------------------------------------------------------------------
-    // CHG01                            02.03.09   created form
-    // THM250817                        25.08.17   add Update batch
-    // 
-    // Mgts10.00.05.00      04.01.2022 : Replace "Vol cbm" GetVolCBM
 
     Editable = false;
     PageType = Card;
@@ -63,11 +51,11 @@ page 50081 "DEL Manual Deal Item Update"
                 Image = Approve;
                 Promoted = true;
                 PromotedCategory = Process;
-
-                trigger OnAction()
-                begin
-                    DealItem_Cu.FNC_Manual_Update(Rec."No.");
-                end;
+                // todo 
+                // trigger OnAction()
+                // begin
+                //     DealItem_Cu.FNC_Manual_Update(Rec."No.");
+                // end;
             }
             action("Update Batch")
             {

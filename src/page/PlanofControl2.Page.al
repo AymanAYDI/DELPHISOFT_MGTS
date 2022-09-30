@@ -1,23 +1,14 @@
-page 50110 "Plan of Control 2"
+page 50110 "DEL Plan of Control 2"
 {
-    // +---------------------------------------------------------------+
-    // | Logico SA                                                     |
-    // | Status:                                                       |
-    // | Customer/Project:                                             |
-    // +---------------------------------------------------------------+
-    // Requirement UserID   Date       Where   Description
-    // -----------------------------------------------------------------
-    // T-00755      THM     05.01.16           Create Object
-    // T-00757      THM     07.01.16           add and modify Field
 
     Caption = 'Plan of Control';
     DeleteAllowed = false;
     InsertAllowed = false;
     PageType = List;
-    SourceTable = Table50057;
-    SourceTableView = SORTING(No., Type)
+    SourceTable = "DEL Regulation";
+    SourceTableView = SORTING("No.", Type)
                       ORDER(Ascending)
-                      WHERE(Type = FILTER(Plan of control));
+                      WHERE(Type = FILTER("Plan of control"));
 
     layout
     {
@@ -25,35 +16,45 @@ page 50110 "Plan of Control 2"
         {
             repeater(Group)
             {
-                field(Checked; Checked)
+                field(Checked; Rec.Checked)
                 {
+                    Caption = 'Checked';
                 }
-                field(Type; Type)
+                field(Type; Rec.Type)
                 {
+                    Caption = 'Type';
                 }
-                field("No."; "No.")
+                field("No."; Rec."No.")
                 {
+                    Caption = 'No.';
                 }
-                field("Test Type"; "Test Type")
+                field("Test Type"; Rec."Test Type")
                 {
+                    Caption = 'Test Type';
                 }
-                field(Descriptive; Descriptive)
+                field(Descriptive; Rec.Descriptive)
                 {
+                    Caption = 'Descriptive';
                 }
-                field("Support Text"; "Support Text")
+                field("Support Text"; Rec."Support Text")
                 {
+                    Caption = 'Support Text';
                 }
-                field("Control Type"; "Control Type")
+                field("Control Type"; Rec."Control Type")
                 {
+                    Caption = 'Type de contrôle';
                 }
-                field(Frequency; Frequency)
+                field(Frequency; Rec.Frequency)
                 {
+                    Caption = 'Frequency';
                 }
-                field("Referent Laboratory"; "Referent Laboratory")
+                field("Referent Laboratory"; Rec."Referent Laboratory")
                 {
+                    Caption = 'Referent Laboratory';
                 }
-                field("Livrables 1"; "Livrables 1")
+                field("Livrables 1"; Rec."Livrables 1")
                 {
+                    Caption = 'Deliverables 1';
                 }
             }
         }
@@ -70,9 +71,9 @@ page 50110 "Plan of Control 2"
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
-                RunObject = Page 50107;
-                RunPageLink = No.=FIELD(No.),
-                              Type=FIELD(Type);
+                RunObject = Page "DEL Plan of Control Card";
+                RunPageLink = "No." = FIELD("No."),
+                              Type = FIELD(Type);
                 RunPageMode = View;
             }
         }

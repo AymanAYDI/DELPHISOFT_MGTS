@@ -1,8 +1,8 @@
-page 50114 "Matrix Text"
+page 50114 "DEL Matrix Text"
 {
     Caption = 'Matrix Text';
     PageType = Worksheet;
-    SourceTable = Table50053;
+    SourceTable = "DEL Regulation Matrix Text";
 
     layout
     {
@@ -10,38 +10,45 @@ page 50114 "Matrix Text"
         {
             repeater(Group)
             {
-                field("Item Category Code"; "Item Category Code")
+                field("Item Category Code"; Rec."Item Category Code")
                 {
                     Editable = false;
                     Visible = false;
+                    Caption = 'Item Category Code';
                 }
-                field("Product Group Code"; "Product Group Code")
+                field("Product Group Code"; Rec."Product Group Code")
                 {
                     Editable = false;
                     Visible = false;
+                    Caption = 'Product Group Code';
                 }
-                field("Product Description"; "Product Description")
+                field("Product Description"; Rec."Product Description")
                 {
                     Editable = false;
                     Visible = false;
+                    Caption = 'Description produit';
                 }
-                field(Mark; Mark)
+                field(Mark; Rec.Mark)
                 {
                     Editable = false;
                     Visible = false;
+                    Caption = 'Mark';
                 }
-                field(Type; Type)
+                field(Type; Rec.Type)
                 {
                     Editable = false;
                     Visible = false;
+                    Caption = 'Type';
                 }
-                field("Line No."; "Line No.")
+                field("Line No."; Rec."Line No.")
                 {
                     Editable = false;
                     Visible = false;
+                    Caption = 'Line No.';
                 }
-                field(Text; Text)
+                field("Text"; Rec.Text)
                 {
+                    Caption = 'Text';
                 }
             }
         }
@@ -76,27 +83,20 @@ page 50114 "Matrix Text"
     procedure EditText()
     var
         RecRef: RecordRef;
-        TextEdit: Codeunit "50010";
+        //TODO: codeunit is still not imported yet  TextEdit: Codeunit "50010";
         Text00001: Label 'Edit Document Text';
     begin
-        /*
-        IF NOT(GET("Attached to Line No.",Type,"Line No.")) THEN BEGIN
-          INIT;
-          INSERT;
-          COMMIT;
-        END;
-        
-        */
+
         RecRef.GETTABLE(Rec);
-        TextEdit.EditTextLines(RecRef,
-                               'Text',
-                               '',
-                               '',
-                               'Attached to Line No.',
-                               'Line No.',
-                               FALSE,
-                               '',
-                               'Edit Text');
+        //TODO TextEdit.EditTextLines(RecRef,
+        //                        'Text',
+        //                        '',
+        //                        '',
+        //                        'Attached to Line No.',
+        //                        'Line No.',
+        //                        FALSE,
+        //                        '',
+        //                        'Edit Text');
 
     end;
 }

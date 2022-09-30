@@ -1,9 +1,10 @@
-page 50131 "DocMatrix Setup"
+
+page 50131 "DEL DocMatrix Setup"
 {
-    // DEL/PD/20190227/LOP003 : object created
+
 
     PageType = Card;
-    SourceTable = Table50069;
+    SourceTable = "DEL DocMatrix Setup";
 
     layout
     {
@@ -11,22 +12,22 @@ page 50131 "DocMatrix Setup"
         {
             group(General)
             {
-                field("Sales File Folder"; "Sales File Folder")
+                field("Sales File Folder"; Rec."Sales File Folder")
                 {
                 }
-                field("Purchase File Folder"; "Purchase File Folder")
+                field("Purchase File Folder"; Rec."Purchase File Folder")
                 {
                 }
-                field("Default E-Mail From"; "Default E-Mail From")
+                field("Default E-Mail From"; Rec."Default E-Mail From")
                 {
                 }
-                field("Show Notifications"; "Show Notifications")
+                field("Show Notifications"; Rec."Show Notifications")
                 {
                 }
-                field("Statement Test Date"; "Statement Test Date")
+                field("Statement Test Date"; Rec."Statement Test Date")
                 {
                 }
-                field("Test Active"; "Test Active")
+                field("Test Active"; Rec."Test Active")
                 {
                 }
             }
@@ -39,10 +40,9 @@ page 50131 "DocMatrix Setup"
 
     trigger OnOpenPage()
     begin
-        IF NOT GET THEN BEGIN
-            INIT;
-            INSERT;
+        IF NOT Rec.GET() THEN BEGIN
+            Rec.INIT();
+            Rec.INSERT();
         END;
     end;
 }
-

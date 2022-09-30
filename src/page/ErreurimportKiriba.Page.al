@@ -1,8 +1,8 @@
-page 50124 "Erreur import Kiriba"
+page 50124 "DEL Erreur import Kiriba"
 {
     PageType = List;
-    SourceTable = Table50065;
-    SourceTableView = SORTING(N° facture fournisseur, No Traitement)
+    SourceTable = "DEL Temp Kiriba";
+    SourceTableView = SORTING("N° facture fournisseur", "No Traitement")
                       WHERE(Erreur = FILTER(<> ''));
 
     layout
@@ -11,31 +11,31 @@ page 50124 "Erreur import Kiriba"
         {
             repeater(Group)
             {
-                field(Client; Client)
+                field(Client; Rec.Client)
                 {
                 }
-                field(Fournisseur; Fournisseur)
+                field(Fournisseur; Rec.Fournisseur)
                 {
                 }
-                field("N° facture fournisseur"; "N° facture fournisseur")
+                field("N° facture fournisseur"; Rec."N° facture fournisseur")
                 {
                 }
-                field(Erreur; Erreur)
+                field(Erreur; Rec.Erreur)
                 {
                 }
-                field(Devise; Devise)
+                field(Devise; Rec.Devise)
                 {
                 }
-                field(Montant; Montant)
+                field(Montant; Rec.Montant)
                 {
                 }
-                field("Date facture"; "Date facture")
+                field("Date facture"; Rec."Date facture")
                 {
                 }
-                field("Date compta"; "Date compta")
+                field("Date compta"; Rec."Date compta")
                 {
                 }
-                field("Cycle de netting"; "Cycle de netting")
+                field("Cycle de netting"; Rec."Cycle de netting")
                 {
                 }
             }

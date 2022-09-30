@@ -1,8 +1,8 @@
-page 50142 "Type Order EDI"
+page 50142 "DEL Type Order EDI"
 {
     Caption = 'Type Order EDI';
     PageType = List;
-    SourceTable = Table50079;
+    SourceTable = "DEL Type Order EDI";
 
     layout
     {
@@ -10,21 +10,22 @@ page 50142 "Type Order EDI"
         {
             repeater(Group)
             {
-                field(Code; Code)
+                field("Code"; Rec.Code)
                 {
+                    Caption = 'Code';
                 }
-                field(Description; Description)
+                field(Description; Rec.Description)
                 {
+                    Caption = 'Description';
                 }
-                field("Automatic ACO"; "Automatic ACO")
+                field("Automatic ACO"; Rec."Automatic ACO")
                 {
+                    Caption = 'Automatic ACO';
                 }
             }
         }
     }
 
-    actions
-    {
-    }
+
 }
 

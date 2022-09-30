@@ -1,7 +1,7 @@
-page 50123 "Liste des motifs"
+page 50123 "DEL Liste des motifs"
 {
     PageType = List;
-    SourceTable = Table50064;
+    SourceTable = "DEL Liste des motifs";
 
     layout
     {
@@ -9,18 +9,18 @@ page 50123 "Liste des motifs"
         {
             repeater(Group)
             {
-                field(No; No)
+                field(No; Rec.No)
                 {
+                    Caption = 'No';
                 }
-                field(Motif; Motif)
+                field(Motif; Rec.Motif)
                 {
+                    Caption = 'Motif';
                 }
             }
         }
     }
 
-    actions
-    {
-    }
+
 }
 

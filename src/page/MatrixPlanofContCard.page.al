@@ -1,14 +1,6 @@
-page 50093 "Matrix Plan of Control Card"
+page 50093 "DEL Matrix Plan of Cont. Card"
 {
-    // +---------------------------------------------------------------+
-    // | Logico SA                                                     |
-    // | Status:                                                       |
-    // | Customer/Project:                                             |
-    // +---------------------------------------------------------------+
-    // Requirement UserID   Date       Where   Description
-    // -----------------------------------------------------------------
-    // T-00755      THM     05.01.16           Create Object
-    // T-00757      THM     07.01.16           add and modify Field
+
 
     Caption = 'Plan of Control Card';
     Editable = false;
@@ -27,47 +19,56 @@ page 50093 "Matrix Plan of Control Card"
                 Caption = 'Record details';
                 field("Item Category Code"; Rec."Item Category Code")
                 {
+                    Caption = 'Item Category Code';
                 }
                 field("Product Group Code"; Rec."Product Group Code")
                 {
+                    Caption = 'Product Group Code';
                 }
                 field("Item Category Label"; Rec."Item Category Label")
                 {
+                    Caption = 'Item category description';
                 }
                 field("Product Group Label"; Rec."Product Group Label")
                 {
+                    Caption = 'Product group description';
                 }
                 field(Type; Rec.Type)
                 {
+                    Caption = 'Type';
                 }
                 field("Test Type"; Rec."Test Type")
                 {
+                    Caption = 'Test Type';
                 }
                 field(Descriptive; Rec.Descriptive)
                 {
+                    Caption = 'Descriptive';
                 }
                 field("Support Text"; Rec."Support Text")
                 {
+                    Caption = 'Support Text';
                 }
                 field("Control Type"; Rec."Control Type")
                 {
+                    Caption = 'Type de contrôle';
                 }
                 field(Frequency; Rec.Frequency)
                 {
+                    Caption = 'Frequency';
                 }
                 field("Referent Laboratory"; Rec."Referent Laboratory")
                 {
+                    Caption = 'Referent Laboratory';
                 }
                 field("Livrables 1"; Rec."Livrables 1")
                 {
+                    Caption = 'Deliverables 1';
                 }
             }
         }
     }
 
-    actions
-    {
-    }
-}
 
+}
 

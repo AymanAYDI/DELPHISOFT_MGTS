@@ -1,22 +1,9 @@
-page 50086 "Regulation matrix Card"
+page 50086 "DEL Regulation matrix Card"
 {
-    // +---------------------------------------------------------------+
-    // | Logico SA                                                     |
-    // | Status:                                                       |
-    // | Customer/Project:                                             |
-    // +---------------------------------------------------------------+
-    // Requirement UserID   Date       Where   Description
-    // -----------------------------------------------------------------
-    // T-00716      THM     27.08.15           Create Object
-    // T-00757      THM     07.01.16           add and modify Field
-    // T-00758      THM     12.01.16           add new field
-    // T-00783      THM     19.04.16           Ajout contrôle si tous les champs sont vide
-    // T-00783      THM     29.04.16           Add field
-    //              THM     26.08.16           modify captionML
 
     Caption = 'Regulation matrix Card';
     PageType = Card;
-    SourceTable = Table50050;
+    SourceTable = "DEL Regulation Matrix";
 
     layout
     {
@@ -25,107 +12,126 @@ page 50086 "Regulation matrix Card"
             group("Record details")
             {
                 Caption = 'Record details';
-                field("Item Category Code"; "Item Category Code")
+                field("Item Category Code"; Rec."Item Category Code")
                 {
+                    Caption = 'Item Category Code';
                 }
-                field("Item Category Label"; "Item Category Label")
+                field("Item Category Label"; Rec."Item Category Label")
                 {
+                    Caption = 'Item Category Description';
                 }
-                field("Product Group Code"; "Product Group Code")
+                field("Product Group Code"; Rec."Product Group Code")
                 {
+                    Caption = 'Product Group Code';
                 }
-                field("Product Group Label"; "Product Group Label")
+                field("Product Group Label"; Rec."Product Group Label")
                 {
+                    Caption = 'Product Group Description';
                 }
-                field(Mark; Mark)
+                field(Mark; Rec.Mark)
                 {
+                    Caption = 'Mark';
                 }
-                field("Product Description"; "Product Description")
+                field("Product Description"; Rec."Product Description")
                 {
+                    Caption = 'Description produit';
                 }
-                field("Risque Quality"; "Risque Quality")
+                field("Risque Quality"; Rec."Risque Quality")
                 {
+                    Caption = 'Risk Quality';
                 }
-                field("NGTS Quality Expert"; "NGTS Quality Expert")
+                field("NGTS Quality Expert"; Rec."NGTS Quality Expert")
                 {
+                    Caption = 'NGTS Quality Expert';
                 }
-                field("Manuel instruction"; "Manuel instruction")
+                field("Manuel instruction"; Rec."Manuel instruction")
                 {
+                    Caption = 'Manuel instruction';
                 }
-                field("Regl. Generale"; "Regl. Generale")
+                field("Regl. Generale"; Rec."Regl. Generale")
                 {
+                    Caption = 'General Product Regulation';
 
                     trigger OnValidate()
                     begin
-                        RegGenerale := "Regl. Generale";
+                        RegGenerale := Rec."Regl. Generale";
                     end;
                 }
-                field("Regl. Matiere"; "Regl. Matiere")
+                field("Regl. Matiere"; Rec."Regl. Matiere")
                 {
+                    Caption = 'Substance Regulation';
 
                     trigger OnValidate()
                     begin
-                        RegMat := "Regl. Matiere";
+                        RegMat := Rec."Regl. Matiere";
                     end;
                 }
-                field("Plan of control"; "Plan of control")
+                field("Plan of control"; Rec."Plan of control")
                 {
+                    Caption = 'Plan of control';
 
                     trigger OnValidate()
                     begin
-                        PlanControl := "Plan of control";
+                        PlanControl := Rec."Plan of control";
                     end;
                 }
-                field("Warning instruction in French"; "Warning instruction in French")
+                field("Warning instruction in French"; Rec."Warning instruction in French")
                 {
+                    Caption = 'Warning instruction in French';
                 }
-                field("Warning instruction in English"; "Warning instruction in English")
+                field("Warning instruction in English"; Rec."Warning instruction in English")
                 {
+                    Caption = 'Warning instruction in English';
                 }
-                field("Marking in the product FR"; "Marking in the product FR")
-                {
-                    MultiLine = true;
-                }
-                field("Marking in the product ENU"; "Marking in the product ENU")
+                field("Marking in the product FR"; Rec."Marking in the product FR")
                 {
                     MultiLine = true;
+                    Caption = 'Marking in the product (warning) + Pictogram type in French';
                 }
-                field("Marking in the pack FR"; "Marking in the pack FR")
+                field("Marking in the product ENU"; Rec."Marking in the product ENU")
                 {
                     MultiLine = true;
+                    Caption = 'Marking in the product (warning) + Pictogram type in English';
                 }
-                field("Marking in the pack ENU"; "Marking in the pack ENU")
+                field("Marking in the pack FR"; Rec."Marking in the pack FR")
                 {
                     MultiLine = true;
+                    Caption = 'Marking in the pack (warning + Pictogram) in French';
                 }
-                field("List Items Associated"; "List Items Associated")
+                field("Marking in the pack ENU"; Rec."Marking in the pack ENU")
+                {
+                    MultiLine = true;
+                    Caption = 'Marking in the pack (warning + Pictogram) in English';
+                }
+                field("List Items Associated"; Rec."List Items Associated")
                 {
                     DrillDown = true;
                     DrillDownPageID = "Item Quality List";
+                    Caption = 'List Items Associated';
                 }
             }
-            part(; 50090)
+            part("Matrix General regulation"; "DEL Matrix General regulation")
             {
-                SubPageLink = Item Category Code=FIELD(Item Category Code),
-                              Product Group Code=FIELD(Product Group Code),
-                              Mark=FIELD(Mark),
-                              Product Description=FIELD(Product Description);
+                SubPageLink = "Item Category Code" = FIELD("Item Category Code"),
+                              "Product Group Code" = FIELD("Product Group Code"),
+                              Mark = FIELD(Mark),
+                              "Product Description" = FIELD("Product Description");
                 Visible = RegGenerale;
             }
-            part(;50091)
+            part("Matrix Substance regulation"; "DEL Matrix Sub. regulation")
             {
-                SubPageLink = Item Category Code=FIELD(Item Category Code),
-                              Product Group Code=FIELD(Product Group Code),
-                              Mark=FIELD(Mark),
-                              Product Description=FIELD(Product Description);
+                SubPageLink = "Item Category Code" = FIELD("Item Category Code"),
+                              "Product Group Code" = FIELD("Product Group Code"),
+                              Mark = FIELD(Mark),
+                              "Product Description" = FIELD("Product Description");
                 Visible = RegMat;
             }
-            part(;50092)
+            part("Matrix Plan of Control"; "DEL Matrix Plan of Control")
             {
-                SubPageLink = Item Category Code=FIELD(Item Category Code),
-                              Product Group Code=FIELD(Product Group Code),
-                              Mark=FIELD(Mark),
-                              Product Description=FIELD(Product Description);
+                SubPageLink = "Item Category Code" = FIELD("Item Category Code"),
+                              "Product Group Code" = FIELD("Product Group Code"),
+                              Mark = FIELD(Mark),
+                              "Product Description" = FIELD("Product Description");
                 Visible = PlanControl;
             }
         }
@@ -135,7 +141,7 @@ page 50086 "Regulation matrix Card"
     {
         area(processing)
         {
-            group()
+            group(Control1)
             {
                 action("Régl. Générale")
                 {
@@ -144,11 +150,11 @@ page 50086 "Regulation matrix Card"
                     Promoted = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
-                    RunObject = Page 50090;
-                                    RunPageLink = Item Category Code=FIELD(Item Category Code),
-                                  Product Group Code=FIELD(Product Group Code),
-                                  Mark=FIELD(Mark),
-                                  Product Description=FIELD(Product Description);
+                    RunObject = Page "DEL Matrix General regulation";
+                    RunPageLink = "Item Category Code" = FIELD("Item Category Code"),
+                                  "Product Group Code" = FIELD("Product Group Code"),
+                                  Mark = FIELD(Mark),
+                                  "Product Description" = FIELD("Product Description");
                     Visible = RegGenerale;
                 }
                 action("Régl. Matière")
@@ -158,11 +164,11 @@ page 50086 "Regulation matrix Card"
                     Promoted = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
-                    RunObject = Page 50091;
-                                    RunPageLink = Item Category Code=FIELD(Item Category Code),
-                                  Product Group Code=FIELD(Product Group Code),
-                                  Mark=FIELD(Mark),
-                                  Product Description=FIELD(Product Description);
+                    RunObject = Page "DEL Matrix Sub. regulation";
+                    RunPageLink = "Item Category Code" = FIELD("Item Category Code"),
+                                  "Product Group Code" = FIELD("Product Group Code"),
+                                  Mark = FIELD(Mark),
+                                  "Product Description" = FIELD("Product Description");
                     Visible = RegMat;
                 }
                 action("Plan Control")
@@ -172,11 +178,11 @@ page 50086 "Regulation matrix Card"
                     Promoted = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
-                    RunObject = Page 50092;
-                                    RunPageLink = Item Category Code=FIELD(Item Category Code),
-                                  Product Group Code=FIELD(Product Group Code),
-                                  Mark=FIELD(Mark),
-                                  Product Description=FIELD(Product Description);
+                    RunObject = Page "DEL Matrix Plan of Control";
+                    RunPageLink = "Item Category Code" = FIELD("Item Category Code"),
+                                  "Product Group Code" = FIELD("Product Group Code"),
+                                  Mark = FIELD(Mark),
+                                  "Product Description" = FIELD("Product Description");
                     Visible = PlanControl;
                 }
             }
@@ -185,26 +191,24 @@ page 50086 "Regulation matrix Card"
 
     trigger OnAfterGetRecord()
     begin
-        RegGenerale:="Regl. Generale";
-        RegMat:="Regl. Matiere";
-        PlanControl:="Plan of control";
-        //deleteVar:=FALSE;
+        RegGenerale := Rec."Regl. Generale";
+        RegMat := Rec."Regl. Matiere";
+        PlanControl := Rec."Plan of control";
+
     end;
 
     trigger OnDeleteRecord(): Boolean
     begin
-        deleteVar:=TRUE;
+        deleteVar := TRUE;
     end;
 
     trigger OnQueryClosePage(CloseAction: Action): Boolean
     begin
-        IF deleteVar=FALSE THEN
-        BEGIN
-          IF ("Item Category Code"='') AND ("Product Group Code"='') AND (Mark=Mark::" ") AND ("Product Description"='') AND ("Risque Quality"="Risque Quality"::" ") AND ("NGTS Quality Expert"="NGTS Quality Expert"::" ")THEN
-          EXIT ELSE
-          IF ("Item Category Code"='') OR ("Product Group Code"='') OR (Mark=Mark::" ") OR ("Product Description"='') OR ("Risque Quality"="Risque Quality"::" ") OR ("NGTS Quality Expert"="NGTS Quality Expert"::" ")THEN
-          ERROR(Text0001,FIELDCAPTION("Item Category Code"),FIELDCAPTION("Product Group Code"),FIELDCAPTION(Mark),FIELDCAPTION("Product Description"),FIELDCAPTION("Risque Quality"),FIELDCAPTION("NGTS Quality Expert"))
-        END;
+        IF deleteVar = FALSE THEN
+            IF (Rec."Item Category Code" = '') AND (Rec."Product Group Code" = '') AND (Rec.Mark = Rec.Mark::" ") AND (Rec."Product Description" = '') AND (Rec."Risque Quality" = Rec."Risque Quality"::" ") AND (Rec."NGTS Quality Expert" = Rec."NGTS Quality Expert"::" ") THEN
+                EXIT ELSE
+                IF (Rec."Item Category Code" = '') OR (Rec."Product Group Code" = '') OR (Rec.Mark = Rec.Mark::" ") OR (Rec."Product Description" = '') OR (Rec."Risque Quality" = Rec."Risque Quality"::" ") OR (Rec."NGTS Quality Expert" = Rec."NGTS Quality Expert"::" ") THEN
+                    ERROR(Text0001, Rec.FIELDCAPTION("Item Category Code"), Rec.FIELDCAPTION("Product Group Code"), Rec.FIELDCAPTION(Mark), Rec.FIELDCAPTION("Product Description"), Rec.FIELDCAPTION("Risque Quality"), Rec.FIELDCAPTION("NGTS Quality Expert"));
     end;
 
     var

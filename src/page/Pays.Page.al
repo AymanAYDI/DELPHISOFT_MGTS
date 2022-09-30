@@ -1,17 +1,10 @@
-page 50088 Pays
+page 50088 "DEL Pays"
 {
-    // +---------------------------------------------------------------+
-    // | Logico SA                                                     |
-    // | Status:                                                       |
-    // | Customer/Project:                                             |
-    // +---------------------------------------------------------------+
-    // Requirement UserID   Date       Where   Description
-    // -----------------------------------------------------------------
-    // T-00716      THM     27.08.15           Create Object
+
 
     Caption = 'Country';
     PageType = List;
-    SourceTable = Table50052;
+    SourceTable = "DEL Pays";
 
     layout
     {
@@ -19,18 +12,18 @@ page 50088 Pays
         {
             repeater(Group)
             {
-                field(Code; Code)
+                field("Code"; Rec.Code)
                 {
+                    Caption = 'Code';
                 }
-                field(Description; Description)
+                field(Description; Rec.Description)
                 {
+                    Caption = 'Description';
                 }
             }
         }
     }
 
-    actions
-    {
-    }
+
 }
 

@@ -1,22 +1,13 @@
-page 50107 "Plan of Control Card"
+page 50107 "DEL Plan of Control Card"
 {
-    // +---------------------------------------------------------------+
-    // | Logico SA                                                     |
-    // | Status:                                                       |
-    // | Customer/Project:                                             |
-    // +---------------------------------------------------------------+
-    // Requirement UserID   Date       Where   Description
-    // -----------------------------------------------------------------
-    // T-00755      THM     05.01.16           Create Object
-    // T-00757      THM     07.01.16           add and modify Field
-    // T-00757      THM     08.01.15           Test Type - OnLookup(VAR Text : Text) : Boolean
+
 
     Caption = 'Plan of Control Card';
     PageType = Card;
-    SourceTable = Table50057;
-    SourceTableView = SORTING(No., Type)
+    SourceTable = "DEL Regulation";
+    SourceTableView = SORTING("No.", Type)
                       ORDER(Ascending)
-                      WHERE(Type = FILTER(Plan of control));
+                      WHERE(Type = FILTER("Plan of control"));
 
     layout
     {
@@ -25,46 +16,52 @@ page 50107 "Plan of Control Card"
             group(Group)
             {
                 Caption = 'Record details';
-                field(Type; Type)
+                field(Type; Rec.Type)
                 {
                     Editable = false;
+                    Caption = 'Type';
                 }
-                field("Test Type"; "Test Type")
+                field("Test Type"; Rec."Test Type")
                 {
+                    Caption = 'Test Type';
                 }
-                field("Description Plan of control"; "Description Plan of control")
+                field("Description Plan of control"; Rec."Description Plan of control")
                 {
+                    Caption = 'Description';
                 }
-                field(Descriptive; Descriptive)
-                {
-                    MultiLine = true;
-                }
-                field("Support Text"; "Support Text")
-                {
-                }
-                field("Control Type"; "Control Type")
-                {
-                }
-                field(Frequency; Frequency)
-                {
-                }
-                field("Referent Laboratory"; "Referent Laboratory")
-                {
-                }
-                field("Livrables 1"; "Livrables 1")
+                field(Descriptive; Rec.Descriptive)
                 {
                     MultiLine = true;
+                    Caption = 'Descriptive';
+                }
+                field("Support Text"; Rec."Support Text")
+                {
+                    Caption = 'Support Text';
+                }
+                field("Control Type"; Rec."Control Type")
+                {
+                    Caption = 'Type de contrôle';
+                }
+                field(Frequency; Rec.Frequency)
+                {
+                    Caption = 'Frequency';
+                }
+                field("Referent Laboratory"; Rec."Referent Laboratory")
+                {
+                    Caption = 'Referent Laboratory';
+                }
+                field("Livrables 1"; Rec."Livrables 1")
+                {
+                    MultiLine = true;
+                    Caption = 'Deliverables 1';
                 }
             }
         }
     }
 
-    actions
-    {
-    }
 
     var
-        TestType: Record "50058";
-        TestType_Page: Page "50100";
+        TestType: Record "DEL Test Type";
+        TestType_Page: Page "DEL Test Type";
 }
 

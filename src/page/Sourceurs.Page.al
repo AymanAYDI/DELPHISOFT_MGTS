@@ -1,8 +1,8 @@
-page 50101 Sourceurs
+page 50101 "DEL Sourceurs"
 {
     Caption = 'Sourceurs';
     PageType = List;
-    SourceTable = Table50061;
+    SourceTable = "DEL Sourceur";
 
     layout
     {
@@ -10,18 +10,17 @@ page 50101 Sourceurs
         {
             repeater(Group)
             {
-                field(Code; Code)
+                field("Code"; Rec.Code)
                 {
+                    Caption = 'Code';
                 }
-                field(Name; Name)
+                field(Name; Rec.Name)
                 {
+                    Caption = 'Name';
                 }
             }
         }
     }
 
-    actions
-    {
-    }
 }
 

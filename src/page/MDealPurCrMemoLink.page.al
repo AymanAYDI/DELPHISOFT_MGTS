@@ -130,16 +130,18 @@ page 50083 "DEL M Deal Pur. Cr. Memo Link"
 
     procedure ChangeCodeAchat_FNC()
     var
-        PurchCreditMemoLine_Re_Loc: Record "Purch. Cr. Memo Line";
-        //TODO PostedLine_Re_Loc: Record 359;
-        ACOConnection_Rec_Loc: Record "DEL ACO Connection";
-        NewCodeAchatNo_Co_Par: Code[20];
         DealShipment_Rec_Loc: Record "DEL Deal Shipment";
         PurchCreditMemoHeader_Re_Loc: Record "Purch. Cr. Memo Hdr.";
+        PurchCreditMemoLine_Re_Loc: Record "Purch. Cr. Memo Line";
+        //PostedLine_Re_Loc: Record 359;
+        PostedLine_Re_Loc: Record "Dimension Set Entry";
+        ACOConnection_Rec_Loc: Record "DEL ACO Connection";
+        NewCodeAchatNo_Co_Par: Code[20];
+
     begin
 
         ACOConnection_Rec_Loc.SETRANGE(Deal_ID, "Deal ID");
-        IF ACOConnection_Rec_Loc.FINDFIRST THEN
+        IF ACOConnection_Rec_Loc.FINDFIRST() THEN
             NewCodeAchatNo_Co_Par := ACOConnection_Rec_Loc."ACO No.";
 
 
@@ -152,21 +154,22 @@ page 50083 "DEL M Deal Pur. Cr. Memo Link"
 
         PurchCreditMemoLine_Re_Loc.RESET();
         PurchCreditMemoLine_Re_Loc.SETRANGE("Document No.", "Purch Cr. Memo No.");
-        IF PurchCreditMemoLine_Re_Loc.FINDFIRST THEN
+        IF PurchCreditMemoLine_Re_Loc.FINDFIRST() THEN
             REPEAT
                 PurchCreditMemoLine_Re_Loc."Shortcut Dimension 1 Code" := NewCodeAchatNo_Co_Par;
                 PurchCreditMemoLine_Re_Loc.MODIFY();
-            UNTIL PurchCreditMemoLine_Re_Loc.NEXT = 0;
+            UNTIL PurchCreditMemoLine_Re_Loc.NEXT() = 0;
 
         PostedLine_Re_Loc.RESET();
-        PostedLine_Re_Loc.SETFILTER("Table ID", '%1|%2', 124, 125);
-        PostedLine_Re_Loc.SETRANGE("Document No.", "Purch Cr. Memo No.");
+        //à voir PostedLine_Re_Loc.SETFILTER("Table ID", '%1|%2', 124, 125);
+        PostedLine_Re_Loc.SETFILTER("Dimension Set ID", '%1|%2', 124, 125);
+        //TODO PostedLine_Re_Loc.SETRANGE("Document No.", "Purch Cr. Memo No.");
         PostedLine_Re_Loc.SETRANGE("Dimension Code", 'ACHAT');
-        IF PostedLine_Re_Loc.FINDFIRST THEN
+        IF PostedLine_Re_Loc.FINDFIRST() THEN
             REPEAT
                 PostedLine_Re_Loc."Dimension Value Code" := NewCodeAchatNo_Co_Par;
                 PostedLine_Re_Loc.MODIFY();
-            UNTIL PostedLine_Re_Loc.NEXT = 0;
+            UNTIL PostedLine_Re_Loc.NEXT() = 0;
     end;
 }
 
