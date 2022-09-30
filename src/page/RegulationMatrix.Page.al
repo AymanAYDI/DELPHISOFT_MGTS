@@ -1,22 +1,12 @@
-page 50085 "Regulation Matrix"
+page 50085 "DEL Regulation Matrix"
 {
-    // +---------------------------------------------------------------+
-    // | Logico SA                                                     |
-    // | Status:                                                       |
-    // | Customer/Project:                                             |
-    // +---------------------------------------------------------------+
-    // Requirement UserID   Date       Where   Description
-    // -----------------------------------------------------------------
-    // T-00716      THM     27.08.15           Create Object
-    // T-00755      THM     05.01.16           Add new field
-    // T-00757      THM     07.01.16           add and modify Field
-    // T-00783      THM     29.04.16           add field
+
 
     Caption = 'Regulation Matrix';
     CardPageID = "Regulation matrix Card";
     Editable = false;
     PageType = List;
-    SourceTable = Table50050;
+    SourceTable = "DEL Regulation Matrix";
 
     layout
     {
@@ -94,7 +84,7 @@ page 50085 "Regulation Matrix"
     {
         area(processing)
         {
-            group()
+            group(Control1)
             {
                 action("Régl. Générale")
                 {
@@ -103,14 +93,14 @@ page 50085 "Regulation Matrix"
                     Promoted = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
-                    RunObject = Page 50090;
-                    RunPageLink = Item Category Code=FIELD(Item Category Code),
-                                  Product Group Code=FIELD(Product Group Code),
+                    RunObject = Page "Matrix General regulation";
+                    RunPageLink = "Item Category Code"=FIELD("Item Category Code"),
+                                  "Product Group Code"=FIELD("Product Group Code"),
                                   Mark=FIELD(Mark),
-                                  Product Description=FIELD(Product Description);
-                    RunPageView = SORTING(Item Category Code,Product Group Code,Mark,Product Description,No.,Type)
+                                  "Product Description"=FIELD("Product Description");
+                    RunPageView = SORTING("Item Category Code","Product Group Code",Mark,"Product Description","No.",Type)
                                   ORDER(Ascending)
-                                  WHERE(Type=FILTER(General product));
+                                  WHERE(Type=FILTER("General product"));
                     Visible = RegGenerale;
                 }
                 action("Régl. Matière")

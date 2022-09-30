@@ -7,10 +7,10 @@ page 50004 "DEL New products follow up"
     PageType = List;
     Permissions = TableData "Purch. Inv. Line" = rimd;
     SourceTable = "Purchase Line";
-    //TODO SourceTableView = SORTING("Document Type", "Document No.", "Line No.")
-    //                   WHERE("First Purch. Order" = CONST(Yes),
-    //                         Type = CONST(Item),
-    //                         "Photo And DDoc" = CONST(No));
+    SourceTableView = SORTING("Document Type", "Document No.", "Line No.")
+                      WHERE("DEL First Purch. Order" = CONST(true),
+                            Type = CONST(Item),
+                            "DEL Photo And DDoc" = CONST(false));
 
     layout
     {
@@ -51,48 +51,48 @@ page 50004 "DEL New products follow up"
                 {
                     Editable = false;
                 }
-                //TODO: à ajouter aprés les tableextensions
-                // field("Sample Collected"; "Sample Collected")
-                // {
-                //     Caption = 'DDOCS provided';
 
-                //     trigger OnValidate()
-                //     begin
-                //         IF "Photo Taked" = TRUE THEN BEGIN
-                //             IF "Sample Collected" = TRUE THEN "Photo And DDoc" := TRUE;
-                //             CurrPage.UPDATE;
-                //         END;
-                //     end;
-                // }
-                // field("Collected Date"; "Collected Date")
-                // {
-                //     Caption = 'DDOCS date';
-                //     Editable = true;
-                // }
-                // field("Sample Collected by"; "Sample Collected by")
-                // {
-                //     Caption = 'DDOCS by';
-                // }
-                // field("Photo Taked"; "Photo Taked")
-                // {
+                field("Sample Collected"; Rec."DEL Sample Collected")
+                {
+                    Caption = 'DDOCS provided';
 
-                //     trigger OnValidate()
-                //     begin
-                //         IF "Photo Taked" = TRUE THEN BEGIN
-                //             IF "Sample Collected" = TRUE THEN "Photo And DDoc" := TRUE;
-                //             CurrPage.UPDATE;
-                //         END;
-                //     end;
-                // }
-                // field("Photo Date"; "Photo Date")
-                // {
-                //     Caption = 'Picture Date';
-                //     Editable = true;
-                // }
-                // field("Photo Taked By"; "Photo Taked By")
-                // {
-                //     Caption = 'Picture Taked By';
-                // }
+                    trigger OnValidate()
+                    begin
+                        IF Rec."DEL Photo Taked" = TRUE THEN BEGIN
+                            IF Rec."DEL Sample Collected" = TRUE THEN Rec."DEL Photo And DDoc" := TRUE;
+                            CurrPage.UPDATE();
+                        END;
+                    end;
+                }
+                field("Collected Date"; Rec."DEL Collected Date")
+                {
+                    Caption = 'DDOCS date';
+                    Editable = true;
+                }
+                field("Sample Collected by"; Rec."DEL Sample Collected by")
+                {
+                    Caption = 'DDOCS by';
+                }
+                field("Photo Taked"; Rec."DEL Photo Taked")
+                {
+
+                    trigger OnValidate()
+                    begin
+                        IF Rec."DEL Photo Taked" = TRUE THEN BEGIN
+                            IF Rec."DEL Sample Collected" = TRUE THEN Rec."DEL Photo And DDoc" := TRUE;
+                            CurrPage.UPDATE;
+                        END;
+                    end;
+                }
+                field("Photo Date"; Rec."DEL Photo Date")
+                {
+                    Caption = 'Picture Date';
+                    Editable = true;
+                }
+                field("Photo Taked By"; Rec."DEL Photo Taked By")
+                {
+                    Caption = 'Picture Taked By';
+                }
                 field(PurchCode; PurchCode)
                 {
                     Caption = 'Purchaser Code';
@@ -122,7 +122,7 @@ page 50004 "DEL New products follow up"
                     PageManagement: Codeunit "Page Management";
 
                 begin
-                    PurchHeader.GET("Document Type", Rec."Document No.");
+                    PurchHeader.GET(Rec."Document Type", Rec."Document No.");
                     PageManagement.PageRun(PurchHeader);
                 end;
             }

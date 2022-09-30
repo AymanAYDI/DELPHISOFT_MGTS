@@ -1,26 +1,16 @@
-page 50090 "Matrix General regulation"
+page 50090 "DEL Matrix General regulation"
 {
-    // +---------------------------------------------------------------+
-    // | Logico SA                                                     |
-    // | Status:                                                       |
-    // | Customer/Project:                                             |
-    // +---------------------------------------------------------------+
-    // Requirement UserID   Date       Where   Description
-    // -----------------------------------------------------------------
-    // T-00716      THM     27.08.15           Create Object
-    // T-00757      THM     07.01.16           add and modify Field
-    // T-00783      THM     04.04.16           Delete Fields
-    //              THM     26.08.16           modify captionML
+
 
     Caption = 'General product regulation';
     DeleteAllowed = true;
     InsertAllowed = false;
     ModifyAllowed = false;
     PageType = List;
-    SourceTable = Table50051;
-    SourceTableView = SORTING (Item Category Code, Product Group Code, Mark, Product Description, No., Type)
+    SourceTable = "DEL Regulation Matrix Line";
+    SourceTableView = SORTING("Item Category Code", "Product Group Code", Mark, "Product Description", "No.", Type)
                       ORDER(Ascending)
-                      WHERE (Type = FILTER (General product));
+                      WHERE(Type = FILTER("General product"));
 
     layout
     {
@@ -28,78 +18,78 @@ page 50090 "Matrix General regulation"
         {
             repeater(Group)
             {
-                field("Item Category Code"; "Item Category Code")
+                field("Item Ctegory Code"; Rec."Item Category Code")
                 {
                     Visible = false;
                 }
-                field("Product Group Code"; "Product Group Code")
+                field("Product Group Code"; Rec."Product Group Code")
                 {
                     Visible = false;
                 }
-                field("Item Category Label"; "Item Category Label")
+                field("Item Category Label"; Rec."Item Category Label")
                 {
                     Visible = false;
                 }
-                field("Product Group Label"; "Product Group Label")
+                field("Product Group Label"; Rec."Product Group Label")
                 {
                     Visible = false;
                 }
-                field(Type; Type)
+                field(Type; Rec.Type)
                 {
                     Visible = false;
                 }
-                field("No."; "No.")
+                field("No."; Rec."No.")
                 {
 
                     trigger OnLookup(var Text: Text): Boolean
                     begin
-                        RegulationMatrixLine.RESET;
-                        RegulationMatrixLine.SETRANGE(RegulationMatrixLine."Item Category Code", "Item Category Code");
-                        RegulationMatrixLine.SETRANGE(RegulationMatrixLine."Product Group Code", "Product Group Code");
-                        RegulationMatrixLine.SETRANGE(RegulationMatrixLine.Mark, Mark);
-                        RegulationMatrixLine.SETRANGE(RegulationMatrixLine."Product Description", "Product Description");
-                        RegulationMatrixLine.SETRANGE(RegulationMatrixLine."No.", "No.");
-                        RegulationMatrixLine.SETRANGE(RegulationMatrixLine.Type, Type);
-                        PAGE.RUN(50094, RegulationMatrixLine);
+                        RegulationMatrixLine.RESET();
+                        RegulationMatrixLine.SETRANGE(RegulationMatrixLine."Item Category Code", Rec."Item Category Code");
+                        RegulationMatrixLine.SETRANGE(RegulationMatrixLine."Product Group Code", Rec."Product Group Code");
+                        RegulationMatrixLine.SETRANGE(RegulationMatrixLine.Mark, Rec.Mark);
+                        RegulationMatrixLine.SETRANGE(RegulationMatrixLine."Product Description", Rec."Product Description");
+                        RegulationMatrixLine.SETRANGE(RegulationMatrixLine."No.", Rec."No.");
+                        RegulationMatrixLine.SETRANGE(RegulationMatrixLine.Type, Rec.Type);
+                        PAGE.RUN(Page::"DEL Matrix General Reg. Card", RegulationMatrixLine);
                     end;
                 }
-                field("Description pays"; "Description pays")
+                field("Description pays"; Rec."Description pays")
                 {
                 }
-                field(Nature; Nature)
+                field(Nature; Rec.Nature)
                 {
                 }
-                field("Title in French"; "Title in French")
+                field("Title in French"; Rec."Title in French")
                 {
                 }
-                field("Title in English"; "Title in English")
+                field("Title in English"; Rec."Title in English")
                 {
                 }
-                field(Description; Description)
+                field(Description; Rec.Description)
                 {
                 }
-                field("Publication date"; "Publication date")
+                field("Publication date"; Rec."Publication date")
                 {
                 }
-                field("Date limit of the application"; "Date limit of the application")
+                field("Date limit of the application"; Rec."Date limit of the application")
                 {
                 }
-                field("Starting date"; "Starting date")
+                field("Starting date"; Rec."Starting date")
                 {
                 }
-                field("Date Fin"; "Date Fin")
+                field("Date Fin"; Rec."Date Fin")
                 {
                 }
-                field("Texte rattachement"; "Texte rattachement")
+                field("Texte rattachement"; Rec."Texte rattachement")
                 {
                 }
-                field(Statut; Statut)
+                field(Statut; Rec.Statut)
                 {
                 }
-                field("Texte de remplacement"; "Texte de remplacement")
+                field("Texte de remplacement"; Rec."Texte de remplacement")
                 {
                 }
-                field("Referent Laboratory"; "Referent Laboratory")
+                field("Referent Laboratory"; Rec."Referent Laboratory")
                 {
                     Caption = 'ICS';
                 }
@@ -122,25 +112,25 @@ page 50090 "Matrix General regulation"
                 begin
                     CurrGlobLang := GLOBALLANGUAGE;
 
-                    CategCode := GETFILTER("Item Category Code");
-                    ProductCode := GETFILTER("Product Group Code");
-                    Markfilter := GETFILTER(Mark);
-                    DescProduct := GETFILTER("Product Description");
+                    CategCode := Rec.GETFILTER("Item Category Code");
+                    ProductCode := Rec.GETFILTER("Product Group Code");
+                    Markfilter := Rec.GETFILTER(Mark);
+                    DescProduct := Rec.GETFILTER("Product Description");
                     IF CurrGlobLang = 1033 THEN
                         EVALUATE(MarkOptionENU, Markfilter)
                     ELSE
                         EVALUATE(MarkOptionFRS, Markfilter);
                     CLEAR(RegGen);
-                    Reglementation.RESET;
+                    Reglementation.RESET();
                     Reglementation.FILTERGROUP(3);
                     Reglementation.SETRANGE(Reglementation.Type, Reglementation.Type::"General product");
                     RegGen.SETTABLEVIEW(Reglementation);
                     RegGen.LOOKUPMODE := FALSE;
-                    IF RegGen.RUNMODAL = ACTION::OK THEN BEGIN
+                    IF RegGen.RUNMODAL() = ACTION::OK THEN BEGIN
                         Reglementation.SETRANGE(Reglementation.Checked, TRUE);
-                        IF Reglementation.FINDFIRST THEN BEGIN
+                        IF Reglementation.FINDFIRST() THEN
                             REPEAT
-                                RegulationMatrixLine.RESET;
+                                RegulationMatrixLine.RESET();
                                 RegulationMatrixLine.SETRANGE(RegulationMatrixLine."Item Category Code", CategCode);
                                 RegulationMatrixLine.SETRANGE(RegulationMatrixLine."Product Group Code", ProductCode);
                                 IF CurrGlobLang = 1033 THEN
@@ -150,24 +140,22 @@ page 50090 "Matrix General regulation"
                                 RegulationMatrixLine.SETRANGE(RegulationMatrixLine."Product Description", DescProduct);
                                 RegulationMatrixLine.SETRANGE(RegulationMatrixLine."No.", Reglementation."No.");
                                 RegulationMatrixLine.SETRANGE(RegulationMatrixLine.Type, Reglementation.Type);
-                                IF NOT RegulationMatrixLine.FINDFIRST THEN BEGIN
-                                    RegulationMatrixLine.INIT;
+                                IF NOT RegulationMatrixLine.FINDFIRST() THEN BEGIN
+                                    RegulationMatrixLine.INIT();
                                     RegulationMatrixLine."Item Category Code" := CategCode;
                                     RegulationMatrixLine."Product Group Code" := ProductCode;
                                     EVALUATE(RegulationMatrixLine.Mark, Markfilter);
                                     RegulationMatrixLine."Product Description" := DescProduct;
                                     RegulationMatrixLine."No." := Reglementation."No.";
                                     RegulationMatrixLine.Type := Reglementation.Type;
-                                    RegulationMatrixLine.INSERT;
+                                    RegulationMatrixLine.INSERT();
                                 END;
-                            UNTIL Reglementation.NEXT = 0;
-                        END;
-                        IF Reglementation.FINDFIRST THEN BEGIN
+                            UNTIL Reglementation.NEXT() = 0;
+                        IF Reglementation.FINDFIRST() THEN
                             REPEAT
                                 Reglementation.Checked := FALSE;
-                                Reglementation.MODIFY;
-                            UNTIL Reglementation.NEXT = 0;
-                        END;
+                                Reglementation.MODIFY();
+                            UNTIL Reglementation.NEXT() = 0;
                     END;
                 end;
             }
@@ -177,27 +165,27 @@ page 50090 "Matrix General regulation"
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
-                RunObject = Page 50094;
-                RunPageLink = Item Category Code=FIELD(Item Category Code),
-                              Product Group Code=FIELD(Product Group Code),
-                              No.=FIELD(No.),
-                              Type=FIELD(Type),
-                              Mark=FIELD(Mark),
-                              Product Description=FIELD(Product Description);
+                RunObject = Page "DEL Matrix General Reg. Card";
+                RunPageLink = "Item Category Code" = FIELD("Item Category Code"),
+                              "Product Group Code" = FIELD("Product Group Code"),
+                              "No." = FIELD("No."),
+                              Type = FIELD(Type),
+                              Mark = FIELD(Mark),
+                              "Product Description" = FIELD("Product Description");
             }
         }
     }
 
     var
-        RegGen: Page "50104";
-                    Reglementation: Record "50057";
-                    RegulationMatrixLine: Record "50051";
-                    ProductCode: Code[20];
-                    CategCode: Code[20];
-                    Markfilter: Text;
-                    DescProduct: Text;
-                    MarkOptionENU: Option " ","Own brand","Supplier brand",Licence,"No Name","Premium Brand",NA,"?","All Marks";
-                    MarkOptionFRS: Option " ",MDD,"Marque Fournisseur",Licence,"Sans Marque","Marque Prestige",NC,NA,"?","Toutes Marques";
-                    CurrGlobLang: Integer;
+        RegGen: Page "General product regulation 2";
+        Reglementation: Record "DEL Regulation";
+        RegulationMatrixLine: Record "DEL Regulation Matrix Line";
+        ProductCode: Code[20];
+        CategCode: Code[20];
+        Markfilter: Text;
+        DescProduct: Text;
+        MarkOptionENU: Option " ","Own brand","Supplier brand",Licence,"No Name","Premium Brand",NA,"?","All Marks";
+        MarkOptionFRS: Option " ",MDD,"Marque Fournisseur",Licence,"Sans Marque","Marque Prestige",NC,NA,"?","Toutes Marques";
+        CurrGlobLang: Integer;
 }
 

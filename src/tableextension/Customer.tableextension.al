@@ -1,6 +1,6 @@
 tableextension 50013 "DEL Customer" extends Customer
 {
-    //Unsupported feature: Property Deletion (TableRelation) on ""Customer Price Group"(Field 23)".
+
 
 
     fields
@@ -681,51 +681,11 @@ tableextension 50013 "DEL Customer" extends Customer
     }
 
 
-<<<<<<< HEAD
-    //Unsupported feature: Code Modification on "OnModify".
-
-    //trigger OnModify()
-    //>>>> ORIGINAL CODE:
-    //begin
-        /*
-        "Last Date Modified" := TODAY;
-
-        IF (Name <> xRec.Name) OR
-        #4..28
-            IF FIND THEN;
-          END;
-        END;
-        */
-    //end;
-    //>>>> MODIFIED CODE:
-    //begin
-        /*
-        #1..31
 
 
-        //START T-00678
-        IF "Last Accounting Date"<>0D THEN
-        BEGIN
-        //START T-00738
-          IF "Fréquence de facturation"="Fréquence de facturation"::"12 mois" THEN
-            "Date de prochaine facturation":=CALCDATE('<+12M>',"Last Accounting Date");
-          IF "Fréquence de facturation"="Fréquence de facturation"::"6 mois" THEN
-           "Date de prochaine facturation":=   CALCDATE('<+6M>',"Last Accounting Date");
-          IF "Fréquence de facturation"="Fréquence de facturation"::"4 mois" THEN
-           "Date de prochaine facturation":=   CALCDATE('<+4M>',"Last Accounting Date");
-          IF "Fréquence de facturation"="Fréquence de facturation"::"3 mois" THEN
-          "Date de prochaine facturation":=   CALCDATE('<+3M>',"Last Accounting Date");
-          IF "Fréquence de facturation"="Fréquence de facturation"::" " THEN
-          "Date de prochaine facturation":=   CALCDATE('<+0M>',"Last Accounting Date");
-        //STOP T-00738
-          "Nbre jour avant proch. fact.":="Date de prochaine facturation"-TODAY;
-        END;
-        // STOP T-00678
-        */
-    //end;
 
     var
-        CustPriceGroup: Record "6";
+        CustPriceGroup: Record "Customer Price Group";
         Text50000: Label '%1|%2';
 
 }

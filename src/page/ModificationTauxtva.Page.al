@@ -1,17 +1,9 @@
-page 50084 "Modification Taux tva"
+page 50084 "DEL Modification Taux tva"
 {
-    // +-------------------------------------------------------------------------------+
-    // | Logico SA - Logiciels & Conseils                                              |
-    // |                                                                               |
-    // |                                                                               |
-    // +-------------------------------------------------------------------------------+
-    // 
-    // ID     Version     Story-Card    Date       Description
-    // ---------------------------------------------------------------------------------
-    // T-00559             THM        13.08.13      activé le cas TVA=0
+
 
     PageType = Card;
-    SourceTable = Table36;
+    SourceTable = "Sales Header";
 
     layout
     {
@@ -46,16 +38,15 @@ page 50084 "Modification Taux tva"
                     // end T-00559 THM
 
                     SalesLine2.SETRANGE("Document Type", SalesLine2."Document Type"::Order);
-                    SalesLine2.SETRANGE("Document No.", "No.");
+                    SalesLine2.SETRANGE("Document No.", Rec."No.");
 
-                    IF SalesLine2.FIND('-') THEN BEGIN
+                    IF SalesLine2.FIND('-') THEN
                         REPEAT
                             SalesLine2."VAT %" := Taux;
-                            SalesLine2.UpdateAmounts;
+                            SalesLine2.UpdateAmounts();
                             SalesLine2.MODIFY();
 
-                        UNTIL SalesLine2.NEXT = 0;
-                    END;
+                        UNTIL SalesLine2.NEXT() = 0;
 
                     MESSAGE('MAJ terminée');
                 end;
@@ -64,9 +55,10 @@ page 50084 "Modification Taux tva"
     }
 
     var
+        customer: Record Customer;
+        SalesLine2: Record "Sales Line";
         Nclient: Code[20];
         Taux: Decimal;
-        customer: Record "18";
-        SalesLine2: Record "37";
+
 }
 

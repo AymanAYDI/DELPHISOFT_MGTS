@@ -1,8 +1,8 @@
-page 50069 "Note audit"
+page 50069 "DEL Note audit"
 {
     Caption = 'Rating Audit';
     PageType = List;
-    SourceTable = Table50019;
+    SourceTable = "DEL Note";
 
     layout
     {
@@ -10,24 +10,26 @@ page 50069 "Note audit"
         {
             repeater(Group)
             {
-                field(Code; Code)
+                field("Code"; Rec.Code)
                 {
+                    Caption = 'Code';
                 }
-                field(Description; Description)
+                field(Description; Rec.Description)
                 {
+                    Caption = 'Description';
                 }
-                field("Revision Calculation"; "Revision Calculation")
+                field("Revision Calculation"; Rec."Revision Calculation")
                 {
+                    Caption = 'Revising Calculation';
                 }
-                field("Impact statut"; "Impact statut")
+                field("Impact statut"; Rec."Impact statut")
                 {
+                    Caption = 'Impact of status';
                 }
             }
         }
     }
 
-    actions
-    {
-    }
+    
 }
 

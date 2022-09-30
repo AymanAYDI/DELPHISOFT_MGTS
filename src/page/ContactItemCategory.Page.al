@@ -24,8 +24,5 @@ page 50005 "DEL Contact_ItemCategory"
         }
     }
 
-    actions
-    {
-    }
 }
 

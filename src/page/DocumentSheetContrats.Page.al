@@ -1,13 +1,5 @@
-page 50075 "Document Sheet Contrats"
+page 50075 "DEL Document Sheet Contrats"
 {
-    // +---------------------------------------------------------------+
-    // | Logico SA                                                     |
-    // | Status:                                                       |
-    // | Customer/Project:                                             |
-    // +---------------------------------------------------------------+
-    // Requirement UserID   Date       Where   Description
-    // -----------------------------------------------------------------
-    // T-00678     THM      12.09.14          Create object
 
     Caption = 'Document Sheet';
     DataCaptionFields = "No.";
@@ -15,34 +7,34 @@ page 50075 "Document Sheet Contrats"
     InsertAllowed = false;
     PageType = Worksheet;
     PopulateAllFields = true;
-    SourceTable = Table50008;
-    SourceTableView = SORTING (Table Name, No., Comment Entry No., Line No.)
+    SourceTable = "DEL Document Line";
+    SourceTableView = SORTING("Table Name", "No.", "Comment Entry No.", "Line No.")
                       ORDER(Ascending)
-                      WHERE (Notation Type=FILTER(' '),
-                            Type liasse=FILTER(' '));
+                      WHERE("Notation Type" = FILTER(' '),
+                            "Type liasse" = FILTER(' '));
 
     layout
     {
         area(content)
         {
-            repeater()
+            repeater(Control1)
             {
-                field("Insert Date";"Insert Date")
+                field("Insert Date"; Rec."Insert Date")
                 {
                 }
-                field("Insert Time";"Insert Time")
+                field("Insert Time"; Rec."Insert Time")
                 {
                 }
-                field(Path;Path)
+                field(Path; Rec.Path)
                 {
                 }
-                field("File Name";"File Name")
+                field("File Name"; Rec."File Name")
                 {
                 }
-                field("Type contrat";"Type contrat")
+                field("Type contrat"; Rec."Type contrat")
                 {
                 }
-                field("User ID";"User ID")
+                field("User ID"; Rec."User ID")
                 {
                 }
             }
@@ -53,7 +45,7 @@ page 50075 "Document Sheet Contrats"
     {
         area(processing)
         {
-            action(Add)
+            action(MgtsAdd)
             {
                 Caption = 'Add';
                 Ellipsis = true;
@@ -64,10 +56,10 @@ page 50075 "Document Sheet Contrats"
 
                 trigger OnAction()
                 begin
-                    Add;
+                    Add();
                 end;
             }
-            action(Open)
+            action(MgtsOpen)
             {
                 Caption = 'Open';
                 Image = View;
@@ -78,7 +70,7 @@ page 50075 "Document Sheet Contrats"
 
                 trigger OnAction()
                 begin
-                    Open;
+                    Open();
                 end;
             }
         }
@@ -86,15 +78,15 @@ page 50075 "Document Sheet Contrats"
 
     trigger OnNewRecord(BelowxRec: Boolean)
     begin
-        SetUpNewLine(BelowxRec);
+        Rec.SetUpNewLine(BelowxRec);
     end;
 
     var
-        Document_CU: Codeunit "50007";
+    //TODODocument_CU: Codeunit 50007;
 
     local procedure Add()
     var
-        DocumentLine: Record "50008";
+        DocumentLine: Record "DEL Document Line";
         oFile: File;
         InStr: InStream;
         OutStr: OutStream;
@@ -102,31 +94,31 @@ page 50075 "Document Sheet Contrats"
         ServerFileName: Text;
         LastLineNo: Integer;
     begin
-        IF NOT Document_CU.OpenFile(ImportFileName, ServerFileName) THEN
-          EXIT;
+        //TODO IF NOT Document_CU.OpenFile(ImportFileName, ServerFileName) THEN
+        //     EXIT;
 
         IF ServerFileName = '' THEN
-          EXIT;
+            EXIT;
 
         DocumentLine.SETRANGE("Table Name", "Table Name");
         DocumentLine.SETRANGE("No.", "No.");
-        IF DocumentLine.FINDLAST THEN
-          LastLineNo := DocumentLine."Line No.";
+        IF DocumentLine.FINDLAST() THEN
+            LastLineNo := DocumentLine."Line No.";
 
-        INIT;
+        INIT();
         "Line No." := LastLineNo + 10000;
 
-        oFile.OPEN(ServerFileName);
-        oFile.CREATEINSTREAM(InStr);
+        //TODO oFile.OPEN(ServerFileName);
+        // oFile.CREATEINSTREAM(InStr);
         Document.CREATEOUTSTREAM(OutStr);
         COPYSTREAM(OutStr, InStr);
-        oFile.CLOSE;
+        //TODO oFile.CLOSE;
 
         "Insert Date" := TODAY;
         "Insert Time" := TIME;
 
-        Path := Document_CU.GetDirectoryName(ImportFileName);
-        "File Name" := Document_CU.GetFileName(ImportFileName);
+        //TODO Path := Document_CU.GetDirectoryName(ImportFileName);
+        // "File Name" := Document_CU.GetFileName(ImportFileName);
 
         INSERT(TRUE);
         CurrPage.UPDATE(FALSE);
@@ -154,20 +146,20 @@ page 50075 "Document Sheet Contrats"
     begin
         //CALCFIELDS(Document);
         //IF NOT Document.HASVALUE THEN
-         // ERROR(cNoDocument);
+        // ERROR(cNoDocument);
 
 
-          Directory := Document_CU.TempDirectory;
+        //TODO Directory := Document_CU.TempDirectory;
 
-          oFile.CREATE(Directory + "File Name");
-          oFile.CREATEOUTSTREAM(OutStr);
+        // oFile.CREATE(Directory + "File Name");
+        // oFile.CREATEOUTSTREAM(OutStr);
 
-          Document.CREATEINSTREAM(InStr);
-          COPYSTREAM(OutStr, InStr);
+        // Document.CREATEINSTREAM(InStr);
+        // COPYSTREAM(OutStr, InStr);
 
-          oFile.CLOSE;
+        // oFile.CLOSE;
 
-          HYPERLINK(Directory + "File Name");
+        HYPERLINK(Directory + "File Name");
     end;
 }
 

@@ -14,19 +14,19 @@ page 50006 "DEL Item Category Translation"
                 field(CategoryCode; Rec.CategoryCode)
                 {
                     Visible = false;
+                    Caption = 'CategoryCode';
                 }
                 field(Language_Code; Rec.Language_Code)
                 {
+                    Caption = 'Language Code';
                 }
                 field(Translation; Rec.Translation)
                 {
+                    Caption = 'Translation';
                 }
             }
         }
     }
 
-    actions
-    {
-    }
 }
 

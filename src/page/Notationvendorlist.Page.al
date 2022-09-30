@@ -3,13 +3,13 @@ page 50063 "DEL Notation vendor list"
 
 
     Caption = 'Rating vendor list';
-    CardPageID = "Vendor Card Notation";
+    CardPageID = "DEL Vendor Card Notation";
     Editable = false;
     PageType = List;
     SourceTable = Vendor;
-    SourceTableView = SORTING("No.")
-                      ORDER(Ascending)
-                      WHERE("Vendor Posting Group" = FILTER(MARCH));
+    //TODO SourceTableView = SORTING("No.")
+    //                   ORDER(Ascending)
+    //                   WHERE("Vendor Posting Group" = FILTER(MARCH));
 
     layout
     {
@@ -17,10 +17,10 @@ page 50063 "DEL Notation vendor list"
         {
             repeater(Group)
             {
-                field("No."; "No.")
+                field("No."; Rec."No.")
                 {
                 }
-                field(Name; Name)
+                field(Name; Rec.Name)
                 {
                 }
                 //-------------//TODO/ TABLEEXT-------------------

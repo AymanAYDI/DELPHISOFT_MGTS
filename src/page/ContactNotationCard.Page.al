@@ -114,58 +114,59 @@ page 50067 "DEL Contact Notation Card"
             group("Audit Quality")
             {
                 Caption = 'Audit Quality';
-                //TODO field("URL Quality"; "URL Quality")
-                // {
-                // }
-                field("Note Quality"; Rec."Note Quality")
+                field("URL Quality"; Rec."DEL URL Quality")
+                {
+                }
+                field("Note Quality"; Rec."DEL Note Quality")
                 {
                     Importance = Promoted;
                 }
-                //TODO field("Realisation Date Quality"; "Realisation Date Quality")
-                // {
-                // }
-                // field("Revision Date quality"; "Revision Date quality")
-                // {
-                // }
+                field("Realisation Date Quality"; Rec."DEL Realisation Date Quality")
+                {
+                }
+                field("Revision Date quality"; Rec."DEL Revision Date quality")
+                {
+                }
             }
             group("Audit  Social")
             {
                 Caption = 'Audit  Social';
-                //TODO field("URL social"; "URL social")
-                // {
-                // }
-                // field("Note Soc"; "Note Soc")
-                // {
-                //     Importance = Promoted;
-                // }
-                // field("Realisation Date Soc"; "Realisation Date Soc")
-                // {
-                // }
-                // field("Revision Date Soc"; "Revision Date Soc")
-                // {
-                // }
-                // part("Detail Social Audit Contact"; "DEL Detail Social Audit Contact")
-                // {
-                //     SubPageLink = "Vendor/Contact No." = FIELD("No."),
-                //                   Type = FILTER(Contact);
-                // }
+                field("URL social"; Rec."DEL URL social")
+                {
+                }
+                field("Note Soc"; Rec."DEL Note Soc")
+                {
+                    Importance = Promoted;
+                }
+                field("Realisation Date Soc"; Rec."DEL Realisation Date Soc")
+                {
+                }
+                field("Revision Date Soc"; Rec."DEL Revision Date Soc")
+                {
+                }
+                part("Detail Social Audit Contact"; "DEL Detail Soc. Audit Contact")
+                {
+
+                    SubPageLink = "Vendor/Contact No." = FIELD("No."),
+                                  Type = FILTER("Contact");
+                }
             }
             group("Environmental Audit")
             {
                 Caption = 'Environmental Audit';
-                //TODO field("URL Environmental"; "URL Environmental")
-                // {
-                // }
-                // field("Note Env"; "Note Env")
-                // {
-                //     Importance = Promoted;
-                // }
-                // field("Realisation Date Env"; "Realisation Date Env")
-                // {
-                // }
-                // field("Revision Date env"; "Revision Date env")
-                // {
-                // }
+                field("URL Environmental"; Rec."DEL URL Environmental")
+                {
+                }
+                field("Note Env"; Rec."DEL Note Env")
+                {
+                    Importance = Promoted;
+                }
+                field("Realisation Date Env"; Rec."DEL Realisation Date Env")
+                {
+                }
+                field("Revision Date env"; Rec."DEL Revision Date env")
+                {
+                }
             }
             part("Rlshp. Mgt. Comment Sheet"; "Rlshp. Mgt. Comment Sheet")
             {
@@ -626,16 +627,16 @@ page 50067 "DEL Contact Notation Card"
         }
     }
 
-    // trigger OnAfterGetCurrRecord()
-    // begin
-    //     xRec := Rec;
-    //     EnableFields;
+    trigger OnAfterGetCurrRecord()
+    begin
+        xRec := Rec;
+        EnableFields();
 
-    //     IF Rec.Type = Rec.Type::Person THEN
-    //         //TODO IntegrationFindCustomerNo
-    //     // ELSE
-    //     //     IntegrationCustomerNo := '';
-    // //end;
+        IF Rec.Type = Rec.Type::Person THEN
+            IntegrationFindCustomerNo()
+        ELSE
+            IntegrationCustomerNo := '';
+    end;
 
     trigger OnInit()
     begin
@@ -699,9 +700,9 @@ page 50067 "DEL Contact Notation Card"
         ContactBusinessRelation.SETCURRENTKEY("Link to Table", "Contact No.");
         ContactBusinessRelation.SETRANGE("Link to Table", ContactBusinessRelation."Link to Table"::Customer);
         ContactBusinessRelation.SETRANGE("Contact No.", Rec."Company No.");
-        IF ContactBusinessRelation.FINDFIRST() THEN BEGIN
-            IntegrationCustomerNo := ContactBusinessRelation."No.";
-        END ELSE
+        IF ContactBusinessRelation.FINDFIRST() THEN
+            IntegrationCustomerNo := ContactBusinessRelation."No."
+        ELSE
             IntegrationCustomerNo := '';
     end;
 

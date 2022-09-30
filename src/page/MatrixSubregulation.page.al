@@ -1,25 +1,15 @@
-page 50091 "Matrix Substance regulation"
+page 50091 "DEL Matrix Sub. regulation"
 {
-    // +---------------------------------------------------------------+
-    // | Logico SA                                                     |
-    // | Status:                                                       |
-    // | Customer/Project:                                             |
-    // +---------------------------------------------------------------+
-    // Requirement UserID   Date       Where   Description
-    // -----------------------------------------------------------------
-    // T-00716      THM     27.08.15           Create Object
-    // T-00757      THM     07.01.16           add and modify Field
-    //              THM     03.05.16           add "Description Usage"
-    //              THM     09.06.16           Multiline=yes field "Substance - nom"
+
 
     Caption = 'Substance regulation';
     InsertAllowed = false;
     ModifyAllowed = false;
     PageType = List;
-    SourceTable = Table50051;
-    SourceTableView = SORTING (Item Category Code, Product Group Code, Mark, Product Description, No., Type)
+    SourceTable = "DEL Regulation Matrix Line";
+    SourceTableView = SORTING("Item Category Code", "Product Group Code", Mark, "Product Description", "No.", Type)
                       ORDER(Ascending)
-                      WHERE (Type = FILTER (Materials));
+                      WHERE(Type = FILTER(Materials));
 
     layout
     {
@@ -59,7 +49,7 @@ page 50091 "Matrix Substance regulation"
                         RegulationMatrixLine.SETRANGE(RegulationMatrixLine."Product Description", "Product Description");
                         RegulationMatrixLine.SETRANGE(RegulationMatrixLine."No.", "No.");
                         RegulationMatrixLine.SETRANGE(RegulationMatrixLine.Type, Type);
-                        PAGE.RUN(50095, RegulationMatrixLine);
+                        PAGE.RUN(Page::"DEL Matrix Subs. reg Card", RegulationMatrixLine);
                     end;
                 }
                 field("Description pays"; "Description pays")
@@ -176,7 +166,7 @@ page 50091 "Matrix Substance regulation"
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
-                RunObject = Page 50095;
+                RunObject = Page "DEL Matrix Subs. reg Card";
                 RunPageLink = Item Category Code=FIELD(Item Category Code),
                               Product Group Code=FIELD(Product Group Code),
                               No.=FIELD(No.),
@@ -188,9 +178,9 @@ page 50091 "Matrix Substance regulation"
     }
 
     var
-        RegMat: Page "50105";
-                    Reglementation: Record "50057";
-                    RegulationMatrixLine: Record "50051";
+        RegMat: Page 50105;
+                    Reglementation: Record 50057;
+                    RegulationMatrixLine: Record 50051;
                     ProductCode: Code[20];
                     CategCode: Code[20];
                     Markfilter: Text;

@@ -1,24 +1,15 @@
-page 50092 "Matrix Plan of Control"
+page 50092 "DEL Matrix Plan of Control"
 {
-    // +---------------------------------------------------------------+
-    // | Logico SA                                                     |
-    // | Status:                                                       |
-    // | Customer/Project:                                             |
-    // +---------------------------------------------------------------+
-    // Requirement UserID   Date       Where   Description
-    // -----------------------------------------------------------------
-    // T-00755      THM     05.01.16           Create Object
-    // T-00757      THM     07.01.16           add and modify Field
 
     Caption = 'Plan of Control';
     CardPageID = "Matrix Plan of Control Card";
     InsertAllowed = false;
     ModifyAllowed = false;
     PageType = List;
-    SourceTable = Table50051;
-    SourceTableView = SORTING (Item Category Code, Product Group Code, Mark, Product Description, No., Type)
+    SourceTable = "DEL Regulation Matrix Line";
+    SourceTableView = SORTING(Item Category Code, Product Group Code, Mark, Product Description, No., Type)
                       ORDER(Ascending)
-                      WHERE (Type = FILTER (Plan of control));
+                      WHERE(Type = FILTER(Plan of control));
 
     layout
     {
@@ -59,7 +50,7 @@ page 50092 "Matrix Plan of Control"
                         RegulationMatrixLine.SETRANGE(RegulationMatrixLine."Product Description", "Product Description");
                         RegulationMatrixLine.SETRANGE(RegulationMatrixLine."No.", "No.");
                         RegulationMatrixLine.SETRANGE(RegulationMatrixLine.Type, Type);
-                        PAGE.RUN(50093, RegulationMatrixLine);
+                        PAGE.RUN(Page::"Matrix Plan of Control Card", RegulationMatrixLine);
                     end;
                 }
                 field(Descriptive; Descriptive)
@@ -155,7 +146,7 @@ page 50092 "Matrix Plan of Control"
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
-                RunObject = Page 50093;
+                RunObject = Page "Matrix Plan of Control Card";
                 RunPageLink = Item Category Code=FIELD(Item Category Code),
                               Product Group Code=FIELD(Product Group Code),
                               No.=FIELD(No.),
@@ -167,9 +158,9 @@ page 50092 "Matrix Plan of Control"
     }
 
     var
-        RegControl: Page "50110";
-                        Reglementation: Record "50057";
-                        RegulationMatrixLine: Record "50051";
+        RegControl: Page 50110;
+                        Reglementation: Record 50057;
+                        RegulationMatrixLine: Record 50051;
                         ProductCode: Code[20];
                         CategCode: Code[20];
                         Markfilter: Text;

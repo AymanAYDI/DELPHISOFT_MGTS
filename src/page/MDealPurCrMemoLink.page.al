@@ -1,42 +1,31 @@
-page 50083 "M Deal Purcha Cr. Memo Linking"
+page 50083 "DEL M Deal Pur. Cr. Memo Link"
 {
-    // +-------------------------------------------------------------------------------+
-    // | Logico SA - Logiciels & Conseils                                              |
-    // | Stand: 02.03.09                                                               |
-    // |                                                                               |
-    // +-------------------------------------------------------------------------------+
-    // 
-    // ID     Version     Story-Card    Date       Description
-    // ---------------------------------------------------------------------------------
-    // CHG01                            02.03.09   created form
-    // CHG02                            06.04.09   adapté l'appel de fonction de création de l'affaire
-    // CHG03                            06.04.09   added requestUpdateManagement handling
 
     Caption = 'Manual Deal Cr. Memo Linking';
     ModifyAllowed = true;
     PageType = Card;
-    Permissions = TableData 115 = rimd,
-                  TableData 124 = rimd,
-                  TableData 125 = rimd;
-    SourceTable = Table50048;
+    Permissions = TableData "Sales Cr.Memo Line" = rimd,
+                  TableData "Purch. Cr. Memo Hdr." = rimd,
+                  TableData "Purch. Cr. Memo Line" = rimd;
+    SourceTable = "DEL Manual Purch. Cr. Memo L";
 
     layout
     {
         area(content)
         {
-            field("Purch Cr. Memo No."; "Purch Cr. Memo No.")
+            field("Purch Cr. Memo No."; Rec."Purch Cr. Memo No.")
             {
                 Caption = 'Note de crédit achat';
             }
-            field("Deal ID"; "Deal ID")
+            field("Deal ID"; Rec."Deal ID")
             {
                 Caption = 'Deal ID destination';
             }
-            field("Shipment Selection"; "Shipment Selection")
+            field("Shipment Selection"; Rec."Shipment Selection")
             {
                 Caption = 'Deal ID origine';
             }
-            label()
+            label(General)
             {
                 CaptionClass = Text19022230;
                 Style = Standard;
@@ -49,7 +38,7 @@ page 50083 "M Deal Purcha Cr. Memo Linking"
     {
         area(navigation)
         {
-            group(Post)
+            group(MgtsPost)
             {
                 Caption = 'Post';
                 action(Post)
@@ -63,19 +52,19 @@ page 50083 "M Deal Purcha Cr. Memo Linking"
 
                     trigger OnAction()
                     var
-                        element_Re_Loc: Record "50021";
+                        element_Re_Loc: Record "DEL Element";
                         element_ID_Loc: Code[20];
-                        dealShipmentSelection_Re_Loc: Record "50031";
-                        salesInvLine_Re_Loc: Record "113";
-                        salesInvHeader_Re_Loc: Record "112";
+                        dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
+                        salesInvLine_Re_Loc: Record "Sales Invoice Line";
+                        salesInvHeader_Re_Loc: Record "Sales Invoice Header";
                         last: Code[20];
                         shipmentID_Co_Loc: Code[20];
                         salesInvID_Co_Loc: Code[20];
-                        PurchCrMemoHeader_Re_Loc: Record "124";
+                        PurchCrMemoHeader_Re_Loc: Record "Purch. Cr. Memo Hdr.";
                         add_Variant_Op_Loc: Option New,Existing;
                         requestID_Co_Loc: Code[20];
-                        urm_Re_Loc: Record "50039";
-                        ACOElement_Re_Loc: Record "50021";
+                        urm_Re_Loc: Record "DEL Update Request Manager";
+                        ACOElement_Re_Loc: Record "DEL Element";
                     begin
 
 
@@ -129,23 +118,24 @@ page 50083 "M Deal Purcha Cr. Memo Linking"
     end;
 
     var
-        Element_Cu: Codeunit "50021";
-        Deal_Cu: Codeunit "50020";
-        UpdateRequestManager_Cu: Codeunit "50032";
-        DealShipment_Cu: Codeunit "50029";
-        ShipmentConnection_Cu: Codeunit "50027";
-        Position_CU: Codeunit "50022";
+        //TODO: until we get codeunits
+        // Element_Cu: Codeunit "50021";
+        // Deal_Cu: Codeunit "50020";
+        // UpdateRequestManager_Cu: Codeunit "50032";
+        // DealShipment_Cu: Codeunit "50029";
+        // ShipmentConnection_Cu: Codeunit "50027";
+        // Position_CU: Codeunit "50022";
         Text19022230: Label 'M A N U A L   L I N K I N G';
 
     [Scope('Internal')]
     procedure ChangeCodeAchat_FNC()
     var
-        PurchCreditMemoLine_Re_Loc: Record "125";
-        PostedLine_Re_Loc: Record "359";
-        ACOConnection_Rec_Loc: Record "50026";
+        PurchCreditMemoLine_Re_Loc: Record "Purch. Cr. Memo Line";
+        //TODO PostedLine_Re_Loc: Record 359;
+        ACOConnection_Rec_Loc: Record "DEL ACO Connection";
         NewCodeAchatNo_Co_Par: Code[20];
-        DealShipment_Rec_Loc: Record "50030";
-        PurchCreditMemoHeader_Re_Loc: Record "124";
+        DealShipment_Rec_Loc: Record "DEL Deal Shipment";
+        PurchCreditMemoHeader_Re_Loc: Record "Purch. Cr. Memo Hdr.";
     begin
 
         ACOConnection_Rec_Loc.SETRANGE(Deal_ID, "Deal ID");

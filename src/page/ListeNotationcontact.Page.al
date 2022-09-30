@@ -1,7 +1,7 @@
 page 50066 "DEL Liste Notation contact"
 {
     Caption = 'Rating contracts List';
-    CardPageID = "Contact Notation Card";
+    CardPageID = "DEL Contact Notation Card";
     Editable = false;
     PageType = List;
     SourceTable = Contact;
@@ -14,40 +14,52 @@ page 50066 "DEL Liste Notation contact"
             {
                 field("No."; Rec."No.")
                 {
+                    Caption = 'No.';
                 }
                 field(Name; Rec.Name)
                 {
+                    Caption = 'Name';
                 }
                 field(Type; Rec.Type)
                 {
+                    Caption = 'Type';
                 }
-                //TODO field("Note Quality"; "Note Quality")
-                // {
-                // }
-                // field("Realisation Date Quality"; "Realisation Date Quality")
-                // {
-                // }
-                // field("Revision Date quality"; "Revision Date quality")
-                // {
-                // }
-                // field("Note Soc"; "Note Soc")
-                // {
-                // }
-                // field("Realisation Date Soc"; "Realisation Date Soc")
-                // {
-                // }
-                // field("Revision Date Soc"; "Revision Date Soc")
-                // {
-                // }
-                // field("Note Env"; "Note Env")
-                // {
-                // }
-                // field("Realisation Date Env"; "Realisation Date Env")
-                // {
-                // }
-                // field("Revision Date env"; "Revision Date env")
-                // {
-                // }
+                field("Note Quality"; Rec."DEL Note Quality")
+                {
+                    Caption = 'Quality rating';
+                }
+                field("Realisation Date Quality"; Rec."DEL Realisation Date Quality")
+                {
+                    Caption = 'Creation Date';
+                }
+                field("Revision Date quality"; Rec."DEL Revision Date quality")
+                {
+                    Caption = 'Expired Date';
+                }
+                field("Note Soc"; Rec."DEL Note Soc")
+                {
+                    Caption = 'Social rating';
+                }
+                field("Realisation Date Soc"; Rec."DEL Realisation Date Soc")
+                {
+                    Caption = 'Creation Date Soc';
+                }
+                field("Revision Date Soc"; Rec."DEL Revision Date Soc")
+                {
+                    Caption = 'Expired Date Soc';
+                }
+                field("Note Env"; Rec."DEL Note Env")
+                {
+                    Caption = 'Environmental rating';
+                }
+                field("Realisation Date Env"; Rec."DEL Realisation Date Env")
+                {
+                    Caption = 'Creation Date Env';
+                }
+                field("Revision Date env"; Rec."DEL Revision Date env")
+                {
+                    Caption = 'Expired Date Env';
+                }
             }
         }
     }
@@ -129,12 +141,13 @@ page 50066 "DEL Liste Notation contact"
                 }
                 action("Co&mments")
                 {
-                    //TODO Caption = 'Co&mments';
-                    // Image = ViewComments;
-                    // RunObject = Page "Rlshp. Mgt. Comment Sheet"
-                    // RunPageLink = "Table Name" = CONST(Contact),
-                    //               "No." = FIELD("No."),
-                    //               "Sub No." = CONST(0);
+                    Caption = 'Co&mments';
+                    Image = ViewComments;
+                    RunObject = Page "Rlshp. Mgt. Comment Sheet";
+                    RunPageLink = "Table Name" = CONST(Contact),
+                                  "No." = FIELD("No."),
+                                  "Sub No." = CONST(0);
+
                 }
                 group("Alternati&ve Address")
                 {
@@ -438,7 +451,7 @@ page 50066 "DEL Liste Notation contact"
                 Image = "Report";
                 Promoted = true;
                 PromotedCategory = "Report";
-                RunObject = Report 5051;
+                RunObject = Report "Contact - Company Summary";
             }
             action("Contact Labels")
             {

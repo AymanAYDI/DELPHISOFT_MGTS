@@ -1,4 +1,4 @@
-enum 50071 "DEL Marque Produit"
+enum 50071 "DEL Mar Produit"
 {
     Extensible = false;
 

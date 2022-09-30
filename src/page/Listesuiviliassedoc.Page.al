@@ -1,22 +1,14 @@
-page 50070 "Liste suivi liasse doc"
+page 50070 "DEL Liste suivi liasse doc"
 {
-    // +---------------------------------------------------------------+
-    // | Logico SA                                                     |
-    // | Status:                                                       |
-    // | Customer/Project:                                             |
-    // +---------------------------------------------------------------+
-    // Requirement UserID   Date       Where   Description
-    // -----------------------------------------------------------------
-    // T-00678     THM      12.09.14           Create Object
 
     Caption = 'follow General contract doc case List';
     CardPageID = "Fiche suivi liasse doc";
     Editable = false;
     PageType = List;
-    SourceTable = Table23;
-    SourceTableView = SORTING (No.)
-                      ORDER(Ascending)
-                      WHERE (Vendor Posting Group=FILTER(MARCH));
+    SourceTable = Vendor;
+    //TODO SourceTableView = SORTING("No.")
+    //                   ORDER(Ascending)
+    //                   WHERE("Vendor Posting Group"=FILTER(MARCH));
 
     layout
     {
@@ -24,33 +16,33 @@ page 50070 "Liste suivi liasse doc"
         {
             repeater(Group)
             {
-                field("No.";"No.")
+                field("No."; Rec."No.")
                 {
                 }
-                field(Name;Name)
+                field(Name; Rec.Name)
                 {
                 }
-                field("Purchaser Code";"Purchaser Code")
+                field("Purchaser Code"; Rec."Purchaser Code")
                 {
                 }
-                field("Gen. Bus. Posting Group";"Gen. Bus. Posting Group")
+                field("Gen. Bus. Posting Group"; Rec."Gen. Bus. Posting Group")
                 {
                 }
-                field(Contact;Contact)
+                field(Contact; Rec.Contact)
                 {
                 }
-                field("Statut CG";"Statut CG")
-                {
-                }
-                field("Date de maj statut CG";"Date de maj statut CG")
-                {
-                }
-                field("Statut CE";"Statut CE")
-                {
-                }
-                field("Date de maj statut CE";"Date de maj statut CE")
-                {
-                }
+                // TODO/ field("Statut CG"; "DEL Statut CG")
+                // {
+                // }
+                // field("Date de maj statut CG"; "Date de maj statut CG")
+                // {
+                // }
+                // field("Statut CE"; "Statut CE")
+                // {
+                // }
+                // field("Date de maj statut CE"; "Date de maj statut CE")
+                // {
+                // }
             }
         }
     }

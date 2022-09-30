@@ -16,24 +16,29 @@ page 50001 "DEL Regulation Text"
                 {
                     Editable = false;
                     Visible = false;
+                    Caption = 'No.';
                 }
                 field(Type; Rec.Type)
                 {
                     Editable = false;
                     Visible = false;
+                    Caption = 'Type';
                 }
                 field(Champs; Rec.Champs)
                 {
                     Editable = false;
                     Visible = false;
+                    Caption = 'Champs';
                 }
                 field("Line No."; Rec."Line No.")
                 {
                     Editable = false;
                     Visible = false;
+                    Caption = 'Line No.';
                 }
                 field("Text"; Rec.Text)
                 {
+                    Caption = 'Text';
                 }
             }
         }

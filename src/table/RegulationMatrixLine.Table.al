@@ -205,10 +205,10 @@ table 50051 "DEL Regulation Matrix Line"
 
         field(24; "List Items Associated"; Integer)
         {
-            CalcFormula = Count(Item WHERE("Item Category Code" = FIELD("Item Category Code"),
-                                            //TODO  // "Product Group Code"=FIELD("Product Group Code"),
-                                            "DEL Product Description" = FIELD("Product Description"),
-                                            "DEL Marque Produit" = FIELD(Mark)));
+            //TODO CalcFormula = Count("Item" WHERE("Item Category Code" = FIELD("Item Category Code"),
+            //                                 //TODO  // "Product Group Code"=FIELD("Product Group Code"),
+            //                                 "DEL Product Description" = FIELD("DEL Product Description"),
+            //                                 "DEL Marque Produit" = FIELD(Mark)));
 
             Caption = 'List Items Associated';
             Editable = false;
