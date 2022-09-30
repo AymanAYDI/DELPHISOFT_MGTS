@@ -93,14 +93,14 @@ page 50085 "DEL Regulation Matrix"
                     Promoted = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
-                    RunObject = Page "Matrix General regulation";
-                    RunPageLink = "Item Category Code"=FIELD("Item Category Code"),
-                                  "Product Group Code"=FIELD("Product Group Code"),
-                                  Mark=FIELD(Mark),
-                                  "Product Description"=FIELD("Product Description");
-                    RunPageView = SORTING("Item Category Code","Product Group Code",Mark,"Product Description","No.",Type)
+                    RunObject = Page "DEL Matrix General regulation";
+                    RunPageLink = "Item Category Code" = FIELD("Item Category Code"),
+                                  "Product Group Code" = FIELD("Product Group Code"),
+                                  Mark = FIELD(Mark),
+                                  "Product Description" = FIELD("Product Description");
+                    RunPageView = SORTING("Item Category Code", "Product Group Code", Mark, "Product Description", "No.", Type)
                                   ORDER(Ascending)
-                                  WHERE(Type=FILTER("General product"));
+                                  WHERE(Type = FILTER("General product"));
                     Visible = RegGenerale;
                 }
                 action("Régl. Matière")
@@ -110,14 +110,14 @@ page 50085 "DEL Regulation Matrix"
                     Promoted = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
-                    RunObject = Page 50091;
-                                    RunPageLink = Item Category Code=FIELD(Item Category Code),
-                                  Product Group Code=FIELD(Product Group Code),
-                                  Mark=FIELD(Mark),
-                                  Product Description=FIELD(Product Description);
-                    RunPageView = SORTING(Item Category Code,Product Group Code,Mark,Product Description,No.,Type)
+                    RunObject = Page "DEL Matrix Sub. regulation";
+                    RunPageLink = "Item Category Code" = FIELD("Item Category Code"),
+                                  "Product Group Code" = FIELD("Product Group Code"),
+                                  Mark = FIELD(Mark),
+                                  "Product Description" = FIELD("Product Description");
+                    RunPageView = SORTING("Item Category Code", "Product Group Code", Mark, "Product Description", "No.", Type)
                                   ORDER(Ascending)
-                                  WHERE(Type=FILTER(Materials));
+                                  WHERE(Type = FILTER(Materials));
                     Visible = RegMat;
                 }
                 action("Plan Control")
@@ -127,8 +127,8 @@ page 50085 "DEL Regulation Matrix"
                     Promoted = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
-                    RunObject = Page 50092;
-                                    RunPageLink = Item Category Code=FIELD(Item Category Code),
+                    RunObject = Page "Matrix Plan of Control";
+                    RunPageLink = Item Category Code=FIELD(Item Category Code),
                                   Product Group Code=FIELD(Product Group Code),
                                   Mark=FIELD(Mark),
                                   Product Description=FIELD(Product Description);
