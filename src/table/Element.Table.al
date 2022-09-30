@@ -1,9 +1,7 @@
 table 50021 "DEL Element"
 {
     Caption = 'DEL Element';
-
-    //TODO
-    // LookupPageID = 50021;
+    LookupPageID = 50021;
 
     fields
     {
@@ -25,14 +23,6 @@ table 50021 "DEL Element"
 
             Caption = 'Type';
 
-            trigger OnValidate()
-            var
-                Purchaseline: Record "Purchase Line";
-                SalesHeader: Record "Sales Header";
-                DealShpmentConnection: Record "DEL Deal Shipment Connection";
-                Deal: Record "DEL Deal";
-            begin
-            end;
         }
         field(5; "Type No."; Code[20])
         {
@@ -148,10 +138,10 @@ table 50021 "DEL Element"
     end;
 
     var
-        NoSeriesMgt: Codeunit NoSeriesManagement;
-        Setup: Record "DEL General Setup";
         element1: Record "DEL Element";
         element2: Record "DEL Element";
+        Setup: Record "DEL General Setup";
+        NoSeriesMgt: Codeunit NoSeriesManagement;
         BillNumer: Code[20];
 
 

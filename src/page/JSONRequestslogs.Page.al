@@ -1,15 +1,12 @@
-page 50140 "JSON Requests logs"
+page 50140 "DEL JSON Requests logs"
 {
-    // Mgts10.00.01.00 | 11.01.2020 | Create : JSON Requests logs
-    // 
-    // Mgts10.00.03.00 | 07.04.2020 | Add C\AL in  : Execute Message - OnAction()
-    // Mgts10.00.04.00 | 10.12.2021 | Add new action  : Filter Message - OnAction()
+
 
     Caption = 'JSON Requests logs';
     InsertAllowed = false;
     ModifyAllowed = false;
     PageType = List;
-    SourceTable = Table50073;
+    SourceTable = "DEL JSON Requests log";
     SourceTableView = SORTING(Date)
                       ORDER(Descending);
 
@@ -17,7 +14,7 @@ page 50140 "JSON Requests logs"
     {
         area(content)
         {
-            group()
+            group(Controle1)
             {
                 Visible = TextToFilter <> '';
                 label(TextToFilter)
@@ -29,26 +26,26 @@ page 50140 "JSON Requests logs"
                     StyleExpr = TRUE;
                 }
             }
-            grid()
+            grid(Controle2)
             {
                 repeater(Group)
                 {
-                    field(Date; Date)
+                    field("Date"; Rec.Date)
                     {
                     }
-                    field(Type; Type)
+                    field(Type; Rec.Type)
                     {
                     }
-                    field("Function"; "Function")
+                    field(Function; Rec."Function")
                     {
                     }
-                    field(Error; Error)
+                    field("Error"; Rec.Error)
                     {
                     }
                 }
-                part(; 50141)
+                part(Message; Message)
                 {
-                    SubPageLink = Entry No.=FIELD(Entry No.);
+                    SubPageLink = "Entry No." = FIELD("Entry No.");
                 }
             }
         }
@@ -66,66 +63,68 @@ page 50140 "JSON Requests logs"
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 PromotedOnly = true;
+                //TODO
+                // trigger OnAction()
+                // var
 
-                trigger OnAction()
-                var
-                    JSONWebService: Codeunit "50040";
-                    Data: Text;
-                    IStream: InStream;
-                    StreamReader: DotNet StreamReader;
-                    Win: Dialog;
-                begin
-                    TESTFIELD(Type, Type::Request);
-                    //TESTFIELD(Error,TRUE);
-                    CALCFIELDS(Message);
+                //     JSONWebService: Codeunit "50040";
+                //     StreamReader: DotNet StreamReader;
+                //     Data: Text;
+                //     IStream: InStream;
 
-                    Win.OPEN("Function" + '...');
-                    Message.CREATEINSTREAM(IStream);
-                    StreamReader := StreamReader.StreamReader(IStream, TRUE);
-                    Data := StreamReader.ReadToEnd();
-                    CASE "Function" OF
-                        'CreateVendor':
-                            JSONWebService.CreateSupplier(Data);
-                        'UpdateVEndor':
-                            JSONWebService.UpdateSupplier(Data);
-                        'GetVendorInfo':
-                            JSONWebService.GetSupplierInfo(Data);
+                //     Win: Dialog;
+                // begin
+                //     Rec.TESTFIELD(Type, Rec.Type::Request);
+                //     //TESTFIELD(Error,TRUE);
+                //     Rec.CALCFIELDS(Message);
 
-                        'CreateUpdateItem':
-                            JSONWebService.CreateUpdateProduct(Data);
-                        'api/order':
-                            DIALOG.MESSAGE('Not implemented.');
+                //     Win.OPEN(Rec."Function" + '...');
+                //     Message.CREATEINSTREAM(IStream);
+                //     StreamReader := StreamReader.StreamReader(IStream, TRUE);
+                //     Data := StreamReader.ReadToEnd();
+                //     CASE Rec."Function" OF
+                //         'CreateVendor':
+                //             JSONWebService.CreateSupplier(Data);
+                //         'UpdateVEndor':
+                //             JSONWebService.UpdateSupplier(Data);
+                //         'GetVendorInfo':
+                //             JSONWebService.GetSupplierInfo(Data);
 
-                        //>>Mgts10.00.04.00
-                        'GetItemCrossReferences':
-                            JSONWebService.GetItemCrossReferences(Data);
-                        'GetSalesPricess':
-                            JSONWebService.GetSalesPrices(Data);
-                        'GetPurchasePrices':
-                            JSONWebService.GetPurchasePrices(Data);
-                        'CreateItemSalesPrices':
-                            JSONWebService.CreateItemSalesPrices(Data);
-                        'UpdateItemSalesPrices':
-                            JSONWebService.UpdateItemSalesPrices(Data);
-                        'DeleteItemSalesPrices':
-                            JSONWebService.DeleteItemSalesPrices(Data);
-                        'CreateItemPurchasePrices':
-                            JSONWebService.CreateItemPurchasePrices(Data);
-                        'UpdateItemPurchasePrices':
-                            JSONWebService.UpdateItemPurchasePrices(Data);
-                        'DeleteItemPurchasePrices':
-                            JSONWebService.DeleteItemPurchasePrices(Data);
-                        'CreateItemCrossReferences':
-                            JSONWebService.CreateItemCrossReferences(Data);
-                        'UpdateItemCrossReferences':
-                            JSONWebService.UpdateItemCrossReferences(Data);
-                        'DeleteItemCrossReferences':
-                            JSONWebService.DeleteItemCrossReferences(Data);
-                    //<<Mgts10.00.04.00
+                //         'CreateUpdateItem':
+                //             JSONWebService.CreateUpdateProduct(Data);
+                //         'api/order':
+                //             DIALOG.MESSAGE('Not implemented.');
 
-                    END;
-                    Win.CLOSE;
-                end;
+                //         //>>Mgts10.00.04.00
+                //         'GetItemCrossReferences':
+                //             JSONWebService.GetItemCrossReferences(Data);
+                //         'GetSalesPricess':
+                //             JSONWebService.GetSalesPrices(Data);
+                //         'GetPurchasePrices':
+                //             JSONWebService.GetPurchasePrices(Data);
+                //         'CreateItemSalesPrices':
+                //             JSONWebService.CreateItemSalesPrices(Data);
+                //         'UpdateItemSalesPrices':
+                //             JSONWebService.UpdateItemSalesPrices(Data);
+                //         'DeleteItemSalesPrices':
+                //             JSONWebService.DeleteItemSalesPrices(Data);
+                //         'CreateItemPurchasePrices':
+                //             JSONWebService.CreateItemPurchasePrices(Data);
+                //         'UpdateItemPurchasePrices':
+                //             JSONWebService.UpdateItemPurchasePrices(Data);
+                //         'DeleteItemPurchasePrices':
+                //             JSONWebService.DeleteItemPurchasePrices(Data);
+                //         'CreateItemCrossReferences':
+                //             JSONWebService.CreateItemCrossReferences(Data);
+                //         'UpdateItemCrossReferences':
+                //             JSONWebService.UpdateItemCrossReferences(Data);
+                //         'DeleteItemCrossReferences':
+                //             JSONWebService.DeleteItemCrossReferences(Data);
+                //     //<<Mgts10.00.04.00
+
+                //     END;
+                //     Win.CLOSE;
+                // end;
             }
             action(Search)
             {
@@ -135,26 +134,26 @@ page 50140 "JSON Requests logs"
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 PromotedOnly = true;
+                //TODO //REPORT 
+                // trigger OnAction()
+                // var
+                //     FilterMessage: Report 50054;
+                // begin
+                //     FilterMessage.RUNMODAL;
+                //     FilterMessage.GetResult(TextToFilter);
+                //     TextToFilter := STRSUBSTNO(Text001, TextToFilter);
 
-                trigger OnAction()
-                var
-                    FilterMessage: Report "50054";
-                begin
-                    FilterMessage.RUNMODAL;
-                    FilterMessage.GetResult(TextToFilter);
-                    TextToFilter := STRSUBSTNO(Text001, TextToFilter);
+                //     Rec.SETCURRENTKEY(Filtered, Date);
+                //     Rec.SETRANGE(Filtered, TRUE);
+                //     IF Rec.ISEMPTY THEN BEGIN
+                //         Rec.SETRANGE(Filtered);
+                //         TextToFilter := '';
+                //     END;
 
-                    SETCURRENTKEY(Filtered, Date);
-                    SETRANGE(Filtered, TRUE);
-                    IF ISEMPTY THEN BEGIN
-                        SETRANGE(Filtered);
-                        TextToFilter := '';
-                    END;
-
-                    CurrPage.UPDATE;
-                end;
+                //     CurrPage.UPDATE;
+                // end;
             }
-            action(Init)
+            action("Init")
             {
                 Caption = 'Init';
                 Image = ClearFilter;
@@ -165,14 +164,14 @@ page 50140 "JSON Requests logs"
 
                 trigger OnAction()
                 var
-                    JSONRequestslog: Record "50073";
+                    JSONRequestslog: Record "DEL JSON Requests log";
                 begin
                     JSONRequestslog.SETCURRENTKEY(Filtered);
                     JSONRequestslog.SETRANGE(Filtered, TRUE);
                     JSONRequestslog.MODIFYALL(Filtered, FALSE);
 
-                    SETCURRENTKEY(Date);
-                    SETRANGE(Filtered);
+                    Rec.SETCURRENTKEY(Date);
+                    Rec.SETRANGE(Filtered);
                     TextToFilter := '';
                     CurrPage.UPDATE;
                 end;

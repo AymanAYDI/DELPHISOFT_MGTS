@@ -1,21 +1,19 @@
-page 50136 "DocMatrix Request Page Par"
+page 50136 "DEL DocMatrix Request Page Par"
 {
-    // 20190227/DEL/PD/LOP003 - object created
-    // 20190305/DEL/PD/LOP003 - object optimized and corrected
 
     Caption = 'Request Page Parameters';
     Editable = false;
     PageType = StandardDialog;
     SaveValues = true;
-    SourceTable = Table50067;
+    SourceTable = "DEL Document Matrix";
 
     layout
     {
         area(content)
         {
-            group()
+            group(Control14)
             {
-                group()
+                group(Control13)
                 {
                     field(BodyText; txParameters)
                     {
@@ -36,7 +34,7 @@ page 50136 "DocMatrix Request Page Par"
 
     trigger OnAfterGetCurrRecord()
     begin
-        txParameters := GetRequestPageParametersText(Rec);
+        txParameters := Rec.GetRequestPageParametersText(DocMatrixSet);
     end;
 
     trigger OnOpenPage()
@@ -47,6 +45,8 @@ page 50136 "DocMatrix Request Page Par"
     end;
 
     var
+        DocMatrixSet: Record "DEL DocMatrix Setup";
         txParameters: Text;
+
 }
 

@@ -1,9 +1,9 @@
 table 50073 "DEL JSON Requests log"
 {
     Caption = 'JSON Requests log';
-    //   TODO 
-    // DrillDownPageID = 50095;
-    // LookupPageID = 50095;
+
+    DrillDownPageID = "DEL Matrix Subs. reg Card";
+    LookupPageID = "DEL Matrix Subs. reg Card";
 
     fields
     {

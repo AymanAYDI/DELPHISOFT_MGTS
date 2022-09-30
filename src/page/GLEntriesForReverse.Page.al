@@ -1,189 +1,177 @@
-page 50126 "GL Entries For Reverse"
-{
-    // 
-    // ------------------------------------------------------------------------------------------
-    // Sign    : Maria Hr. Hristova = mhh
-    // Version : MGTS10.00.001
-    // 
-    // ------------------------------------------------------------------------------------------
-    // No.    Version          Date        Sign    Description
-    // ------------------------------------------------------------------------------------------
-    // 001    MGTS10.00.001    18.12.19    mhh     List of changes:
-    //                                              Created function: SetGLEntry()
-    //                                              Added new field: "Customer Provision"
-    // ------------------------------------------------------------------------------------------
 
+page 50126 "DEL GL Entries For Reverse"
+{
     Caption = 'General Ledger Entries';
-    DataCaptionExpression = GetCaption;
+    DataCaptionExpression = GetCaption();
     Editable = false;
     PageType = List;
     Permissions = TableData 17 = rm;
-    SourceTable = Table17;
-    SourceTableView = SORTING(G/L Account No., Posting Date)
+    SourceTable = "G/L Entry";
+    SourceTableView = SORTING("G/L Account No.", "Posting Date")
                       ORDER(Descending);
 
     layout
     {
         area(content)
         {
-            repeater()
+            repeater(Control1)
             {
-                field("Posting Date"; "Posting Date")
+                field("Posting Date"; Rec."Posting Date")
                 {
                     ApplicationArea = Basic, Suite;
                     ToolTip = 'Specifies the posting date for the entry.';
                 }
-                field("Document Type"; "Document Type")
+                field("Document Type"; Rec."Document Type")
                 {
                     ApplicationArea = Basic, Suite;
                     ToolTip = 'Specifies the Document Type that the entry belongs to.';
                 }
-                field("External Document No."; "External Document No.")
+                field("External Document No."; Rec."External Document No.")
                 {
                 }
-                field("Document No."; "Document No.")
+                field("Document No."; Rec."Document No.")
                 {
                     ApplicationArea = Basic, Suite;
                     ToolTip = 'Specifies the entry''s Document No.';
                 }
-                field("G/L Account No."; "G/L Account No.")
+                field("G/L Account No."; Rec."G/L Account No.")
                 {
                     ApplicationArea = Basic, Suite;
                     ToolTip = 'Specifies the number of the account that the entry has been posted to.';
                 }
-                field("G/L Account Name"; "G/L Account Name")
+                field("G/L Account Name"; Rec."G/L Account Name")
                 {
                     DrillDown = false;
                     ToolTip = 'Specifies the name of the account that the entry has been posted to.';
                     Visible = false;
                 }
-                field(Description; Description)
+                field(Description; Rec.Description)
                 {
                     ApplicationArea = Basic, Suite;
                     ToolTip = 'Specifies a description of the entry.';
                 }
-                field("Job No."; "Job No.")
+                field("Job No."; Rec."Job No.")
                 {
                     ToolTip = 'Specifies the Job No. corresponding the to G/L entry.';
                     Visible = false;
                 }
-                field("Global Dimension 1 Code"; "Global Dimension 1 Code")
+                field("Global Dimension 1 Code"; Rec."Global Dimension 1 Code")
                 {
                     ToolTip = 'Specifies the dimension value code that the entry is linked to.';
                     Visible = false;
                 }
-                field("Global Dimension 2 Code"; "Global Dimension 2 Code")
+                field("Global Dimension 2 Code"; Rec."Global Dimension 2 Code")
                 {
                     ToolTip = 'Specifies the dimension value code that the entry is linked to.';
                     Visible = false;
                 }
-                field("IC Partner Code"; "IC Partner Code")
+                field("IC Partner Code"; Rec."IC Partner Code")
                 {
                     ToolTip = 'Specifies the code of the intercompany partner that the transaction is with if the entry was posted from an intercompany transaction.';
                     Visible = false;
                 }
-                field("Gen. Posting Type"; "Gen. Posting Type")
+                field("Gen. Posting Type"; Rec."Gen. Posting Type")
                 {
                     ApplicationArea = Basic, Suite;
                     ToolTip = 'Specifies the Gen. Posting Type that applies to the entry.';
                 }
-                field("Gen. Bus. Posting Group"; "Gen. Bus. Posting Group")
+                field("Gen. Bus. Posting Group"; Rec."Gen. Bus. Posting Group")
                 {
                     ApplicationArea = Basic, Suite;
                     ToolTip = 'Specifies the general business posting group that applies to the entry.';
                 }
-                field("Gen. Prod. Posting Group"; "Gen. Prod. Posting Group")
+                field("Gen. Prod. Posting Group"; Rec."Gen. Prod. Posting Group")
                 {
                     ApplicationArea = Basic, Suite;
                     ToolTip = 'Specifies the general product posting group that applies to the entry.';
                 }
-                field(Quantity; Quantity)
+                field(Quantity; Rec.Quantity)
                 {
                     ToolTip = 'Specifies the quantity that was posted on the entry.';
                     Visible = false;
                 }
-                field(Amount; Amount)
+                field(Amount; Rec.Amount)
                 {
                     ApplicationArea = Basic, Suite;
                     ToolTip = 'Specifies the Amount of the entry.';
                 }
-                field("Amount (FCY)"; "Amount (FCY)")
+                field("Amount (FCY)"; Rec."Amount (FCY)")
                 {
                     ApplicationArea = Basic, Suite;
                     ToolTip = 'Specifies the foreign currency amount for G/L entries.';
                 }
-                field("Additional-Currency Amount"; "Additional-Currency Amount")
+                field("Additional-Currency Amount"; Rec."Additional-Currency Amount")
                 {
                     ToolTip = 'Specifies the general ledger entry that is posted if you post in an additional reporting currency.';
                     Visible = false;
                 }
-                field("VAT Amount"; "VAT Amount")
+                field("VAT Amount"; Rec."VAT Amount")
                 {
                     ToolTip = 'Specifies the VAT Amount that was posted as a result of the entry.';
                     Visible = false;
                 }
-                field("Bal. Account Type"; "Bal. Account Type")
+                field("Bal. Account Type"; Rec."Bal. Account Type")
                 {
                     ApplicationArea = Basic, Suite;
                     ToolTip = 'Specifies the type of balancing account used in the entry: G/L Account, Bank Account, Vendor, Customer, or Fixed Asset.';
                 }
-                field("Bal. Account No."; "Bal. Account No.")
+                field("Bal. Account No."; Rec."Bal. Account No.")
                 {
                     ApplicationArea = Basic, Suite;
                     ToolTip = 'Specifies the number of the G/L account or the bank account, that a balancing entry has been posted to.';
                 }
-                field("User ID"; "User ID")
+                field("User ID"; Rec."User ID")
                 {
                     ToolTip = 'Specifies the ID of the user that is associated with the entry.';
                     Visible = false;
                 }
-                field("Source Code"; "Source Code")
+                field("Source Code"; Rec."Source Code")
                 {
                     ToolTip = 'Specifies the Source Code that is linked to the entry.';
                     Visible = false;
                 }
-                field("Reason Code"; "Reason Code")
+                field("Reason Code"; Rec."Reason Code")
                 {
                     ToolTip = 'Specifies the reason code on the entry.';
                     Visible = false;
                 }
-                field(Reversed; Reversed)
+                field(Reversed; Rec.Reversed)
                 {
                     ToolTip = 'Specifies if the entry has been part of a reverse transaction (correction) made by the Reverse function.';
                     Visible = false;
                 }
-                field("Reversed by Entry No."; "Reversed by Entry No.")
+                field("Reversed by Entry No."; Rec."Reversed by Entry No.")
                 {
                     ToolTip = 'Specifies the number of the correcting entry. If the field Specifies a number, the entry cannot be reversed again.';
                     Visible = false;
                 }
-                field("Reversed Entry No."; "Reversed Entry No.")
+                field("Reversed Entry No."; Rec."Reversed Entry No.")
                 {
                     ToolTip = 'Specifies the number of the original entry that was undone by the reverse transaction.';
                     Visible = false;
                 }
-                field("FA Entry Type"; "FA Entry Type")
+                field("FA Entry Type"; Rec."FA Entry Type")
                 {
                     ToolTip = 'This field is automatically updated.';
                     Visible = false;
                 }
-                field("FA Entry No."; "FA Entry No.")
+                field("FA Entry No."; Rec."FA Entry No.")
                 {
                     ToolTip = 'This field is automatically updated.';
                     Visible = false;
                 }
-                field("Entry No."; "Entry No.")
+                field("Entry No."; Rec."Entry No.")
                 {
                     ApplicationArea = Basic, Suite;
                     ToolTip = 'Specifies the Entry No. that the program has given the entry.';
                 }
-                field("Initial Currency (FCY)"; "Initial Currency (FCY)")
+                field("Initial Currency (FCY)"; Rec."DEL Initial Currency (FCY)")
                 {
                 }
-                field("Initial Amount (FCY)"; "Initial Amount (FCY)")
+                field("Initial Amount (FCY)"; Rec."DEL Initial Amount (FCY)")
                 {
                 }
-                field("Customer Provision"; "Customer Provision")
+                field("Customer Provision"; Rec."DEL Customer Provision")
                 {
                 }
             }
@@ -195,11 +183,11 @@ page 50126 "GL Entries For Reverse"
                 ApplicationArea = Basic, Suite;
                 ShowFilter = false;
             }
-            systempart(; Links)
+            systempart(Links; Links)
             {
                 Visible = false;
             }
-            systempart(; Notes)
+            systempart(Notes; Notes)
             {
                 Visible = false;
             }
@@ -226,8 +214,8 @@ page 50126 "GL Entries For Reverse"
 
                     trigger OnAction()
                     begin
-                        ShowDimensions;
-                        CurrPage.SAVERECORD;
+                        Rec.ShowDimensions();
+                        CurrPage.SAVERECORD();
                     end;
                 }
                 action(GLDimensionOverview)
@@ -240,11 +228,11 @@ page 50126 "GL Entries For Reverse"
 
                     trigger OnAction()
                     var
-                        GLEntriesDimensionOverview: Page "563";
+                        GLEntriesDimensionOverview: Page "G/L Entries Dimension Overview";
                     begin
-                        IF ISTEMPORARY THEN BEGIN
+                        IF Rec.ISTEMPORARY THEN BEGIN
                             GLEntriesDimensionOverview.SetTempGLEntry(Rec);
-                            GLEntriesDimensionOverview.RUN;
+                            GLEntriesDimensionOverview.RUN();
                         END ELSE
                             PAGE.RUN(PAGE::"G/L Entries Dimension Overview", Rec);
                     end;
@@ -260,7 +248,7 @@ page 50126 "GL Entries For Reverse"
 
                     trigger OnAction()
                     begin
-                        ShowValueEntries;
+                        Rec.ShowValueEntries();
                     end;
                 }
             }
@@ -299,10 +287,10 @@ page 50126 "GL Entries For Reverse"
                     trigger OnAction()
                     begin
 
-                        GLEntry.RESET;
+                        GLEntry.RESET();
                         CurrPage.SETSELECTIONFILTER(GLEntry);
-                        IF GLEntry.FINDSET THEN
-                            GLEntry.MODIFYALL("Reverse With Doc. No.", '');
+                        IF GLEntry.FINDSET() THEN
+                            GLEntry.MODIFYALL("DEL Reverse With Doc. No.", '');
                     end;
                 }
             }
@@ -311,36 +299,36 @@ page 50126 "GL Entries For Reverse"
 
     trigger OnAfterGetCurrRecord()
     var
-        IncomingDocument: Record "130";
+        IncomingDocument: Record "Incoming Document";
     begin
-        HasIncomingDocument := IncomingDocument.PostedDocExists("Document No.", "Posting Date");
+        HasIncomingDocument := IncomingDocument.PostedDocExists(Rec."Document No.", Rec."Posting Date");
         CurrPage.IncomingDocAttachFactBox.PAGE.LoadDataFromRecord(Rec);
     end;
 
     trigger OnOpenPage()
     begin
-        IF FINDFIRST THEN;
+        IF Rec.FINDFIRST() THEN;
     end;
 
     var
-        GLAcc: Record "15";
+        GLAcc: Record "G/L Account";
+        GLEntry: Record "G/L Entry";
+        RelatedOrder: Record "Sales Header";
         HasIncomingDocument: Boolean;
-        RelatedOrder: Record "36";
         HasRelatedOrder: Boolean;
         Text50001: Label '''''';
-        GLEntry: Record "17";
 
     local procedure GetCaption(): Text[250]
     begin
-        IF GLAcc."No." <> "G/L Account No." THEN
-            IF NOT GLAcc.GET("G/L Account No.") THEN
-                IF GETFILTER("G/L Account No.") <> '' THEN
-                    IF GLAcc.GET(GETRANGEMIN("G/L Account No.")) THEN;
+        IF GLAcc."No." <> Rec."G/L Account No." THEN
+            IF NOT GLAcc.GET(Rec."G/L Account No.") THEN
+                IF Rec.GETFILTER("G/L Account No.") <> '' THEN
+                    IF GLAcc.GET(Rec.GETRANGEMIN("G/L Account No.")) THEN;
         EXIT(STRSUBSTNO('%1 %2', GLAcc."No.", GLAcc.Name))
     end;
 
 
-    procedure SetRelatedOrder(NewRelatedOrder: Record "36")
+    procedure SetRelatedOrder(NewRelatedOrder: Record "Sales Header")
     begin
 
         HasRelatedOrder := TRUE;
@@ -350,26 +338,26 @@ page 50126 "GL Entries For Reverse"
 
     procedure SelectGLEntryForReverse()
     var
-        GLEntry: Record "17";
-        GLEntries: Page "50127";
-        ReverseGLEntry: Record "17";
-        GLSetup: Record "98";
+        GLEntry: Record "G/L Entry";
+        GLSetup: Record "General Ledger Setup";
+        ReverseGLEntry: Record "G/L Entry";
+        GLEntries: Page "DEL Gen. Ledger Entr. Reverse";
     begin
 
         //MGTS10.00.001; 001; mhh; entire function
-        IF NOT GLSetup.GET THEN
-            GLSetup.INIT;
+        IF NOT GLSetup.GET() THEN
+            GLSetup.INIT();
 
-        GLSetup.TESTFIELD("Provision Source Code");
-        GLSetup.TESTFIELD("Provision Journal Batch");
+        GLSetup.TESTFIELD("DEL Provision Source Code");
+        GLSetup.TESTFIELD("DEL Provision Journal Batch");
 
-        GLEntry.RESET;
+        GLEntry.RESET();
         GLEntry.SETCURRENTKEY("Document No.", "Posting Date");
         GLEntry.FILTERGROUP(2);
-        GLEntry.SETRANGE("Source Code", GLSetup."Provision Source Code");
-        GLEntry.SETFILTER("Journal Batch Name", GLSetup."Provision Journal Batch");
-        GLEntry.SETRANGE("Customer Provision", RelatedOrder."Bill-to Customer No.");
-        GLEntry.SETRANGE("Reverse With Doc. No.", Text50001);
+        GLEntry.SETRANGE("Source Code", GLSetup."DEL Provision Source Code");
+        GLEntry.SETFILTER("Journal Batch Name", GLSetup."DEL Provision Journal Batch");
+        GLEntry.SETRANGE("DEL Customer Provision", RelatedOrder."Bill-to Customer No.");
+        GLEntry.SETRANGE("DEL Reverse With Doc. No.", Text50001);
         GLEntry.FILTERGROUP(0);
 
         GLEntry.SETCURRENTKEY("Document No.", "Posting Date");
@@ -377,14 +365,16 @@ page 50126 "GL Entries For Reverse"
         CLEAR(GLEntries);
         GLEntries.SETTABLEVIEW(GLEntry);
         GLEntries.LOOKUPMODE(TRUE);
-        IF GLEntries.RUNMODAL = ACTION::LookupOK THEN BEGIN
+        IF GLEntries.RUNMODAL() = ACTION::LookupOK THEN BEGIN
             GLEntries.SetGLEntry(ReverseGLEntry);
-            IF ReverseGLEntry.FINDSET THEN
+            IF ReverseGLEntry.FINDSET() THEN
                 REPEAT
-                    ReverseGLEntry."Reverse With Doc. No." := RelatedOrder."No.";
-                    ReverseGLEntry.MODIFY;
-                UNTIL ReverseGLEntry.NEXT = 0;
+                    ReverseGLEntry."DEL Reverse With Doc. No." := RelatedOrder."No.";
+                    ReverseGLEntry.MODIFY();
+                UNTIL ReverseGLEntry.NEXT() = 0;
         END;
     end;
 }
+
+
 

@@ -1,7 +1,7 @@
 page 50020 "DEL Deal"
 {
     Caption = 'Shipment/Deal list';
-    CardPageID = "Deal Mainboard";
+    CardPageID = "DEL Deal Mainboard";
     DeleteAllowed = false;
     Editable = false;
     InsertAllowed = false;

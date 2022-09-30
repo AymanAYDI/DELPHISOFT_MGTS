@@ -1,14 +1,12 @@
-page 50143 "EDI Export Documents"
+page 50143 "DEL EDI Export Documents"
 {
-    // MGTSEDI10.00.00.00 | 01.11.2020 | Create Page
-
     Caption = 'EDI Export Documents';
     DeleteAllowed = false;
     Editable = false;
     InsertAllowed = false;
     ModifyAllowed = false;
     PageType = List;
-    SourceTable = Table50077;
+    SourceTable = "DEL EDI Export Buffer";
 
     layout
     {
@@ -16,43 +14,43 @@ page 50143 "EDI Export Documents"
         {
             repeater(Group)
             {
-                field("EDI Document Type"; "EDI Document Type")
+                field("EDI Document Type"; Rec."EDI Document Type")
                 {
                 }
-                field("EDI Order Type"; "EDI Order Type")
+                field("EDI Order Type"; Rec."EDI Order Type")
                 {
                 }
-                field("Document Type"; "Document Type")
-                {
-                    Style = Strong;
-                    StyleExpr = TRUE;
-                }
-                field("Document No."; "Document No.")
+                field("Document Type"; Rec."Document Type")
                 {
                     Style = Strong;
                     StyleExpr = TRUE;
                 }
-                field("Document Date"; "Document Date")
+                field("Document No."; Rec."Document No.")
+                {
+                    Style = Strong;
+                    StyleExpr = TRUE;
+                }
+                field("Document Date"; Rec."Document Date")
                 {
                 }
-                field("Your Reference"; "Your Reference")
+                field("Your Reference"; Rec."Your Reference")
                 {
                 }
-                field("Currency Code"; "Currency Code")
+                field("Currency Code"; Rec."Currency Code")
                 {
                 }
-                field("Document Amount"; "Document Amount")
+                field("Document Amount"; Rec."Document Amount")
                 {
                 }
-                field("Order No."; "Order No.")
+                field("Order No."; Rec."Order No.")
                 {
                 }
-                field(Exported; Exported)
+                field(Exported; Rec.Exported)
                 {
                     Style = Favorable;
                     StyleExpr = TRUE;
                 }
-                field("Export Date"; "Export Date")
+                field("Export Date"; Rec."Export Date")
                 {
                     Style = Favorable;
                     StyleExpr = TRUE;
@@ -61,11 +59,11 @@ page 50143 "EDI Export Documents"
         }
         area(factboxes)
         {
-            systempart(; Links)
+            systempart(Links; Links)
             {
                 Visible = true;
             }
-            systempart(; Notes)
+            systempart(Notes; Notes)
             {
                 Visible = true;
             }
@@ -84,13 +82,13 @@ page 50143 "EDI Export Documents"
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 PromotedOnly = true;
-
-                trigger OnAction()
-                var
-                    MGTSEDIManagement: Codeunit "50052";
-                begin
-                    MGTSEDIManagement.OpenDocument(Rec);
-                end;
+                //todo //CODEUNIT
+                // trigger OnAction()
+                // var
+                //     MGTSEDIManagement: Codeunit "50052";
+                // begin
+                //     MGTSEDIManagement.OpenDocument(Rec);
+                // end;
             }
             action(ResendDocument)
             {
@@ -100,14 +98,14 @@ page 50143 "EDI Export Documents"
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 PromotedOnly = true;
-
-                trigger OnAction()
-                var
-                    MGTSEDIManagement: Codeunit "50052";
-                begin
-                    MGTSEDIManagement.ResendDocument(Rec);
-                    CurrPage.UPDATE;
-                end;
+                //todo //CODEUNIT
+                // trigger OnAction()
+                // var
+                //     MGTSEDIManagement: Codeunit "50052";
+                // begin
+                //     MGTSEDIManagement.ResendDocument(Rec);
+                //     CurrPage.UPDATE;
+                // end;
             }
         }
     }

@@ -1,8 +1,7 @@
 table 50020 "DEL Deal"
 {
     Caption = 'DEL Deal';
-    //  TODO DrillDownPageID = 50020;
-    //     LookupPageID = 50020;
+    LookupPageID = "DEL Deal";
 
     fields
     {

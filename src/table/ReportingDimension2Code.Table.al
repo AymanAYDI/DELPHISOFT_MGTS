@@ -1,8 +1,7 @@
 table 50016 "DEL Reporting Dimension 2 Code"
 {
     Caption = 'Reporting Dimension 2 Code';
-    //    TODO //page
-    // LookupPageID = 50017;
+    LookupPageID = "DEL Reporting Dimension 2 Code";
 
     fields
     {
@@ -11,14 +10,6 @@ table 50016 "DEL Reporting Dimension 2 Code"
             Caption = 'Code';
             NotBlank = true;
 
-            trigger OnValidate()
-            var
-                GLAcc: Record "G/L Account";
-                BusUnit: Record "Business Unit";
-                Item: Record Item;
-                Location: Record Location;
-            begin
-            end;
         }
         field(2; Description; Text[50])
         {

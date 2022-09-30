@@ -253,7 +253,7 @@ table 99210 "DEL Ex_Campaign"
             FieldClass = FlowFilter;
         }
 
-        field(35; "Priority Filter"; Enum "Priority Filter ")
+        field(35; "Priority Filter"; Enum "DEL Priority Filter")
         {
             Caption = 'Priority Filter';
             FieldClass = FlowFilter;

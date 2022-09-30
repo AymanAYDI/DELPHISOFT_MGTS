@@ -46,11 +46,5 @@ table 50011 "DEL Forwarding Agent"
     fieldgroups
     {
     }
-
-    trigger OnDelete()
-    var
-        TransferRoute: Record "Transfer Route";
-    begin
-    end;
 }
 
