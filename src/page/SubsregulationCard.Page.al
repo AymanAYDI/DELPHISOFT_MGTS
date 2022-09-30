@@ -15,9 +15,9 @@ page 50103 "Subs. regulation Card"
     Caption = 'Substance regulation Card';
     PageType = Card;
     SourceTable = Table50057;
-    SourceTableView = SORTING (No., Type)
+    SourceTableView = SORTING(No., Type)
                       ORDER(Ascending)
-                      WHERE (Type = FILTER (Materials));
+                      WHERE(Type = FILTER(Materials));
 
     layout
     {

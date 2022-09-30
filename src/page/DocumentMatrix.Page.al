@@ -217,14 +217,14 @@ page 50130 "Document Matrix"
         }
     }
 
-    [Scope('Internal')]
+
     procedure SetCustomerFilter(lCustNo: Code[20])
     begin
         SETRANGE("No.", lCustNo);
         SETRANGE(Type, Type::Customer);
     end;
 
-    [Scope('Internal')]
+
     procedure SetVendorFilter(lVendNo: Code[20])
     begin
         SETRANGE("No.", lVendNo);

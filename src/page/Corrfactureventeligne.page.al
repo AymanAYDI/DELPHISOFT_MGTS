@@ -16,69 +16,69 @@ page 50014 "DEL Corr. facture vente ligne"
             {
                 IndentationColumn = DescriptionIndent;
                 IndentationControls = Description;
-                field(Type; Type)
+                field(Type; Rec.Type)
                 {
                     Editable = false;
                 }
-                field("No."; "No.")
+                field("No."; Rec."No.")
                 {
                     Editable = false;
                 }
-                field(Position; Position)
+                field(Position; Rec.Position)
                 {
                     Caption = 'Pos';
                     Editable = false;
                     Visible = false;
                 }
-                field("Cross-Reference No."; "Cross-Reference No.")
+                field("Cross-Reference No."; Rec."Cross-Reference No.")
                 {
                     Editable = false;
                     Visible = false;
                 }
-                field("Variant Code"; "Variant Code")
+                field("Variant Code"; Rec."Variant Code")
                 {
                     Editable = false;
                     Visible = false;
                 }
-                field(Description; Description)
+                field(Description; Rec.Description)
                 {
                     Editable = false;
                 }
-                field("Return Reason Code"; "Return Reason Code")
-                {
-                    Editable = false;
-                    Visible = false;
-                }
-                field("Location Code"; "Location Code")
+                field("Return Reason Code"; Rec."Return Reason Code")
                 {
                     Editable = false;
                     Visible = false;
                 }
-                field("Bin Code"; "Bin Code")
+                field("Location Code"; Rec."Location Code")
                 {
                     Editable = false;
                     Visible = false;
                 }
-                field(Quantity; Quantity)
+                field("Bin Code"; Rec."Bin Code")
+                {
+                    Editable = false;
+                    Visible = false;
+                }
+                field(Quantity; Rec.Quantity)
                 {
                     BlankZero = true;
                     Editable = false;
                 }
-                field("Unit of Measure Code"; "Unit of Measure Code")
+                field("Unit of Measure Code"; Rec."Unit of Measure Code")
                 {
                     Editable = false;
                 }
-                field("Unit of Measure"; "Unit of Measure")
-                {
-                    Editable = false;
-                    Visible = false;
-                }
-                field("Unit Cost (LCY)"; "Unit Cost (LCY)")
+                field("Unit of Measure"; Rec."Unit of Measure")
                 {
                     Editable = false;
                     Visible = false;
                 }
-                field("Unit Price"; "Unit Price")
+                field("Unit Cost (LCY)"; Rec."Unit Cost (LCY)")
+                {
+                    Editable = false;
+                    Visible = false;
+                }
+                field("Unit Price"; Rec."Unit Price")
                 {
                     BlankZero = true;
                     Editable = false;
@@ -86,59 +86,59 @@ page 50014 "DEL Corr. facture vente ligne"
                 field(LineAmountText; LineAmountText)
                 {
                     //TODO    // BlankZero = true;
-                    CaptionClass = FIELDCAPTION("Line Amount");
+                    CaptionClass = Rec.FIELDCAPTION("Line Amount");
                     Editable = false;
                 }
                 field(AmountIncludingVATText; AmountIncludingVATText)
                 {
-                    CaptionClass = FIELDCAPTION("Amount Including VAT");
+                    CaptionClass = Rec.FIELDCAPTION("Amount Including VAT");
                     Editable = false;
                 }
-                field("Line Discount %"; "Line Discount %")
+                field("Line Discount %"; Rec."Line Discount %")
                 {
                     BlankZero = true;
                     Editable = false;
                 }
-                field("Line Discount Amount"; "Line Discount Amount")
+                field("Line Discount Amount"; Rec."Line Discount Amount")
                 {
                     Editable = false;
                     Visible = false;
                 }
-                field("Allow Invoice Disc."; "Allow Invoice Disc.")
+                field("Allow Invoice Disc."; Rec."Allow Invoice Disc.")
                 {
                     Editable = false;
                     Visible = false;
                 }
-                field("Job No."; "Job No.")
+                field("Job No."; Rec."Job No.")
                 {
                     Editable = false;
                     Visible = false;
                 }
-                field("Title No."; "Title No.")
+                field("Title No."; Rec."Title No.")
                 {
                     Editable = false;
                     Visible = false;
                 }
-                field("Quote-Level"; "Quote-Level")
+                field("Quote-Level"; Rec."Quote-Level")
                 {
                     Editable = false;
                     Visible = false;
                 }
-                field(Classification; Classification)
+                field(Classification; Rec.Classification)
                 {
                     Editable = false;
                     Visible = false;
                 }
-                field("Appl.-to Item Entry"; "Appl.-to Item Entry")
+                field("Appl.-to Item Entry"; Rec."Appl.-to Item Entry")
                 {
                     Editable = false;
                     Visible = false;
                 }
-                field("Shortcut Dimension 1 Code"; "Shortcut Dimension 1 Code")
+                field("Shortcut Dimension 1 Code"; Rec."Shortcut Dimension 1 Code")
                 {
                     Visible = true;
                 }
-                field("Shortcut Dimension 2 Code"; "Shortcut Dimension 2 Code")
+                field("Shortcut Dimension 2 Code"; Rec."Shortcut Dimension 2 Code")
                 {
                     Editable = false;
                     Visible = false;
@@ -155,9 +155,9 @@ page 50014 "DEL Corr. facture vente ligne"
     begin
         DescriptionIndent := 0;
         //TODO   DescriptionOnFormat;
-        LineAmountText := FORMAT("Line Amount");
+        LineAmountText := FORMAT(Rec."Line Amount");
         LineAmountTextOnFormat(LineAmountText);
-        AmountIncludingVATText := FORMAT("Amount Including VAT");
+        AmountIncludingVATText := FORMAT(Rec."Amount Including VAT");
         AmountIncludingVATTextOnFormat(AmountIncludingVATText);
     end;
 
@@ -179,13 +179,13 @@ page 50014 "DEL Corr. facture vente ligne"
 
     procedure ShowDimensions()
     begin
-        Rec.ShowDimensions;
+        Rec.ShowDimensions();
     end;
 
 
     procedure ShowItemTrackingLines()
     begin
-        Rec.ShowItemTrackingLines;
+        Rec.ShowItemTrackingLines();
     end;
 
 
@@ -203,10 +203,10 @@ page 50014 "DEL Corr. facture vente ligne"
     local procedure DescriptionOnFormat()
     begin
         // CH2500.begin
-        IF "Quote-Level" > 0 THEN
-            DescriptionIndent := "Quote-Level" - 1;
+        IF Rec."Quote-Level" > 0 THEN
+            DescriptionIndent := Rec."Quote-Level" - 1;
 
-        IF Type IN [Type::Title, Type::"Begin-Total", Type::"End-Total"] THEN
+        IF Rec.Type IN [Rec.Type::Title, Rec.Type::"Begin-Total", Rec.Type::"End-Total"] THEN
             DescriptionEmphasize := TRUE
         // CH2500.end
     end;
@@ -214,8 +214,8 @@ page 50014 "DEL Corr. facture vente ligne"
     local procedure LineAmountTextOnFormat(var Text: Text[1024])
     begin
         // CH2500.begin
-        IF (Type = Type::"End-Total") AND ("Subtotal net" <> 0) THEN BEGIN
-            Text := FORMAT("Subtotal net", 0, '<Sign><Integer Thousand><Decimals,3>');
+        IF (Rec.Type = Rec.Type::"End-Total") AND (Rec."Subtotal net" <> 0) THEN BEGIN
+            Text := FORMAT(Rec."Subtotal net", 0, '<Sign><Integer Thousand><Decimals,3>');
             "Line AmountEmphasize" := TRUE;
         END;
         // CH2500.end
@@ -224,8 +224,8 @@ page 50014 "DEL Corr. facture vente ligne"
     local procedure AmountIncludingVATTextOnFormat(var Text: Text[1024])
     begin
         // CH2500.begin
-        IF (Type = Type::"End-Total") AND ("Subtotal gross" <> 0) THEN BEGIN
-            Text := FORMAT("Subtotal gross", 0, '<Sign><Integer Thousand><Decimals,3>');
+        IF (Rec.Type = Rec.Type::"End-Total") AND (Rec."Subtotal gross" <> 0) THEN BEGIN
+            Text := FORMAT(Rec."Subtotal gross", 0, '<Sign><Integer Thousand><Decimals,3>');
             "Amount Including VATEmphasize" := TRUE;
         END;
         // CH2500.end

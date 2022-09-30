@@ -22,14 +22,18 @@ tableextension 50046 "DEL GeneralLedgerSetup" extends "General Ledger Setup"
 
             trigger OnLookup()
             var
-                GenJournalBatchPage: Page "General Journal Batches";
                 GenJournalBatch: Record "Gen. Journal Batch";
+                GenJournalBatchPage: Page "General Journal Batches";
             begin
 
 
                 CLEAR(GenJournalBatchPage);
                 GenJournalBatchPage.LOOKUPMODE(TRUE);
+
                 // GenJournalBatchPage.SetProvBatchChoice(TRUE); TODO: 'Page "General Journal Batches"' does not contain a definition for 'SetProvBatchChoice'
+
+                GenJournalBatchPage.SetProvBatchChoice(TRUE);
+
                 IF GenJournalBatchPage.RUNMODAL() = ACTION::LookupOK THEN BEGIN
                     GenJournalBatchPage.GETRECORD(GenJournalBatch);
                     IF "DEL Provision Journal Batch" = '' THEN

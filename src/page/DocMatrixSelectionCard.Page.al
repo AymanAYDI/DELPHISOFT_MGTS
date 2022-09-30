@@ -91,7 +91,7 @@ page 50137 "DocMatrix Selection Card"
     var
         boPostVisible: Boolean;
 
-    [Scope('Internal')]
+
     procedure SetPostVisible(pboVisible: Boolean)
     begin
         boPostVisible := pboVisible;

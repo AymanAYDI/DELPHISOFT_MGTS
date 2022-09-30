@@ -6,7 +6,9 @@ page 50092 "DEL Matrix Plan of Control"
     InsertAllowed = false;
     ModifyAllowed = false;
     PageType = List;
+
     SourceTable = "DEL Regulation Matrix Line";
+
     SourceTableView = SORTING(Item Category Code, Product Group Code, Mark, Product Description, No., Type)
                       ORDER(Ascending)
                       WHERE(Type = FILTER(Plan of control));

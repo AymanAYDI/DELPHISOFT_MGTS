@@ -205,7 +205,7 @@ page 50066 "DEL Liste Notation contact"
 
                     trigger OnAction()
                     begin
-                        ShowCustVendBank();
+                        Rec.ShowCustVendBank();
                     end;
                 }
             }
@@ -343,7 +343,7 @@ page 50066 "DEL Liste Notation contact"
 
                         trigger OnAction()
                         begin
-                            CreateCustomer(Rec.ChooseCustomerTemplate());
+                            Rec.CreateCustomer(Rec.ChooseCustomerTemplate());
                         end;
                     }
                     action(MgtsVendor)

@@ -10,16 +10,16 @@ page 50019 "DEL Detail Social Audit"
         {
             repeater(Group)
             {
-                field("No."; "No.")
+                field("No."; Rec."No.")
                 {
                 }
-                field(Axe; Axe)
+                field(Axe; Rec.Axe)
                 {
                 }
-                field(Note; Note)
+                field(Note; Rec.Note)
                 {
                 }
-                field("Vendor/Contact No."; "Vendor/Contact No.")
+                field("Vendor/Contact No."; Rec."Vendor/Contact No.")
                 {
                     Visible = false;
                 }
@@ -40,9 +40,9 @@ page 50019 "DEL Detail Social Audit"
                 begin
                     IF Auditsocial.FINDFIRST THEN
                         REPEAT
-                            "No." := Auditsocial."No.";
-                            Type := Type::Vendor;
-                            INSERT;
+                            Rec."No." := Auditsocial."No.";
+                            Rec.Type := Rec.Type::Vendor;
+                            Rec.INSERT;
                         UNTIL Auditsocial.NEXT = 0;
                 end;
             }

@@ -75,36 +75,36 @@ page 50121 "Artikelkarte Katalog St. NGTS"
             part(Uebersetzungen; 4006527)
             {
                 Caption = 'Translations';
-                SubPageLink = Art = CONST (Artikel),
-                              Code = FIELD (No.);
+                SubPageLink = Art = CONST(Artikel),
+                              Code = FIELD(No.);
             }
             part(Beschreibungen; 4006555)
             {
                 Caption = 'Descriptions';
-                SubPageLink = Art = CONST (Artikel),
-                              Nummer = FIELD (No.);
+                SubPageLink = Art = CONST(Artikel),
+                              Nummer = FIELD(No.);
             }
             part(Merkmale; 4006560)
             {
                 Caption = 'Features';
-                SubPageLink = Zeilenart = CONST (Merkmal),
-                              Code = FIELD (No.);
+                SubPageLink = Zeilenart = CONST(Merkmal),
+                              Code = FIELD(No.);
             }
             part(Bilddokumente; 4006557)
             {
                 Caption = 'Picture Documents';
-                SubPageLink = Quelle = CONST (Artikel),
-                              Art = CONST (Bild),
-                              Code = FIELD (No.);
+                SubPageLink = Quelle = CONST(Artikel),
+                              Art = CONST(Bild),
+                              Code = FIELD(No.);
             }
             part(Verwendungen; 4006499)
             {
                 Caption = 'Usages';
                 Editable = false;
-                SubPageLink = Zeilenart = CONST (Artikel),
-                              Nummer = FIELD (No.);
-                SubPageView = SORTING (Zeilenart, Nummer)
-                              WHERE (Zeilenart = CONST (Artikel));
+                SubPageLink = Zeilenart = CONST(Artikel),
+                              Nummer = FIELD(No.);
+                SubPageView = SORTING(Zeilenart, Nummer)
+                              WHERE(Zeilenart = CONST(Artikel));
             }
             group(Zuordnungen)
             {
@@ -212,16 +212,16 @@ page 50121 "Artikelkarte Katalog St. NGTS"
         {
             part(MultiPicture; 4021251)
             {
-                SubPageLink = Quelle = CONST (Artikel),
-                              Art = CONST (Bild),
-                              Code = FIELD (No.);
+                SubPageLink = Quelle = CONST(Artikel),
+                              Art = CONST(Bild),
+                              Code = FIELD(No.);
                 Visible = false;
             }
             part(DescriptionFactBox; 4043662)
             {
                 Caption = 'Descriptions';
                 Provider = Beschreibungen;
-                SubPageLink = Art = FIELD (Art),
+                SubPageLink = Art = FIELD(Art),
                               Zeilennr.=FIELD(Zeilennr.),
                               Nummer=FIELD(Nummer),
                               Basiszeilennr.=FIELD(Basiszeilennr.);

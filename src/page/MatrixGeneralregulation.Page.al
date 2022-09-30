@@ -7,10 +7,12 @@ page 50090 "DEL Matrix General regulation"
     InsertAllowed = false;
     ModifyAllowed = false;
     PageType = List;
+
     SourceTable = "DEL Regulation Matrix Line";
     SourceTableView = SORTING("Item Category Code", "Product Group Code", Mark, "Product Description", "No.", Type)
                       ORDER(Ascending)
                       WHERE(Type = FILTER("General product"));
+
 
     layout
     {

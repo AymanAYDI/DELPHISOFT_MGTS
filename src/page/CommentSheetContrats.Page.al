@@ -1,4 +1,4 @@
-page 50076 "Comment Sheet Contrats"
+page 50076 "DEL Comment Sheet Contrats"
 {
     // +---------------------------------------------------------------+
     // | Logico SA                                                     |
@@ -16,8 +16,8 @@ page 50076 "Comment Sheet Contrats"
     LinksAllowed = false;
     MultipleNewLines = true;
     PageType = List;
-    SourceTable = Table97;
-    SourceTableView = SORTING (Date)
+    SourceTable = "Comment Line";
+    SourceTableView = SORTING(Date)
                       ORDER(Descending);
 
     layout
@@ -26,13 +26,13 @@ page 50076 "Comment Sheet Contrats"
         {
             repeater()
             {
-                field(Date; Date)
+                field("Date"; Rec.Date)
                 {
                 }
-                field(Comment; Comment)
+                field(Comment; Rec.Comment)
                 {
                 }
-                field(Code; Code)
+                field("Code"; Rec.Code)
                 {
                     Visible = false;
                 }
@@ -49,7 +49,8 @@ page 50076 "Comment Sheet Contrats"
 
     trigger OnNewRecord(BelowxRec: Boolean)
     begin
-        SetUpNewLine;
+        Rec.SetUpNewLine();
     end;
 }
+
 

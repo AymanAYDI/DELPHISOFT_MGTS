@@ -10,6 +10,7 @@ page 50070 "DEL Liste suivi liasse doc"
     //                   ORDER(Ascending)
     //                   WHERE("Vendor Posting Group"=FILTER(MARCH));
 
+
     layout
     {
         area(content)

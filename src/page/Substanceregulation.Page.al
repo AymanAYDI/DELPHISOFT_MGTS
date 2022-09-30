@@ -17,9 +17,9 @@ page 50102 "Substance regulation"
     Editable = false;
     PageType = List;
     SourceTable = Table50057;
-    SourceTableView = SORTING (No., Type)
+    SourceTableView = SORTING(No., Type)
                       ORDER(Ascending)
-                      WHERE (Type = FILTER (Materials));
+                      WHERE(Type = FILTER(Materials));
 
     layout
     {

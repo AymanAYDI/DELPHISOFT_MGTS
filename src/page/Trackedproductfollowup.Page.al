@@ -114,7 +114,7 @@ page 50012 "DEL Tracked product follow up"
         //DEL.SAZ 17.09.2018
         motif := '';
         IF Item.GET(Rec."No.") THEN
-            IF Listedesmotifs.GET(Item."Code motif de suivi") THEN
+            IF Listedesmotifs.GET(Item."DEL Code motif de suivi") THEN
                 motif := Listedesmotifs.Motif;
     end;
 

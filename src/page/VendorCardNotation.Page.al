@@ -21,7 +21,7 @@ page 50064 "DEL Vendor Card Notation"
 
                     trigger OnAssistEdit()
                     begin
-                        IF AssistEdit(xRec) THEN
+                        IF Rec.AssistEdit(xRec) THEN
                             CurrPage.UPDATE();
                     end;
                 }

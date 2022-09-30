@@ -167,7 +167,7 @@ page 50060 "DEL Correctif Purchase Invoice"
 
                     trigger OnAction()
                     begin
-                        ShowDimensions();
+                        Rec.ShowDimensions();
                     end;
                 }
             }
@@ -197,7 +197,7 @@ page 50060 "DEL Correctif Purchase Invoice"
 
                 trigger OnAction()
                 begin
-                    Navigate();
+                    Rec.Navigate();
                 end;
             }
             action("Mise à jour affaire")
@@ -260,7 +260,7 @@ page 50060 "DEL Correctif Purchase Invoice"
 
     trigger OnOpenPage()
     begin
-        SetSecurityFilterOnRespCenter();
+        Rec.SetSecurityFilterOnRespCenter();
     end;
 
     var

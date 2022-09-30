@@ -1,4 +1,5 @@
-page 50078 "Item Quality List"
+#pragma implicitwith disable
+page 50078 "DEL Item Quality List"
 {
     // +---------------------------------------------------------------+
     // | Logico SA                                                     |
@@ -15,7 +16,7 @@ page 50078 "Item Quality List"
     //              THM     29.04.16           add fields
 
     Caption = 'Item Quality List';
-    CardPageID = "Item Quality";
+    CardPageID = "DEL Item Quality";
     DataCaptionFields = "Regl. Type Filter", "Regl. No. Filter";
     DeleteAllowed = false;
     Editable = false;
@@ -24,7 +25,7 @@ page 50078 "Item Quality List"
     RefreshOnActivate = true;
     SaveValues = true;
     ShowFilter = true;
-    SourceTable = Table27;
+    SourceTable = Item;
 
     layout
     {
@@ -33,30 +34,30 @@ page 50078 "Item Quality List"
             repeater("Général")
             {
                 Caption = 'General';
-                field("No."; "No.")
+                field("No."; Rec."No.")
                 {
                     Editable = false;
                 }
-                field(Description; Description)
+                field(Description; Rec.Description)
                 {
                     Editable = false;
                 }
-                field("Base Unit of Measure"; "Base Unit of Measure")
+                field("Base Unit of Measure"; Rec."Base Unit of Measure")
                 {
                     Editable = false;
                 }
-                field(Blocked; Blocked)
+                field(Blocked; Rec.Blocked)
                 {
                     Caption = 'Quality Blocked';
                     Editable = false;
                 }
-                field("Item Category Code"; "Item Category Code")
+                field("Item Category Code"; Rec."Item Category Code")
                 {
                 }
                 field("Item Category Label"; "Item Category Label")
                 {
                 }
-                field("Product Group Code"; "Product Group Code")
+                field("Product Group Code"; Rec."Product Group Code")
                 {
                 }
                 field("Product Group Label"; "Product Group Label")
@@ -68,7 +69,7 @@ page 50078 "Item Quality List"
                 field("Marque Produit"; "Marque Produit")
                 {
                 }
-                field("Product Description"; "Product Description")
+                field("Product Description"; Rec."Product Description")
                 {
                 }
                 field("NGTS Quality Expert"; "NGTS Quality Expert")
@@ -147,14 +148,9 @@ page 50078 "Item Quality List"
                     Promoted = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
-                    RunObject = Page 50111;
-                    RunPageLink = Item Category Code=FIELD(Item Category Code),
-                                  Product Group Code=FIELD(Product Group Code),
-                                  Mark=FIELD(Marque Produit),
-                                  Product Description=FIELD(Product Description);
-                    RunPageView = SORTING(Item Category Code,Product Group Code,Mark,Product Description,No.,Type)
-                                  ORDER(Ascending)
-                                  WHERE(Type=FILTER(General product));
+                    RunObject = Page "Matrix General regulation List";
+                    RunPageLink = "Item Category Code" = FIELD("Item Category Code"), "Product Group Code" = FIELD("Product Group Code"), Mark = FIELD("Marque Produit"), "Product Description" = FIELD("Product Description");
+                    RunPageView = SORTING("Item Category Code", "Product Group Code", Mark, "Product Description", "No.", Type) ORDER(Ascending) WHERE(Type = FILTER("General product"));
                     Visible = RegGenerale;
                 }
                 action("Régl. Matière")
@@ -164,14 +160,9 @@ page 50078 "Item Quality List"
                     Promoted = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
-                    RunObject = Page 50112;
-                                    RunPageLink = Item Category Code=FIELD(Item Category Code),
-                                  Product Group Code=FIELD(Product Group Code),
-                                  Mark=FIELD(Marque Produit),
-                                  Product Description=FIELD(Product Description);
-                    RunPageView = SORTING(Item Category Code,Product Group Code,Mark,Product Description,No.,Type)
-                                  ORDER(Ascending)
-                                  WHERE(Type=FILTER(Materials));
+                    RunObject = Page "Matrix Substance regul List";
+                    RunPageLink = "Item Category Code" = FIELD("Item Category Code"), "Product Group Code" = FIELD("Product Group Code"), Mark = FIELD("Marque Produit"), "Product Description" = FIELD("Product Description");
+                    RunPageView = SORTING("Item Category Code", "Product Group Code", Mark, "Product Description", "No.", Type) ORDER(Ascending) WHERE(Type = FILTER(Materials));
                     Visible = RegMat;
                 }
                 action("Reg. plan of control")
@@ -181,15 +172,12 @@ page 50078 "Item Quality List"
                     Promoted = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
-                    RunObject = Page 50113;
-                                    RunPageLink = Item Category Code=FIELD(Item Category Code),
-                                  Product Group Code=FIELD(Product Group Code),
-                                  Mark=FIELD(Marque Produit),
-                                  Product Description=FIELD(Product Description);
+                    RunObject = Page "Matrix Plan of Control List";
+                    RunPageLink = "Item Category Code" = FIELD("Item Category Code"), "Product Group Code" = FIELD("Product Group Code"), Mark = FIELD("Marque Produit"), "Product Description" = FIELD("Product Description");
                     RunPageMode = View;
-                    RunPageView = SORTING(Item Category Code,Product Group Code,Mark,Product Description,No.,Type)
+                    RunPageView = SORTING("Item Category Code", "Product Group Code", Mark, "Product Description", "No.", Type)
                                   ORDER(Ascending)
-                                  WHERE(Type=FILTER(Plan of control));
+                                  WHERE(Type = FILTER("Plan of control"));
                     Visible = Regplan;
                 }
                 action("Co&mments")
@@ -198,9 +186,8 @@ page 50078 "Item Quality List"
                     Image = ViewComments;
                     Promoted = true;
                     PromotedIsBig = true;
-                    RunObject = Page 124;
-                                    RunPageLink = Table Name=CONST(Item),
-                                  No.=FIELD(No.);
+                    RunObject = Page "Comment Sheet";
+                    RunPageLink = "Table Name" = CONST(Item), "No." = FIELD("No.");
                 }
             }
         }
@@ -208,16 +195,16 @@ page 50078 "Item Quality List"
 
     trigger OnAfterGetRecord()
     begin
-        CALCFIELDS("Regl. Generale","Regl. Matiere","Regl. Plan Control");
-        RegGenerale:="Regl. Generale";
-        RegMat:="Regl. Matiere";
-        RegPlan:="Regl. Plan Control";
+        CALCFIELDS("Regl. Generale", "Regl. Matiere", "Regl. Plan Control");
+        RegGenerale := "Regl. Generale";
+        RegMat := "Regl. Matiere";
+        RegPlan := "Regl. Plan Control";
     end;
 
     trigger OnOpenPage()
     begin
-         SETFILTER("Regl. Type Filter",'1|2|3');
-         SETFILTER("Regl. No. Filter",'<>%1','');
+        SETFILTER("Regl. Type Filter", '1|2|3');
+        SETFILTER("Regl. No. Filter", '<>%1', '');
     end;
 
     var
@@ -225,8 +212,8 @@ page 50078 "Item Quality List"
         RegMat: Boolean;
         RegPlan: Boolean;
         Regelect: Boolean;
-        Item_Rec: Record "27";
-        LiaisseProduit: Record "50056";
+        Item_Rec: Record "Item";
+        LiaisseProduit: Record "DEL Item Quality forms";
         i: Integer;
 }
 

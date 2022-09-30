@@ -19,7 +19,7 @@ page 50126 "GL Entries For Reverse"
     PageType = List;
     Permissions = TableData 17 = rm;
     SourceTable = Table17;
-    SourceTableView = SORTING (G/L Account No., Posting Date)
+    SourceTableView = SORTING(G/L Account No., Posting Date)
                       ORDER(Descending);
 
     layout
@@ -339,7 +339,7 @@ page 50126 "GL Entries For Reverse"
         EXIT(STRSUBSTNO('%1 %2', GLAcc."No.", GLAcc.Name))
     end;
 
-    [Scope('Internal')]
+
     procedure SetRelatedOrder(NewRelatedOrder: Record "36")
     begin
 
@@ -347,7 +347,7 @@ page 50126 "GL Entries For Reverse"
         RelatedOrder := NewRelatedOrder;
     end;
 
-    [Scope('Internal')]
+
     procedure SelectGLEntryForReverse()
     var
         GLEntry: Record "17";

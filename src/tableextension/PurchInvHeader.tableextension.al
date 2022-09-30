@@ -12,16 +12,16 @@ tableextension 50008 "DEL PurchInvHeader" extends "Purch. Inv. Header"
         {
             Caption = 'Type Order EDI';
 
-            //TODO  // TableRelation = "Type Order EDI";
+            TableRelation = "DEL Type Order EDI";
         }
         field(50015; "DEL GLN"; Text[30])
         {
             Caption = 'GLN';
-            Description = 'MGTS10.010';
+
         }
         field(50016; "DEL Type Order EDI Description"; Text[50])
         {
-            //TODO  //   CalcFormula = Lookup("Type Order EDI".Description WHERE(Code = FIELD("Type Order EDI")));
+            CalcFormula = Lookup("DEL Type Order EDI".Description WHERE(Code = FIELD("DEL Type Order EDI")));
             Caption = 'Type Order EDI Description';
             Editable = false;
             FieldClass = FlowField;

@@ -90,7 +90,7 @@ tableextension 50033 "DEL Contact" extends Contact
             begin
                 IF "DEL Realisation Date Quality" <> 0D THEN BEGIN
                     TESTFIELD("DEL Note Quality");
-                    Note_Rec.RESET;
+                    Note_Rec.RESET();
                     IF Note_Rec.GET("DEL Note Quality", Note_Rec."Type audit"::Quality) THEN
                         IF FORMAT(Note_Rec."Revision Calculation") = '' THEN
                             VALIDATE("DEL Revision Date quality", 0D)
@@ -146,8 +146,10 @@ tableextension 50033 "DEL Contact" extends Contact
             trigger OnValidate()
             begin
                 IF "DEL Realisation Date Soc" <> 0D THEN BEGIN
-                    TESTFIELD("Note Soc");
+
+                    TESTFIELD("DEL Note Soc");
                     Note_Rec.RESET;
+
                     IF Note_Rec.GET("DEL Note Soc", Note_Rec."Type audit"::social) THEN
                         IF FORMAT(Note_Rec."Revision Calculation") = '' THEN
                             VALIDATE("DEL Revision Date Soc", 0D)
@@ -204,7 +206,7 @@ tableextension 50033 "DEL Contact" extends Contact
             begin
                 IF "DEL Realisation Date Env" <> 0D THEN BEGIN
                     TESTFIELD("DEL Note Env");
-                    Note_Rec.RESET;
+                    Note_Rec.RESET();
                     IF Note_Rec.GET("DEL Note Env", Note_Rec."Type audit"::Environmental) THEN
                         IF FORMAT(Note_Rec."Revision Calculation") = '' THEN
                             VALIDATE("DEL Revision Date env", 0D)
@@ -299,6 +301,7 @@ tableextension 50033 "DEL Contact" extends Contact
     }
 
     var
-    // Note_Rec: Record "Vendor Ledger Entry"; TODO still in process
+
+        Note_Rec: Record "DEL Note";
 }
 

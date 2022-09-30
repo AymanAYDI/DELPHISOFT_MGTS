@@ -23,12 +23,10 @@ table 99202 "DEL Ex_Country/Region"
         {
             Caption = 'Intrastat Code';
         }
-        field(8; "Address Format"; Option)
+        field(8; "Address Format"; Enum "DEL Address format")
         {
             Caption = 'Address Format';
             InitValue = "City+Post Code";
-            OptionCaption = 'Post Code+City,City+Post Code,City+County+Post Code,Blank Line+Post Code+City';
-            OptionMembers = "Post Code+City","City+Post Code","City+County+Post Code","Blank Line+Post Code+City";
         }
         field(9; "Contact Address Format"; Option)
         {

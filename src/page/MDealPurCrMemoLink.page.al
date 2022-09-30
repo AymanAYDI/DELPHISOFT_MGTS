@@ -127,7 +127,7 @@ page 50083 "DEL M Deal Pur. Cr. Memo Link"
         // Position_CU: Codeunit "50022";
         Text19022230: Label 'M A N U A L   L I N K I N G';
 
-    [Scope('Internal')]
+
     procedure ChangeCodeAchat_FNC()
     var
         PurchCreditMemoLine_Re_Loc: Record "Purch. Cr. Memo Line";

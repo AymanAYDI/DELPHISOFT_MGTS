@@ -4,11 +4,9 @@ tableextension 50043 "DEL Language" extends Language
     {
         field(4006496; "DEL Katalogsprache"; Boolean)
         {
-            Description = 'AL.KVK5.0';
         }
         field(4006497; "DEL ISO Code"; Text[3])
         {
-            Description = 'AL.KVK5.0';
         }
     }
     keys

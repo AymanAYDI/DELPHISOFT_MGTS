@@ -231,7 +231,7 @@ page 50098 "NGTS DAF-CG Role Center"
                 Caption = 'Balance';
                 Image = Balance;
                 RunObject = Page 27;
-                RunPageView = WHERE (Balance (LCY)=FILTER(<>0));
+                RunPageView = WHERE(Balance (LCY)=FILTER(<>0));
             }
             action("Purchase Orders")
             {

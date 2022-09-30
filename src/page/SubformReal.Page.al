@@ -180,7 +180,7 @@ page 50034 "DEL Subform Real"
                                         IF element_Re_Loc.FIND('-') THEN BEGIN
 
                                             GLEntry_Re_Loc.RESET();
-                                            GLEntry_Re_Loc.SETRANGE("G/L Account No.", "Subject No.");
+                                            GLEntry_Re_Loc.SETRANGE("G/L Account No.", Rec."Subject No.");
 
                                             IF GLEntry_Re_Loc."Document Type" = GLEntry_Re_Loc."Document Type"::Invoice THEN BEGIN
                                                 GLEntry_Re_Loc.SETRANGE("Document Type", GLEntry_Re_Loc."Document Type"::Invoice);
@@ -191,7 +191,7 @@ page 50034 "DEL Subform Real"
                                                     GLEntry_Re_Loc.SETFILTER(Amount, '>%1', 0);
                                                 END;
 
-                                            GLEntry_Re_Loc.SETRANGE("Document No.", "Type No.");
+                                            GLEntry_Re_Loc.SETRANGE("Document No.", Rec."Type No.");
                                             GLEntry_Re_Loc.SETFILTER("Global Dimension 1 Code", '%1|%2', '', element_Re_Loc."Type No.");
 
                                             IF GLEntry_Re_Loc.FIND('-') THEN BEGIN

@@ -19,7 +19,7 @@ tableextension 50005 "DEL SalesCrMemoHeader" extends "Sales Cr.Memo Header"
         {
             Caption = 'Type Order EDI';
 
-            //TODO // TableRelation = "Type Order EDI";
+            TableRelation = "DEL Type Order EDI";
         }
         field(50007; "DEL GLN"; Text[30])
         {
@@ -28,7 +28,7 @@ tableextension 50005 "DEL SalesCrMemoHeader" extends "Sales Cr.Memo Header"
         }
         field(50008; "DEL Type Order EDI Description"; Text[50])
         {
-            //TODO //    CalcFormula = Lookup("Type Order EDI".Description WHERE(Code = FIELD("Type Order EDI")));
+            CalcFormula = Lookup("DEL Type Order EDI".Description WHERE(Code = FIELD("DEL Type Order EDI")));
             Caption = 'Type Order EDI Description';
 
             Editable = false;
@@ -49,12 +49,9 @@ tableextension 50005 "DEL SalesCrMemoHeader" extends "Sales Cr.Memo Header"
 
             Editable = false;
         }
-        field(50022; "DEL Status Purchase Order Create"; Option)
+        field(50022; "DEL Status Purch. Order Create"; enum "DEL Status Purchase Order")
         {
             Caption = 'Statut création commande achat';
-
-            OptionCaption = ' ,Création demande d''achat,Création affaire,Commande créée';
-            OptionMembers = " ","Create Req. Worksheet","Create Deal",Created;
         }
         field(50023; "DEL Error Text Purch. Order Create"; Text[250])
         {

@@ -2,8 +2,8 @@ page 50124 "Erreur import Kiriba"
 {
     PageType = List;
     SourceTable = Table50065;
-    SourceTableView = SORTING (N° facture fournisseur, No Traitement)
-                      WHERE (Erreur = FILTER (<> ''));
+    SourceTableView = SORTING(N° facture fournisseur, No Traitement)
+                      WHERE(Erreur = FILTER(<> ''));
 
     layout
     {
