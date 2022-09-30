@@ -1,4 +1,4 @@
-page 50134 "DocMatrix Mail Codes"
+page 50134 "DEL DocMatrix Mail Codes"
 {
     // 20190227/DEL/PD/LOP003 - object created
     // 20200916/DEL/PD/CR101  - new action button "Mail Place Holders"
@@ -14,7 +14,7 @@ page 50134 "DocMatrix Mail Codes"
         {
             repeater(Group)
             {
-                field(Code; Code)
+                field("Code"; Code)
                 {
                 }
                 field("Language Code"; "Language Code")
@@ -90,7 +90,7 @@ page 50134 "DocMatrix Mail Codes"
         BodyText: Text;
         PreviousBodyText: Text;
 
-    [Scope('Internal')]
+
     procedure ReadBLOB(pCode: Code[20]; pLanguage: Code[10])
     var
         DocMatrixEmailCodes: Record "50070";
@@ -121,7 +121,7 @@ page 50134 "DocMatrix Mail Codes"
 
     end;
 
-    [Scope('Internal')]
+
     procedure WriteBLOB(pCode: Code[20]; pLanguage: Code[10])
     var
         MyBigText: BigText;
@@ -138,7 +138,7 @@ page 50134 "DocMatrix Mail Codes"
 
     end;
 
-    [Scope('Internal')]
+
     procedure SetBodyText(pbtxBigText: BigText)
     begin
         /*--- Code obsolete ---

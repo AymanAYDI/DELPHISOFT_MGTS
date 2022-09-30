@@ -141,7 +141,7 @@ page 50080 "Manual Deal Invoice Linking"
                                         Element_Cu.FNC_Add_New_Invoice_Connection(
                                           element_ID_Co_Loc, dss_Re_Loc, ConnectionType_Op_Par::Element, elementConnectionSplitIndex);
                                         elementConnectionSplitIndex += 1;
-                                        //MESSAGE('insert invoice connection ok');
+                                    //MESSAGE('insert invoice connection ok');
 
                                     UNTIL (dss_Re_Loc.NEXT() = 0);
 
@@ -211,7 +211,7 @@ page 50080 "Manual Deal Invoice Linking"
         UpdateRequestManager_Cu: Codeunit "50032";
         Text19022230: Label 'M A N U A L   L I N K I N G';
 
-    [Scope('Internal')]
+
     procedure FNC_ShipmentLookup()
     var
         deal_Re_Loc: Record "50020";

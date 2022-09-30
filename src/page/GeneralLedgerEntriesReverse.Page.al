@@ -18,7 +18,7 @@ page 50127 "General Ledger Entries Reverse"
     Editable = false;
     PageType = List;
     SourceTable = Table17;
-    SourceTableView = SORTING (Document No., Posting Date)
+    SourceTableView = SORTING(Document No., Posting Date)
                       ORDER(Descending);
 
     layout
@@ -406,7 +406,7 @@ page 50127 "General Ledger Entries Reverse"
         EXIT(STRSUBSTNO('%1 %2', GLAcc."No.", GLAcc.Name))
     end;
 
-    [Scope('Internal')]
+
     procedure SetGLEntry(var GLEntry: Record "17")
     begin
 

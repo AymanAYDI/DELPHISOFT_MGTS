@@ -1,82 +1,17 @@
 tableextension 50026 "DEL SalesHeader" extends "Sales Header"
 {
-    // THM       16.03.17      add field 50001,50002,50003
-    // THM160317 16.03.17      OnInsert
-    // THM121217 12.12.17      Validate posting Date
-    // THM       16.03.18      add field "Event Code"
-    // DEl.SAZ   21.06.19      Add field "Estimated Delivery Date"
-    // MHH       23.07.19      Changed field: "Customer Price Group" (Properties: TableRelation, Lenght)
-    //                         Changed trigger: Customer Price Group - OnLookup()
-    // 
-    // ------------------------------------------------------------------------------------------
-    // Sign    : Maria Hr. Hristova = mhh
-    // Sign    : Emil Hr. Hristov = ehh
-    // 
-    // Version : MGTS10.00.001,MGTS10.009,MGTS10.013,MGTS10.014,MGTS10.015,MGTS10.019,MGTS10.022,
-    //           MGTS10.025
-    // 
-    // ------------------------------------------------------------------------------------------
-    // No.    Version          Date        Sign    Description
-    // ------------------------------------------------------------------------------------------
-    // 001    MGTS10.00.001    18.12.19    mhh     List of changes:
-    //                                              Created function: SelectGLEntryForReverse()
-    //                                              Created function: ShowSelectedEntriesForReverse
-    // 
-    // 002    MGTS10.009       09.09.20    ehh     List of changes:
-    //                                              Added new field: 50006 Type Order ODI
-    //                                              Added new field: 50008 Type Order ODI Description
-    // 
-    // 003    MGTS10.010       09.09.20    ehh     List of changes:
-    //                                              Added new field: 50007 GLN
-    // 
-    // 004     MGTS10.013       29.10.20    mhh     List of changes:
-    //                                              Changed function: RecreateSalesLines()
-    //                                              Changed function: CreateSalesLine()
-    // 
-    // 005     MGTS10.014       23.11.20    mhh     List of changes:
-    //                                              Changed trigger: Ship-to Code - OnValidate()
-    //                                              Changed function: CreateSalesLine()
-    // 
-    // 006     MGTS10.015       26.11.20    mhh     List of changes:
-    //                                              Added new field: 50009 "Has Spec. Purch. Order"
-    // 
-    // 007     MGTS10.019       14.12.20    mhh     List of changes:
-    //                                              Added new field: 50010 "Export With EDI"
-    // 
-    // 008     MGTS10.022       28.01.21    mhh     List of changes:
-    //                                              Changed function: CreateSalesLine()
-    // 
-    // 009     MGTS10.025       17.02.21    mhh     List of changes:
-    //                                              Changed type of field: 50004 "Event Code"
-    // ------------------------------------------------------------------------------------------
-    // 
-    // MGTSEDI10.00.00.21 | 18.01.2021 | EDI Management : Add table relation field GLN
-    // 
-    // MGTSEDI10.00.00.22 | 11.02.2021 | EDI Management : Add field 50010
-    // 
-    // MGTSEDI10.00.00.23 | 21.05.2021 | EDI Management : Add fields
-    //                                                     To Create Purchase Order,
-    //                                                     Purchase Order Create Date,
-    //                                                     Status Purchase Order Create
-    //                                                     Text Purch. Order Create
-    //                                                   Error Purch. Order Create
-    // 
-    // MGTS10.029  | 13.07.2021 | Add C\AL :
-    // 
-    // 
-    // MGTS10.031  | 22.07.2021 | Add fields : 50050, 50051
 
     //Unsupported feature: Property Insertion (Permissions) on ""Sales Header"(Table 36)".
 
     fields
     {
-        modify("Customer Price Group")
-        {
+        //TODO //Modify 
+        // modify("Customer Price Group")
+        // {
 
-            //Unsupported feature: Property Modification (Data type) on ""Customer Price Group"(Field 34)".
+        //     //Unsupported feature: Property Modification (Data type) on ""Customer Price Group"(Field 34)".
 
-            Description = 'MGTS0124';
-        }
+        // }
 
 
         //Unsupported feature: Code Modification on ""Sell-to Customer No."(Field 2).OnValidate".
@@ -322,12 +257,11 @@ tableextension 50026 "DEL SalesHeader" extends "Sales Header"
             Caption = 'Create Time';
             Editable = false;
         }
-        field(50004; "DEL Event Code"; Option)
+        field(50004; "DEL Event Code"; enum "DEL Code Event")
         {
             Caption = 'Event Code';
             Description = 'EDI,MGTS10.025';
-            OptionCaption = 'NORM,TYRE,SPARE,SMOOVE,ISP,CANCELLED';
-            OptionMembers = NORM,TYRE,SPARE,SMOOVE,ISP,CANCELLED;
+
         }
         field(50005; "DEL Estimated Delivery Date"; Date)
         {
@@ -351,20 +285,20 @@ tableextension 50026 "DEL SalesHeader" extends "Sales Header"
         {
             Caption = 'Type Order EDI';
 
-            //TODO // TableRelation = "Type Order EDI";
+            TableRelation = "DEL Type Order EDI";
         }
         field(50007; "DEL GLN"; Text[30])
         {
             Caption = 'Delivery GLN';
 
-            //TODO //   TableRelation = "EDI Delivery GLN Customer";
+            TableRelation = "DEL EDI Delivery GLN Customer";
             //This property is currently not supported
             //TestTableRelation = false;
-            //TODO    ValidateTableRelation = false;
+            ValidateTableRelation = false;
         }
         field(50008; "DEL Type Order EDI Description"; Text[50])
         {
-            // TODO //   CalcFormula = Lookup("Type Order EDI".Description WHERE(Code = FIELD("Type Order EDI")));
+            CalcFormula = Lookup("DEL Type Order EDI".Description WHERE(Code = FIELD("DEL Type Order EDI")));
             Caption = 'Type Order EDI Description';
 
             Editable = false;
@@ -395,12 +329,10 @@ tableextension 50026 "DEL SalesHeader" extends "Sales Header"
 
             Editable = false;
         }
-        field(50022; "DEL Status Purchase Order Create"; Option)
+        field(50022; "DEL Status Purch. Order Create"; enum "DEL Status Purchase Order")
         {
             Caption = 'Statut création commande achat';
 
-            OptionCaption = ' ,Création demande d''achat,Création affaire,Commande créée';
-            OptionMembers = " ","Create Req. Worksheet","Create Deal",Created;
         }
         field(50023; "DEL Error Text Purch. Order Create"; Text[250])
         {
@@ -418,7 +350,7 @@ tableextension 50026 "DEL SalesHeader" extends "Sales Header"
                 TextCst001: Label 'This change will reset the purchase order creation status. Do you want to continue?';
             begin
                 IF NOT HideValidationDialog THEN
-                    IF ("DEL Error Purch. Order Create" = FALSE) AND ("DEL Status Purchase Order Create" <> "DEL Status Purchase Order Create"::Created) THEN
+                    IF ("DEL Error Purch. Order Create" = FALSE) AND ("DEL Status Purch. Order Create" <> "DEL Status Purch. Order Create"::Created) THEN
                         IF CONFIRM(TextCst001, FALSE) THEN BEGIN
                             "DEL Error Text Purch. Order Create" := '';
                             "DEL To Create Purchase Order" := TRUE;
@@ -443,35 +375,36 @@ tableextension 50026 "DEL SalesHeader" extends "Sales Header"
     procedure SelectGLEntryForReverse()
     var
         GLEntry: Record "G/L Entry";
-        GLEntries: Page "General Ledger Entries";
         ReverseGLEntry: Record "G/L Entry";
         GLSetup: Record "General Ledger Setup";
+        GLEntries: Page "General Ledger Entries";
+
     begin
 
         //MGTS10.00.001; 001; mhh; entire function
         IF NOT GLSetup.GET() THEN
             GLSetup.INIT();
 
-        GLSetup.TESTFIELD("Provision Source Code");
-        GLSetup.TESTFIELD("Provision Journal Batch");
+        GLSetup.TESTFIELD("DEL Provision Source Code");
+        GLSetup.TESTFIELD("DEL Provision Journal Batch");
 
         GLEntry.RESET();
         GLEntry.SETCURRENTKEY("Document No.", "Posting Date");
         GLEntry.FILTERGROUP(2);
-        GLEntry.SETRANGE("Source Code", GLSetup."Provision Source Code");
-        GLEntry.SETFILTER("Journal Batch Name", GLSetup."Provision Journal Batch");
-        GLEntry.SETRANGE("Customer Provision", "Bill-to Customer No.");
-        GLEntry.SETRANGE("Reverse With Doc. No.", Text50001);
+        GLEntry.SETRANGE("Source Code", GLSetup."DEL Provision Source Code");
+        GLEntry.SETFILTER("Journal Batch Name", GLSetup."DEL Provision Journal Batch");
+        GLEntry.SETRANGE("DEL Customer Provision", "Bill-to Customer No.");
+        GLEntry.SETRANGE("DEL Reverse With Doc. No.", Text50001);
         GLEntry.FILTERGROUP(0);
 
         CLEAR(GLEntries);
         GLEntries.SETTABLEVIEW(GLEntry);
         GLEntries.LOOKUPMODE(TRUE);
         IF GLEntries.RUNMODAL() = ACTION::LookupOK THEN BEGIN
-            GLEntries.SetGLEntry(ReverseGLEntry);
+            //TODO // GLEntries.SetGLEntry(ReverseGLEntry);
             IF ReverseGLEntry.FINDSET() THEN
                 REPEAT
-                    ReverseGLEntry."Reverse With Doc. No." := "No.";
+                    ReverseGLEntry."DEL Reverse With Doc. No." := "No.";
                     ReverseGLEntry.MODIFY();
                 UNTIL ReverseGLEntry.NEXT() = 0;
         END;
@@ -487,13 +420,13 @@ tableextension 50026 "DEL SalesHeader" extends "Sales Header"
         TESTFIELD("No.");
 
         GLEntry.RESET();
-        GLEntry.SETCURRENTKEY("Reverse With Doc. No.");
+        GLEntry.SETCURRENTKEY("DEL Reverse With Doc. No.");
         GLEntry.FILTERGROUP(2);
-        GLEntry.SETRANGE("Reverse With Doc. No.", "No.");
+        GLEntry.SETRANGE("DEL Reverse With Doc. No.", "No.");
         GLEntry.FILTERGROUP(4);
 
         CLEAR(GLEntriesForReverse);
-        GLEntriesForReverse.SetRelatedOrder(Rec);
+        //TODO        // GLEntriesForReverse.SetRelatedOrder(Rec);
         GLEntriesForReverse.SETTABLEVIEW(GLEntry);
         GLEntriesForReverse.RUN();
     end;

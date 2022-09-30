@@ -131,7 +131,7 @@ page 50082 "M Deal Cr. Memo Linking"
         Position_CU: Codeunit "50022";
         Text19022230: Label 'M A N U A L   L I N K I N G';
 
-    [Scope('Internal')]
+
     procedure ChangeCodeAchat_FNC()
     var
         SalesCreditMemoLine_Re_Loc: Record "115";

@@ -72,7 +72,7 @@ page 50114 "Matrix Text"
         GetNextLineNo(Rec, FALSE);
     end;
 
-    [Scope('Internal')]
+
     procedure EditText()
     var
         RecRef: RecordRef;

@@ -10,4 +10,12 @@ enum 50003 "DEL Type liasse"
     {
         Caption = 'General purchasing term';
     }
+    value(2; "CG d'achats NGTS")
+    {
+        Caption = 'CG dachats NGTS';
+    }
+    value(3; "Charte ethique")
+    {
+        Caption = 'Charte ethique';
+    }
 }

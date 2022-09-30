@@ -12,16 +12,16 @@ page 50011 "DEL Forwarding Agents"
         {
             repeater(Controle1)
             {
-                field("Vendor No."; "Vendor No.")
+                field("Vendor No."; Rec."Vendor No.")
                 {
                 }
-                field("Location Code"; "Location Code")
+                field("Location Code"; Rec."Location Code")
                 {
                 }
-                field("Forwarding Agent"; "Forwarding Agent")
+                field("Forwarding Agent"; Rec."Forwarding Agent")
                 {
                 }
-                field("Departure port"; "Departure port")
+                field("Departure port"; Rec."Departure port")
                 {
                 }
             }

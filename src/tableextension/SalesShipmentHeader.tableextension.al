@@ -36,7 +36,7 @@ tableextension 50001 "DEL SalesShipmentHeader" extends "Sales Shipment Header"
                     IF PAGE.RUNMODAL(50140, Trackinggeneral) = ACTION::LookupOK THEN
                         //VALIDATE("Primary Contact No.",Cont."No.");
                         //MESSAGE(Trackinggeneral.Container_no);
-                        //TODO // VALIDATE(Container_no, Trackinggeneral.Container_no);
+            VALIDATE("DEL Container_no", Trackinggeneral.Container_no);
                         MODIFY();
                 END;
             end;
@@ -54,7 +54,7 @@ tableextension 50001 "DEL SalesShipmentHeader" extends "Sales Shipment Header"
         }
         field(50008; "DEL Type Order EDI Description"; Text[50])
         {
-            //TODO //    CalcFormula = Lookup ("Type Order EDI".Description WHERE (Code = FIELD ("Type Order EDI")));
+       CalcFormula = Lookup ("DEL Type Order EDI".Description WHERE (Code = FIELD ("DEL Type Order EDI")));
             Caption = 'Type Order EDI Description';
 
             Editable = false;
@@ -75,7 +75,7 @@ tableextension 50001 "DEL SalesShipmentHeader" extends "Sales Shipment Header"
 
             Editable = false;
         }
-        field(50022; "DEL Status Purchase Order Create"; Option)
+        field(50022; "DEL Status Purch. Order Create"; Option)
         {
             Caption = 'Statut création commande achat';
 
