@@ -2,8 +2,8 @@ table 50001 "DEL Texte Regulation"
 {
     Caption = 'DEL Texte Regulation';
 
-    //TODO DrillDownPageID = 50001;
-    // LookupPageID = 50001;
+    DrillDownPageID = "DEL Regulation Text";
+    LookupPageID = "DEL Regulation Text";
 
     fields
     {
@@ -21,7 +21,7 @@ table 50001 "DEL Texte Regulation"
             AutoIncrement = true;
             Caption = 'Line No.';
         }
-        field(4; Text; Text[120])
+        field(4; "Text"; Text[120])
         {
             Caption = 'Text';
         }
@@ -69,7 +69,7 @@ table 50001 "DEL Texte Regulation"
                 NextLineNo := RegulationLine."Line No." + LineStep
             ELSE
                 IF BelowxRec THEN BEGIN
-                    RegulationLine.FINDLAST;
+                    RegulationLine.FINDLAST();
                     NextLineNo := RegulationLine."Line No." + LineStep;
                 END ELSE
                     IF RegulationLine.NEXT(-1) = 0 THEN BEGIN

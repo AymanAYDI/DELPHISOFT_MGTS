@@ -2,7 +2,7 @@ table 50006 "DEL ItemCategory_Translation"
 {
     DataCaptionFields = CategoryCode;
     Caption = 'DEL ItemCategory_Translation';
-    //TODO LookupPageID = 50006;
+    LookupPageID = "DEL Item Category Translation";
 
     fields
     {

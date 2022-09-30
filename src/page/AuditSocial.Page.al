@@ -11,9 +11,11 @@ page 50028 "DEL Audit Social"
             {
                 field("No."; Rec."No.")
                 {
+                    Caption = 'No.';
                 }
                 field(Axe; Rec.Axe)
                 {
+                    Caption = 'Axe';
                 }
             }
         }

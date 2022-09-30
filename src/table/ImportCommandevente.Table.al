@@ -1,8 +1,8 @@
 table 50002 "DEL Import Commande vente"
 {
     Caption = 'DEL Import Commande vente';
-    //TODO DrillDownPageID = 50002;
-    // LookupPageID = 50002;
+    DrillDownPageID = "DEL Import Commande vente";
+    LookupPageID = "DEL Import Commande vente";
 
     fields
     {
@@ -23,29 +23,13 @@ table 50002 "DEL Import Commande vente"
         {
             Caption = 'No.';
 
-            trigger OnValidate()
-            var
-                TempSalesLine: Record "Sales Line" temporary;
-                StandardText: Record "Standard Text";
-                FixedAsset: Record "Fixed Asset";
-                PrepaymentMgt: Codeunit "Prepayment Mgt.";
-                TypeHelper: Codeunit "Type Helper";
-            begin
-            end;
+
         }
         field(5; Description; Text[100])
         {
             Caption = 'Description';
 
-            trigger OnValidate()
-            var
-                Item: Record "Item";
-                TypeHelper: Codeunit "Type Helper";
-                ReturnValue: Text[50];
-                ItemDescriptionIsNo: Boolean;
-                DefaultCreate: Boolean;
-            begin
-            end;
+
         }
         field(6; Quantity; Text[100])
         {
@@ -65,7 +49,7 @@ table 50002 "DEL Import Commande vente"
             var
 
                 ACOConnection_Re_Loc: Record "DEL ACO Connection";
-            // DealItem_Cu: Codeunit "50024";
+            //TODO DealItem_Cu: Codeunit "50024";
             // Deal_Cu: Codeunit "50020";
             begin
             end;

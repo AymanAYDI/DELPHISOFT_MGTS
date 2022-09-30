@@ -13,15 +13,19 @@ page 50024 "DEL Fee"
             {
                 field(ID; Rec.ID)
                 {
+                    Caption = 'ID';
                 }
                 field(Description; Rec.Description)
                 {
+                    Caption = 'Description';
                 }
                 field("No compte"; Rec."No compte")
                 {
+                    Caption = 'Account No';
                 }
                 field("Amount Type"; Rec."Amount Type")
                 {
+                    Caption = 'Amount Type';
 
                     trigger OnValidate()
                     begin
@@ -30,9 +34,11 @@ page 50024 "DEL Fee"
                 }
                 field("Ventilation Element"; Rec."Ventilation Element")
                 {
+                    Caption = 'Ventilation Element';
                 }
                 field("Ventilation Position"; Rec."Ventilation Position")
                 {
+                    Caption = 'Ventilation Position';
                 }
                 field(FormCurrency; Rec.Currency)
                 {
@@ -66,12 +72,15 @@ page 50024 "DEL Fee"
                 field("Factor by date"; Rec."Factor by date")
                 {
                     Editable = false;
+                    Caption = 'factor by period';
                 }
                 field(Destination; Rec.Destination)
                 {
+                    Caption = 'Destination';
                 }
                 field(Axe; Rec.Axe)
                 {
+                    Caption = 'Axe';
                 }
                 field("Used For Import"; Rec."Used For Import")
                 {
@@ -91,7 +100,7 @@ page 50024 "DEL Fee"
                 Promoted = true;
                 PromotedCategory = Process;
                 RunObject = Page "DEL Fee Factor";
-                // RunPageLink = Fee_ID = FIELD(ID);
+                RunPageLink = Fee_ID = FIELD(ID);
             }
         }
     }

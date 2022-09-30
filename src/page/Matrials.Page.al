@@ -1,17 +1,10 @@
-page 50087 Matrials
+page 50087 "DEL Matrials"
 {
-    // +---------------------------------------------------------------+
-    // | Logico SA                                                     |
-    // | Status:                                                       |
-    // | Customer/Project:                                             |
-    // +---------------------------------------------------------------+
-    // Requirement UserID   Date       Where   Description
-    // -----------------------------------------------------------------
-    // T-00716      THM     27.08.15           Create Object
+
 
     Caption = 'Matrials';
     PageType = List;
-    SourceTable = Table50053;
+    SourceTable = "DEL Regulation Matrix Text";
 
     layout
     {
@@ -19,18 +12,18 @@ page 50087 Matrials
         {
             repeater(Group)
             {
-                field("Item Category Code"; "Item Category Code")
+                field("Item Category Code"; Rec."Item Category Code")
                 {
+                    Caption = 'Item Category Code';
                 }
-                field("Product Group Code"; "Product Group Code")
+                field("Product Group Code"; Rec."Product Group Code")
                 {
+                    Caption = 'Product Group Code';
                 }
             }
         }
     }
 
-    actions
-    {
-    }
+
 }
 

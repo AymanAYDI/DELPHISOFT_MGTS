@@ -1,13 +1,14 @@
-page 50102 "DEL Substance regulation"
+page 50112 "DEL Matrix Sub. regul List"
 {
 
 
     Caption = 'Substance regulation';
-    CardPageID = "Subs. regulation Card";
-    Editable = false;
+    DeleteAllowed = false;
+    InsertAllowed = false;
+    ModifyAllowed = false;
     PageType = List;
-    SourceTable = "DEL Regulation";
-    SourceTableView = SORTING("No.", Type)
+    SourceTable = "DEL Regulation Matrix Line";
+    SourceTableView = SORTING("Item Category Code", "Product Group Code", Mark, "Product Description", "No.", Type)
                       ORDER(Ascending)
                       WHERE(Type = FILTER(Materials));
 
@@ -17,8 +18,29 @@ page 50102 "DEL Substance regulation"
         {
             repeater(Group)
             {
+                field("Item Category Code"; Rec."Item Category Code")
+                {
+                    Visible = false;
+                    Caption = 'Item Category Code';
+                }
+                field("Product Group Code"; Rec."Product Group Code")
+                {
+                    Visible = false;
+                    Caption = 'Product Group Code';
+                }
+                field("Item Category Label"; Rec."Item Category Label")
+                {
+                    Visible = false;
+                    Caption = 'Item category description';
+                }
+                field("Product Group Label"; Rec."Product Group Label")
+                {
+                    Visible = false;
+                    Caption = 'Product group description';
+                }
                 field(Type; Rec.Type)
                 {
+                    Visible = false;
                     Caption = 'Type';
                 }
                 field("No."; Rec."No.")
@@ -81,6 +103,25 @@ page 50102 "DEL Substance regulation"
         }
     }
 
-
+    actions
+    {
+        area(processing)
+        {
+            action(Card)
+            {
+                Image = Line;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                RunObject = Page "DEL Matrix Subs. reg Card";
+                RunPageLink = "Item Category Code" = FIELD("Item Category Code"),
+                              "Product Group Code" = FIELD("Product Group Code"),
+                              "No." = FIELD("No."),
+                              Type = FIELD(Type),
+                              Mark = FIELD(Mark),
+                              "Product Description" = FIELD("Product Description");
+            }
+        }
+    }
 }
 

@@ -1,8 +1,8 @@
 table 50064 "DEL Liste des motifs"
 {
 
-    // DrillDownPageID = 50123;
-    // LookupPageID = 50123;
+    DrillDownPageID = "DEL Liste des motifs";
+    LookupPageID = "DEL Liste des motifs";
     Caption = 'Liste des motifs';
     DataClassification = CustomerContent;
 

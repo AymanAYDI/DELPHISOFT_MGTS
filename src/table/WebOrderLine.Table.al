@@ -3,9 +3,9 @@ table 50003 "DEL Web_Order_Line"
 {
     Caption = 'Web_Order_Line';
 
-    //TODO
-    //DrillDownPageID = 50003;
-    //LookupPageID = 50003;
+
+    DrillDownPageID = "DEL Error Import";
+    LookupPageID = "DEL Error Import";
 
     fields
     {

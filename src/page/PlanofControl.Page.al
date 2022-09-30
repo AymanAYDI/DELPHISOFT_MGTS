@@ -1,23 +1,15 @@
-page 50106 "Plan of Control"
+page 50106 "DEL Plan of Control"
 {
-    // +---------------------------------------------------------------+
-    // | Logico SA                                                     |
-    // | Status:                                                       |
-    // | Customer/Project:                                             |
-    // +---------------------------------------------------------------+
-    // Requirement UserID   Date       Where   Description
-    // -----------------------------------------------------------------
-    // T-00755      THM     05.01.16           Create Object
-    // T-00757      THM     07.01.16           add and modify Field
+
 
     Caption = 'Plan of Control';
-    CardPageID = "Plan of Control Card";
+    CardPageID = "DEL Plan of Control Card";
     Editable = false;
     PageType = List;
-    SourceTable = Table50057;
-    SourceTableView = SORTING(No., Type)
+    SourceTable = "DEL Regulation";
+    SourceTableView = SORTING("No.", Type)
                       ORDER(Ascending)
-                      WHERE(Type = FILTER(Plan of control));
+                      WHERE(Type = FILTER("Plan of control"));
 
     layout
     {
@@ -25,40 +17,47 @@ page 50106 "Plan of Control"
         {
             repeater(Group)
             {
-                field(Type; Type)
+                field(Type; Rec.Type)
                 {
                     Editable = false;
+                    Caption = 'Type';
                 }
-                field("Test Type"; "Test Type")
+                field("Test Type"; Rec."Test Type")
                 {
+                    Caption = 'Test Type';
                 }
-                field("Description Plan of control"; "Description Plan of control")
+                field("Description Plan of control"; Rec."Description Plan of control")
                 {
+                    Caption = 'Description';
                 }
-                field(Descriptive; Descriptive)
+                field(Descriptive; Rec.Descriptive)
                 {
+                    Caption = 'Descriptive';
                 }
-                field("Support Text"; "Support Text")
+                field("Support Text"; Rec."Support Text")
                 {
+                    Caption = 'Support Text';
                 }
-                field("Control Type"; "Control Type")
+                field("Control Type"; Rec."Control Type")
                 {
+                    Caption = 'Type de contrôle';
                 }
-                field(Frequency; Frequency)
+                field(Frequency; Rec.Frequency)
                 {
+                    Caption = 'Frequency';
                 }
-                field("Referent Laboratory"; "Referent Laboratory")
+                field("Referent Laboratory"; Rec."Referent Laboratory")
                 {
+                    Caption = 'Referent Laboratory';
                 }
-                field("Livrables 1"; "Livrables 1")
+                field("Livrables 1"; Rec."Livrables 1")
                 {
+                    Caption = 'Deliverables 1';
                 }
             }
         }
     }
 
-    actions
-    {
-    }
+
 }
 

@@ -20,6 +20,7 @@ page 50004 "DEL New products follow up"
             {
                 field("Buy-from Vendor No."; Rec."Buy-from Vendor No.")
                 {
+                    Caption = 'Buy-from Vendor No.';
                 }
                 field(BuyfromVendorName; BuyfromVendorName)
                 {
@@ -30,18 +31,22 @@ page 50004 "DEL New products follow up"
                 field("Document No."; Rec."Document No.")
                 {
                     Editable = false;
+                    Caption = 'Document No.';
                 }
                 field("No."; Rec."No.")
                 {
                     Editable = false;
+                    Caption = 'No.';
                 }
                 field(Description; Rec.Description)
                 {
                     Editable = false;
+                    Caption = 'Description';
                 }
                 field("Order Date"; Rec."Order Date")
                 {
                     Editable = false;
+                    Caption = 'Order Date';
                 }
                 field("Expected Receipt Date"; Rec."Expected Receipt Date")
                 {
@@ -50,6 +55,7 @@ page 50004 "DEL New products follow up"
                 field(Quantity; Rec.Quantity)
                 {
                     Editable = false;
+                    Caption = 'Quantity';
                 }
 
                 field("Sample Collected"; Rec."DEL Sample Collected")
@@ -75,12 +81,13 @@ page 50004 "DEL New products follow up"
                 }
                 field("Photo Taked"; Rec."DEL Photo Taked")
                 {
+                    Caption = 'Picture Taken';
 
                     trigger OnValidate()
                     begin
                         IF Rec."DEL Photo Taked" = TRUE THEN BEGIN
                             IF Rec."DEL Sample Collected" = TRUE THEN Rec."DEL Photo And DDoc" := TRUE;
-                            CurrPage.UPDATE;
+                            CurrPage.UPDATE();
                         END;
                     end;
                 }
@@ -144,42 +151,16 @@ page 50004 "DEL New products follow up"
 
     end;
 
-    trigger OnInit()
     var
-        ExitRepeat: Boolean;
-    begin
-        /*ExitRepeat:=FALSE;
-        IF Item_Rec.FINDSET THEN BEGIN
-        REPEAT
-          IF ExistOldPurch(Item_Rec."No.") THEN BEGIN
-          MESSAGE('item No %1',Item_Rec."No.");
-          ExitRepeat:=TRUE;
-          END;
-          UNTIL (Item_Rec.NEXT =0) AND (ExitRepeat = FALSE);
-        END;
-        MESSAGE('End');*/
-        //Purch. Inv. Line
-        /*PurchInvLine.SETRANGE("No.",'10121');
-        PurchInvLine.SETRANGE(Type,PurchInvLine.Type::Item);
-        PurchInvLine.DELETEALL;*/
-
-    end;
-
-    trigger OnOpenPage()
-    begin
-        //Sample Collected
-        //<Photo Taked
-        //First Purch. Order=CONST(Yes),Type=CONST(Item)
-    end;
-
-    var
-        Item_Rec: Record Item;
-        PurchInvLine: Record "Purch. Inv. Line";
-        BuyfromVendorName: Text;
         Vendor_Rec: Record Vendor;
+
         PurchaseHeader_Rec: Record "Purchase Header";
-        PurchCode: Code[10];
         PurchaseLine: Record "Purchase Line";
+        BuyfromVendorName: Text;
+
+
+        PurchCode: Code[10];
+
 
     local procedure ExistOldPurch(ItemNo: Code[20]): Boolean
     var

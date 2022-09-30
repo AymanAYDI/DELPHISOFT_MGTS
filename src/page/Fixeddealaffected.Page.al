@@ -114,7 +114,7 @@ page 50062 "DEL Fixed deal affected"
     var
         TrackingGeneral: Record "DEL Tracking général";
         TrackingDetail: Record "DEL Tracking détail";
-        Logistic2: Record "DEL Logistic"; //unused
+
         Booking_Num: Text[50];
         Text0001: Label 'Do you want to remove BL No ?';
 }

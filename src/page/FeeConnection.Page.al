@@ -12,12 +12,15 @@ page 50025 "DEL Fee Connection"
             {
                 field(ID; Rec.ID)
                 {
+                    Caption = 'ID';
                 }
                 field(Type; Rec.Type)
                 {
+                    Caption = 'Type';
                 }
                 field("No."; Rec."No.")
                 {
+                    Caption = 'No.';
                 }
                 field("Deal ID"; Rec."Deal ID")
                 {

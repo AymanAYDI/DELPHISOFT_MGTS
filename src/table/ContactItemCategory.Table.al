@@ -1,8 +1,8 @@
 table 50005 "DEL Contact_ItemCategory"
 {
     Caption = 'DEL Contact_ItemCategory';
-    //TODO DrillDownPageID = 50005;
-    // LookupPageID = 50005;
+    DrillDownPageID = "DEL Contact_ItemCategory";
+    LookupPageID = "DEL Contact_ItemCategory";
 
     fields
     {

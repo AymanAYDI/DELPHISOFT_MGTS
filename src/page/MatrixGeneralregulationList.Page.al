@@ -1,15 +1,6 @@
 page 50111 "Matrix General regulation List"
 {
-    // +---------------------------------------------------------------+
-    // | Logico SA                                                     |
-    // | Status:                                                       |
-    // | Customer/Project:                                             |
-    // +---------------------------------------------------------------+
-    // Requirement UserID   Date       Where   Description
-    // -----------------------------------------------------------------
-    // T-00716      THM     27.08.15           Create Object
-    // T-00757      THM     07.01.16           add and modify Field
-    //              THM     26.08.16           modify captionML
+
 
     Caption = 'General product regulation';
     DeleteAllowed = false;
@@ -27,66 +18,84 @@ page 50111 "Matrix General regulation List"
         {
             repeater(Group)
             {
-                field("Item Category Code"; "Item Category Code")
+                field("Item Category Code"; Rec."Item Category Code")
                 {
                     Visible = false;
+                    Caption = 'Item Category Code';
                 }
-                field("Product Group Code"; "Product Group Code")
+                field("Product Group Code"; Rec."Product Group Code")
                 {
                     Visible = false;
+                    Caption = 'Product Group Code';
                 }
-                field("Item Category Label"; "Item Category Label")
+                field("Item Category Label"; Rec."Item Category Label")
                 {
                     Visible = false;
+                    Caption = 'Item category description';
                 }
-                field("Product Group Label"; "Product Group Label")
+                field("Product Group Label"; Rec."Product Group Label")
                 {
                     Visible = false;
+                    Caption = 'Product group description';
                 }
-                field(Type; Type)
+                field(Type; Rec.Type)
                 {
                     Visible = false;
+                    Caption = 'Type';
                 }
-                field("No."; "No.")
+                field("No."; Rec."No.")
                 {
+                    Caption = 'No.';
                 }
-                field("Description pays"; "Description pays")
+                field("Description pays"; Rec."Description pays")
                 {
+                    Caption = 'Country';
                 }
-                field(Nature; Nature)
+                field(Nature; Rec.Nature)
                 {
+                    Caption = 'Type of regulation';
                 }
-                field("Title in French"; "Title in French")
+                field("Title in French"; Rec."Title in French")
                 {
+                    Caption = 'Title in French';
                 }
-                field("Title in English"; "Title in English")
+                field("Title in English"; Rec."Title in English")
                 {
+                    Caption = 'Title in English';
                 }
-                field(Description; Description)
+                field(Description; Rec.Description)
                 {
+                    Caption = 'Description';
                 }
-                field("Publication date"; "Publication date")
+                field("Publication date"; Rec."Publication date")
                 {
+                    Caption = 'Publication date';
                 }
-                field("Date limit of the application"; "Date limit of the application")
+                field("Date limit of the application"; Rec."Date limit of the application")
                 {
+                    Caption = 'Date limit of the application';
                 }
-                field("Starting date"; "Starting date")
+                field("Starting date"; Rec."Starting date")
                 {
+                    Caption = 'Starting date';
                 }
-                field("Date Fin"; "Date Fin")
+                field("Date Fin"; Rec."Date Fin")
                 {
+                    Caption = 'End date';
                 }
-                field("Texte rattachement"; "Texte rattachement")
+                field("Texte rattachement"; Rec."Texte rattachement")
                 {
+                    Caption = 'Text of connection';
                 }
-                field(Statut; Statut)
+                field(Statut; Rec.Statut)
                 {
+                    Caption = 'Status';
                 }
-                field("Texte de remplacement"; "Texte de remplacement")
+                field("Texte de remplacement"; Rec."Texte de remplacement")
                 {
+                    Caption = 'Text of substitution';
                 }
-                field("Referent Laboratory"; "Referent Laboratory")
+                field("Referent Laboratory"; Rec."Referent Laboratory")
                 {
                     Caption = 'ICS';
                 }
@@ -104,7 +113,7 @@ page 50111 "Matrix General regulation List"
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
-                RunObject = Page "Matrix General regulation Card";
+                RunObject = Page "DEL Matrix General Reg. Card";
                 RunPageLink = "Item Category Code" = FIELD("Item Category Code"), "Product Group Code" = FIELD("Product Group Code"), "No." = FIELD("No."), Type = FIELD(Type), Mark = FIELD(Mark), "Product Description" = FIELD("Product Description");
             }
         }

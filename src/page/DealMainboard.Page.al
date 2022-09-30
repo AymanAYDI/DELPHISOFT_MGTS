@@ -63,7 +63,7 @@ page 50030 "DEL Deal Mainboard"
                     mypage.SETTABLEVIEW(dealShipment_Re_Loc);
                     mypage.SETRECORD(dealShipment_Re_Loc);
                     mypage.LOOKUPMODE(TRUE);
-                    IF mypage.RUNMODAL = ACTION::LookupOK THEN BEGIN
+                    IF mypage.RUNMODAL() = ACTION::LookupOK THEN BEGIN
 
                         mypage.GETRECORD(dealShipment_Re_Loc);
                         ItemDetailShipmentNo_Co := dealShipment_Re_Loc.ID;
@@ -120,11 +120,11 @@ page 50030 "DEL Deal Mainboard"
                     myPage.SETTABLEVIEW(dealShipment_Re_Loc);
                     myPage.SETRECORD(dealShipment_Re_Loc);
                     myPage.LOOKUPMODE(TRUE);
-                    IF myPage.RUNMODAL = ACTION::LookupOK THEN BEGIN
+                    IF myPage.RUNMODAL() = ACTION::LookupOK THEN BEGIN
 
                         myPage.GETRECORD(dealShipment_Re_Loc);
                         PLLogisticShipmentNo_Co := dealShipment_Re_Loc.ID;
-                        CurrPage.UPDATE
+                        CurrPage.UPDATE()
 
                     END
                 end;
@@ -134,7 +134,7 @@ page 50030 "DEL Deal Mainboard"
                     dealShipment_Re_Loc: Record "DEL Deal Shipment";
                 begin
 
-                    PLLogisticShipmentNoCoOnAfterV;
+                    PLLogisticShipmentNoCoOnAfterV();
                 end;
             }
             part(PLLogistic; "DEL Subform P&L Logistic")
@@ -159,11 +159,11 @@ page 50030 "DEL Deal Mainboard"
                     myPage.SETTABLEVIEW(dealShipment_Re_Loc);
                     myPage.SETRECORD(dealShipment_Re_Loc);
                     myPage.LOOKUPMODE(TRUE);
-                    IF myPage.RUNMODAL = ACTION::LookupOK THEN BEGIN
+                    IF myPage.RUNMODAL() = ACTION::LookupOK THEN BEGIN
 
                         myPage.GETRECORD(dealShipment_Re_Loc);
                         PLDetailShipmentNo_Co := dealShipment_Re_Loc.ID;
-                        CurrPage.UPDATE
+                        CurrPage.UPDATE()
 
                     END
                 end;
@@ -173,7 +173,7 @@ page 50030 "DEL Deal Mainboard"
                     dealShipment_Re_Loc: Record "DEL Deal Shipment";
                 begin
 
-                    PLDetailShipmentNoCoOnAfterVal;
+                    PLDetailShipmentNoCoOnAfterVal();
                 end;
             }
             part(PositionDetails; "DEL Subform P&L Details")
@@ -208,7 +208,7 @@ page 50030 "DEL Deal Mainboard"
                         CurrencyExchange_page_Loc: Page "DEL Currency Exchange";
                     begin
                         DealShipList_Fo_Loc.LOOKUPMODE := TRUE;
-                        IF DealShipList_Fo_Loc.RUNMODAL = ACTION::LookupOK THEN BEGIN
+                        IF DealShipList_Fo_Loc.RUNMODAL() = ACTION::LookupOK THEN BEGIN
                             DealShipList_Fo_Loc.GETRECORD(DealShip_Re_Loc);
                             Rec.GET(DealShip_Re_Loc.Deal_ID);
                         END;
@@ -238,10 +238,10 @@ page 50030 "DEL Deal Mainboard"
 
                         CurrencyExchange_page_Loc.SETTABLEVIEW(CurrencyExchange_Re_Loc);
                         CurrencyExchange_page_Loc.SETRECORD(CurrencyExchange_Re_Loc);
-                        CurrencyExchange_page_Loc.RUNMODAL
+                        CurrencyExchange_page_Loc.RUNMODAL()
                     end;
                 }
-                separator()
+                separator(SPR)
                 {
                 }
                 action(Reinit)
@@ -272,8 +272,8 @@ page 50030 "DEL Deal Mainboard"
 
                         UpdateRequestManager_Cu.FNC_Process_RequestsDeal(urm_Re_Loc, FALSE, FALSE, TRUE, requestID_Co_Loc);
                         urm_Re_Loc.SETRANGE(urm_Re_Loc.ID, requestID_Co_Loc);
-                        IF urm_Re_Loc.FINDFIRST THEN
-                            urm_Re_Loc.DELETE;
+                        IF urm_Re_Loc.FINDFIRST() THEN
+                            urm_Re_Loc.DELETE();
                         // end THM
                         CurrPage.UPDATE();
                     end;
@@ -304,8 +304,8 @@ page 50030 "DEL Deal Mainboard"
 
                         UpdateRequestManager_Cu.FNC_Process_RequestsDeal(urm_Re_Loc, FALSE, TRUE, TRUE, requestID_Co_Loc);
                         urm_Re_Loc.SETRANGE(urm_Re_Loc.ID, requestID_Co_Loc);
-                        IF urm_Re_Loc.FINDFIRST THEN
-                            urm_Re_Loc.DELETE;
+                        IF urm_Re_Loc.FINDFIRST() THEN
+                            urm_Re_Loc.DELETE();
 
 
                         CurrPage.UPDATE();
@@ -340,7 +340,7 @@ page 50030 "DEL Deal Mainboard"
             CurrPage.ShipmentSubpage.PAGE.FNC_SetFilters(Rec.ID, '');
 
 
-        PLLogistic_Re_Temp.DELETEALL;
+        PLLogistic_Re_Temp.DELETEALL();
 
 
         IF PLLogisticShipmentNo_Co = '' THEN BEGIN
@@ -351,7 +351,7 @@ page 50030 "DEL Deal Mainboard"
             plannedElement_Re_Loc.SETRANGE(Type, plannedElement_Re_Loc.Type::Fee);
             plannedElement_Re_Loc.SETRANGE(Instance, plannedElement_Re_Loc.Instance::planned);
             //on boucle sur toutes les elements de type Fee
-            IF plannedElement_Re_Loc.FINDFIRST THEN
+            IF plannedElement_Re_Loc.FINDFIRST() THEN
                 REPEAT
 
                     PLLogistic_Re_Temp.INIT();
@@ -369,7 +369,7 @@ page 50030 "DEL Deal Mainboard"
                     realElement_Re_Loc.SETRANGE(Fee_Connection_ID, plannedElement_Re_Loc.Fee_Connection_ID);
 
                     //on boucle sur tous les elements de type Invoice
-                    IF realElement_Re_Loc.FINDFIRST THEN BEGIN
+                    IF realElement_Re_Loc.FINDFIRST() THEN BEGIN
                         REPEAT
 
                             IF NOT PLLogistic_Re_Temp.GET(plannedElement_Re_Loc.ID, realElement_Re_Loc.ID) THEN BEGIN
@@ -405,7 +405,7 @@ page 50030 "DEL Deal Mainboard"
             plannedElement_Re_Loc.SETRANGE(Deal_ID, Rec.ID);
             plannedElement_Re_Loc.SETRANGE(Type, plannedElement_Re_Loc.Type::Fee);
             plannedElement_Re_Loc.SETRANGE(Instance, plannedElement_Re_Loc.Instance::planned);
-            IF plannedElement_Re_Loc.FINDFIRST THEN
+            IF plannedElement_Re_Loc.FINDFIRST() THEN
                 REPEAT
 
                     PLLogistic_Re_Temp.INIT();
@@ -417,13 +417,13 @@ page 50030 "DEL Deal Mainboard"
                     purchRcptLine_Re_Loc.SETRANGE("Document No.", DealShipment_Cu.FNC_GetBRNo(PLLogisticShipmentNo_Co));
                     purchRcptLine_Re_Loc.SETRANGE(Type, purchRcptLine_Re_Loc.Type::Item);
                     purchRcptLine_Re_Loc.SETFILTER(Quantity, '>%1', 0);
-                    IF purchRcptLine_Re_Loc.FINDFIRST THEN
+                    IF purchRcptLine_Re_Loc.FINDFIRST() THEN
                         REPEAT
 
                             position_Re_Loc.RESET();
                             position_Re_Loc.SETRANGE(Element_ID, plannedElement_Re_Loc.ID);
                             position_Re_Loc.SETRANGE("Deal Item No.", purchRcptLine_Re_Loc."No.");
-                            IF position_Re_Loc.FINDFIRST THEN
+                            IF position_Re_Loc.FINDFIRST() THEN
                                 REPEAT
                                     amount_Dec_Loc += position_Re_Loc.Amount * purchRcptLine_Re_Loc.Quantity * position_Re_Loc.Rate;
                                 UNTIL (position_Re_Loc.NEXT() = 0);
@@ -446,20 +446,19 @@ page 50030 "DEL Deal Mainboard"
                     realElement_Re_Loc.SETRANGE(Fee_ID, plannedElement_Re_Loc.Fee_ID);
                     realElement_Re_Loc.SETRANGE(Fee_Connection_ID, plannedElement_Re_Loc.Fee_Connection_ID);
                     //on boucle sur tous les elements de type Fee
-                    IF realElement_Re_Loc.FINDFIRST THEN BEGIN
+                    IF realElement_Re_Loc.FINDFIRST() THEN BEGIN
                         REPEAT
 
                             //filtre sur les positions avec element id correspondant
                             position_Re_Loc.RESET();
                             position_Re_Loc.SETRANGE(Deal_ID, Rec.ID);
                             position_Re_Loc.SETRANGE(Element_ID, realElement_Re_Loc.ID);
-                            IF position_Re_Loc.FINDFIRST THEN
+                            IF position_Re_Loc.FINDFIRST() THEN
                                 REPEAT
 
-                                    IF dealShipCon_Re_Loc.GET(Rec.ID, PLLogisticShipmentNo_Co, position_Re_Loc."Sub Element_ID") THEN BEGIN
+                                    IF dealShipCon_Re_Loc.GET(Rec.ID, PLLogisticShipmentNo_Co, position_Re_Loc."Sub Element_ID") THEN
                                         //PLLogistic_Re_Temp."Real Element ID" := realElement_Re_Loc.ID;
                                         PLLogistic_Re_Temp."Real Amount" += position_Re_Loc."Line Amount (EUR)";
-                                    END
 
                                 UNTIL (position_Re_Loc.NEXT() = 0);
 
@@ -477,13 +476,13 @@ page 50030 "DEL Deal Mainboard"
 
 
 
-                    PositionSummary_Re_Temp.DELETEALL;
+                    PositionSummary_Re_Temp.DELETEALL();
 
 
                     position_Re_Loc.RESET();
                     position_Re_Loc.SETFILTER(Deal_ID, Rec.ID);
 
-                    IF position_Re_Loc.FINDFIRST THEN
+                    IF position_Re_Loc.FINDFIRST() THEN
                         REPEAT
                             //on controle si cet article a déjà été ajouté (si oui, on skip, si non on calcule et ajoute)
                             IF NOT PositionSummary_Re_Temp.GET(position_Re_Loc."Deal Item No.") THEN BEGIN
@@ -686,17 +685,17 @@ page 50030 "DEL Deal Mainboard"
 
     local procedure PLShipmentNoCoOnAfterValidate()
     begin
-        CurrPage.UPDATE
+        CurrPage.UPDATE()
     end;
 
     local procedure PLLogisticShipmentNoCoOnAfterV()
     begin
-        CurrPage.UPDATE
+        CurrPage.UPDATE()
     end;
 
     local procedure PLDetailShipmentNoCoOnAfterVal()
     begin
-        CurrPage.UPDATE
+        CurrPage.UPDATE()
     end;
 
     local procedure Control1103070011OnDeactivate()

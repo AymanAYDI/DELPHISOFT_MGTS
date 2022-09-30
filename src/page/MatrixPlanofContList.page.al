@@ -1,12 +1,14 @@
-page 50110 "DEL Plan of Control 2"
+page 50113 "DEL Matrix Plan of Cont. List"
 {
+
 
     Caption = 'Plan of Control';
     DeleteAllowed = false;
     InsertAllowed = false;
+    ModifyAllowed = false;
     PageType = List;
-    SourceTable = "DEL Regulation";
-    SourceTableView = SORTING("No.", Type)
+    SourceTable = "DEL Regulation Matrix Line";
+    SourceTableView = SORTING("Item Category Code", "Product Group Code", Mark, "Product Description", "No.", Type)
                       ORDER(Ascending)
                       WHERE(Type = FILTER("Plan of control"));
 
@@ -16,17 +18,30 @@ page 50110 "DEL Plan of Control 2"
         {
             repeater(Group)
             {
-                field(Checked; Rec.Checked)
+                field("Item Category Code"; Rec."Item Category Code")
                 {
-                    Caption = 'Checked';
+                    Visible = false;
+                    Caption = 'Item Category Code';
+                }
+                field("Product Group Code"; Rec."Product Group Code")
+                {
+                    Visible = false;
+                    Caption = 'Product Group Code';
+                }
+                field("Item Category Label"; Rec."Item Category Label")
+                {
+                    Visible = false;
+                    Caption = 'Item category description';
+                }
+                field("Product Group Label"; Rec."Product Group Label")
+                {
+                    Visible = false;
+                    Caption = 'Product group description';
                 }
                 field(Type; Rec.Type)
                 {
+                    Visible = false;
                     Caption = 'Type';
-                }
-                field("No."; Rec."No.")
-                {
-                    Caption = 'No.';
                 }
                 field("Test Type"; Rec."Test Type")
                 {
@@ -66,15 +81,17 @@ page 50110 "DEL Plan of Control 2"
         {
             action(Card)
             {
-                Caption = 'Card';
                 Image = Line;
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
-                RunObject = Page "DEL Plan of Control Card";
-                RunPageLink = "No." = FIELD("No."),
-                              Type = FIELD(Type);
-                RunPageMode = View;
+                RunObject = Page "DEL Matrix Plan of Cont. Card";
+                RunPageLink = "Item Category Code" = FIELD("Item Category Code"),
+                              "Product Group Code" = FIELD("Product Group Code"),
+                              "No." = FIELD("No."),
+                              Type = FIELD(Type),
+                              Mark = FIELD(Mark),
+                              "Product Description" = FIELD("Product Description");
             }
         }
     }
