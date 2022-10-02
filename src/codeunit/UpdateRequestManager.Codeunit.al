@@ -1,4 +1,4 @@
-codeunit 50032 "Update Request Manager"
+codeunit 50032 "DEL Update Request Manager"
 {
     // +-------------------------------------------------------------------------------+
     // | Logico SA - Logiciels & Conseils                                              |
@@ -39,7 +39,6 @@ codeunit 50032 "Update Request Manager"
         timProgress: array[10] of Time;
         interval: array[10] of Integer;
 
-    [Scope('Internal')]
     procedure FNC_Process_Requests(updateRequest_Re_Par: Record "50039"; deleteWhenUpdated: Boolean; UpdatePlanned_Bo_Par: Boolean; processSilently_Bo_Par: Boolean)
     var
         intProgressI: Integer;
@@ -109,7 +108,6 @@ codeunit 50032 "Update Request Manager"
 
     end;
 
-    [Scope('Internal')]
     procedure FNC_Add_Request(Requested_For_Deal_ID_Co_Par: Code[20]; Requested_By_Type_Co_Par: Option; Requested_By_TypeNo_Co_Par: Code[20]; Requested_At_DateTime_Par: DateTime) updateRequest_ID_Ret: Code[20]
     begin
         //Ajoute une update request à la liste
@@ -146,7 +144,7 @@ codeunit 50032 "Update Request Manager"
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Remove_Request(Request_ID_Co_Par: Code[20])
     begin
         //Supprime une update request
@@ -157,7 +155,7 @@ codeunit 50032 "Update Request Manager"
         END
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Validate_Request(Request_ID_Co_Par: Code[20])
     begin
         //Marque une update request comme étant à ignorer
@@ -168,7 +166,7 @@ codeunit 50032 "Update Request Manager"
         END
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Ignore_Request(Request_ID_Co_Par: Code[20])
     begin
         //Marque une update request comme validée
@@ -179,7 +177,7 @@ codeunit 50032 "Update Request Manager"
         END
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Test(DealID_Co_Loc: Code[20]): Boolean
     begin
         //Test de l'affaire dans le but de pas la mettre à jour si le(s) test(s) révèle(nt) des irrégularités
@@ -199,7 +197,7 @@ codeunit 50032 "Update Request Manager"
         EXIT(TRUE);
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Import_All()
     var
         deal_Re_Loc: Record "50020";
@@ -240,7 +238,7 @@ codeunit 50032 "Update Request Manager"
                 //IF element_Re_Loc.FINDFIRST THEN BEGIN
                 FNC_Add_Request(deal_Re_Loc.ID, UpdateRequest_Re.Requested_By_Type::CUSTOM, 'All', CURRENTDATETIME);
                 counter_Loc += 1;
-                //END
+            //END
 
             UNTIL (deal_Re_Loc.NEXT() = 0);
 
@@ -250,7 +248,6 @@ codeunit 50032 "Update Request Manager"
 
     end;
 
-    [Scope('Internal')]
     procedure FNC_Import_BlankInvoices()
     var
         deal_Re_Loc: Record "50020";
@@ -282,7 +279,6 @@ codeunit 50032 "Update Request Manager"
 
     end;
 
-    [Scope('Internal')]
     procedure FNC_ProcessRequestsByType(Type_Op_Par: Option Invoice,"Purchase Header","Sales Header","Sales Cr. Memo","Purch. Cr. Memo",Payment,Provision,USERID; TypeNo_Co_Par: Code[20]; processSilently_Bo_Par: Boolean)
     begin
         /*
@@ -308,7 +304,6 @@ codeunit 50032 "Update Request Manager"
 
     end;
 
-    [Scope('Internal')]
     procedure FNC_ProgressBar_Init(index_Int_Par: Integer; interval_Int_Par: Integer; stepProgress_Int_Par: Integer; text_Te_Par: Text[50]; total_Int_Par: Integer)
     begin
         /*
@@ -332,7 +327,6 @@ codeunit 50032 "Update Request Manager"
 
     end;
 
-    [Scope('Internal')]
     procedure FNC_ProgressBar_Update(index_Int_Par: Integer)
     begin
         intProgressI[index_Int_Par] += 1;
@@ -360,13 +354,11 @@ codeunit 50032 "Update Request Manager"
         END;
     end;
 
-    [Scope('Internal')]
     procedure FNC_ProgressBar_Close(index_Int_Par: Integer)
     begin
         diaProgress[index_Int_Par].CLOSE;
     end;
 
-    [Scope('Internal')]
     procedure FNC_Process_RequestsDeal(updateRequest_Re_Par: Record "50039"; deleteWhenUpdated: Boolean; UpdatePlanned_Bo_Par: Boolean; processSilently_Bo_Par: Boolean; NumID: Code[20])
     var
         intProgressI: Integer;
@@ -437,7 +429,6 @@ codeunit 50032 "Update Request Manager"
 
     end;
 
-    [Scope('Internal')]
     procedure FNC_Process_RequestsFilter(updateRequest_Re_Par: Record "50039"; deleteWhenUpdated: Boolean; UpdatePlanned_Bo_Par: Boolean; processSilently_Bo_Par: Boolean; FilterDeal: Text)
     var
         intProgressI: Integer;
