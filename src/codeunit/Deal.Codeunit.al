@@ -1,29 +1,5 @@
 codeunit 50020 "DEL Deal"
 {
-    // +-------------------------------------------------------------------------------+
-    // | Logico SA - Logiciels & Conseils                                              |
-    // | Stand: 09.09.08                                                               |
-    // +-------------------------------------------------------------------------------+
-    // 
-    // ID     Version     Story-Card    Date       Description
-    // ---------------------------------------------------------------------------------
-    // CHG01  RC4                       09.09.08   Created Doc
-    // CHG02                            15.09.08   Changed deal status attribution rule
-    // CHG03                            15.09.08   Correction du calcul des montants ACO et VCO par livraison
-    // CHG04                            06.04.09   Added FNC_Reinit_Silently_Method which cause a reinit with not message nor warnings
-    //                                             Adapted FNC_Reinit_Deal to handle silent update
-    //                                             Adapted FNC_Init_Deal to handle silent update
-    //                                             Correction de l'implémentation du paramètre "Update_Planned_Bo_Par"
-    // CHG05                            20.04.09   Added FNC_Set_LastUpdate_DateTime
-    // STG01                            28.05.09   Reinitialization possible if real elements are not Purchase Invoice or Sales Invoice
-    // CHG06                            07.09.09   Gestion de la période
-    // CHG07                            11.03.10   Définition du nouveau champ Deal."ACO Docuement Date"
-    // CHG08                            26.09.11   adapted deal update function with "updatePlanned" parameter
-    // THM        THM150118             15.01.18   add vendor No
-    // 
-    // Mgts10.00.01.00 | 11.01.2020 | Order API Management : Add C\AL : FNC_Init_Deal
-
-
     trigger OnRun()
     begin
     end;

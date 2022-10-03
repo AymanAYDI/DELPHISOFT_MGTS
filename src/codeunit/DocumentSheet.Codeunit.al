@@ -25,9 +25,9 @@ codeunit 50007 "DEL Document Sheet"
 
     local procedure ShowOpenFileDialog(var ClientFileName: Text; var ServerFileName: Text; UploadToServer: Boolean): Boolean
     var
-        DialogResult: DotNet DialogResult;
-        [RunOnClient]
-        OpenFileDialog: DotNet OpenFileDialog;
+    // DialogResult: DotNet DialogResult;
+    // [RunOnClient]
+    // OpenFileDialog: DotNet OpenFileDialog; TODO:
     begin
         OpenFileDialog := OpenFileDialog.OpenFileDialog;
         OpenFileDialog.Filter := GetDialogFilter();
@@ -59,9 +59,9 @@ codeunit 50007 "DEL Document Sheet"
     procedure SelectDirectory(var Directory: Text): Boolean
     var
         ActiveFolder: Text;
-        DialogResult: DotNet DialogResult;
-        [RunOnClient]
-        FolderBrowserDialog: DotNet FolderBrowserDialog;
+    // DialogResult: DotNet DialogResult;
+    // [RunOnClient]
+    // FolderBrowserDialog: DotNet FolderBrowserDialog; TODO:
     begin
         FolderBrowserDialog := FolderBrowserDialog.FolderBrowserDialog;
 
@@ -81,7 +81,7 @@ codeunit 50007 "DEL Document Sheet"
 
     procedure OpenDirectory(Directory: Text)
     var
-        WindowsShell: Automation;
+        // WindowsShell: Automation; TODO:
         ctFolderNotFound: Label 'The folder does not exist.';
     begin
         IF NOT ServerDirectoryExists(Directory) THEN
@@ -134,7 +134,7 @@ codeunit 50007 "DEL Document Sheet"
 
     procedure ServerDirectoryExists(DirectoryName: Text): Boolean
     var
-        IODirectory: DotNet Directory;
+    // IODirectory: DotNet Directory; TODO:
     begin
         EXIT(IODirectory.Exists(DirectoryName));
     end;
@@ -145,8 +145,8 @@ codeunit 50007 "DEL Document Sheet"
         TmpClientFileName: Text;
         TmpServerFileName: Text;
         ctAllFiles: Label 'All Files (*.*)|*.*';
-        [RunOnClient]
-        IOFile: DotNet File;
+    // [RunOnClient]
+    // IOFile: DotNet File; TODO:
     begin
 
         TmpServerFile.CREATETEMPFILE;
@@ -221,9 +221,8 @@ codeunit 50007 "DEL Document Sheet"
 
     procedure TempDirectory() ExitValue: Text
     begin
-        ExitValue := TEMPORARYPATH;
-
-        AddBackSlash(ExitValue);
+        // ExitValue := TEMPORARYPATH;
+        // AddBackSlash(ExitValue); TODO:
     end;
 }
 

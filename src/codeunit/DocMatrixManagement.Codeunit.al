@@ -53,7 +53,7 @@ codeunit 50015 "DEL DocMatrix Management"
         DocumentSendingProfile: Record "Document Sending Profile";
         DocumentPrint: Codeunit "Document-Print";
         FileManagement: Codeunit "File Management";
-        lcuDocMatrixSingleInstance: Codeunit "DocMatrix SingleInstance";
+        lcuDocMatrixSingleInstance: Codeunit "DEL DocMatrix SingleInstance";
         lNo: Code[20];
         lErr001: Label 'A unexpected problem with the parameter for the function "ProcessDocumentMatrix" occured.';
         lboDeleteFileAtTheEnd: Boolean;
@@ -395,7 +395,7 @@ codeunit 50015 "DEL DocMatrix Management"
         txSendFromAddress: Text;
         ltxSubjectMail: Text;
         larrMailBody: array[10] of Text;
-        lcuDocMatrixSingleInstance: Codeunit "DocMatrix SingleInstance";
+        lcuDocMatrixSingleInstance: Codeunit "DEL DocMatrix SingleInstance";
         lcuDocumentMailing: Codeunit "Document-Mailing";
         TxtMailBody: Text;
     begin
@@ -525,14 +525,16 @@ codeunit 50015 "DEL DocMatrix Management"
 
     local procedure SendSMTPmail(ptxFromAddressName: Text; ptxFromAddressString: Text; ptxToAddressString: Text; ptxSubject: Text; txAttachementFullPathFileName: Text; larrMailBody: array[10] of Text)
     var
-        lcuSMTP: Codeunit 400;
+        lcuSMTP: Codeunit "Email Message";
         lcuFileManagement: Codeunit "File Management";
+        tempBlob: Codeunit "temp Blob";
         i: Integer;
     begin
-        lcuSMTP.CreateMessage(ptxFromAddressName, ptxFromAddressString, ptxToAddressString, ptxSubject, '', TRUE);
+        lcuSMTP.Create(ptxToAddressString, ptxSubject, '', TRUE);
         FOR i := 1 TO ARRAYLEN(larrMailBody) DO
-            lcuSMTP.AppendBody('<p>' + larrMailBody[i] + '</p>');
-        lcuSMTP.AddAttachment(txAttachementFullPathFileName, lcuFileManagement.GetFileName(txAttachementFullPathFileName));
+            lcuSMTP.AppendToBody('<p>' + larrMailBody[i] + '</p>');
+        FileManagement.
+    lcuSMTP.AddAttachment(txAttachementFullPathFileName, lcuFileManagement.GetFileName(txAttachementFullPathFileName));
         lcuSMTP.Send;
     end;
 

@@ -149,7 +149,7 @@ codeunit 50002 "DEL TransitaireMgt"
 
     procedure CopyDocDimToDocDim(var TempDocDim: Record "Gen. Jnl. Dim. Filter" temporary; "Table ID": Integer; DocType: Integer; DocNo: Code[20]; LineNo: Integer)
     var
-        DocDim: Record "Gen. Jnl. Dim. Filter";
+        DocDim: Record "IC Document Dimension";
     begin
         TempDocDim.RESET();
         TempDocDim.DELETEALL();
@@ -169,7 +169,11 @@ codeunit 50002 "DEL TransitaireMgt"
     procedure SendToTransitairePartner(ICOutboxTrans: Record "IC Outbox Transaction")
     var
         ICPartner: Record "IC Partner";
+        Transitaire: Record "DEL Forwarding agent 2";
+        PurchHeader: Record "Purchase Header";
+        NGTSSetup: Record "DEL General Setup";
         MailHandler: Codeunit Mail;
+        tempBlob: Codeunit "Temp Blob";
         ICOutboxExportXML: XMLport "IC Outbox Imp/Exp";
         OFile: File;
         FileName: Text[250];
@@ -178,9 +182,6 @@ codeunit 50002 "DEL TransitaireMgt"
         i: Integer;
         ToName: Text[100];
         CcName: Text[100];
-        Transitaire: Record "DEL Forwarding agent 2";
-        PurchHeader: Record "Purchase Header";
-        NGTSSetup: Record "DEL General Setup";
         XMLPortOutbox: XMLport 50000;
         ICPurchHeaderArchiv: Record "Handled IC Outbox Purch. Hdr";
         XMLPortOutboxNew: XMLport 50002;
@@ -210,8 +211,9 @@ codeunit 50002 "DEL TransitaireMgt"
                       NGTSSetup."Nom emetteur", NGTSSetup."Nom achat commande transitaire",
                       ICOutboxTrans."Document No.");
 
-            OFile.CREATE(FileName);
-            OFile.CREATEOUTSTREAM(Ostr);
+            // OFile.CREATE(FileName);
+            // OFile.CREATEOUTSTREAM(Ostr);
+            tempBlob.CreateOutStream(Ostr);
 
             IF Transitaire."HSCODE Enable" = FALSE THEN BEGIN   //ngts1  begin
                 XMLPortOutbox.SETDESTINATION(Ostr);
@@ -226,7 +228,7 @@ codeunit 50002 "DEL TransitaireMgt"
             END;                                               //ngts1  end
 
 
-            OFile.CLOSE;
+            // OFile.CLOSE;
             CLEAR(Ostr);
             CLEAR(ICOutboxExportXML);
 

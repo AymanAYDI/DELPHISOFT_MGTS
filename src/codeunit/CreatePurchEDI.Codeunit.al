@@ -1,8 +1,5 @@
 codeunit 50019 "DEL Create Purch. EDI"
 {
-    // MGTSEDI10.00.00.23 | 21.05.2021 | EDI Management : Create codeunit
-
-
     trigger OnRun()
     begin
         CASE Param OF

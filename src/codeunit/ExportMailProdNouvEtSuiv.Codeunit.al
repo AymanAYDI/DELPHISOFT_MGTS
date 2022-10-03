@@ -157,8 +157,8 @@ codeunit 50010 "Export Mail Prod Nouv Et Suiv"
         IF SMTPMailSetup.GET THEN BEGIN
             //report_MGTS@mgts.com
             //SMTPMailSetup."Sender mail"
-            SMTP.CreateMessage('report_MGTS', 'report_MGTS@mgts.com', '', 'List New_products_follow_up and Tracked_product_follow_up', 'List New_products_follow_up and Tracked_product_follow_up', TRUE);
-
+            // SMTP.CreateMessage('report_MGTS', 'report_MGTS@mgts.com', '', 'List New_products_follow_up and Tracked_product_follow_up', 'List New_products_follow_up and Tracked_product_follow_up', TRUE); TODO: Check
+            SMTP.Create('', 'List New_products_follow_up and Tracked_product_follow_up', 'List New_products_follow_up and Tracked_product_follow_up', TRUE);
             IF SMTPMailSetup.Mail1 <> '' THEN
                 SMTP.AddRecipients(SMTPMailSetup.Mail1);
             IF SMTPMailSetup.Mail2 <> '' THEN
@@ -194,10 +194,11 @@ codeunit 50010 "Export Mail Prod Nouv Et Suiv"
         streamWriter: DotNet StreamWriter;
         encoding: DotNet Encoding;
         WTAB: Char;
-        SMTP: Codeunit "400";
+        SMTP: Codeunit "Email Message";
         BuyfromVendorName: Text;
         Vendor_Rec: Record Vendor;
-        SMTPMailSetup: Record "409";
+        // SMTPMailSetup: Record "409";
+        SMTPMailSetup: "Email – SMTP";
         PurchaseHeader_Nouv: Record "Purchase Header";
         PurchaseHeader_Suiv: Record "Purchase Header";
         motif: Text[100];

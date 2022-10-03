@@ -30,7 +30,7 @@ codeunit 50018 "DEL Create Purch. EDI Launcher"
                     COMMIT();
                     CreatePurchEDI.SetParam(Param::CreateAndValidateReqWorksheet, SalesHeader."No.");
                     IF NOT CreatePurchEDI.RUN() THEN BEGIN
-                        SalesHeader."Status Purchase Order Create" := SalesHeader."Status Purchase Order Create"::"Create Req. Worksheet";
+                        SalesHeader."DEL Status Purch. Order Create" := SalesHeader."DEL Status Purch. Order Create"::"Create Req. Worksheet";
                         SalesHeader."DEL Error Purch. Order Create" := TRUE;
                         SalesHeader."DEL Error Text Purch. Order Create" := COPYSTR(GETLASTERRORTEXT, 1, 250);
                         SalesHeader."DEL To Create Purchase Order" := FALSE;
@@ -50,19 +50,19 @@ codeunit 50018 "DEL Create Purch. EDI Launcher"
         SalesHeader: Record "Sales Header";
         CreatePurchEDI: Codeunit "DEL Create Purch. EDI";
     begin
-        SalesHeader.SETRANGE("Status Purchase Order Create", SalesHeader."Status Purchase Order Create"::"Create Deal");
+        SalesHeader.SETRANGE("DEL Status Purch. Order Create", SalesHeader."DEL Status Purch. Order Create"::"Create Deal");
         IF SalesHeader.FINDSET() THEN
             REPEAT
                 CLEAR(CreatePurchEDI);
                 COMMIT();
                 CreatePurchEDI.SetParam(Param::CreateDeal, SalesHeader."No.");
                 IF NOT CreatePurchEDI.RUN() THEN BEGIN
-                    SalesHeader."Status Purchase Order Create" := SalesHeader."Status Purchase Order Create"::"Create Deal";
+                    SalesHeader."DEL Status Purch. Order Create" := SalesHeader."DEL Status Purch. Order Create"::"Create Deal";
                     SalesHeader."DEL Error Purch. Order Create" := TRUE;
                     SalesHeader."DEL Error Text Purch. Order Create" := COPYSTR(GETLASTERRORTEXT, 1, 250);
                     SalesHeader.MODIFY();
                 END ELSE BEGIN
-                    SalesHeader."Status Purchase Order Create" := SalesHeader."Status Purchase Order Create"::Created;
+                    SalesHeader."DEL Status Purch. Order Create" := SalesHeader."DEL Status Purch. Order Create"::Created;
                     SalesHeader."DEL Error Text Purch. Order Create" := '';
                     SalesHeader.MODIFY();
                 END;
