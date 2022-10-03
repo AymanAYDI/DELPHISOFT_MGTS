@@ -1,20 +1,6 @@
-codeunit 50032 "Update Request Manager"
+codeunit 50032 "DEL Update Request Manager"
 {
-    // +-------------------------------------------------------------------------------+
-    // | Logico SA - Logiciels & Conseils                                              |
-    // | Stand: 06.04.09                                                               |
-    // |                                                                               |
-    // +-------------------------------------------------------------------------------+
-    // 
-    // ID     Version     Story-Card    Date       Description
-    // ---------------------------------------------------------------------------------
-    // CHG01                            06.04.09   created object
-    // CHG02                            20.04.09   created FNC_Import_Requests
-    //                                             modified FNC_Process_Requests to add progress bar handling
-    // CHG03                            04.05.09   renamed FNC_Import_Requests to FNC_Import_All
-    //                                             created FNC_Import_BlankInvoices
-    // CHG04                            26.09.11   adapted deal update function with "updatePlanned" parameter
-    // T-00759     THM                  13.01.16   add new function FNC_Process_RequestsFilter
+
 
 
     trigger OnRun()
@@ -25,10 +11,10 @@ codeunit 50032 "Update Request Manager"
     end;
 
     var
-        UpdateRequest_Re: Record "50039";
-        Setup: Record "50000";
-        NoSeriesMgt_Cu: Codeunit "396";
-        Deal_Cu: Codeunit "50020";
+        UpdateRequest_Re: Record "DEL Update Request Manager";
+        Setup: Record "DEL General Setup";
+        NoSeriesMgt_Cu: Codeunit NoSeriesManagement;
+        Deal_Cu: Codeunit Deal;
         "v------PROGRESS BAR------v": Integer;
         intProgressI: array[10] of Integer;
         diaProgress: array[10] of Dialog;
@@ -39,14 +25,10 @@ codeunit 50032 "Update Request Manager"
         timProgress: array[10] of Time;
         interval: array[10] of Integer;
 
-    [Scope('Internal')]
-    procedure FNC_Process_Requests(updateRequest_Re_Par: Record "50039"; deleteWhenUpdated: Boolean; UpdatePlanned_Bo_Par: Boolean; processSilently_Bo_Par: Boolean)
+
+    procedure FNC_Process_Requests(updateRequest_Re_Par: Record "DEL Update Request Manager"; deleteWhenUpdated: Boolean; UpdatePlanned_Bo_Par: Boolean; processSilently_Bo_Par: Boolean)
     var
-        intProgressI: Integer;
-        diaProgress: Dialog;
-        intProgress: Integer;
-        intProgressTotal: Integer;
-        timProgress: Time;
+
     begin
         /*
         usage:
@@ -76,7 +58,7 @@ codeunit 50032 "Update Request Manager"
         //check toutes les 500ms si au moins 1% d'avancé
         FNC_ProgressBar_Init(1, 1000, 100, 'Mise à jour en cours...', updateRequest_Re_Par.COUNT());
 
-        IF updateRequest_Re_Par.FINDFIRST THEN
+        IF updateRequest_Re_Par.FINDFIRST() THEN
             REPEAT
 
                 //mise à jour de la barre de progression
@@ -109,7 +91,7 @@ codeunit 50032 "Update Request Manager"
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Add_Request(Requested_For_Deal_ID_Co_Par: Code[20]; Requested_By_Type_Co_Par: Option; Requested_By_TypeNo_Co_Par: Code[20]; Requested_At_DateTime_Par: DateTime) updateRequest_ID_Ret: Code[20]
     begin
         //Ajoute une update request à la liste
@@ -146,7 +128,7 @@ codeunit 50032 "Update Request Manager"
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Remove_Request(Request_ID_Co_Par: Code[20])
     begin
         //Supprime une update request
@@ -157,7 +139,7 @@ codeunit 50032 "Update Request Manager"
         END
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Validate_Request(Request_ID_Co_Par: Code[20])
     begin
         //Marque une update request comme étant à ignorer
@@ -168,7 +150,7 @@ codeunit 50032 "Update Request Manager"
         END
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Ignore_Request(Request_ID_Co_Par: Code[20])
     begin
         //Marque une update request comme validée
@@ -179,7 +161,7 @@ codeunit 50032 "Update Request Manager"
         END
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Test(DealID_Co_Loc: Code[20]): Boolean
     begin
         //Test de l'affaire dans le but de pas la mettre à jour si le(s) test(s) révèle(nt) des irrégularités
@@ -199,11 +181,11 @@ codeunit 50032 "Update Request Manager"
         EXIT(TRUE);
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Import_All()
     var
-        deal_Re_Loc: Record "50020";
-        element_Re_Loc: Record "50021";
+        deal_Re_Loc: Record "DEL Deal";
+        element_Re_Loc: Record "DEL Element";
         counter_Loc: Integer;
     begin
         /*
@@ -228,7 +210,7 @@ codeunit 50032 "Update Request Manager"
         //check toutes les 500ms si au moins 5% d'avancé
         FNC_ProgressBar_Init(1, 500, 500, 'Création des update request...', deal_Re_Loc.COUNT());
 
-        IF deal_Re_Loc.FINDFIRST THEN
+        IF deal_Re_Loc.FINDFIRST() THEN
             REPEAT
 
                 FNC_ProgressBar_Update(1);
@@ -240,7 +222,7 @@ codeunit 50032 "Update Request Manager"
                 //IF element_Re_Loc.FINDFIRST THEN BEGIN
                 FNC_Add_Request(deal_Re_Loc.ID, UpdateRequest_Re.Requested_By_Type::CUSTOM, 'All', CURRENTDATETIME);
                 counter_Loc += 1;
-                //END
+            //END
 
             UNTIL (deal_Re_Loc.NEXT() = 0);
 
@@ -250,12 +232,12 @@ codeunit 50032 "Update Request Manager"
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Import_BlankInvoices()
     var
-        deal_Re_Loc: Record "50020";
-        element_Re_Loc: Record "50021";
-        position_Re_Loc: Record "50022";
+        deal_Re_Loc: Record "DEL Deal";
+        element_Re_Loc: Record "DEL Element";
+        position_Re_Loc: Record "DEL Position";
         counter_Loc: Integer;
     begin
         /*
@@ -268,11 +250,11 @@ codeunit 50032 "Update Request Manager"
         element_Re_Loc.RESET();
         element_Re_Loc.SETFILTER(Type,
           '%1|%2|%3', element_Re_Loc.Type::Invoice, element_Re_Loc.Type::"Sales Invoice", element_Re_Loc.Type::"Purchase Invoice");
-        IF element_Re_Loc.FINDFIRST THEN
+        IF element_Re_Loc.FINDFIRST() THEN
             REPEAT
                 position_Re_Loc.RESET();
                 position_Re_Loc.SETRANGE(Element_ID, element_Re_Loc.ID);
-                IF NOT position_Re_Loc.FINDFIRST THEN BEGIN
+                IF NOT position_Re_Loc.FINDFIRST() THEN BEGIN
                     FNC_Add_Request(element_Re_Loc.Deal_ID, UpdateRequest_Re.Requested_By_Type::CUSTOM, 'blank invoices', CURRENTDATETIME);
                     counter_Loc += 1;
                 END;
@@ -282,7 +264,7 @@ codeunit 50032 "Update Request Manager"
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_ProcessRequestsByType(Type_Op_Par: Option Invoice,"Purchase Header","Sales Header","Sales Cr. Memo","Purch. Cr. Memo",Payment,Provision,USERID; TypeNo_Co_Par: Code[20]; processSilently_Bo_Par: Boolean)
     begin
         /*
@@ -308,7 +290,7 @@ codeunit 50032 "Update Request Manager"
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_ProgressBar_Init(index_Int_Par: Integer; interval_Int_Par: Integer; stepProgress_Int_Par: Integer; text_Te_Par: Text[50]; total_Int_Par: Integer)
     begin
         /*
@@ -332,7 +314,7 @@ codeunit 50032 "Update Request Manager"
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_ProgressBar_Update(index_Int_Par: Integer)
     begin
         intProgressI[index_Int_Par] += 1;
@@ -353,21 +335,21 @@ codeunit 50032 "Update Request Manager"
                 timProgress[index_Int_Par] := TIME;
 
                 //mise à jour de la barre
-                diaProgress[index_Int_Par].UPDATE;
+                diaProgress[index_Int_Par].UPDATE();
 
             END;
 
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_ProgressBar_Close(index_Int_Par: Integer)
     begin
-        diaProgress[index_Int_Par].CLOSE;
+        diaProgress[index_Int_Par].CLOSE();
     end;
 
-    [Scope('Internal')]
-    procedure FNC_Process_RequestsDeal(updateRequest_Re_Par: Record "50039"; deleteWhenUpdated: Boolean; UpdatePlanned_Bo_Par: Boolean; processSilently_Bo_Par: Boolean; NumID: Code[20])
+
+    procedure FNC_Process_RequestsDeal(updateRequest_Re_Par: Record "DEL Update Request Manager"; deleteWhenUpdated: Boolean; UpdatePlanned_Bo_Par: Boolean; processSilently_Bo_Par: Boolean; NumID: Code[20])
     var
         intProgressI: Integer;
         diaProgress: Dialog;
@@ -404,7 +386,7 @@ codeunit 50032 "Update Request Manager"
         //check toutes les 500ms si au moins 1% d'avancé
         FNC_ProgressBar_Init(1, 1000, 100, 'Mise à jour en cours...', updateRequest_Re_Par.COUNT());
 
-        IF updateRequest_Re_Par.FINDFIRST THEN
+        IF updateRequest_Re_Par.FINDFIRST() THEN
             REPEAT
 
                 //mise à jour de la barre de progression
@@ -437,8 +419,8 @@ codeunit 50032 "Update Request Manager"
 
     end;
 
-    [Scope('Internal')]
-    procedure FNC_Process_RequestsFilter(updateRequest_Re_Par: Record "50039"; deleteWhenUpdated: Boolean; UpdatePlanned_Bo_Par: Boolean; processSilently_Bo_Par: Boolean; FilterDeal: Text)
+
+    procedure FNC_Process_RequestsFilter(updateRequest_Re_Par: Record "DEL Update Request Manager"; deleteWhenUpdated: Boolean; UpdatePlanned_Bo_Par: Boolean; processSilently_Bo_Par: Boolean; FilterDeal: Text)
     var
         intProgressI: Integer;
         diaProgress: Dialog;
@@ -460,7 +442,7 @@ codeunit 50032 "Update Request Manager"
         //check toutes les 500ms si au moins 1% d'avancé
         //FNC_ProgressBar_Init(1, 1000, 100, 'Mise à jour en cours...', updateRequest_Re_Par.COUNT());
 
-        IF updateRequest_Re_Par.FINDFIRST THEN
+        IF updateRequest_Re_Par.FINDFIRST() THEN
             REPEAT
 
                 //mise à jour de la barre de progression
