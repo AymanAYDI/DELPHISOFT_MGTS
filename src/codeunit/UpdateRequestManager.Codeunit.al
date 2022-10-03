@@ -1,4 +1,4 @@
-codeunit 50032 "Update Request Manager"
+codeunit 50032 "DEL Update Request Manager"
 {
     // +-------------------------------------------------------------------------------+
     // | Logico SA - Logiciels & Conseils                                              |
@@ -38,7 +38,6 @@ codeunit 50032 "Update Request Manager"
         intNextProgressStep: array[10] of Integer;
         timProgress: array[10] of Time;
         interval: array[10] of Integer;
-
 
     procedure FNC_Process_Requests(updateRequest_Re_Par: Record "50039"; deleteWhenUpdated: Boolean; UpdatePlanned_Bo_Par: Boolean; processSilently_Bo_Par: Boolean)
     var
@@ -108,7 +107,6 @@ codeunit 50032 "Update Request Manager"
         IF NOT processSilently_Bo_Par THEN MESSAGE('Liste traitée !')
 
     end;
-
 
     procedure FNC_Add_Request(Requested_For_Deal_ID_Co_Par: Code[20]; Requested_By_Type_Co_Par: Option; Requested_By_TypeNo_Co_Par: Code[20]; Requested_At_DateTime_Par: DateTime) updateRequest_ID_Ret: Code[20]
     begin
@@ -282,7 +280,6 @@ codeunit 50032 "Update Request Manager"
 
     end;
 
-
     procedure FNC_ProcessRequestsByType(Type_Op_Par: Option Invoice,"Purchase Header","Sales Header","Sales Cr. Memo","Purch. Cr. Memo",Payment,Provision,USERID; TypeNo_Co_Par: Code[20]; processSilently_Bo_Par: Boolean)
     begin
         /*
@@ -307,7 +304,6 @@ codeunit 50032 "Update Request Manager"
         FNC_Process_Requests(UpdateRequest_Re, FALSE, FALSE, processSilently_Bo_Par);
 
     end;
-
 
     procedure FNC_ProgressBar_Init(index_Int_Par: Integer; interval_Int_Par: Integer; stepProgress_Int_Par: Integer; text_Te_Par: Text[50]; total_Int_Par: Integer)
     begin
@@ -359,7 +355,6 @@ codeunit 50032 "Update Request Manager"
 
         END;
     end;
-
 
     procedure FNC_ProgressBar_Close(index_Int_Par: Integer)
     begin
@@ -436,7 +431,6 @@ codeunit 50032 "Update Request Manager"
         IF NOT processSilently_Bo_Par THEN MESSAGE('Liste traitée !')
 
     end;
-
 
     procedure FNC_Process_RequestsFilter(updateRequest_Re_Par: Record "50039"; deleteWhenUpdated: Boolean; UpdatePlanned_Bo_Par: Boolean; processSilently_Bo_Par: Boolean; FilterDeal: Text)
     var

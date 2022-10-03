@@ -1,8 +1,5 @@
-codeunit 50006 "Tracking traitement"
+codeunit 50006 "DEL Tracking traitement"
 {
-    //  Ngts/loco/grc  27.04.2010 create object
-
-
     trigger OnRun()
     begin
 
@@ -11,18 +8,18 @@ codeunit 50006 "Tracking traitement"
     end;
 
     var
-        "TrackingNonTraité": Record "50012";
-        Logistic: Record "50034";
-        TrackingDetail: Record "50014";
-        TrackingGeneral: Record "50013";
+        "TrackingNonTraité": Record "DEL Tracking non traité";
+        Logistic: Record "DEL Logistic";
+        TrackingDetail: Record "DEL Tracking détail";
+        TrackingGeneral: Record "DEL Tracking général";
+        Logistic2: Record "DEL Logistic";
         CodeACo: Text[3];
-        Logistic2: Record "50034";
 
 
     procedure InsertionAutomatique()
     begin
 
-        IF TrackingNonTraité.FINDFIRST THEN BEGIN
+        IF TrackingNonTraité.FINDFIRST() THEN
             REPEAT
 
                 TrackingNonTraité.Statut := '';
@@ -33,7 +30,7 @@ codeunit 50006 "Tracking traitement"
                     //1 maj fiche logistic begin
                     Logistic.SETRANGE("BL N°", TrackingNonTraité.Booking_no);
                     Logistic.SETRANGE("ACO No.", TrackingNonTraité.Order_no);
-                    IF Logistic.FINDFIRST THEN BEGIN
+                    IF Logistic.FINDFIRST() THEN
                         REPEAT
                             Logistic."Forwarder Name" := TrackingNonTraité.Forwading_agent_no;
                             Logistic."Supplier Name" := TrackingNonTraité.Vendor_no;
@@ -48,8 +45,7 @@ codeunit 50006 "Tracking traitement"
                             Logistic."Customer Delivery date" := TrackingNonTraité.ActualDeliveryDate;
                             Logistic.MODIFY();
                             TrackingNonTraité.Statut := Logistic.ID;
-                        UNTIL Logistic.NEXT = 0;
-                    END;
+                        UNTIL Logistic.NEXT() = 0;
 
 
                     //1 maj fiche logistic end
@@ -59,7 +55,7 @@ codeunit 50006 "Tracking traitement"
                     TrackingDetail.SETRANGE(Item_no, TrackingNonTraité.Item_no);
                     TrackingDetail.SETRANGE(Booking_no, TrackingNonTraité.Booking_no);
                     TrackingDetail.SETRANGE(Container_no, TrackingNonTraité.Container_no);
-                    IF TrackingDetail.FINDFIRST THEN BEGIN
+                    IF TrackingDetail.FINDFIRST() THEN BEGIN
                         TrackingDetail.TRANSFERFIELDS(TrackingNonTraité);
                         TrackingDetail.Booking_no := UPPERCASE(TrackingNonTraité.Booking_no);
                         TrackingDetail.MODIFY();
@@ -79,8 +75,7 @@ codeunit 50006 "Tracking traitement"
 
                 END;
                 TrackingNonTraité.DELETE()
-            UNTIL TrackingNonTraité.NEXT = 0;
-        END;
+            UNTIL TrackingNonTraité.NEXT() = 0;
     end;
 
 

@@ -1,21 +1,20 @@
-codeunit 50001 "ReqLine OrderDate Update"
+codeunit 50001 "DEL ReqLine OrderDate Update"
 {
 
     trigger OnRun()
     begin
         ReqLine.SETFILTER(ReqLine."Order Date", '<>%1', 0D);
-        IF ReqLine.FINDFIRST THEN BEGIN
+        IF ReqLine.FINDFIRST() THEN
             REPEAT
 
                 ReqLine."Order Date" := WORKDATE();
                 ReqLine.VALIDATE("Order Date");
-                ReqLine.MODIFY;
+                ReqLine.MODIFY();
 
-            UNTIL ReqLine.NEXT = 0;
-        END;
+            UNTIL ReqLine.NEXT() = 0;
     end;
 
     var
-        ReqLine: Record "246";
+        ReqLine: Record "Requisition Line";
 }
 

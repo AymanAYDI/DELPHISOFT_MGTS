@@ -1,4 +1,4 @@
-codeunit 50007 "Document Sheet"
+codeunit 50007 "DEL Document Sheet"
 {
 
     trigger OnRun()
@@ -18,7 +18,6 @@ codeunit 50007 "Document Sheet"
     begin
         EXIT(ShowOpenFileDialog(ClientFileName, DummyFileName, FALSE));
     end;
-
 
     procedure OpenFile(var ClientFileName: Text; var ServerFileName: Text): Boolean
     begin
@@ -57,7 +56,6 @@ codeunit 50007 "Document Sheet"
 
         EXIT(TRUE);
     end;
-
 
     procedure SelectDirectory(var Directory: Text): Boolean
     var
@@ -121,7 +119,6 @@ codeunit 50007 "Document Sheet"
         EXIT(FileName);
     end;
 
-
     procedure GetDirectoryName(FileName: Text): Text
     var
         i: Integer;
@@ -139,14 +136,12 @@ codeunit 50007 "Document Sheet"
                 Directory += '\';
     end;
 
-
     procedure ServerDirectoryExists(DirectoryName: Text): Boolean
     var
         IODirectory: DotNet Directory;
     begin
         EXIT(IODirectory.Exists(DirectoryName));
     end;
-
 
     procedure UploadToServerRTC(ClientFileName: Text; ServerFileName: Text): Text
     var

@@ -1,4 +1,4 @@
-codeunit 50003 "MGT Tracking"
+codeunit 50003 "DEL MGT Tracking"
 {
     //  Nts/loco/grc   23.04.2010 create object
     //  JUH            14.09.16    Filter .xml
@@ -17,12 +17,12 @@ codeunit 50003 "MGT Tracking"
     end;
 
     var
-        MyFile: Record "2000000022";
+        // MyFile: Record File; TODO:
+        NgtsSetup: Record "DEL General Setup";
+        TrackingGeneral: Record "DEL Tracking non traité";
         MyStream: InStream;
-        NgtsSetup: Record "50000";
         TestFile: File;
-        TrackingGeneral: Record "50012";
-        fso: DotNet File;
+        // fso: DotNet File; TODO:
         outStreamtest: OutStream;
         charXml: Text;
         Pos: Integer;
@@ -35,7 +35,7 @@ codeunit 50003 "MGT Tracking"
         charXml := '.xml';
         MyFile.SETRANGE(Path, NgtsSetup."Folder Expeditors");
         MyFile.SETRANGE("Is a file", TRUE);
-        IF MyFile.FINDFIRST THEN BEGIN
+        IF MyFile.FINDFIRST() THEN
             REPEAT
                 Pos := STRPOS(MyFile.Name, charXml);
                 IF Pos <> 0 THEN BEGIN
@@ -44,15 +44,13 @@ codeunit 50003 "MGT Tracking"
                     XMLPORT.IMPORT(XMLPORT::"Import tracking", MyStream);
                     TestFile.CLOSE;
                     TrackingGeneral.SETRANGE(Nom_Fichier, '');
-                    IF TrackingGeneral.FINDFIRST THEN BEGIN
+                    IF TrackingGeneral.FINDFIRST() THEN
                         REPEAT
                             TrackingGeneral.Nom_Fichier := MyFile.Name;
                             TrackingGeneral.MODIFY();
-                        UNTIL TrackingGeneral.NEXT = 0;
-                    END;
+                        UNTIL TrackingGeneral.NEXT() = 0;
                 END;
-            UNTIL MyFile.NEXT = 0;
-        END;
+            UNTIL MyFile.NEXT() = 0;
         // JUH 14.09.16 END
         MESSAGE('Import Xml completed 1!');
     end;
@@ -64,8 +62,7 @@ codeunit 50003 "MGT Tracking"
 
         MyFile.SETRANGE(Path, NgtsSetup."Folder Maersk");
         MyFile.SETRANGE("Is a file", TRUE);
-        IF MyFile.FINDFIRST THEN BEGIN
-
+        IF MyFile.FINDFIRST() THEN
             REPEAT
 
                 TestFile.OPEN(NgtsSetup."Folder Maersk" + MyFile.Name);
@@ -73,14 +70,12 @@ codeunit 50003 "MGT Tracking"
                 XMLPORT.IMPORT(XMLPORT::"Import tracking", MyStream);
                 TestFile.CLOSE;
                 TrackingGeneral.SETRANGE(Nom_Fichier, '');
-                IF TrackingGeneral.FINDFIRST THEN BEGIN
+                IF TrackingGeneral.FINDFIRST() THEN
                     REPEAT
                         TrackingGeneral.Nom_Fichier := MyFile.Name;
                         TrackingGeneral.MODIFY();
-                    UNTIL TrackingGeneral.NEXT = 0;
-                END;
-            UNTIL MyFile.NEXT = 0;
-        END;
+                    UNTIL TrackingGeneral.NEXT() = 0;
+            UNTIL MyFile.NEXT() = 0;
 
         MESSAGE('Import Xml completed 2!');
     end;
@@ -92,13 +87,11 @@ codeunit 50003 "MGT Tracking"
 
         MyFile.SETRANGE(Path, NgtsSetup."Folder Expeditors");
         MyFile.SETRANGE("Is a file", TRUE);
-        IF MyFile.FINDFIRST THEN BEGIN
-
+        IF MyFile.FINDFIRST() THEN
             REPEAT
                 fso.Copy(NgtsSetup."Folder Expeditors" + MyFile.Name, NgtsSetup."Folder Expeditors Archive" + MyFile.Name);
                 fso.Delete(NgtsSetup."Folder Expeditors" + MyFile.Name);
-            UNTIL MyFile.NEXT = 0;
-        END;
+            UNTIL MyFile.NEXT() = 0;
     end;
 
 
@@ -109,13 +102,11 @@ codeunit 50003 "MGT Tracking"
 
         MyFile.SETRANGE(Path, NgtsSetup."Folder Maersk");
         MyFile.SETRANGE("Is a file", TRUE);
-        IF MyFile.FINDFIRST THEN BEGIN
-
+        IF MyFile.FINDFIRST() THEN
             REPEAT
                 fso.Copy(NgtsSetup."Folder Maersk" + MyFile.Name, NgtsSetup."Folder Maersk Archive" + MyFile.Name);
                 fso.Delete(NgtsSetup."Folder Maersk" + MyFile.Name);
-            UNTIL MyFile.NEXT = 0;
-        END;
+            UNTIL MyFile.NEXT() = 0;
     end;
 
 

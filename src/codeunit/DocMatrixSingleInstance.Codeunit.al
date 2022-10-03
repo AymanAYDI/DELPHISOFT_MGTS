@@ -1,7 +1,5 @@
-codeunit 50016 "DocMatrix SingleInstance"
+codeunit 50016 "DEL DocMatrix SingleInstance"
 {
-    // DEL/PD/20190227/LOP003 : object created
-
     SingleInstance = true;
 
     trigger OnRun()
@@ -18,19 +16,16 @@ codeunit 50016 "DocMatrix SingleInstance"
         SendFromAddress := pSendFromAddress;
     end;
 
-
     procedure GetSendFromAddress(): Text
     begin
         EXIT(SendFromAddress);
     end;
-
 
     procedure SetDocumentMatrixProcessActive(pDocumentMatrixProcessActive: Boolean)
     begin
         DocumentMatrixProcessActive := pDocumentMatrixProcessActive;
 
     end;
-
 
     procedure GetDocumentMatrixProcessActive(): Boolean
     begin
