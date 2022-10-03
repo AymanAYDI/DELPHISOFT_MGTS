@@ -1,4 +1,4 @@
-codeunit 50053 "D365FM PDF Email Send"
+codeunit 50053 "DEL D365FM PDF Email Send"
 {
     // +--------------------------------------------------------------------+
     // | D365FM-INV14.00.00.05  | 30.06.21 | Create Codeunit

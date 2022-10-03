@@ -3,14 +3,12 @@ codeunit 50028 "DEL Alert and fee copy Mgt"
 
 
 
-    trigger OnRun()
-    begin
-    end;
+
 
     var
         LogisticTmp_Re: Record "DEL Logistic" temporary;
 
-    [Scope('Internal')]
+
     procedure FNC_GlobalCheck(Deal_ID: Code[20])
     var
         Logistic_Re_Loc: Record "DEL Logistic";
@@ -18,7 +16,7 @@ codeunit 50028 "DEL Alert and fee copy Mgt"
         DealShip2_Re_Loc: Record "DEL Deal Shipment";
     begin
 
-        //ajout des lignes à tester
+
         Logistic_Re_Loc.SETRANGE(Deal_ID, Deal_ID);
         IF Logistic_Re_Loc.FINDFIRST() THEN
             REPEAT
@@ -34,18 +32,17 @@ codeunit 50028 "DEL Alert and fee copy Mgt"
                 IF DealShip2_Re_Loc.GET(DealShip_Re_Loc.ID) THEN BEGIN
                     LogisticTmp_Re.SETFILTER(ID, DealShip2_Re_Loc.ID);
                     IF LogisticTmp_Re.FINDFIRST() THEN
-
-                        // TODO: on cloud FNC_Alert1(DealShip2_Re_Loc);
-                        // FNC_Alert2(DealShip2_Re_Loc);
-                        // FNC_Alert3(DealShip2_Re_Loc);
-                        // FNC_Alert4(DealShip2_Re_Loc);
-                        DealShip2_Re_Loc.MODIFY();
+                        FNC_Alert1(DealShip2_Re_Loc);
+                    FNC_Alert2(DealShip2_Re_Loc);
+                    FNC_Alert3(DealShip2_Re_Loc);
+                    FNC_Alert4(DealShip2_Re_Loc);
+                    DealShip2_Re_Loc.MODIFY();
 
                 END;
             UNTIL DealShip_Re_Loc.NEXT() = 0;
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Alert1(var DealShip_Re_Par: Record "DEL Deal Shipment")
     begin
 
@@ -55,21 +52,11 @@ codeunit 50028 "DEL Alert and fee copy Mgt"
             DealShip_Re_Par.PI := DealShip_Re_Par.PI::"En cours";
 
 
-        /*IF (LogisticTmp_Re."PI approval date" = 0D) AND (LogisticTmp_Re."PI approved by" = '') THEN BEGIN
-          DealShip_Re_Par.PI := DealShip_Re_Par.PI::"En cours";
-        END ELSE BEGIN
-          IF  LogisticTmp_Re."PI approval date" <> 0D THEN
-            DealShip_Re_Par.PI := DealShip_Re_Par.PI::"OK"
-          ELSE
-            DealShip_Re_Par.PI := DealShip_Re_Par.PI::"En cours";
-        END;
-        
-        IF (LogisticTmp_Re."PI approval date" <> 0D) AND (LogisticTmp_Re."PI approved by" = '') THEN
-          DealShip_Re_Par.PI := DealShip_Re_Par.PI::OK;        */
+
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Alert2(var DealShip_Re_Par: Record "DEL Deal Shipment")
     begin
 
@@ -78,11 +65,9 @@ codeunit 50028 "DEL Alert and fee copy Mgt"
         ELSE
             DealShip_Re_Par."A facturer" := DealShip_Re_Par."A facturer"::"En cours";
 
-        //IF LogisticTmp_Re."Actual Arrival date" <> 0D THEN
-        //  DealShip_Re_Par."A facturer" := DealShip_Re_Par."A facturer"::"A Facturer"
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Alert3(var DealShip_Re_Par: Record "DEL Deal Shipment")
     begin
 
@@ -95,7 +80,7 @@ codeunit 50028 "DEL Alert and fee copy Mgt"
             DealShip_Re_Par."Depart shipment" := FALSE;
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Alert4(var DealShip_Re_Par: Record "DEL Deal Shipment")
     begin
 
@@ -108,7 +93,7 @@ codeunit 50028 "DEL Alert and fee copy Mgt"
             DealShip_Re_Par."Arrival ship" := FALSE;
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_FeeCopy(Type_Op_Par: Option Customer,Vendor; No_Co_Par: Code[20]; OriNo_Co_Par: Code[20])
     var
         ConnectionFee_Re_Loc: Record "DEL Fee Connection";
@@ -133,7 +118,7 @@ codeunit 50028 "DEL Alert and fee copy Mgt"
             UNTIL ConnectionFee_Re_Loc.NEXT() = 0;
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_LogisticCopy(DealID_Co_Par: Code[20]; ID_Co_Par: Code[20])
     var
         DealShip_Re_loc: Record "DEL Deal Shipment";
@@ -161,9 +146,9 @@ codeunit 50028 "DEL Alert and fee copy Mgt"
                 LogisticINSERT_Re_Loc."Shipment mode" := Logistic_Re_Loc."Shipment mode";
                 LogisticINSERT_Re_Loc."Departure Port" := Logistic_Re_Loc."Departure Port";
                 LogisticINSERT_Re_Loc."ETD Requested" := Logistic_Re_Loc."ETD Requested";
-                // THM
+
                 LogisticINSERT_Re_Loc."ACO No." := Logistic_Re_Loc."ACO No.";
-                // END THM
+
                 LogisticINSERT_Re_Loc.INSERT();
             END;
     end;

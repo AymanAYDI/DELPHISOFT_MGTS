@@ -1,16 +1,5 @@
-codeunit 50052 "MGTS EDI Management"
+codeunit 50052 "DEL MGTS EDI Management"
 {
-    // MGTSEDI10.00.00.00 | 07.08.2020 | EDI Management
-    // 
-    // MGTSEDI10.00.00.01 | 24.12.2020 | EDI Management : Add function : ResendCustomerInvoice
-    // 
-    // MGTSEDI10.00.00.03 | 30.12.2020 | EDI Management : Add function : GetSalesInvoiceShipToGLN
-    // 
-    // MGTSEDI10.00.00.21 | 18.01.2021 | EDI Management : Add function : OnAfterValidateGLNSalesHeader
-    // 
-    // MGTSEDI10.00.00.22 | 11.02.2021 | EDI Management : Add C\AL :
-    // 
-    // MGTSEDI10.00.00.23 | 30.06.2021 | EDI Management : Add C\AL : InsertSalesInvoiceEDIExportBuffer
 
 
     trigger OnRun()
@@ -18,13 +7,13 @@ codeunit 50052 "MGTS EDI Management"
         GenerateSalesInvoiceEDIBuffer('0555891', TRUE);
     end;
 
-    local procedure SendPurchaseOrder(PurchaseHeader: Record "38"; Force: Boolean)
+    local procedure SendPurchaseOrder(PurchaseHeader: Record "Purchase Header"; Force: Boolean)
     var
-        Vendor: Record "23";
-        TempEDIExportBufferLine: Record "50078" temporary;
+        Vendor: Record Vendor;
+        TempEDIExportBufferLine: Record "DEL EDI Export Buffer Line" temporary;
     begin
         Vendor.GET(PurchaseHeader."Buy-from Vendor No.");
-        IF NOT Vendor.EDI THEN
+        IF NOT Vendor."DEL EDI" THEN
             EXIT;
         GetPurchEDIExportBufferLines(PurchaseHeader, TempEDIExportBufferLine, Force);
         IF TempEDIExportBufferLine.ISEMPTY THEN
@@ -33,20 +22,20 @@ codeunit 50052 "MGTS EDI Management"
         InsertPurchEDIExportBuffer(PurchaseHeader, TempEDIExportBufferLine);
     end;
 
-    local procedure InsertPurchEDIExportBuffer(PurchaseHeader: Record "38"; var TempEDIExportBufferLine: Record "50078" temporary)
+    local procedure InsertPurchEDIExportBuffer(PurchaseHeader: Record "Purchase Header"; var TempEDIExportBufferLine: Record "DEL EDI Export Buffer Line" temporary)
     var
-        EDIExportBuffer: Record "50077";
-        EDIExportBufferLine: Record "50078";
-        CompanyInformation: Record "79";
-        Vendor: Record "23";
+        EDIExportBuffer: Record "DEL EDI Export Buffer";
+        EDIExportBufferLine: Record "DEL EDI Export Buffer Line";
+        CompanyInformation: Record "Company Information";
+        Vendor: Record Vendor;
     begin
         Vendor.GET(PurchaseHeader."Buy-from Vendor No.");
-        IF NOT Vendor.EDI THEN
+        IF NOT Vendor."DEL EDI" THEN
             EXIT;
-        CompanyInformation.GET;
+        CompanyInformation.GET();
 
         PurchaseHeader.CALCFIELDS(Amount);
-        EDIExportBuffer.INIT;
+        EDIExportBuffer.INIT();
         EDIExportBuffer."Source No." := DATABASE::"Purchase Header";
         EDIExportBuffer."Document Type" := PurchaseHeader."Document Type";
         EDIExportBuffer."Document No." := PurchaseHeader."No.";
@@ -59,40 +48,40 @@ codeunit 50052 "MGTS EDI Management"
         EDIExportBuffer."Supplier GLN" := Vendor.GLN;
         EDIExportBuffer."Buyer GLN" := CompanyInformation.GLN;
         EDIExportBuffer."Customer GLN" := CompanyInformation.GLN;
-        EDIExportBuffer."Delivery GLN" := PurchaseHeader.GLN;
+        EDIExportBuffer."Delivery GLN" := PurchaseHeader."DEL GLN";
         EDIExportBuffer."Contact Name" := CompanyInformation.Name;
         EDIExportBuffer."Contact Email" := CompanyInformation."E-Mail";
-        EDIExportBuffer."EDI Document Type" := PurchaseHeader."Type Order EDI";
+        EDIExportBuffer."EDI Document Type" := PurchaseHeader."DEL Type Order EDI";
         IF (PurchaseHeader."Currency Code" <> '') THEN
             EDIExportBuffer."Currency Code" := PurchaseHeader."Currency Code"
         ELSE
             EDIExportBuffer."Currency Code" := 'CHF';
         EDIExportBuffer."Document Amount" := PurchaseHeader.Amount;
-        EDIExportBuffer.INSERT;
+        EDIExportBuffer.INSERT();
 
-        TempEDIExportBufferLine.FINDSET;
+        TempEDIExportBufferLine.FINDSET();
         IF (EDIExportBuffer."Delivery Date" = 0D) THEN BEGIN
             EDIExportBuffer."Delivery Date" := TempEDIExportBufferLine."Delivery Date";
             EDIExportBuffer."Delivery Date Text" := TempEDIExportBufferLine."Delivery Date Text";
-            EDIExportBuffer.MODIFY;
+            EDIExportBuffer.MODIFY();
         END;
         REPEAT
-            EDIExportBufferLine.INIT;
+            EDIExportBufferLine.INIT();
             EDIExportBufferLine := TempEDIExportBufferLine;
             EDIExportBufferLine."Document Enty No." := EDIExportBuffer."Entry No.";
             EDIExportBufferLine."Delivery GLN" := EDIExportBuffer."Delivery GLN";
-            EDIExportBufferLine.INSERT;
-        UNTIL TempEDIExportBufferLine.NEXT = 0;
+            EDIExportBufferLine.INSERT();
+        UNTIL TempEDIExportBufferLine.NEXT() = 0;
     end;
 
-    local procedure GetPurchEDIExportBufferLines(PurchaseHeader: Record "38"; var TempEDIExportBufferLine: Record "50078" temporary; Force: Boolean)
+    local procedure GetPurchEDIExportBufferLines(PurchaseHeader: Record "Purchase Header"; var TempEDIExportBufferLine: Record "DEL EDI Export Buffer Line" temporary; Force: Boolean)
     var
-        PurchaseLine: Record "39";
-        Item: Record "27";
+        PurchaseLine: Record "Purchase Line";
+        Item: Record Item;
         LineNo: Integer;
     begin
-        TempEDIExportBufferLine.RESET;
-        TempEDIExportBufferLine.DELETEALL;
+        TempEDIExportBufferLine.RESET();
+        TempEDIExportBufferLine.DELETEALL();
         PurchaseLine.SETRANGE("Document Type", PurchaseHeader."Document Type");
         PurchaseLine.SETRANGE("Document No.", PurchaseHeader."No.");
         PurchaseLine.SETRANGE(Type, PurchaseLine.Type::Item);
@@ -100,21 +89,21 @@ codeunit 50052 "MGTS EDI Management"
         PurchaseLine.SETFILTER("No.", '<>%1', '');
         IF PurchaseLine.ISEMPTY THEN
             EXIT;
-        PurchaseLine.FINDSET;
+        PurchaseLine.FINDSET();
         REPEAT
             IF NOT EDIExportBufferLineExist(PurchaseLine) OR Force THEN BEGIN
                 LineNo += 1;
                 Item.GET(PurchaseLine."No.");
-                TempEDIExportBufferLine.INIT;
+                TempEDIExportBufferLine.INIT();
                 TempEDIExportBufferLine."Line No." := LineNo;
                 TempEDIExportBufferLine."Source No." := DATABASE::"Purchase Line";
                 TempEDIExportBufferLine."Document Type" := PurchaseLine."Document Type";
                 TempEDIExportBufferLine."Document No." := PurchaseLine."Document No.";
-                TempEDIExportBufferLine."Delivery GLN" := PurchaseHeader.GLN;
+                TempEDIExportBufferLine."Delivery GLN" := PurchaseHeader."DEL GLN";
                 TempEDIExportBufferLine."Document Line No." := PurchaseLine."Line No.";
                 TempEDIExportBufferLine."Item No." := PurchaseLine."No.";
                 TempEDIExportBufferLine.Description := PurchaseLine.Description;
-                TempEDIExportBufferLine.EAN := Item."Code EAN 13";
+                TempEDIExportBufferLine.EAN := Item."DEL Code EAN 13";
                 TempEDIExportBufferLine."Supplier Item No." := PurchaseLine."Vendor Item No.";
                 TempEDIExportBufferLine."Customer Item No." := PurchaseLine."No.";
                 TempEDIExportBufferLine."Unit of Measure" := PurchaseLine."Unit of Measure Code";
@@ -123,14 +112,14 @@ codeunit 50052 "MGTS EDI Management"
                 TempEDIExportBufferLine."Delivery Quantity" := PurchaseLine.Quantity;
                 TempEDIExportBufferLine."Delivery Date" := PurchaseLine."Requested Receipt Date";
                 TempEDIExportBufferLine."Delivery Date Text" := FORMAT(PurchaseLine."Requested Receipt Date", 0, '<Year4>-<Month,2>-<Day,2>');
-                TempEDIExportBufferLine.INSERT;
+                TempEDIExportBufferLine.INSERT();
             END;
-        UNTIL PurchaseLine.NEXT = 0;
+        UNTIL PurchaseLine.NEXT() = 0;
     end;
 
-    local procedure EDIExportBufferLineExist(PurchaseLine: Record "39"): Boolean
+    local procedure EDIExportBufferLineExist(PurchaseLine: Record "Purchase Line"): Boolean
     var
-        EDIExportBufferLine: Record "50078";
+        EDIExportBufferLine: Record "DEL EDI Export Buffer Line";
     begin
         EDIExportBufferLine.SETCURRENTKEY("Document Type", "Document No.", "Document Line No.");
         EDIExportBufferLine.SETRANGE("Document Type", PurchaseLine."Document Type");
@@ -139,11 +128,10 @@ codeunit 50052 "MGTS EDI Management"
         EXIT(NOT EDIExportBufferLine.ISEMPTY);
     end;
 
-    [EventSubscriber(ObjectType::Codeunit, 415, 'OnAfterReleasePurchaseDoc', '', false, false)]
-    local procedure OnAfterReleasePurchaseDoc(var PurchaseHeader: Record "38"; PreviewMode: Boolean)
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Release Purchase Document", 'OnAfterReleasePurchaseDoc', '', false, false)]
+    local procedure OnAfterReleasePurchaseDoc(var PurchaseHeader: Record "Purchase Header"; PreviewMode: Boolean)
     var
-        TempEDIExportBufferLine: Record "50078" temporary;
-        Vendor: Record "23";
+
     begin
         IF PreviewMode THEN
             EXIT;
@@ -151,25 +139,25 @@ codeunit 50052 "MGTS EDI Management"
         SendPurchaseOrder(PurchaseHeader, FALSE);
     end;
 
-    local procedure InsertSalesInvoiceEDIExportBuffer(SalesInvoiceHeader: Record "112"; var TempEDIExportBufferLine: Record "50078" temporary)
+    local procedure InsertSalesInvoiceEDIExportBuffer(SalesInvoiceHeader: Record "Sales Invoice Header"; var TempEDIExportBufferLine: Record "DEL EDI Export Buffer Line" temporary)
     var
-        EDIExportBuffer: Record "50077";
-        EDIExportBufferLine: Record "50078";
-        CompanyInformation: Record "79";
-        Customer: Record "18";
-        Customer2: Record "18";
-        Contact: Record "5050";
-        SalesShipmentHeader: Record "110";
+        EDIExportBuffer: Record "DEL EDI Export Buffer";
+        EDIExportBufferLine: Record "DEL EDI Export Buffer Line";
+        CompanyInformation: Record "Company Information";
+        Customer: Record Customer;
+
+        Contact: Record Contact;
+        SalesShipmentHeader: Record "Sales Shipment Header";
     begin
         IF (SalesInvoiceHeader."Order No." = '') THEN
             EXIT;
         Customer.GET(SalesInvoiceHeader."Sell-to Customer No.");
-        IF NOT Customer.EDI THEN
+        IF NOT Customer."DEL EDI" THEN
             EXIT;
-        CompanyInformation.GET;
+        CompanyInformation.GET();
         SalesInvoiceHeader.CALCFIELDS(Amount, "Amount Including VAT");
 
-        EDIExportBuffer.INIT;
+        EDIExportBuffer.INIT();
         EDIExportBuffer."Source No." := DATABASE::"Sales Invoice Header";
         EDIExportBuffer."Document Type" := EDIExportBuffer."Document Type"::Invoice;
         EDIExportBuffer."Document No." := SalesInvoiceHeader."No.";
@@ -178,7 +166,7 @@ codeunit 50052 "MGTS EDI Management"
         EDIExportBuffer."Your Reference" := SalesInvoiceHeader."External Document No.";
         EDIExportBuffer."Contact Name" := CompanyInformation.Name;
         EDIExportBuffer."Contact Email" := CompanyInformation."E-Mail";
-        EDIExportBuffer."EDI Order Type" := SalesInvoiceHeader."Type Order EDI";
+        EDIExportBuffer."EDI Order Type" := SalesInvoiceHeader."DEL Type Order EDI";
         EDIExportBuffer."EDI Document Type" := '380';
 
         IF (SalesInvoiceHeader."Currency Code" <> '') THEN
@@ -197,17 +185,17 @@ codeunit 50052 "MGTS EDI Management"
 
         EDIExportBuffer."Supplier GLN" := CompanyInformation.GLN;
         EDIExportBuffer."Supplier Name" := CompanyInformation.Name;
-        IF (STRLEN(CompanyInformation."Info fiscales 1") >= 24) THEN
-            EDIExportBuffer."Supplier Legal Form" := COPYSTR(CompanyInformation."Info fiscales 1", 1, 24);
-        IF (STRLEN(CompanyInformation."Info fiscales 1") > 25) THEN
-            EDIExportBuffer."Supplier Capital Stock" := COPYSTR(CompanyInformation."Info fiscales 1", 25, STRLEN(CompanyInformation."Info fiscales 1"));
+        IF (STRLEN(CompanyInformation."DEL Info fiscales 1") >= 24) THEN
+            EDIExportBuffer."Supplier Legal Form" := COPYSTR(CompanyInformation."DEL Info fiscales 1", 1, 24);
+        IF (STRLEN(CompanyInformation."DEL Info fiscales 1") > 25) THEN
+            EDIExportBuffer."Supplier Capital Stock" := COPYSTR(CompanyInformation."DEL Info fiscales 1", 25, STRLEN(CompanyInformation."DEL Info fiscales 1"));
 
         EDIExportBuffer."Supplier City" := CompanyInformation.City;
         EDIExportBuffer."Supplier Country" := CompanyInformation."Country/Region Code";
         EDIExportBuffer."Supplier Street" := CompanyInformation.Address;
         EDIExportBuffer."Supplier VAT No." := DELCHR(CompanyInformation."VAT Registration No.", '=', '.- ');
-        EDIExportBuffer."Supplier Registration No." := CompanyInformation."UID Number";//CompanyInformation."Registration No.";
-        EDIExportBuffer."Supplier SIREN No." := CompanyInformation."Info fiscales 2";
+        EDIExportBuffer."Supplier Registration No." := CompanyInformation."UID Number";
+        EDIExportBuffer."Supplier SIREN No." := CompanyInformation."DEL Info fiscales 2";
         EDIExportBuffer."Supplier Post Code" := CompanyInformation."Post Code";
 
         EDIExportBuffer."Buyer GLN" := Customer.GLN;
@@ -229,19 +217,9 @@ codeunit 50052 "MGTS EDI Management"
 
 
 
-        IF Contact.GET(SalesInvoiceHeader."Fiscal Repr.") THEN BEGIN
-            //>>MGTSEDI10.00.00.23
-            /*
-            IF (SalesInvoiceHeader."Bill-to Customer No." <> '') THEN
-            BEGIN
-              Customer2.GET(SalesInvoiceHeader."Bill-to Customer No.");
-              IF (Customer2."Fiscal Repr." <> '') THEN
-                Contact.GET(Customer2."Fiscal Repr.");
-            END;
-            */
-            //<<MGTSEDI10.00.00.23
+        IF Contact.GET(SalesInvoiceHeader."DEL Fiscal Repr.") THEN BEGIN
 
-            EDIExportBuffer."Tax Representative ID" := Contact.GLN;
+            EDIExportBuffer."Tax Representative ID" := Contact."DEL GLN";
             EDIExportBuffer."Tax Representative Name" := Contact.Name;
             EDIExportBuffer."Tax Representative City" := Contact.City;
             EDIExportBuffer."Tax Representative Country" := Contact."Country/Region Code";
@@ -251,18 +229,17 @@ codeunit 50052 "MGTS EDI Management"
             EDIExportBuffer."Tax Rep. Post Code" := Contact."Post Code";
         END;
 
-        EDIExportBuffer."Delivery GLN" := GetSalesInvoiceShipToGLN(SalesInvoiceHeader);
+
         SalesShipmentHeader.SETCURRENTKEY("Order No.");
         SalesShipmentHeader.SETRANGE("Order No.", SalesInvoiceHeader."Order No.");
         IF NOT SalesShipmentHeader.ISEMPTY THEN BEGIN
-            SalesShipmentHeader.FINDFIRST;
+            SalesShipmentHeader.FINDFIRST();
 
-            //>>MGTSEDI10.00.00.22
-            IF (SalesInvoiceHeader."Shipment No." = '') THEN
+            IF (SalesInvoiceHeader."DEL Shipment No." = '') THEN
                 EDIExportBuffer."Delivery Document No." := SalesShipmentHeader."No."
             ELSE
-                EDIExportBuffer."Delivery Document No." := SalesInvoiceHeader."Shipment No.";
-            //<<MGTSEDI10.00.00.22
+                EDIExportBuffer."Delivery Document No." := SalesInvoiceHeader."DEL Shipment No.";
+
 
             EDIExportBuffer."Delivery Date" := SalesShipmentHeader."Posting Date";
             EDIExportBuffer."Delivery Date Text" := FORMAT(SalesShipmentHeader."Posting Date", 0, '<Year4>-<Month,2>-<Day,2>');
@@ -272,35 +249,35 @@ codeunit 50052 "MGTS EDI Management"
             EDIExportBuffer."Delivery Street" := SalesShipmentHeader."Ship-to Address";
             EDIExportBuffer."Delivery Post Code" := SalesShipmentHeader."Ship-to Post Code";
         END;
-        EDIExportBuffer.INSERT;
+        EDIExportBuffer.INSERT();
 
-        TempEDIExportBufferLine.FINDSET;
+        TempEDIExportBufferLine.FINDSET();
         IF (EDIExportBuffer."Delivery Date" = 0D) THEN BEGIN
             EDIExportBuffer."Delivery Date" := TempEDIExportBufferLine."Delivery Date";
             EDIExportBuffer."Delivery Date Text" := TempEDIExportBufferLine."Delivery Date Text";
-            EDIExportBuffer.MODIFY;
+            EDIExportBuffer.MODIFY();
         END;
         REPEAT
-            EDIExportBufferLine.INIT;
+            EDIExportBufferLine.INIT();
             EDIExportBufferLine := TempEDIExportBufferLine;
             EDIExportBufferLine."Document Enty No." := EDIExportBuffer."Entry No.";
             EDIExportBufferLine."Delivery GLN" := EDIExportBuffer."Delivery GLN";
             EDIExportBufferLine."Delivery Date Text" := EDIExportBuffer."Delivery Date Text";
-            EDIExportBufferLine.INSERT;
-        UNTIL TempEDIExportBufferLine.NEXT = 0;
+            EDIExportBufferLine.INSERT();
+        UNTIL TempEDIExportBufferLine.NEXT() = 0;
 
         GenerateSalesInvoiceVATAndTextEDInfos(SalesInvoiceHeader, EDIExportBuffer);
 
     end;
 
-    local procedure GetSalesInvoiceEDIExportBufferLines(SalesInvoiceHeader: Record "112"; var TempEDIExportBufferLine: Record "50078" temporary; Force: Boolean)
+    local procedure GetSalesInvoiceEDIExportBufferLines(SalesInvoiceHeader: Record "Sales Invoice Header"; var TempEDIExportBufferLine: Record "DEL EDI Export Buffer Line" temporary; Force: Boolean)
     var
-        SalesInvoiceLine: Record "113";
-        Item: Record "27";
+        SalesInvoiceLine: Record "Sales Invoice Line";
+        Item: Record Item;
         LineNo: Integer;
     begin
-        TempEDIExportBufferLine.RESET;
-        TempEDIExportBufferLine.DELETEALL;
+        TempEDIExportBufferLine.RESET();
+        TempEDIExportBufferLine.DELETEALL();
 
         SalesInvoiceLine.SETRANGE("Document No.", SalesInvoiceHeader."No.");
         SalesInvoiceLine.SETRANGE(Type, SalesInvoiceLine.Type::Item);
@@ -308,21 +285,21 @@ codeunit 50052 "MGTS EDI Management"
         SalesInvoiceLine.SETFILTER("No.", '<>%1', '');
         IF SalesInvoiceLine.ISEMPTY THEN
             EXIT;
-        SalesInvoiceLine.FINDSET;
+        SalesInvoiceLine.FINDSET();
         REPEAT
             IF NOT EDIExportSalesInvoiceExist(SalesInvoiceLine) OR Force THEN BEGIN
                 LineNo += 1;
                 Item.GET(SalesInvoiceLine."No.");
-                TempEDIExportBufferLine.INIT;
+                TempEDIExportBufferLine.INIT();
                 TempEDIExportBufferLine."Line No." := LineNo;
                 TempEDIExportBufferLine."Source No." := DATABASE::"Sales Invoice Header";
                 TempEDIExportBufferLine."Document Type" := TempEDIExportBufferLine."Document Type"::Invoice;
                 TempEDIExportBufferLine."Document No." := SalesInvoiceHeader."No.";
-                TempEDIExportBufferLine."Delivery GLN" := SalesInvoiceHeader.GLN;
+                TempEDIExportBufferLine."Delivery GLN" := SalesInvoiceHeader."DEL GLN";
                 TempEDIExportBufferLine."Document Line No." := SalesInvoiceLine."Line No.";
                 TempEDIExportBufferLine."Item No." := SalesInvoiceLine."No.";
                 TempEDIExportBufferLine.Description := SalesInvoiceLine.Description;
-                TempEDIExportBufferLine.EAN := Item."Code EAN 13";
+                TempEDIExportBufferLine.EAN := Item."DEL Code EAN 13";
                 TempEDIExportBufferLine."Supplier Item No." := SalesInvoiceLine."No.";
                 TempEDIExportBufferLine."Customer Item No." := SalesInvoiceLine."Cross-Reference No.";
                 TempEDIExportBufferLine."Unit of Measure" := SalesInvoiceLine."Unit of Measure Code";
@@ -333,14 +310,14 @@ codeunit 50052 "MGTS EDI Management"
                 TempEDIExportBufferLine."Line Amount" := SalesInvoiceLine."Line Amount";
                 TempEDIExportBufferLine."VAT Code" := 'VAT';
                 TempEDIExportBufferLine."VAT %" := SalesInvoiceLine."VAT %";
-                TempEDIExportBufferLine.INSERT;
+                TempEDIExportBufferLine.INSERT();
             END;
-        UNTIL SalesInvoiceLine.NEXT = 0;
+        UNTIL SalesInvoiceLine.NEXT() = 0;
     end;
 
-    local procedure EDIExportSalesInvoiceExist(SalesInvoiceLine: Record "113"): Boolean
+    local procedure EDIExportSalesInvoiceExist(SalesInvoiceLine: Record "Sales Invoice Line"): Boolean
     var
-        EDIExportBufferLine: Record "50078";
+        EDIExportBufferLine: Record "DEL EDI Export Buffer Line";
     begin
         EDIExportBufferLine.SETCURRENTKEY("Document Type", "Document No.", "Document Line No.");
         EDIExportBufferLine.SETRANGE("Document Type", EDIExportBufferLine."Document Type"::Invoice);
@@ -349,12 +326,12 @@ codeunit 50052 "MGTS EDI Management"
         EXIT(NOT EDIExportBufferLine.ISEMPTY);
     end;
 
-    [Scope('Internal')]
+
     procedure GenerateSalesInvoiceEDIBuffer(InvoiceNo: Code[20]; Force: Boolean)
     var
-        TempEDIExportBufferLine: Record "50078" temporary;
-        SalesInvoiceHeader: Record "112";
-        Customer: Record "18";
+        TempEDIExportBufferLine: Record "DEL EDI Export Buffer Line" temporary;
+        SalesInvoiceHeader: Record "Sales Invoice Header";
+        Customer: Record Customer;
     begin
         IF (InvoiceNo = '') THEN
             EXIT;
@@ -363,7 +340,7 @@ codeunit 50052 "MGTS EDI Management"
         IF (SalesInvoiceHeader."Order No." = '') THEN
             EXIT;
         Customer.GET(SalesInvoiceHeader."Sell-to Customer No.");
-        IF NOT Customer.EDI THEN
+        IF NOT Customer."DEL EDI" THEN
             EXIT;
 
 
@@ -374,20 +351,20 @@ codeunit 50052 "MGTS EDI Management"
         InsertSalesInvoiceEDIExportBuffer(SalesInvoiceHeader, TempEDIExportBufferLine);
     end;
 
-    local procedure GenerateSalesInvoiceVATAndTextEDInfos(SalesInvoiceHeader: Record "112"; EDIExportBuffer: Record "50077")
+    local procedure GenerateSalesInvoiceVATAndTextEDInfos(SalesInvoiceHeader: Record "Sales Invoice Header"; EDIExportBuffer: Record "DEL EDI Export Buffer")
     var
-        SalesInvoiceLine: Record "113";
-        TempVATAmountLine: Record "290" temporary;
-        EDIExportBufferAddInfos: Record "50080";
-        CompanyInformation: Record "79";
-        PaymentTerms: Record "3";
+        SalesInvoiceLine: Record "Sales Invoice Line";
+        TempVATAmountLine: Record "VAT Amount Line" temporary;
+        EDIExportBufferAddInfos: Record "DEL EDI Exp. Buffer Add. Infos";
+        CompanyInformation: Record "Company Information";
+        PaymentTerms: Record "Payment Terms";
         LineNo: Integer;
         Cst000: Label 'Payment Terms :  %1';
     begin
-        CompanyInformation.GET;
+        CompanyInformation.GET();
         IF PaymentTerms.GET(SalesInvoiceHeader."Payment Terms Code") THEN BEGIN
             LineNo += 1;
-            EDIExportBufferAddInfos.INIT;
+            EDIExportBufferAddInfos.INIT();
             EDIExportBufferAddInfos.Type := EDIExportBufferAddInfos.Type::Text;
             EDIExportBufferAddInfos."Document Enty No." := EDIExportBuffer."Entry No.";
             EDIExportBufferAddInfos."Line No." := LineNo;
@@ -401,11 +378,11 @@ codeunit 50052 "MGTS EDI Management"
                 EDIExportBufferAddInfos."Text 1" := STRSUBSTNO(Cst000, PaymentTerms.Description)
             ELSE
                 EDIExportBufferAddInfos."Text 1" := STRSUBSTNO(Cst000, PaymentTerms.Code);
-            EDIExportBufferAddInfos.INSERT;
+            EDIExportBufferAddInfos.INSERT();
         END;
 
         LineNo += 1;
-        EDIExportBufferAddInfos.INIT;
+        EDIExportBufferAddInfos.INIT();
         EDIExportBufferAddInfos.Type := EDIExportBufferAddInfos.Type::Text;
         EDIExportBufferAddInfos."Document Enty No." := EDIExportBuffer."Entry No.";
         EDIExportBufferAddInfos."Line No." := LineNo;
@@ -416,16 +393,16 @@ codeunit 50052 "MGTS EDI Management"
         EDIExportBufferAddInfos.Code := 'PMD';
         EDIExportBufferAddInfos."Code Type" := 'PMD';
         EDIExportBufferAddInfos."Text 1" := CompanyInformation."Info pénalités";
-        EDIExportBufferAddInfos.INSERT;
+        EDIExportBufferAddInfos.INSERT();
 
         SalesInvoiceLine.SETRANGE("Document No.", SalesInvoiceHeader."No.");
-        SalesInvoiceLine.FINDFIRST;
+        SalesInvoiceLine.FINDFIRST();
         SalesInvoiceLine.CalcVATAmountLines(SalesInvoiceHeader, TempVATAmountLine);
         TempVATAmountLine.SETFILTER("VAT Base", '<>%1', 0);
         IF TempVATAmountLine.ISEMPTY THEN BEGIN
             LineNo += 1;
             SalesInvoiceHeader.CALCFIELDS("Amount Including VAT");
-            EDIExportBufferAddInfos.INIT;
+            EDIExportBufferAddInfos.INIT();
             EDIExportBufferAddInfos.Type := EDIExportBufferAddInfos.Type::VAT;
             EDIExportBufferAddInfos."Document Enty No." := EDIExportBuffer."Entry No.";
             EDIExportBufferAddInfos."Line No." := LineNo;
@@ -439,12 +416,12 @@ codeunit 50052 "MGTS EDI Management"
             EDIExportBufferAddInfos."Amount Inc. VAT" := SalesInvoiceHeader."Amount Including VAT";
             EDIExportBufferAddInfos."VAT Amount" := 0;
             EDIExportBufferAddInfos."VAT %" := 0;
-            EDIExportBufferAddInfos.INSERT;
+            EDIExportBufferAddInfos.INSERT();
         END
-        ELSE BEGIN
+        ELSE
             REPEAT
                 LineNo += 1;
-                EDIExportBufferAddInfos.INIT;
+                EDIExportBufferAddInfos.INIT();
                 EDIExportBufferAddInfos.Type := EDIExportBufferAddInfos.Type::VAT;
                 EDIExportBufferAddInfos."Document Enty No." := EDIExportBuffer."Entry No.";
                 EDIExportBufferAddInfos."Line No." := LineNo;
@@ -459,18 +436,17 @@ codeunit 50052 "MGTS EDI Management"
                 EDIExportBufferAddInfos."VAT Amount" := TempVATAmountLine."VAT Amount";
                 EDIExportBufferAddInfos."VAT %" := TempVATAmountLine."VAT %";
                 IF (EDIExportBufferAddInfos.Amount <> 0) THEN
-                    EDIExportBufferAddInfos.INSERT;
-            UNTIL TempVATAmountLine.NEXT = 0;
-        END;
+                    EDIExportBufferAddInfos.INSERT();
+            UNTIL TempVATAmountLine.NEXT() = 0;
 
-        //Generate Ecotax segment
+
         SalesInvoiceLine.SETRANGE("Document No.", SalesInvoiceHeader."No.");
         SalesInvoiceLine.SETRANGE(Type, SalesInvoiceLine.Type::"G/L Account");
         SalesInvoiceLine.SETRANGE("No.", '3610');
         SalesInvoiceLine.SETFILTER("Line Amount", '>0');
-        IF SalesInvoiceLine.FINDFIRST THEN BEGIN
+        IF SalesInvoiceLine.FINDFIRST() THEN BEGIN
             LineNo += 1;
-            EDIExportBufferAddInfos.INIT;
+            EDIExportBufferAddInfos.INIT();
             EDIExportBufferAddInfos.Type := EDIExportBufferAddInfos.Type::VAT;
             EDIExportBufferAddInfos."Document Enty No." := EDIExportBuffer."Entry No.";
             EDIExportBufferAddInfos."Line No." := LineNo;
@@ -486,18 +462,18 @@ codeunit 50052 "MGTS EDI Management"
             EDIExportBufferAddInfos."Amount Inc. VAT" := SalesInvoiceLine."Amount Including VAT";
             EDIExportBufferAddInfos."VAT Amount" := SalesInvoiceLine."Amount Including VAT" - SalesInvoiceLine.Amount;
             EDIExportBufferAddInfos."VAT %" := SalesInvoiceLine."VAT %";
-            EDIExportBufferAddInfos.INSERT;
+            EDIExportBufferAddInfos.INSERT();
         END;
 
-        //TVA TEXT
+
         SalesInvoiceLine.SETRANGE("Line Amount");
         SalesInvoiceLine.SETRANGE("Document No.", SalesInvoiceHeader."No.");
         SalesInvoiceLine.SETRANGE(Type, SalesInvoiceLine.Type::" ");
         SalesInvoiceLine.SETFILTER("No.", '<>%1', '');
-        IF SalesInvoiceLine.FINDSET THEN
+        IF SalesInvoiceLine.FINDSET() THEN
             REPEAT
                 LineNo += 1;
-                EDIExportBufferAddInfos.INIT;
+                EDIExportBufferAddInfos.INIT();
                 EDIExportBufferAddInfos.Type := EDIExportBufferAddInfos.Type::Text;
                 EDIExportBufferAddInfos."Document Enty No." := EDIExportBuffer."Entry No.";
                 EDIExportBufferAddInfos."Line No." := LineNo;
@@ -508,38 +484,31 @@ codeunit 50052 "MGTS EDI Management"
                 EDIExportBufferAddInfos.Code := 'SIN';
                 EDIExportBufferAddInfos."Code Type" := 'SIN';
                 EDIExportBufferAddInfos."Text 1" := SalesInvoiceLine.Description + ' ' + SalesInvoiceLine."Description 2";
-                EDIExportBufferAddInfos.INSERT;
-            UNTIL SalesInvoiceLine.NEXT = 0;
+                EDIExportBufferAddInfos.INSERT();
+            UNTIL SalesInvoiceLine.NEXT() = 0;
     end;
 
-    [EventSubscriber(ObjectType::Codeunit, 80, 'OnAfterPostSalesDoc', '', false, false)]
-    local procedure OnAfterPostSalesDoc(var SalesHeader: Record "36"; var GenJnlPostLine: Codeunit "12"; SalesShptHdrNo: Code[20]; RetRcpHdrNo: Code[20]; SalesInvHdrNo: Code[20]; SalesCrMemoHdrNo: Code[20])
-    begin
-        //GenerateSalesInvoiceEDIBuffer(SalesInvHdrNo,FALSE);
-    end;
 
-    [Scope('Internal')]
-    procedure OpenDocument(EDIExportBuffer: Record "50077")
+
+    procedure OpenDocument(EDIExportBuffer: Record "DEL EDI Export Buffer")
     var
-        PurchaseHeader: Record "38";
-        SalesInvoiceHeader: Record "112";
+        PurchaseHeader: Record "Purchase Header";
+        SalesInvoiceHeader: Record "Sales Invoice Header";
     begin
-        IF (EDIExportBuffer."Source No." = DATABASE::"Purchase Header") AND (EDIExportBuffer."Document Type" = EDIExportBuffer."Document Type"::Order) THEN BEGIN
+        IF (EDIExportBuffer."Source No." = DATABASE::"Purchase Header") AND (EDIExportBuffer."Document Type" = EDIExportBuffer."Document Type"::Order) THEN
             IF PurchaseHeader.GET(PurchaseHeader."Document Type"::Order, EDIExportBuffer."Document No.") THEN
                 PAGE.RUN(PAGE::"Purchase Order", PurchaseHeader);
-        END;
 
-        IF (EDIExportBuffer."Source No." = DATABASE::"Sales Invoice Header") AND (EDIExportBuffer."Document Type" = EDIExportBuffer."Document Type"::Invoice) THEN BEGIN
+        IF (EDIExportBuffer."Source No." = DATABASE::"Sales Invoice Header") AND (EDIExportBuffer."Document Type" = EDIExportBuffer."Document Type"::Invoice) THEN
             IF SalesInvoiceHeader.GET(EDIExportBuffer."Document No.") THEN
                 PAGE.RUN(PAGE::"Posted Sales Invoice", SalesInvoiceHeader);
-        END;
     end;
 
-    [Scope('Internal')]
-    procedure ResendDocument(var EDIExportBuffer: Record "50077")
+
+    procedure ResendDocument(var EDIExportBuffer: Record "DEL EDI Export Buffer")
     var
-        PurchaseHeader: Record "38";
-        SalesInvoiceHeader: Record "112";
+        PurchaseHeader: Record "Purchase Header";
+        SalesInvoiceHeader: Record "Sales Invoice Header";
         MsgResend: Label 'Resend in progress';
     begin
         CheckResendDocumentAuthorization();
@@ -549,7 +518,7 @@ codeunit 50052 "MGTS EDI Management"
             ELSE BEGIN
                 EDIExportBuffer.Exported := FALSE;
                 EDIExportBuffer."Export Date" := 0DT;
-                EDIExportBuffer.MODIFY;
+                EDIExportBuffer.MODIFY();
             END;
             MESSAGE(MsgResend);
         END;
@@ -560,26 +529,26 @@ codeunit 50052 "MGTS EDI Management"
             ELSE BEGIN
                 EDIExportBuffer.Exported := FALSE;
                 EDIExportBuffer."Export Date" := 0DT;
-                EDIExportBuffer.MODIFY;
+                EDIExportBuffer.MODIFY();
             END;
             MESSAGE(MsgResend);
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure CheckResendDocumentAuthorization()
     var
-        UserSetup: Record "91";
+        UserSetup: Record "User Setup";
         ErrResendEDIDoc: Label 'You are not authorized to resend EDI documents.';
     begin
         IF NOT UserSetup.GET(USERID) THEN
-            UserSetup.INIT;
-        IF NOT UserSetup."Resend EDI Document" THEN
+            UserSetup.INIT();
+        IF NOT UserSetup."DEL Resend EDI Document" THEN
             ERROR(ErrResendEDIDoc);
     end;
 
-    [Scope('Internal')]
-    procedure ResendCustomerInvoice(SalesInvoiceHeader: Record "112")
+
+    procedure ResendCustomerInvoice(SalesInvoiceHeader: Record "Sales Invoice Header")
     var
         MsgResend: Label 'Resend in progress';
         ConfirmEDISend: Label 'Are you sure you want to send invoice %1 via EDI?';
@@ -591,40 +560,16 @@ codeunit 50052 "MGTS EDI Management"
         MESSAGE(MsgResend);
     end;
 
-    local procedure GetSalesInvoiceShipToGLN(SalesInvoiceHeader: Record "112"): Text[13]
+
+
+    [EventSubscriber(ObjectType::Table, Database::"Sales Header", 'OnAfterValidateEvent', 'DEL GLN', false, false)]
+    local procedure OnAfterValidateGLNSalesHeader(var Rec: Record "Sales Header"; var xRec: Record "Sales Header"; CurrFieldNo: Integer)
     var
-        ANVEDICrossReference: Record "5327362";
-        Customer: Record "18";
+        EDIDeliveryGLNCustomer: Record "DEL EDI Delivery GLN Customer";
     begin
-        IF (SalesInvoiceHeader.GLN <> '') AND (STRLEN(SalesInvoiceHeader.GLN) = 13) THEN
-            EXIT(COPYSTR(SalesInvoiceHeader.GLN, 1, 13));
-
-        IF (SalesInvoiceHeader."Ship-to Code" = '') THEN BEGIN
-            Customer.GET(SalesInvoiceHeader."Sell-to Customer No.");
-            EXIT(Customer.GLN);
-        END;
-
-        ANVEDICrossReference.SETRANGE("Cross-Reference Type", 'MOBIVIA-SHIP-GLN');
-        ANVEDICrossReference.SETRANGE("Table ID", DATABASE::"Ship-to Address");
-        ANVEDICrossReference.SETRANGE("Table Relation Par 1", SalesInvoiceHeader."Sell-to Customer No.");
-        ANVEDICrossReference.SETRANGE("Internal No.", SalesInvoiceHeader."Ship-to Code");
-        IF NOT ANVEDICrossReference.ISEMPTY THEN BEGIN
-            ANVEDICrossReference.FINDSET;
-            EXIT(ANVEDICrossReference."External No.");
-        END
-        ELSE
-            EXIT('');
-    end;
-
-    [EventSubscriber(ObjectType::Table, 36, 'OnAfterValidateEvent', 'GLN', false, false)]
-    local procedure OnAfterValidateGLNSalesHeader(var Rec: Record "36"; var xRec: Record "36"; CurrFieldNo: Integer)
-    var
-        EDIDeliveryGLNCustomer: Record "50081";
-    begin
-        IF EDIDeliveryGLNCustomer.GET(Rec.GLN) THEN BEGIN
+        IF EDIDeliveryGLNCustomer.GET(Rec."DEL GLN") THEN
             IF Rec."Bill-to Customer No." <> EDIDeliveryGLNCustomer."Bill-to Customer No." THEN
                 Rec.VALIDATE(Rec."Bill-to Customer No.", EDIDeliveryGLNCustomer."Bill-to Customer No.");
-        END;
     end;
 }
 

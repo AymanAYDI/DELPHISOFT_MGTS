@@ -1,10 +1,10 @@
-page 50117 "Contact Contrat"
+page 50117 "DEL Contact Contrat"
 {
     // THM       08.05.17      create
 
     Caption = 'Follow contracts contacts';
     PageType = List;
-    SourceTable = Table5050;
+    SourceTable = Contact;
 
     layout
     {
@@ -12,23 +12,23 @@ page 50117 "Contact Contrat"
         {
             repeater(Group)
             {
-                field("No."; "No.")
+                field("No."; Rec."No.")
                 {
                     Editable = false;
                 }
-                field("Type Contact"; "Type Contact")
+                field("Type Contact"; Rec."DEL Type Contact")
                 {
                 }
-                field("Name Contact"; "Name Contact")
+                field("Name Contact"; Rec."DEL Name Contact")
                 {
                 }
-                field("First Name Contact"; "First Name Contact")
+                field("First Name Contact"; Rec."DEL First Name Contact")
                 {
                 }
-                field("E-Mail"; "E-Mail")
+                field("E-Mail"; Rec."E-Mail")
                 {
                 }
-                field("Phone No."; "Phone No.")
+                field("Phone No."; Rec."Phone No.")
                 {
                 }
             }
@@ -41,19 +41,19 @@ page 50117 "Contact Contrat"
 
     trigger OnNewRecord(BelowxRec: Boolean)
     begin
-        CodeClient := GETFILTER("Customer No.");
-        ContactBusinessRelation.RESET;
+        CodeClient := Rec.GETFILTER("DEL Customer No.");
+        ContactBusinessRelation.RESET();
         ContactBusinessRelation.SETRANGE(ContactBusinessRelation."Link to Table", ContactBusinessRelation."Link to Table"::Customer);
         ContactBusinessRelation.SETRANGE(ContactBusinessRelation."No.", CodeClient);
-        IF ContactBusinessRelation.FINDFIRST THEN BEGIN
-            Type := Type::Person;
-            VALIDATE("Company No.", ContactBusinessRelation."Contact No.");
-            "Customer No." := ContactBusinessRelation."No."
+        IF ContactBusinessRelation.FINDFIRST() THEN BEGIN
+            Rec.Type := Rec.Type::Person;
+            Rec.VALIDATE("Company No.", ContactBusinessRelation."Contact No.");
+            Rec."DEL Customer No." := ContactBusinessRelation."No."
         END;
     end;
 
     var
-        ContactBusinessRelation: Record "5054";
+        ContactBusinessRelation: Record "Contact Business Relation";
         CodeClient: Text;
 }
 

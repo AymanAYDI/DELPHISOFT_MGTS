@@ -1,16 +1,11 @@
-codeunit 50051 "QRCode Event Mgt"
+codeunit 50051 "DEL QRCode Event Mgt"
 {
-    // DEL_QR1.00.00.01/RLA/02/11/2020 -  Create CodeUnit
 
 
-    trigger OnRun()
-    begin
-    end;
-
-    [EventSubscriber(ObjectType::Table, 288, 'OnAfterValidateEvent', 'IBAN', false, false)]
-    local procedure OnOnAfterValidateIBAN(var Rec: Record "288"; var xRec: Record "288"; CurrFieldNo: Integer)
+    [EventSubscriber(ObjectType::Table, Database::"Vendor Bank Account", 'OnAfterValidateEvent', 'IBAN', false, false)]
+    local procedure OnOnAfterValidateIBAN(var Rec: Record "Vendor Bank Account"; var xRec: Record "Vendor Bank Account"; CurrFieldNo: Integer)
     var
-        BankDirectory: Record "11500";
+        BankDirectory: Record "Bank Directory";
     begin
         IF Rec.ISTEMPORARY OR (STRLEN(Rec.IBAN) < 10) THEN
             EXIT;

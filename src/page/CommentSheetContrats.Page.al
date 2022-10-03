@@ -36,7 +36,7 @@ page 50076 "DEL Comment Sheet Contrats"
                 {
                     Visible = false;
                 }
-                field("Type contrat"; "Type contrat")
+                field("Type contrat"; Rec."DEL Type contrat")
                 {
                 }
             }

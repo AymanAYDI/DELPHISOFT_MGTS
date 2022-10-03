@@ -1,4 +1,4 @@
-page 50097 "General regulation Card"
+page 50097 "DEL General regulation Card"
 {
     // +---------------------------------------------------------------+
     // | Logico SA                                                     |
@@ -15,10 +15,10 @@ page 50097 "General regulation Card"
 
     Caption = 'General product regulation Card';
     PageType = Card;
-    SourceTable = Table50057;
-    SourceTableView = SORTING(No., Type)
+    SourceTable = "DEL Regulation";
+    SourceTableView = SORTING("No.", Type)
                       ORDER(Ascending)
-                      WHERE(Type = FILTER(General product));
+                      WHERE(Type = FILTER("General product"));
 
     layout
     {
@@ -27,14 +27,14 @@ page 50097 "General regulation Card"
             group("Général")
             {
                 Caption = 'Record details';
-                field(Type; Type)
+                field(Type; Rec.Type)
                 {
                     Editable = false;
                 }
-                field("No."; "No.")
+                field("No."; Rec."No.")
                 {
                 }
-                field("Description pays"; "Description pays")
+                field("Description pays"; Rec."Description pays")
                 {
 
                     trigger OnLookup(var Text: Text): Boolean
@@ -46,60 +46,60 @@ page 50097 "General regulation Card"
                         Pays_Page.LOOKUPMODE := TRUE;
                         IF Pays_Page.RUNMODAL = ACTION::LookupOK THEN BEGIN
                             Pays_Page.GETRECORD(Pays_Rec);
-                            IF Pays = '' THEN BEGIN
-                                Pays := Pays_Rec.Code;
-                                "Description pays" := Pays_Rec.Description;
+                            IF Rec.Pays = '' THEN BEGIN
+                                Rec.Pays := Pays_Rec.Code;
+                                Rec."Description pays" := Pays_Rec.Description;
                             END
                             ELSE BEGIN
-                                Pays := Pays + ',' + Pays_Rec.Code;
-                                "Description pays" := "Description pays" + ',' + Pays_Rec.Description;
+                                Rec.Pays := Rec.Pays + ',' + Pays_Rec.Code;
+                                Rec."Description pays" := Rec."Description pays" + ',' + Pays_Rec.Description;
                             END;
                         END;
                     end;
 
                     trigger OnValidate()
                     begin
-                        IF "Description pays" = '' THEN
-                            Pays := '';
+                        IF Rec."Description pays" = '' THEN
+                            Rec.Pays := '';
                     end;
                 }
-                field(Nature; Nature)
+                field(Nature; Rec.Nature)
                 {
                 }
-                field("Title in French"; "Title in French")
-                {
-                    MultiLine = true;
-                }
-                field("Title in English"; "Title in English")
+                field("Title in French"; Rec."Title in French")
                 {
                     MultiLine = true;
                 }
-                field(Description; Description)
+                field("Title in English"; Rec."Title in English")
                 {
                     MultiLine = true;
                 }
-                field("Starting date"; "Starting date")
+                field(Description; Rec.Description)
+                {
+                    MultiLine = true;
+                }
+                field("Starting date"; Rec."Starting date")
                 {
                 }
-                field("Date Fin"; "Date Fin")
+                field("Date Fin"; Rec."Date Fin")
                 {
                 }
-                field("Publication date"; "Publication date")
+                field("Publication date"; Rec."Publication date")
                 {
                 }
-                field("Date limit of the application"; "Date limit of the application")
+                field("Date limit of the application"; Rec."Date limit of the application")
                 {
                 }
-                field("Texte rattachement"; "Texte rattachement")
+                field("Texte rattachement"; Rec."Texte rattachement")
                 {
                 }
-                field(Statut; Statut)
+                field(Statut; Rec.Statut)
                 {
                 }
-                field("Texte de remplacement"; "Texte de remplacement")
+                field("Texte de remplacement"; Rec."Texte de remplacement")
                 {
                 }
-                field("Referent Laboratory"; "Referent Laboratory")
+                field("Referent Laboratory"; Rec."Referent Laboratory")
                 {
                     Caption = 'ICS';
                 }
@@ -112,7 +112,7 @@ page 50097 "General regulation Card"
     }
 
     var
-        Pays_Page: Page "50088";
-        Pays_Rec: Record "50052";
+        Pays_Page: Page Pays;
+        Pays_Rec: Record "DEL Pays";
 }
 

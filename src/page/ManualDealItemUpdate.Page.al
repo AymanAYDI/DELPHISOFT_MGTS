@@ -1,51 +1,40 @@
+
 page 50081 "DEL Manual Deal Item Update"
 {
-    // +-------------------------------------------------------------------------------+
-    // | Logico SA - Logiciels & Conseils                                              |
-    // | Stand: 02.03.09                                                               |
-    // |                                                                               |
-    // +-------------------------------------------------------------------------------+
-    // 
-    // ID     Version     Story-Card    Date       Description
-    // ---------------------------------------------------------------------------------
-    // CHG01                            02.03.09   created form
-    // THM250817                        25.08.17   add Update batch
-    // 
-    // Mgts10.00.05.00      04.01.2022 : Replace "Vol cbm" GetVolCBM
 
     Editable = false;
     PageType = Card;
-    SourceTable = Table27;
+    SourceTable = Item;
 
     layout
     {
         area(content)
         {
-            field("No."; "No.")
+            field("No."; Rec."No.")
             {
             }
-            field(Description; Description)
+            field(Description; Rec.Description)
             {
                 Editable = false;
                 Enabled = true;
             }
-            field("Weight net"; "Weight net")
+            field("Weight net"; Rec."DEL Weight net")
             {
                 Editable = false;
             }
-            field("Weight brut"; "Weight brut")
+            field("Weight brut"; Rec."DEL Weight brut")
             {
                 Editable = false;
             }
-            field("Vol cbm"; GetVolCBM(TRUE))
+            field("Vol cbm"; Rec.GetVolCBM(TRUE))
             {
                 Caption = 'Vol cbm';
             }
-            field("Vol cbm carton transport"; "Vol cbm carton transport")
+            field("Vol cbm carton transport"; Rec."DEL Vol cbm carton transport")
             {
                 Editable = false;
             }
-            field(PCB; PCB)
+            field(PCB; Rec."DEL PCB")
             {
                 Editable = false;
             }
@@ -62,11 +51,11 @@ page 50081 "DEL Manual Deal Item Update"
                 Image = Approve;
                 Promoted = true;
                 PromotedCategory = Process;
-
-                trigger OnAction()
-                begin
-                    DealItem_Cu.FNC_Manual_Update("No.");
-                end;
+                // todo 
+                // trigger OnAction()
+                // begin
+                //     DealItem_Cu.FNC_Manual_Update(Rec."No.");
+                // end;
             }
             action("Update Batch")
             {
@@ -86,7 +75,9 @@ page 50081 "DEL Manual Deal Item Update"
     }
 
     var
-        DealItem_Cu: Codeunit "50024";
+        // DealItem_Cu: Codeunit "50024"; TODO: 
         Text19021811: Label 'D E A L   I T E M   U P D A T E';
 }
+
+#pragma implicitwith restore
 

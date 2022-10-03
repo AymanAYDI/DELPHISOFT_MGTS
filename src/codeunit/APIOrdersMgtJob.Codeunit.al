@@ -1,15 +1,15 @@
-codeunit 50046 "API Orders  Mgt.Job"
+codeunit 50046 "DEL API Orders  Mgt.Job"
 {
-    // Mgts10.00.01.00 | 11.01.2020 | Order API Management
 
-    TableNo = 472;
+
+    TableNo = "Job Queue Entry";
 
     trigger OnRun()
     begin
-        APIOrdersMgt.RUN;
+        APIOrdersMgt.RUN();
     end;
 
     var
-        APIOrdersMgt: Codeunit "50045";
+        APIOrdersMgt: Codeunit "DEL API Orders  Mgt.";
 }
 

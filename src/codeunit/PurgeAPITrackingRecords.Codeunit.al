@@ -1,12 +1,12 @@
-codeunit 50049 "Purge API Tracking Records"
+codeunit 50049 "DEL Purge API Tracking Records"
 {
-    // Mgts10.00.01.02 | 24.02.2020 | Order API Management : Add C\AL in : OnRun
 
-    TableNo = 472;
+
+    TableNo = "Job Queue Entry";
 
     trigger OnRun()
     var
-        OrderAPIRecordTracking: Record "50074";
+        OrderAPIRecordTracking: Record "DEL Order API Record Tracking";
     begin
         OrderAPIRecordTracking.SETCURRENTKEY("Sent Deal");
         OrderAPIRecordTracking.SETRANGE("Sent Deal", TRUE);

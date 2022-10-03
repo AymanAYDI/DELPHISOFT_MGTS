@@ -19,7 +19,7 @@ table 50078 "DEL EDI Export Buffer Line"
             Caption = 'N° Source';
         }
 
-        field(4; "Document Type"; Enum "DEL DocTYPE")
+        field(4; "Document Type"; Enum "Purchase Document Type")
         {
             Caption = 'Document Type';
 

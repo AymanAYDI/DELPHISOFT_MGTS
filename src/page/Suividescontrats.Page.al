@@ -68,7 +68,7 @@ page 50073 "DEL Suivi des contrats"
                 {
                     Editable = false;
                 }
-                field("Parent Company"; "DEL Parent Company")
+                field("Parent Company"; Rec."DEL Parent Company")
                 {
                 }
             }
@@ -110,6 +110,7 @@ page 50073 "DEL Suivi des contrats"
                 {
 
                     trigger OnLookup(var Text: Text): Boolean
+
                     begin
 
                         CLEAR(DocumentLine);
@@ -665,7 +666,7 @@ page 50073 "DEL Suivi des contrats"
                     Promoted = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
-                    RunObject = Page "Contract comment";
+                    RunObject = Page "DEL Contract comment";
                                     RunPageLink = "No." = FIELD("No.");
                                     RunPageView = SORTING("No.", "Line No.");
                 }

@@ -1,4 +1,4 @@
-page 50089 Usage
+page 50089 "DEL Usage"
 {
     // +---------------------------------------------------------------+
     // | Logico SA                                                     |
@@ -11,7 +11,7 @@ page 50089 Usage
 
     Caption = 'Usage';
     PageType = List;
-    SourceTable = Table50054;
+    SourceTable = "DEL Desc Plan of control";
 
     layout
     {
@@ -19,10 +19,10 @@ page 50089 Usage
         {
             repeater(Group)
             {
-                field(Code; Code)
+                field("Code"; Rec.Code)
                 {
                 }
-                field(Description; Description)
+                field(Description; Rec.Description)
                 {
                 }
             }
@@ -33,4 +33,5 @@ page 50089 Usage
     {
     }
 }
+
 

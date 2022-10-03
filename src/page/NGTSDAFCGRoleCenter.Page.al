@@ -1,4 +1,4 @@
-page 50098 "NGTS DAF-CG Role Center"
+page 50098 "DEL NGTS DAF-CG Role Center"
 {
     Caption = 'Role Center';
     PageType = RoleCenter;
@@ -7,45 +7,45 @@ page 50098 "NGTS DAF-CG Role Center"
     {
         area(rolecenter)
         {
-            group()
+            group(Control1)
             {
-                part(; 762)
+                part("Finance Performance"; "Finance Performance")
                 {
                     Visible = false;
                 }
-                part(; 770)
+                part("Sales Performance"; "Sales Performance")
                 {
                 }
-                part(; 9073)
+                part("Small Business Owner Act."; "Small Business Owner Act.")
                 {
                 }
-                systempart(; Outlook)
+                systempart(Outlook; Outlook)
                 {
                 }
             }
-            group()
+            group(Control2)
             {
-                part(; 760)
+                part("Trailing Sales Orders Chart"; "Trailing Sales Orders Chart")
                 {
                     Visible = false;
                 }
-                part(; 675)
+                part("My Job Queue"; "My Job Queue")
                 {
                     Visible = false;
                 }
-                part(; 869)
+                part("Cash Flow Forecast Chart"; "Cash Flow Forecast Chart")
                 {
                 }
-                part(; 9150)
+                part("My Customers"; "My Customers")
                 {
                 }
-                part(; 9151)
+                part("My Vendors"; "My Vendors")
                 {
                 }
-                part(; 9175)
+                part("Copy Profile"; "Copy Profile")
                 {
                 }
-                systempart(; MyNotes)
+                systempart(MyNotes; MyNotes)
                 {
                 }
             }
@@ -60,157 +60,157 @@ page 50098 "NGTS DAF-CG Role Center"
             {
                 Caption = 'Provisional Trial Balance';
                 Image = "Report";
-                RunObject = Report 11500;
+                // RunObject = Report 11500; TODO:
             }
             action("G/L Total-Balance")
             {
                 Caption = 'G/L Total-Balance';
-                RunObject = Report 11002;
+                // RunObject = Report 11002; TODO:
             }
             action("&Bank Detail Trial Balance")
             {
                 Caption = '&Bank Detail Trial Balance';
                 Image = "Report";
-                RunObject = Report 1404;
+                RunObject = Report "Bank Acc. - Detail Trial Bal.";
             }
             action("&Account Schedule")
             {
                 Caption = '&Account Schedule';
                 Image = "Report";
-                RunObject = Report 25;
+                RunObject = Report "Account Schedule";
             }
             action("Bu&dget")
             {
                 Caption = 'Bu&dget';
                 Image = "Report";
-                RunObject = Report 8;
+                RunObject = Report Budget;
             }
             action("Trial Balance by &Period")
             {
                 Caption = 'Trial Balance by &Period';
                 Image = "Report";
-                RunObject = Report 38;
+                RunObject = Report "Trial Balance by Period";
             }
             action("&Fiscal Year Balance")
             {
                 Caption = '&Fiscal Year Balance';
                 Image = "Report";
-                RunObject = Report 36;
+                RunObject = Report "Fiscal Year Balance";
             }
             action("Balance Comp. - Prev. Y&ear")
             {
                 Caption = 'Balance Comp. - Prev. Y&ear';
                 Image = "Report";
-                RunObject = Report 37;
+                RunObject = Report "Balance Comp. - Prev. Year";
             }
             action("&Closing Trial Balance")
             {
                 Caption = '&Closing Trial Balance';
                 Image = "Report";
-                RunObject = Report 10;
+                RunObject = Report "Closing Trial Balance";
             }
-            separator()
+            separator(SEP1)
             {
             }
             action("Cust. - Balance to Date")
             {
                 Caption = 'Cust. - Balance to Date';
                 Image = "Report";
-                RunObject = Report 11540;
+                // RunObject = Report 11540; TODO:
             }
             action("Vendor - Balance to Date")
             {
                 Caption = 'Vendor - Balance to Date';
                 Image = "Report";
-                RunObject = Report 11559;
+                // RunObject = Report 11559; TODO:
             }
             action("Cash Flow Date List")
             {
                 Caption = 'Cash Flow Date List';
                 Image = "Report";
-                RunObject = Report 846;
+                RunObject = Report "Cash Flow Date List";
             }
-            separator()
+            separator(SEP2)
             {
             }
             action("Aged Accounts &Receivable")
             {
                 Caption = 'Aged Accounts &Receivable';
                 Image = "Report";
-                RunObject = Report 120;
+                RunObject = Report "Aged Accounts Receivable";
             }
             action("Aged Accounts Pa&yable")
             {
                 Caption = 'Aged Accounts Pa&yable';
                 Image = "Report";
-                RunObject = Report 322;
+                RunObject = Report "Aged Accounts Payable";
             }
             action("Reconcile Cus&t. and Vend. Accs")
             {
                 Caption = 'Reconcile Cus&t. and Vend. Accs';
                 Image = "Report";
-                RunObject = Report 33;
+                RunObject = Report "Reconcile Cust. and Vend. Accs";
             }
             action("Customer Total-Balance")
             {
                 Caption = 'Customer Total-Balance';
-                RunObject = Report 11003;
+                // RunObject = Report 11003; TODO:
             }
             action("Vendor Total-Balance")
             {
                 Caption = 'Vendor Total-Balance';
-                RunObject = Report 11004;
+                // RunObject = Report 11004; TODO:
             }
-            separator()
+            separator(SEP3)
             {
             }
             action("&VAT Registration No. Check")
             {
                 Caption = '&VAT Registration No. Check';
                 Image = "Report";
-                RunObject = Report 32;
+                RunObject = Report "VAT Registration No. Check";
             }
             action("VAT E&xceptions")
             {
                 Caption = 'VAT E&xceptions';
                 Image = "Report";
-                RunObject = Report 31;
+                RunObject = Report "VAT Exceptions";
             }
             action("VAT &Statement")
             {
                 Caption = 'VAT &Statement';
                 Image = "Report";
-                RunObject = Report 12;
+                RunObject = Report "VAT Statement";
             }
-            separator()
+            separator(SEP4)
             {
             }
-            separator()
+            separator(SEP5)
             {
             }
             action("Cost Accounting P/L Statement")
             {
                 Caption = 'Cost Accounting P/L Statement';
                 Image = "Report";
-                RunObject = Report 1126;
+                RunObject = Report "Cost Acctg. Statement";
             }
             action("CA P/L Statement per Period")
             {
                 Caption = 'CA P/L Statement per Period';
                 Image = "Report";
-                RunObject = Report 1123;
+                RunObject = Report "Cost Acctg. Stmt. per Period";
             }
             action("CA P/L Statement with Budget")
             {
                 Caption = 'CA P/L Statement with Budget';
                 Image = "Report";
-                RunObject = Report 1133;
+                RunObject = Report "Cost Acctg. Statement/Budget";
             }
             action("Cost Accounting Analysis")
             {
                 Caption = 'Cost Accounting Analysis';
                 Image = "Report";
-                RunObject = Report 1127;
+                RunObject = Report "Cost Acctg. Analysis";
             }
         }
         area(embedding)
@@ -218,66 +218,66 @@ page 50098 "NGTS DAF-CG Role Center"
             action("Chart of Accounts")
             {
                 Caption = 'Chart of Accounts';
-                RunObject = Page 16;
+                RunObject = Page "Chart of Accounts";
             }
             action(Vendors)
             {
                 Caption = 'Vendors';
                 Image = Vendor;
-                RunObject = Page 27;
+                RunObject = Page "Vendor List";
             }
             action(Balance)
             {
                 Caption = 'Balance';
                 Image = Balance;
-                RunObject = Page 27;
-                RunPageView = WHERE(Balance (LCY)=FILTER(<>0));
+                RunObject = Page "Vendor List";
+                RunPageView = WHERE("Balance (LCY)" = FILTER(<> 0));
             }
             action("Purchase Orders")
             {
                 Caption = 'Purchase Orders';
-                RunObject = Page 9307;
+                RunObject = Page "Purchase Order List";
             }
             action(Budgets)
             {
                 Caption = 'Budgets';
-                RunObject = Page 121;
+                RunObject = Page "G/L Budget Names";
             }
             action("VAT Statements")
             {
                 Caption = 'VAT Statements';
-                RunObject = Page 320;
+                RunObject = Page "VAT Statement Names";
             }
             action(Items)
             {
                 Caption = 'Items';
                 Image = Item;
-                RunObject = Page 31;
+                RunObject = Page "Item List";
             }
             action(Customers)
             {
                 Caption = 'Customers';
                 Image = Customer;
-                RunObject = Page 22;
+                RunObject = Page "Customer List";
             }
-            action(Balance)
+            action(Balance2)
             {
                 Caption = 'Balance';
                 Image = Balance;
-                RunObject = Page 22;
-                                RunPageView = WHERE(Balance (LCY)=FILTER(<>0));
+                RunObject = Page "Customer List";
+                RunPageView = WHERE("Balance (LCY)" = FILTER(<> 0));
             }
             action("Sales Orders")
             {
                 Caption = 'Sales Orders';
                 Image = "Order";
-                RunObject = Page 9305;
+                RunObject = Page "Sales Order List";
             }
             action(Reminders)
             {
                 Caption = 'Reminders';
                 Image = Reminder;
-                RunObject = Page 436;
+                RunObject = Page "Reminder List";
             }
         }
         area(sections)
@@ -289,103 +289,95 @@ page 50098 "NGTS DAF-CG Role Center"
                 action("Purchase Journals")
                 {
                     Caption = 'Purchase Journals';
-                    RunObject = Page 251;
-                                    RunPageView = WHERE(Template Type=CONST(Purchases),
-                                        Recurring=CONST(No));
+                    RunObject = Page "General Journal Batches";
+                    RunPageView = WHERE("Template Type" = CONST(Purchases), Recurring = CONST(false));
                 }
                 action("Sales Journals")
                 {
                     Caption = 'Sales Journals';
-                    RunObject = Page 251;
-                                    RunPageView = WHERE(Template Type=CONST(Sales),
-                                        Recurring=CONST(No));
+                    RunObject = Page "General Journal Batches";
+                    RunPageView = WHERE("Template Type" = CONST(Sales), Recurring = CONST(false));
                 }
                 action("Cash Receipt Journals")
                 {
                     Caption = 'Cash Receipt Journals';
                     Image = Journals;
-                    RunObject = Page 251;
-                                    RunPageView = WHERE(Template Type=CONST(Cash Receipts),
-                                        Recurring=CONST(No));
+                    RunObject = Page "General Journal Batches";
+                    RunPageView = WHERE("Template Type" = CONST("Cash Receipts"), Recurring = CONST(false));
                 }
                 action("LSV Journals")
                 {
                     Caption = 'LSV Journals';
-                    RunObject = Page 3010832;
+                    // RunObject = Page 3010832; TODO:
                 }
                 action("Payment Journals")
                 {
                     Caption = 'Payment Journals';
                     Image = Journals;
-                    RunObject = Page 251;
-                                    RunPageView = WHERE(Template Type=CONST(Payments),
-                                        Recurring=CONST(No));
+                    RunObject = Page "General Journal Batches";
+                    RunPageView = WHERE("Template Type" = CONST(Payments), Recurring = CONST(false));
                 }
                 action("IC General Journals")
                 {
                     Caption = 'IC General Journals';
-                    RunObject = Page 251;
-                                    RunPageView = WHERE(Template Type=CONST(Intercompany),
-                                        Recurring=CONST(No));
+                    RunObject = Page "General Journal Batches";
+                    RunPageView = WHERE("Template Type" = CONST(Intercompany), Recurring = CONST(false));
                 }
                 action("General Journals")
                 {
                     Caption = 'General Journals';
                     Image = Journal;
-                    RunObject = Page 251;
-                                    RunPageView = WHERE(Template Type=CONST(General),
-                                        Recurring=CONST(No));
+                    RunObject = Page "General Journal Batches";
+                    RunPageView = WHERE("Template Type" = CONST(General), Recurring = CONST(false));
                 }
                 action("<Action3>")
                 {
                     Caption = 'Recurring General Journals';
-                    RunObject = Page 251;
-                                    RunPageView = WHERE(Template Type=CONST(General),
-                                        Recurring=CONST(Yes));
+                    RunObject = Page "General Journal Batches";
+                    RunPageView = WHERE("Template Type" = CONST(General), Recurring = CONST(true));
                 }
             }
             group("Fixed Assets")
             {
                 Caption = 'Fixed Assets';
                 Image = FixedAssets;
-                action("Fixed Assets")
+                action("_Fixed Assets")
                 {
                     Caption = 'Fixed Assets';
-                    RunObject = Page 5601;
+                    RunObject = Page "Fixed Asset List";
                 }
                 action(Insurance)
                 {
                     Caption = 'Insurance';
-                    RunObject = Page 5645;
+                    RunObject = Page "Insurance List";
                 }
                 action("Fixed Assets G/L Journals")
                 {
                     Caption = 'Fixed Assets G/L Journals';
-                    RunObject = Page 251;
-                                    RunPageView = WHERE(Template Type=CONST(Assets),
-                                        Recurring=CONST(No));
+                    RunObject = Page "General Journal Batches";
+                    RunPageView = WHERE("Template Type" = CONST(Assets), Recurring = CONST(false));
                 }
                 action("Fixed Assets Journals")
                 {
                     Caption = 'Fixed Assets Journals';
-                    RunObject = Page 5633;
-                                    RunPageView = WHERE(Recurring=CONST(No));
+                    RunObject = Page "FA Journal Batches";
+                    RunPageView = WHERE(Recurring = CONST(false));
                 }
                 action("Fixed Assets Reclass. Journals")
                 {
                     Caption = 'Fixed Assets Reclass. Journals';
-                    RunObject = Page 5640;
+                    RunObject = Page "FA Reclass. Journal Batches";
                 }
                 action("Insurance Journals")
                 {
                     Caption = 'Insurance Journals';
-                    RunObject = Page 5655;
+                    RunObject = Page "Insurance Journal Batches";
                 }
                 action("Recurring Fixed Asset Journals")
                 {
                     Caption = 'Recurring Fixed Asset Journals';
-                    RunObject = Page 5633;
-                                    RunPageView = WHERE(Recurring=CONST(Yes));
+                    RunObject = Page "FA Journal Batches";
+                    RunPageView = WHERE(Recurring = CONST(true));
                 }
             }
             group("Cash Flow")
@@ -394,22 +386,22 @@ page 50098 "NGTS DAF-CG Role Center"
                 action("Cash Flow Forecasts")
                 {
                     Caption = 'Cash Flow Forecasts';
-                    RunObject = Page 849;
+                    RunObject = Page "Cash Flow Forecast List";
                 }
                 action("Chart of Cash Flow Accounts")
                 {
                     Caption = 'Chart of Cash Flow Accounts';
-                    RunObject = Page 851;
+                    RunObject = Page "Chart of Cash Flow Accounts";
                 }
                 action("Cash Flow Manual Revenues")
                 {
                     Caption = 'Cash Flow Manual Revenues';
-                    RunObject = Page 857;
+                    RunObject = Page "Cash Flow Manual Revenues";
                 }
                 action("Cash Flow Manual Expenses")
                 {
                     Caption = 'Cash Flow Manual Expenses';
-                    RunObject = Page 859;
+                    RunObject = Page "Cash Flow Manual Expenses";
                 }
             }
             group("Cost Accounting")
@@ -418,27 +410,27 @@ page 50098 "NGTS DAF-CG Role Center"
                 action("Cost Types")
                 {
                     Caption = 'Cost Types';
-                    RunObject = Page 1100;
+                    RunObject = Page "Chart of Cost Types";
                 }
                 action("Cost Centers")
                 {
                     Caption = 'Cost Centers';
-                    RunObject = Page 1122;
+                    RunObject = Page "Chart of Cost Centers";
                 }
                 action("Cost Objects")
                 {
                     Caption = 'Cost Objects';
-                    RunObject = Page 1123;
+                    RunObject = Page "Chart of Cost Objects";
                 }
                 action("Cost Allocations")
                 {
                     Caption = 'Cost Allocations';
-                    RunObject = Page 1102;
+                    RunObject = Page "Cost Allocation Sources";
                 }
                 action("Cost Budgets")
                 {
                     Caption = 'Cost Budgets';
-                    RunObject = Page 1116;
+                    RunObject = Page "Cost Budget Names";
                 }
             }
             group("Posted Documents")
@@ -449,51 +441,51 @@ page 50098 "NGTS DAF-CG Role Center"
                 {
                     Caption = 'Posted Sales Invoices';
                     Image = PostedOrder;
-                    RunObject = Page 143;
+                    RunObject = Page "Posted Sales Invoices";
                 }
                 action("Posted Sales Credit Memos")
                 {
                     Caption = 'Posted Sales Credit Memos';
                     Image = PostedOrder;
-                    RunObject = Page 144;
+                    RunObject = Page "Posted Sales Credit Memos";
                 }
                 action("Posted Purchase Invoices")
                 {
                     Caption = 'Posted Purchase Invoices';
-                    RunObject = Page 146;
+                    RunObject = Page "Posted Purchase Invoices";
                 }
                 action("Posted Purchase Credit Memos")
                 {
                     Caption = 'Posted Purchase Credit Memos';
-                    RunObject = Page 147;
+                    RunObject = Page "Posted Purchase Credit Memos";
                 }
                 action("Issued Reminders")
                 {
                     Caption = 'Issued Reminders';
                     Image = OrderReminder;
-                    RunObject = Page 440;
+                    RunObject = Page "Issued Reminder List";
                 }
                 action("Issued Fin. Charge Memos")
                 {
                     Caption = 'Issued Fin. Charge Memos';
                     Image = PostedMemo;
-                    RunObject = Page 452;
+                    RunObject = Page "Issued Fin. Charge Memo List";
                 }
                 action("G/L Registers")
                 {
                     Caption = 'G/L Registers';
                     Image = GLRegisters;
-                    RunObject = Page 116;
+                    RunObject = Page "G/L Registers";
                 }
                 action("Cost Accounting Registers")
                 {
                     Caption = 'Cost Accounting Registers';
-                    RunObject = Page 1104;
+                    RunObject = Page "Cost Registers";
                 }
                 action("Cost Accounting Budget Registers")
                 {
                     Caption = 'Cost Accounting Budget Registers';
-                    RunObject = Page 1121;
+                    RunObject = Page "Cost Budget Registers";
                 }
             }
             group(Administration)
@@ -504,39 +496,39 @@ page 50098 "NGTS DAF-CG Role Center"
                 {
                     Caption = 'Currencies';
                     Image = Currency;
-                    RunObject = Page 5;
+                    RunObject = Page Currencies;
                 }
                 action("Accounting Periods")
                 {
                     Caption = 'Accounting Periods';
                     Image = AccountingPeriods;
-                    RunObject = Page 100;
+                    RunObject = Page "Accounting Periods";
                 }
                 action("Number Series")
                 {
                     Caption = 'Number Series';
-                    RunObject = Page 456;
+                    RunObject = Page "No. Series";
                 }
                 action("Analysis Views")
                 {
                     Caption = 'Analysis Views';
-                    RunObject = Page 556;
+                    RunObject = Page "Analysis View List";
                 }
                 action("Account Schedules")
                 {
                     Caption = 'Account Schedules';
-                    RunObject = Page 103;
+                    RunObject = Page "Account Schedule Names";
                 }
                 action(Dimensions)
                 {
                     Caption = 'Dimensions';
                     Image = Dimensions;
-                    RunObject = Page 536;
+                    RunObject = Page Dimensions;
                 }
                 action("Bank Account Posting Groups")
                 {
                     Caption = 'Bank Account Posting Groups';
-                    RunObject = Page 373;
+                    RunObject = Page "Bank Account Posting Groups";
                 }
             }
         }
@@ -549,8 +541,8 @@ page 50098 "NGTS DAF-CG Role Center"
                 Promoted = false;
                 //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
                 //PromotedCategory = Process;
-                RunObject = Page 44;
-                                RunPageMode = Create;
+                RunObject = Page "Sales Credit Memo";
+                RunPageMode = Create;
             }
             action("P&urchase Credit Memo")
             {
@@ -559,8 +551,8 @@ page 50098 "NGTS DAF-CG Role Center"
                 Promoted = false;
                 //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
                 //PromotedCategory = Process;
-                RunObject = Page 52;
-                                RunPageMode = Create;
+                RunObject = Page "Purchase Credit Memo";
+                RunPageMode = Create;
             }
         }
         area(processing)
@@ -574,63 +566,63 @@ page 50098 "NGTS DAF-CG Role Center"
             {
                 Caption = 'Cas&h Receipt Journal';
                 Image = CashReceiptJournal;
-                RunObject = Page 255;
+                RunObject = Page "Cash Receipt Journal";
             }
             action("Pa&yment Journal")
             {
                 Caption = 'Pa&yment Journal';
                 Image = PaymentJournal;
-                RunObject = Page 256;
+                RunObject = Page "Payment Journal";
             }
-            separator()
+            separator(SEP6)
             {
             }
             action("Analysis &View")
             {
                 Caption = 'Analysis &View';
                 Image = AnalysisView;
-                RunObject = Page 555;
+                RunObject = Page "Analysis View Card";
             }
             action("Analysis by &Dimensions")
             {
                 Caption = 'Analysis by &Dimensions';
                 Image = AnalysisViewDimension;
-                RunObject = Page 554;
+                RunObject = Page "Analysis by Dimensions";
             }
             action("Calculate Deprec&iation")
             {
                 Caption = 'Calculate Deprec&iation';
                 Ellipsis = true;
                 Image = CalculateDepreciation;
-                RunObject = Report 5692;
+                RunObject = Report "Calculate Depreciation";
             }
             action("Import Co&nsolidation from Database")
             {
                 Caption = 'Import Co&nsolidation from Database';
                 Ellipsis = true;
                 Image = ImportDatabase;
-                RunObject = Report 90;
+                RunObject = Report "Import Consolidation from DB";
             }
             action("Bank Account R&econciliation")
             {
                 Caption = 'Bank Account R&econciliation';
                 Image = BankAccountRec;
-                RunObject = Page 379;
+                RunObject = Page "Bank Acc. Reconciliation";
             }
             action("Adjust E&xchange Rates")
             {
                 Caption = 'Adjust E&xchange Rates';
                 Ellipsis = true;
                 Image = AdjustExchangeRates;
-                RunObject = Report 595;
+                RunObject = Report "Adjust Exchange Rates";
             }
             action("P&ost Inventory Cost to G/L")
             {
                 Caption = 'P&ost Inventory Cost to G/L';
                 Image = PostInventoryToGL;
-                RunObject = Report 1002;
+                RunObject = Report "Post Inventory Cost to G/L";
             }
-            separator()
+            separator(SEP7)
             {
             }
             action("C&reate Reminders")
@@ -638,25 +630,25 @@ page 50098 "NGTS DAF-CG Role Center"
                 Caption = 'C&reate Reminders';
                 Ellipsis = true;
                 Image = CreateReminders;
-                RunObject = Report 188;
+                RunObject = Report "Create Reminders";
             }
             action("Create Finance Charge &Memos")
             {
                 Caption = 'Create Finance Charge &Memos';
                 Ellipsis = true;
                 Image = CreateFinanceChargememo;
-                RunObject = Report 191;
+                RunObject = Report "Create Finance Charge Memos";
             }
-            separator()
+            separator(SEP8)
             {
             }
             action("Calc. and Pos&t VAT Settlement")
             {
                 Caption = 'Calc. and Pos&t VAT Settlement';
                 Image = SettleOpenTransactions;
-                RunObject = Report 20;
+                RunObject = Report "Calc. and Post VAT Settlement";
             }
-            separator(Administration)
+            separator(_Administration)
             {
                 Caption = 'Administration';
                 IsHeader = true;
@@ -665,37 +657,37 @@ page 50098 "NGTS DAF-CG Role Center"
             {
                 Caption = 'General &Ledger Setup';
                 Image = Setup;
-                RunObject = Page 118;
+                RunObject = Page "General Ledger Setup";
             }
             action("&Sales && Receivables Setup")
             {
                 Caption = '&Sales && Receivables Setup';
                 Image = Setup;
-                RunObject = Page 459;
+                RunObject = Page "Sales & Receivables Setup";
             }
             action("&Purchases && Payables Setup")
             {
                 Caption = '&Purchases && Payables Setup';
                 Image = Setup;
-                RunObject = Page 460;
+                RunObject = Page "Purchases & Payables Setup";
             }
             action("&Fixed Asset Setup")
             {
                 Caption = '&Fixed Asset Setup';
                 Image = Setup;
-                RunObject = Page 5607;
+                RunObject = Page "Fixed Asset Setup";
             }
             action("Cash Flow Setup")
             {
                 Caption = 'Cash Flow Setup';
                 Image = CashFlowSetup;
-                RunObject = Page 846;
+                RunObject = Page "Cash Flow Setup";
             }
             action("Cost Accounting Setup")
             {
                 Caption = 'Cost Accounting Setup';
                 Image = CostAccountingSetup;
-                RunObject = Page 1113;
+                RunObject = Page "Cost Accounting Setup";
             }
             separator(History)
             {
@@ -706,7 +698,7 @@ page 50098 "NGTS DAF-CG Role Center"
             {
                 Caption = 'Navi&gate';
                 Image = Navigate;
-                RunObject = Page 344;
+                RunObject = Page Navigate;
             }
         }
     }

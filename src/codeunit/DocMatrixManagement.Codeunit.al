@@ -1,51 +1,23 @@
-codeunit 50015 "DocMatrix Management"
+codeunit 50015 "DEL DocMatrix Management"
 {
-    // DEL/PD/20190227/LOP003 : object created
-    // DEL/PD/20190228/LOP003 : changed f.ProcessDocumentMatrix: Progress Bar implemented
-    //                          new function "UpdateDocMatrixSelection"
-    // DEL/PD/20190304/LOP003 : new function "TestShipmentSelectionBeforeUptdateRequest" and "ManageRequestAfterPosting"
-    //                          - this code comes from Codeunit "Sales-Post (Yes/no)" (Cu81) and is put in seperate functions for better readability and usability
-    // DEL/PD/20190305/LOP003 : changed functions "CreateStatementPDFforCustomer" and "ChangeRequestPageParameterForProcess": make sure the correct record is processed
-    //                          changed function "ProcessDocumentMatrix", "ProcessDocumentMatrixAutomatic" and "LogAction" to have better error logging
-    //                          new function "LogActionSetNoError": sometimes it is not possible to use Try function for catching error, solved by setting error and and resetting it after sucess
-    // DEL/PD/20190307/LOP003 : changed function "ProcessDocumentMatrix" and "ProcessDocumentMatrixAutomatic", new FTP process with customer specific FTP settings in table 50072
-    //                          new functions "ProcessFTP" and "ProcessMail", better usage of code, avoid double code
-    //                          new functions "TryUploadFileToFTP" for catching FTP errors in order not to block Job Queue process
-    // DEL/PD/20190311/LOP003 : changed function "SendMail", put "Send From Address" in single instance var
-    // DEL/PD/20191118/CRQ001 : changed f.GetParameters: new parameters for "Purchase Code"
-    //                          changed f.ProcessDocumentMatrix: new parameters for "Purchase Code"
-    //                          changed f.CreateStatementPDFforCustomer
-    // DEL/PD/20191122/LOP003 : changed f.GetReportName, implement f.RemoveSpecialCharacters
-    //                          changed f.CheckAndCreateServerPath, directory handling now with cu419
-    // 20200915/DEL/PD/CR100  : changed f.GetReciverMailAddressStringFromDocMxSel
-    //                          new f.GetEmailFromSalesOrder
-    //                          changed f.GetReciverMailAddressStringFromDocMxSel: new parameter "pDocNo"
-    //                          changed f.SendMail: new parameter pDocNo, call function with new parameter "pNo"
-    //                          changed f.CheckMailAddressString: implement 4th case
-    // 20200916/DEL/PD/CR101  : new f.ReplacePlaceHoldersWithValues
-    //                          new f.FillMailPlaceHolderArray
-    // 20201007/DEL/PD/CR100+CR101  : published to PROD
-    // 20210215/DEL/PD/CR102  : changed f.CheckMailAddressString: implemnt new way of creating correct Mail-String with all possible combinations
-
-
     trigger OnRun()
     begin
     end;
 
     var
-        lcuProgressBar: Codeunit "50037";
-        Type: Option Customer,Vendor;
+        lcuProgressBar: Codeunit LogiProgressBar;
         ProcessType: Option Manual,Automatic;
         SalesUsage: Option "Order Confirmation","Work Order","Pick Instruction";
-        FileManagement: Codeunit "419";
+        FileManagement: Codeunit "File Management";
+        Type: Option Customer,Vendor;
         Err001: Label 'The Sales Order %1 has no Contact assigend!';
         Err002: Label 'The Contact %1 in the Sales Order %2 has no Email Address!';
 
-    [Scope('Internal')]
-    procedure ShowDocMatrixSelection(pNo: Code[20]; pProcessType: Option Manual,Automatic; pUsage: Integer; var precDocMatrixSelection: Record "50071"; pPrintOnly: Boolean): Boolean
+
+    procedure ShowDocMatrixSelection(pNo: Code[20]; pProcessType: Option Manual,Automatic; pUsage: Integer; var precDocMatrixSelection: Record "DEL DocMatrix Selection"; pPrintOnly: Boolean): Boolean
     var
-        DocumentMatrix: Record "50067";
-        lpgDocMatrixSelection: Page "50137";
+        DocumentMatrix: Record "DEL Document Matrix";
+        lpgDocMatrixSelection: Page "DEL DocMatrix Selection Card";
         lErr001: Label 'There is no Document Matrix Configuration available for"%1".';
         lType: Option Customer,Vendor;
     begin
@@ -63,7 +35,7 @@ codeunit 50015 "DocMatrix Management"
             lpgDocMatrixSelection.LOOKUPMODE(TRUE);
             lpgDocMatrixSelection.SETRECORD(precDocMatrixSelection);
             lpgDocMatrixSelection.SetPostVisible((pUsage IN [1, 3]) AND (NOT pPrintOnly));  // 1 = S.Order
-            IF lpgDocMatrixSelection.RUNMODAL = ACTION::LookupOK THEN BEGIN
+            IF lpgDocMatrixSelection.RUNMODAL() = ACTION::LookupOK THEN BEGIN
                 lpgDocMatrixSelection.GETRECORD(precDocMatrixSelection);
                 EXIT(TRUE);
             END ELSE
@@ -75,24 +47,23 @@ codeunit 50015 "DocMatrix Management"
         END;
     end;
 
-    [Scope('Internal')]
     procedure ProcessDocumentMatrix(pUsage: Integer; pProcessType: Option Manual,Automatic; pRecordVariant: Variant; pFieldNo: Integer; pFieldDocNo: Integer; precDocMatrixSelection: Record "50071"; pFieldPurchCode: Integer)
     var
-        DummyReportSelections: Record "77";
-        lAction: Option Print,Save,Mail,FTP1,FTP2;
-        lType: Option Customer,Vendor;
-        DocumentPrint: Codeunit "229";
+        DummyReportSelections: Record "Report Selections";
+        DocumentSendingProfile: Record "Document Sending Profile";
+        DocumentPrint: Codeunit "Document-Print";
+        FileManagement: Codeunit "File Management";
+        lcuDocMatrixSingleInstance: Codeunit "DocMatrix SingleInstance";
         lNo: Code[20];
         lErr001: Label 'A unexpected problem with the parameter for the function "ProcessDocumentMatrix" occured.';
         lboDeleteFileAtTheEnd: Boolean;
-        DocumentSendingProfile: Record "60";
         lDocMatrixUsage: Option ,"S.Order","S.Invoice","S.Cr.Memo",,,"P.Order","P.Invoice",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Statement;
-        FileManagement: Codeunit "419";
         lDocNo: Code[20];
+        lAction: Option Print,Save,Mail,FTP1,FTP2;
+        lType: Option Customer,Vendor;
         ltxServerFile: Text;
         ltxClientFile: Text;
         ltxClientPath: Text;
-        lcuDocMatrixSingleInstance: Codeunit "50016";
         lErrPrint: Text;
         lPurchCode: Code[10];
     begin
@@ -152,12 +123,11 @@ codeunit 50015 "DocMatrix Management"
             lcuProgressBar.FNC_ProgressBar_Update(1);
 
             // Print
-            IF CheckDocumentMatrixSelection(lAction::Print, precDocMatrixSelection) THEN BEGIN
+            IF CheckDocumentMatrixSelection(lAction::Print, precDocMatrixSelection) THEN
                 IF ltxClientFile <> '' THEN BEGIN
                     lErrPrint := SilentPrint(pUsage, ltxClientFile);
                     LogAction(lAction::Print, lDocNo, precDocMatrixSelection, lErrPrint <> '', '');
                 END;
-            END;
 
             // Progress Bar
             lcuProgressBar.FNC_ProgressBar_Update(1);
@@ -199,13 +169,12 @@ codeunit 50015 "DocMatrix Management"
         lcuProgressBar.FNC_ProgressBar_Close(1);
     end;
 
-    [Scope('Internal')]
     procedure ProcessDocumentMatrixAutomatic(pUsage: Integer)
     var
-        lrecCustomer: Record "18";
-        lrecDocumentMatrix: Record "50067";
-        lrecDocMatrixChanged: Record "50067";
-        lrecDocMatrixSetup: Record "50069";
+        lrecCustomer: Record Customer;
+        lrecDocumentMatrix: Record "DEL Document Matrix";
+        lrecDocMatrixChanged: Record "DEL Document Matrix";
+        lrecDocMatrixSetup: Record "DEL DocMatrix Setup";
         lErr001: Label 'No Request Page Parameters found!';
         lReportID: Integer;
         lDate: Date;
@@ -214,7 +183,7 @@ codeunit 50015 "DocMatrix Management"
         lAction: Option Print,Save,Mail,FTP1,FTP2,,,,,,JobQueueEntry;
         lNo: Code[20];
         lLastStatementNo: Integer;
-        lrecDocMatrixSelection: Record "50071";
+        lrecDocMatrixSelection: Record "DEL DocMatrix Selection";
         ltxClientFile: Text;
         lvarCustomer: Variant;
         lintLogID: Integer;
@@ -242,18 +211,16 @@ codeunit 50015 "DocMatrix Management"
         // Job Queue: Testing a date with values, avoid using WORKDATE for testing, because server via Job Queue has WORKDATE = TODAY
         //lDate := 311219D; -> OK
         //lDate := 200120D; -> OK
-        IF lrecDocMatrixSetup.GET THEN BEGIN
+        IF lrecDocMatrixSetup.GET() THEN
             IF lrecDocMatrixSetup."Test Active" AND (lrecDocMatrixSetup."Statement Test Date" <> 0D) THEN
                 lDate := lrecDocMatrixSetup."Statement Test Date";
-        END;
 
         // get the report record from the Document Matrix
         lrecDocumentMatrix.SETAUTOCALCFIELDS("Request Page Parameters");
         lrecDocumentMatrix.SETRANGE(Usage, pUsage);
         lrecDocumentMatrix.SETRANGE("Process Type", lProcessType);
         lrecDocumentMatrix.SETRANGE(Type, GetTypeWithUsage(pUsage));
-        IF lrecDocumentMatrix.FINDSET THEN BEGIN
-
+        IF lrecDocumentMatrix.FINDSET() THEN
             REPEAT
 
                 // init
@@ -268,7 +235,7 @@ codeunit 50015 "DocMatrix Management"
 
                     // since the report (currently only R116 is supported) must be executed for all customers, loop through all customers
                     lNo := lrecDocumentMatrix."No.";
-                    IF lrecCustomer.GET(lNo) THEN BEGIN
+                    IF lrecCustomer.GET(lNo) THEN
 
                         // only execute the report, if the customer has statement values for TODAY (prevent empty PDF files)
                         IF CustomerHasStatmentRecords(lrecCustomer."No.", lDate) THEN BEGIN
@@ -298,25 +265,21 @@ codeunit 50015 "DocMatrix Management"
 
                             // log action that the customer was processed, but had no statement to send
                             LogAction(lAction::JobQueueEntry, '', lrecDocMatrixSelection, FALSE, 'No Statement Records found for ' + FORMAT(lDate));
+                    // GET lrecCustomer
 
-
-                    END; // GET lrecCustomer
-
-                END ELSE BEGIN // BLOB HASVALUE
+                END ELSE  // BLOB HASVALUE
                     LogAction(lAction::JobQueueEntry, '', lrecDocMatrixSelection, TRUE, 'No Request Page found');
-                    //ERROR(lErr001);
-                END;
+            //ERROR(lErr001);
 
-            UNTIL lrecDocumentMatrix.NEXT = 0;
-
-        END; // lrecDocumentMatrix
+            UNTIL lrecDocumentMatrix.NEXT() = 0;
+        // lrecDocumentMatrix
     end;
 
-    local procedure CheckDocumentMatrixSelection(pAction: Option Print,Save,Mail,FTP1,FTP2; precDocMatrixSelection: Record "50071"): Boolean
+    local procedure CheckDocumentMatrixSelection(pAction: Option Print,Save,Mail,FTP1,FTP2; precDocMatrixSelection: Record "DEL DocMatrix Selection"): Boolean
     var
-        Customer: Record "18";
-        Vendor: Record "23";
-        DocumentMatrix: Record "50067";
+        Customer: Record Customer;
+        Vendor: Record Vendor;
+        DocumentMatrix: Record "DEL Document Matrix";
     begin
         CASE pAction OF
             pAction::Print:
@@ -334,16 +297,16 @@ codeunit 50015 "DocMatrix Management"
 
     local procedure CheckDocumentMatrix(pAction: Option Print,Save,Mail,FTP1,FTP2; pType: Option Customer,Vendor; pNo: Code[20]; pProcessType: Option Manual,Automatic; pUsage: Integer): Boolean
     var
-        Customer: Record "18";
-        Vendor: Record "23";
-        DocumentMatrix: Record "50067";
+        Customer: Record Customer;
+        Vendor: Record Vendor;
+        DocumentMatrix: Record "DEL Document Matrix";
     begin
-        DocumentMatrix.RESET;
+        DocumentMatrix.RESET();
         DocumentMatrix.SETRANGE(Type, pType);
         DocumentMatrix.SETRANGE("No.", pNo);
         DocumentMatrix.SETRANGE("Process Type", pProcessType);
         DocumentMatrix.SETRANGE(Usage, pUsage);
-        IF DocumentMatrix.FINDFIRST THEN BEGIN
+        IF DocumentMatrix.FINDFIRST() THEN
             CASE pAction OF
                 pAction::Print:
                     EXIT(DocumentMatrix."Print PDF");
@@ -356,24 +319,22 @@ codeunit 50015 "DocMatrix Management"
                 pAction::FTP2:
                     EXIT(DocumentMatrix."Send to FTP 2");
             END;
-        END;
     end;
 
-    [Scope('Internal')]
+
     procedure SavePDF(pUsage: Integer; pRecordVariant: Variant; ptxClientFile: Text; ptxServerFile: Text)
     var
-        RecLReportSelections: Record "77";
+        RecLReportSelections: Record "Report Selections";
         lErr001: Label 'Not able to save PDF %1. \\ERROR: %2';
     begin
-        RecLReportSelections.RESET;
+        RecLReportSelections.RESET();
         RecLReportSelections.SETRANGE(Usage, pUsage);
-        IF RecLReportSelections.FINDSET THEN
-            IF RecLReportSelections.FINDFIRST THEN BEGIN
+        IF RecLReportSelections.FINDSET() THEN
+            IF RecLReportSelections.FINDFIRST() THEN
                 REPEAT
                     REPORT.SAVEASPDF(RecLReportSelections."Report ID", ptxServerFile, pRecordVariant);
                     ManageFilesAfterProcess(ptxClientFile, ptxServerFile);
-                UNTIL RecLReportSelections.NEXT = 0;
-            END;
+                UNTIL RecLReportSelections.NEXT() = 0;
     end;
 
     local procedure SilentPrint(pUsage: Integer; ptxClientFile: Text): Text
@@ -408,7 +369,7 @@ codeunit 50015 "DocMatrix Management"
         Process.Start(ProcessStartInfo);
     end;
 
-    local procedure ProcessMail(pUsage: Integer; pProcessType: Option Manual,Automatic; pAction: Option Print,Save,Mail,FTP1,FTP2; pNo: Code[20]; pDocNo: Code[20]; precDocMatrixSelection: Record "50071"; ptxClientFile: Text; pRecordVariant: Variant): Boolean
+    local procedure ProcessMail(pUsage: Integer; pProcessType: Option Manual,Automatic; pAction: Option Print,Save,Mail,FTP1,FTP2; pNo: Code[20]; pDocNo: Code[20]; precDocMatrixSelection: Record "DEL DocMatrix Selection"; ptxClientFile: Text; pRecordVariant: Variant): Boolean
     var
         lintLogID: Integer;
         lErr002: Label 'There is no Attachement File available to send by Email.';
@@ -425,22 +386,21 @@ codeunit 50015 "DocMatrix Management"
         EXIT(TRUE);
     end;
 
-    [Scope('Internal')]
-    procedure SendMail(pUsage: Integer; pProcessType: Option Manual,Automatic; pRecordVariant: Variant; pNo: Code[20]; ptxAttachementFullPathFileName: Text; precDocMatrixSelection: Record "50071"; pDocNo: Code[20])
+    procedure SendMail(pUsage: Integer; pProcessType: Option Manual,Automatic; pRecordVariant: Variant; pNo: Code[20]; ptxAttachementFullPathFileName: Text; precDocMatrixSelection: Record "DEL DocMatrix Selection"; pDocNo: Code[20])
     var
         Cst001: Label 'We must add a e email template';
-        lrecCompanyInformation: Record "79";
+        lrecCompanyInformation: Record "Company Information";
         txSendFromName: Text;
         txSendToAddress: Text;
         txSendFromAddress: Text;
         ltxSubjectMail: Text;
         larrMailBody: array[10] of Text;
-        lcuDocMatrixSingleInstance: Codeunit "50016";
-        lcuDocumentMailing: Codeunit "260";
+        lcuDocMatrixSingleInstance: Codeunit "DocMatrix SingleInstance";
+        lcuDocumentMailing: Codeunit "Document-Mailing";
         TxtMailBody: Text;
     begin
         // this is the Name for the sender Email
-        IF lrecCompanyInformation.GET THEN;
+        IF lrecCompanyInformation.GET() THEN;
         txSendFromName := lrecCompanyInformation.Name;
 
         // get the Email Address "To" from Document Matrix
@@ -500,13 +460,13 @@ codeunit 50015 "DocMatrix Management"
 
     local procedure FillMailPlaceHolderArray(var parrMailPlaceHolderValues: array[4] of Text; pRecordVariant: Variant; pUsage: Integer)
     var
-        lrecCompanyInformation: Record "79";
-        lrecSalesHeader: Record "36";
+        lrecCompanyInformation: Record "Company Information";
+        lrecSalesHeader: Record "Sales Header";
         RecRef: RecordRef;
         FieldRef: FieldRef;
     begin
         // get Company Name
-        IF lrecCompanyInformation.GET THEN;
+        IF lrecCompanyInformation.GET() THEN;
         parrMailPlaceHolderValues[1] := lrecCompanyInformation.Name;
 
         //pUsage: ,S.Order,S.Invoice,S.Cr.Memo,,,P.Order,P.Invoice,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,C.Statement
@@ -527,29 +487,29 @@ codeunit 50015 "DocMatrix Management"
                 END;
             //Sales Invoice
             2:
-                BEGIN
 
-                END;
+                ;
+
             //Sales Credit Memo
             3:
-                BEGIN
 
-                END;
-                //Purchase Order
+                ;
+
+            //Purchase Order
             6:
-                BEGIN
 
-                END;
+                ;
+
             //Purchase Invoice
             7:
-                BEGIN
 
-                END;
+                ;
+
             //Customer Statement
             85:
-                BEGIN
 
-                END;
+                ;
+
         END;
 
         /*---
@@ -565,8 +525,8 @@ codeunit 50015 "DocMatrix Management"
 
     local procedure SendSMTPmail(ptxFromAddressName: Text; ptxFromAddressString: Text; ptxToAddressString: Text; ptxSubject: Text; txAttachementFullPathFileName: Text; larrMailBody: array[10] of Text)
     var
-        lcuSMTP: Codeunit "400";
-        lcuFileManagement: Codeunit "419";
+        lcuSMTP: Codeunit 400;
+        lcuFileManagement: Codeunit "File Management";
         i: Integer;
     begin
         lcuSMTP.CreateMessage(ptxFromAddressName, ptxFromAddressString, ptxToAddressString, ptxSubject, '', TRUE);
@@ -576,7 +536,7 @@ codeunit 50015 "DocMatrix Management"
         lcuSMTP.Send;
     end;
 
-    local procedure ProcessFTP(pAction: Option Print,Save,Mail,FTP1,FTP2; pNo: Code[20]; pDocNo: Code[20]; precDocMatrixSelection: Record "50071"; ptxClientFile: Text): Boolean
+    local procedure ProcessFTP(pAction: Option Print,Save,Mail,FTP1,FTP2; pNo: Code[20]; pDocNo: Code[20]; precDocMatrixSelection: Record "DEL DocMatrix Selection"; ptxClientFile: Text): Boolean
     var
         lintLogID: Integer;
         ltxFTPResultDescr: Text;
@@ -593,10 +553,10 @@ codeunit 50015 "DocMatrix Management"
 
     local procedure FTPProcessFile(pAction: Option Print,Save,Mail,FTP1,FTP2; ptxFullPathFileName: Text; pCustNo: Code[20]; var pDescription: Text): Boolean
     var
-        lrecCompanyInformation: Record "79";
-        CduLFileManagement: Codeunit "419";
+        lrecCompanyInformation: Record "Company Information";
+        CduLFileManagement: Codeunit "File Management";
         ltxFileName: Text;
-        lrecFTPCustomer: Record "50072";
+        lrecFTPCustomer: Record "DEL DocMatrix Customer FTP";
         lText001: Label 'The FTP setup for the customer %1 is missing.';
         lText002: Label 'There is no file to transfer.';
         lboTransferSucessful: Boolean;
@@ -608,32 +568,28 @@ codeunit 50015 "DocMatrix Management"
         END;
 
         // then check if a FTP configuration for the customer is available, and upload the file if yes
-        WITH lrecFTPCustomer DO BEGIN
-            IF GET(pCustNo) THEN BEGIN
+        WITH lrecFTPCustomer DO
+            IF GET(pCustNo) THEN
                 CASE pAction OF
                     pAction::FTP1:
-                        BEGIN
-                            IF ("FTP1 Server" = '') AND ("FTP1 UserName" = '') AND ("FTP1 Password" = '') THEN BEGIN
-                                pDescription := STRSUBSTNO(lText001, pCustNo);
-                                EXIT(FALSE);
-                            END ELSE BEGIN
-                                pDescription := UploadFileToFTP("FTP1 Server", "FTP1 UserName", "FTP1 Password", ptxFullPathFileName, lboTransferSucessful);
-                                EXIT(lboTransferSucessful);
-                            END;
+
+                        IF ("FTP1 Server" = '') AND ("FTP1 UserName" = '') AND ("FTP1 Password" = '') THEN BEGIN
+                            pDescription := STRSUBSTNO(lText001, pCustNo);
+                            EXIT(FALSE);
+                        END ELSE BEGIN
+                            pDescription := UploadFileToFTP("FTP1 Server", "FTP1 UserName", "FTP1 Password", ptxFullPathFileName, lboTransferSucessful);
+                            EXIT(lboTransferSucessful);
                         END;
                     pAction::FTP2:
-                        BEGIN
-                            IF ("FTP2 Server" = '') AND ("FTP2 UserName" = '') AND ("FTP2 Password" = '') THEN BEGIN
-                                pDescription := STRSUBSTNO(lText001, pCustNo);
-                                EXIT(FALSE);
-                            END ELSE BEGIN
-                                pDescription := UploadFileToFTP("FTP2 Server", "FTP2 UserName", "FTP2 Password", ptxFullPathFileName, lboTransferSucessful);
-                                EXIT(lboTransferSucessful);
-                            END;
+
+                        IF ("FTP2 Server" = '') AND ("FTP2 UserName" = '') AND ("FTP2 Password" = '') THEN BEGIN
+                            pDescription := STRSUBSTNO(lText001, pCustNo);
+                            EXIT(FALSE);
+                        END ELSE BEGIN
+                            pDescription := UploadFileToFTP("FTP2 Server", "FTP2 UserName", "FTP2 Password", ptxFullPathFileName, lboTransferSucessful);
+                            EXIT(lboTransferSucessful);
                         END;
                 END;
-            END;
-        END;
     end;
 
     local procedure UploadFileToFTP(ptxFTPServer: Text; ptxFTPUser: Text; ptxFTPPassword: Text; ptxFullPathFileName: Text; var pTransferSucessful: Boolean): Text
@@ -691,9 +647,9 @@ codeunit 50015 "DocMatrix Management"
         pStatusDescription := FTPWebResponse.StatusDescription;
     end;
 
-    local procedure CreateStatementPDFforCustomer(precDocMatrixReqPageChanged: Record "50067"; pUsage: Integer; pCustNo: Code[20]; pFieldCustNo: Integer; pReportID: Integer; pDate: Date; var pLastStatementNo: Integer; var pvarCustomer: Variant): Text
+    local procedure CreateStatementPDFforCustomer(precDocMatrixReqPageChanged: Record "DEL Document Matrix"; pUsage: Integer; pCustNo: Code[20]; pFieldCustNo: Integer; pReportID: Integer; pDate: Date; var pLastStatementNo: Integer; var pvarCustomer: Variant): Text
     var
-        lrecDocMatrixReqPageChanged: Record "50067";
+        lrecDocMatrixReqPageChanged: Record "DEL Document Matrix";
         lRecRef: RecordRef;
         lFieldRef: FieldRef;
         ltxClientFile: Text;
@@ -718,7 +674,7 @@ codeunit 50015 "DocMatrix Management"
 
         // filter the RecRef to the porcessed customer (can not be done by changing ReqPageParameter)
         lFieldRef.SETRANGE(pCustNo);
-        IF lRecRef.FINDFIRST THEN
+        IF lRecRef.FINDFIRST() THEN
             pvarCustomer := lRecRef;
 
         // make use of all the fuzz, and get the Request Page Parameter
@@ -735,7 +691,7 @@ codeunit 50015 "DocMatrix Management"
 
         // close file and RecRef vars
         Content.CLOSE;
-        lRecRef.CLOSE;
+        lRecRef.CLOSE();
 
         // get the "Last Statement No." from the customer for R116 for the Log entry
         IF pReportID = REPORT::Statement THEN
@@ -744,33 +700,33 @@ codeunit 50015 "DocMatrix Management"
         EXIT(ltxClientFile);
     end;
 
-    local procedure LogAction(pAction: Option Print,Save,Mail,FTP1,FTP2,,,,,,JobQueueEntry; pDocNo: Code[20]; precDocMatrixSelection: Record "50071"; pError: Boolean; pDescription: Text): Integer
+    local procedure LogAction(pAction: Option Print,Save,Mail,FTP1,FTP2,,,,,,JobQueueEntry; pDocNo: Code[20]; precDocMatrixSelection: Record "DEL DocMatrix Selection"; pError: Boolean; pDescription: Text): Integer
     var
-        lrecDocMatrixLog: Record "50068";
+        lrecDocMatrixLog: Record "DEL DocMatrix Log";
     begin
-        lrecDocMatrixLog.INIT;
+        lrecDocMatrixLog.INIT();
         lrecDocMatrixLog.TRANSFERFIELDS(precDocMatrixSelection);
         lrecDocMatrixLog.UserId := USERID;
-        lrecDocMatrixLog."Line No." := GetNextLogLineNo;
+        lrecDocMatrixLog."Line No." := GetNextLogLineNo();
         lrecDocMatrixLog."Date Time Stamp" := CREATEDATETIME(TODAY, TIME);
         lrecDocMatrixLog.Action := pAction;
         lrecDocMatrixLog."Document No." := pDocNo;
         lrecDocMatrixLog.Error := pError;
         lrecDocMatrixLog."Process Result Description" := pDescription;
-        lrecDocMatrixLog.INSERT;
-        COMMIT;
+        lrecDocMatrixLog.INSERT();
+        COMMIT();
         EXIT(lrecDocMatrixLog."Line No.");
     end;
 
     local procedure LogActionUpdateErrorStatus(pLogID: Integer; pboError: Boolean; ptxDescription: Text)
     var
-        lrecDocMatrixLog: Record "50068";
+        lrecDocMatrixLog: Record "DEL DocMatrix Log";
     begin
         lrecDocMatrixLog.SETRANGE("Line No.", pLogID);
-        IF lrecDocMatrixLog.FINDFIRST THEN BEGIN
+        IF lrecDocMatrixLog.FINDFIRST() THEN BEGIN
             lrecDocMatrixLog.Error := pboError;
             lrecDocMatrixLog."Process Result Description" := ptxDescription;
-            lrecDocMatrixLog.MODIFY;
+            lrecDocMatrixLog.MODIFY();
         END;
     end;
 
@@ -787,27 +743,27 @@ codeunit 50015 "DocMatrix Management"
         lRecRef.OPEN(GetTableNoByUsage(pUsage));
         lFieldRef := lRecRef.FIELD(pFieldDocNo);
         lFieldRef.SETRANGE(pDocNo);
-        IF lRecRef.FINDFIRST THEN
+        IF lRecRef.FINDFIRST() THEN
             pRecordVariant := lRecRef;
     end;
 
-    local procedure CreateDocMatrixSelection(pNo: Code[20]; pProcessType: Option Manual,Automatic; pUsage: Integer; var precDocMatrixSelection: Record "50071"; pPrintOnly: Boolean): Boolean
+    local procedure CreateDocMatrixSelection(pNo: Code[20]; pProcessType: Option Manual,Automatic; pUsage: Integer; var precDocMatrixSelection: Record "DEL DocMatrix Selection"; pPrintOnly: Boolean): Boolean
     var
-        DocumentMatrix: Record "50067";
+        DocumentMatrix: Record "DEL Document Matrix";
         lPostOptionSOrder: Integer;
     begin
         // first delete old User record
-        precDocMatrixSelection.RESET;
+        precDocMatrixSelection.RESET();
         precDocMatrixSelection.SETRANGE(UserId, USERID);
-        precDocMatrixSelection.DELETEALL;
+        precDocMatrixSelection.DELETEALL();
 
         // then create new User record with a copy of the saved record in Document Matrix table
-        DocumentMatrix.RESET;
+        DocumentMatrix.RESET();
         DocumentMatrix.SETRANGE(Type, GetTypeWithUsage(pUsage));
         DocumentMatrix.SETRANGE("No.", pNo);
         DocumentMatrix.SETRANGE("Process Type", pProcessType);
         DocumentMatrix.SETRANGE(Usage, pUsage);
-        IF DocumentMatrix.FINDFIRST THEN BEGIN
+        IF DocumentMatrix.FINDFIRST() THEN BEGIN
 
             // check if it is a "Sales Order" (1) that is posted and take over the Post value from the "Sales Order" in order to show it
             // in the DocMatrix Selection page of the "Sales Invoice" (the post option value is on the "Sales Order", but processed is the "Sales Invoice")
@@ -827,33 +783,33 @@ codeunit 50015 "DocMatrix Management"
                 lPostOptionSOrder := DocumentMatrix.Post::" ";
 
             // now find the record again and create the Selection DocMatrix record
-            IF DocumentMatrix.FINDFIRST THEN BEGIN
-                precDocMatrixSelection.INIT;
+            IF DocumentMatrix.FINDFIRST() THEN BEGIN
+                precDocMatrixSelection.INIT();
                 precDocMatrixSelection.TRANSFERFIELDS(DocumentMatrix);
                 precDocMatrixSelection.UserId := USERID;
                 IF pUsage = 1 THEN
                     precDocMatrixSelection.Post := lPostOptionSOrder;
-                precDocMatrixSelection.INSERT;
-                COMMIT;
+                precDocMatrixSelection.INSERT();
+                COMMIT();
                 EXIT(TRUE);
             END;
 
         END;
     end;
 
-    [Scope('Internal')]
-    procedure UpdateDocMatrixSelection(pNo: Code[20]; pProcessType: Option Manual,Automatic; pUsage: Integer; var precDocMatrixSelection: Record "50071"; pPrintOnly: Boolean)
+
+    procedure UpdateDocMatrixSelection(pNo: Code[20]; pProcessType: Option Manual,Automatic; pUsage: Integer; var precDocMatrixSelection: Record "DEL DocMatrix Selection"; pPrintOnly: Boolean)
     var
-        DocumentMatrix: Record "50067";
+        DocumentMatrix: Record "DEL Document Matrix";
         lPostOptionSOrder: Integer;
     begin
         // find the Document Matrix record
-        DocumentMatrix.RESET;
+        DocumentMatrix.RESET();
         DocumentMatrix.SETRANGE(Type, GetTypeWithUsage(pUsage));
         DocumentMatrix.SETRANGE("No.", pNo);
         DocumentMatrix.SETRANGE("Process Type", pProcessType);
         DocumentMatrix.SETRANGE(Usage, pUsage);
-        IF DocumentMatrix.FINDFIRST THEN BEGIN
+        IF DocumentMatrix.FINDFIRST() THEN BEGIN
 
             // check if it is a "Sales Order" (1) that is posted and take over the Post value from the "Sales Order" in order to show it
             // in the DocMatrix Selection page of the "Sales Invoice" (the post option value is on the "Sales Order", but processed is the "Sales Invoice")
@@ -873,39 +829,39 @@ codeunit 50015 "DocMatrix Management"
                 lPostOptionSOrder := DocumentMatrix.Post::" ";
 
             // now find the record again and modify the Selection DocMatrix record
-            IF DocumentMatrix.FINDFIRST THEN BEGIN
+            IF DocumentMatrix.FINDFIRST() THEN BEGIN
                 precDocMatrixSelection.TRANSFERFIELDS(DocumentMatrix);
                 precDocMatrixSelection.UserId := USERID;
                 IF pUsage = 1 THEN
                     precDocMatrixSelection.Post := lPostOptionSOrder;
-                precDocMatrixSelection.MODIFY;
-                COMMIT;
+                precDocMatrixSelection.MODIFY();
+                COMMIT();
             END;
 
         END;
     end;
 
-    [Scope('Internal')]
-    procedure GetPostedSalesInvoice(pNo: Code[20]; pCustNo: Code[20]; var precSalesInvoiceHeader: Record "112"): Boolean
+
+    procedure GetPostedSalesInvoice(pNo: Code[20]; pCustNo: Code[20]; var precSalesInvoiceHeader: Record "Sales Invoice Header"): Boolean
     begin
-        precSalesInvoiceHeader.RESET;
+        precSalesInvoiceHeader.RESET();
         precSalesInvoiceHeader.SETRANGE("Order No.", pNo);
         precSalesInvoiceHeader.SETRANGE("Sell-to Customer No.", pCustNo);
-        EXIT(precSalesInvoiceHeader.FINDFIRST);
+        EXIT(precSalesInvoiceHeader.FINDFIRST());
     end;
 
-    [Scope('Internal')]
-    procedure GetPostedSalesCreditMemo(pNo: Code[20]; pCustNo: Code[20]; var precSalesCrMemoHeader: Record "114"): Boolean
+
+    procedure GetPostedSalesCreditMemo(pNo: Code[20]; pCustNo: Code[20]; var precSalesCrMemoHeader: Record "Sales Cr.Memo Header"): Boolean
     begin
-        precSalesCrMemoHeader.RESET;
+        precSalesCrMemoHeader.RESET();
         precSalesCrMemoHeader.SETRANGE("Pre-Assigned No.", pNo);
         precSalesCrMemoHeader.SETRANGE("Sell-to Customer No.", pCustNo);
-        EXIT(precSalesCrMemoHeader.FINDFIRST);
+        EXIT(precSalesCrMemoHeader.FINDFIRST());
     end;
 
     local procedure GetParameters(pUsage: Integer; pRecordVariant: Variant; pFieldNo: Integer; pFieldDocNo: Integer; var pType: Option Customer,Vendor; var pNo: Code[20]; var pDocNo: Code[20]; pFieldPurchCode: Integer; var pPurchCode: Code[10])
     var
-        DummyReportSelection: Record "77";
+        DummyReportSelection: Record "Report Selections";
         RecRef: RecordRef;
         FieldRef: FieldRef;
     begin
@@ -934,7 +890,7 @@ codeunit 50015 "DocMatrix Management"
         pType := GetTypeWithUsage(pUsage);
     end;
 
-    local procedure GetRecordByRecRefUsage(pUsage: Integer; pRecordVariant: Variant; var precSalesHeader: Record "36"; var precSalesInvoiceHeader: Record "112"; var precSalesCrMemoHeader: Record "114"; var precPurchaseHeader: Record "38"; var precPurchInvHeader: Record "122"; var precPurchCrMemoHdr: Record "124"): Boolean
+    local procedure GetRecordByRecRefUsage(pUsage: Integer; pRecordVariant: Variant; var precSalesHeader: Record "Sales Header"; var precSalesInvoiceHeader: Record "Sales Invoice Header"; var precSalesCrMemoHeader: Record "Sales Cr.Memo Header"; var precPurchaseHeader: Record "Purchase Header"; var precPurchInvHeader: Record "Purch. Inv. Header"; var precPurchCrMemoHdr: Record "Purch. Cr. Memo Hdr."): Boolean
     var
         RecRef: RecordRef;
         FieldRef: FieldRef;
@@ -960,28 +916,28 @@ codeunit 50015 "DocMatrix Management"
                     lDocType := FieldRef.VALUE;
                     FieldRef := RecRef.FIELD(precSalesHeader.FIELDNO("No."));
                     lNo := FieldRef.VALUE;
-                    precSalesHeader.RESET;
+                    precSalesHeader.RESET();
                     precSalesHeader.SETRANGE("Document Type", lDocType);
                     precSalesHeader.SETRANGE("No.", lNo);
-                    EXIT(precSalesHeader.FINDFIRST);
+                    EXIT(precSalesHeader.FINDFIRST());
                 END;
             2:
                 BEGIN
                     RecRef.GETTABLE(pRecordVariant);
                     FieldRef := RecRef.FIELD(precSalesInvoiceHeader.FIELDNO("No."));
                     lNo := FieldRef.VALUE;
-                    precSalesInvoiceHeader.RESET;
+                    precSalesInvoiceHeader.RESET();
                     precSalesInvoiceHeader.SETRANGE("No.", lNo);
-                    EXIT(precSalesInvoiceHeader.FINDFIRST);
+                    EXIT(precSalesInvoiceHeader.FINDFIRST());
                 END;
             3:
                 BEGIN
                     RecRef.GETTABLE(pRecordVariant);
                     FieldRef := RecRef.FIELD(precSalesCrMemoHeader.FIELDNO("No."));
                     lNo := FieldRef.VALUE;
-                    precSalesCrMemoHeader.RESET;
+                    precSalesCrMemoHeader.RESET();
                     precSalesCrMemoHeader.SETRANGE("No.", lNo);
-                    EXIT(precSalesCrMemoHeader.FINDFIRST);
+                    EXIT(precSalesCrMemoHeader.FINDFIRST());
                 END;
             6:
                 BEGIN
@@ -990,19 +946,19 @@ codeunit 50015 "DocMatrix Management"
                     lDocType := FieldRef.VALUE;
                     FieldRef := RecRef.FIELD(precPurchaseHeader.FIELDNO("No."));
                     lNo := FieldRef.VALUE;
-                    precPurchaseHeader.RESET;
+                    precPurchaseHeader.RESET();
                     precPurchaseHeader.SETRANGE("Document Type", lDocType);
                     precPurchaseHeader.SETRANGE("No.", lNo);
-                    EXIT(precPurchaseHeader.FINDFIRST);
+                    EXIT(precPurchaseHeader.FINDFIRST());
                 END;
             7:
                 BEGIN
                     RecRef.GETTABLE(pRecordVariant);
                     FieldRef := RecRef.FIELD(precPurchInvHeader.FIELDNO("No."));
                     lNo := FieldRef.VALUE;
-                    precPurchInvHeader.RESET;
+                    precPurchInvHeader.RESET();
                     precPurchInvHeader.SETRANGE("No.", lNo);
-                    EXIT(precPurchInvHeader.FINDFIRST);
+                    EXIT(precPurchInvHeader.FINDFIRST());
                 END;
         END;
     end;
@@ -1036,17 +992,17 @@ codeunit 50015 "DocMatrix Management"
 
     local procedure GetReportName(pReportID: Integer): Text[250]
     var
-        AllObjWithCaption: Record "2000000058";
+        AllObjWithCaption: Record AllObjWithCaption;
     begin
         IF AllObjWithCaption.GET(AllObjWithCaption."Object Type"::Report, pReportID) THEN
             EXIT(DELCHR(RemoveSpecialCharacters(AllObjWithCaption."Object Caption"), '='));
     end;
 
-    [Scope('Internal')]
+
     procedure GetCustVendName(pType: Option Customer,Vendor; pNo: Code[20]): Text[50]
     var
-        Customer: Record "18";
-        Vendor: Record "23";
+        Customer: Record Customer;
+        Vendor: Record Vendor;
     begin
         CASE pType OF
             pType::Customer:
@@ -1058,11 +1014,11 @@ codeunit 50015 "DocMatrix Management"
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure GetCustVendLanguageCode(pType: Option Customer,Vendor; pNo: Code[20]): Code[10]
     var
-        Customer: Record "18";
-        Vendor: Record "23";
+        Customer: Record Customer;
+        Vendor: Record Vendor;
     begin
         CASE pType OF
             pType::Customer:
@@ -1074,14 +1030,14 @@ codeunit 50015 "DocMatrix Management"
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure GetReportIDWithUsage(pUsage: Integer): Integer
     var
-        ReportSelections: Record "77";
+        ReportSelections: Record "Report Selections";
     begin
-        ReportSelections.RESET;
+        ReportSelections.RESET();
         ReportSelections.SETRANGE(Usage, pUsage);
-        IF ReportSelections.FINDFIRST THEN
+        IF ReportSelections.FINDFIRST() THEN
             EXIT(ReportSelections."Report ID");
     end;
 
@@ -1111,8 +1067,8 @@ codeunit 50015 "DocMatrix Management"
 
     local procedure GetEmailFromSalesOrder(pDocNo: Code[20]): Text[80]
     var
-        lrecSalesOrder: Record "36";
-        lrecContact: Record "5050";
+        lrecSalesOrder: Record "Sales Header";
+        lrecContact: Record Contact;
     begin
         IF lrecSalesOrder.GET(lrecSalesOrder."Document Type"::Order, pDocNo) THEN
             IF lrecContact.GET(lrecSalesOrder."Sell-to Contact No.") THEN BEGIN
@@ -1126,17 +1082,17 @@ codeunit 50015 "DocMatrix Management"
                     ERROR(Err001, pDocNo);
     end;
 
-    local procedure GetReciverMailAddressStringFromDocMxSel(precDocMatrixSelection: Record "50071"; pDocNo: Code[20]): Text[1024]
+    local procedure GetReciverMailAddressStringFromDocMxSel(precDocMatrixSelection: Record "DEL DocMatrix Selection"; pDocNo: Code[20]): Text[1024]
     var
-        Customer: Record "18";
-        Vendor: Record "23";
-        DocumentMatrix: Record "50067";
+        Customer: Record Customer;
+        Vendor: Record Vendor;
+        DocumentMatrix: Record "DEL Document Matrix";
         ltxMailAddressString: Text[1024];
     begin
         IF ((precDocMatrixSelection."E-Mail To 1" <> '') OR
             (precDocMatrixSelection."E-Mail To 2" <> '') OR
             (precDocMatrixSelection."E-Mail To 3" <> ''))
-        THEN BEGIN
+        THEN
             //20200915/DEL/PD/CR100.begin
             //ltxMailAddressString := precDocMatrixSelection."E-Mail To 1" + ';' + precDocMatrixSelection."E-Mail To 2" + ';' + precDocMatrixSelection."E-Mail To 3";
             IF precDocMatrixSelection."E-Mail from Sales Order" THEN
@@ -1146,15 +1102,14 @@ codeunit 50015 "DocMatrix Management"
                                       + GetEmailFromSalesOrder(pDocNo)
             ELSE
                 ltxMailAddressString := precDocMatrixSelection."E-Mail To 1" + ';' + precDocMatrixSelection."E-Mail To 2" + ';' + precDocMatrixSelection."E-Mail To 3";
-            //20200915/DEL/PD/CR100.end
-        END;
+        //20200915/DEL/PD/CR100.end
 
         EXIT(CheckMailAddressString(ltxMailAddressString));
     end;
 
-    local procedure GetSenderMailAddressStringFromDocMxSel(precDocMatrixSelection: Record "50071"): Text[1024]
+    local procedure GetSenderMailAddressStringFromDocMxSel(precDocMatrixSelection: Record "DEL DocMatrix Selection"): Text[1024]
     var
-        DocumentMatrix: Record "50067";
+        DocumentMatrix: Record "DEL Document Matrix";
         lErr001: Label 'The "E-Mail From" in the Document Matrix Setup can not be empty!';
     begin
         IF precDocMatrixSelection."E-Mail From" = '' THEN
@@ -1165,11 +1120,11 @@ codeunit 50015 "DocMatrix Management"
 
     local procedure GetNextLogLineNo(): Integer
     var
-        lrecDocMatrixLog: Record "50068";
+        lrecDocMatrixLog: Record "DEL DocMatrix Log";
     begin
-        lrecDocMatrixLog.LOCKTABLE;
+        lrecDocMatrixLog.LOCKTABLE();
         lrecDocMatrixLog.SETCURRENTKEY("Line No.");
-        IF lrecDocMatrixLog.FINDLAST THEN
+        IF lrecDocMatrixLog.FINDLAST() THEN
             EXIT(lrecDocMatrixLog."Line No." + 1)
         ELSE
             EXIT(1);
@@ -1177,25 +1132,25 @@ codeunit 50015 "DocMatrix Management"
 
     local procedure GetLastStatementNoFromCust(pCustNo: Code[20]): Integer
     var
-        lrecCustomer: Record "18";
+        lrecCustomer: Record Customer;
     begin
-        lrecCustomer.RESET;
+        lrecCustomer.RESET();
         IF lrecCustomer.GET(pCustNo) THEN
             EXIT(lrecCustomer."Last Statement No.");
     end;
 
-    local procedure GetMailSubjectAndBodyFromMatrix(precDocMatrixSelection: Record "50071"; var pMyTextArray: array[10] of Text; var ptxMySubject: Text)
+    local procedure GetMailSubjectAndBodyFromMatrix(precDocMatrixSelection: Record "DEL DocMatrix Selection"; var pMyTextArray: array[10] of Text; var ptxMySubject: Text)
     var
-        lrecDocMatrixEmailCodes: Record "50070";
+        lrecDocMatrixEmailCodes: Record "DEL DocMatrix Email Codes";
         BLOBInStream: InStream;
         i: Integer;
     begin
-        lrecDocMatrixEmailCodes.RESET;
+        lrecDocMatrixEmailCodes.RESET();
         lrecDocMatrixEmailCodes.SETRANGE(Code, precDocMatrixSelection."Mail Text Code");
         lrecDocMatrixEmailCodes.SETRANGE("Language Code", precDocMatrixSelection."Mail Text Langauge Code");
-        IF NOT lrecDocMatrixEmailCodes.FINDFIRST THEN
+        IF NOT lrecDocMatrixEmailCodes.FINDFIRST() THEN
             lrecDocMatrixEmailCodes.SETRANGE("Language Code");
-        IF lrecDocMatrixEmailCodes.FINDFIRST THEN BEGIN
+        IF lrecDocMatrixEmailCodes.FINDFIRST() THEN BEGIN
 
             // get the Subject text
             ptxMySubject := lrecDocMatrixEmailCodes.Subject;
@@ -1296,7 +1251,7 @@ codeunit 50015 "DocMatrix Management"
 
     end;
 
-    [Scope('Internal')]
+
     procedure RemoveSpecialCharacters(InputText: Text[50]): Text[50]
     begin
         EXIT(DELCHR(InputText, '=', '~!$^&*(){}[]\|;:''"?/,<>@#`.-+='));
@@ -1316,7 +1271,7 @@ codeunit 50015 "DocMatrix Management"
         ELSE
             lSep := '';
         IF pCreateTimeStamp THEN
-            EXIT(GetDateTimeStamp + '-' + pPurchCode + lSep + pNo + '-' + pDocNo + pExt)
+            EXIT(GetDateTimeStamp() + '-' + pPurchCode + lSep + pNo + '-' + pDocNo + pExt)
         ELSE
             EXIT(pPurchCode + lSep + pNo + '-' + pDocNo + pExt);
     end;
@@ -1337,7 +1292,7 @@ codeunit 50015 "DocMatrix Management"
 
     local procedure CheckAndCreateServerPath(pUsage: Integer; pNo: Code[20]): Text
     var
-        lrecDocMatrixSetup: Record "50069";
+        lrecDocMatrixSetup: Record "DEL DocMatrix Setup";
         ltxtStorageLocation: Text;
         i: Integer;
         lType: Option Customer,Vendor;
@@ -1354,7 +1309,7 @@ codeunit 50015 "DocMatrix Management"
         // 85 = C.Statement
 
         // get the general path for the Document Type from setup
-        IF lrecDocMatrixSetup.GET THEN;
+        IF lrecDocMatrixSetup.GET() THEN;
         CASE pUsage OF
             1, 2, 3, 85:
                 BEGIN
@@ -1385,7 +1340,7 @@ codeunit 50015 "DocMatrix Management"
         EXIT(ltxtStorageLocation + '\');
     end;
 
-    local procedure ChangeRequestPageParameterForProcess(pDate: Date; var precDocumentMatrix: Record "50067")
+    local procedure ChangeRequestPageParameterForProcess(pDate: Date; var precDocumentMatrix: Record "DEL Document Matrix")
     var
         ltxTextToFind: array[2] of Text;
         ltxReplaceWithText: array[2] of Text;
@@ -1406,26 +1361,25 @@ codeunit 50015 "DocMatrix Management"
         ltxReplaceWithText[1] := '<Field name="StartDate">' + FormatDateSepWithDashYYYYMMDD(pDate);
         ltxTextToFind[2] := '<Field name="EndDate">';
         ltxReplaceWithText[2] := '<Field name="EndDate">' + FormatDateSepWithDashYYYYMMDD(pDate);
-        FOR i := 1 TO 2 DO BEGIN
+        FOR i := 1 TO 2 DO
             precDocumentMatrix.ChangeRequestPageParameters(precDocumentMatrix, ltxTextToFind[i], ltxReplaceWithText[i]);
-        END;
-        COMMIT;
+        COMMIT();
     end;
 
     local procedure CustomerHasStatmentRecords(pNo: Code[20]; pDate: Date): Boolean
     var
-        lrecCustLedgerEntry: Record "21";
+        lrecCustLedgerEntry: Record "Cust. Ledger Entry";
     begin
-        lrecCustLedgerEntry.RESET;
+        lrecCustLedgerEntry.RESET();
         lrecCustLedgerEntry.SETRANGE("Posting Date", pDate);
         lrecCustLedgerEntry.SETRANGE("Customer No.", pNo);
         lrecCustLedgerEntry.SETRANGE(Open, TRUE);
-        EXIT(lrecCustLedgerEntry.FINDSET);
+        EXIT(lrecCustLedgerEntry.FINDSET());
     end;
 
     local procedure ManageFilesAfterProcess(ptxClientFile: Text; ptxServerFile: Text)
     var
-        CduLFileManagement: Codeunit "419";
+        CduLFileManagement: Codeunit "File Management";
     begin
         //IF NOT CduLFileManagement.ClientDirectoryExists(txClientPath) THEN
         //  CduLFileManagement.CreateClientDirectory(txClientPath);
@@ -1439,14 +1393,14 @@ codeunit 50015 "DocMatrix Management"
     begin
     end;
 
-    [Scope('Internal')]
-    procedure TestShipmentSelectionBeforeUptdateRequest(precSalesHeader: Record "36"; var precDealShipmentSelection: Record "50031"; var pcdUpdateRequestID: Code[20]; var pboShipmentSelected: Boolean)
+
+    procedure TestShipmentSelectionBeforeUptdateRequest(precSalesHeader: Record "Sales Header"; var precDealShipmentSelection: Record "DEL Deal Shipment Selection"; var pcdUpdateRequestID: Code[20]; var pboShipmentSelected: Boolean)
     var
-        element_Re_Loc: Record "50021";
-        dealShipmentSelection_Re_Loc: Record "50031";
-        updateRequestManager_Cu: Codeunit "50032";
-        salesLine_Re_Loc: Record "37";
-        GLAccount_Re_Loc: Record "15";
+        element_Re_Loc: Record "DEL Element";
+        dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
+        updateRequestManager_Cu: Codeunit "DEL Update Request Manager";
+        salesLine_Re_Loc: Record "Sales Line";
+        GLAccount_Re_Loc: Record "G/L Account";
     begin
         //DEL/PD/20190304/LOP003.begin
 
@@ -1508,21 +1462,19 @@ codeunit 50015 "DocMatrix Management"
                 );
 
                 //aucune livraison n'a été sélectionnée
-            END ELSE BEGIN
+            END ELSE
 
-                IF precSalesHeader."Document Type" = precSalesHeader."Document Type"::Order THEN BEGIN
-
-                    ERROR('Il faut choisir exactement 1 livraison liée !');
-
-                    //si le type de ligne est "G/L Account" et le num 3400, 3401 ou 3410, ... alors pas d'erreur
-                END ELSE
+                IF precSalesHeader."Document Type" = precSalesHeader."Document Type"::Order THEN
+                    ERROR('Il faut choisir exactement 1 livraison liée !')
+                //si le type de ligne est "G/L Account" et le num 3400, 3401 ou 3410, ... alors pas d'erreur
+                ELSE
                     IF precSalesHeader."Document Type" = precSalesHeader."Document Type"::"Credit Memo" THEN BEGIN
 
                         //on vérifie les lignes du document
                         salesLine_Re_Loc.RESET();
                         salesLine_Re_Loc.SETRANGE("Document Type", salesLine_Re_Loc."Document Type"::"Credit Memo");
                         salesLine_Re_Loc.SETRANGE("Document No.", precSalesHeader."No.");
-                        IF salesLine_Re_Loc.FIND('-') THEN BEGIN
+                        IF salesLine_Re_Loc.FIND('-') THEN
                             REPEAT
                                 //si c'est pas un compte alors c'est déjà grillé -> erreur
                                 IF (salesLine_Re_Loc.Type <> salesLine_Re_Loc.Type::"G/L Account") THEN
@@ -1533,7 +1485,6 @@ codeunit 50015 "DocMatrix Management"
                                         IF NOT (GLAccount_Re_Loc."Shipment Binding Control") THEN
                                             ERROR('Il faut choisir exactement 1 livraison liée !')
                             UNTIL (salesLine_Re_Loc.NEXT() = 0);
-                        END;
                     END
                     ELSE
                         IF precSalesHeader."Document Type" = precSalesHeader."Document Type"::Invoice THEN BEGIN
@@ -1542,7 +1493,7 @@ codeunit 50015 "DocMatrix Management"
                             salesLine_Re_Loc.RESET();
                             salesLine_Re_Loc.SETRANGE("Document Type", salesLine_Re_Loc."Document Type"::Invoice);
                             salesLine_Re_Loc.SETRANGE("Document No.", precSalesHeader."No.");
-                            IF salesLine_Re_Loc.FIND('-') THEN BEGIN
+                            IF salesLine_Re_Loc.FIND('-') THEN
                                 REPEAT
                                     //si c'est pas un compte alors c'est déjà grillé -> erreur
                                     IF (salesLine_Re_Loc.Type <> salesLine_Re_Loc.Type::"G/L Account") THEN
@@ -1553,10 +1504,7 @@ codeunit 50015 "DocMatrix Management"
                                             IF NOT (GLAccount_Re_Loc."Shipment Binding Control") THEN
                                                 ERROR('Il faut choisir exactement 1 livraison liée !')
                                 UNTIL (salesLine_Re_Loc.NEXT() = 0);
-
-                            END;
                         END;
-            END;
         END;
         // T-00551-DEAL +
 
@@ -1565,12 +1513,12 @@ codeunit 50015 "DocMatrix Management"
         //DEL/PD/20190304/LOP003.end
     end;
 
-    [Scope('Internal')]
+
     procedure ManageRequestAfterPosting(pcdSalesHeaderNo: Code[20]; pboShipmentSelected: Boolean; pcdUpdateRequestID: Code[20])
     var
-        Deal_Cu: Codeunit "50020";
-        updateRequestManager_Cu: Codeunit "50032";
-        dealShipmentSelection_Re_Loc: Record "50031";
+        Deal_Cu: Codeunit "DEL Deal";
+        updateRequestManager_Cu: Codeunit "DEL Update Request Manager";
+        dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
     begin
         //DEL/PD/20190304/LOP003.begin
 

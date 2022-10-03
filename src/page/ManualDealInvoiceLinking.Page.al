@@ -28,7 +28,7 @@ page 50080 "Manual Deal Invoice Linking"
 
                 trigger OnValidate()
                 begin
-                    EntryNoOnAfterValidate;
+                    EntryNoOnAfterValidate();
                 end;
             }
             field("Document No."; Rec."Document No.")
@@ -59,7 +59,7 @@ page 50080 "Manual Deal Invoice Linking"
             group(Post)
             {
                 Caption = 'Post';
-                action(Post)
+                action(Post1)
                 {
                     Caption = 'Post';
                     Image = Post;
@@ -207,18 +207,18 @@ page 50080 "Manual Deal Invoice Linking"
     end;
 
     var
-        Element_Cu: Codeunit "50021";
-        Deal_Cu: Codeunit "50020";
-        UpdateRequestManager_Cu: Codeunit "50032";
+        // Element_Cu: Codeunit "50021";
+        // Deal_Cu: Codeunit "50020";
+        // UpdateRequestManager_Cu: Codeunit "50032"; TODO:
         Text19022230: Label 'M A N U A L   L I N K I N G';
 
 
     procedure FNC_ShipmentLookup()
     var
         deal_Re_Loc: Record "DEL Deal";
-        dealShipment_Re_Loc: Record "50030";
-        dealShipmentSelection_Re_Loc: Record "50031";
-        dealShipmentSelection_page_Loc: Page "50038";
+        dealShipment_Re_Loc: Record "DEL Deal Shipment";
+        dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
+        dealShipmentSelection_page_Loc: Page "DEL Deal Shipment Selection";
     begin
         /*_
         1. On recherche des sélections ont été générées pour cette ligne de facture achat et si oui -> on les supprime

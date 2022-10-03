@@ -22,7 +22,7 @@ table 50080 "DEL EDI Exp. Buffer Add. Infos"
         {
             Caption = 'N° Source';
         }
-        field(5; "Document Type"; enum "DEL DocTYPE")
+        field(5; "Document Type"; enum "Purchase Document Type")
         {
             Caption = 'Document Type';
 

@@ -17,10 +17,10 @@ page 50074 "DEL Liste Suivi des contrats"
     CardPageID = "DEL Suivi des contrats";
     Editable = false;
     PageType = List;
-    SourceTable = "VAT Clause";
+    SourceTable = Customer;
     SourceTableView = SORTING("No.")
                       ORDER(Ascending)
-                      WHERE(Customer Posting Group=FILTER(SERVICES));
+                      WHERE("Customer Posting Group" = FILTER('SERVICES'));
 
     layout
     {
@@ -28,22 +28,22 @@ page 50074 "DEL Liste Suivi des contrats"
         {
             repeater(Group)
             {
-                field("No."; "No.")
+                field("No."; Rec."No.")
                 {
                 }
-                field(Name; Name)
+                field(Name; Rec.Name)
                 {
                 }
-                field("Salesperson Code"; "Salesperson Code")
+                field("Salesperson Code"; Rec."Salesperson Code")
                 {
                 }
-                field(Contact; Contact)
+                field(Contact; Rec.Contact)
                 {
                 }
                 field("Partnership agreement"; "Partnership agreement")
                 {
                 }
-                field("Libellé PA";"Libellé PA")
+                field("Libellé PA"; "Libellé PA")
                 {
                 }
                 field("Statut PA"; "Statut PA")
@@ -61,7 +61,7 @@ page 50074 "DEL Liste Suivi des contrats"
                 field("Annexe D PA"; "Annexe D PA")
                 {
                 }
-                field("Date de début PA";"Date de début PA")
+                field("Date de début PA"; "Date de début PA")
                 {
                 }
                 field("Date de fin PA"; "Date de fin PA")
@@ -73,19 +73,19 @@ page 50074 "DEL Liste Suivi des contrats"
                 field("En facturation"; "En facturation")
                 {
                 }
-                field("Libellé SSA";"Libellé SSA")
+                field("Libellé SSA"; "Libellé SSA")
                 {
                 }
                 field("Statut SSA"; "Statut SSA")
                 {
                 }
-                field("Date de début SSA";"Date de début SSA")
+                field("Date de début SSA"; "Date de début SSA")
                 {
                 }
                 field("Date de fin SSA"; "Date de fin SSA")
                 {
                 }
-                field("Fréquence de facturation";"Fréquence de facturation")
+                field("Fréquence de facturation"; "Fréquence de facturation")
                 {
                 }
                 field("Date de prochaine facturation"; "Date de prochaine facturation")
@@ -162,45 +162,45 @@ page 50074 "DEL Liste Suivi des contrats"
                 }
                 field("Amount YTD"; "Amount YTD")
                 {
-                    CaptionClass = '3,' +CustDateFilter[1];
+                    CaptionClass = '3,' + CustDateFilter[1];
 
                     trigger OnLookup(var Text: Text): Boolean
                     begin
                         CustLedgerEntry2.RESET;
                         CustLedgerEntry2.FILTERGROUP(2);
-                        CustLedgerEntry2.SETRANGE(CustLedgerEntry2."Customer No.","No.");
-                        CustLedgerEntry2.SETFILTER(CustLedgerEntry2."Sales (LCY)",'<>0');
-                        CustLedgerEntry2.SETFILTER(CustLedgerEntry2."Posting Date",DateFilter1);
+                        CustLedgerEntry2.SETRANGE(CustLedgerEntry2."Customer No.", Rec."No.");
+                        CustLedgerEntry2.SETFILTER(CustLedgerEntry2."Sales (LCY)", '<>0');
+                        CustLedgerEntry2.SETFILTER(CustLedgerEntry2."Posting Date", DateFilter1);
 
-                        PAGE.RUN(25,CustLedgerEntry2);
+                        PAGE.RUN(25, CustLedgerEntry2);
                     end;
                 }
                 field("Amount YTD-1"; "Amount YTD-1")
                 {
-                    CaptionClass = '3,' +CustDateFilter[2];
+                    CaptionClass = '3,' + CustDateFilter[2];
 
                     trigger OnLookup(var Text: Text): Boolean
                     begin
                         CustLedgerEntry2.RESET;
                         CustLedgerEntry2.FILTERGROUP(2);
-                        CustLedgerEntry2.SETRANGE(CustLedgerEntry2."Customer No.","No.");
-                        CustLedgerEntry2.SETFILTER(CustLedgerEntry2."Sales (LCY)",'<>0');
-                        CustLedgerEntry2.SETFILTER(CustLedgerEntry2."Posting Date",DateFilter2);
-                        PAGE.RUN(25,CustLedgerEntry2);
+                        CustLedgerEntry2.SETRANGE(CustLedgerEntry2."Customer No.", Rec."No.");
+                        CustLedgerEntry2.SETFILTER(CustLedgerEntry2."Sales (LCY)", '<>0');
+                        CustLedgerEntry2.SETFILTER(CustLedgerEntry2."Posting Date", DateFilter2);
+                        PAGE.RUN(25, CustLedgerEntry2);
                     end;
                 }
                 field("Amount YTD-2"; "Amount YTD-2")
                 {
-                    CaptionClass = '3,' +CustDateFilter[3];
+                    CaptionClass = '3,' + CustDateFilter[3];
 
                     trigger OnLookup(var Text: Text): Boolean
                     begin
                         CustLedgerEntry2.RESET;
                         CustLedgerEntry2.FILTERGROUP(2);
-                        CustLedgerEntry2.SETRANGE(CustLedgerEntry2."Customer No.","No.");
-                        CustLedgerEntry2.SETFILTER(CustLedgerEntry2."Sales (LCY)",'<>0');
-                        CustLedgerEntry2.SETFILTER(CustLedgerEntry2."Posting Date",DateFilter3);
-                        PAGE.RUN(25,CustLedgerEntry2);
+                        CustLedgerEntry2.SETRANGE(CustLedgerEntry2."Customer No.", Rec."No.");
+                        CustLedgerEntry2.SETFILTER(CustLedgerEntry2."Sales (LCY)", '<>0');
+                        CustLedgerEntry2.SETFILTER(CustLedgerEntry2."Posting Date", DateFilter3);
+                        PAGE.RUN(25, CustLedgerEntry2);
                     end;
                 }
                 field("Parent Company"; "Parent Company")
@@ -256,9 +256,9 @@ page 50074 "DEL Liste Suivi des contrats"
                     begin
                         CLEAR(DocumentLine);
                         DocumentLine.RESET;
-                        DocumentLine.SETRANGE(DocumentLine."Table Name",DocumentLine."Table Name"::Customer);
-                        DocumentLine.SETRANGE(DocumentLine."No.","No.");
-                        DocumentLine.SETRANGE(DocumentLine."Type contrat",DocumentLine."Type contrat"::"Charte ethique");
+                        DocumentLine.SETRANGE(DocumentLine."Table Name", DocumentLine."Table Name"::Customer);
+                        DocumentLine.SETRANGE(DocumentLine."No.", Rec."No.");
+                        DocumentLine.SETRANGE(DocumentLine."Type contrat", DocumentLine."Type contrat"::"Charte ethique");
                         DocumentContrat.SETTABLEVIEW(DocumentLine);
                         DocumentContrat.RUN;
                     end;
@@ -405,10 +405,10 @@ page 50074 "DEL Liste Suivi des contrats"
         }
         area(factboxes)
         {
-            part(;50119)
+            part("DEL Contract comment"; "DEL Contract comment")
             {
-                SubPageLink = No.=FIELD(No.);
-                SubPageView = SORTING(No.,Line No.);
+                SubPageLink = "No." = FIELD("No.");
+                SubPageView = SORTING("No.", "Line No.");
             }
         }
     }
@@ -428,9 +428,9 @@ page 50074 "DEL Liste Suivi des contrats"
                     Promoted = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
-                    RunObject = Page "Contract comment";
-                                    RunPageLink = "No."=FIELD("No.");
-                    RunPageView = SORTING("No.","Line No.");
+                    RunObject = Page "DEL Contract comment";
+                    RunPageLink = "No." = FIELD("No.");
+                    RunPageView = SORTING("No.", "Line No.");
                 }
             }
         }
@@ -439,88 +439,86 @@ page 50074 "DEL Liste Suivi des contrats"
     trigger OnOpenPage()
     begin
         Customer.RESET;
-        Customer.SETRANGE(Customer."Customer Posting Group",'HORS-GRPE');
+        Customer.SETRANGE(Customer."Customer Posting Group", 'HORS-GRPE');
         IF Customer.FINDFIRST THEN
-        REPEAT
-          CustLedgerEntry.RESET;
-          CustLedgerEntry.SETRANGE(CustLedgerEntry."Customer No.",Customer."No.");
-          CustLedgerEntry.SETRANGE(CustLedgerEntry."Document Type",CustLedgerEntry."Document Type"::Invoice);
-          IF CustLedgerEntry.FINDLAST THEN
-          BEGIN
-           CustLedgerEntry.CALCFIELDS(CustLedgerEntry.Amount,CustLedgerEntry."Remaining Amount");
-           Customer."Last Accounting Date":=CustLedgerEntry."Posting Date";
-           Customer.Facture:=CustLedgerEntry."Document No.";
-           Customer.Montant:=CustLedgerEntry.Amount;
-           Customer."Montant ouvert":=CustLedgerEntry."Remaining Amount";
+            REPEAT
+                CustLedgerEntry.RESET;
+                CustLedgerEntry.SETRANGE(CustLedgerEntry."Customer No.", Customer."No.");
+                CustLedgerEntry.SETRANGE(CustLedgerEntry."Document Type", CustLedgerEntry."Document Type"::Invoice);
+                IF CustLedgerEntry.FINDLAST THEN BEGIN
+                    CustLedgerEntry.CALCFIELDS(CustLedgerEntry.Amount, CustLedgerEntry."Remaining Amount");
+                    Customer."Last Accounting Date" := CustLedgerEntry."Posting Date";
+                    Customer.Facture := CustLedgerEntry."Document No.";
+                    Customer.Montant := CustLedgerEntry.Amount;
+                    Customer."Montant ouvert" := CustLedgerEntry."Remaining Amount";
 
-        //START T-00738
-           IF Customer."Fréquence de facturation"=Customer."Fréquence de facturation"::"12 mois" THEN
-             Customer."Date de prochaine facturation":=   CALCDATE('<+12M>',CustLedgerEntry."Posting Date");
-           IF Customer."Fréquence de facturation"=Customer."Fréquence de facturation"::"6 mois" THEN
-            Customer."Date de prochaine facturation":=   CALCDATE('<+6M>',CustLedgerEntry."Posting Date");
-           IF Customer."Fréquence de facturation"=Customer."Fréquence de facturation"::"4 mois" THEN
-            Customer."Date de prochaine facturation":=   CALCDATE('<+4M>',CustLedgerEntry."Posting Date");
-           IF Customer."Fréquence de facturation"=Customer."Fréquence de facturation"::"3 mois" THEN
-            Customer."Date de prochaine facturation":=   CALCDATE('<+3M>',CustLedgerEntry."Posting Date");
-           IF Customer."Fréquence de facturation"=Customer."Fréquence de facturation"::" " THEN
-             Customer."Date de prochaine facturation":=   CALCDATE('<+0M>',CustLedgerEntry."Posting Date");
-        //STOP T-00738
+                    //START T-00738
+                    IF Customer."Fréquence de facturation" = Customer."Fréquence de facturation"::"12 mois" THEN
+                        Customer."Date de prochaine facturation" := CALCDATE('<+12M>', CustLedgerEntry."Posting Date");
+                    IF Customer."Fréquence de facturation" = Customer."Fréquence de facturation"::"6 mois" THEN
+                        Customer."Date de prochaine facturation" := CALCDATE('<+6M>', CustLedgerEntry."Posting Date");
+                    IF Customer."Fréquence de facturation" = Customer."Fréquence de facturation"::"4 mois" THEN
+                        Customer."Date de prochaine facturation" := CALCDATE('<+4M>', CustLedgerEntry."Posting Date");
+                    IF Customer."Fréquence de facturation" = Customer."Fréquence de facturation"::"3 mois" THEN
+                        Customer."Date de prochaine facturation" := CALCDATE('<+3M>', CustLedgerEntry."Posting Date");
+                    IF Customer."Fréquence de facturation" = Customer."Fréquence de facturation"::" " THEN
+                        Customer."Date de prochaine facturation" := CALCDATE('<+0M>', CustLedgerEntry."Posting Date");
+                    //STOP T-00738
 
-           Customer."Nbre jour avant proch. fact.":=Customer."Date de prochaine facturation"-TODAY;
+                    Customer."Nbre jour avant proch. fact." := Customer."Date de prochaine facturation" - TODAY;
 
-          END;
+                END;
 
-        IF Customer."Date de fin PA"<TODAY THEN
-        Customer."Statut PA":=Customer."Statut PA"::Échu;
-        IF Customer."Date de fin SSA"<TODAY THEN
-        Customer."Statut SSA":=Customer."Statut SSA"::Échu;
+                IF Customer."Date de fin PA" < TODAY THEN
+                    Customer."Statut PA" := Customer."Statut PA"::Échu;
+                IF Customer."Date de fin SSA" < TODAY THEN
+                    Customer."Statut SSA" := Customer."Statut SSA"::Échu;
 
-        //START T-00767
-        IF Customer."Period of denunciation"<TODAY THEN
-        Customer."Denunciation to analyze":=TRUE
-        ELSE
-        Customer."Denunciation to analyze":=FALSE;
+                //START T-00767
+                IF Customer."Period of denunciation" < TODAY THEN
+                    Customer."Denunciation to analyze" := TRUE
+                ELSE
+                    Customer."Denunciation to analyze" := FALSE;
 
-        IF (Customer."Denunciation Replanned")AND (Customer."Period of denunciation"<>0D) THEN
-        BEGIN
-         Customer."Denunciation Replanned":=FALSE;
+                IF (Customer."Denunciation Replanned") AND (Customer."Period of denunciation" <> 0D) THEN BEGIN
+                    Customer."Denunciation Replanned" := FALSE;
 
-        END;
-        //STOP T-00767
+                END;
+                //STOP T-00767
 
-        CustDateFilter[1]:=FORMAT(DMY2DATE(1,1,DATE2DMY(TODAY,3)))+'..'+FORMAT(DMY2DATE(31,12,DATE2DMY(TODAY,3)));
-        CustDateFilter[2]:=FORMAT(DMY2DATE(1,1,DATE2DMY(TODAY,3)-1))+'..'+FORMAT(DMY2DATE(31,12,DATE2DMY(TODAY,3)-1));
-        CustDateFilter[3]:=FORMAT(DMY2DATE(1,1,DATE2DMY(TODAY,3)-2))+'..'+FORMAT(DMY2DATE(31,12,DATE2DMY(TODAY,3)-2));
-        DateFilter1:=CustDateFilter[1];
-        DateFilter2:=CustDateFilter[2];
-        DateFilter3:=CustDateFilter[3];
+                CustDateFilter[1] := FORMAT(DMY2DATE(1, 1, DATE2DMY(TODAY, 3))) + '..' + FORMAT(DMY2DATE(31, 12, DATE2DMY(TODAY, 3)));
+                CustDateFilter[2] := FORMAT(DMY2DATE(1, 1, DATE2DMY(TODAY, 3) - 1)) + '..' + FORMAT(DMY2DATE(31, 12, DATE2DMY(TODAY, 3) - 1));
+                CustDateFilter[3] := FORMAT(DMY2DATE(1, 1, DATE2DMY(TODAY, 3) - 2)) + '..' + FORMAT(DMY2DATE(31, 12, DATE2DMY(TODAY, 3) - 2));
+                DateFilter1 := CustDateFilter[1];
+                DateFilter2 := CustDateFilter[2];
+                DateFilter3 := CustDateFilter[3];
 
-        FOR i := 1 TO 3 DO BEGIN
-          Customer.SETFILTER("Date Filter",CustDateFilter[i]);
-          Customer.CALCFIELDS(Customer."Sales (LCY)");
-          CustSalesLCY[i] := Customer."Sales (LCY)";
+                FOR i := 1 TO 3 DO BEGIN
+                    Customer.SETFILTER("Date Filter", CustDateFilter[i]);
+                    Customer.CALCFIELDS(Customer."Sales (LCY)");
+                    CustSalesLCY[i] := Customer."Sales (LCY)";
 
-        END;
+                END;
 
-        CustDateFilter[1]:=Text001+' '+FORMAT(DMY2DATE(1,1,DATE2DMY(TODAY,3)),0,'<Year4>');
-        CustDateFilter[2]:=Text001+' '+FORMAT(DMY2DATE(1,1,DATE2DMY(TODAY,3)-1),0,'<Year4>');
-        CustDateFilter[3]:=Text001+' '+FORMAT(DMY2DATE(1,1,DATE2DMY(TODAY,3)-2),0,'<Year4>');
+                CustDateFilter[1] := Text001 + ' ' + FORMAT(DMY2DATE(1, 1, DATE2DMY(TODAY, 3)), 0, '<Year4>');
+                CustDateFilter[2] := Text001 + ' ' + FORMAT(DMY2DATE(1, 1, DATE2DMY(TODAY, 3) - 1), 0, '<Year4>');
+                CustDateFilter[3] := Text001 + ' ' + FORMAT(DMY2DATE(1, 1, DATE2DMY(TODAY, 3) - 2), 0, '<Year4>');
 
-        Customer."Amount YTD":=CustSalesLCY[1];
-        Customer."Amount YTD-1":=CustSalesLCY[2];
-        Customer."Amount YTD-2":=CustSalesLCY[3];
+                Customer."Amount YTD" := CustSalesLCY[1];
+                Customer."Amount YTD-1" := CustSalesLCY[2];
+                Customer."Amount YTD-2" := CustSalesLCY[3];
 
-        Customer.MODIFY;
+                Customer.MODIFY;
 
 
-        UNTIL Customer.NEXT=0;
+            UNTIL Customer.NEXT = 0;
     end;
 
     var
         Customer: Record Customer;
         CustLedgerEntry: Record "Cust. Ledger Entry";
-        CustSalesLCY: array [4] of Decimal;
-        CustDateFilter: array [4] of Text[30];
+        CustSalesLCY: array[4] of Decimal;
+        CustDateFilter: array[4] of Text[30];
         i: Integer;
         DateFilter1: Text;
         DateFilter2: Text;
@@ -530,4 +528,5 @@ page 50074 "DEL Liste Suivi des contrats"
         DocumentLine: Record "DEL Document Line";
         DocumentContrat: Page "DEL Document Sheet Contrats";
 }
+
 

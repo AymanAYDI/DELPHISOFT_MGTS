@@ -1,8 +1,8 @@
-page 50122 "Beschreibungstext 2"
+page 50122 "DEL Beschreibungstext 2"
 {
     Caption = 'Description Text Descriptions';
     PageType = CardPart;
-    SourceTable = Table4006511;
+    SourceTable = 4006511;
 
     layout
     {

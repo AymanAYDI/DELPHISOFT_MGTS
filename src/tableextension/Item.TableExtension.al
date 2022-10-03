@@ -1343,17 +1343,17 @@ tableextension 50020 "DEL Item" extends Item
         //END MIG2017
     end;
 
-    // //TODO procedure GetVolCBM(Update: Boolean): Decimal
-    // begin
-    //     //>>Mgts10.00.05.00
-    //     IF ("Vol cbm" = 0) AND (PCB <> 0) THEN BEGIN
-    //         "Vol cbm" := ROUND(("Vol cbm carton transport" / PCB), 0.00001, '>');
-    //         IF Update THEN
-    //             MODIFY;
-    //     END;
-    //     EXIT("Vol cbm")
-    //     //<<Mgts10.00.05.00
-    // end;
+    procedure GetVolCBM(Update: Boolean): Decimal
+    begin
+        //>>Mgts10.00.05.00
+        IF ("DEL Vol cbm" = 0) AND ("DEL PCB" <> 0) THEN BEGIN
+            "DEL Vol cbm" := ROUND(("DEL Vol cbm carton transport" / "DEL PCB"), 0.00001, '>');
+            IF Update THEN
+                MODIFY();
+        END;
+        EXIT("DEL Vol cbm")
+        //<<Mgts10.00.05.00
+    end;
 
     var
         ItemCategory: Record "Item Category";

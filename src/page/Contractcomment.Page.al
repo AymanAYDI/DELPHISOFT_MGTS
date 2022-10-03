@@ -1,7 +1,9 @@
-page 50119 "Contract comment"
+page 50119 "DEL Contract comment"
 {
     PageType = List;
-    SourceTable = Table50063;
+    SourceTable = "DEL Contrat Comment";
+    ApplicationArea = All;
+    UsageCategory = Administration;
 
     layout
     {
@@ -9,11 +11,11 @@ page 50119 "Contract comment"
         {
             repeater(Group)
             {
-                field("Line No."; "Line No.")
+                field("Line No."; Rec."Line No.")
                 {
                     Editable = false;
                 }
-                field(Comment; Comment)
+                field(Comment; Rec.Comment)
                 {
                 }
             }
@@ -26,14 +28,14 @@ page 50119 "Contract comment"
 
     trigger OnInsertRecord(BelowxRec: Boolean): Boolean
     begin
-        ContratComment.SETRANGE("No.", "No.");
-        IF ContratComment.FINDLAST THEN
-            "Line No." := ContratComment."Line No." + 10000
+        ContratComment.SETRANGE("No.", Rec."No.");
+        IF ContratComment.FINDLAST() THEN
+            Rec."Line No." := ContratComment."Line No." + 10000
         ELSE
-            "Line No." := 10000;
+            Rec."Line No." := 10000;
     end;
 
     var
-        ContratComment: Record "50063";
+        ContratComment: Record "DEL Contrat Comment";
 }
 
