@@ -17,14 +17,14 @@ codeunit 50019 "Create Purch. EDI"
         Param: Option " ",CreateAndValidateReqWorksheet,CreateDeal;
         DocNo: Code[20];
 
-    [Scope('Internal')]
+
     procedure SetParam(pParam: Option " ",CreateAndValidateReqWorksheet,CreateDeal; pDocNo: Code[20])
     begin
         Param := pParam;
         DocNo := pDocNo;
     end;
 
-    [Scope('Internal')]
+
     procedure CreateAndValidateReqWorksheet(DocNo: Code[20])
     var
         RequisitionLine: Record "246";
@@ -60,7 +60,7 @@ codeunit 50019 "Create Purch. EDI"
         PerformAction.RUNMODAL;
     end;
 
-    [Scope('Internal')]
+
     procedure CreateDeal(DocNo: Code[20])
     var
         PurchaseLine: Record "39";

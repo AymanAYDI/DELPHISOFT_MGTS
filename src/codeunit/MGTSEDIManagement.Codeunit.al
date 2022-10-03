@@ -349,7 +349,7 @@ codeunit 50052 "MGTS EDI Management"
         EXIT(NOT EDIExportBufferLine.ISEMPTY);
     end;
 
-    [Scope('Internal')]
+
     procedure GenerateSalesInvoiceEDIBuffer(InvoiceNo: Code[20]; Force: Boolean)
     var
         TempEDIExportBufferLine: Record "50078" temporary;
@@ -518,7 +518,7 @@ codeunit 50052 "MGTS EDI Management"
         //GenerateSalesInvoiceEDIBuffer(SalesInvHdrNo,FALSE);
     end;
 
-    [Scope('Internal')]
+
     procedure OpenDocument(EDIExportBuffer: Record "50077")
     var
         PurchaseHeader: Record "38";
@@ -535,7 +535,7 @@ codeunit 50052 "MGTS EDI Management"
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure ResendDocument(var EDIExportBuffer: Record "50077")
     var
         PurchaseHeader: Record "38";
@@ -566,7 +566,7 @@ codeunit 50052 "MGTS EDI Management"
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure CheckResendDocumentAuthorization()
     var
         UserSetup: Record "91";
@@ -578,7 +578,7 @@ codeunit 50052 "MGTS EDI Management"
             ERROR(ErrResendEDIDoc);
     end;
 
-    [Scope('Internal')]
+
     procedure ResendCustomerInvoice(SalesInvoiceHeader: Record "112")
     var
         MsgResend: Label 'Resend in progress';

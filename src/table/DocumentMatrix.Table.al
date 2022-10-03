@@ -297,7 +297,7 @@ table 50067 "DEL Document Matrix"
 
     local procedure CheckSetup()
     begin
-        IF NOT DocumentMatrixSetup.GET THEN
+        IF NOT DocumentMatrixSetup.GET() THEN
             ERROR(Err001);
     end;
 

@@ -38,12 +38,12 @@ page 50019 "DEL Detail Social Audit"
 
                 trigger OnAction()
                 begin
-                    IF Auditsocial.FINDFIRST THEN
+                    IF Auditsocial.FINDFIRST() THEN
                         REPEAT
                             Rec."No." := Auditsocial."No.";
                             Rec.Type := Rec.Type::Vendor;
-                            Rec.INSERT;
-                        UNTIL Auditsocial.NEXT = 0;
+                            Rec.INSERT();
+                        UNTIL Auditsocial.NEXT() = 0;
                 end;
             }
         }

@@ -1,23 +1,10 @@
-codeunit 50027 "Deal Shipment Connection"
+codeunit 50027 "DEL Deal Shipment Connection"
 {
-    // +-------------------------------------------------------------------------------+
-    // | Logico SA - Logiciels & Conseils                                              |
-    // | Stand: 09.09.08                                                               |
-    // +-------------------------------------------------------------------------------+
-    // 
-    // ID     Version     Story-Card    Date       Description
-    // ---------------------------------------------------------------------------------
-    // CHG01  RC4                       09.09.08   Created Doc
 
 
-    trigger OnRun()
-    begin
-    end;
-
-    [Scope('Internal')]
     procedure FNC_Insert(Deal_ID_Co_Par: Code[20]; Shipment_ID_Co_Par: Code[20]; Element_ID_Co_Par: Code[20])
     var
-        dsc_Re_Loc: Record "50032";
+        dsc_Re_Loc: Record "DEL Deal Shipment Connection";
     begin
         /*
         INSERE UNE SHIPMENT CONNECTION DANS LA TABLE DEAL SHIPMENT CONNECTION
@@ -34,10 +21,10 @@ codeunit 50027 "Deal Shipment Connection"
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Delete(Element_ID_Co_Par: Code[20])
     var
-        dsc_Re_Loc: Record "50032";
+        dsc_Re_Loc: Record "DEL Deal Shipment Connection";
     begin
         dsc_Re_Loc.RESET();
         dsc_Re_Loc.SETCURRENTKEY(Element_ID);

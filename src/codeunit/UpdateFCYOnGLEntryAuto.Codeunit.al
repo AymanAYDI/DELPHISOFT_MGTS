@@ -50,7 +50,7 @@ codeunit 50009 "Update FCY On G/L Entry Auto"
         IF GeneralSetup."Dernier num séq maj Dev Init" <> 0 THEN
             glEntry_Re_Loc.SETFILTER("Entry No.", '>%1', GeneralSetup."Dernier num séq maj Dev Init")
         ELSE
-            glEntry_Re_Loc.SETRANGE("Posting Date", CALCDATE('<-5M>', WORKDATE), WORKDATE);
+            glEntry_Re_Loc.SETRANGE("Posting Date", CALCDATE('<-5M>', WORKDATE()), WORKDATE());
         //END T-00737
         // THM
         glEntry_Re_Loc.MODIFYALL("Initial Amount (FCY)", 0);
@@ -124,7 +124,7 @@ codeunit 50009 "Update FCY On G/L Entry Auto"
                 END;
                 // T-00737
                 LastEntyModify := glEntry_Re_Loc."Entry No.";
-                //END  T-00737
+            //END  T-00737
             UNTIL (glEntry_Re_Loc.NEXT() = 0);
 
         // T-00737
@@ -161,7 +161,7 @@ codeunit 50009 "Update FCY On G/L Entry Auto"
                                     GLEntry3_Re_Loc.MODIFY;
                                 END;
                             UNTIL GLEntry3_Re_Loc.NEXT = 0;
-                        // STOP STG02
+                    // STOP STG02
                     UNTIL GLEntry2_Re_Loc.NEXT = 0;
             UNTIL GLAccount_Re_Loc.NEXT = 0;
         //YAH01-
@@ -176,7 +176,7 @@ codeunit 50009 "Update FCY On G/L Entry Auto"
         LastEntyModify: Integer;
         GeneralSetup: Record "50000";
 
-    [Scope('Internal')]
+
     procedure updateGLEntry(var GLEntry_Re_Par: Record "17"; Amount_Dec_Par: Decimal; Currency_Co_Par: Code[10]; Factor_Dec_Par: Decimal)
     var
         GLEntry_Re_Loc: Record "17";

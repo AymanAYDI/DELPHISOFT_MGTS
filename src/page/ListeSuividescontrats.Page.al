@@ -166,7 +166,7 @@ page 50074 "DEL Liste Suivi des contrats"
 
                     trigger OnLookup(var Text: Text): Boolean
                     begin
-                        CustLedgerEntry2.RESET;
+                        CustLedgerEntry2.RESET();
                         CustLedgerEntry2.FILTERGROUP(2);
                         CustLedgerEntry2.SETRANGE(CustLedgerEntry2."Customer No.", Rec."No.");
                         CustLedgerEntry2.SETFILTER(CustLedgerEntry2."Sales (LCY)", '<>0');
@@ -181,7 +181,7 @@ page 50074 "DEL Liste Suivi des contrats"
 
                     trigger OnLookup(var Text: Text): Boolean
                     begin
-                        CustLedgerEntry2.RESET;
+                        CustLedgerEntry2.RESET();
                         CustLedgerEntry2.FILTERGROUP(2);
                         CustLedgerEntry2.SETRANGE(CustLedgerEntry2."Customer No.", Rec."No.");
                         CustLedgerEntry2.SETFILTER(CustLedgerEntry2."Sales (LCY)", '<>0');
@@ -195,7 +195,7 @@ page 50074 "DEL Liste Suivi des contrats"
 
                     trigger OnLookup(var Text: Text): Boolean
                     begin
-                        CustLedgerEntry2.RESET;
+                        CustLedgerEntry2.RESET();
                         CustLedgerEntry2.FILTERGROUP(2);
                         CustLedgerEntry2.SETRANGE(CustLedgerEntry2."Customer No.", Rec."No.");
                         CustLedgerEntry2.SETFILTER(CustLedgerEntry2."Sales (LCY)", '<>0');
@@ -255,12 +255,12 @@ page 50074 "DEL Liste Suivi des contrats"
                     trigger OnLookup(var Text: Text): Boolean
                     begin
                         CLEAR(DocumentLine);
-                        DocumentLine.RESET;
+                        DocumentLine.RESET();
                         DocumentLine.SETRANGE(DocumentLine."Table Name", DocumentLine."Table Name"::Customer);
                         DocumentLine.SETRANGE(DocumentLine."No.", Rec."No.");
                         DocumentLine.SETRANGE(DocumentLine."Type contrat", DocumentLine."Type contrat"::"Charte ethique");
                         DocumentContrat.SETTABLEVIEW(DocumentLine);
-                        DocumentContrat.RUN;
+                        DocumentContrat.RUN();
                     end;
                 }
                 field("Note Quality"; "Note Quality")
@@ -438,14 +438,14 @@ page 50074 "DEL Liste Suivi des contrats"
 
     trigger OnOpenPage()
     begin
-        Customer.RESET;
+        Customer.RESET();
         Customer.SETRANGE(Customer."Customer Posting Group", 'HORS-GRPE');
-        IF Customer.FINDFIRST THEN
+        IF Customer.FINDFIRST() THEN
             REPEAT
-                CustLedgerEntry.RESET;
+                CustLedgerEntry.RESET();
                 CustLedgerEntry.SETRANGE(CustLedgerEntry."Customer No.", Customer."No.");
                 CustLedgerEntry.SETRANGE(CustLedgerEntry."Document Type", CustLedgerEntry."Document Type"::Invoice);
-                IF CustLedgerEntry.FINDLAST THEN BEGIN
+                IF CustLedgerEntry.FINDLAST() THEN BEGIN
                     CustLedgerEntry.CALCFIELDS(CustLedgerEntry.Amount, CustLedgerEntry."Remaining Amount");
                     Customer."Last Accounting Date" := CustLedgerEntry."Posting Date";
                     Customer.Facture := CustLedgerEntry."Document No.";
@@ -508,10 +508,10 @@ page 50074 "DEL Liste Suivi des contrats"
                 Customer."Amount YTD-1" := CustSalesLCY[2];
                 Customer."Amount YTD-2" := CustSalesLCY[3];
 
-                Customer.MODIFY;
+                Customer.MODIFY();
 
 
-            UNTIL Customer.NEXT = 0;
+            UNTIL Customer.NEXT() = 0;
     end;
 
     var

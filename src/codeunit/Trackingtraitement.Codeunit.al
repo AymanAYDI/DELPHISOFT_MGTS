@@ -18,7 +18,7 @@ codeunit 50006 "Tracking traitement"
         CodeACo: Text[3];
         Logistic2: Record "50034";
 
-    [Scope('Internal')]
+
     procedure InsertionAutomatique()
     begin
 
@@ -83,7 +83,7 @@ codeunit 50006 "Tracking traitement"
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure AllocationManuel()
     begin
     end;

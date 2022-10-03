@@ -49,7 +49,7 @@ codeunit 50036 "Import commande vente"
             REImportCdeVente.DELETE;
     end;
 
-    [Scope('Internal')]
+
     procedure InsertError(var TextErreur: Text)
     var
         ErrorImportvente: Record "50062";

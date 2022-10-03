@@ -8,7 +8,7 @@ codeunit 50000 "Update SalesLine/PurchaseLine"
     var
         Text0001: Label 'Update Successfully Completed';
 
-    [Scope('Internal')]
+
     procedure UpdateSalesLine(SalesLineNo: Code[20])
     var
         SalesLine: Record "37";
@@ -25,7 +25,7 @@ codeunit 50000 "Update SalesLine/PurchaseLine"
         MESSAGE(Text0001);
     end;
 
-    [Scope('Internal')]
+
     procedure UpdatePurchaseLine(PurchaseLineNo: Code[20])
     var
         PurchaseLine: Record "39";

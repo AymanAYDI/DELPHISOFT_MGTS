@@ -49,7 +49,7 @@ page 50045 "DEL Subform P&L Logistic"
 
     trigger OnModifyRecord(): Boolean
     begin
-        ModifyRec;
+        ModifyRec();
         EXIT(FALSE);
     end;
 
@@ -71,7 +71,7 @@ page 50045 "DEL Subform P&L Logistic"
     procedure ModifyRec()
     begin
         PLLogistic_Re_Temp := Rec;
-        PLLogistic_Re_Temp.MODIFY;
+        PLLogistic_Re_Temp.MODIFY();
     end;
 
 

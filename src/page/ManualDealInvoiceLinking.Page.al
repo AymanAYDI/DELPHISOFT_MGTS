@@ -237,11 +237,11 @@ page 50080 "Manual Deal Invoice Linking"
         //Lister les deal, puis les livraisons qui y sont rattachées
         deal_Re_Loc.RESET();
         deal_Re_Loc.SETFILTER(Status, '<>%1', deal_Re_Loc.Status::Closed);
-        IF deal_Re_Loc.FINDFIRST THEN
+        IF deal_Re_Loc.FINDFIRST() THEN
             REPEAT
                 dealShipment_Re_Loc.RESET();
                 dealShipment_Re_Loc.SETRANGE(Deal_ID, deal_Re_Loc.ID);
-                IF dealShipment_Re_Loc.FINDFIRST THEN
+                IF dealShipment_Re_Loc.FINDFIRST() THEN
                     REPEAT
 
                         dealShipmentSelection_Re_Loc.INIT();
@@ -276,7 +276,7 @@ page 50080 "Manual Deal Invoice Linking"
         dealShipmentSelection_page_Loc.SETTABLEVIEW(dealShipmentSelection_Re_Loc);
         dealShipmentSelection_page_Loc.SETRECORD(dealShipmentSelection_Re_Loc);
 
-        dealShipmentSelection_page_Loc.RUN
+        dealShipmentSelection_page_Loc.RUN()
 
     end;
 

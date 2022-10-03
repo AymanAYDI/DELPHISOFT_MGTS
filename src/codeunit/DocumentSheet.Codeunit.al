@@ -10,7 +10,7 @@ codeunit 50007 "Document Sheet"
         DialogFileName: Text;
         DialogFilter: Text;
 
-    [Scope('Internal')]
+
     procedure GetOpenFileName(var ClientFileName: Text; UploadToServer: Boolean): Boolean
     var
         DummyFileName: Text;
@@ -19,7 +19,7 @@ codeunit 50007 "Document Sheet"
         EXIT(ShowOpenFileDialog(ClientFileName, DummyFileName, FALSE));
     end;
 
-    [Scope('Internal')]
+
     procedure OpenFile(var ClientFileName: Text; var ServerFileName: Text): Boolean
     begin
         EXIT(ShowOpenFileDialog(ClientFileName, ServerFileName, TRUE));
@@ -32,7 +32,7 @@ codeunit 50007 "Document Sheet"
         OpenFileDialog: DotNet OpenFileDialog;
     begin
         OpenFileDialog := OpenFileDialog.OpenFileDialog;
-        OpenFileDialog.Filter := GetDialogFilter;
+        OpenFileDialog.Filter := GetDialogFilter();
 
         IF ClientFileName <> '' THEN BEGIN
             OpenFileDialog.InitialDirectory := GetDirectoryName(ClientFileName);
@@ -58,7 +58,7 @@ codeunit 50007 "Document Sheet"
         EXIT(TRUE);
     end;
 
-    [Scope('Internal')]
+
     procedure SelectDirectory(var Directory: Text): Boolean
     var
         ActiveFolder: Text;
@@ -82,7 +82,7 @@ codeunit 50007 "Document Sheet"
         EXIT(TRUE);
     end;
 
-    [Scope('Internal')]
+
     procedure OpenDirectory(Directory: Text)
     var
         WindowsShell: Automation;
@@ -109,7 +109,7 @@ codeunit 50007 "Document Sheet"
             EXIT(DialogFilter + '|' + ctAllFiles);
     end;
 
-    [Scope('Internal')]
+
     procedure GetFileName(FileName: Text): Text
     var
         i: Integer;
@@ -121,7 +121,7 @@ codeunit 50007 "Document Sheet"
         EXIT(FileName);
     end;
 
-    [Scope('Internal')]
+
     procedure GetDirectoryName(FileName: Text): Text
     var
         i: Integer;
@@ -131,7 +131,7 @@ codeunit 50007 "Document Sheet"
                 EXIT(COPYSTR(FileName, 1, i));
     end;
 
-    [Scope('Internal')]
+
     procedure AddBackSlash(var Directory: Text)
     begin
         IF Directory <> '' THEN
@@ -139,7 +139,7 @@ codeunit 50007 "Document Sheet"
                 Directory += '\';
     end;
 
-    [Scope('Internal')]
+
     procedure ServerDirectoryExists(DirectoryName: Text): Boolean
     var
         IODirectory: DotNet Directory;
@@ -147,7 +147,7 @@ codeunit 50007 "Document Sheet"
         EXIT(IODirectory.Exists(DirectoryName));
     end;
 
-    [Scope('Internal')]
+
     procedure UploadToServerRTC(ClientFileName: Text; ServerFileName: Text): Text
     var
         TmpServerFile: File;
@@ -196,7 +196,7 @@ codeunit 50007 "Document Sheet"
         SetExtension(ToFileName, Extension);
     end;
 
-    [Scope('Internal')]
+
     procedure GetExtension(FileName: Text): Text
     var
         i: Integer;
@@ -229,7 +229,7 @@ codeunit 50007 "Document Sheet"
             FileName := DELSTR(FileName, DotPos) + '.' + Extension;
     end;
 
-    [Scope('Internal')]
+
     procedure TempDirectory() ExitValue: Text
     begin
         ExitValue := TEMPORARYPATH;

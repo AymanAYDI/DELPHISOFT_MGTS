@@ -1,4 +1,4 @@
-codeunit 50020 Deal
+codeunit 50020 "DEL Deal"
 {
     // +-------------------------------------------------------------------------------+
     // | Logico SA - Logiciels & Conseils                                              |
@@ -39,7 +39,7 @@ codeunit 50020 Deal
         DealItem_Cu: Codeunit "50024";
         Currency_Exchange_Re: Record "50028";
 
-    [Scope('Internal')]
+
     procedure FNC_New_Deal(ACO_No_Co_Par: Code[20]) deal_ID_Co_Ret: Code[20]
     var
         purchaseHeader_Re_Loc: Record "38";
@@ -79,7 +79,7 @@ codeunit 50020 Deal
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Init_Deal(Deal_ID_Co_Par: Code[20]; Update_Planned_Bo_Par: Boolean; Update_Silently_Bo_Par: Boolean)
     var
         intProgressI: Integer;
@@ -107,7 +107,7 @@ codeunit 50020 Deal
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Reinit_Deal(Deal_ID_Co_Par: Code[20]; Update_Planned_Par: Boolean; Update_Silently_Par: Boolean)
     var
         element_Re_Loc: Record "50021";
@@ -201,13 +201,13 @@ codeunit 50020 Deal
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Reinit_Silently_Deal(Deal_ID_Co_Par: Code[20]; UpdatePlanned_Bo_Par: Boolean)
     begin
         FNC_Reinit_Deal(Deal_ID_Co_Par, UpdatePlanned_Bo_Par, TRUE);
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Delete(Deal_ID_Co_Par: Code[20])
     var
         element_Re_Loc: Record "50021";
@@ -265,7 +265,7 @@ codeunit 50020 Deal
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Insert_Deal(Deal_ID_Co_Par: Code[20]; PurchaserCode_Co_Par: Code[10]; ACODocumentDate_Da_Par: Date) deal_ID_Co_Ret: Code[20]
     var
         deal_Re_Loc: Record "50020";
@@ -292,7 +292,7 @@ codeunit 50020 Deal
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Set_Deal(var Deal_Re_Par: Record "50020"; Deal_ID_Co_Par: Code[20])
     begin
         /*__Sets by instance Deal_Re_Par according to Deal_ID_Co_Par, and raises an error could not__*/
@@ -302,8 +302,8 @@ codeunit 50020 Deal
 
     end;
 
-    [Scope('Internal')]
-    procedure FNC_Get_ACO(var element_Re_Par: Record "50021"; dealID_Co_Par: Code[20])
+
+    procedure FNC_Get_ACO(element_Re_Par: Record 50021; dealID_Co_Par: Code[20])
     begin
         //filtre un record element (passé par REF) sur le premier élément ACO d'une affaire
 
@@ -316,7 +316,7 @@ codeunit 50020 Deal
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_UpdateStatus(Deal_ID_Co_Par: Code[20])
     var
         deal_Re_Loc: Record "50020";
@@ -396,7 +396,7 @@ codeunit 50020 Deal
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_UpdatePurchaserCode(Deal_ID_Co_Par: Code[20])
     var
         element_Re_Loc: Record "50021";
@@ -418,7 +418,7 @@ codeunit 50020 Deal
         END
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Set_LastUpdate_DateTime(Deal_ID_Co_Par: Code[20])
     var
         deal_Re_Loc: Record "50020";
@@ -428,7 +428,7 @@ codeunit 50020 Deal
         deal_Re_Loc.MODIFY();
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_UpdatePeriod(Deal_ID_Co_Par: Code[20])
     var
         deal_Re_Loc: Record "50020";
@@ -492,7 +492,7 @@ codeunit 50020 Deal
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Attach_ACO(Deal_ID_Co_Par: Code[20]; ACO_ID_Co_Par: Code[20])
     var
         ACO_Connection_Re_Loc: Record "50026";
@@ -512,7 +512,7 @@ codeunit 50020 Deal
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Get_ACO_Amount(Deal_ID_Co_Par: Code[20]; DealShipment_No_Co_Par: Code[20]) Amount_Dec_Ret: Decimal
     var
         element_Re_Loc: Record "50021";
@@ -584,7 +584,7 @@ codeunit 50020 Deal
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Get_VCO_Amount(Deal_ID_Co_Par: Code[20]; DealShipment_No_Co_Par: Code[20]) Amount_Dec_Ret: Decimal
     var
         element_Re_Loc: Record "50021";
@@ -657,7 +657,7 @@ codeunit 50020 Deal
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Get_Fee_Amount(Deal_ID_Co_Par: Code[20]; DealShipment_No_Co_Par: Code[20]) Amount_Dec_Ret: Decimal
     var
         element_Re_Loc: Record "50021";
@@ -748,7 +748,7 @@ codeunit 50020 Deal
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Get_PurchInvoice_Amount(Deal_ID_Co_Par: Code[20]; DealShipment_No_Co_Par: Code[20]) Amount_Dec_Ret: Decimal
     var
         element_Re_Loc: Record "50021";
@@ -783,7 +783,7 @@ codeunit 50020 Deal
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Get_PurchCrMemo_Amount(Deal_ID_Co_Par: Code[20]; DealShipment_No_Co_Par: Code[20]) Amount_Dec_Ret: Decimal
     var
         element_Re_Loc: Record "50021";
@@ -818,7 +818,7 @@ codeunit 50020 Deal
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Get_SalesInvoice_Amount(Deal_ID_Co_Par: Code[20]; DealShipment_No_Co_Par: Code[20]) Amount_Dec_Ret: Decimal
     var
         element_Re_Loc: Record "50021";
@@ -853,7 +853,7 @@ codeunit 50020 Deal
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Get_SalesCrMemo_Amount(Deal_ID_Co_Par: Code[20]; DealShipment_No_Co_Par: Code[20]) Amount_Dec_Ret: Decimal
     var
         element_Re_Loc: Record "50021";
@@ -888,7 +888,7 @@ codeunit 50020 Deal
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Get_Invoice_Amount(Deal_ID_Co_Par: Code[20]; DealShipment_No_Co_Par: Code[20]) Amount_Dec_Ret: Decimal
     var
         element_Re_Loc: Record "50021";
@@ -973,7 +973,7 @@ codeunit 50020 Deal
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Get_ProSales_Amount(Deal_ID_Co_Par: Code[20]; DealShipment_No_Co_Par: Code[20]) Amount_Dec_Ret: Decimal
     var
         element_Re_Loc: Record "50021";
@@ -1061,7 +1061,7 @@ codeunit 50020 Deal
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Get_ProPurch_Amount(Deal_ID_Co_Par: Code[20]; DealShipment_No_Co_Par: Code[20]) Amount_Dec_Ret: Decimal
     var
         element_Re_Loc: Record "50021";
@@ -1146,7 +1146,7 @@ codeunit 50020 Deal
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Get_ProLog_Amount(Deal_ID_Co_Par: Code[20]; DealShipment_No_Co_Par: Code[20]) Amount_Dec_Ret: Decimal
     var
         element_Re_Loc: Record "50021";
@@ -1313,7 +1313,7 @@ codeunit 50020 Deal
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_GetMonthFirstWorkDay(date_Par: Date) date: Date
     begin
         /*
@@ -1331,14 +1331,14 @@ codeunit 50020 Deal
                 //avancer d'un jour
                 date := CALCDATE('<+1D>', date);
 
-                //jusqu'a ce qu'on tombe sur un lundi
+            //jusqu'a ce qu'on tombe sur un lundi
             UNTIL (FORMAT(date, 0, '<Weekday>') = '1');
 
         EXIT(date);
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_GetMonthLastWorkDay(date_Par: Date) date: Date
     begin
         /*
@@ -1356,7 +1356,7 @@ codeunit 50020 Deal
                 //reculer d'un jour
                 date := CALCDATE('<-1D>', date);
 
-                //jusqu'à ce qu'on tombe sur un vendredi
+            //jusqu'à ce qu'on tombe sur un vendredi
             UNTIL (FORMAT(date, 0, '<Weekday>') = '5');
 
         EXIT(date);

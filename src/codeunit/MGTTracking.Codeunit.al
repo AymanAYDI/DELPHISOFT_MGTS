@@ -27,7 +27,7 @@ codeunit 50003 "MGT Tracking"
         charXml: Text;
         Pos: Integer;
 
-    [Scope('Internal')]
+
     procedure importXMLFiles1()
     begin
         IF NgtsSetup.GET() THEN;
@@ -57,7 +57,7 @@ codeunit 50003 "MGT Tracking"
         MESSAGE('Import Xml completed 1!');
     end;
 
-    [Scope('Internal')]
+
     procedure importXMLFiles2()
     begin
         IF NgtsSetup.GET() THEN;
@@ -85,7 +85,7 @@ codeunit 50003 "MGT Tracking"
         MESSAGE('Import Xml completed 2!');
     end;
 
-    [Scope('Internal')]
+
     procedure move1()
     begin
         IF NgtsSetup.GET() THEN;
@@ -101,7 +101,7 @@ codeunit 50003 "MGT Tracking"
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure move2()
     begin
 
@@ -118,7 +118,7 @@ codeunit 50003 "MGT Tracking"
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure export()
     begin
 

@@ -3,8 +3,8 @@ codeunit 50010 "Export Mail Prod Nouv Et Suiv"
 
     trigger OnRun()
     begin
-        CLEARALL;
-        CLEARLASTERROR;
+        CLEARALL();
+        CLEARLASTERROR();
         /*
         IF EXISTS('D:\Export\New_products_follow_up.csv') THEN
          ERASE('D:\Export\New_products_follow_up.csv');
@@ -91,7 +91,7 @@ codeunit 50010 "Export Mail Prod Nouv Et Suiv"
 
         //DEL.SAZ 19.09.2018
         PurchaseLine_Suiv.SETRANGE("Photo Risk Item Taked", FALSE);
-        DateRecCalc := CALCDATE('<-5D>', WORKDATE);
+        DateRecCalc := CALCDATE('<-5D>', WORKDATE());
         PurchaseLine_Suiv.SETFILTER("Expected Receipt Date", '>%1', DateRecCalc);
         //END DEL.SAZ 19.09.2018
         IF PurchaseLine_Suiv.FINDSET THEN BEGIN
@@ -176,7 +176,7 @@ codeunit 50010 "Export Mail Prod Nouv Et Suiv"
         SLEEP(9000);
         SMTP.Send;
         SLEEP(9000);
-        CLEARALL;
+        CLEARALL();
 
         IF EXISTS('C:\Export\New_products_follow_up.csv') THEN
             ERASE('C:\Export\New_products_follow_up.csv');

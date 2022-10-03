@@ -146,13 +146,13 @@ table 50000 "DEL General Setup"
             var
                 GLAccount_Re: Record "G/L Account";
             begin
-                GLAccount_Re.RESET;
-                IF GLAccount_Re.FINDFIRST THEN BEGIN
+                GLAccount_Re.RESET();
+                IF GLAccount_Re.FINDFIRST() THEN BEGIN
                     IF ("Hyperion Company Code" <> '') THEN BEGIN
                         REPEAT
                             //TODO  GLAccount_Re."Company Code" := "Hyperion Company Code";
-                            GLAccount_Re.MODIFY;
-                        UNTIL GLAccount_Re.NEXT = 0;
+                            GLAccount_Re.MODIFY();
+                        UNTIL GLAccount_Re.NEXT() = 0;
                     END;
                 END;
             end;

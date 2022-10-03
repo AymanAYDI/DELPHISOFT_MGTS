@@ -173,7 +173,7 @@ page 50140 "DEL JSON Requests logs"
                     Rec.SETCURRENTKEY(Date);
                     Rec.SETRANGE(Filtered);
                     TextToFilter := '';
-                    CurrPage.UPDATE;
+                    CurrPage.UPDATE();
                 end;
             }
         }

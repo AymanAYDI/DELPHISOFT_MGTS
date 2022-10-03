@@ -10,8 +10,8 @@ codeunit 50018 "Create Purch. EDI Launcher"
         //  'CREATEPURCHDEAL':CreatePurchDeal;
         //END;
 
-        CreateReqWorkSheet;
-        CreatePurchDeal;
+        CreateReqWorkSheet();
+        CreatePurchDeal();
     end;
 
     var
@@ -30,7 +30,7 @@ codeunit 50018 "Create Purch. EDI Launcher"
             REPEAT
                 IF TypeOrderEDI.GET(SalesHeader."Type Order EDI") AND TypeOrderEDI."Automatic ACO" THEN BEGIN
                     CLEAR(CreatePurchEDI);
-                    COMMIT;
+                    COMMIT();
                     CreatePurchEDI.SetParam(Param::CreateAndValidateReqWorksheet, SalesHeader."No.");
                     IF NOT CreatePurchEDI.RUN THEN BEGIN
                         SalesHeader."Status Purchase Order Create" := SalesHeader."Status Purchase Order Create"::"Create Req. Worksheet";
@@ -57,7 +57,7 @@ codeunit 50018 "Create Purch. EDI Launcher"
         IF SalesHeader.FINDSET THEN
             REPEAT
                 CLEAR(CreatePurchEDI);
-                COMMIT;
+                COMMIT();
                 CreatePurchEDI.SetParam(Param::CreateDeal, SalesHeader."No.");
                 IF NOT CreatePurchEDI.RUN THEN BEGIN
                     SalesHeader."Status Purchase Order Create" := SalesHeader."Status Purchase Order Create"::"Create Deal";

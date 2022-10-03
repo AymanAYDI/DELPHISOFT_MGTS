@@ -7,7 +7,7 @@ codeunit 50001 "ReqLine OrderDate Update"
         IF ReqLine.FINDFIRST THEN BEGIN
             REPEAT
 
-                ReqLine."Order Date" := WORKDATE;
+                ReqLine."Order Date" := WORKDATE();
                 ReqLine.VALIDATE("Order Date");
                 ReqLine.MODIFY;
 

@@ -22,7 +22,7 @@ codeunit 50008 "Update Request"
         UpdatePlanned_Bo_Par: Boolean;
         i: Integer;
 
-    [Scope('Internal')]
+
     procedure SetValeur(PrevuVar: Boolean)
     begin
         UpdatePlanned_Bo_Par := PrevuVar;

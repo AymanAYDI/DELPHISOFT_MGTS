@@ -18,7 +18,7 @@ codeunit 50037 LogiProgressBar
         timProgress: array[10] of Time;
         interval: array[10] of Integer;
 
-    [Scope('Internal')]
+
     procedure FNC_TestProgressBar()
     var
         i: Integer;
@@ -38,7 +38,7 @@ codeunit 50037 LogiProgressBar
         LogiProgressBar_Cu.FNC_ProgressBar_Close(1);
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_TestProgressBar2()
     var
         i: Integer;
@@ -57,7 +57,7 @@ codeunit 50037 LogiProgressBar
         LogiProgressBar_Cu.FNC_ProgressBar_Close(2);
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_ProgressBar_Init(index_Int_Par: Integer; interval_Int_Par: Integer; stepProgress_Int_Par: Integer; text_Te_Par: Text[50]; total_Int_Par: Integer)
     begin
         /*
@@ -103,7 +103,7 @@ codeunit 50037 LogiProgressBar
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_ProgressBar_Update(index_Int_Par: Integer)
     begin
         //incrémentation de la variable d'itération
@@ -123,7 +123,7 @@ codeunit 50037 LogiProgressBar
                 intNextProgressStep[index_Int_Par] := intProgress[index_Int_Par] + intProgressStep[index_Int_Par];
 
                 //mise à jour de la barre
-                diaProgress[index_Int_Par].UPDATE;
+                diaProgress[index_Int_Par].UPDATE();
 
                 //mise à jour du temps
                 timProgress[index_Int_Par] := TIME;
@@ -133,10 +133,10 @@ codeunit 50037 LogiProgressBar
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_ProgressBar_Close(index_Int_Par: Integer)
     begin
-        diaProgress[index_Int_Par].CLOSE;
+        diaProgress[index_Int_Par].CLOSE();
     end;
 }
 

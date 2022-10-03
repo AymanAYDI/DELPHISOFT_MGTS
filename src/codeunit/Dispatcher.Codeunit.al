@@ -1,32 +1,20 @@
-codeunit 50026 Dispatcher
+codeunit 50026 "DEL Dispatcher"
 {
-    // +-------------------------------------------------------------------------------+
-    // | Logico SA - Logiciels & Conseils                                              |
-    // | Stand: 16.07.09                                                               |
-    // +-------------------------------------------------------------------------------+
-    // 
-    // ID     Version     Story-Card    Date       Description
-    // ---------------------------------------------------------------------------------
-    // CHG01  RC4                       09.09.08   Created Doc
-    //                                  20.04.09   Adapted Postion Insert Function Params
-    // CHG02                            16.06.09   changed array dimension to 300
-    // CHG03                            16.07.09   added FNC_Element_Quantity function
-
 
     trigger OnRun()
     begin
     end;
 
     var
-        Element_Cu: Codeunit "50021";
+        Element_Cu: Codeunit 50021;
         ERROR_TXT: Label 'ERREUR\Source : %1\Function : %2\Reason : %3';
-        Position_Cu: Codeunit "50022";
-        Fee_Cu: Codeunit "50023";
-        Currency_Exchange_Re: Record "50028";
-        DealItem_Cu: Codeunit "50024";
+        Position_Cu: Codeunit 50022;
+        Fee_Cu: Codeunit 50023;
+        Currency_Exchange_Re: Record 50028;
+        DealItem_Cu: Codeunit 50024;
         MyError_Te: Text[1024];
 
-    [Scope('Internal')]
+
     procedure FNC_Dispatch_Amount(var Value_Ar_Par: array[300] of Decimal; ArrayAmount_Dec_Par: Decimal; ElementAmount_Dec_Par: Decimal)
     var
         arrayIndex: Integer;
@@ -41,13 +29,13 @@ codeunit 50026 Dispatcher
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Element_Value(var Value_Ar_Par: array[300] of Decimal; Element_ID_Co_Par: Code[20]; FilterOnDealID_Bo_Par: Boolean)
     var
-        element_Re_Loc: Record "50021";
-        elementConnection_Re_Loc: Record "50027";
+        element_Re_Loc: Record 50021;
+        elementConnection_Re_Loc: Record 50027;
         arrayIndex: Integer;
-        applyElement_Re_Loc: Record "50021";
+        applyElement_Re_Loc: Record 50021;
         addPositions_Bo_Loc: Boolean;
     begin
         Element_Cu.FNC_Set_Element(element_Re_Loc, Element_ID_Co_Par);
@@ -65,7 +53,7 @@ codeunit 50026 Dispatcher
 
         //step 1 : SOMME DES AMOUNT DE CHAQUE ELEMENT
         arrayIndex := 1;
-        IF elementConnection_Re_Loc.FINDFIRST THEN BEGIN
+        IF elementConnection_Re_Loc.FINDFIRST() THEN BEGIN
             REPEAT
 
                 IF FilterOnDealID_Bo_Par THEN BEGIN
@@ -76,7 +64,7 @@ codeunit 50026 Dispatcher
                     applyElement_Re_Loc.RESET();
                     applyElement_Re_Loc.SETRANGE(Deal_ID, elementConnection_Re_Loc.Deal_ID);
                     applyElement_Re_Loc.SETRANGE(ID, elementConnection_Re_Loc."Apply To");
-                    IF applyElement_Re_Loc.FINDFIRST THEN
+                    IF applyElement_Re_Loc.FINDFIRST() THEN
                         addPositions_Bo_Loc := TRUE;
 
                     IF addPositions_Bo_Loc THEN BEGIN
@@ -101,7 +89,7 @@ codeunit 50026 Dispatcher
 
                 END;
 
-            UNTIL (elementConnection_Re_Loc.NEXT = 0);
+            UNTIL (elementConnection_Re_Loc.NEXT() = 0);
 
             //CHG
             IF (FNC_Array_Sum(Value_Ar_Par) = 0) THEN
@@ -114,13 +102,13 @@ codeunit 50026 Dispatcher
               STRSUBSTNO('Aucune connection élément pour élément ID >%1<', element_Re_Loc.ID));
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Element_Volume(var Value_Ar_Par: array[300] of Decimal; Element_ID_Co_Par: Code[20]; FilterOnDealID_Bo_Par: Boolean)
     var
-        element_Re_Loc: Record "50021";
-        elementConnection_Re_Loc: Record "50027";
+        element_Re_Loc: Record 50021;
+        elementConnection_Re_Loc: Record 50027;
         arrayIndex: Integer;
-        applyElement_Re_Loc: Record "50021";
+        applyElement_Re_Loc: Record 50021;
         addPositions_Bo_Loc: Boolean;
     begin
         Element_Cu.FNC_Set_Element(element_Re_Loc, Element_ID_Co_Par);
@@ -138,7 +126,7 @@ codeunit 50026 Dispatcher
 
         //step 1 : SOMME DES VOLUME DE CHAQUE ELEMENT
         arrayIndex := 1;
-        IF elementConnection_Re_Loc.FINDFIRST THEN BEGIN
+        IF elementConnection_Re_Loc.FINDFIRST() THEN BEGIN
             REPEAT
 
                 IF FilterOnDealID_Bo_Par THEN BEGIN
@@ -149,7 +137,7 @@ codeunit 50026 Dispatcher
                     applyElement_Re_Loc.RESET();
                     applyElement_Re_Loc.SETRANGE(Deal_ID, elementConnection_Re_Loc.Deal_ID);
                     applyElement_Re_Loc.SETRANGE(ID, elementConnection_Re_Loc."Apply To");
-                    IF applyElement_Re_Loc.FINDFIRST THEN
+                    IF applyElement_Re_Loc.FINDFIRST() THEN
                         addPositions_Bo_Loc := TRUE;
 
                     IF addPositions_Bo_Loc THEN BEGIN
@@ -174,7 +162,7 @@ codeunit 50026 Dispatcher
 
                 END;
 
-            UNTIL (elementConnection_Re_Loc.NEXT = 0);
+            UNTIL (elementConnection_Re_Loc.NEXT() = 0);
 
             //CHG
             IF (FNC_Array_Sum(Value_Ar_Par) = 0) THEN
@@ -187,13 +175,13 @@ codeunit 50026 Dispatcher
               STRSUBSTNO('Aucune connection élément pour élément ID >%1<', element_Re_Loc.ID));
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Element_VolumeTransport(var Value_Ar_Par: array[300] of Decimal; Element_ID_Co_Par: Code[20]; FilterOnDealID_Bo_Par: Boolean)
     var
-        element_Re_Loc: Record "50021";
-        elementConnection_Re_Loc: Record "50027";
+        element_Re_Loc: Record 50021;
+        elementConnection_Re_Loc: Record 50027;
         arrayIndex: Integer;
-        applyElement_Re_Loc: Record "50021";
+        applyElement_Re_Loc: Record 50021;
         addPositions_Bo_Loc: Boolean;
     begin
         Element_Cu.FNC_Set_Element(element_Re_Loc, Element_ID_Co_Par);
@@ -211,7 +199,7 @@ codeunit 50026 Dispatcher
 
         //step 1 : SOMME DES VOLUME DE CHAQUE ELEMENT
         arrayIndex := 1;
-        IF elementConnection_Re_Loc.FINDFIRST THEN BEGIN
+        IF elementConnection_Re_Loc.FINDFIRST() THEN BEGIN
             REPEAT
 
                 IF FilterOnDealID_Bo_Par THEN BEGIN
@@ -222,7 +210,7 @@ codeunit 50026 Dispatcher
                     applyElement_Re_Loc.RESET();
                     applyElement_Re_Loc.SETRANGE(Deal_ID, elementConnection_Re_Loc.Deal_ID);
                     applyElement_Re_Loc.SETRANGE(ID, elementConnection_Re_Loc."Apply To");
-                    IF applyElement_Re_Loc.FINDFIRST THEN
+                    IF applyElement_Re_Loc.FINDFIRST() THEN
                         addPositions_Bo_Loc := TRUE;
 
                     IF addPositions_Bo_Loc THEN BEGIN
@@ -247,7 +235,7 @@ codeunit 50026 Dispatcher
 
                 END;
 
-            UNTIL (elementConnection_Re_Loc.NEXT = 0);
+            UNTIL (elementConnection_Re_Loc.NEXT() = 0);
 
             //CHG
             IF (FNC_Array_Sum(Value_Ar_Par) = 0) THEN
@@ -260,13 +248,13 @@ codeunit 50026 Dispatcher
               STRSUBSTNO('Aucune connection élément pour élément ID >%1<', element_Re_Loc.ID));
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Element_Gross_Weight(var Value_Ar_Par: array[300] of Decimal; Element_ID_Co_Par: Code[20]; FilterOnDealID_Bo_Par: Boolean)
     var
-        element_Re_Loc: Record "50021";
-        elementConnection_Re_Loc: Record "50027";
+        element_Re_Loc: Record 50021;
+        elementConnection_Re_Loc: Record 50027;
         arrayIndex: Integer;
-        applyElement_Re_Loc: Record "50021";
+        applyElement_Re_Loc: Record 50021;
         addPositions_Bo_Loc: Boolean;
     begin
         Element_Cu.FNC_Set_Element(element_Re_Loc, Element_ID_Co_Par);
@@ -284,7 +272,7 @@ codeunit 50026 Dispatcher
 
         //step 1 : SOMME DES POIDS BRUT DE CHAQUE ELEMENT
         arrayIndex := 1;
-        IF elementConnection_Re_Loc.FINDFIRST THEN BEGIN
+        IF elementConnection_Re_Loc.FINDFIRST() THEN BEGIN
             REPEAT
 
                 IF FilterOnDealID_Bo_Par THEN BEGIN
@@ -295,7 +283,7 @@ codeunit 50026 Dispatcher
                     applyElement_Re_Loc.RESET();
                     applyElement_Re_Loc.SETRANGE(Deal_ID, elementConnection_Re_Loc.Deal_ID);
                     applyElement_Re_Loc.SETRANGE(ID, elementConnection_Re_Loc."Apply To");
-                    IF applyElement_Re_Loc.FINDFIRST THEN
+                    IF applyElement_Re_Loc.FINDFIRST() THEN
                         addPositions_Bo_Loc := TRUE;
 
                     IF addPositions_Bo_Loc THEN BEGIN
@@ -320,7 +308,7 @@ codeunit 50026 Dispatcher
 
                 END;
 
-            UNTIL (elementConnection_Re_Loc.NEXT = 0);
+            UNTIL (elementConnection_Re_Loc.NEXT() = 0);
 
             //CHG
             IF (FNC_Array_Sum(Value_Ar_Par) = 0) THEN
@@ -333,13 +321,13 @@ codeunit 50026 Dispatcher
               STRSUBSTNO('Aucune connection élément pour élément ID >%1<', element_Re_Loc.ID));
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Element_SommeCout(var Value_Ar_Par: array[300] of Decimal; Element_ID_Co_Par: Code[20]; FilterOnDealID_Bo_Par: Boolean)
     var
-        element_Re_Loc: Record "50021";
-        elementConnection_Re_Loc: Record "50027";
+        element_Re_Loc: Record 50021;
+        elementConnection_Re_Loc: Record 50027;
         arrayIndex: Integer;
-        applyElement_Re_Loc: Record "50021";
+        applyElement_Re_Loc: Record 50021;
         addPositions_Bo_Loc: Boolean;
     begin
         Element_Cu.FNC_Set_Element(element_Re_Loc, Element_ID_Co_Par);
@@ -359,7 +347,7 @@ codeunit 50026 Dispatcher
         //le frais sera distribué de manière égale sur toutes les livraisons : p.e. un frais de 300.- sur trois livraisons = 100.- sur
         //chaque peut importe le contenu
         arrayIndex := 1;
-        IF elementConnection_Re_Loc.FINDFIRST THEN BEGIN
+        IF elementConnection_Re_Loc.FINDFIRST() THEN BEGIN
             REPEAT
 
                 IF FilterOnDealID_Bo_Par THEN BEGIN
@@ -370,7 +358,7 @@ codeunit 50026 Dispatcher
                     applyElement_Re_Loc.RESET();
                     applyElement_Re_Loc.SETRANGE(Deal_ID, elementConnection_Re_Loc.Deal_ID);
                     applyElement_Re_Loc.SETRANGE(ID, elementConnection_Re_Loc."Apply To");
-                    IF applyElement_Re_Loc.FINDFIRST THEN
+                    IF applyElement_Re_Loc.FINDFIRST() THEN
                         addPositions_Bo_Loc := TRUE;
 
                     IF addPositions_Bo_Loc THEN BEGIN
@@ -395,7 +383,7 @@ codeunit 50026 Dispatcher
 
                 END;
 
-            UNTIL (elementConnection_Re_Loc.NEXT = 0);
+            UNTIL (elementConnection_Re_Loc.NEXT() = 0);
 
             //CHG
             IF (FNC_Array_Sum(Value_Ar_Par) = 0) THEN
@@ -408,13 +396,13 @@ codeunit 50026 Dispatcher
               STRSUBSTNO('Aucune connection élément pour élément ID >%1<', element_Re_Loc.ID));
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Element_Colis(var Value_Ar_Par: array[300] of Decimal; Element_ID_Co_Par: Code[20]; FilterOnDealID_Bo_Par: Boolean)
     var
-        element_Re_Loc: Record "50021";
-        elementConnection_Re_Loc: Record "50027";
+        element_Re_Loc: Record 50021;
+        elementConnection_Re_Loc: Record 50027;
         arrayIndex: Integer;
-        applyElement_Re_Loc: Record "50021";
+        applyElement_Re_Loc: Record 50021;
         addPositions_Bo_Loc: Boolean;
     begin
         Element_Cu.FNC_Set_Element(element_Re_Loc, Element_ID_Co_Par);
@@ -432,7 +420,7 @@ codeunit 50026 Dispatcher
 
         //step 1 : SOMME DES COLIS DE CHAQUE ELEMENT
         arrayIndex := 1;
-        IF elementConnection_Re_Loc.FINDFIRST THEN BEGIN
+        IF elementConnection_Re_Loc.FINDFIRST() THEN BEGIN
             REPEAT
 
                 IF FilterOnDealID_Bo_Par THEN BEGIN
@@ -443,7 +431,7 @@ codeunit 50026 Dispatcher
                     applyElement_Re_Loc.RESET();
                     applyElement_Re_Loc.SETRANGE(Deal_ID, elementConnection_Re_Loc.Deal_ID);
                     applyElement_Re_Loc.SETRANGE(ID, elementConnection_Re_Loc."Apply To");
-                    IF applyElement_Re_Loc.FINDFIRST THEN
+                    IF applyElement_Re_Loc.FINDFIRST() THEN
                         addPositions_Bo_Loc := TRUE;
 
                     IF addPositions_Bo_Loc THEN BEGIN
@@ -468,7 +456,7 @@ codeunit 50026 Dispatcher
 
                 END;
 
-            UNTIL (elementConnection_Re_Loc.NEXT = 0);
+            UNTIL (elementConnection_Re_Loc.NEXT() = 0);
 
             //CHG
             IF (FNC_Array_Sum(Value_Ar_Par) = 0) THEN
@@ -481,13 +469,13 @@ codeunit 50026 Dispatcher
               STRSUBSTNO('Aucune connection élément pour élément ID >%1<', element_Re_Loc.ID));
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Element_Quantity(var Value_Ar_Par: array[300] of Decimal; Element_ID_Co_Par: Code[20]; FilterOnDealID_Bo_Par: Boolean)
     var
-        element_Re_Loc: Record "50021";
-        elementConnection_Re_Loc: Record "50027";
+        element_Re_Loc: Record 50021;
+        elementConnection_Re_Loc: Record 50027;
         arrayIndex: Integer;
-        applyElement_Re_Loc: Record "50021";
+        applyElement_Re_Loc: Record 50021;
         addPositions_Bo_Loc: Boolean;
     begin
         Element_Cu.FNC_Set_Element(element_Re_Loc, Element_ID_Co_Par);
@@ -505,7 +493,7 @@ codeunit 50026 Dispatcher
 
         //step 1 : SOMME DES Quantity DE CHAQUE ELEMENT
         arrayIndex := 1;
-        IF elementConnection_Re_Loc.FINDFIRST THEN BEGIN
+        IF elementConnection_Re_Loc.FINDFIRST() THEN BEGIN
             REPEAT
 
                 IF FilterOnDealID_Bo_Par THEN BEGIN
@@ -516,7 +504,7 @@ codeunit 50026 Dispatcher
                     applyElement_Re_Loc.RESET();
                     applyElement_Re_Loc.SETRANGE(Deal_ID, elementConnection_Re_Loc.Deal_ID);
                     applyElement_Re_Loc.SETRANGE(ID, elementConnection_Re_Loc."Apply To");
-                    IF applyElement_Re_Loc.FINDFIRST THEN
+                    IF applyElement_Re_Loc.FINDFIRST() THEN
                         addPositions_Bo_Loc := TRUE;
 
                     IF addPositions_Bo_Loc THEN BEGIN
@@ -541,7 +529,7 @@ codeunit 50026 Dispatcher
 
                 END;
 
-            UNTIL (elementConnection_Re_Loc.NEXT = 0);
+            UNTIL (elementConnection_Re_Loc.NEXT() = 0);
 
             //CHG
             IF (FNC_Array_Sum(Value_Ar_Par) = 0) THEN
@@ -554,25 +542,25 @@ codeunit 50026 Dispatcher
               STRSUBSTNO('Aucune connection élément pour élément ID >%1<', element_Re_Loc.ID));
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Position_Prorata_Value(Source_Element_ID_Co_Par: Code[20]; Target_Element_ID_Co_Par: Code[20]; Amount_To_Dispatch_Dec_Par: Decimal; Element_Amount_Dec_Par: Decimal)
     var
-        element_Re_Loc: Record "50021";
-        source_Element_Re_Loc: Record "50021";
-        ACO_Line_Re_Loc: Record "39";
-        VCO_Line_Re_Loc: Record "37";
+        element_Re_Loc: Record 50021;
+        source_Element_Re_Loc: Record 50021;
+        ACO_Line_Re_Loc: Record 39;
+        VCO_Line_Re_Loc: Record 37;
         amount_Dec_Loc: Decimal;
-        fee_Re_Loc: Record "50024";
-        purchRcptLine_Re_Loc: Record "121";
+        fee_Re_Loc: Record 50024;
+        purchRcptLine_Re_Loc: Record 121;
         BR_Line_Amount_Dec: Decimal;
-        dealItem_Re_Loc: Record "50023";
-        purchInvLine_Re_Loc: Record "123";
+        dealItem_Re_Loc: Record 50023;
+        purchInvLine_Re_Loc: Record 123;
         purchInv_Line_Amount_Dec: Decimal;
         exchangeRate_Dec_Loc: Decimal;
-        ACOElement_Re_Loc: Record "50021";
-        elementConnection_Re_Loc: Record "50027";
-        salesInvLine_Re_Loc: Record "113";
-        purchHeader_Re_Loc: Record "38";
+        ACOElement_Re_Loc: Record 50021;
+        elementConnection_Re_Loc: Record 50027;
+        salesInvLine_Re_Loc: Record 113;
+        purchHeader_Re_Loc: Record 38;
         currency_Co_Loc: Code[10];
     begin
         //SOURCE = Fee ou Invoice ou Provision
@@ -599,7 +587,7 @@ codeunit 50026 Dispatcher
                     ACO_Line_Re_Loc.SETRANGE("Document No.", element_Re_Loc."Type No.");
                     ACO_Line_Re_Loc.SETRANGE(Type, ACO_Line_Re_Loc.Type::Item);
                     ACO_Line_Re_Loc.SETFILTER(Quantity, '>%1', 0);
-                    IF ACO_Line_Re_Loc.FINDFIRST THEN
+                    IF ACO_Line_Re_Loc.FINDFIRST() THEN
                         REPEAT
                             //somme à ventiler sur 1 article = (% de la valeur de la ligne * somme à ventiler) / quantité
                             amount_Dec_Loc :=
@@ -634,7 +622,7 @@ codeunit 50026 Dispatcher
                         purchInvLine_Re_Loc.SETRANGE("Shortcut Dimension 1 Code", element_Re_Loc."Type No.");
                         purchInvLine_Re_Loc.SETFILTER(Quantity, '>%1', 0);
                         purchInvLine_Re_Loc.SETRANGE(Type, ACO_Line_Re_Loc.Type::Item);
-                        IF purchInvLine_Re_Loc.FINDFIRST THEN
+                        IF purchInvLine_Re_Loc.FINDFIRST() THEN
                             REPEAT
 
                                 //somme à ventiler sur 1 article = (% de la valeur de la ligne * somme à ventiler) / quantité
@@ -674,7 +662,7 @@ codeunit 50026 Dispatcher
                     elementConnection_Re_Loc.RESET();
                     elementConnection_Re_Loc.SETRANGE(Deal_ID, element_Re_Loc.Deal_ID);
                     elementConnection_Re_Loc.SETRANGE(Element_ID, element_Re_Loc.ID);
-                    IF elementConnection_Re_Loc.FINDFIRST THEN BEGIN
+                    IF elementConnection_Re_Loc.FINDFIRST() THEN BEGIN
 
                         Element_Cu.FNC_Set_Element(ACOElement_Re_Loc, elementConnection_Re_Loc."Apply To");
 
@@ -684,7 +672,7 @@ codeunit 50026 Dispatcher
                         VCO_Line_Re_Loc.SETRANGE("Special Order Purchase No.", ACOElement_Re_Loc."Type No.");
                         VCO_Line_Re_Loc.SETRANGE(Type, VCO_Line_Re_Loc.Type::Item);
                         VCO_Line_Re_Loc.SETFILTER(Quantity, '>%1', 0);
-                        IF VCO_Line_Re_Loc.FINDFIRST THEN
+                        IF VCO_Line_Re_Loc.FINDFIRST() THEN
                             REPEAT
                                 //somme à ventiler sur 1 article = (% de la valeur de la ligne * somme à ventiler) / quantité
                                 amount_Dec_Loc :=
@@ -709,7 +697,7 @@ codeunit 50026 Dispatcher
                                   element_Re_Loc.ID,
                                   //le Fee est un élément prévu, donc on veut le taux de change prévu dans la table currency exchange
                                   Currency_Exchange_Re.FNC_Get_Rate(element_Re_Loc.Deal_ID, currency_Co_Loc, 'EUR'),
-                                  VCO_Line_Re_Loc."Campaign Code"
+                                  VCO_Line_Re_Loc."DEL Campaign Code"
                                 );
 
                             UNTIL (VCO_Line_Re_Loc.NEXT() = 0)
@@ -722,7 +710,7 @@ codeunit 50026 Dispatcher
                             VCO_Line_Re_Loc.SETRANGE("Shortcut Dimension 1 Code", ACOElement_Re_Loc."Type No.");
                             VCO_Line_Re_Loc.SETRANGE(Type, VCO_Line_Re_Loc.Type::Item);
                             VCO_Line_Re_Loc.SETFILTER(Quantity, '>%1', 0);
-                            IF VCO_Line_Re_Loc.FINDFIRST THEN
+                            IF VCO_Line_Re_Loc.FINDFIRST() THEN
                                 REPEAT
 
                                     //somme à ventiler sur 1 article = (% de la valeur de la ligne * somme à ventiler) / quantité
@@ -748,7 +736,7 @@ codeunit 50026 Dispatcher
                                       element_Re_Loc.ID,
                                       //le Fee est un élément prévu, donc on veut le taux de change prévu dans la table currency exchange
                                       Currency_Exchange_Re.FNC_Get_Rate(element_Re_Loc.Deal_ID, currency_Co_Loc, 'EUR'),
-                                      VCO_Line_Re_Loc."Campaign Code"
+                                      VCO_Line_Re_Loc."DEL Campaign Code"
                                     );
 
                                 UNTIL (VCO_Line_Re_Loc.NEXT() = 0)
@@ -759,7 +747,7 @@ codeunit 50026 Dispatcher
                                 salesInvLine_Re_Loc.SETRANGE("Shortcut Dimension 1 Code", ACOElement_Re_Loc."Type No.");
                                 salesInvLine_Re_Loc.SETFILTER(Quantity, '>%1', 0);
                                 salesInvLine_Re_Loc.SETRANGE(Type, salesInvLine_Re_Loc.Type::Item);
-                                IF salesInvLine_Re_Loc.FINDFIRST THEN
+                                IF salesInvLine_Re_Loc.FINDFIRST() THEN
                                     REPEAT
 
                                         //somme à ventiler sur 1 article = (% de la valeur de la ligne * somme à ventiler) / quantité
@@ -800,7 +788,7 @@ codeunit 50026 Dispatcher
                     purchRcptLine_Re_Loc.SETRANGE("Document No.", element_Re_Loc."Type No.");
                     purchRcptLine_Re_Loc.SETFILTER(Quantity, '>%1', 0);
                     purchRcptLine_Re_Loc.SETRANGE(Type, purchRcptLine_Re_Loc.Type::Item);
-                    IF purchRcptLine_Re_Loc.FINDFIRST THEN
+                    IF purchRcptLine_Re_Loc.FINDFIRST() THEN
                         REPEAT
                             BR_Line_Amount_Dec :=
                               purchRcptLine_Re_Loc.Quantity * DealItem_Cu.FNC_Get_Unit_Cost(element_Re_Loc.Deal_ID, purchRcptLine_Re_Loc."No.");
@@ -839,7 +827,7 @@ codeunit 50026 Dispatcher
                     purchInvLine_Re_Loc.SETRANGE("Document No.", element_Re_Loc."Type No.");
                     purchInvLine_Re_Loc.SETFILTER(Quantity, '>%1', 0);
                     purchInvLine_Re_Loc.SETRANGE(Type, purchInvLine_Re_Loc.Type::Item);
-                    IF purchInvLine_Re_Loc.FINDFIRST THEN
+                    IF purchInvLine_Re_Loc.FINDFIRST() THEN
                         REPEAT
                             //somme à ventiler sur 1 article = (% de la valeur de la ligne * somme à ventiler) / quantité
 
@@ -882,25 +870,26 @@ codeunit 50026 Dispatcher
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Position_Prorata_Volume(Source_Element_ID_Co_Par: Code[20]; Target_Element_ID_Co_Par: Code[20]; Amount_To_Dispatch_Dec_Par: Decimal; Element_Amount_Dec_Par: Decimal)
     var
-        element_Re_Loc: Record "50021";
-        source_Element_Re_Loc: Record "50021";
-        ACO_Line_Re_Loc: Record "39";
-        VCO_Line_Re_Loc: Record "37";
+
+        element_Re_Loc: Record 50021;
+        source_Element_Re_Loc: Record 50021;
+        ACO_Line_Re_Loc: Record 39;
+        VCO_Line_Re_Loc: Record 37;
         amount_Dec_Loc: Decimal;
-        fee_Re_Loc: Record "50024";
-        purchRcptLine_Re_Loc: Record "121";
+        fee_Re_Loc: Record 50024;
+        purchRcptLine_Re_Loc: Record 121;
         BR_Line_Amount_Dec: Decimal;
-        dealItem_Re_Loc: Record "50023";
-        purchInvLine_Re_Loc: Record "123";
+        dealItem_Re_Loc: Record 50023;
+        purchInvLine_Re_Loc: Record 123;
         purchInv_Line_Amount_Dec: Decimal;
         exchangeRate_Dec_Loc: Decimal;
+        ACOElement_Re_Loc: Record 50021;
+        elementConnection_Re_Loc: Record 50027;
+        salesInvLine_Re_Loc: Record 113;
         volume_Dec_Loc: Decimal;
-        ACOElement_Re_Loc: Record "50021";
-        elementConnection_Re_Loc: Record "50027";
-        salesInvLine_Re_Loc: Record "113";
         currency_Co_Loc: Code[10];
     begin
         //SOURCE = Fee ou Invoice
@@ -927,7 +916,7 @@ codeunit 50026 Dispatcher
                     ACO_Line_Re_Loc.SETRANGE("Document No.", element_Re_Loc."Type No.");
                     ACO_Line_Re_Loc.SETRANGE(Type, ACO_Line_Re_Loc.Type::Item);
                     ACO_Line_Re_Loc.SETFILTER(Quantity, '>%1', 0);
-                    IF ACO_Line_Re_Loc.FINDFIRST THEN
+                    IF ACO_Line_Re_Loc.FINDFIRST() THEN
                         REPEAT
 
                             volume_Dec_Loc :=
@@ -966,7 +955,7 @@ codeunit 50026 Dispatcher
                         purchInvLine_Re_Loc.SETRANGE("Shortcut Dimension 1 Code", element_Re_Loc."Type No.");
                         purchInvLine_Re_Loc.SETRANGE(Type, purchInvLine_Re_Loc.Type::Item);
                         purchInvLine_Re_Loc.SETFILTER(Quantity, '>%1', 0);
-                        IF purchInvLine_Re_Loc.FINDFIRST THEN
+                        IF purchInvLine_Re_Loc.FINDFIRST() THEN
                             REPEAT
 
                                 volume_Dec_Loc :=
@@ -1010,7 +999,7 @@ codeunit 50026 Dispatcher
                     elementConnection_Re_Loc.RESET();
                     elementConnection_Re_Loc.SETRANGE(Deal_ID, element_Re_Loc.Deal_ID);
                     elementConnection_Re_Loc.SETRANGE(Element_ID, element_Re_Loc.ID);
-                    IF elementConnection_Re_Loc.FINDFIRST THEN BEGIN
+                    IF elementConnection_Re_Loc.FINDFIRST() THEN BEGIN
 
                         Element_Cu.FNC_Set_Element(ACOElement_Re_Loc, elementConnection_Re_Loc."Apply To");
 
@@ -1020,7 +1009,7 @@ codeunit 50026 Dispatcher
                         VCO_Line_Re_Loc.SETRANGE("Special Order Purchase No.", ACOElement_Re_Loc."Type No.");
                         VCO_Line_Re_Loc.SETRANGE(Type, VCO_Line_Re_Loc.Type::Item);
                         VCO_Line_Re_Loc.SETFILTER(Quantity, '>%1', 0);
-                        IF VCO_Line_Re_Loc.FINDFIRST THEN
+                        IF VCO_Line_Re_Loc.FINDFIRST() THEN
                             REPEAT
 
                                 volume_Dec_Loc :=
@@ -1049,7 +1038,7 @@ codeunit 50026 Dispatcher
                                   element_Re_Loc.ID,
                                   //le Fee est un élément prévu, donc on veut le taux de change prévu dans la table currency exchange
                                   Currency_Exchange_Re.FNC_Get_Rate(element_Re_Loc.Deal_ID, fee_Re_Loc.Currency, 'EUR'),
-                                  VCO_Line_Re_Loc."Campaign Code"
+                                  VCO_Line_Re_Loc."DEL Campaign Code"
                                 );
 
                             UNTIL (VCO_Line_Re_Loc.NEXT() = 0)
@@ -1062,7 +1051,7 @@ codeunit 50026 Dispatcher
                             VCO_Line_Re_Loc.SETRANGE("Shortcut Dimension 1 Code", ACOElement_Re_Loc."Type No.");
                             VCO_Line_Re_Loc.SETRANGE(Type, VCO_Line_Re_Loc.Type::Item);
                             VCO_Line_Re_Loc.SETFILTER(Quantity, '>%1', 0);
-                            IF VCO_Line_Re_Loc.FINDFIRST THEN
+                            IF VCO_Line_Re_Loc.FINDFIRST() THEN
                                 REPEAT
 
                                     volume_Dec_Loc :=
@@ -1091,7 +1080,7 @@ codeunit 50026 Dispatcher
                                       element_Re_Loc.ID,
                                       //le Fee est un élément prévu, donc on veut le taux de change prévu dans la table currency exchange
                                       Currency_Exchange_Re.FNC_Get_Rate(element_Re_Loc.Deal_ID, currency_Co_Loc, 'EUR'),
-                                      VCO_Line_Re_Loc."Campaign Code"
+                                      VCO_Line_Re_Loc."DEL Campaign Code"
                                     );
 
                                 UNTIL (VCO_Line_Re_Loc.NEXT() = 0)
@@ -1102,7 +1091,7 @@ codeunit 50026 Dispatcher
                                 salesInvLine_Re_Loc.SETRANGE("Shortcut Dimension 1 Code", ACOElement_Re_Loc."Type No.");
                                 salesInvLine_Re_Loc.SETFILTER(Quantity, '>%1', 0);
                                 salesInvLine_Re_Loc.SETRANGE(Type, salesInvLine_Re_Loc.Type::Item);
-                                IF salesInvLine_Re_Loc.FINDFIRST THEN
+                                IF salesInvLine_Re_Loc.FINDFIRST() THEN
                                     REPEAT
 
                                         volume_Dec_Loc :=
@@ -1149,7 +1138,7 @@ codeunit 50026 Dispatcher
                     purchRcptLine_Re_Loc.SETRANGE("Document No.", element_Re_Loc."Type No.");
                     purchRcptLine_Re_Loc.SETFILTER(Quantity, '>%1', 0);
                     purchRcptLine_Re_Loc.SETRANGE(Type, purchRcptLine_Re_Loc.Type::Item);
-                    IF purchRcptLine_Re_Loc.FINDFIRST THEN
+                    IF purchRcptLine_Re_Loc.FINDFIRST() THEN
                         REPEAT
 
                             volume_Dec_Loc :=
@@ -1182,14 +1171,14 @@ codeunit 50026 Dispatcher
 
                         UNTIL (purchRcptLine_Re_Loc.NEXT() = 0);
                 END;
-                //4. on dispatch une INVOICE sur une purchase invoice
+            //4. on dispatch une INVOICE sur une purchase invoice
             element_Re_Loc.Type::"Purchase Invoice":
                 BEGIN
                     purchInvLine_Re_Loc.RESET();
                     purchInvLine_Re_Loc.SETRANGE("Document No.", element_Re_Loc."Type No.");
                     purchInvLine_Re_Loc.SETFILTER(Quantity, '>%1', 0);
                     purchInvLine_Re_Loc.SETRANGE(Type, purchInvLine_Re_Loc.Type::Item);
-                    IF purchInvLine_Re_Loc.FINDFIRST THEN
+                    IF purchInvLine_Re_Loc.FINDFIRST() THEN
                         REPEAT
 
                             volume_Dec_Loc :=
@@ -1233,25 +1222,26 @@ codeunit 50026 Dispatcher
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Position_Prorata_G_Weight(Source_Element_ID_Co_Par: Code[20]; Target_Element_ID_Co_Par: Code[20]; Amount_To_Dispatch_Dec_Par: Decimal; Element_Amount_Dec_Par: Decimal)
     var
-        element_Re_Loc: Record "50021";
-        source_Element_Re_Loc: Record "50021";
-        ACO_Line_Re_Loc: Record "39";
-        VCO_Line_Re_Loc: Record "37";
+        element_Re_Loc: Record 50021;
+        source_Element_Re_Loc: Record 50021;
+        ACO_Line_Re_Loc: Record 39;
+        VCO_Line_Re_Loc: Record 37;
         amount_Dec_Loc: Decimal;
-        fee_Re_Loc: Record "50024";
-        purchRcptLine_Re_Loc: Record "121";
+        fee_Re_Loc: Record 50024;
+        purchRcptLine_Re_Loc: Record 121;
         BR_Line_Amount_Dec: Decimal;
-        dealItem_Re_Loc: Record "50023";
-        purchInvLine_Re_Loc: Record "123";
+        dealItem_Re_Loc: Record 50023;
+        purchInvLine_Re_Loc: Record 123;
         purchInv_Line_Amount_Dec: Decimal;
         exchangeRate_Dec_Loc: Decimal;
+        ACOElement_Re_Loc: Record 50021;
+        elementConnection_Re_Loc: Record 50027;
+        salesInvLine_Re_Loc: Record 113;
+        purchHeader_Re_Loc: Record 38;
         volume_Dec_Loc: Decimal;
-        ACOElement_Re_Loc: Record "50021";
-        elementConnection_Re_Loc: Record "50027";
-        salesInvLine_Re_Loc: Record "113";
         currency_Co_Loc: Code[10];
     begin
         //SOURCE = Fee ou Invoice
@@ -1278,7 +1268,7 @@ codeunit 50026 Dispatcher
                     ACO_Line_Re_Loc.SETRANGE("Document No.", element_Re_Loc."Type No.");
                     ACO_Line_Re_Loc.SETRANGE(Type, ACO_Line_Re_Loc.Type::Item);
                     ACO_Line_Re_Loc.SETFILTER(Quantity, '>%1', 0);
-                    IF ACO_Line_Re_Loc.FINDFIRST THEN
+                    IF ACO_Line_Re_Loc.FINDFIRST() THEN
                         REPEAT
 
                             volume_Dec_Loc :=
@@ -1317,7 +1307,7 @@ codeunit 50026 Dispatcher
                         purchInvLine_Re_Loc.SETRANGE("Shortcut Dimension 1 Code", element_Re_Loc."Type No.");
                         purchInvLine_Re_Loc.SETRANGE(Type, purchInvLine_Re_Loc.Type::Item);
                         purchInvLine_Re_Loc.SETFILTER(Quantity, '>%1', 0);
-                        IF purchInvLine_Re_Loc.FINDFIRST THEN
+                        IF purchInvLine_Re_Loc.FINDFIRST() THEN
                             REPEAT
 
                                 volume_Dec_Loc :=
@@ -1361,7 +1351,7 @@ codeunit 50026 Dispatcher
                     elementConnection_Re_Loc.RESET();
                     elementConnection_Re_Loc.SETRANGE(Deal_ID, element_Re_Loc.Deal_ID);
                     elementConnection_Re_Loc.SETRANGE(Element_ID, element_Re_Loc.ID);
-                    IF elementConnection_Re_Loc.FINDFIRST THEN BEGIN
+                    IF elementConnection_Re_Loc.FINDFIRST() THEN BEGIN
 
                         Element_Cu.FNC_Set_Element(ACOElement_Re_Loc, elementConnection_Re_Loc."Apply To");
 
@@ -1371,7 +1361,7 @@ codeunit 50026 Dispatcher
                         VCO_Line_Re_Loc.SETRANGE("Special Order Purchase No.", ACOElement_Re_Loc."Type No.");
                         VCO_Line_Re_Loc.SETRANGE(Type, VCO_Line_Re_Loc.Type::Item);
                         VCO_Line_Re_Loc.SETFILTER(Quantity, '>%1', 0);
-                        IF VCO_Line_Re_Loc.FINDFIRST THEN
+                        IF VCO_Line_Re_Loc.FINDFIRST() THEN
                             REPEAT
 
                                 volume_Dec_Loc :=
@@ -1400,7 +1390,7 @@ codeunit 50026 Dispatcher
                                   element_Re_Loc.ID,
                                   //le Fee est un élément prévu, donc on veut le taux de change prévu dans la table currency exchange
                                   Currency_Exchange_Re.FNC_Get_Rate(element_Re_Loc.Deal_ID, currency_Co_Loc, 'EUR'),
-                                  VCO_Line_Re_Loc."Campaign Code"
+                                  VCO_Line_Re_Loc."DEL Campaign Code"
                                 );
 
                             UNTIL (VCO_Line_Re_Loc.NEXT() = 0)
@@ -1413,7 +1403,7 @@ codeunit 50026 Dispatcher
                             VCO_Line_Re_Loc.SETRANGE("Shortcut Dimension 1 Code", ACOElement_Re_Loc."Type No.");
                             VCO_Line_Re_Loc.SETRANGE(Type, VCO_Line_Re_Loc.Type::Item);
                             VCO_Line_Re_Loc.SETFILTER(Quantity, '>%1', 0);
-                            IF VCO_Line_Re_Loc.FINDFIRST THEN
+                            IF VCO_Line_Re_Loc.FINDFIRST() THEN
                                 REPEAT
 
                                     volume_Dec_Loc :=
@@ -1442,7 +1432,7 @@ codeunit 50026 Dispatcher
                                       element_Re_Loc.ID,
                                       //le Fee est un élément prévu, donc on veut le taux de change prévu dans la table currency exchange
                                       Currency_Exchange_Re.FNC_Get_Rate(element_Re_Loc.Deal_ID, currency_Co_Loc, 'EUR'),
-                                      VCO_Line_Re_Loc."Campaign Code"
+                                      VCO_Line_Re_Loc."DEL Campaign Code"
                                     );
 
                                 UNTIL (VCO_Line_Re_Loc.NEXT() = 0)
@@ -1453,7 +1443,7 @@ codeunit 50026 Dispatcher
                                 salesInvLine_Re_Loc.SETRANGE("Shortcut Dimension 1 Code", ACOElement_Re_Loc."Type No.");
                                 salesInvLine_Re_Loc.SETFILTER(Quantity, '>%1', 0);
                                 salesInvLine_Re_Loc.SETRANGE(Type, salesInvLine_Re_Loc.Type::Item);
-                                IF salesInvLine_Re_Loc.FINDFIRST THEN
+                                IF salesInvLine_Re_Loc.FINDFIRST() THEN
                                     REPEAT
 
                                         volume_Dec_Loc :=
@@ -1501,7 +1491,7 @@ codeunit 50026 Dispatcher
                     purchRcptLine_Re_Loc.SETRANGE("Document No.", element_Re_Loc."Type No.");
                     purchRcptLine_Re_Loc.SETFILTER(Quantity, '>%1', 0);
                     purchRcptLine_Re_Loc.SETRANGE(Type, purchRcptLine_Re_Loc.Type::Item);
-                    IF purchRcptLine_Re_Loc.FINDFIRST THEN
+                    IF purchRcptLine_Re_Loc.FINDFIRST() THEN
                         REPEAT
 
                             volume_Dec_Loc :=
@@ -1541,7 +1531,7 @@ codeunit 50026 Dispatcher
                     purchInvLine_Re_Loc.SETRANGE("Document No.", element_Re_Loc."Type No.");
                     purchInvLine_Re_Loc.SETFILTER(Quantity, '>%1', 0);
                     purchInvLine_Re_Loc.SETRANGE(Type, purchInvLine_Re_Loc.Type::Item);
-                    IF purchInvLine_Re_Loc.FINDFIRST THEN
+                    IF purchInvLine_Re_Loc.FINDFIRST() THEN
                         REPEAT
 
                             volume_Dec_Loc :=
@@ -1585,25 +1575,28 @@ codeunit 50026 Dispatcher
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Position_Prorata_Colis(Source_Element_ID_Co_Par: Code[20]; Target_Element_ID_Co_Par: Code[20]; Amount_To_Dispatch_Dec_Par: Decimal; Element_Amount_Dec_Par: Decimal)
     var
-        element_Re_Loc: Record "50021";
-        source_Element_Re_Loc: Record "50021";
-        ACO_Line_Re_Loc: Record "39";
-        VCO_Line_Re_Loc: Record "37";
+
+
+
+        element_Re_Loc: Record 50021;
+        source_Element_Re_Loc: Record 50021;
+        ACO_Line_Re_Loc: Record 39;
+        VCO_Line_Re_Loc: Record 37;
         amount_Dec_Loc: Decimal;
-        fee_Re_Loc: Record "50024";
-        purchRcptLine_Re_Loc: Record "121";
+        fee_Re_Loc: Record 50024;
+        purchRcptLine_Re_Loc: Record 121;
         BR_Line_Amount_Dec: Decimal;
-        dealItem_Re_Loc: Record "50023";
-        purchInvLine_Re_Loc: Record "123";
+        dealItem_Re_Loc: Record 50023;
+        purchInvLine_Re_Loc: Record 123;
         purchInv_Line_Amount_Dec: Decimal;
         exchangeRate_Dec_Loc: Decimal;
         nbrColis_Dec_Loc: Decimal;
-        ACOElement_Re_Loc: Record "50021";
-        elementConnection_Re_Loc: Record "50027";
-        salesInvLine_Re_Loc: Record "113";
+        ACOElement_Re_Loc: Record 50021;
+        elementConnection_Re_Loc: Record 50027;
+        salesInvLine_Re_Loc: Record 113;
         currency_Co_Loc: Code[10];
     begin
         //SOURCE = Fee ou Invoice
@@ -1631,16 +1624,14 @@ codeunit 50026 Dispatcher
                     ACO_Line_Re_Loc.SETRANGE("Document No.", element_Re_Loc."Type No.");
                     ACO_Line_Re_Loc.SETRANGE(Type, ACO_Line_Re_Loc.Type::Item);
                     ACO_Line_Re_Loc.SETFILTER(Quantity, '>%1', 0);
-                    IF ACO_Line_Re_Loc.FINDFIRST THEN
+                    IF ACO_Line_Re_Loc.FINDFIRST() THEN
                         REPEAT
 
                             nbrColis_Dec_Loc :=
                               ACO_Line_Re_Loc.Quantity / DealItem_Cu.FNC_Get_PCB(element_Re_Loc.Deal_ID, ACO_Line_Re_Loc."No.");
 
                             //somme à ventiler sur 1 article = (% de la valeur de la ligne * somme à ventiler) / quantité
-                            amount_Dec_Loc :=
-                              (((nbrColis_Dec_Loc * 1) /
-                              Element_Amount_Dec_Par) * Amount_To_Dispatch_Dec_Par) / ACO_Line_Re_Loc.Quantity;
+                            amount_Dec_Loc := (((nbrColis_Dec_Loc * 1) / Element_Amount_Dec_Par) * Amount_To_Dispatch_Dec_Par) / ACO_Line_Re_Loc.Quantity;
 
                             //par défaut on prend la devise du frais
                             currency_Co_Loc := fee_Re_Loc.Currency;
@@ -1671,7 +1662,7 @@ codeunit 50026 Dispatcher
                         purchInvLine_Re_Loc.SETRANGE("Shortcut Dimension 1 Code", element_Re_Loc."Type No.");
                         purchInvLine_Re_Loc.SETRANGE(Type, purchInvLine_Re_Loc.Type::Item);
                         purchInvLine_Re_Loc.SETFILTER(Quantity, '>%1', 0);
-                        IF purchInvLine_Re_Loc.FINDFIRST THEN
+                        IF purchInvLine_Re_Loc.FINDFIRST() THEN
                             REPEAT
 
                                 nbrColis_Dec_Loc :=
@@ -1709,7 +1700,7 @@ codeunit 50026 Dispatcher
 
                 END;
 
-                //2. on dispatch un fee sur une VCO
+            //2. on dispatch un fee sur une VCO
             element_Re_Loc.Type::VCO:
                 BEGIN
 
@@ -1717,7 +1708,7 @@ codeunit 50026 Dispatcher
                     elementConnection_Re_Loc.RESET();
                     elementConnection_Re_Loc.SETRANGE(Deal_ID, element_Re_Loc.Deal_ID);
                     elementConnection_Re_Loc.SETRANGE(Element_ID, element_Re_Loc.ID);
-                    IF elementConnection_Re_Loc.FINDFIRST THEN BEGIN
+                    IF elementConnection_Re_Loc.FINDFIRST() THEN BEGIN
 
                         Element_Cu.FNC_Set_Element(ACOElement_Re_Loc, elementConnection_Re_Loc."Apply To");
 
@@ -1727,7 +1718,7 @@ codeunit 50026 Dispatcher
                         VCO_Line_Re_Loc.SETRANGE("Special Order Purchase No.", ACOElement_Re_Loc."Type No.");
                         VCO_Line_Re_Loc.SETRANGE(Type, VCO_Line_Re_Loc.Type::Item);
                         VCO_Line_Re_Loc.SETFILTER(Quantity, '>%1', 0);
-                        IF VCO_Line_Re_Loc.FINDFIRST THEN
+                        IF VCO_Line_Re_Loc.FINDFIRST() THEN
                             REPEAT
 
                                 nbrColis_Dec_Loc :=
@@ -1756,7 +1747,7 @@ codeunit 50026 Dispatcher
                                   element_Re_Loc.ID,
                                   //le Fee est un élément prévu, donc on veut le taux de change prévu dans la table currency exchange
                                   Currency_Exchange_Re.FNC_Get_Rate(element_Re_Loc.Deal_ID, currency_Co_Loc, 'EUR'),
-                                  VCO_Line_Re_Loc."Campaign Code"
+                                  VCO_Line_Re_Loc."DEL Campaign Code"
                                 );
 
                             UNTIL (VCO_Line_Re_Loc.NEXT() = 0)
@@ -1769,7 +1760,7 @@ codeunit 50026 Dispatcher
                             VCO_Line_Re_Loc.SETRANGE("Shortcut Dimension 1 Code", ACOElement_Re_Loc."Type No.");
                             VCO_Line_Re_Loc.SETRANGE(Type, VCO_Line_Re_Loc.Type::Item);
                             VCO_Line_Re_Loc.SETFILTER(Quantity, '>%1', 0);
-                            IF VCO_Line_Re_Loc.FINDFIRST THEN
+                            IF VCO_Line_Re_Loc.FINDFIRST() THEN
                                 REPEAT
 
                                     nbrColis_Dec_Loc :=
@@ -1798,7 +1789,7 @@ codeunit 50026 Dispatcher
                                       element_Re_Loc.ID,
                                       //le Fee est un élément prévu, donc on veut le taux de change prévu dans la table currency exchange
                                       Currency_Exchange_Re.FNC_Get_Rate(element_Re_Loc.Deal_ID, currency_Co_Loc, 'EUR'),
-                                      VCO_Line_Re_Loc."Campaign Code"
+                                      VCO_Line_Re_Loc."DEL Campaign Code"
                                     );
 
 
@@ -1810,7 +1801,7 @@ codeunit 50026 Dispatcher
                                 salesInvLine_Re_Loc.SETRANGE("Shortcut Dimension 1 Code", ACOElement_Re_Loc."Type No.");
                                 salesInvLine_Re_Loc.SETFILTER(Quantity, '>%1', 0);
                                 salesInvLine_Re_Loc.SETRANGE(Type, salesInvLine_Re_Loc.Type::Item);
-                                IF salesInvLine_Re_Loc.FINDFIRST THEN
+                                IF salesInvLine_Re_Loc.FINDFIRST() THEN
                                     REPEAT
 
                                         nbrColis_Dec_Loc :=
@@ -1854,7 +1845,7 @@ codeunit 50026 Dispatcher
                     purchRcptLine_Re_Loc.SETRANGE("Document No.", element_Re_Loc."Type No.");
                     purchRcptLine_Re_Loc.SETFILTER(Quantity, '>%1', 0);
                     purchRcptLine_Re_Loc.SETRANGE(Type, purchRcptLine_Re_Loc.Type::Item);
-                    IF purchRcptLine_Re_Loc.FINDFIRST THEN
+                    IF purchRcptLine_Re_Loc.FINDFIRST() THEN
                         REPEAT
 
                             nbrColis_Dec_Loc :=
@@ -1894,7 +1885,7 @@ codeunit 50026 Dispatcher
                     purchInvLine_Re_Loc.SETRANGE("Document No.", element_Re_Loc."Type No.");
                     purchInvLine_Re_Loc.SETFILTER(Quantity, '>%1', 0);
                     purchInvLine_Re_Loc.SETRANGE(Type, purchInvLine_Re_Loc.Type::Item);
-                    IF purchInvLine_Re_Loc.FINDFIRST THEN
+                    IF purchInvLine_Re_Loc.FINDFIRST() THEN
                         REPEAT
 
                             nbrColis_Dec_Loc :=
@@ -1938,25 +1929,25 @@ codeunit 50026 Dispatcher
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Position_Prorata_Quantity(Source_Element_ID_Co_Par: Code[20]; Target_Element_ID_Co_Par: Code[20]; Amount_To_Dispatch_Dec_Par: Decimal; Element_Amount_Dec_Par: Decimal)
     var
-        element_Re_Loc: Record "50021";
-        source_Element_Re_Loc: Record "50021";
-        ACO_Line_Re_Loc: Record "39";
-        VCO_Line_Re_Loc: Record "37";
+        element_Re_Loc: Record 50021;
+        source_Element_Re_Loc: Record 50021;
+        ACO_Line_Re_Loc: Record 39;
+        VCO_Line_Re_Loc: Record 37;
         amount_Dec_Loc: Decimal;
-        fee_Re_Loc: Record "50024";
-        purchRcptLine_Re_Loc: Record "121";
+        fee_Re_Loc: Record 50024;
+        purchRcptLine_Re_Loc: Record 121;
         BR_Line_Amount_Dec: Decimal;
-        dealItem_Re_Loc: Record "50023";
-        purchInvLine_Re_Loc: Record "123";
+        dealItem_Re_Loc: Record 50023;
+        purchInvLine_Re_Loc: Record 123;
         purchInv_Line_Amount_Dec: Decimal;
         exchangeRate_Dec_Loc: Decimal;
-        ACOElement_Re_Loc: Record "50021";
-        elementConnection_Re_Loc: Record "50027";
-        salesInvLine_Re_Loc: Record "113";
-        purchHeader_Re_Loc: Record "38";
+        ACOElement_Re_Loc: Record 50021;
+        elementConnection_Re_Loc: Record 50027;
+        salesInvLine_Re_Loc: Record 113;
+        purchHeader_Re_Loc: Record 38;
         currency_Co_Loc: Code[10];
     begin
         //SOURCE = Fee ou Invoice ou Provision
@@ -1983,7 +1974,7 @@ codeunit 50026 Dispatcher
                     ACO_Line_Re_Loc.SETRANGE("Document No.", element_Re_Loc."Type No.");
                     ACO_Line_Re_Loc.SETRANGE(Type, ACO_Line_Re_Loc.Type::Item);
                     ACO_Line_Re_Loc.SETFILTER(Quantity, '>%1', 0);
-                    IF ACO_Line_Re_Loc.FINDFIRST THEN
+                    IF ACO_Line_Re_Loc.FINDFIRST() THEN
                         REPEAT
                             //somme à ventiler sur 1 article = (% de la valeur de la ligne * somme à ventiler) / quantité
                             amount_Dec_Loc :=
@@ -2019,7 +2010,7 @@ codeunit 50026 Dispatcher
                         purchInvLine_Re_Loc.SETRANGE("Shortcut Dimension 1 Code", element_Re_Loc."Type No.");
                         purchInvLine_Re_Loc.SETFILTER(Quantity, '>%1', 0);
                         purchInvLine_Re_Loc.SETRANGE(Type, ACO_Line_Re_Loc.Type::Item);
-                        IF purchInvLine_Re_Loc.FINDFIRST THEN
+                        IF purchInvLine_Re_Loc.FINDFIRST() THEN
                             REPEAT
 
                                 //somme à ventiler sur 1 article = (% de la valeur de la ligne * somme à ventiler) / quantité
@@ -2059,7 +2050,7 @@ codeunit 50026 Dispatcher
                     elementConnection_Re_Loc.RESET();
                     elementConnection_Re_Loc.SETRANGE(Deal_ID, element_Re_Loc.Deal_ID);
                     elementConnection_Re_Loc.SETRANGE(Element_ID, element_Re_Loc.ID);
-                    IF elementConnection_Re_Loc.FINDFIRST THEN BEGIN
+                    IF elementConnection_Re_Loc.FINDFIRST() THEN BEGIN
 
                         Element_Cu.FNC_Set_Element(ACOElement_Re_Loc, elementConnection_Re_Loc."Apply To");
 
@@ -2069,7 +2060,7 @@ codeunit 50026 Dispatcher
                         VCO_Line_Re_Loc.SETRANGE("Special Order Purchase No.", ACOElement_Re_Loc."Type No.");
                         VCO_Line_Re_Loc.SETRANGE(Type, VCO_Line_Re_Loc.Type::Item);
                         VCO_Line_Re_Loc.SETFILTER(Quantity, '>%1', 0);
-                        IF VCO_Line_Re_Loc.FINDFIRST THEN
+                        IF VCO_Line_Re_Loc.FINDFIRST() THEN
                             REPEAT
                                 //somme à ventiler sur 1 article = (% de la valeur de la ligne * somme à ventiler) / quantité
                                 amount_Dec_Loc :=
@@ -2094,7 +2085,7 @@ codeunit 50026 Dispatcher
                                   element_Re_Loc.ID,
                                   //le Fee est un élément prévu, donc on veut le taux de change prévu dans la table currency exchange
                                   Currency_Exchange_Re.FNC_Get_Rate(element_Re_Loc.Deal_ID, currency_Co_Loc, 'EUR'),
-                                  VCO_Line_Re_Loc."Campaign Code"
+                                  VCO_Line_Re_Loc."DEL Campaign Code"
                                 );
 
                             UNTIL (VCO_Line_Re_Loc.NEXT() = 0)
@@ -2107,7 +2098,7 @@ codeunit 50026 Dispatcher
                             VCO_Line_Re_Loc.SETRANGE("Shortcut Dimension 1 Code", ACOElement_Re_Loc."Type No.");
                             VCO_Line_Re_Loc.SETRANGE(Type, VCO_Line_Re_Loc.Type::Item);
                             VCO_Line_Re_Loc.SETFILTER(Quantity, '>%1', 0);
-                            IF VCO_Line_Re_Loc.FINDFIRST THEN
+                            IF VCO_Line_Re_Loc.FINDFIRST() THEN
                                 REPEAT
 
                                     //somme à ventiler sur 1 article = (% de la valeur de la ligne * somme à ventiler) / quantité
@@ -2133,7 +2124,7 @@ codeunit 50026 Dispatcher
                                       element_Re_Loc.ID,
                                       //le Fee est un élément prévu, donc on veut le taux de change prévu dans la table currency exchange
                                       Currency_Exchange_Re.FNC_Get_Rate(element_Re_Loc.Deal_ID, currency_Co_Loc, 'EUR'),
-                                      VCO_Line_Re_Loc."Campaign Code"
+                                      VCO_Line_Re_Loc."DEL Campaign Code"
                                     );
 
                                 UNTIL (VCO_Line_Re_Loc.NEXT() = 0)
@@ -2144,7 +2135,7 @@ codeunit 50026 Dispatcher
                                 salesInvLine_Re_Loc.SETRANGE("Shortcut Dimension 1 Code", ACOElement_Re_Loc."Type No.");
                                 salesInvLine_Re_Loc.SETFILTER(Quantity, '>%1', 0);
                                 salesInvLine_Re_Loc.SETRANGE(Type, salesInvLine_Re_Loc.Type::Item);
-                                IF salesInvLine_Re_Loc.FINDFIRST THEN
+                                IF salesInvLine_Re_Loc.FINDFIRST() THEN
                                     REPEAT
 
                                         //somme à ventiler sur 1 article = (% de la valeur de la ligne * somme à ventiler) / quantité
@@ -2185,7 +2176,7 @@ codeunit 50026 Dispatcher
                     purchRcptLine_Re_Loc.SETRANGE("Document No.", element_Re_Loc."Type No.");
                     purchRcptLine_Re_Loc.SETFILTER(Quantity, '>%1', 0);
                     purchRcptLine_Re_Loc.SETRANGE(Type, purchRcptLine_Re_Loc.Type::Item);
-                    IF purchRcptLine_Re_Loc.FINDFIRST THEN
+                    IF purchRcptLine_Re_Loc.FINDFIRST() THEN
                         REPEAT
 
                             //somme à ventiler sur 1 article = (% de la valeur de la ligne * somme à ventiler) / quantité
@@ -2222,7 +2213,7 @@ codeunit 50026 Dispatcher
                     purchInvLine_Re_Loc.SETRANGE("Document No.", element_Re_Loc."Type No.");
                     purchInvLine_Re_Loc.SETFILTER(Quantity, '>%1', 0);
                     purchInvLine_Re_Loc.SETRANGE(Type, purchInvLine_Re_Loc.Type::Item);
-                    IF purchInvLine_Re_Loc.FINDFIRST THEN
+                    IF purchInvLine_Re_Loc.FINDFIRST() THEN
                         REPEAT
                             //somme à ventiler sur 1 article = (% de la valeur de la ligne * somme à ventiler) / quantité
 
@@ -2263,7 +2254,7 @@ codeunit 50026 Dispatcher
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Array_Sum(Value_Ar_Par: array[300] of Decimal) total_Dec_Ret: Decimal
     var
         arrayIndex: Integer;

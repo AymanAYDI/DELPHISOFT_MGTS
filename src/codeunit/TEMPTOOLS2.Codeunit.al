@@ -27,7 +27,7 @@ codeunit 50099 "TEMP TOOLS 2"
           UNTIL PurchaseHeader.NEXT = 0 ;
         END;
         */
-        JSONRequestslog.SETRANGE(Error, TRUE);
+        JSONRequestslog.SETRANGE(Error(), TRUE);
 
         MESSAGE('%1', JSONRequestslog.COUNT);
 

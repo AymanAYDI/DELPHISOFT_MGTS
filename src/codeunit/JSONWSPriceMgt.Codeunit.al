@@ -47,7 +47,7 @@ codeunit 50056 "JSON WS : Price Mgt"
     local procedure OnBeforInsertSalesPrice(var Rec: Record "7002"; RunTrigger: Boolean)
     begin
         IF Rec."Entry No." = 0 THEN
-            Rec."Entry No." := GetNextEntryNoSalesPrice;
+            Rec."Entry No." := GetNextEntryNoSalesPrice();
     end;
 
     local procedure GetNextEntryNoSalesPrice(): Integer
@@ -65,7 +65,7 @@ codeunit 50056 "JSON WS : Price Mgt"
     local procedure OnBeforInsertPurchasePrice(var Rec: Record "7012"; RunTrigger: Boolean)
     begin
         IF Rec."Entry No." = 0 THEN
-            Rec."Entry No." := GetNextEntryNoPurchasePrice;
+            Rec."Entry No." := GetNextEntryNoPurchasePrice();
     end;
 
     local procedure GetNextEntryNoPurchasePrice(): Integer
@@ -83,7 +83,7 @@ codeunit 50056 "JSON WS : Price Mgt"
     local procedure OnBeforInsertItemCrossReference(var Rec: Record "5717"; RunTrigger: Boolean)
     begin
         IF Rec."Entry No." = 0 THEN
-            Rec."Entry No." := GetNextEntryNoItemCrossReference;
+            Rec."Entry No." := GetNextEntryNoItemCrossReference();
     end;
 
     local procedure GetNextEntryNoItemCrossReference(): Integer
@@ -122,7 +122,7 @@ codeunit 50056 "JSON WS : Price Mgt"
     begin
     end;
 
-    [Scope('Internal')]
+
     procedure GetSalesPriceInfo(SalesPrice: Record "7002") JsonResponse: Text
     var
         JsonMgt: Codeunit "50041";
@@ -144,7 +144,7 @@ codeunit 50056 "JSON WS : Price Mgt"
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure GetSalesPrices(JsonAsObject: DotNet JObject) JsonResponse: Text
     var
         RecordModificationTracking: Record "50083";
@@ -184,7 +184,7 @@ codeunit 50056 "JSON WS : Price Mgt"
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure GetSalesPricesResponse(): Text
     begin
         EXIT(SalesPricesResponse);
@@ -251,7 +251,7 @@ codeunit 50056 "JSON WS : Price Mgt"
             EXIT(ErrorSalesPriceCreationResponse(SalesPrice));
     end;
 
-    [Scope('Internal')]
+
     procedure CreateItemSalesPrices(JsonAsArray: DotNet JArray) JsonResponse: Text
     var
         Text0001: Label 'Segment code missing product code %1';
@@ -268,7 +268,7 @@ codeunit 50056 "JSON WS : Price Mgt"
         JsonResponse += ']';
     end;
 
-    [Scope('Internal')]
+
     procedure UpdateItemSalesPrices(JsonAsArray: DotNet JArray) JsonResponse: Text
     var
         Text0001: Label 'Segment code missing product code %1';
@@ -285,7 +285,7 @@ codeunit 50056 "JSON WS : Price Mgt"
         JsonResponse += ']';
     end;
 
-    [Scope('Internal')]
+
     procedure DeleteItemSalesPrices(JsonAsArray: DotNet JArray) JsonResponse: Text
     var
         Text0001: Label 'Segment code missing product code %1';
@@ -302,7 +302,7 @@ codeunit 50056 "JSON WS : Price Mgt"
         JsonResponse += ']';
     end;
 
-    [Scope('Internal')]
+
     procedure SuccesSalesPriceCreationResponse(SalesPrice: Record "7002"; StatusMessage: Text) JsonResponse: Text
     var
         JsonAsObject: DotNet JObject;
@@ -317,7 +317,7 @@ codeunit 50056 "JSON WS : Price Mgt"
         JsonMgt.JsonObjectToText(JsonAsObject, JsonResponse);
     end;
 
-    [Scope('Internal')]
+
     procedure ErrorSalesPriceCreationResponse(SalesPrice: Record "7002") JsonResponse: Text
     var
         JsonAsObject: DotNet JObject;
@@ -336,7 +336,7 @@ codeunit 50056 "JSON WS : Price Mgt"
     begin
     end;
 
-    [Scope('Internal')]
+
     procedure GetPurchasePriceInfo(PurchasePrice: Record "7012") JsonResponse: Text
     var
         JsonMgt: Codeunit "50041";
@@ -360,7 +360,7 @@ codeunit 50056 "JSON WS : Price Mgt"
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure GetPurchasePrices(JsonAsObject: DotNet JObject) JsonResponse: Text
     var
         RecordModificationTracking: Record "50083";
@@ -399,7 +399,7 @@ codeunit 50056 "JSON WS : Price Mgt"
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure GetPurchasePricesResponse(): Text
     begin
         EXIT(PurchasePricesResponse);
@@ -471,7 +471,7 @@ codeunit 50056 "JSON WS : Price Mgt"
             EXIT(ErrorPurchasePriceCreationResponse(PurchasePrice));
     end;
 
-    [Scope('Internal')]
+
     procedure CreateItemPurchasePrices(JsonAsArray: DotNet JArray) JsonResponse: Text
     var
         Text0001: Label 'Segment code missing product code %1';
@@ -488,7 +488,7 @@ codeunit 50056 "JSON WS : Price Mgt"
         JsonResponse += ']';
     end;
 
-    [Scope('Internal')]
+
     procedure UpdateItemPurchasePrices(JsonAsArray: DotNet JArray) JsonResponse: Text
     var
         Text0001: Label 'Segment code missing product code %1';
@@ -505,7 +505,7 @@ codeunit 50056 "JSON WS : Price Mgt"
         JsonResponse += ']';
     end;
 
-    [Scope('Internal')]
+
     procedure DeleteItemPurchasePrices(JsonAsArray: DotNet JArray) JsonResponse: Text
     var
         Text0001: Label 'Segment code missing product code %1';
@@ -522,7 +522,7 @@ codeunit 50056 "JSON WS : Price Mgt"
         JsonResponse += ']';
     end;
 
-    [Scope('Internal')]
+
     procedure SuccesPurchasePriceCreationResponse(PurchasePrice: Record "7012"; StatusMessage: Text) JsonResponse: Text
     var
         JsonAsObject: DotNet JObject;
@@ -537,7 +537,7 @@ codeunit 50056 "JSON WS : Price Mgt"
         JsonMgt.JsonObjectToText(JsonAsObject, JsonResponse);
     end;
 
-    [Scope('Internal')]
+
     procedure ErrorPurchasePriceCreationResponse(PurchasePrice: Record "7012") JsonResponse: Text
     var
         JsonAsObject: DotNet JObject;
@@ -556,7 +556,7 @@ codeunit 50056 "JSON WS : Price Mgt"
     begin
     end;
 
-    [Scope('Internal')]
+
     procedure GetItemCrossReferenceInfo(ItemCrossReference: Record "5717") JsonResponse: Text
     var
         JsonMgt: Codeunit "50041";
@@ -574,7 +574,7 @@ codeunit 50056 "JSON WS : Price Mgt"
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure GetItemCrossReferences(JsonAsObject: DotNet JObject) JsonResponse: Text
     var
         JsonMgt: Codeunit "50041";
@@ -612,7 +612,7 @@ codeunit 50056 "JSON WS : Price Mgt"
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure GetItemCrossReferencesResponse(): Text
     begin
         EXIT(ItemCrossReferencesResponse);
@@ -679,7 +679,7 @@ codeunit 50056 "JSON WS : Price Mgt"
             EXIT(ErrorItemCrossReferenceCreationResponse(ItemCrossReference));
     end;
 
-    [Scope('Internal')]
+
     procedure CreateItemCrossReferences(JsonAsArray: DotNet JArray) JsonResponse: Text
     var
         Text0001: Label 'Segment code missing product code %1';
@@ -696,7 +696,7 @@ codeunit 50056 "JSON WS : Price Mgt"
         JsonResponse += ']';
     end;
 
-    [Scope('Internal')]
+
     procedure UpdateItemCrossReferences(JsonAsArray: DotNet JArray) JsonResponse: Text
     var
         Text0001: Label 'Segment code missing product code %1';
@@ -713,7 +713,7 @@ codeunit 50056 "JSON WS : Price Mgt"
         JsonResponse += ']';
     end;
 
-    [Scope('Internal')]
+
     procedure DeleteItemCrossReferences(JsonAsArray: DotNet JArray) JsonResponse: Text
     var
         Text0001: Label 'Segment code missing product code %1';
@@ -730,7 +730,7 @@ codeunit 50056 "JSON WS : Price Mgt"
         JsonResponse += ']';
     end;
 
-    [Scope('Internal')]
+
     procedure SuccesItemCrossReferenceCreationResponse(ItemCrossReference: Record "5717"; StatusMessage: Text) JsonResponse: Text
     var
         JsonAsObject: DotNet JObject;
@@ -745,7 +745,7 @@ codeunit 50056 "JSON WS : Price Mgt"
         JsonMgt.JsonObjectToText(JsonAsObject, JsonResponse);
     end;
 
-    [Scope('Internal')]
+
     procedure ErrorItemCrossReferenceCreationResponse(ItemCrossReference: Record "5717") JsonResponse: Text
     var
         JsonAsObject: DotNet JObject;
@@ -760,21 +760,21 @@ codeunit 50056 "JSON WS : Price Mgt"
         JsonMgt.JsonObjectToText(JsonAsObject, JsonResponse);
     end;
 
-    [Scope('Internal')]
+
     procedure SetFunctionJArray(_Function: Text; _JsonAsArray: DotNet JArray)
     begin
         "Function" := _Function;
         JsonAsArrayGlobal := _JsonAsArray;
     end;
 
-    [Scope('Internal')]
+
     procedure SetFunctionJObject(_Function: Text; _JsonAsObject: DotNet JObject)
     begin
         "Function" := _Function;
         JsonAsObjectGlobal := _JsonAsObject;
     end;
 
-    [Scope('Internal')]
+
     procedure GetJsonResponse(): Text
     begin
         EXIT(JsonResponseGlobal);

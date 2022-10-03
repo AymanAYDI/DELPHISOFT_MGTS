@@ -17,7 +17,7 @@ codeunit 50038 "Deal Item Completer"
         DealItem_Cu: Codeunit "50024";
         Element_Cu: Codeunit "50021";
 
-    [Scope('Internal')]
+
     procedure CompleteDeal_FNC(DealID_Co_Par: Code[20])
     var
         element_Re_Loc: Record "50021";
@@ -33,21 +33,21 @@ codeunit 50038 "Deal Item Completer"
                 //complète l'élément
                 CompleteElement_FNC(element_Re_Loc.ID);
 
-                /*
-                //complète les éléments auxquels il s'applique
-                elementConnection_Re_Loc.RESET();
-                elementConnection_Re_Loc.SETRANGE(Element_ID, element_Re_Loc.ID);
-                IF elementConnection_Re_Loc.FINDFIRST THEN
-                REPEAT
-                  CompleteElement_FNC(elementConnection_Re_Loc."Apply To");
-                UNTIL(elementConnection_Re_Loc.NEXT()=0);
-                */
+            /*
+            //complète les éléments auxquels il s'applique
+            elementConnection_Re_Loc.RESET();
+            elementConnection_Re_Loc.SETRANGE(Element_ID, element_Re_Loc.ID);
+            IF elementConnection_Re_Loc.FINDFIRST THEN
+            REPEAT
+              CompleteElement_FNC(elementConnection_Re_Loc."Apply To");
+            UNTIL(elementConnection_Re_Loc.NEXT()=0);
+            */
 
             UNTIL (element_Re_Loc.NEXT() = 0);
 
     end;
 
-    [Scope('Internal')]
+
     procedure CompleteElement_FNC(elementID_Co_Par: Code[20])
     var
         element_Re_Loc: Record "50021";
@@ -82,7 +82,7 @@ codeunit 50038 "Deal Item Completer"
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure CompleteACO_FNC(DealID_Co_Par: Code[20]; DocumentNo_Co_Par: Code[20])
     var
         PurchLine_Re_Loc: Record "39";
@@ -113,7 +113,7 @@ codeunit 50038 "Deal Item Completer"
 
     end;
 
-    [Scope('Internal')]
+
     procedure CompleteVCO_FNC(DealID_Co_Par: Code[20]; DocumentNo_Co_Par: Code[20])
     var
         SalesLine_Re_Loc: Record "37";
@@ -150,7 +150,7 @@ codeunit 50038 "Deal Item Completer"
 
     end;
 
-    [Scope('Internal')]
+
     procedure CompleteFee_FNC(DealID_Co_Par: Code[20]; DocumentNo_Co_Par: Code[20])
     var
         PurchLine_Re_Loc: Record "39";
@@ -158,7 +158,7 @@ codeunit 50038 "Deal Item Completer"
     begin
     end;
 
-    [Scope('Internal')]
+
     procedure CompleteInvoice_FNC(DealID_Co_Par: Code[20]; DocumentNo_Co_Par: Code[20])
     var
         PurchLine_Re_Loc: Record "39";
@@ -166,7 +166,7 @@ codeunit 50038 "Deal Item Completer"
     begin
     end;
 
-    [Scope('Internal')]
+
     procedure CompleteBR_FNC(DealID_Co_Par: Code[20]; DocumentNo_Co_Par: Code[20])
     var
         purchRcptLine_Re_Loc: Record "121";
@@ -197,7 +197,7 @@ codeunit 50038 "Deal Item Completer"
 
     end;
 
-    [Scope('Internal')]
+
     procedure CompleteBL_FNC(DealID_Co_Par: Code[20]; DocumentNo_Co_Par: Code[20])
     var
         PurchLine_Re_Loc: Record "39";
@@ -205,7 +205,7 @@ codeunit 50038 "Deal Item Completer"
     begin
     end;
 
-    [Scope('Internal')]
+
     procedure CompletePurchInv_FNC(DealID_Co_Par: Code[20]; DocumentNo_Co_Par: Code[20])
     var
         purchInvLine_Re_Loc: Record "123";
@@ -236,7 +236,7 @@ codeunit 50038 "Deal Item Completer"
 
     end;
 
-    [Scope('Internal')]
+
     procedure CompleteSalesInv_FNC(DealID_Co_Par: Code[20]; DocumentNo_Co_Par: Code[20])
     var
         salesInvLine_Re_Loc: Record "113";
@@ -273,7 +273,7 @@ codeunit 50038 "Deal Item Completer"
 
     end;
 
-    [Scope('Internal')]
+
     procedure CompletePurchCrMemo_FNC(DealID_Co_Par: Code[20]; DocumentNo_Co_Par: Code[20])
     var
         PurchLine_Re_Loc: Record "39";
@@ -281,7 +281,7 @@ codeunit 50038 "Deal Item Completer"
     begin
     end;
 
-    [Scope('Internal')]
+
     procedure CompleteSalesCrMemo_FNC(DealID_Co_Par: Code[20]; DocumentNo_Co_Par: Code[20])
     var
         PurchLine_Re_Loc: Record "39";
@@ -289,7 +289,7 @@ codeunit 50038 "Deal Item Completer"
     begin
     end;
 
-    [Scope('Internal')]
+
     procedure CompleteProvision_FNC(DealID_Co_Par: Code[20]; DocumentNo_Co_Par: Code[20])
     var
         PurchLine_Re_Loc: Record "39";

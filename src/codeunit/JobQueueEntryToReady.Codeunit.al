@@ -14,7 +14,7 @@ codeunit 50047 "Job Queue Entry To Ready"
             REPEAT
                 IF IsJobToRestart(JobQueueEntry) THEN BEGIN
                     JobQueueEntry.SetStatus(JobQueueEntry.Status::"On Hold");
-                    COMMIT;
+                    COMMIT();
                     JobQueueEntry.SetStatus(JobQueueEntry.Status::Ready);
                 END;
             UNTIL JobQueueEntry.NEXT = 0;

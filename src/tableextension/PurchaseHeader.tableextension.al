@@ -1,6 +1,7 @@
 tableextension 50028 "DEL PurchaseHeader" extends "Purchase Header"
 {
     fields
+
     {
 
 
@@ -444,15 +445,15 @@ tableextension 50028 "DEL PurchaseHeader" extends "Purchase Header"
                                 // Créer Axe Document
                                 NTO_DocDim.INIT();
                                 //TODO //DOCDim
-                                NTO_DocDim."Table ID" := 37;
-                                NTO_DocDim."Document Type" := NTO_DocDim."Document Type"::Order;
-                                NTO_DocDim."Document No." := NTO_ResEntrySale."Source ID";
-                                NTO_DocDim."Dimension Code" := NTO_GenSetup."Code Axe Achat";
-                                NTO_DocDim."Dimension Value Code" := NTO_ResEntryPurch."Source ID";
-                                NTO_DocDim."Line No." := NTO_ResEntrySale."Source Ref. No.";
-                                IF NTO_DocDim.INSERT() THEN NTO_DocDim.MODIFY();
-                                NTO_SalesLine."Shortcut Dimension 1 Code" := NTO_ResEntryPurch."Source ID";
-                                NTO_SalesLine.MODIFY();
+                                // NTO_DocDim."Table ID" := 37;
+                                // NTO_DocDim."Document Type" := NTO_DocDim."Document Type"::Order;
+                                // NTO_DocDim."Document No." := NTO_ResEntrySale."Source ID";
+                                // NTO_DocDim."Dimension Code" := NTO_GenSetup."Code Axe Achat";
+                                // NTO_DocDim."Dimension Value Code" := NTO_ResEntryPurch."Source ID";
+                                // NTO_DocDim."Line No." := NTO_ResEntrySale."Source Ref. No.";
+                                // IF NTO_DocDim.INSERT() THEN NTO_DocDim.MODIFY();
+                                // NTO_SalesLine."Shortcut Dimension 1 Code" := NTO_ResEntryPurch."Source ID";
+                                // NTO_SalesLine.MODIFY();
                             END;
                             NTO_PurchLine."Shortcut Dimension 1 Code" := NTO_ResEntryPurch."Source ID";
                             NTO_PurchLine.MODIFY();

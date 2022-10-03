@@ -82,7 +82,7 @@ table 50053 "DEL Regulation Matrix Text"
                 NextLineNo := MatriceLine."Line No." + LineStep
             ELSE
                 IF BelowxRec THEN BEGIN
-                    MatriceLine.FINDLAST;
+                    MatriceLine.FINDLAST();
                     NextLineNo := MatriceLine."Line No." + LineStep;
                 END ELSE
                     IF MatriceLine.NEXT(-1) = 0 THEN BEGIN

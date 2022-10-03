@@ -21,20 +21,20 @@ codeunit 50050 "JSON WS : Item Mgt"
         JsonAsArrayGlobal: DotNet JArray;
         ErpItem: Code[20];
 
-    [Scope('Internal')]
+
     procedure SetFunction(CurrentFunction: Text; CurrentJsonAsObject: DotNet JObject)
     begin
         "Function" := CurrentFunction;
         JsonAsObjectGlobal := CurrentJsonAsObject;
     end;
 
-    [Scope('Internal')]
+
     procedure GetCreatedItem(): Code[20]
     begin
         EXIT(ErpItem);
     end;
 
-    [Scope('Internal')]
+
     procedure CreateUpdateItem(JsonAsObject: DotNet JObject) ErpItemCode: Code[20]
     var
         Item: Record "27";
@@ -110,7 +110,7 @@ codeunit 50050 "JSON WS : Item Mgt"
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure SuccesItemCreationResponse(ErpItemrCode: Code[20]) JsonResponse: Text
     var
         JsonAsObject: DotNet JObject;

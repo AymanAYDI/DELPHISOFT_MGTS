@@ -73,7 +73,7 @@ page 50065 "DEL Document Sheet"
 
                 trigger OnAction()
                 begin
-                    Add;
+                    Add();
                 end;
             }
             action(MgtsOpen)
@@ -119,7 +119,7 @@ page 50065 "DEL Document Sheet"
 
         DocumentLine.SETRANGE(Rec."Table Name", Rec."Table Name");
         DocumentLine.SETRANGE(Rec."No.", Rec."No.");
-        IF DocumentLine.FINDLAST THEN
+        IF DocumentLine.FINDLAST() THEN
             LastLineNo := DocumentLine."Line No.";
 
         Rec.INIT();

@@ -1,8 +1,7 @@
 table 50015 "DEL Reporting Dimension 1 Code"
 {
     Caption = 'Reporting Dimension 1 Code';
-    //TODO //Page
-    // LookupPageID = 50016;
+    LookupPageID = "DEL Reporting Dimension 1 Code";
 
     fields
     {

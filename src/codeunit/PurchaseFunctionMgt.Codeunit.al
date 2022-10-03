@@ -7,7 +7,7 @@ codeunit 50089 "PurchaseFunction Mgt"
     begin
     end;
 
-    [Scope('Internal')]
+
     procedure UpdatePurchaseOrderPrices(PurchaseHeader: Record "38")
     var
         PurchaseLine: Record "39";

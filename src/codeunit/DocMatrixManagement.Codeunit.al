@@ -41,7 +41,7 @@ codeunit 50015 "DocMatrix Management"
         Err001: Label 'The Sales Order %1 has no Contact assigend!';
         Err002: Label 'The Contact %1 in the Sales Order %2 has no Email Address!';
 
-    [Scope('Internal')]
+
     procedure ShowDocMatrixSelection(pNo: Code[20]; pProcessType: Option Manual,Automatic; pUsage: Integer; var precDocMatrixSelection: Record "50071"; pPrintOnly: Boolean): Boolean
     var
         DocumentMatrix: Record "50067";
@@ -75,7 +75,7 @@ codeunit 50015 "DocMatrix Management"
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure ProcessDocumentMatrix(pUsage: Integer; pProcessType: Option Manual,Automatic; pRecordVariant: Variant; pFieldNo: Integer; pFieldDocNo: Integer; precDocMatrixSelection: Record "50071"; pFieldPurchCode: Integer)
     var
         DummyReportSelections: Record "77";
@@ -199,7 +199,7 @@ codeunit 50015 "DocMatrix Management"
         lcuProgressBar.FNC_ProgressBar_Close(1);
     end;
 
-    [Scope('Internal')]
+
     procedure ProcessDocumentMatrixAutomatic(pUsage: Integer)
     var
         lrecCustomer: Record "18";
@@ -359,7 +359,7 @@ codeunit 50015 "DocMatrix Management"
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure SavePDF(pUsage: Integer; pRecordVariant: Variant; ptxClientFile: Text; ptxServerFile: Text)
     var
         RecLReportSelections: Record "77";
@@ -425,7 +425,7 @@ codeunit 50015 "DocMatrix Management"
         EXIT(TRUE);
     end;
 
-    [Scope('Internal')]
+
     procedure SendMail(pUsage: Integer; pProcessType: Option Manual,Automatic; pRecordVariant: Variant; pNo: Code[20]; ptxAttachementFullPathFileName: Text; precDocMatrixSelection: Record "50071"; pDocNo: Code[20])
     var
         Cst001: Label 'We must add a e email template';
@@ -535,7 +535,7 @@ codeunit 50015 "DocMatrix Management"
                 BEGIN
 
                 END;
-                //Purchase Order
+            //Purchase Order
             6:
                 BEGIN
 
@@ -718,7 +718,7 @@ codeunit 50015 "DocMatrix Management"
 
         // filter the RecRef to the porcessed customer (can not be done by changing ReqPageParameter)
         lFieldRef.SETRANGE(pCustNo);
-        IF lRecRef.FINDFIRST THEN
+        IF lRecRef.FINDFIRST() THEN
             pvarCustomer := lRecRef;
 
         // make use of all the fuzz, and get the Request Page Parameter
@@ -735,7 +735,7 @@ codeunit 50015 "DocMatrix Management"
 
         // close file and RecRef vars
         Content.CLOSE;
-        lRecRef.CLOSE;
+        lRecRef.CLOSE();
 
         // get the "Last Statement No." from the customer for R116 for the Log entry
         IF pReportID = REPORT::Statement THEN
@@ -751,14 +751,14 @@ codeunit 50015 "DocMatrix Management"
         lrecDocMatrixLog.INIT;
         lrecDocMatrixLog.TRANSFERFIELDS(precDocMatrixSelection);
         lrecDocMatrixLog.UserId := USERID;
-        lrecDocMatrixLog."Line No." := GetNextLogLineNo;
+        lrecDocMatrixLog."Line No." := GetNextLogLineNo();
         lrecDocMatrixLog."Date Time Stamp" := CREATEDATETIME(TODAY, TIME);
         lrecDocMatrixLog.Action := pAction;
         lrecDocMatrixLog."Document No." := pDocNo;
         lrecDocMatrixLog.Error := pError;
         lrecDocMatrixLog."Process Result Description" := pDescription;
         lrecDocMatrixLog.INSERT;
-        COMMIT;
+        COMMIT();
         EXIT(lrecDocMatrixLog."Line No.");
     end;
 
@@ -787,7 +787,7 @@ codeunit 50015 "DocMatrix Management"
         lRecRef.OPEN(GetTableNoByUsage(pUsage));
         lFieldRef := lRecRef.FIELD(pFieldDocNo);
         lFieldRef.SETRANGE(pDocNo);
-        IF lRecRef.FINDFIRST THEN
+        IF lRecRef.FINDFIRST() THEN
             pRecordVariant := lRecRef;
     end;
 
@@ -834,14 +834,14 @@ codeunit 50015 "DocMatrix Management"
                 IF pUsage = 1 THEN
                     precDocMatrixSelection.Post := lPostOptionSOrder;
                 precDocMatrixSelection.INSERT;
-                COMMIT;
+                COMMIT();
                 EXIT(TRUE);
             END;
 
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure UpdateDocMatrixSelection(pNo: Code[20]; pProcessType: Option Manual,Automatic; pUsage: Integer; var precDocMatrixSelection: Record "50071"; pPrintOnly: Boolean)
     var
         DocumentMatrix: Record "50067";
@@ -879,13 +879,13 @@ codeunit 50015 "DocMatrix Management"
                 IF pUsage = 1 THEN
                     precDocMatrixSelection.Post := lPostOptionSOrder;
                 precDocMatrixSelection.MODIFY;
-                COMMIT;
+                COMMIT();
             END;
 
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure GetPostedSalesInvoice(pNo: Code[20]; pCustNo: Code[20]; var precSalesInvoiceHeader: Record "112"): Boolean
     begin
         precSalesInvoiceHeader.RESET;
@@ -894,7 +894,7 @@ codeunit 50015 "DocMatrix Management"
         EXIT(precSalesInvoiceHeader.FINDFIRST);
     end;
 
-    [Scope('Internal')]
+
     procedure GetPostedSalesCreditMemo(pNo: Code[20]; pCustNo: Code[20]; var precSalesCrMemoHeader: Record "114"): Boolean
     begin
         precSalesCrMemoHeader.RESET;
@@ -1042,7 +1042,7 @@ codeunit 50015 "DocMatrix Management"
             EXIT(DELCHR(RemoveSpecialCharacters(AllObjWithCaption."Object Caption"), '='));
     end;
 
-    [Scope('Internal')]
+
     procedure GetCustVendName(pType: Option Customer,Vendor; pNo: Code[20]): Text[50]
     var
         Customer: Record "18";
@@ -1058,7 +1058,7 @@ codeunit 50015 "DocMatrix Management"
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure GetCustVendLanguageCode(pType: Option Customer,Vendor; pNo: Code[20]): Code[10]
     var
         Customer: Record "18";
@@ -1074,7 +1074,7 @@ codeunit 50015 "DocMatrix Management"
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure GetReportIDWithUsage(pUsage: Integer): Integer
     var
         ReportSelections: Record "77";
@@ -1296,7 +1296,7 @@ codeunit 50015 "DocMatrix Management"
 
     end;
 
-    [Scope('Internal')]
+
     procedure RemoveSpecialCharacters(InputText: Text[50]): Text[50]
     begin
         EXIT(DELCHR(InputText, '=', '~!$^&*(){}[]\|;:''"?/,<>@#`.-+='));
@@ -1316,7 +1316,7 @@ codeunit 50015 "DocMatrix Management"
         ELSE
             lSep := '';
         IF pCreateTimeStamp THEN
-            EXIT(GetDateTimeStamp + '-' + pPurchCode + lSep + pNo + '-' + pDocNo + pExt)
+            EXIT(GetDateTimeStamp() + '-' + pPurchCode + lSep + pNo + '-' + pDocNo + pExt)
         ELSE
             EXIT(pPurchCode + lSep + pNo + '-' + pDocNo + pExt);
     end;
@@ -1409,7 +1409,7 @@ codeunit 50015 "DocMatrix Management"
         FOR i := 1 TO 2 DO BEGIN
             precDocumentMatrix.ChangeRequestPageParameters(precDocumentMatrix, ltxTextToFind[i], ltxReplaceWithText[i]);
         END;
-        COMMIT;
+        COMMIT();
     end;
 
     local procedure CustomerHasStatmentRecords(pNo: Code[20]; pDate: Date): Boolean
@@ -1439,7 +1439,7 @@ codeunit 50015 "DocMatrix Management"
     begin
     end;
 
-    [Scope('Internal')]
+
     procedure TestShipmentSelectionBeforeUptdateRequest(precSalesHeader: Record "36"; var precDealShipmentSelection: Record "50031"; var pcdUpdateRequestID: Code[20]; var pboShipmentSelected: Boolean)
     var
         element_Re_Loc: Record "50021";
@@ -1565,7 +1565,7 @@ codeunit 50015 "DocMatrix Management"
         //DEL/PD/20190304/LOP003.end
     end;
 
-    [Scope('Internal')]
+
     procedure ManageRequestAfterPosting(pcdSalesHeaderNo: Code[20]; pboShipmentSelected: Boolean; pcdUpdateRequestID: Code[20])
     var
         Deal_Cu: Codeunit "50020";

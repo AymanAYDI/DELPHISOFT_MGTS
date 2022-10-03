@@ -29,7 +29,7 @@ codeunit 50002 TransitaireMgt
         Text50001: Label 'The operation was broken off.';
         Text50002: Label 'Operation canceld! Code transitaire is not correct.';
 
-    [Scope('Internal')]
+
     procedure SendForwardingDoc(PurchHeader: Record "38"; Post: Boolean)
     var
         ICPartner: Record "413";
@@ -42,7 +42,7 @@ codeunit 50002 TransitaireMgt
             MESSAGE(Text50002);
     end;
 
-    [Scope('Internal')]
+
     procedure CreateOutboxForwardingDocTrans(PurchHeader: Record "38"; Rejection: Boolean; Post: Boolean)
     var
         OutboxTransaction: Record "414";
@@ -56,7 +56,7 @@ codeunit 50002 TransitaireMgt
     begin
         // Erstellt einen Eintrag in der Tabelle 414 "IC Outbox Transaction"
         GLSetup.LOCKTABLE;
-        GetGLSetup;
+        GetGLSetup();
         TransactionNo := GLSetup."Last IC Transaction No." + 1;
         GLSetup."Last IC Transaction No." := TransactionNo;
         GLSetup.MODIFY;
@@ -139,7 +139,7 @@ codeunit 50002 TransitaireMgt
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure GetGLSetup()
     begin
         IF NOT GLSetupFound THEN
@@ -147,7 +147,7 @@ codeunit 50002 TransitaireMgt
         GLSetupFound := TRUE;
     end;
 
-    [Scope('Internal')]
+
     procedure CopyDocDimToDocDim(var TempDocDim: Record "357" temporary; "Table ID": Integer; DocType: Integer; DocNo: Code[20]; LineNo: Integer)
     var
         DocDim: Record "357";
@@ -166,7 +166,7 @@ codeunit 50002 TransitaireMgt
             UNTIL DocDim.NEXT = 0;
     end;
 
-    [Scope('Internal')]
+
     procedure SendToTransitairePartner(ICOutboxTrans: Record "414")
     var
         ICPartner: Record "413";

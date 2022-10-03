@@ -19,7 +19,7 @@ codeunit 50012 "Minimizing Clicks - MGTS"
     begin
     end;
 
-    [Scope('Internal')]
+
     procedure FctSalesOrderConfirmationPDFSave(RecPSalesHeader: Record "36")
     var
         RecLSalesHeader: Record "36";
@@ -54,7 +54,7 @@ codeunit 50012 "Minimizing Clicks - MGTS"
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure FctPurchaseOrderPDFSave(RecPPurchaseHeader: Record "38"): Text
     var
         RecLPurchaseHeader: Record "38";
@@ -89,7 +89,7 @@ codeunit 50012 "Minimizing Clicks - MGTS"
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure FctSendMailPurchOrder(RecPPurchaseHeader: Record "38")
     var
         CduLMail: Codeunit "397";
@@ -135,7 +135,7 @@ codeunit 50012 "Minimizing Clicks - MGTS"
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure FctSendMailSalesInvoice(RecPSalesInvoiceHeader: Record "112")
     var
         CduLMail: Codeunit "397";
@@ -181,7 +181,7 @@ codeunit 50012 "Minimizing Clicks - MGTS"
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure FctSalesInvoicePDFSave(RecPSalesInvoiceHeader: Record "112"): Text
     var
         RecLSalesInvoiceHeader: Record "112";
@@ -227,7 +227,7 @@ codeunit 50012 "Minimizing Clicks - MGTS"
         DotLWebClient.UploadFile(TxtPAddress + '/' + TxtPFileNameFTP, TxtPPath);
     end;
 
-    [Scope('Internal')]
+
     procedure FctPrintSalesInvoiceMGTS(RecPSalesInvoiceHeader: Record "112")
     var
         RecLCustomer: Record "18";
@@ -259,7 +259,7 @@ codeunit 50012 "Minimizing Clicks - MGTS"
             FctSendMailSalesInvoice(RecPSalesInvoiceHeader);
     end;
 
-    [Scope('Internal')]
+
     procedure FctSalesCrMemoHeaderPDFSave(RecPSalesCrMemoHeader: Record "114"): Text
     var
         RecLSalesSetup: Record "311";
@@ -295,7 +295,7 @@ codeunit 50012 "Minimizing Clicks - MGTS"
         EXIT(TxtLClientFilename);
     end;
 
-    [Scope('Internal')]
+
     procedure FctSendMailSalesCrMemoHeader(RecPSalesCrMemoHeader: Record "114")
     var
         RecLReportSelections: Record "77";
@@ -334,7 +334,7 @@ codeunit 50012 "Minimizing Clicks - MGTS"
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure FctPrintCrMemoMGTS(RecPSalesCrMemoHeader: Record "114")
     var
         RecLCustomer: Record "18";

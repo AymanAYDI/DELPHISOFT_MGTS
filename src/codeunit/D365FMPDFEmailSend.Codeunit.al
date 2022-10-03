@@ -42,7 +42,7 @@ codeunit 50053 "D365FM PDF Email Send"
         NewPage: Boolean;
         TemplateMailString: Text[250];
 
-    [Scope('Internal')]
+
     procedure FctLaunchExport(): Boolean
     var
         Text001: Label 'Escompte pour paiement à réception : 0.3% par mois. ';
@@ -70,7 +70,7 @@ codeunit 50053 "D365FM PDF Email Send"
         ServiceHeader2: Record "5900";
         JobQueueEntry: Record "472";
     begin
-        RecRefMaster.SETRECFILTER;
+        RecRefMaster.SETRECFILTER();
 
         CLEAR(CduGSMTPMail);
 
@@ -181,7 +181,7 @@ codeunit 50053 "D365FM PDF Email Send"
         EXIT(TRUE);
     end;
 
-    [Scope('Internal')]
+
     procedure LoadMailBody(var RecPBLOBRef: Record "99008535"; var TxtPEmailBody: Text; var RecPRef: RecordRef)
     var
         TxtLRepeatLine: Text[1024];
@@ -300,7 +300,7 @@ codeunit 50053 "D365FM PDF Email Send"
 
     end;
 
-    [Scope('Internal')]
+
     procedure FillTemplate(var Body: Text[1024]; TextNo: Text[30]; TxtPSpecialText: Text[200]; IntPPageNo: Integer; var RecPRef: RecordRef)
     var
         FldLRef: FieldRef;
@@ -367,22 +367,22 @@ codeunit 50053 "D365FM PDF Email Send"
                     // Body := STRSUBSTNO(Body, GETURL(CLIENTTYPE::Web, COMPANYNAME, OBJECTTYPE::Page, IntPPageNo, RefPRecordRef, TRUE));
                     //200000003:
                     BEGIN
-                        RecLActiveSession.SETRANGE("Server Instance ID", SERVICEINSTANCEID);
-                        RecLActiveSession.SETRANGE("Session ID", SESSIONID);
+                        RecLActiveSession.SETRANGE("Server Instance ID", SERVICEINSTANCEID());
+                        RecLActiveSession.SETRANGE("Session ID", SESSIONID());
                         RecLActiveSession.FINDFIRST;
                         Body := STRSUBSTNO(Body, ConvertString(RecLActiveSession."Server Computer Name"));
                     END;
                 200000004:
                     BEGIN
-                        RecLActiveSession.SETRANGE("Server Instance ID", SERVICEINSTANCEID);
-                        RecLActiveSession.SETRANGE("Session ID", SESSIONID);
+                        RecLActiveSession.SETRANGE("Server Instance ID", SERVICEINSTANCEID());
+                        RecLActiveSession.SETRANGE("Session ID", SESSIONID());
                         RecLActiveSession.FINDFIRST;
                         Body := STRSUBSTNO(Body, ConvertString(RecLActiveSession."Database Name"));
                     END;
                 200000005:
                     Body := STRSUBSTNO(Body, ConvertString(COMPANYNAME));
                 200000006:
-                    Body := STRSUBSTNO(Body, FORMAT(WORKDATE));
+                    Body := STRSUBSTNO(Body, FORMAT(WORKDATE()));
                 200000007:
                     Body := STRSUBSTNO(Body, FORMAT(DocNo));
                 200000008:
@@ -413,7 +413,7 @@ codeunit 50053 "D365FM PDF Email Send"
                     BEGIN
                         Body := STRSUBSTNO(Body, FORMAT(JobQueueEntry."Error Message"));
                     END;
-                    //<<D365FM14.00.00.11
+            //<<D365FM14.00.00.11
             END;
         END
     end;
@@ -461,7 +461,7 @@ codeunit 50053 "D365FM PDF Email Send"
     begin
     end;
 
-    [Scope('Internal')]
+
     procedure InitValue(var NewTxtPObject: Text; var NewTxtPSender: Text; var NewTxtPCustEmail: Text; NewOptPDocType: Option " ","Service Invoice","Service Credit Memo","Issued Reminder"; NewCodGLanguage: Code[20]; NewPRemTermsCod: Code[20]; NewPRemLevelInt: Integer; NewEntryNo: Integer; NewParam: Text)
     begin
         TxtGObject := NewTxtPObject;
@@ -475,7 +475,7 @@ codeunit 50053 "D365FM PDF Email Send"
         Param := NewParam;
     end;
 
-    [Scope('Internal')]
+
     procedure GetTemplateWithLanguage(var RecPRef: RecordRef; OptPDocumentType: Option " ","Service Invoice","Service Credit Memo","Issued Reminder","Service Header"; CodPLanguage: Code[10]; var RecPBLOBRef: Record "99008535"; var TxtPObject: Text; var TxtPSender: Text; var TxtPCCI: Text; "Code": Code[20]; Level: Integer; var LanguageTemplateMail: Record "50082"): Boolean
     begin
         CASE RecPRef.NUMBER OF
@@ -574,17 +574,17 @@ codeunit 50053 "D365FM PDF Email Send"
 
                     EXIT(TRUE);
                 END;
-                //<<D365FM14.00.00.11
+        //<<D365FM14.00.00.11
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure SetRecRef(var RecPRefMaster: RecordRef)
     begin
         RecRefMaster := RecPRefMaster;
     end;
 
-    [Scope('Internal')]
+
     procedure SetParam(RenewalStdTextCode_P: Code[20]; PrintPicture_P: Boolean; NewPage_P: Boolean)
     begin
         RenewalStdTextCode := RenewalStdTextCode_P;
@@ -592,7 +592,7 @@ codeunit 50053 "D365FM PDF Email Send"
         NewPage := NewPage_P;
     end;
 
-    [Scope('Internal')]
+
     procedure SetTemplateMailString(pTemplateMailString: Text[250])
     begin
         TemplateMailString := pTemplateMailString;
