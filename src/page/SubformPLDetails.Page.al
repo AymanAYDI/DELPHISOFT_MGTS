@@ -81,7 +81,7 @@ page 50035 "DEL Subform P&L Details"
 
     trigger OnModifyRecord(): Boolean
     begin
-        ModifyRec;
+        ModifyRec();
         EXIT(FALSE);
     end;
 
@@ -103,7 +103,7 @@ page 50035 "DEL Subform P&L Details"
     procedure ModifyRec()
     begin
         PositionSummary_Re_Temp := Rec;
-        PositionSummary_Re_Temp.MODIFY;
+        PositionSummary_Re_Temp.MODIFY();
     end;
 
 

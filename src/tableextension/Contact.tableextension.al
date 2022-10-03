@@ -148,7 +148,7 @@ tableextension 50033 "DEL Contact" extends Contact
                 IF "DEL Realisation Date Soc" <> 0D THEN BEGIN
 
                     TESTFIELD("DEL Note Soc");
-                    Note_Rec.RESET;
+                    Note_Rec.RESET();
 
                     IF Note_Rec.GET("DEL Note Soc", Note_Rec."Type audit"::social) THEN
                         IF FORMAT(Note_Rec."Revision Calculation") = '' THEN

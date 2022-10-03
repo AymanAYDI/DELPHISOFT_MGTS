@@ -10,6 +10,7 @@ codeunit 50007 "DEL Document Sheet"
         DialogFileName: Text;
         DialogFilter: Text;
 
+
     procedure GetOpenFileName(var ClientFileName: Text; UploadToServer: Boolean): Boolean
     var
         DummyFileName: Text;
@@ -79,6 +80,7 @@ codeunit 50007 "DEL Document Sheet"
         EXIT(TRUE);
     end;
 
+
     procedure OpenDirectory(Directory: Text)
     var
         // WindowsShell: Automation; TODO:
@@ -105,6 +107,7 @@ codeunit 50007 "DEL Document Sheet"
             EXIT(DialogFilter + '|' + ctAllFiles);
     end;
 
+
     procedure GetFileName(FileName: Text): Text
     var
         i: Integer;
@@ -124,6 +127,7 @@ codeunit 50007 "DEL Document Sheet"
             IF FileName[i] = '\' THEN
                 EXIT(COPYSTR(FileName, 1, i));
     end;
+
 
     procedure AddBackSlash(var Directory: Text)
     begin
@@ -187,6 +191,7 @@ codeunit 50007 "DEL Document Sheet"
         SetExtension(ToFileName, Extension);
     end;
 
+
     procedure GetExtension(FileName: Text): Text
     var
         i: Integer;
@@ -218,6 +223,7 @@ codeunit 50007 "DEL Document Sheet"
         ELSE
             FileName := DELSTR(FileName, DotPos) + '.' + Extension;
     end;
+
 
     procedure TempDirectory() ExitValue: Text
     begin

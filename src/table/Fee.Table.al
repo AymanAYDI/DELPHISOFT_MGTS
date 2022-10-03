@@ -47,7 +47,8 @@ table 50024 "DEL Fee"
             TableRelation = Currency.Code;
             Caption = 'Currency';
         }
-        field(8; "Field"; Enum "DEL Field")
+        field(8; "Field"; Enum "DEL   
+        ield")
         {
             Caption = 'Field';
         }

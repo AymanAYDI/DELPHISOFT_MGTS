@@ -9,38 +9,38 @@ codeunit 50041 "JSON Mgt"
     end;
 
     [TryFunction]
-    [Scope('Internal')]
+
     procedure TextToJsonArrayObject(JsonAsText: Text; var JsonAsArray: DotNet JArray)
     begin
-        CLEARLASTERROR;
+        CLEARLASTERROR();
         CLEAR(JsonAsArray);
         JsonAsArray := JsonAsArray.Parse(JsonAsText);
     end;
 
     [TryFunction]
-    [Scope('Internal')]
+
     procedure TextToJsonObject(JsonAsText: Text; var JsonAsObject: DotNet JObject)
     begin
-        CLEARLASTERROR;
+        CLEARLASTERROR();
         CLEAR(JsonAsObject);
         JsonAsObject := JsonAsObject.Parse(JsonAsText);
     end;
 
     [TryFunction]
-    [Scope('Internal')]
+
     procedure JsonObjectToText(JsonAsObject: DotNet JObject; var JsonAsText: Text)
     var
         JsonConverter: DotNet JsonConvert;
         JsonFormatting: DotNet Formatting;
     begin
-        CLEARLASTERROR;
+        CLEARLASTERROR();
         CLEAR(JsonAsText);
         IF ISNULL(JsonAsObject) THEN
-            DataFormatError;
+            DataFormatError();
         JsonAsText := JsonConverter.SerializeObject(JsonAsObject, JsonFormatting.Indented);
     end;
 
-    [Scope('Internal')]
+
     procedure GetFormattedJsonText(JsonAsObject: DotNet JObject) FormattedJsonAsText: Text
     var
         JsonConverter: DotNet JsonConvert;
@@ -50,7 +50,7 @@ codeunit 50041 "JSON Mgt"
         FormattedJsonAsText := JsonConverter.SerializeObject(JsonAsObject, JsonFormatting.Indented);
     end;
 
-    [Scope('Internal')]
+
     procedure GetFormattedJsonArrayText(JsonAsArray: DotNet JArray) FormattedJsonAsText: Text
     var
         JsonConverter: DotNet JsonConvert;
@@ -60,31 +60,31 @@ codeunit 50041 "JSON Mgt"
         FormattedJsonAsText := JsonConverter.SerializeObject(JsonAsArray, JsonFormatting.Indented);
     end;
 
-    [Scope('Internal')]
+
     procedure GetValueFromJsonObject(JsonAsObject: DotNet JObject; "Key": Text; Length: Integer) Value: Text
     var
         JToken: DotNet JsonToken;
     begin
         IF ISNULL(JsonAsObject) THEN
-            DataFormatError;
+            DataFormatError();
         JToken := JsonAsObject.GetValue(Key);
         Value := JToken.ToString();
         IF (STRLEN(Value) > Length) THEN
             Value := COPYSTR(Value, 1, Length);
     end;
 
-    [Scope('Internal')]
+
     procedure AddValueToJsonObject(var JsonAsObject: DotNet JObject; "Key": Text; Value: Text)
     var
         JValue: DotNet JValue;
     begin
         IF ISNULL(JsonAsObject) THEN
-            DataFormatError;
+            DataFormatError();
         JValue := JValue.JValue(Value);
         JsonAsObject.Add(Key, JValue);
     end;
 
-    [Scope('Internal')]
+
     procedure DataFormatError()
     var
         MsgDataFormatError: Label 'Data Format Error';
@@ -92,7 +92,7 @@ codeunit 50041 "JSON Mgt"
         ERROR(MsgDataFormatError);
     end;
 
-    [Scope('Internal')]
+
     procedure CreateErrorResponse("Function": Text; Data: Text) JsonError: Text
     var
         JsonAsObject: DotNet JObject;

@@ -213,9 +213,9 @@ page 50015 "DEL Corr. Facture enregistée"
                     begin
                         ChangeExchangeRate.SetParameter(Rec."Currency Code", Rec."Currency Factor", Rec."Posting Date");
                         ChangeExchangeRate.EDITABLE(FALSE);
-                        IF ChangeExchangeRate.RUNMODAL = ACTION::OK THEN BEGIN
-                            Rec."Currency Factor" := ChangeExchangeRate.GetParameter;
-                            Rec.MODIFY;
+                        IF ChangeExchangeRate.RUNMODAL() = ACTION::OK THEN BEGIN
+                            Rec."Currency Factor" := ChangeExchangeRate.GetParameter();
+                            Rec.MODIFY();
                         END;
                         CLEAR(ChangeExchangeRate);
                     end;

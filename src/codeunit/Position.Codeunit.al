@@ -1,37 +1,22 @@
-codeunit 50022 Position
+codeunit 50022 "DEL Position"
 {
-    // +-------------------------------------------------------------------------------+
-    // | Logico SA - Logiciels & Conseils                                              |
-    // | Stand: 09.09.08                                                               |
-    // +-------------------------------------------------------------------------------+
-    // 
-    // ID     Version     Story-Card    Date       Description
-    // ---------------------------------------------------------------------------------
-    // CHG01  RC4                       09.09.08   Created Doc
-    // CHG02                            29.01.09   changer les messages d'erreur par des warnings (message)
-    // CHG03                            06.04.09   Adapted various update methods to handle silent update
-    //                                  20.04.09   Adapted Postion Insert Function Params
-    //                                  02.03.18   Add Currency code vide
-    // DEL.SAZ                          29.03.19   Modify Function : FNC_Add_Invoice_Position
-
-
     trigger OnRun()
     begin
     end;
 
     var
-        Deal_Cu: Codeunit "50020";
-        Element_Cu: Codeunit "50021";
-        DealItem_Cu: Codeunit "50024";
+        Deal_Cu: Codeunit "DEL Deal";
+        Element_Cu: Codeunit "DEL Element";
+        DealItem_Cu: Codeunit "DEL Deal Item";
         ERROR_TXT: Label 'ERREUR\Source : %1\Function : %2\Reason : %3';
-        NoSeriesMgt_Cu: Codeunit "396";
-        Fee_Cu: Codeunit "50023";
-        DealShipment_Cu: Codeunit "50029";
-        Setup: Record "50000";
-        Currency_Exchange_Re: Record "50028";
+        NoSeriesMgt_Cu: Codeunit NoSeriesManagement;
+        Fee_Cu: Codeunit "DEL Fee";
+        DealShipment_Cu: Codeunit "Deal Shipment";
+        Setup: Record "DEL General Setup";
+        Currency_Exchange_Re: Record "DEL Currency Exchange";
         INFORMATION_TXT: Label 'INFORMATION\%1';
 
-    [Scope('Internal')]
+
     procedure FNC_Add_Positions(Deal_ID_Co_Par: Code[20]; Update_Planned_Bo_Par: Boolean; Update_Silently_Bo_Par: Boolean)
     begin
         /*__
@@ -86,8 +71,8 @@ codeunit 50022 Position
 
     end;
 
-    [Scope('Internal')]
-    procedure FNC_Set_Position(var position_Re_Par: Record "50022"; position_ID_Co_Par: Code[20])
+
+    procedure FNC_Set_Position(var position_Re_Par: Record "DEL Position"; position_ID_Co_Par: Code[20])
     begin
         // défini l'instance du premier paramètre sur le record correspondant au Position.ID passé en 2ème paramètre
         // p.e. j'ai l'ID de la Position et je veux faire pointer ma variable sur le record qui correspond à cet ID
@@ -96,12 +81,12 @@ codeunit 50022 Position
           );
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Insert_Position(Deal_ID_Co_Par: Code[20]; Element_ID_Co_Par: Code[20]; DealItemNo_Co_Par: Code[20]; Quantity_Dec_Par: Decimal; Currency_Co_Par: Code[10]; Amount_Dec_Par: Decimal; Sub_Element_ID_Co_Par: Code[20]; Rate_Dec_Par: Decimal; CampaignCode_Co_Par: Code[20])
     var
-        deal_Re_Loc: Record "50020";
-        element_Re_Loc: Record "50021";
-        position_Re_Loc: Record "50022";
+        deal_Re_Loc: Record "DEL Deal";
+        element_Re_Loc: Record "DEL Element";
+        position_Re_Loc: Record "DEL Position";
         position_ID_Co_Loc: Code[20];
     begin
         /*
@@ -145,20 +130,20 @@ codeunit 50022 Position
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Delete(Element_ID_Co_Par: Code[20])
     var
-        position_Re_Loc: Record "50022";
+        position_Re_Loc: Record "DEL Position";
     begin
         position_Re_Loc.RESET();
         position_Re_Loc.SETRANGE(Element_ID, Element_ID_Co_Par);
         position_Re_Loc.DELETEALL();
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Flush(Deal_ID_Co_Par: Code[20])
     var
-        position_Re_Loc: Record "50022";
+        position_Re_Loc: Record "DEL Position";
     begin
         // VIDER LES ENREGISTREMENT DE LA TABLE "Position" POUR CE Deal.ID
         position_Re_Loc.RESET();
@@ -166,16 +151,16 @@ codeunit 50022 Position
         position_Re_Loc.DELETEALL();
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Add_ACO_Position(Deal_ID_Co_Par: Code[20])
     var
-        element_Re_Loc: Record "50021";
-        ACO_Re_Loc: Record "38";
-        ACO_Line_Re_Loc: Record "39";
+        element_Re_Loc: Record "DEL Element";
+        ACO_Re_Loc: Record "Purchase Header";
+        ACO_Line_Re_Loc: Record "Purchase Line";
         itemCurrency_Co_Loc: Code[10];
-        importFromInvoice_Re_Temp: Record "50035" temporary;
-        purchInvLine_Re_Loc: Record "123";
-        purchInvHeader_Re_Loc: Record "122";
+        importFromInvoice_Re_Temp: Record "DEL Import From Invoice" temporary;
+        purchInvLine_Re_Loc: Record "Purch. Inv. Line";
+        purchInvHeader_Re_Loc: Record "Purch. Inv. Header";
     begin
         //on recherche tous les "Element" de type ACO pour un Deal.ID donné
         //element_Re_Loc.RESET();
@@ -185,7 +170,7 @@ codeunit 50022 Position
 
         //si il y a un ou plusieurs ACO
         Deal_Cu.FNC_Get_ACO(element_Re_Loc, Deal_ID_Co_Par);
-        IF element_Re_Loc.FINDFIRST THEN
+        IF element_Re_Loc.FINDFIRST() THEN
             REPEAT
                 //On filtre les lignes de chaque ACO
                 ACO_Line_Re_Loc.RESET();
@@ -195,7 +180,7 @@ codeunit 50022 Position
                 ACO_Line_Re_Loc.SETRANGE(Type, ACO_Line_Re_Loc.Type::Item);
                 ACO_Line_Re_Loc.SETFILTER(Quantity, '>%1', 0);
                 //si il y a des lignes sur l'ACO
-                IF ACO_Line_Re_Loc.FINDFIRST THEN
+                IF ACO_Line_Re_Loc.FINDFIRST() THEN
                     REPEAT
 
                         //La fonction ajoute seulement si l'item n'a jamais été enregistré !
@@ -226,7 +211,7 @@ codeunit 50022 Position
                           DealItem_Cu.FNC_Get_Campaign_Code(Deal_ID_Co_Par, ACO_Line_Re_Loc."No.")
                         );
 
-                    UNTIL (ACO_Line_Re_Loc.NEXT = 0)
+                    UNTIL (ACO_Line_Re_Loc.NEXT() = 0)
 
                 /*_Si pas de purchase line, alors on cherche si il y a des invoice line_*/
                 ELSE BEGIN
@@ -237,7 +222,7 @@ codeunit 50022 Position
                     purchInvLine_Re_Loc.SETRANGE("Shortcut Dimension 1 Code", element_Re_Loc."Type No.");
                     purchInvLine_Re_Loc.SETRANGE(Type, purchInvLine_Re_Loc.Type::Item);
                     purchInvLine_Re_Loc.SETFILTER(Quantity, '>%1', 0);
-                    IF purchInvLine_Re_Loc.FINDFIRST THEN
+                    IF purchInvLine_Re_Loc.FINDFIRST() THEN
                         REPEAT
 
                             IF NOT purchInvHeader_Re_Loc.GET(purchInvLine_Re_Loc."Document No.") THEN
@@ -265,7 +250,7 @@ codeunit 50022 Position
 
                     //2. Lire la table et créer les positions
                     importFromInvoice_Re_Temp.RESET();
-                    IF importFromInvoice_Re_Temp.FINDFIRST THEN
+                    IF importFromInvoice_Re_Temp.FINDFIRST() THEN
                         REPEAT
 
                             //La fonction ajoute seulement si l'item n'a jamais été enregistré !
@@ -300,30 +285,31 @@ codeunit 50022 Position
 
                 END
 
-            UNTIL (element_Re_Loc.NEXT = 0);
+            UNTIL (element_Re_Loc.NEXT() = 0);
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Add_VCO_Position(Deal_ID_Co_Par: Code[20])
     var
-        element_Re_Loc: Record "50021";
-        VCO_Line_Re_Loc: Record "37";
+        element_Re_Loc: Record "DEL Element";
+        VCO_Line_Re_Loc: Record "Sales Line";
         itemCurrency_Co_Loc: Code[10];
-        elementConnection_Re_Loc: Record "50027";
-        ACOElement_Re_Loc: Record "50021";
-        salesInvLine_Re_Loc: Record "113";
-        salesInvHeader_Re_Loc: Record "112";
-        importFromInvoice_Re_Temp: Record "50035" temporary;
+        elementConnection_Re_Loc: Record "DEL Element Connection";
+        ACOElement_Re_Loc: Record "DEL Element";
+        salesInvLine_Re_Loc: Record "Sales Invoice Line";
+        salesInvHeader_Re_Loc: Record "Sales Invoice Header";
+        importFromInvoice_Re_Temp: Record "DEL Import From Invoice" temporary;
     begin
         //on recherche tous les "Element" de type VCO pour un Deal.ID donné
+
 
         element_Re_Loc.RESET();
         element_Re_Loc.SETCURRENTKEY(Deal_ID, Type, Instance);
         element_Re_Loc.SETRANGE(Deal_ID, Deal_ID_Co_Par);
         element_Re_Loc.SETRANGE(Type, element_Re_Loc.Type::VCO);
         element_Re_Loc.SETRANGE(Instance, element_Re_Loc.Instance::planned);
-        IF element_Re_Loc.FINDFIRST THEN
+        IF element_Re_Loc.FINDFIRST() THEN
             REPEAT
 
                 //on cherche à quel ACO la VCO appartient
@@ -331,7 +317,7 @@ codeunit 50022 Position
                 elementConnection_Re_Loc.SETRANGE(Deal_ID, Deal_ID_Co_Par);
                 elementConnection_Re_Loc.SETRANGE(Element_ID, element_Re_Loc.ID);
 
-                IF elementConnection_Re_Loc.FINDFIRST THEN BEGIN
+                IF elementConnection_Re_Loc.FINDFIRST() THEN BEGIN
 
                     Element_Cu.FNC_Set_Element(ACOElement_Re_Loc, elementConnection_Re_Loc."Apply To");
 
@@ -348,7 +334,7 @@ codeunit 50022 Position
                     //si il y a des lignes sur la VCO et que "Special Order Purchase No." est renseigné alors il s'agit d'une nouvelle VCO
                     //sinon c'est qu'on veut récupérer une vieille VCO et à ce moment là on trouve le renseignement sur le champ "Code Achat"
                     //qui est en fait le "Shortcut dimension 1 Code"
-                    IF VCO_Line_Re_Loc.FINDFIRST THEN
+                    IF VCO_Line_Re_Loc.FINDFIRST() THEN
                         REPEAT
 
                             //La fonction ajoute seulement si l'item n'a jamais été enregistré !
@@ -381,7 +367,7 @@ codeunit 50022 Position
                               DealItem_Cu.FNC_Get_Campaign_Code(Deal_ID_Co_Par, VCO_Line_Re_Loc."No.")
                             );
 
-                        UNTIL (VCO_Line_Re_Loc.NEXT = 0)
+                        UNTIL (VCO_Line_Re_Loc.NEXT() = 0)
 
                     ELSE BEGIN
 
@@ -393,7 +379,7 @@ codeunit 50022 Position
                         VCO_Line_Re_Loc.SETRANGE(Type, VCO_Line_Re_Loc.Type::Item);
                         VCO_Line_Re_Loc.SETRANGE(VCO_Line_Re_Loc."Shortcut Dimension 1 Code", ACOElement_Re_Loc."Type No.");
                         VCO_Line_Re_Loc.SETFILTER(Quantity, '>%1', 0);
-                        IF VCO_Line_Re_Loc.FINDFIRST THEN
+                        IF VCO_Line_Re_Loc.FINDFIRST() THEN
                             REPEAT
 
                                 //La fonction ajoute seulement si l'item n'a jamais été enregistré !
@@ -426,7 +412,7 @@ codeunit 50022 Position
                                  DealItem_Cu.FNC_Get_Campaign_Code(Deal_ID_Co_Par, VCO_Line_Re_Loc."No.")
                                 );
 
-                            UNTIL (VCO_Line_Re_Loc.NEXT = 0)
+                            UNTIL (VCO_Line_Re_Loc.NEXT() = 0)
 
                         //on cherche encore sur les sales invoices dans le cas ou les vco sont basées sur des vco inexistantes..
                         ELSE BEGIN
@@ -439,7 +425,7 @@ codeunit 50022 Position
                             salesInvLine_Re_Loc.SETRANGE(Type, salesInvLine_Re_Loc.Type::Item);
                             salesInvLine_Re_Loc.SETRANGE("Order No.", element_Re_Loc."Type No.");
                             salesInvLine_Re_Loc.SETFILTER(Quantity, '>%1', 0);
-                            IF salesInvLine_Re_Loc.FINDFIRST THEN
+                            IF salesInvLine_Re_Loc.FINDFIRST() THEN
                                 REPEAT
 
                                     IF NOT salesInvHeader_Re_Loc.GET(salesInvLine_Re_Loc."Document No.") THEN
@@ -469,7 +455,7 @@ codeunit 50022 Position
 
                             //2. Lire la table et créer les positions
                             importFromInvoice_Re_Temp.RESET();
-                            IF importFromInvoice_Re_Temp.FINDFIRST THEN
+                            IF importFromInvoice_Re_Temp.FINDFIRST() THEN
                                 REPEAT
 
                                     //La fonction ajoute seulement si l'item n'a jamais été enregistré !
@@ -507,13 +493,13 @@ codeunit 50022 Position
 
                 END;
 
-            UNTIL (element_Re_Loc.NEXT = 0);
+            UNTIL (element_Re_Loc.NEXT() = 0);
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Add_Fee_Position(Deal_ID_Co_Par: Code[20])
     var
-        element_Re_Loc: Record "50021";
+        element_Re_Loc: Record "DEL Element";
     begin
         //on recherche tous les "Element" de type Fee ou Ecriture pour un Deal.ID donné
 
@@ -522,17 +508,17 @@ codeunit 50022 Position
         element_Re_Loc.SETRANGE(Deal_ID, Deal_ID_Co_Par);
         element_Re_Loc.SETRANGE(Type, element_Re_Loc.Type::Fee);
         element_Re_Loc.SETRANGE(Instance, element_Re_Loc.Instance::planned);
-        IF element_Re_Loc.FINDFIRST THEN
+        IF element_Re_Loc.FINDFIRST() THEN
             REPEAT
                 Fee_Cu.FNC_Dispatch(element_Re_Loc.ID);
-            UNTIL (element_Re_Loc.NEXT = 0);
+            UNTIL (element_Re_Loc.NEXT() = 0);
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Add_BR_Position(Deal_ID_Co_Par: Code[20]; Add_Silently_Bo_Par: Boolean)
     var
-        element_Re_Loc: Record "50021";
-        BR_Line_Re_Loc: Record "121";
+        element_Re_Loc: Record "DEL Element";
+        BR_Line_Re_Loc: Record "Purch. Rcpt. Line";
     begin
         /* obsolet
         
@@ -582,12 +568,12 @@ codeunit 50022 Position
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Add_Invoice_Position(Deal_ID_Co_Par: Code[20])
     var
-        element_Re_Loc: Record "50021";
-        BR_Line_Re_Loc: Record "121";
-        position_Re_Loc: Record "50022";
+        element_Re_Loc: Record "DEL Element";
+        BR_Line_Re_Loc: Record "Purch. Rcpt. Line";
+        position_Re_Loc: Record "DEL Position";
     begin
         //on recherche tous les "Element" de type Invoice pour un Deal.ID donné
 
@@ -596,7 +582,7 @@ codeunit 50022 Position
         element_Re_Loc.SETRANGE(Deal_ID, Deal_ID_Co_Par);
         element_Re_Loc.SETRANGE(Type, element_Re_Loc.Type::Invoice);
 
-        IF element_Re_Loc.FINDFIRST THEN
+        IF element_Re_Loc.FINDFIRST() THEN
             REPEAT
 
                 //si les positions n'existent pas, on dispatch, sinon on laisse tel quel
@@ -610,18 +596,18 @@ codeunit 50022 Position
                 //SAZ 080418  IF element_Re_Loc.Amount <> 0 THEN  //NEW DEL.SAZ 29.03.19
 
                 Fee_Cu.FNC_Dispatch(element_Re_Loc.ID);
-                //END //ELSE
-                //MESSAGE('INVOICE ALREADY DISPATCHED');
+            //END //ELSE
+            //MESSAGE('INVOICE ALREADY DISPATCHED');
 
             UNTIL (element_Re_Loc.NEXT() = 0);
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Add_Provision_Position(Deal_ID_Co_Par: Code[20])
     var
-        element_Re_Loc: Record "50021";
-        BR_Line_Re_Loc: Record "121";
-        position_Re_Loc: Record "50022";
+        element_Re_Loc: Record "DEL Element";
+        BR_Line_Re_Loc: Record "Purch. Rcpt. Line";
+        position_Re_Loc: Record "DEL Position";
     begin
         /*
         //CHG-DEV-PROVISION
@@ -652,17 +638,17 @@ codeunit 50022 Position
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Add_PurchInvoice_Position(Deal_ID_Co_Par: Code[20]; Add_Silently_Bo_Par: Boolean)
     var
-        element_Re_Loc: Record "50021";
-        purchInvHeader_Re_Loc: Record "122";
-        purchInv_Line_Re_Loc: Record "123";
+        element_Re_Loc: Record "DEL Element";
+        purchInvHeader_Re_Loc: Record "Purch. Inv. Header";
+        purchInv_Line_Re_Loc: Record "Purch. Inv. Line";
         currency_Co_Loc: Code[10];
         currencyRate_Dec_Loc: Decimal;
-        position_Re_Loc: Record "50022";
-        currExRate_Re_loc: Record "330";
-        ACOElement_Re_Loc: Record "50021";
+        position_Re_Loc: Record "DEL Position";
+        currExRate_Re_loc: Record "Currency Exchange Rate";
+        ACOElement_Re_Loc: Record "DEL Element";
     begin
         //on recherche tous les "Element" de type Purchase Invoice pour un Deal.ID donné
 
@@ -670,7 +656,7 @@ codeunit 50022 Position
         element_Re_Loc.SETCURRENTKEY(Deal_ID, Type);
         element_Re_Loc.SETRANGE(Deal_ID, Deal_ID_Co_Par);
         element_Re_Loc.SETRANGE(Type, element_Re_Loc.Type::"Purchase Invoice");
-        IF element_Re_Loc.FINDFIRST THEN
+        IF element_Re_Loc.FINDFIRST() THEN
             REPEAT
 
                 //on cherche à quel ACO la sales invoice appartient
@@ -680,7 +666,7 @@ codeunit 50022 Position
                 //ACOElement_Re_Loc.SETRANGE(Type, ACOElement_Re_Loc.Type::ACO);
 
                 Deal_Cu.FNC_Get_ACO(ACOElement_Re_Loc, element_Re_Loc.Deal_ID);
-                IF ACOElement_Re_Loc.FINDFIRST THEN BEGIN
+                IF ACOElement_Re_Loc.FINDFIRST() THEN BEGIN
 
                     //si les positions n'existent pas, on dispatch, sinon on laisse tel quel
                     //position_Re_Loc.RESET();
@@ -697,7 +683,7 @@ codeunit 50022 Position
                     purchInv_Line_Re_Loc.SETRANGE(Type, purchInv_Line_Re_Loc.Type::Item);
                     purchInv_Line_Re_Loc.SETRANGE("Document No.", element_Re_Loc."Type No.");
                     purchInv_Line_Re_Loc.SETFILTER(Quantity, '>%1', 0);
-                    IF purchInv_Line_Re_Loc.FINDFIRST THEN
+                    IF purchInv_Line_Re_Loc.FINDFIRST() THEN
                         REPEAT
                             purchInvHeader_Re_Loc.GET(purchInv_Line_Re_Loc."Document No.");
                             currency_Co_Loc := purchInvHeader_Re_Loc."Currency Code";
@@ -736,17 +722,17 @@ codeunit 50022 Position
 
                 END;
 
-            UNTIL (element_Re_Loc.NEXT = 0);
+            UNTIL (element_Re_Loc.NEXT() = 0);
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Add_PurchCrMemo_Position(Deal_ID_Co_Par: Code[20]; Add_Silently_Bo_Par: Boolean)
     var
-        element_Re_Loc: Record "50021";
-        ACOElement_Re_Loc: Record "50021";
-        purchCreditMemoLine_Re_Loc: Record "125";
-        purchCreditMemoHeader_Re_Loc: Record "124";
-        currExRate_Re_loc: Record "330";
+        element_Re_Loc: Record "DEL Element";
+        ACOElement_Re_Loc: Record "DEL Element";
+        purchCreditMemoLine_Re_Loc: Record "Purch. Cr. Memo Line";
+        purchCreditMemoHeader_Re_Loc: Record "Purch. Cr. Memo Hdr.";
+        currExRate_Re_loc: Record "Currency Exchange Rate";
         currency_Co_Loc: Code[10];
         currencyRate_Dec_Loc: Decimal;
     begin
@@ -756,7 +742,7 @@ codeunit 50022 Position
         element_Re_Loc.SETCURRENTKEY(Deal_ID, Type);
         element_Re_Loc.SETRANGE(Deal_ID, Deal_ID_Co_Par);
         element_Re_Loc.SETRANGE(Type, element_Re_Loc.Type::"Purch. Cr. Memo");
-        IF element_Re_Loc.FINDFIRST THEN
+        IF element_Re_Loc.FINDFIRST() THEN
             REPEAT
 
                 //on cherche à quel ACO la sales invoice appartient
@@ -766,7 +752,7 @@ codeunit 50022 Position
                 //ACOElement_Re_Loc.SETRANGE(Type, ACOElement_Re_Loc.Type::ACO);
 
                 Deal_Cu.FNC_Get_ACO(ACOElement_Re_Loc, element_Re_Loc.Deal_ID);
-                IF ACOElement_Re_Loc.FINDFIRST THEN BEGIN
+                IF ACOElement_Re_Loc.FINDFIRST() THEN BEGIN
 
                     //si les positions n'existent pas, on dispatch, sinon on laisse tel quel
                     //position_Re_Loc.RESET();
@@ -783,7 +769,7 @@ codeunit 50022 Position
                     purchCreditMemoLine_Re_Loc.SETRANGE(Type, purchCreditMemoLine_Re_Loc.Type::Item);
                     purchCreditMemoLine_Re_Loc.SETRANGE("Document No.", element_Re_Loc."Type No.");
                     purchCreditMemoLine_Re_Loc.SETFILTER(Quantity, '>%1', 0);
-                    IF purchCreditMemoLine_Re_Loc.FINDFIRST THEN
+                    IF purchCreditMemoLine_Re_Loc.FINDFIRST() THEN
                         REPEAT
                             purchCreditMemoHeader_Re_Loc.GET(purchCreditMemoLine_Re_Loc."Document No.");
                             currency_Co_Loc := purchCreditMemoHeader_Re_Loc."Currency Code";
@@ -822,20 +808,20 @@ codeunit 50022 Position
 
                 END
 
-            UNTIL (element_Re_Loc.NEXT = 0);
+            UNTIL (element_Re_Loc.NEXT() = 0);
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Add_SalesInvoice_Position(Deal_ID_Co_Par: Code[20]; Add_Silently_Bo_Par: Boolean)
     var
-        element_Re_Loc: Record "50021";
-        salesInvHeader_Re_Loc: Record "112";
-        salesInv_Line_Re_Loc: Record "113";
+        element_Re_Loc: Record "DEL Element";
+        salesInvHeader_Re_Loc: Record "Sales Invoice Header";
+        salesInv_Line_Re_Loc: Record "Sales Invoice Line";
         currency_Co_Loc: Code[10];
         currencyRate_Dec_Loc: Decimal;
-        position_Re_Loc: Record "50022";
-        currExRate_Re_loc: Record "330";
-        ACOElement_Re_Loc: Record "50021";
+        position_Re_Loc: Record "DEL Position";
+        currExRate_Re_loc: Record "Currency Exchange Rate";
+        ACOElement_Re_Loc: Record "DEL Element";
     begin
         //on recherche tous les "Element" de type Sales Invoice pour un Deal.ID donné
 
@@ -843,7 +829,7 @@ codeunit 50022 Position
         element_Re_Loc.SETCURRENTKEY(Deal_ID, Type);
         element_Re_Loc.SETRANGE(Deal_ID, Deal_ID_Co_Par);
         element_Re_Loc.SETRANGE(Type, element_Re_Loc.Type::"Sales Invoice");
-        IF element_Re_Loc.FINDFIRST THEN
+        IF element_Re_Loc.FINDFIRST() THEN
             REPEAT
 
                 //on cherche à quel ACO la sales invoice appartient
@@ -853,7 +839,7 @@ codeunit 50022 Position
                 //ACOElement_Re_Loc.SETRANGE(Type, ACOElement_Re_Loc.Type::ACO);
 
                 Deal_Cu.FNC_Get_ACO(ACOElement_Re_Loc, element_Re_Loc.Deal_ID);
-                IF ACOElement_Re_Loc.FINDFIRST THEN BEGIN
+                IF ACOElement_Re_Loc.FINDFIRST() THEN BEGIN
 
                     //si les positions n'existent pas, on dispatch, sinon on laisse tel quel
                     //position_Re_Loc.RESET();
@@ -870,7 +856,7 @@ codeunit 50022 Position
                     salesInv_Line_Re_Loc.SETRANGE(Type, salesInv_Line_Re_Loc.Type::Item);
                     salesInv_Line_Re_Loc.SETRANGE("Document No.", element_Re_Loc."Type No.");
                     salesInv_Line_Re_Loc.SETFILTER(Quantity, '>%1', 0);
-                    IF salesInv_Line_Re_Loc.FINDFIRST THEN
+                    IF salesInv_Line_Re_Loc.FINDFIRST() THEN
                         REPEAT
                             salesInvHeader_Re_Loc.GET(salesInv_Line_Re_Loc."Document No.");
                             currency_Co_Loc := salesInvHeader_Re_Loc."Currency Code";
@@ -911,17 +897,17 @@ codeunit 50022 Position
 
                 END
 
-            UNTIL (element_Re_Loc.NEXT = 0);
+            UNTIL (element_Re_Loc.NEXT() = 0);
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Add_SalesCrMemo_Position(Deal_ID_Co_Par: Code[20]; Add_Silently_Bo_Par: Boolean)
     var
-        element_Re_Loc: Record "50021";
-        ACOElement_Re_Loc: Record "50021";
-        salesCreditMemoLine_Re_Loc: Record "115";
-        salesCreditMemoHeader_Re_Loc: Record "114";
-        currExRate_Re_loc: Record "330";
+        element_Re_Loc: Record "DEL Element";
+        ACOElement_Re_Loc: Record "DEL Element";
+        salesCreditMemoLine_Re_Loc: Record "Sales Cr.Memo Line";
+        salesCreditMemoHeader_Re_Loc: Record "Sales Cr.Memo Header";
+        currExRate_Re_loc: Record "Currency Exchange Rate";
         currency_Co_Loc: Code[10];
         currencyRate_Dec_Loc: Decimal;
     begin
@@ -931,7 +917,7 @@ codeunit 50022 Position
         element_Re_Loc.SETCURRENTKEY(Deal_ID, Type);
         element_Re_Loc.SETRANGE(Deal_ID, Deal_ID_Co_Par);
         element_Re_Loc.SETRANGE(Type, element_Re_Loc.Type::"Sales Cr. Memo");
-        IF element_Re_Loc.FINDFIRST THEN
+        IF element_Re_Loc.FINDFIRST() THEN
             REPEAT
 
                 //on cherche à quel ACO la sales invoice appartient
@@ -941,7 +927,7 @@ codeunit 50022 Position
                 //ACOElement_Re_Loc.SETRANGE(Type, ACOElement_Re_Loc.Type::ACO);
 
                 Deal_Cu.FNC_Get_ACO(ACOElement_Re_Loc, element_Re_Loc.Deal_ID);
-                IF ACOElement_Re_Loc.FINDFIRST THEN BEGIN
+                IF ACOElement_Re_Loc.FINDFIRST() THEN BEGIN
 
                     //si les positions n'existent pas, on dispatch, sinon on laisse tel quel
                     //position_Re_Loc.RESET();
@@ -958,7 +944,7 @@ codeunit 50022 Position
                     salesCreditMemoLine_Re_Loc.SETRANGE(Type, salesCreditMemoLine_Re_Loc.Type::Item);
                     salesCreditMemoLine_Re_Loc.SETRANGE("Document No.", element_Re_Loc."Type No.");
                     salesCreditMemoLine_Re_Loc.SETFILTER(Quantity, '>%1', 0);
-                    IF salesCreditMemoLine_Re_Loc.FINDFIRST THEN
+                    IF salesCreditMemoLine_Re_Loc.FINDFIRST() THEN
                         REPEAT
                             salesCreditMemoHeader_Re_Loc.GET(salesCreditMemoLine_Re_Loc."Document No.");
                             currency_Co_Loc := salesCreditMemoHeader_Re_Loc."Currency Code";
@@ -997,30 +983,31 @@ codeunit 50022 Position
 
                 END
 
-            UNTIL (element_Re_Loc.NEXT = 0);
+            UNTIL (element_Re_Loc.NEXT() = 0);
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Add_Dispatched_Positions(DealID_Co_Par: Code[20])
     var
-        ds_Re_Loc: Record "50030";
-        dsc_Re_Loc: Record "50032";
-        element_Re_Loc: Record "50021";
-        position_Re_Loc: Record "50022";
-        feeElement_Re_Loc: Record "50021";
+
+        ds_Re_Loc: Record "DEL Deal Shipment";
+        dsc_Re_Loc: Record "DEL Deal Shipment Connection";
+        element_Re_Loc: Record "DEL Element";
+        position_Re_Loc: Record "DEL Position";
+        feeElement_Re_Loc: Record "DEL Element";
     begin
         //Pour les livraisons de l'affaire qui ont un BR
         ds_Re_Loc.RESET();
         ds_Re_Loc.SETRANGE(Deal_ID, DealID_Co_Par);
         ds_Re_Loc.SETFILTER("BR No.", '<>%1', '');
-        IF ds_Re_Loc.FINDFIRST THEN BEGIN
+        IF ds_Re_Loc.FINDFIRST() THEN BEGIN
             REPEAT
 
                 //pour les éléments liés à cette livraison
                 dsc_Re_Loc.RESET();
                 dsc_Re_Loc.SETRANGE(Deal_ID, ds_Re_Loc.Deal_ID);
                 dsc_Re_Loc.SETRANGE(Shipment_ID, ds_Re_Loc.ID);
-                IF dsc_Re_Loc.FINDFIRST THEN
+                IF dsc_Re_Loc.FINDFIRST() THEN
                     REPEAT
 
                         Element_Cu.FNC_Set_Element(element_Re_Loc, dsc_Re_Loc.Element_ID);
@@ -1034,7 +1021,7 @@ codeunit 50022 Position
                             //si aucune position n'existe pour cet élément, alors on crée
                             position_Re_Loc.RESET();
                             position_Re_Loc.SETRANGE(Element_ID, element_Re_Loc.ID);
-                            IF NOT position_Re_Loc.FINDFIRST THEN
+                            IF NOT position_Re_Loc.FINDFIRST() THEN
                                 FNC_Add_DispatchedACO_Position(dsc_Re_Loc.Deal_ID, ds_Re_Loc."BR No.", element_Re_Loc.ID);
 
                             //sinon si c'est une VCO répartie
@@ -1047,7 +1034,7 @@ codeunit 50022 Position
                                 //si aucune position n'existe pour cet élément, alors on crée
                                 position_Re_Loc.RESET();
                                 position_Re_Loc.SETRANGE(Element_ID, element_Re_Loc.ID);
-                                IF NOT position_Re_Loc.FINDFIRST THEN
+                                IF NOT position_Re_Loc.FINDFIRST() THEN
                                     FNC_Add_DispatchedVCO_Position(dsc_Re_Loc.Deal_ID, ds_Re_Loc."BR No.", element_Re_Loc.ID);
 
                                 //sinon si c'est un Fee réparti
@@ -1064,12 +1051,12 @@ codeunit 50022 Position
                                     feeElement_Re_Loc.SETRANGE(Instance, feeElement_Re_Loc.Instance::planned);
                                     feeElement_Re_Loc.SETRANGE(Fee_ID, element_Re_Loc.Fee_ID);
                                     feeElement_Re_Loc.SETRANGE(Fee_Connection_ID, element_Re_Loc.Fee_Connection_ID);
-                                    IF feeElement_Re_Loc.FINDFIRST THEN BEGIN
+                                    IF feeElement_Re_Loc.FINDFIRST() THEN BEGIN
 
                                         //si aucune position n'existe pour cet élément, alors on crée
                                         position_Re_Loc.RESET();
                                         position_Re_Loc.SETRANGE(Element_ID, element_Re_Loc.ID);
-                                        IF NOT position_Re_Loc.FINDFIRST THEN
+                                        IF NOT position_Re_Loc.FINDFIRST() THEN
                                             FNC_Add_DispatchedFee_Position(dsc_Re_Loc.Deal_ID, ds_Re_Loc."BR No.", element_Re_Loc.ID, feeElement_Re_Loc.ID);
 
                                     END
@@ -1083,11 +1070,11 @@ codeunit 50022 Position
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Add_DispatchedACO_Position(DealID_Co_Par: Code[20]; BRNo_Co_Par: Code[20]; ElementID_Co_Par: Code[20])
     var
-        element_Re_Loc: Record "50021";
-        purchRcptLine_Re_Loc: Record "121";
+        element_Re_Loc: Record "DEL Element";
+        purchRcptLine_Re_Loc: Record "Purch. Rcpt. Line";
         BRNo_Co: Code[20];
         qty_Dec_Loc: Decimal;
         amount_Dec_Loc: Decimal;
@@ -1103,7 +1090,7 @@ codeunit 50022 Position
         purchRcptLine_Re_Loc.SETRANGE("Document No.", BRNo_Co_Par);
         purchRcptLine_Re_Loc.SETRANGE(Type, purchRcptLine_Re_Loc.Type::Item);
         purchRcptLine_Re_Loc.SETFILTER(Quantity, '>%1', 0);
-        IF purchRcptLine_Re_Loc.FINDFIRST THEN
+        IF purchRcptLine_Re_Loc.FINDFIRST() THEN
             REPEAT
                 qty_Dec_Loc := purchRcptLine_Re_Loc.Quantity;
                 amount_Dec_Loc := DealItem_Cu.FNC_Get_Unit_Cost(DealID_Co_Par, purchRcptLine_Re_Loc."No.");
@@ -1127,11 +1114,11 @@ codeunit 50022 Position
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Add_DispatchedVCO_Position(DealID_Co_Par: Code[20]; BRNo_Co_Par: Code[20]; ElementID_Co_Par: Code[20])
     var
-        element_Re_Loc: Record "50021";
-        purchRcptLine_Re_Loc: Record "121";
+        element_Re_Loc: Record "DEL Element";
+        purchRcptLine_Re_Loc: Record "Purch. Rcpt. Line";
         BRNo_Co: Code[20];
         qty_Dec_Loc: Decimal;
         amount_Dec_Loc: Decimal;
@@ -1144,7 +1131,7 @@ codeunit 50022 Position
         purchRcptLine_Re_Loc.SETRANGE("Document No.", BRNo_Co_Par);
         purchRcptLine_Re_Loc.SETRANGE(Type, purchRcptLine_Re_Loc.Type::Item);
         purchRcptLine_Re_Loc.SETFILTER(Quantity, '>%1', 0);
-        IF purchRcptLine_Re_Loc.FINDFIRST THEN
+        IF purchRcptLine_Re_Loc.FINDFIRST() THEN
             REPEAT
                 qty_Dec_Loc := purchRcptLine_Re_Loc.Quantity;
                 amount_Dec_Loc := DealItem_Cu.FNC_Get_Unit_Price(DealID_Co_Par, purchRcptLine_Re_Loc."No.");
@@ -1167,30 +1154,30 @@ codeunit 50022 Position
             UNTIL (purchRcptLine_Re_Loc.NEXT() = 0);
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Add_DispatchedFee_Position(DealID_Co_Par: Code[20]; BRNo_Co_Par: Code[20]; ElementID_Co_Par: Code[20]; FeeElementID_Co_Par: Code[20])
     var
-        element_Re_Loc: Record "50021";
-        purchRcptLine_Re_Loc: Record "121";
-        position_Re_Loc: Record "50022";
+        element_Re_Loc: Record "DEL Element";
+        purchRcptLine_Re_Loc: Record "Purch. Rcpt. Line";
+        position_Re_Loc: Record "DEL Position";
         BRNo_Co: Code[20];
         qty_Dec_Loc: Decimal;
         amount_Dec_Loc: Decimal;
         curr_Co_Loc: Code[10];
         rate_Dec_Loc: Decimal;
-        feeElement_Re_Loc: Record "50021";
+        feeElement_Re_Loc: Record "DEL Element";
     begin
         purchRcptLine_Re_Loc.RESET();
         purchRcptLine_Re_Loc.SETRANGE("Document No.", BRNo_Co_Par);
         purchRcptLine_Re_Loc.SETRANGE(Type, purchRcptLine_Re_Loc.Type::Item);
         purchRcptLine_Re_Loc.SETFILTER(Quantity, '>%1', 0);
-        IF purchRcptLine_Re_Loc.FINDFIRST THEN
+        IF purchRcptLine_Re_Loc.FINDFIRST() THEN
             REPEAT
 
                 position_Re_Loc.RESET();
                 position_Re_Loc.SETRANGE(Element_ID, FeeElementID_Co_Par);
                 position_Re_Loc.SETRANGE("Deal Item No.", purchRcptLine_Re_Loc."No.");
-                IF position_Re_Loc.FINDFIRST THEN
+                IF position_Re_Loc.FINDFIRST() THEN
                     REPEAT
 
                         qty_Dec_Loc := purchRcptLine_Re_Loc.Quantity;
@@ -1215,11 +1202,11 @@ codeunit 50022 Position
             UNTIL (purchRcptLine_Re_Loc.NEXT() = 0);
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Get_Amount(Position_ID_Co_Par: Code[20]) Amount_Dec_Ret: Decimal
     var
-        position_Re_Loc: Record "50022";
-        curr_Re_Loc: Record "50028";
+        position_Re_Loc: Record "DEL Position";
+        curr_Re_Loc: Record "DEL Currency Exchange";
     begin
         /*RETOURNE LE MONTANT D'UNE POSITION EN EURO*/
 
@@ -1234,11 +1221,11 @@ codeunit 50022 Position
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Get_Raw_Amount(Position_ID_Co_Par: Code[20]) Amount_Dec_Ret: Decimal
     var
-        position_Re_Loc: Record "50022";
-        curr_Re_Loc: Record "50028";
+        position_Re_Loc: Record "DEL Position";
+        curr_Re_Loc: Record "DEL Currency Exchange";
     begin
         /*RETOURNE LE MONTANT D'UNE POSITION EN DEVISE DE LA POSITION*/
 

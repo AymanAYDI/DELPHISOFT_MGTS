@@ -279,11 +279,10 @@ codeunit 50020 "DEL Deal"
     end;
 
 
+<<<<<<< HEAD
+    procedure FNC_Get_ACO(element_Re_Par: Record 50021; dealID_Co_Par: Code[20])
+=======
     procedure FNC_Get_ACO(var element_Re_Par: Record "DEL Element"; dealID_Co_Par: Code[20])
-    begin
-        //filtre un record element (passé par REF) sur le premier élément ACO d'une affaire
-
-        /*_On cherche l'ACO liée à l'affaire_*/
         element_Re_Par.RESET();
         element_Re_Par.SETCURRENTKEY(Deal_ID, Type, Instance);
         element_Re_Par.SETRANGE(Deal_ID, dealID_Co_Par);
@@ -560,6 +559,10 @@ codeunit 50020 "DEL Deal"
 
     end;
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> 74bd8910beea14b80a9c2f1ed60aa139a7854d71
     procedure FNC_Get_VCO_Amount(Deal_ID_Co_Par: Code[20]; DealShipment_No_Co_Par: Code[20]) Amount_Dec_Ret: Decimal
     var
         element_Re_Loc: Record "DEL Element";

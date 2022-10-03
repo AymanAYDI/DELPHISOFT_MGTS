@@ -7,6 +7,9 @@ page 50026 "DEL ACO Connection"
     {
         area(content)
         {
+            /// <summary>
+            /// 
+            /// </summary>
             repeater(Control1)
             {
                 field(Deal_ID; Rec.Deal_ID)

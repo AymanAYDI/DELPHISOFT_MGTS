@@ -144,7 +144,7 @@ page 50082 "DEL M Deal Cr. Memo Linking"
     begin
 
         ACOConnection_Rec_Loc.SETRANGE(Deal_ID, Rec."Deal ID");
-        IF ACOConnection_Rec_Loc.FINDFIRST THEN
+        IF ACOConnection_Rec_Loc.FINDFIRST() THEN
             NewCodeAchatNo_Co_Par := ACOConnection_Rec_Loc."ACO No.";
 
 

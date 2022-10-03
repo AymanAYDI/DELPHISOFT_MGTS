@@ -1,19 +1,5 @@
-codeunit 50024 "Deal Item"
+codeunit 50024 "DEL Deal Item"
 {
-    // +-------------------------------------------------------------------------------+
-    // | Logico SA - Logiciels & Conseils                                              |
-    // | Stand: 09.09.08                                                               |
-    // +-------------------------------------------------------------------------------+
-    // 
-    // ID     Version     Story-Card    Date       Description
-    // ---------------------------------------------------------------------------------
-    // CHG01  RC4                       09.09.08   Created Doc
-    // CHG02                            06.04.09   Adapted various update methods to handle silent update
-    // STG01                            02.07.09   Comment check price / cost (according FLB tests on 01.07.09)
-    // THM250817                        25.08.17   add Function
-    // THM161117                        16.11.17   Add filtre status
-    // 
-    // Mgts10.00.05.00      04.01.2022 : Replace "Vol cbm" GetVolCBM
 
 
     trigger OnRun()
@@ -28,7 +14,7 @@ codeunit 50024 "Deal Item"
         Type_Op: Option Cost,Price;
         UpdateRequestManager_Cu: Codeunit "50032";
 
-    [Scope('Internal')]
+
     procedure FNC_Add(Deal_ID_Co_Par: Code[20]; Item_No_Co_Par: Code[20])
     var
         dealItem_Re_Loc: Record "50023";
@@ -41,7 +27,7 @@ codeunit 50024 "Deal Item"
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Insert(Deal_ID_Co_Par: Code[20]; Item_No_Co_Par: Code[20])
     var
         dealItem_Re_Loc: Record "50023";
@@ -77,7 +63,7 @@ codeunit 50024 "Deal Item"
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Update_Unit_Cost(Deal_ID_Co_Par: Code[20]; ItemNo_Co_Par: Code[20]; UnitCost_De_Par: Decimal; CurrencyCost_Co_Par: Code[10])
     var
         dealItem_Re_Loc: Record "50023";
@@ -102,7 +88,7 @@ codeunit 50024 "Deal Item"
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Update_Unit_Price(Deal_ID_Co_Par: Code[20]; ItemNo_Co_Par: Code[20]; UnitPrice_De_Par: Decimal; CurrencyPrice_Co_Par: Code[10])
     var
         dealItem_Re_Loc: Record "50023";
@@ -127,7 +113,7 @@ codeunit 50024 "Deal Item"
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Update_Net_Weight(Deal_ID_Co_Par: Code[20]; ItemNo_Co_Par: Code[20]; NewValue_Dec_Par: Decimal)
     var
         dealItem_Re_Loc: Record "50023";
@@ -140,7 +126,7 @@ codeunit 50024 "Deal Item"
               STRSUBSTNO('Item >%1< introuvable pour l''affaire >%2< dans la table Deal Item !', ItemNo_Co_Par, Deal_ID_Co_Par))
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Update_Gross_Weight(Deal_ID_Co_Par: Code[20]; ItemNo_Co_Par: Code[20]; NewValue_Dec_Par: Decimal)
     var
         dealItem_Re_Loc: Record "50023";
@@ -153,7 +139,7 @@ codeunit 50024 "Deal Item"
               STRSUBSTNO('Item >%1< introuvable pour l''affaire >%2< dans la table Deal Item !', ItemNo_Co_Par, Deal_ID_Co_Par))
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Update_Volume_CMB(Deal_ID_Co_Par: Code[20]; ItemNo_Co_Par: Code[20]; NewValue_Dec_Par: Decimal)
     var
         dealItem_Re_Loc: Record "50023";
@@ -166,7 +152,7 @@ codeunit 50024 "Deal Item"
               STRSUBSTNO('Item >%1< introuvable pour l''affaire >%2< dans la table Deal Item !', ItemNo_Co_Par, Deal_ID_Co_Par))
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Update_Volume_CMB_Carton(Deal_ID_Co_Par: Code[20]; ItemNo_Co_Par: Code[20]; NewValue_Dec_Par: Decimal)
     var
         dealItem_Re_Loc: Record "50023";
@@ -179,7 +165,7 @@ codeunit 50024 "Deal Item"
               STRSUBSTNO('Item >%1< introuvable pour l''affaire >%2< dans la table Deal Item !', ItemNo_Co_Par, Deal_ID_Co_Par))
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Update_PCB(Deal_ID_Co_Par: Code[20]; ItemNo_Co_Par: Code[20]; NewValue_Dec_Par: Decimal)
     var
         dealItem_Re_Loc: Record "50023";
@@ -192,7 +178,7 @@ codeunit 50024 "Deal Item"
               STRSUBSTNO('Item >%1< introuvable pour l''affaire >%2< dans la table Deal Item !', ItemNo_Co_Par, Deal_ID_Co_Par))
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Get_Sales_Amount(Deal_ID_Co_Par: Code[20]; ShipmentNo_Co_Par: Code[20]; "Item_No._Co_Par": Code[20]; Instance_Op_Par: Option Planned,Real) Amount_Dec_Ret: Decimal
     var
         position_Re_Loc: Record "50022";
@@ -292,7 +278,7 @@ codeunit 50024 "Deal Item"
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Get_Purchases_Amount(Deal_ID_Co_Par: Code[20]; ShipmentNo_Co_Par: Code[20]; "Item_No._Co_Par": Code[20]; Instance_Op_Par: Option Planned,Real) Amount_Dec_Ret: Decimal
     var
         position_Re_Loc: Record "50022";
@@ -392,7 +378,7 @@ codeunit 50024 "Deal Item"
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Get_Fees_Amount(Deal_ID_Co_Par: Code[20]; ShipmentNo_Co_Par: Code[20]; "Item_No._Co_Par": Code[20]; Instance_Op_Par: Option Planned,Real) Amount_Dec_Ret: Decimal
     var
         position_Re_Loc: Record "50022";
@@ -488,7 +474,7 @@ codeunit 50024 "Deal Item"
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Get_Amount(Deal_ID_Co_Par: Code[20]; "Item_No._Co_Par": Code[20]; Instance_Op_Par: Option) Amount_Dec_Ret: Decimal
     var
         position_Re_Loc: Record "50022";
@@ -508,7 +494,7 @@ codeunit 50024 "Deal Item"
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Get_Unit_Price(Deal_ID_Co_Par: Code[20]; ItemNo_Co_Par: Code[20]) Amount_Dec_Ret: Decimal
     var
         dealItem_Re_Loc: Record "50023";
@@ -520,7 +506,7 @@ codeunit 50024 "Deal Item"
               STRSUBSTNO('Item >%1< introuvable pour l''affaire >%2< dans la table Deal Item !', ItemNo_Co_Par, Deal_ID_Co_Par))
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Get_Unit_Cost(Deal_ID_Co_Par: Code[20]; ItemNo_Co_Par: Code[20]) Amount_Dec_Ret: Decimal
     var
         dealItem_Re_Loc: Record "50023";
@@ -532,7 +518,7 @@ codeunit 50024 "Deal Item"
               STRSUBSTNO('Item >%1< introuvable pour l''affaire >%2< dans la table Deal Item !', ItemNo_Co_Par, Deal_ID_Co_Par))
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Get_Currency_Price(Deal_ID_Co_Par: Code[20]; ItemNo_Co_Par: Code[20]) Currency_Co_Ret: Code[10]
     var
         dealItem_Re_Loc: Record "50023";
@@ -544,7 +530,7 @@ codeunit 50024 "Deal Item"
               STRSUBSTNO('Item >%1< introuvable pour l''affaire >%2< dans la table Deal Item !', ItemNo_Co_Par, Deal_ID_Co_Par))
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Get_Currency_Cost(Deal_ID_Co_Par: Code[20]; ItemNo_Co_Par: Code[20]) Currency_Co_Ret: Code[10]
     var
         dealItem_Re_Loc: Record "50023";
@@ -556,7 +542,7 @@ codeunit 50024 "Deal Item"
               STRSUBSTNO('Item >%1< introuvable pour l''affaire >%2< dans la table Deal Item !', ItemNo_Co_Par, Deal_ID_Co_Par))
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Get_Net_Weight(Deal_ID_Co_Par: Code[20]; ItemNo_Co_Par: Code[20]) Value_Co_Ret: Decimal
     var
         dealItem_Re_Loc: Record "50023";
@@ -568,7 +554,7 @@ codeunit 50024 "Deal Item"
               STRSUBSTNO('Item >%1< introuvable pour l''affaire >%2< dans la table Deal Item !', ItemNo_Co_Par, Deal_ID_Co_Par))
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Get_Gross_Weight(Deal_ID_Co_Par: Code[20]; ItemNo_Co_Par: Code[20]) Value_Co_Ret: Decimal
     var
         dealItem_Re_Loc: Record "50023";
@@ -580,7 +566,7 @@ codeunit 50024 "Deal Item"
               STRSUBSTNO('Item >%1< introuvable pour l''affaire >%2< dans la table Deal Item !', ItemNo_Co_Par, Deal_ID_Co_Par))
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Get_Volume_CMB(Deal_ID_Co_Par: Code[20]; ItemNo_Co_Par: Code[20]) Value_Co_Ret: Decimal
     var
         dealItem_Re_Loc: Record "50023";
@@ -592,7 +578,7 @@ codeunit 50024 "Deal Item"
               STRSUBSTNO('Item >%1< introuvable pour l''affaire >%2< dans la table Deal Item !', ItemNo_Co_Par, Deal_ID_Co_Par))
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Get_Volume_CMB_Carton(Deal_ID_Co_Par: Code[20]; ItemNo_Co_Par: Code[20]) Value_Co_Ret: Decimal
     var
         dealItem_Re_Loc: Record "50023";
@@ -604,7 +590,7 @@ codeunit 50024 "Deal Item"
               STRSUBSTNO('Item >%1< introuvable pour l''affaire >%2< dans la table Deal Item !', ItemNo_Co_Par, Deal_ID_Co_Par))
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Get_PCB(Deal_ID_Co_Par: Code[20]; ItemNo_Co_Par: Code[20]) Value_Co_Ret: Decimal
     var
         dealItem_Re_Loc: Record "50023";
@@ -616,7 +602,7 @@ codeunit 50024 "Deal Item"
               STRSUBSTNO('Item >%1< introuvable pour l''affaire >%2< dans la table Deal Item !', ItemNo_Co_Par, Deal_ID_Co_Par))
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Get_Droit_Douanne(Deal_ID_Co_Par: Code[20]; ItemNo_Co_Par: Code[20]) Value_Co_Ret: Decimal
     var
         dealItem_Re_Loc: Record "50023";
@@ -629,7 +615,7 @@ codeunit 50024 "Deal Item"
               STRSUBSTNO('Item >%1< introuvable pour l''affaire >%2< dans la table Deal Item !', ItemNo_Co_Par, Deal_ID_Co_Par))
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Get_Campaign_Code(Deal_ID_Co_Par: Code[20]; ItemNo_Co_Par: Code[20]) CampaignCode_Co_Ret: Code[20]
     var
         element_Re_Loc: Record "50021";
@@ -657,7 +643,7 @@ codeunit 50024 "Deal Item"
             UNTIL element_Re_Loc.NEXT() = 0;
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_checkForZero(Item_Re_Par: Record "27")
     var
         message_Te_Loc: Text[250];
@@ -680,7 +666,7 @@ codeunit 50024 "Deal Item"
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Manual_Update(ItemNo_Co_Par: Code[20])
     var
         Item_Re_Loc: Record "27";
@@ -711,7 +697,7 @@ codeunit 50024 "Deal Item"
 
                     //START CHG02
                     Deal_Cu.FNC_Reinit_Deal(DealItem_Re_Loc.Deal_ID, TRUE, FALSE);
-                    //STOP CHG02
+                //STOP CHG02
 
                 UNTIL (DealItem_Re_Loc.NEXT() = 0);
 
@@ -725,7 +711,7 @@ codeunit 50024 "Deal Item"
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_UpdateWithACOLine(From_Te_Par: Text[30]; ACOLine_Re_Par: Record "39"; xACOLine_Re_Par: Record "39")
     var
         element_Re_Loc: Record "50021";
@@ -843,7 +829,7 @@ codeunit 50024 "Deal Item"
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_UpdateWithVCOLine(From_Te_Par: Text[30]; VCOLine_Re_Par: Record "37"; xVCOLine_Re_Par: Record "37")
     var
         element_Re_Loc: Record "50021";
@@ -971,7 +957,7 @@ codeunit 50024 "Deal Item"
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_NeedsToBeUpdated(DealID_Co_Par: Code[20]; ItemNo_Co_Par: Code[20]; Type_Op: Option Cost,Price; Amount_Dec_Par: Decimal; Currency_Co_Par: Code[10]) needsUpdate_Bo_Ret: Boolean
     begin
         /*
@@ -1002,7 +988,7 @@ codeunit 50024 "Deal Item"
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Manual_Update2(ItemNo_Co_Par: Code[20])
     var
         Item_Re_Loc: Record "27";
@@ -1035,7 +1021,7 @@ codeunit 50024 "Deal Item"
 
                     //START CHG02
                     Deal_Cu.FNC_Reinit_Deal(DealItem_Re_Loc.Deal_ID, TRUE, TRUE);
-                    //STOP CHG02
+                //STOP CHG02
 
                 UNTIL (DealItem_Re_Loc.NEXT() = 0);
 

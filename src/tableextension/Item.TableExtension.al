@@ -1326,18 +1326,18 @@ tableextension 50020 "DEL Item" extends Item
         IF DefaultDimension_Rec.GET(27, "No.", 'Categorie') THEN BEGIN
             IF DefaultDimension_Rec."Dimension Value Code" <> CategCode THEN BEGIN
                 DefaultDimension_Rec.VALIDATE("Dimension Value Code", CategCode);
-                DefaultDimension_Rec.MODIFY;
+                DefaultDimension_Rec.MODIFY();
             END;
         END
         // T-00746 END
         ELSE BEGIN
             // T-00746 START
-            DefaultDimension_Rec.INIT;
+            DefaultDimension_Rec.INIT();
             DefaultDimension_Rec.VALIDATE("Table ID", 27);
             DefaultDimension_Rec.VALIDATE("No.", "No.");
             DefaultDimension_Rec.VALIDATE("Dimension Code", 'Categorie');
             DefaultDimension_Rec.VALIDATE("Dimension Value Code", CategCode);
-            DefaultDimension_Rec.INSERT;
+            DefaultDimension_Rec.INSERT();
             // T-00746 END
         END;
         //END MIG2017

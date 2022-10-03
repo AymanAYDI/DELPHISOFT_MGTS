@@ -407,7 +407,7 @@ codeunit 50044 "API Orders Track Records Mgt."
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure UpdateOrderAPIRecordTracking(DealID: Code[20])
     var
         ACONo: Code[20];

@@ -21,27 +21,27 @@ codeunit 50042 "JSON WS : Vendor Mgt"
         ErpVendor: Code[20];
         VendorResponse: Text;
 
-    [Scope('Internal')]
+
     procedure SetFunction(CurrentFunction: Text; CurrentJsonAsObject: DotNet JObject)
     begin
         "Function" := CurrentFunction;
         JsonAsObject := CurrentJsonAsObject
     end;
 
-    [Scope('Internal')]
+
     procedure SetErpVendor(CurrentFunction: Text; ErpVendorCode: Code[20])
     begin
         ErpVendor := ErpVendorCode;
         "Function" := CurrentFunction;
     end;
 
-    [Scope('Internal')]
+
     procedure GetCreatedVendor(): Code[20]
     begin
         EXIT(ErpVendor);
     end;
 
-    [Scope('Internal')]
+
     procedure CreateVendor(JsonAsObject: DotNet JObject) ErpVendorCode: Code[20]
     var
         Vendor: Record "23";
@@ -82,7 +82,7 @@ codeunit 50042 "JSON WS : Vendor Mgt"
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure UpdateVendor(JsonAsObject: DotNet JObject) ErpVendorCode: Code[20]
     var
         Vendor: Record "23";
@@ -129,13 +129,13 @@ codeunit 50042 "JSON WS : Vendor Mgt"
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure GetVendorResponse(): Text
     begin
         EXIT(VendorResponse);
     end;
 
-    [Scope('Internal')]
+
     procedure SuccesVendorCreationResponse(ErpVendorCode: Code[20]) JsonResponse: Text
     var
         JsonAsObject: DotNet JObject;
@@ -148,7 +148,7 @@ codeunit 50042 "JSON WS : Vendor Mgt"
         JsonMgt.JsonObjectToText(JsonAsObject, JsonResponse);
     end;
 
-    [Scope('Internal')]
+
     procedure ApplyVendorTemplate(var Vendor: Record "23")
     var
         DimensionsTemplate: Record "1302";
@@ -180,7 +180,7 @@ codeunit 50042 "JSON WS : Vendor Mgt"
             ERROR(MstVendorrExist, SupplierBaseID);
     end;
 
-    [Scope('Internal')]
+
     procedure GetVendorInfo(ErpVendorCode: Code[20]) JsonResponse: Text
     var
         Vendor: Record "23";

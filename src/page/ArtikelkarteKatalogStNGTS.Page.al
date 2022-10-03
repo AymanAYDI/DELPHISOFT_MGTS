@@ -13,6 +13,7 @@ page 50121 "Artikelkarte Katalog St. NGTS"
     {
         area(content)
         {
+
             group(Allgemein)
             {
                 Caption = 'General';
@@ -22,8 +23,8 @@ page 50121 "Artikelkarte Katalog St. NGTS"
 
                     trigger OnAssistEdit()
                     begin
-                        IF Rec.AssistEdit THEN
-                            CurrPage.UPDATE;
+                        IF Rec.AssistEdit() THEN
+                            CurrPage.UPDATE();
                     end;
                 }
                 field(Katalogbezeichnung; Katalogbezeichnung)
@@ -139,8 +140,8 @@ page 50121 "Artikelkarte Katalog St. NGTS"
 
                     trigger OnValidate()
                     begin
-                        ControlSHowMendatory; // vaseem
-                        CurrPage.UPDATE;
+                        ControlSHowMendatory(); // vaseem
+                        CurrPage.UPDATE();
                     end;
                 }
                 field("Bilddokument ID"; "Bilddokument ID")
@@ -321,7 +322,7 @@ page 50121 "Artikelkarte Katalog St. NGTS"
                         gpagZertProt.RUNMODAL;
 
                         // --- Init --- //
-                        grefRecordRefQuelle.CLOSE;
+                        grefRecordRefQuelle.CLOSE();
                     end;
                 }
             }
@@ -415,7 +416,7 @@ page 50121 "Artikelkarte Katalog St. NGTS"
                             ItemStatistics: Page "Item Statistics";
                         begin
                             ItemStatistics.SetItem(Rec);
-                            ItemStatistics.RUNMODAL;
+                            ItemStatistics.RUNMODAL();
                         end;
                     }
                     action(Buchungsstatistik)
@@ -642,13 +643,13 @@ page 50121 "Artikelkarte Katalog St. NGTS"
                                         BEGIN
                                             // --- EAN-Code extern generieren --- //
                                             "EAN Code Katalog" := gcouSystemVerw.ExtEANgenerieren(Rec);
-                                            Rec.MODIFY;
+                                            Rec.MODIFY();
                                         END;
                                     1:
                                         BEGIN
                                             // --- EAN-Code intern generieren --- //
                                             "EAN Code Katalog" := gcouSystemVerw.IntEANgenerieren(Rec);
-                                            Rec.MODIFY;
+                                            Rec.MODIFY();
                                         END;
                                 END;
                             END;
@@ -667,7 +668,7 @@ page 50121 "Artikelkarte Katalog St. NGTS"
                             gcouSystemVerw.EANinitialisieren(Rec."No.", "EAN Code Katalog");
                             // --- Artikel aktualisieren --- //
                             "EAN Code Katalog" := '';
-                            Rec.MODIFY;
+                            Rec.MODIFY();
                         END;
                     end;
                 }
@@ -760,7 +761,7 @@ page 50121 "Artikelkarte Katalog St. NGTS"
                 trigger OnAction()
                 begin
                     // --- Artikel --- /
-                    grecArtikel.RESET;
+                    grecArtikel.RESET();
                     grecArtikel.SETRANGE("No.", Rec."No.");
                     REPORT.RUNMODAL(REPORT::"RW Bericht / Artikel", TRUE, FALSE, grecArtikel);
                 end;
@@ -778,7 +779,7 @@ page 50121 "Artikelkarte Katalog St. NGTS"
         gintBildTimer := 0;
         CLEAR(grecDokument);
 
-        ControlSHowMendatory;
+        ControlSHowMendatory();
 
         // Mulitimage Factbox
         CurrPage.MultiPicture.PAGE.SetMainPicture("Bilddokument ID");
@@ -832,7 +833,7 @@ page 50121 "Artikelkarte Katalog St. NGTS"
             Bezeichnung2Visible := TRUE;
         END;
 
-        ControlSHowMendatory;
+        ControlSHowMendatory();
     end;
 
     var
@@ -1109,37 +1110,37 @@ page 50121 "Artikelkarte Katalog St. NGTS"
                 DotNetArrayRecord := DotNetStr.Split(ArrayofDel);
                 DotNetStr := grecChecklistzeileSteuerung."Felder 001";
                 DotNetArrayField := DotNetStr.Split(ArrayofDel);
-                LoopForShowMedatory;
+                LoopForShowMedatory();
                 DotNetStr := grecChecklistzeileSteuerung."ErfArt 002";
                 DotNetArrayRecord := DotNetStr.Split(ArrayofDel);
                 DotNetStr := grecChecklistzeileSteuerung."Felder 002";
                 DotNetArrayField := DotNetStr.Split(ArrayofDel);
-                LoopForShowMedatory;
+                LoopForShowMedatory();
                 DotNetStr := grecChecklistzeileSteuerung."ErfArt 003";
                 DotNetArrayRecord := DotNetStr.Split(ArrayofDel);
                 DotNetStr := grecChecklistzeileSteuerung."Felder 003";
                 DotNetArrayField := DotNetStr.Split(ArrayofDel);
-                LoopForShowMedatory;
+                LoopForShowMedatory();
                 DotNetStr := grecChecklistzeileSteuerung."ErfArt 004";
                 DotNetArrayRecord := DotNetStr.Split(ArrayofDel);
                 DotNetStr := grecChecklistzeileSteuerung."Felder 004";
                 DotNetArrayField := DotNetStr.Split(ArrayofDel);
-                LoopForShowMedatory;
+                LoopForShowMedatory();
                 DotNetStr := grecChecklistzeileSteuerung."ErfArt 005";
                 DotNetArrayRecord := DotNetStr.Split(ArrayofDel);
                 DotNetStr := grecChecklistzeileSteuerung."Felder 005";
                 DotNetArrayField := DotNetStr.Split(ArrayofDel);
-                LoopForShowMedatory;
+                LoopForShowMedatory();
                 DotNetStr := grecChecklistzeileSteuerung."ErfArt 006";
                 DotNetArrayRecord := DotNetStr.Split(ArrayofDel);
                 DotNetStr := grecChecklistzeileSteuerung."Felder 006";
                 DotNetArrayField := DotNetStr.Split(ArrayofDel);
-                LoopForShowMedatory;
+                LoopForShowMedatory();
                 DotNetStr := grecChecklistzeileSteuerung."ErfArt 007";
                 DotNetArrayRecord := DotNetStr.Split(ArrayofDel);
                 DotNetStr := grecChecklistzeileSteuerung."Felder 007";
                 DotNetArrayField := DotNetStr.Split(ArrayofDel);
-                LoopForShowMedatory;
+                LoopForShowMedatory();
 
             END;
         END;

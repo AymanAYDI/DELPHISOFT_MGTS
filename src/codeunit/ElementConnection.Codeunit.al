@@ -1,26 +1,12 @@
-codeunit 50025 "Element Connection"
+codeunit 50025 "DEL Element Connection"
 {
-    // +-------------------------------------------------------------------------------+
-    // | Logico SA - Logiciels & Conseils                                              |
-    // | Stand: 09.09.08                                                               |
-    // +-------------------------------------------------------------------------------+
-    // 
-    // ID     Version     Story-Card    Date       Description
-    // ---------------------------------------------------------------------------------
-    // CHG01  RC4                       09.09.08   Created Doc
-
-
-    trigger OnRun()
-    begin
-    end;
-
     var
         ERROR_TXT: Label 'ERREUR\Source : %1\Function : %2\Reason : %3';
 
-    [Scope('Internal')]
+
     procedure FNC_Add(Deal_ID_Co_Par: Code[20]; Element_ID_Co_Par: Code[20]; ApplyTo_Co_Par: Code[20]; Instance_Op_Par: Option; SplittIndex_Int_Par: Integer)
     var
-        elementConnection_Re_Loc: Record "50027";
+        elementConnection_Re_Loc: Record "DEL Element Connection";
     begin
         /*év. faire des trucs avant d'insérer..*/
         /*
@@ -36,10 +22,10 @@ codeunit 50025 "Element Connection"
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Insert(Deal_ID_Co_Par: Code[20]; Element_ID_Co_Par: Code[20]; ApplyTo_Co_Par: Code[20]; Instance_Op_Par: Option; SplittIndex_Int_Par: Integer)
     var
-        elementConnection_Re_Loc: Record "50027";
+        elementConnection_Re_Loc: Record "DEL Element Connection";
     begin
         IF NOT elementConnection_Re_Loc.GET(Deal_ID_Co_Par, Element_ID_Co_Par, ApplyTo_Co_Par) THEN BEGIN
 
@@ -67,10 +53,10 @@ codeunit 50025 "Element Connection"
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Delete(Element_ID_Co_Par: Code[20])
     var
-        elementConnection_Re_Loc: Record "50027";
+        elementConnection_Re_Loc: Record "DEL Element Connection";
     begin
         elementConnection_Re_Loc.RESET();
         elementConnection_Re_Loc.SETCURRENTKEY(Element_ID);

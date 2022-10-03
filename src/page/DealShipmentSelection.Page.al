@@ -149,7 +149,7 @@ page 50038 "DEL Deal Shipment Selection"
         feeConnection_page_Loc: Page "Fee Connection";
         element_page_Loc: Page "DEL Element";
     begin
-        element_Re_Loc.RESET;
+        element_Re_Loc.RESET();
         element_Re_Loc.SETCURRENTKEY(Deal_ID, Type, Instance);
         element_Re_Loc.SETRANGE(Deal_ID, Rec.Deal_ID);
         element_Re_Loc.SETRANGE(Type, element_Re_Loc.Type::Fee);
@@ -157,10 +157,10 @@ page 50038 "DEL Deal Shipment Selection"
         element_page_Loc.SETTABLEVIEW(element_Re_Loc);
         element_page_Loc.SETRECORD(element_Re_Loc);
         element_page_Loc.LOOKUPMODE(TRUE);
-        IF element_page_Loc.RUNMODAL = ACTION::LookupOK THEN BEGIN
+        IF element_page_Loc.RUNMODAL() = ACTION::LookupOK THEN BEGIN
             element_page_Loc.GETRECORD(element_Re_Loc);
             Rec."Fee Connection" := element_Re_Loc.Fee_Connection_ID;
-            Rec.MODIFY;
+            Rec.MODIFY();
         END;
     end;
 
@@ -171,19 +171,19 @@ page 50038 "DEL Deal Shipment Selection"
         element_Re_Loc: Record "DEL Element";
         findFeeConnectionError_Loc: Label 'No planned fee for this shipment is in relation with account no. %1.';
     begin
-        element_Re_Loc.RESET;
+        element_Re_Loc.RESET();
         element_Re_Loc.SETCURRENTKEY(Deal_ID, Type, Instance);
         element_Re_Loc.SETRANGE(Deal_ID, Rec.Deal_ID);
         element_Re_Loc.SETRANGE(Type, element_Re_Loc.Type::Fee);
         element_Re_Loc.SETRANGE(Instance, element_Re_Loc.Instance::planned);
-        IF element_Re_Loc.FINDFIRST THEN
+        IF element_Re_Loc.FINDFIRST() THEN
             REPEAT
 
                 fee_Re_Loc.RESET();
                 fee_Re_Loc.SETRANGE(ID, element_Re_Loc.Fee_ID);
                 fee_Re_Loc.SETRANGE(fee_Re_Loc."No compte", Rec."Account No.");
                 fee_Re_Loc.SETRANGE("Used For Import", FALSE);
-                IF fee_Re_Loc.FINDFIRST THEN BEGIN
+                IF fee_Re_Loc.FINDFIRST() THEN BEGIN
                     FeeConnectionID_Co_Par := element_Re_Loc.Fee_Connection_ID;
                     FeeDescription_Te_Par := fee_Re_Loc.Description;
                     EXIT(TRUE);

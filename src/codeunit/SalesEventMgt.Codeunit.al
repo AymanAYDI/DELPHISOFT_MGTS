@@ -38,7 +38,7 @@ codeunit 50058 "Sales Event Mgt."
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure UpdateSalesOrderPrices(SalesHeader: Record "36")
     var
         SalesLine: Record "37";

@@ -74,8 +74,7 @@ table 50028 "DEL Currency Exchange"
         END;
     end;
 
-    // 
-    [Scope('OnPrem')]
+
     procedure FNC_Get_Rate(Deal_ID_Co_Par: Code[20]; From_Currency_Co_Par: Code[10]; To_Currency_Co_Par: Code[10]) Rate_Dec_Ret: Decimal
     begin
         Rate_Dec_Ret := 0;
