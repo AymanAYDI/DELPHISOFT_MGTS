@@ -1,8 +1,5 @@
 codeunit 50019 "DEL Create Purch. EDI"
 {
-    // MGTSEDI10.00.00.23 | 21.05.2021 | EDI Management : Create codeunit
-
-
     trigger OnRun()
     begin
         CASE Param OF
@@ -23,10 +20,7 @@ codeunit 50019 "DEL Create Purch. EDI"
         DocNo := pDocNo;
     end;
 
-    procedure CreateAndValidateReqWorksheet(DocNo: Code[20])
     var
-        RequisitionLine: Record "Requisition Line";
-        GeneralSetup: Record "DEL General Setup";
         GetSalesOrder: Report "Get Sales Orders";
         PerformAction: Report "Carry Out Action Msg. - Req.";
     begin
@@ -58,10 +52,8 @@ codeunit 50019 "DEL Create Purch. EDI"
         PerformAction.RUNMODAL();
     end;
 
-    procedure CreateDeal(DocNo: Code[20])
+
     var
-        PurchaseLine: Record "Purchase Line";
-        Deal_Cu: Codeunit "DEL Deal";
         LastDocNo: Code[20];
         affaireNo_Co_Loc: Code[20];
     begin

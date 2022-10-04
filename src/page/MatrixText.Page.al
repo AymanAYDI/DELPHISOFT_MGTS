@@ -68,7 +68,7 @@ page 50114 "DEL Matrix Text"
 
                 trigger OnAction()
                 begin
-                    EditText;
+                    EditText();
                 end;
             }
         }

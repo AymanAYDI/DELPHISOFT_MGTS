@@ -49,19 +49,19 @@ codeunit 50040 "JSON :  Web Service"
     begin
     end;
 
-    [Scope('Internal')]
+
     procedure CreateSupplier(Data: Text) Response: Text
     begin
         EXIT(CallWSFunction('CreateVendor', Data));
     end;
 
-    [Scope('Internal')]
+
     procedure UpdateSupplier(Data: Text) Response: Text
     begin
         EXIT(CallWSFunction('UpdateVendor', Data));
     end;
 
-    [Scope('Internal')]
+
     procedure GetSupplierInfo(ErpSupplierCode: Code[20]) Response: Text
     var
         JSONWSVendorMgt: Codeunit "50042";
@@ -97,7 +97,7 @@ codeunit 50040 "JSON :  Web Service"
             EXIT(Response)
         END;
 
-        COMMIT;
+        COMMIT();
         JSONWSVendorMgt.SetFunction(_Function, JsonAsObject);
         IF NOT JSONWSVendorMgt.RUN THEN BEGIN
             JSONRequestslog.InsertLogRecord(1, _Function, JsonMgt.GetFormattedJsonText(JsonAsObject), TRUE);
@@ -115,7 +115,7 @@ codeunit 50040 "JSON :  Web Service"
     begin
     end;
 
-    [Scope('Internal')]
+
     procedure CreateUpdateProduct(Data: Text): Text
     begin
         EXIT(CallWSFunction2('CreateUpdateItem', Data));
@@ -135,7 +135,7 @@ codeunit 50040 "JSON :  Web Service"
             EXIT(Response)
         END;
 
-        COMMIT;
+        COMMIT();
         JSONWSItemMgt.SetFunction(_Function, JsonAsObject);
         IF NOT JSONWSItemMgt.RUN THEN BEGIN
             JSONRequestslog.InsertLogRecord(1, _Function, JsonMgt.GetFormattedJsonText(JsonAsObject), TRUE);
@@ -153,7 +153,7 @@ codeunit 50040 "JSON :  Web Service"
     begin
     end;
 
-    [Scope('Internal')]
+
     procedure GetSalesPrices(Data: Text) Response: Text
     var
         JSONWSPriceMgt: Codeunit "50056";
@@ -183,7 +183,7 @@ codeunit 50040 "JSON :  Web Service"
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure CreateItemSalesPrices(Data: Text) Response: Text
     var
         JSONWSPriceMgt: Codeunit "50056";
@@ -200,7 +200,7 @@ codeunit 50040 "JSON :  Web Service"
             EXIT(Response)
         END;
 
-        COMMIT;
+        COMMIT();
         JSONWSPriceMgt.SetFunctionJArray(_Function, JsonAsArray);
         IF NOT JSONWSPriceMgt.RUN THEN BEGIN
             JSONRequestslog.InsertLogRecord(1, _Function, JsonMgt.GetFormattedJsonArrayText(JsonAsArray), TRUE);
@@ -214,7 +214,7 @@ codeunit 50040 "JSON :  Web Service"
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure UpdateItemSalesPrices(Data: Text) Response: Text
     var
         JSONWSPriceMgt: Codeunit "50056";
@@ -231,7 +231,7 @@ codeunit 50040 "JSON :  Web Service"
             EXIT(Response)
         END;
 
-        COMMIT;
+        COMMIT();
         JSONWSPriceMgt.SetFunctionJArray(_Function, JsonAsArray);
         IF NOT JSONWSPriceMgt.RUN THEN BEGIN
             JSONRequestslog.InsertLogRecord(1, _Function, JsonMgt.GetFormattedJsonArrayText(JsonAsArray), TRUE);
@@ -245,7 +245,7 @@ codeunit 50040 "JSON :  Web Service"
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure DeleteItemSalesPrices(Data: Text) Response: Text
     var
         JSONWSPriceMgt: Codeunit "50056";
@@ -262,7 +262,7 @@ codeunit 50040 "JSON :  Web Service"
             EXIT(Response)
         END;
 
-        COMMIT;
+        COMMIT();
         JSONWSPriceMgt.SetFunctionJArray(_Function, JsonAsArray);
         IF NOT JSONWSPriceMgt.RUN THEN BEGIN
             JSONRequestslog.InsertLogRecord(1, _Function, JsonMgt.GetFormattedJsonArrayText(JsonAsArray), TRUE);
@@ -280,7 +280,7 @@ codeunit 50040 "JSON :  Web Service"
     begin
     end;
 
-    [Scope('Internal')]
+
     procedure GetPurchasePrices(Data: Text) Response: Text
     var
         JSONWSPriceMgt: Codeunit "50056";
@@ -310,7 +310,7 @@ codeunit 50040 "JSON :  Web Service"
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure CreateItemPurchasePrices(Data: Text) Response: Text
     var
         JSONWSPriceMgt: Codeunit "50056";
@@ -328,7 +328,7 @@ codeunit 50040 "JSON :  Web Service"
         END;
 
 
-        COMMIT;
+        COMMIT();
         JSONWSPriceMgt.SetFunctionJArray(_Function, JsonAsArray);
         IF NOT JSONWSPriceMgt.RUN THEN BEGIN
             JSONRequestslog.InsertLogRecord(1, _Function, JsonMgt.GetFormattedJsonArrayText(JsonAsArray), TRUE);
@@ -342,7 +342,7 @@ codeunit 50040 "JSON :  Web Service"
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure UpdateItemPurchasePrices(Data: Text) Response: Text
     var
         JSONWSPriceMgt: Codeunit "50056";
@@ -359,7 +359,7 @@ codeunit 50040 "JSON :  Web Service"
             EXIT(Response)
         END;
 
-        COMMIT;
+        COMMIT();
         JSONWSPriceMgt.SetFunctionJArray(_Function, JsonAsArray);
         IF NOT JSONWSPriceMgt.RUN THEN BEGIN
             JSONRequestslog.InsertLogRecord(1, _Function, JsonMgt.GetFormattedJsonArrayText(JsonAsArray), TRUE);
@@ -373,7 +373,7 @@ codeunit 50040 "JSON :  Web Service"
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure DeleteItemPurchasePrices(Data: Text) Response: Text
     var
         JSONWSPriceMgt: Codeunit "50056";
@@ -390,7 +390,7 @@ codeunit 50040 "JSON :  Web Service"
             EXIT(Response)
         END;
 
-        COMMIT;
+        COMMIT();
         JSONWSPriceMgt.SetFunctionJArray(_Function, JsonAsArray);
         IF NOT JSONWSPriceMgt.RUN THEN BEGIN
             JSONRequestslog.InsertLogRecord(1, _Function, JsonMgt.GetFormattedJsonArrayText(JsonAsArray), TRUE);
@@ -408,7 +408,7 @@ codeunit 50040 "JSON :  Web Service"
     begin
     end;
 
-    [Scope('Internal')]
+
     procedure GetItemCrossReferences(Data: Text) Response: Text
     var
         JSONWSPriceMgt: Codeunit "50056";
@@ -438,7 +438,7 @@ codeunit 50040 "JSON :  Web Service"
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure CreateItemCrossReferences(Data: Text) Response: Text
     var
         JSONWSPriceMgt: Codeunit "50056";
@@ -455,7 +455,7 @@ codeunit 50040 "JSON :  Web Service"
             EXIT(Response)
         END;
 
-        COMMIT;
+        COMMIT();
         JSONWSPriceMgt.SetFunctionJArray(_Function, JsonAsArray);
         IF NOT JSONWSPriceMgt.RUN THEN BEGIN
             JSONRequestslog.InsertLogRecord(1, _Function, JsonMgt.GetFormattedJsonArrayText(JsonAsArray), TRUE);
@@ -469,7 +469,7 @@ codeunit 50040 "JSON :  Web Service"
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure UpdateItemCrossReferences(Data: Text) Response: Text
     var
         JSONWSPriceMgt: Codeunit "50056";
@@ -486,7 +486,7 @@ codeunit 50040 "JSON :  Web Service"
             EXIT(Response)
         END;
 
-        COMMIT;
+        COMMIT();
         JSONWSPriceMgt.SetFunctionJArray(_Function, JsonAsArray);
         IF NOT JSONWSPriceMgt.RUN THEN BEGIN
             JSONRequestslog.InsertLogRecord(1, _Function, JsonMgt.GetFormattedJsonArrayText(JsonAsArray), TRUE);
@@ -500,7 +500,7 @@ codeunit 50040 "JSON :  Web Service"
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure DeleteItemCrossReferences(Data: Text) Response: Text
     var
         JSONWSPriceMgt: Codeunit "50056";
@@ -517,7 +517,7 @@ codeunit 50040 "JSON :  Web Service"
             EXIT(Response)
         END;
 
-        COMMIT;
+        COMMIT();
         JSONWSPriceMgt.SetFunctionJArray(_Function, JsonAsArray);
         IF NOT JSONWSPriceMgt.RUN THEN BEGIN
             JSONRequestslog.InsertLogRecord(1, _Function, JsonMgt.GetFormattedJsonArrayText(JsonAsArray), TRUE);

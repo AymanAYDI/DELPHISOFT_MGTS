@@ -73,7 +73,9 @@ codeunit 50012 "DEL Minimizing Clicks - MGTS"
         END;
     end;
 
+
     procedure FctSendMailPurchOrder(RecPPurchaseHeader: Record "Purchase Header")
+
     var
         CduLMail: Codeunit Mail;
         CduSMTPMail: Codeunit 400;

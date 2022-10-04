@@ -11,7 +11,7 @@ codeunit 50029 "Deal Shipment"
         Deal_Cu: Codeunit "50020";
         ERROR_TXT: Label 'ERREUR\Source : %1\Function : %2\Reason : %3';
 
-    [Scope('Internal')]
+
     procedure FNC_Insert(Deal_ID_Co_Par: Code[20]; Date_Par: Date; BR_No_Co_Par: Code[20]) DealShipment_ID_Ret: Code[20]
     var
         dealShipment_Re_Loc: Record "50030";
@@ -47,7 +47,7 @@ codeunit 50029 "Deal Shipment"
         //grc modif end
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_GetFirstShipmentNo(Deal_ID_Co_Par: Code[20]) ShipmentNo_Co_Ret: Code[20]
     var
         dealShipment_Re_Loc: Record "50030";
@@ -63,7 +63,7 @@ codeunit 50029 "Deal Shipment"
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_GetNextShipmentNo(Deal_ID_Co_Par: Code[20]) ShipmentNo_Co_Ret: Code[20]
     var
         deal_Re_Loc: Record "50020";
@@ -82,7 +82,7 @@ codeunit 50029 "Deal Shipment"
         END
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_GetPurchaseInvoiceNo(DealShipmentID_Co_Par: Code[20]) PurchInvNo_Co_Ret: Code[20]
     var
         dealShipmentConnection_Re_Loc: Record "50032";
@@ -112,7 +112,7 @@ codeunit 50029 "Deal Shipment"
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_GetSalesInvoiceNo(DealShipmentID_Co_Par: Code[20]) SalesInvNo_Co_Ret: Code[20]
     var
         dealShipmentConnection_Re_Loc: Record "50032";
@@ -142,7 +142,7 @@ codeunit 50029 "Deal Shipment"
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_GetBRNo(DealShipmentID_Co_Par: Code[20]) BRNo_Co_Ret: Code[20]
     var
         dealShipmentConnection_Re_Loc: Record "50032";
@@ -171,7 +171,7 @@ codeunit 50029 "Deal Shipment"
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_GetPurchInvoiceElementID(DealShipmentID_Co_Par: Code[20]) PurchInvID_Co_Ret: Code[20]
     var
         dealShipmentConnection_Re_Loc: Record "50032";
@@ -199,7 +199,7 @@ codeunit 50029 "Deal Shipment"
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_GetSalesInvoiceElementID(DealShipmentID_Co_Par: Code[20]) SalesInvID_Co_Ret: Code[20]
     var
         dealShipmentConnection_Re_Loc: Record "50032";
@@ -227,7 +227,7 @@ codeunit 50029 "Deal Shipment"
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_GetBRElementID(DealShipmentID_Co_Par: Code[20]) BRID_Co_Ret: Code[20]
     var
         dealShipmentConnection_Re_Loc: Record "50032";
@@ -255,7 +255,7 @@ codeunit 50029 "Deal Shipment"
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_GetSalesCrMemoElementID(DealShipmentID_Co_Par: Code[20]) CrMemoID_Co_Ret: Code[20]
     var
         dealShipmentConnection_Re_Loc: Record "50032";
@@ -283,7 +283,7 @@ codeunit 50029 "Deal Shipment"
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_GetPurchCrMemoElementID(DealShipmentID_Co_Par: Code[20]) CrMemoID_Co_Ret: Code[20]
     var
         dealShipmentConnection_Re_Loc: Record "50032";
@@ -311,7 +311,7 @@ codeunit 50029 "Deal Shipment"
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_GetSalesInvoicePeriod(DealShipmentID_Co_Par: Code[20]) period_Da_Ret: Date
     var
         salesInvoiceHeader_Co_Loc: Record "112";
@@ -330,7 +330,7 @@ codeunit 50029 "Deal Shipment"
             period_Da_Ret := CALCDATE('<-CM>', salesInvoiceHeader_Co_Loc."Posting Date")
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_SetPurchaseInvoiceNo(DealShipmentID_Co_Par: Code[20]; PurchaseInvoiceNo_Co_Par: Code[20])
     var
         dealShipment_Re_Loc: Record "50030";
@@ -341,7 +341,7 @@ codeunit 50029 "Deal Shipment"
         END
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_SetSalesInvoiceNo(DealShipmentID_Co_Par: Code[20]; SalesInvoiceNo_Co_Par: Code[20])
     var
         dealShipment_Re_Loc: Record "50030";
@@ -352,7 +352,7 @@ codeunit 50029 "Deal Shipment"
         END
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_SetBRNo(DealShipmentID_Co_Par: Code[20]; BRNo_Co_Par: Code[20])
     var
         dealShipment_Re_Loc: Record "50030";

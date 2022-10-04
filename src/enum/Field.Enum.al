@@ -26,4 +26,8 @@ enum 50046 "DEL Field"
     {
         Caption = 'Douane';
     }
+    value(6; "Quantity")
+    {
+        Caption = 'Quantity';
+    }
 }

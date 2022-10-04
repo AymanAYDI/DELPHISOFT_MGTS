@@ -28,7 +28,7 @@ codeunit 50033 Provision
         timProgress: array[10] of Time;
         interval: array[10] of Integer;
 
-    [Scope('Internal')]
+
     procedure FNC_TransferToJournal(postingDate_Da_Par: Date; postingDateExt_Da_Par: Date; isCurrentPeriod_Bo_Par: Boolean)
     var
         sps_Re_Loc: Record "50042";
@@ -89,7 +89,7 @@ codeunit 50033 Provision
         PAGE.RUN(39);
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_CreateLedgerEntries(isExtourne: Boolean; isCurrentPeriod: Boolean)
     var
         sps_Re_Loc: Record "50042";
@@ -105,7 +105,7 @@ codeunit 50033 Provision
             ELSE
                 description_Te_Loc := 'Prov ' + FORMAT(postingDate_Da, 0, '<Month>/<Year>') + ' Previous';
 
-            FNC_CreateLedgerEntry(sps_Re_Loc, postingDate_Da, FNC_GetTempSPSTotal * -1, TRUE, description_Te_Loc)
+            FNC_CreateLedgerEntry(sps_Re_Loc, postingDate_Da, FNC_GetTempSPSTotal() * -1, TRUE, description_Te_Loc)
 
         END ELSE BEGIN
 
@@ -114,7 +114,7 @@ codeunit 50033 Provision
             ELSE
                 description_Te_Loc := 'Ext Prov ' + FORMAT(postingDate_Da, 0, '<Month>/<Year>') + ' Previous';
 
-            FNC_CreateLedgerEntry(sps_Re_Loc, postingDateExt_Da, FNC_GetTempSPSTotal, TRUE, description_Te_Loc);
+            FNC_CreateLedgerEntry(sps_Re_Loc, postingDateExt_Da, FNC_GetTempSPSTotal(), TRUE, description_Te_Loc);
 
         END;
 
@@ -150,7 +150,7 @@ codeunit 50033 Provision
             UNTIL (TempSPS_Re.NEXT() = 0);
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_CreateLedgerEntry(sps_Re_Par: Record "50042"; PostingDate_Da_Par: Date; Amount_Dec_Par: Decimal; IsMainEntry_Bo_Par: Boolean; Description_Te_Par: Text[50])
     var
         GenJnlLine_Re_Loc: Record "81";
@@ -188,7 +188,7 @@ codeunit 50033 Provision
         GenJnlLine_Re_Loc.INSERT(TRUE);
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_SetLastGenJnlLineNo()
     var
         GenJnlLine_Re_Loc: Record "81";
@@ -202,7 +202,7 @@ codeunit 50033 Provision
             journalLastLineNo_Int := 0;
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_GetShipmentProvisionAmount(ShipmentID_Co_Par: Code[20]): Decimal
     var
         sps_Re_Loc: Record "50042";
@@ -222,7 +222,7 @@ codeunit 50033 Provision
         EXIT(amount_Dec_Loc);
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Add2TempSPS(sps_Re_Par: Record "50042")
     begin
         /*
@@ -271,7 +271,7 @@ codeunit 50033 Provision
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_GetTempSPSTotal() tot: Decimal
     begin
         //compte le total des provisions pour tous les frais
@@ -285,7 +285,7 @@ codeunit 50033 Provision
             UNTIL (TempSPS_Re.NEXT() = 0);
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_UpdateSPS(docNo_Co_Par: Code[20]; postingDate_Da_Par: Date; isExtourne: Boolean)
     var
         sps_Re_Loc: Record "50042";
@@ -321,7 +321,7 @@ codeunit 50033 Provision
         FNC_ProgressBar_Close(2);
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_RunTest()
     var
         sps_Re_Loc: Record "50042";
@@ -366,7 +366,7 @@ codeunit 50033 Provision
 
                 END;
 
-                //TEST2
+            //TEST2
 
             UNTIL (sps_Re_Loc.NEXT() = 0);
 
@@ -376,7 +376,7 @@ codeunit 50033 Provision
         //MESSAGE('Test OK');
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Dispatch(Element_ID_Co_Loc: Code[20]; ProvisionAmount_Dec_Loc: Decimal)
     var
         element_Re_Loc: Record "50021";
@@ -535,7 +535,7 @@ codeunit 50033 Provision
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Add2Deals()
     var
         deal_ID_Co_Loc: Code[20];
@@ -682,7 +682,7 @@ codeunit 50033 Provision
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_DeleteProvisions()
     var
         element_Re_Loc: Record "50021";
@@ -708,7 +708,7 @@ codeunit 50033 Provision
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_Prune()
     var
         element_Re_Loc: Record "50021";
@@ -741,7 +741,7 @@ codeunit 50033 Provision
         END
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_ProgressBar_Init(index_Int_Par: Integer; interval_Int_Par: Integer; stepProgress_Int_Par: Integer; text_Te_Par: Text[50]; total_Int_Par: Integer)
     begin
         /*
@@ -765,7 +765,7 @@ codeunit 50033 Provision
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_ProgressBar_Update(index_Int_Par: Integer)
     begin
         intProgressI[index_Int_Par] += 1;
@@ -786,17 +786,17 @@ codeunit 50033 Provision
                 timProgress[index_Int_Par] := TIME;
 
                 //mise à jour de la barre
-                diaProgress[index_Int_Par].UPDATE;
+                diaProgress[index_Int_Par].UPDATE();
 
             END;
 
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_ProgressBar_Close(index_Int_Par: Integer)
     begin
-        diaProgress[index_Int_Par].CLOSE;
+        diaProgress[index_Int_Par].CLOSE();
     end;
 }
 

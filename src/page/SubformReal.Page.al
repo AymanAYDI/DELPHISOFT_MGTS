@@ -340,7 +340,7 @@ page 50034 "DEL Subform Real"
     begin
         CurrExchgRate_Re_Loc.SETRANGE("Currency Code", ToCurrencyCode);
         CurrExchgRate_Re_Loc.SETRANGE("Starting Date", 0D, Date);
-        IF CurrExchgRate_Re_Loc.FINDLAST THEN
+        IF CurrExchgRate_Re_Loc.FINDLAST() THEN
             EXIT(CurrExchgRate_Re_Loc."Relational Exch. Rate Amount")
         ELSE
             EXIT(0)

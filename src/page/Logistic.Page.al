@@ -108,21 +108,21 @@ page 50044 "DEL Logistic"
 
                             // TrackingGeneral2.SETRANGE(Booking_no, TrackingGeneral.Booking_no);
                             // TrackingGeneral2.SETRANGE(Order_no, TrackingGeneral.Order_no);
-                            IF TrackingGeneral2.FINDFIRST THEN
+                            IF TrackingGeneral2.FINDFIRST() THEN
                                 REPEAT
                                     TrackingGeneral2.Statut := Rec.ID;
                                     TrackingGeneral2.MODIFY();
-                                UNTIL TrackingGeneral2.NEXT = 0;
+                                UNTIL TrackingGeneral2.NEXT() = 0;
 
 
 
                             TrackingDetail.SETRANGE(Booking_no, TrackingGeneral.Booking_no);
                             TrackingDetail.SETRANGE(Order_no, TrackingGeneral.Order_no);
-                            IF TrackingDetail.FINDFIRST THEN BEGIN
+                            IF TrackingDetail.FINDFIRST() THEN BEGIN
                                 REPEAT
                                     TrackingDetail.Statut := Rec.ID;
                                     TrackingDetail.MODIFY();
-                                UNTIL TrackingDetail.NEXT = 0;
+                                UNTIL TrackingDetail.NEXT() = 0;
                             END;
 
                         END;
@@ -140,7 +140,7 @@ page 50044 "DEL Logistic"
 
                     trigger OnValidate()
                     begin
-                        BLN176OnAfterValidate;
+                        BLN176OnAfterValidate();
                     end;
                 }
                 field("Vessel name"; Rec."Vessel name")

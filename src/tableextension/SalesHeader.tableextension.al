@@ -400,20 +400,19 @@ tableextension 50026 "DEL SalesHeader" extends "Sales Header"
         CLEAR(GLEntries);
         GLEntries.SETTABLEVIEW(GLEntry);
         GLEntries.LOOKUPMODE(TRUE);
-        IF GLEntries.RUNMODAL() = ACTION::LookupOK THEN BEGIN
+        IF GLEntries.RUNMODAL() = ACTION::LookupOK THEN
             //TODO // GLEntries.SetGLEntry(ReverseGLEntry);
             IF ReverseGLEntry.FINDSET() THEN
                 REPEAT
                     ReverseGLEntry."DEL Reverse With Doc. No." := "No.";
                     ReverseGLEntry.MODIFY();
                 UNTIL ReverseGLEntry.NEXT() = 0;
-        END;
     end;
 
     procedure ShowSelectedEntriesForReverse()
     var
         GLEntry: Record "G/L Entry";
-        GLEntriesForReverse: Page "GL Entries For Reverse";
+        GLEntriesForReverse: Page "DEL GL Entries For Reverse";
     begin
 
         //MGTS10.00.001; 001; mhh; entire function

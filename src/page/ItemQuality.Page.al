@@ -61,7 +61,7 @@ page 50077 "DEL Item Quality"
 
                     trigger OnValidate()
                     begin
-                        CurrPage.UPDATE;
+                        CurrPage.UPDATE();
                     end;
                 }
                 field("Product Description"; Rec."Product Description")
@@ -69,7 +69,7 @@ page 50077 "DEL Item Quality"
 
                     trigger OnValidate()
                     begin
-                        CurrPage.UPDATE;
+                        CurrPage.UPDATE();
                     end;
                 }
                 field("Risque Securitaire"; "Risque Securitaire")

@@ -348,7 +348,7 @@ page 50073 "DEL Suivi des contrats"
 
                         trigger OnValidate()
                         begin
-                            CurrPage.UPDATE;
+                            CurrPage.UPDATE();
                         end;
                     }
                     field("Date de prochaine facturation"; Rec."DEL Date de proch. fact.")

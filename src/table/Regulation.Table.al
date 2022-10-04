@@ -233,9 +233,9 @@ table 50057 "DEL Regulation"
     begin
 
         IF Type = Type::"Plan of control" THEN BEGIN
-            Regulation_Var.RESET;
+            Regulation_Var.RESET();
             Regulation_Var.SETRANGE(Regulation_Var.Type, Regulation_Var.Type::"Plan of control");
-            IF Regulation_Var.FINDLAST THEN BEGIN
+            IF Regulation_Var.FINDLAST() THEN BEGIN
                 EVALUATE(Num, Regulation_Var."No.");
                 Num := Num + 1;
             END

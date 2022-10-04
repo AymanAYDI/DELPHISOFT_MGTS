@@ -15,16 +15,11 @@ codeunit 50032 "DEL Update Request Manager"
         Setup: Record "DEL General Setup";
         NoSeriesMgt_Cu: Codeunit NoSeriesManagement;
         Deal_Cu: Codeunit "DEL Deal";
-
-        intProgressI: array[10] of Integer;
-        diaProgress: array[10] of Dialog;
-        intProgress: array[10] of Integer;
         intProgressTotal: array[10] of Integer;
         intProgressStep: array[10] of Integer;
         intNextProgressStep: array[10] of Integer;
         timProgress: array[10] of Time;
         interval: array[10] of Integer;
-
 
     procedure FNC_Process_Requests(updateRequest_Re_Par: Record "DEL Update Request Manager"; deleteWhenUpdated: Boolean; UpdatePlanned_Bo_Par: Boolean; processSilently_Bo_Par: Boolean)
     var
@@ -103,10 +98,10 @@ codeunit 50032 "DEL Update Request Manager"
     begin
         //Supprime une update request
 
-        IF UpdateRequest_Re.GET(Request_ID_Co_Par) THEN BEGIN
+        IF UpdateRequest_Re.GET(Request_ID_Co_Par) THEN
             UpdateRequest_Re.DELETE();
 
-        END
+    END
     end;
 
 
@@ -192,9 +187,9 @@ codeunit 50032 "DEL Update Request Manager"
 
     end;
 
+
     procedure FNC_Import_BlankInvoices()
     var
-
         element_Re_Loc: Record "DEL Element";
         position_Re_Loc: Record "DEL Position";
         counter_Loc: Integer;
@@ -271,6 +266,7 @@ codeunit 50032 "DEL Update Request Manager"
 
     end;
 
+
     procedure FNC_ProgressBar_Update(index_Int_Par: Integer)
     begin
         intProgressI[index_Int_Par] += 1;
@@ -304,7 +300,10 @@ codeunit 50032 "DEL Update Request Manager"
     end;
 
 
+
     procedure FNC_Process_RequestsDeal(updateRequest_Re_Par: Record "DEL Update Request Manager"; deleteWhenUpdated: Boolean; UpdatePlanned_Bo_Par: Boolean; processSilently_Bo_Par: Boolean; NumID: Code[20])
+
+
     var
     begin
 
@@ -353,7 +352,6 @@ codeunit 50032 "DEL Update Request Manager"
         IF NOT processSilently_Bo_Par THEN MESSAGE('Liste traitée !')
 
     end;
-
 
     procedure FNC_Process_RequestsFilter(updateRequest_Re_Par: Record "DEL Update Request Manager"; deleteWhenUpdated: Boolean; UpdatePlanned_Bo_Par: Boolean; processSilently_Bo_Par: Boolean; FilterDeal: Text)
     var

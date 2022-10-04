@@ -71,10 +71,10 @@ page 50047 "DEL Purchase Price worksheet"
                     begin
 
                         IF CONFIRM('L''import va supprimer les lignes de la feuille prix d''achat. Voulez-vous continuer ?', TRUE) THEN BEGIN
-                            Rec.DELETEALL;
+                            Rec.DELETEALL();
                             //TODO Report
                             // ReportImport.RUN;
-                            CurrPage.UPDATE;
+                            CurrPage.UPDATE();
                         END;
                     end;
                 }

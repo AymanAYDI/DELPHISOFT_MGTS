@@ -13,13 +13,13 @@ codeunit 50055 "Record Modification Tracking"
         SynchroniseState: Option Insert,Modify,Delete,Rename;
 
     [EventSubscriber(ObjectType::Codeunit, 1, 'OnAfterGetDatabaseTableTriggerSetup', '', false, false)]
-    [Scope('Internal')]
+
     procedure GetDatabaseTableTriggerSetup(TableId: Integer; var OnDatabaseInsert: Boolean; var OnDatabaseModify: Boolean; var OnDatabaseDelete: Boolean; var OnDatabaseRename: Boolean)
     begin
         IF COMPANYNAME = '' THEN
             EXIT;
 
-        IF NOT GetSynchronizationActivated THEN
+        IF NOT GetSynchronizationActivated() THEN
             EXIT;
 
         IF IsSynchronizedRecord(TableId) THEN BEGIN
@@ -31,12 +31,12 @@ codeunit 50055 "Record Modification Tracking"
     end;
 
     [EventSubscriber(ObjectType::Codeunit, 1, 'OnAfterOnDatabaseInsert', '', false, false)]
-    [Scope('Internal')]
+
     procedure OnDatabaseInsert(RecRef: RecordRef)
     var
         TimeStamp: DateTime;
     begin
-        IF NOT GetSynchronizationActivated THEN
+        IF NOT GetSynchronizationActivated() THEN
             EXIT;
 
         TimeStamp := CURRENTDATETIME;
@@ -44,12 +44,12 @@ codeunit 50055 "Record Modification Tracking"
     end;
 
     [EventSubscriber(ObjectType::Codeunit, 1, 'OnAfterOnDatabaseModify', '', false, false)]
-    [Scope('Internal')]
+
     procedure OnDatabaseModify(RecRef: RecordRef)
     var
         TimeStamp: DateTime;
     begin
-        IF NOT GetSynchronizationActivated THEN
+        IF NOT GetSynchronizationActivated() THEN
             EXIT;
 
         TimeStamp := CURRENTDATETIME;
@@ -57,12 +57,12 @@ codeunit 50055 "Record Modification Tracking"
     end;
 
     [EventSubscriber(ObjectType::Codeunit, 1, 'OnAfterOnDatabaseDelete', '', false, false)]
-    [Scope('Internal')]
+
     procedure OnDatabaseDelete(RecRef: RecordRef)
     var
         TimeStamp: DateTime;
     begin
-        IF NOT GetSynchronizationActivated THEN
+        IF NOT GetSynchronizationActivated() THEN
             EXIT;
 
         TimeStamp := CURRENTDATETIME;
@@ -70,12 +70,12 @@ codeunit 50055 "Record Modification Tracking"
     end;
 
     [EventSubscriber(ObjectType::Codeunit, 1, 'OnAfterOnDatabaseRename', '', false, false)]
-    [Scope('Internal')]
+
     procedure OnDatabaseRename(RecRef: RecordRef; xRecRef: RecordRef)
     var
         TimeStamp: DateTime;
     begin
-        IF NOT GetSynchronizationActivated THEN
+        IF NOT GetSynchronizationActivated() THEN
             EXIT;
 
         TimeStamp := CURRENTDATETIME;
@@ -126,7 +126,7 @@ codeunit 50055 "Record Modification Tracking"
         EXIT(CompanyInformation."Enable WS Interface");
     end;
 
-    [Scope('Internal')]
+
     procedure IsSynchronizedRecord(TableID: Integer): Boolean
     begin
         EXIT(TableID IN

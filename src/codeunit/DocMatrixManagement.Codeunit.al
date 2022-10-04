@@ -47,13 +47,17 @@ codeunit 50015 "DEL DocMatrix Management"
         END;
     end;
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> 74bd8910beea14b80a9c2f1ed60aa139a7854d71
     procedure ProcessDocumentMatrix(pUsage: Integer; pProcessType: Option Manual,Automatic; pRecordVariant: Variant; pFieldNo: Integer; pFieldDocNo: Integer; precDocMatrixSelection: Record "50071"; pFieldPurchCode: Integer)
     var
         DummyReportSelections: Record "Report Selections";
         DocumentSendingProfile: Record "Document Sending Profile";
         DocumentPrint: Codeunit "Document-Print";
         FileManagement: Codeunit "File Management";
-        lcuDocMatrixSingleInstance: Codeunit "DocMatrix SingleInstance";
+        lcuDocMatrixSingleInstance: Codeunit "DEL DocMatrix SingleInstance";
         lNo: Code[20];
         lErr001: Label 'A unexpected problem with the parameter for the function "ProcessDocumentMatrix" occured.';
         lboDeleteFileAtTheEnd: Boolean;
@@ -169,6 +173,10 @@ codeunit 50015 "DEL DocMatrix Management"
         lcuProgressBar.FNC_ProgressBar_Close(1);
     end;
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> 74bd8910beea14b80a9c2f1ed60aa139a7854d71
     procedure ProcessDocumentMatrixAutomatic(pUsage: Integer)
     var
         lrecCustomer: Record Customer;
@@ -350,12 +358,13 @@ codeunit 50015 "DEL DocMatrix Management"
     var
         [RunOnClient]
         ProcessStartInfo: DotNet ProcessStartInfo;
-        [RunOnClient]
-        ProcessWindowStyle: DotNet ProcessWindowStyle;
+    [RunOnClient]
+
+    ProcessWindowStyle: DotNet ProcessWindowStyle;
         [RunOnClient]
         Process: DotNet Process;
-        AppMgt: Codeunit "1";
-        ltxPrinterName: Text;
+                     AppMgt: Codeunit "1";
+                     ltxPrinterName: Text;
     begin
         IF ISNULL(ProcessStartInfo) THEN
             ProcessStartInfo := ProcessStartInfo.ProcessStartInfo;
@@ -395,7 +404,7 @@ codeunit 50015 "DEL DocMatrix Management"
         txSendFromAddress: Text;
         ltxSubjectMail: Text;
         larrMailBody: array[10] of Text;
-        lcuDocMatrixSingleInstance: Codeunit "DocMatrix SingleInstance";
+        lcuDocMatrixSingleInstance: Codeunit "DEL DocMatrix SingleInstance";
         lcuDocumentMailing: Codeunit "Document-Mailing";
         TxtMailBody: Text;
     begin
@@ -525,14 +534,16 @@ codeunit 50015 "DEL DocMatrix Management"
 
     local procedure SendSMTPmail(ptxFromAddressName: Text; ptxFromAddressString: Text; ptxToAddressString: Text; ptxSubject: Text; txAttachementFullPathFileName: Text; larrMailBody: array[10] of Text)
     var
-        lcuSMTP: Codeunit 400;
+        lcuSMTP: Codeunit "Email Message";
         lcuFileManagement: Codeunit "File Management";
+        tempBlob: Codeunit "temp Blob";
         i: Integer;
     begin
-        lcuSMTP.CreateMessage(ptxFromAddressName, ptxFromAddressString, ptxToAddressString, ptxSubject, '', TRUE);
+        lcuSMTP.Create(ptxToAddressString, ptxSubject, '', TRUE);
         FOR i := 1 TO ARRAYLEN(larrMailBody) DO
-            lcuSMTP.AppendBody('<p>' + larrMailBody[i] + '</p>');
-        lcuSMTP.AddAttachment(txAttachementFullPathFileName, lcuFileManagement.GetFileName(txAttachementFullPathFileName));
+            lcuSMTP.AppendToBody('<p>' + larrMailBody[i] + '</p>');
+        FileManagement.
+    lcuSMTP.AddAttachment(txAttachementFullPathFileName, lcuFileManagement.GetFileName(txAttachementFullPathFileName));
         lcuSMTP.Send;
     end;
 
@@ -610,24 +621,25 @@ codeunit 50015 "DEL DocMatrix Management"
     local procedure TryUploadFileToFTP(ptxFTPServer: Text; ptxFTPUser: Text; ptxFTPPassword: Text; ptxFullPathFileName: Text; var pStatusDescription: Text)
     var
         FTPWebRequest: DotNet FtpWebRequest;
-        FTPWebResponse: DotNet FtpWebResponse;
-        NetworkCredential: DotNet NetworkCredential;
-        WebRequestMethods: DotNet WebRequestMethods_File;
-        UTF8Encoding: DotNet UTF8Encoding;
-        ResponseStream: InStream;
-        FileStream: DotNet FileStream;
-        Stream: DotNet Stream;
-        FileDotNet: DotNet File;
-        TempBlob: Record "99008535" temporary;
-        FileName: Text;
-        OutStream: OutStream;
-        [RunOnClient]
-        SearchOption: DotNet SearchOption;
-        i: Integer;
-        RelativeServerPath: Text;
+                           FTPWebResponse: DotNet FtpWebResponse;
+                           NetworkCredential: DotNet NetworkCredential;
+                           WebRequestMethods: DotNet WebRequestMethods_File;
+                           UTF8Encoding: DotNet UTF8Encoding;
+                           ResponseStream: InStream;
+                           FileStream: DotNet FileStream;
+                           Stream: DotNet Stream;
+                           FileDotNet: DotNet File;
+                           TempBlob: Record "99008535" temporary;
+                           FileName: Text;
+                           OutStream: OutStream;
+    [RunOnClient]
+
+    SearchOption: DotNet SearchOption;
+    i: Integer;
+    RelativeServerPath: Text;
         [RunOnClient]
         ClientFilePath: DotNet String;
-        PathHelper: DotNet Path;
+                            PathHelper: DotNet Path;
     begin
         FTPWebRequest := FTPWebRequest.Create(ptxFTPServer + '/' + PathHelper.GetFileName(ptxFullPathFileName));
         FTPWebRequest.Credentials := NetworkCredential.NetworkCredential(ptxFTPUser, ptxFTPPassword);
@@ -799,10 +811,7 @@ codeunit 50015 "DEL DocMatrix Management"
 
 
     procedure UpdateDocMatrixSelection(pNo: Code[20]; pProcessType: Option Manual,Automatic; pUsage: Integer; var precDocMatrixSelection: Record "DEL DocMatrix Selection"; pPrintOnly: Boolean)
-    var
-        DocumentMatrix: Record "DEL Document Matrix";
         lPostOptionSOrder: Integer;
-    begin
         // find the Document Matrix record
         DocumentMatrix.RESET();
         DocumentMatrix.SETRANGE(Type, GetTypeWithUsage(pUsage));
@@ -834,7 +843,9 @@ codeunit 50015 "DEL DocMatrix Management"
                 precDocMatrixSelection.UserId := USERID;
                 IF pUsage = 1 THEN
                     precDocMatrixSelection.Post := lPostOptionSOrder;
+
                 precDocMatrixSelection.MODIFY();
+
                 COMMIT();
             END;
 
@@ -846,16 +857,9 @@ codeunit 50015 "DEL DocMatrix Management"
     begin
         precSalesInvoiceHeader.RESET();
         precSalesInvoiceHeader.SETRANGE("Order No.", pNo);
-        precSalesInvoiceHeader.SETRANGE("Sell-to Customer No.", pCustNo);
-        EXIT(precSalesInvoiceHeader.FINDFIRST());
-    end;
-
 
     procedure GetPostedSalesCreditMemo(pNo: Code[20]; pCustNo: Code[20]; var precSalesCrMemoHeader: Record "Sales Cr.Memo Header"): Boolean
-    begin
-        precSalesCrMemoHeader.RESET();
         precSalesCrMemoHeader.SETRANGE("Pre-Assigned No.", pNo);
-        precSalesCrMemoHeader.SETRANGE("Sell-to Customer No.", pCustNo);
         EXIT(precSalesCrMemoHeader.FINDFIRST());
     end;
 

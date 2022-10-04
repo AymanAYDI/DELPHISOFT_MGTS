@@ -1,9 +1,9 @@
 table 50019 "DEL Note"
 {
     Caption = 'DEL Note';
-    //TODO //Page
-    // DrillDownPageID = 50069;
-    // LookupPageID = 50069;
+
+    DrillDownPageID = "DEL Note audit";
+    LookupPageID = "DEL Note audit";
 
     fields
     {

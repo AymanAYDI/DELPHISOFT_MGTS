@@ -36,7 +36,7 @@ codeunit 50045 "DEL API Orders  Mgt."
             OrderAPIRecordTracking.FINDSET;
             REPEAT
                 CLEAR(JsonMgt);
-                CLEARLASTERROR;
+                CLEARLASTERROR();
 
                 //Prepare Request Body
                 JsonText := GetRequestBody(OrderAPIRecordTracking);
@@ -63,7 +63,7 @@ codeunit 50045 "DEL API Orders  Mgt."
                         OrderAPIRecordTracking2."Sent Deal" := TRUE;
                         OrderAPIRecordTracking2.MODIFY
                     END;
-                    COMMIT;
+                    COMMIT();
                     //<<Mgts10.00.01.02
 
                 END;

@@ -74,16 +74,16 @@ page 50130 "DEL Document Matrix"
                         lrecDocMatrixEmailCodes: Record "DEL DocMatrix Email Codes";
                         lpgDocMatrixMailCodes: Page 50134;
                     begin
-                        lrecDocMatrixEmailCodes.RESET;
+                        lrecDocMatrixEmailCodes.RESET();
                         IF Rec."Mail Text Langauge Code" <> '' THEN
                             lrecDocMatrixEmailCodes.SETFILTER("Language Code", '%1|%2', Rec."Mail Text Langauge Code", '');
-                        IF lrecDocMatrixEmailCodes.FINDSET THEN;
+                        IF lrecDocMatrixEmailCodes.FINDSET() THEN;
                         lpgDocMatrixMailCodes.SETTABLEVIEW(lrecDocMatrixEmailCodes);
                         lpgDocMatrixMailCodes.LOOKUPMODE := TRUE;
-                        IF lpgDocMatrixMailCodes.RUNMODAL = ACTION::LookupOK THEN BEGIN
+                        IF lpgDocMatrixMailCodes.RUNMODAL() = ACTION::LookupOK THEN BEGIN
                             lpgDocMatrixMailCodes.GETRECORD(lrecDocMatrixEmailCodes);
                             Rec."Mail Text Code" := lrecDocMatrixEmailCodes.Code;
-                            Rec.MODIFY;
+                            Rec.MODIFY();
                         END;
                     end;
                 }
@@ -116,7 +116,7 @@ page 50130 "DEL Document Matrix"
                     var
                         pgDocMatrixMailCodes: Page 50134;
                     begin
-                        pgDocMatrixMailCodes.RUN;
+                        pgDocMatrixMailCodes.RUN();
                     end;
                 }
                 action(Setup)
@@ -174,7 +174,7 @@ page 50130 "DEL Document Matrix"
                     begin
                         lpgDocMatrixRequestPagePar.LOOKUPMODE(TRUE);
                         lpgDocMatrixRequestPagePar.SETRECORD(Rec);
-                        lpgDocMatrixRequestPagePar.RUNMODAL;
+                        lpgDocMatrixRequestPagePar.RUNMODAL();
                     end;
                 }
                 action("Show Log")

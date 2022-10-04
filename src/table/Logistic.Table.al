@@ -10,6 +10,7 @@ table 50034 "DEL Logistic"
             Caption = 'ID';
         }
         field(10; Deal_ID; Code[20])
+
         {
             TableRelation = "DEL Deal".ID;
             Caption = 'Deal_ID';
@@ -324,7 +325,7 @@ table 50034 "DEL Logistic"
                 Logistic_Re_Par."Supplier Name" := Vendor_Re.Name;
 
             Logistic_Re_Par."Forwarder Name" := PurchHead_Re."DEL Forwarding Agent Code";
-            Logistic_Re_Par.VALIDATE("Shipment mode", PurchHead_Re."DEL Ship Per");
+            Logistic_Re_Par.VALIDATE("Shipment mode", PurchHead_Re."Ship Per");
             Logistic_Re_Par."ETD Requested" := PurchHead_Re."Requested Receipt Date";
             //Changer port
             Logistic_Re_Par."Arrival port" := PurchHead_Re."Port d'arrivée";
@@ -419,7 +420,7 @@ table 50034 "DEL Logistic"
 
             PurchRcptLine_Re.SETRANGE("Document No.", PurchRcpt_Re."No.");
             PurchRcptLine_Re.SETFILTER(Quantity, '<>0');
-            IF PurchRcptLine_Re.FINDFIRST THEN
+            IF PurchRcptLine_Re.FINDFIRST() THEN
                 REPEAT
                 //TODO // tabext 
                 // IF (Item_Re.GET(PurchRcptLine_Re."No.")) AND (PurchRcptLine_Re.Type = PurchRcptLine_Re.Type::Item) THEN BEGIN

@@ -14,7 +14,7 @@ codeunit 50057 "Vendor Payment Advice Mgt."
         Text001: Label 'Vendor : ##################1################## \\ @@@@@@@@@@@@@@@@@@2@@@@@@@@@@@@@@@@@@';
         Text002: Label 'Processing completed !';
 
-    [Scope('Internal')]
+
     procedure SendPaymentAdvice(_JournalTemplateName: Code[10]; _JournalBatchName: Code[10])
     var
         Cst001: Label 'We must add a e email template';
@@ -90,7 +90,7 @@ codeunit 50057 "Vendor Payment Advice Mgt."
             UNTIL TempVendor.NEXT = 0;
 
             IF GUIALLOWED THEN
-                ProgressionDialog.CLOSE;
+                ProgressionDialog.CLOSE();
             MESSAGE(Text002);
         END;
     end;
@@ -154,7 +154,7 @@ codeunit 50057 "Vendor Payment Advice Mgt."
         EXIT(TempBlob.ReadAsText(CR, TEXTENCODING::UTF8));
     end;
 
-    [Scope('Internal')]
+
     procedure SavePDF(_JournalTemplateName: Code[10]; _JournalBatchName: Code[10]; _VendorNo: Code[20]; var _ServerAttachmentFilePath: Text)
     var
         lErr001: Label 'Not able to save PDF %1. \\ERROR: %2';
@@ -175,7 +175,7 @@ codeunit 50057 "Vendor Payment Advice Mgt."
         VendorPaymentAdvice.SAVEASPDF(_ServerAttachmentFilePath);
     end;
 
-    [Scope('Internal')]
+
     procedure DefineJourBatch(_GnlJourLine: Record "81")
     begin
         JournalBatchName := _GnlJourLine."Journal Batch Name";

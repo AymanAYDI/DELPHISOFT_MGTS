@@ -26,13 +26,13 @@ codeunit 50043 "Advanced JSON Mgt"
         InitializeObjectFromString(JSONString);
     end;
 
-    [Scope('Internal')]
+
     procedure InitializeObjectFromJObject(NewJsonObject: DotNet JObject)
     begin
         JsonObject := NewJsonObject;
     end;
 
-    [Scope('Internal')]
+
     procedure InitializeCollectionFromJArray(NewJsonArray: DotNet JArray)
     begin
         JsonArray := NewJsonArray;
@@ -49,7 +49,7 @@ codeunit 50043 "Advanced JSON Mgt"
         IF JSONString <> '' THEN
             JsonArray := JsonArray.Parse(JSONString)
         ELSE
-            InitializeEmptyCollection;
+            InitializeEmptyCollection();
     end;
 
     local procedure InitializeObjectFromString(JSONString: Text)
@@ -58,32 +58,32 @@ codeunit 50043 "Advanced JSON Mgt"
         IF JSONString <> '' THEN
             JsonObject := JsonObject.Parse(JSONString)
         ELSE
-            InitializeEmptyObject;
+            InitializeEmptyObject();
     end;
 
-    [Scope('Internal')]
+
     procedure GetJSONObject(var JObject: DotNet JObject)
     begin
         JObject := JsonObject;
     end;
 
-    [Scope('Internal')]
+
     procedure GetJsonArray(var JArray: DotNet JArray)
     begin
         JArray := JsonArray;
     end;
 
-    [Scope('Internal')]
+
     procedure GetJObjectFromCollectionByIndex(var JObject: DotNet JObject; Index: Integer): Boolean
     begin
-        IF (GetCollectionCount = 0) OR (GetCollectionCount <= Index) THEN
+        IF (GetCollectionCount() = 0) OR (GetCollectionCount() <= Index) THEN
             EXIT(FALSE);
 
         JObject := JsonArray.Item(Index);
         EXIT(NOT ISNULL(JObject))
     end;
 
-    [Scope('Internal')]
+
     procedure GetJObjectFromCollectionByPropertyValue(var JObject: DotNet JObject; propertyName: Text; value: Text): Boolean
     var
         IEnumerable: DotNet IEnumerable_Of_T;
@@ -99,7 +99,7 @@ codeunit 50043 "Advanced JSON Mgt"
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure GetPropertyValueFromJObjectByName(JObject: DotNet JObject; propertyName: Text; var value: Variant): Boolean
     var
         JProperty: DotNet JProperty;
@@ -113,7 +113,7 @@ codeunit 50043 "Advanced JSON Mgt"
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure GetPropertyValueFromJObjectByPathSetToFieldRef(JObject: DotNet JObject; propertyPath: Text; var FieldRef: FieldRef): Boolean
     var
         OutlookSynchTypeConv: Codeunit "5302";
@@ -176,7 +176,7 @@ codeunit 50043 "Advanced JSON Mgt"
         EXIT(Success);
     end;
 
-    [Scope('Internal')]
+
     procedure GetPropertyValueFromJObjectByPath(JObject: DotNet JObject; fullyQualifiedPropertyName: Text; var value: Variant): Boolean
     var
         containerJObject: DotNet JObject;
@@ -190,7 +190,7 @@ codeunit 50043 "Advanced JSON Mgt"
         EXIT(GetPropertyValueFromJObjectByName(containerJObject, propertyName, value));
     end;
 
-    [Scope('Internal')]
+
     procedure GetStringPropertyValueFromJObjectByName(JObject: DotNet JObject; propertyName: Text; var value: Text): Boolean
     var
         VariantValue: Variant;
@@ -203,7 +203,7 @@ codeunit 50043 "Advanced JSON Mgt"
         EXIT(FALSE);
     end;
 
-    [Scope('Internal')]
+
     procedure GetStringPropertyValueFromJObjectByPath(JObject: DotNet JObject; fullyQualifiedPropertyName: Text; var value: Text): Boolean
     var
         VariantValue: Variant;
@@ -216,7 +216,7 @@ codeunit 50043 "Advanced JSON Mgt"
         EXIT(FALSE);
     end;
 
-    [Scope('Internal')]
+
     procedure GetEnumPropertyValueFromJObjectByName(JObject: DotNet JObject; propertyName: Text; var value: Option)
     var
         StringValue: Text;
@@ -225,7 +225,7 @@ codeunit 50043 "Advanced JSON Mgt"
         EVALUATE(value, StringValue, 0);
     end;
 
-    [Scope('Internal')]
+
     procedure GetBoolPropertyValueFromJObjectByName(JObject: DotNet JObject; propertyName: Text; var value: Boolean): Boolean
     var
         StringValue: Text;
@@ -237,7 +237,7 @@ codeunit 50043 "Advanced JSON Mgt"
         EXIT(FALSE);
     end;
 
-    [Scope('Internal')]
+
     procedure GetArrayPropertyValueFromJObjectByName(JObject: DotNet JObject; propertyName: Text; var JArray: DotNet JArray): Boolean
     var
         JProperty: DotNet JProperty;
@@ -252,7 +252,7 @@ codeunit 50043 "Advanced JSON Mgt"
         EXIT(FALSE);
     end;
 
-    [Scope('Internal')]
+
     procedure GetObjectPropertyValueFromJObjectByName(JObject: DotNet JObject; propertyName: Text; var JSubObject: DotNet JObject): Boolean
     var
         JProperty: DotNet JProperty;
@@ -267,7 +267,7 @@ codeunit 50043 "Advanced JSON Mgt"
         EXIT(FALSE);
     end;
 
-    [Scope('Internal')]
+
     procedure GetDecimalPropertyValueFromJObjectByName(JObject: DotNet JObject; propertyName: Text; var value: Decimal): Boolean
     var
         StringValue: Text;
@@ -279,7 +279,7 @@ codeunit 50043 "Advanced JSON Mgt"
         EXIT(FALSE);
     end;
 
-    [Scope('Internal')]
+
     procedure GetGuidPropertyValueFromJObjectByName(JObject: DotNet JObject; propertyName: Text; var value: Guid): Boolean
     var
         StringValue: Text;
@@ -300,7 +300,7 @@ codeunit 50043 "Advanced JSON Mgt"
         value := JValue.Value;
     end;
 
-    [Scope('Internal')]
+
     procedure GetStringValueFromJObject(JObject: DotNet JObject; var value: Text)
     var
         VariantValue: Variant;
@@ -310,7 +310,7 @@ codeunit 50043 "Advanced JSON Mgt"
         value := FORMAT(VariantValue);
     end;
 
-    [Scope('Internal')]
+
     procedure AddJArrayToJObject(var JObject: DotNet JObject; propertyName: Text; value: Variant)
     var
         JArray2: DotNet JArray;
@@ -320,7 +320,7 @@ codeunit 50043 "Advanced JSON Mgt"
         JObject.Add(JProperty.JProperty(propertyName, JArray2));
     end;
 
-    [Scope('Internal')]
+
     procedure AddJObjectToJObject(var JObject: DotNet JObject; propertyName: Text; value: Variant)
     var
         JObject2: DotNet JObject;
@@ -332,7 +332,7 @@ codeunit 50043 "Advanced JSON Mgt"
         JObject.Add(propertyName, JToken.Parse(ValueText));
     end;
 
-    [Scope('Internal')]
+
     procedure AddJObjectToJArray(var JArray: DotNet JArray; value: Variant)
     var
         JObject: DotNet JObject;
@@ -341,7 +341,7 @@ codeunit 50043 "Advanced JSON Mgt"
         JArray.Add(JObject.DeepClone);
     end;
 
-    [Scope('Internal')]
+
     procedure AddJPropertyToJObject(var JObject: DotNet JObject; propertyName: Text; value: Variant)
     var
         JProperty: DotNet JProperty;
@@ -357,7 +357,7 @@ codeunit 50043 "Advanced JSON Mgt"
         JObject.Add(JProperty);
     end;
 
-    [Scope('Internal')]
+
     procedure AddNullJPropertyToJObject(var JObject: DotNet JObject; propertyName: Text)
     var
         JValue: DotNet JValue;
@@ -365,7 +365,7 @@ codeunit 50043 "Advanced JSON Mgt"
         JObject.Add(propertyName, JValue.CreateNull);
     end;
 
-    [Scope('Internal')]
+
     procedure AddJValueToJObject(var JObject: DotNet JObject; value: Variant)
     var
         JValue: DotNet JValue;
@@ -373,19 +373,19 @@ codeunit 50043 "Advanced JSON Mgt"
         JObject := JValue.JValue(value);
     end;
 
-    [Scope('Internal')]
+
     procedure AddJObjectToCollection(JObject: DotNet JObject)
     begin
         JsonArray.Add(JObject.DeepClone);
     end;
 
-    [Scope('Internal')]
+
     procedure AddJArrayContentToCollection(JArray: DotNet JArray)
     begin
         JsonArray.Merge(JArray.DeepClone);
     end;
 
-    [Scope('Internal')]
+
     procedure ReplaceOrAddJPropertyInJObject(var JObject: DotNet JObject; propertyName: Text; value: Variant): Boolean
     var
         JProperty: DotNet JProperty;
@@ -404,7 +404,7 @@ codeunit 50043 "Advanced JSON Mgt"
         EXIT(TRUE);
     end;
 
-    [Scope('Internal')]
+
     procedure ReplaceOrAddDescendantJPropertyInJObject(var JObject: DotNet JObject; fullyQualifiedPropertyName: Text; value: Variant): Boolean
     var
         containerJObject: DotNet JObject;

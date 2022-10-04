@@ -10,6 +10,7 @@ codeunit 50016 "DEL DocMatrix SingleInstance"
         SendFromAddress: Text;
         DocumentMatrixProcessActive: Boolean;
 
+
     procedure SetSendFromAddress(pSendFromAddress: Text)
     begin
         SendFromAddress := pSendFromAddress;

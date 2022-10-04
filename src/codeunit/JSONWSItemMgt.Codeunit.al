@@ -24,11 +24,11 @@ codeunit 50050 "DEL JSON WS : Item Mgt"
     //     JsonAsObjectGlobal := CurrentJsonAsObject;
     // end;
 
-
     procedure GetCreatedItem(): Code[20]
     begin
         //TODO EXIT(ErpItem);
     end;
+
 
     //TODO : dotnet is removed
     //procedure CreateUpdateItem(JsonAsObject: DotNet JObject) ErpItemCode: Code[20]
@@ -41,7 +41,6 @@ codeunit 50050 "DEL JSON WS : Item Mgt"
     // begin
     //     WITH Item DO BEGIN
     //         IF (JsonMgt.GetValueFromJsonObject(JsonAsObject, 'ProductErpCode', 20) = '') THEN BEGIN
-    //             INIT;
     //             INSERT(TRUE);
     //             ApplyItemTemplate(Item);
     //         END
@@ -125,30 +124,30 @@ codeunit 50050 "DEL JSON WS : Item Mgt"
         MgtsSetup: Record "DEL General Setup";
         ConfigTemplateHeader: Record "Config. Template Header";
         ConfigTemplateManagement: Codeunit "Config. Template Management";
-        ItemRecRef: RecordRef;
+=======
+
+    procedure CreateUpdateItem(JsonAsObject: DotNet JObject) ErpItemCode: Code[20]
+    var
+        Item: Record "27";
+        ProductGroup: Record "5723";
+        MatriseGroupArtGroup: Record "50059";
+        JsonMgt: Codeunit "50041";
+        Text0001: Label 'Segment code missing product code %1';
     begin
-        IF NOT MgtsSetup.GET THEN
-            EXIT;
-
-        IF NOT ConfigTemplateHeader.GET(MgtsSetup."Item Template") THEN
-            EXIT;
-
-        ItemRecRef.GETTABLE(Item);
-        ConfigTemplateManagement.UpdateRecord(ConfigTemplateHeader, ItemRecRef);
-        DimensionsTemplate.InsertDimensionsFromTemplates(ConfigTemplateHeader, Item."No.", DATABASE::Item);
-        ItemRecRef.SETTABLE(Item);
-    end;
+        WITH Item DO BEGIN
+            IF (JsonMgt.GetValueFromJsonObject(JsonAsObject, 'ProductErpCode', 20) = '') THEN BEGIN
+            end;
     //TODO: triggers are not valid
     // trigger JsonAsArrayGlobal::ListChanged(sender: Variant; e: DotNet ListChangedEventArgs)
     // begin
     // end;
 
-    // trigger JsonAsArrayGlobal::AddingNew(sender: Variant; e: DotNet AddingNewEventArgs)
-    // begin
-    // end;
+            // trigger JsonAsArrayGlobal::AddingNew(sender: Variant; e: DotNet AddingNewEventArgs)
+            // begin
+            // end;
 
-    // trigger JsonAsArrayGlobal::CollectionChanged(sender: Variant; e: DotNet NotifyCollectionChangedEventArgs)
-    // begin
-    // end;
+            // trigger JsonAsArrayGlobal::CollectionChanged(sender: Variant; e: DotNet NotifyCollectionChangedEventArgs)
+            // begin
+            // end;
 }
 

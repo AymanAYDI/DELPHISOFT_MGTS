@@ -40,7 +40,7 @@ page 50097 "DEL General regulation Card"
                     trigger OnLookup(var Text: Text): Boolean
                     begin
 
-                        Pays_Rec.RESET;
+                        Pays_Rec.RESET();
                         CLEAR(Pays_Page);
                         Pays_Page.SETTABLEVIEW(Pays_Rec);
                         Pays_Page.LOOKUPMODE := TRUE;

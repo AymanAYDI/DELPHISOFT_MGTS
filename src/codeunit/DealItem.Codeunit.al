@@ -2,7 +2,6 @@ codeunit 50024 "DEL Deal Item"
 {
 
 
-
     trigger OnRun()
     begin
     end;
