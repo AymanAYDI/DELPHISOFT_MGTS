@@ -343,12 +343,7 @@ codeunit 50032 "DEL Update Request Manager"
         diaProgress[index_Int_Par].CLOSE();
     end;
 
-<<<<<<< HEAD
     procedure FNC_Process_RequestsDeal(updateRequest_Re_Par: Record "DEL Update Request Manager"; deleteWhenUpdated: Boolean; UpdatePlanned_Bo_Par: Boolean; processSilently_Bo_Par: Boolean; NumID: Code[20])
-=======
-
-    procedure FNC_Process_RequestsDeal(updateRequest_Re_Par: Record "50039"; deleteWhenUpdated: Boolean; UpdatePlanned_Bo_Par: Boolean; processSilently_Bo_Par: Boolean; NumID: Code[20])
->>>>>>> a5fd495bfd654ab158472c32ca8b3ca0058e4b1c
     var
         intProgressI: Integer;
         diaProgress: Dialog;
