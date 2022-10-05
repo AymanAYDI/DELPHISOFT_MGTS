@@ -90,11 +90,7 @@ tableextension 50044 "DEL GenJournalLine" extends "Gen. Journal Line"
         //<<MGTS10.00.06.00
         */
         //end;
-        field(11510; "DEL Swiss QRBill"; Boolean)
-        {
-            Caption = 'Swiss QRBill';
-            Editable = false;
-        }
+
         field(50001; "DEL Shipment Selection"; Integer)
         {
             FieldClass = FlowField;

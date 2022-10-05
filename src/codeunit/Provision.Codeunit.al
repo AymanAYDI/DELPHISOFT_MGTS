@@ -1,44 +1,42 @@
-codeunit 50033 Provision
+codeunit 50033 "DEL Provision"
 {
 
-    trigger OnRun()
-    begin
-    end;
+
 
     var
-        journalLastLineNo_Int: Integer;
-        NoSeriesMgt_Cu: Codeunit "396";
-        GeneralSetup: Record "50000";
+        GeneralSetup: Record "DEL General Setup";
+        TempSPS_Re: Record "DEL Shipment Provision Select." temporary;
+        Dispatcher_Cu: Codeunit "DEL Dispatcher";
+        Element_Cu: Codeunit "DEL Element";
+        Fee_Cu: Codeunit "DEL Fee";
+        UpdateRequestManager_Cu: Codeunit "DEL Update Request Manager";
+        NoSeriesMgt_Cu: Codeunit NoSeriesManagement;
         DocumentNo_Co: Code[20];
-        TempSPS_Re: Record "50042" temporary;
-        Element_Cu: Codeunit "50021";
-        Dispatcher_Cu: Codeunit "50026";
-        Fee_Cu: Codeunit "50023";
-        ERROR_TXT: Label 'ERREUR\Source : %1\Function : %2\Reason : %3';
-        UpdateRequestManager_Cu: Codeunit "50032";
         postingDate_Da: Date;
         postingDateExt_Da: Date;
-        "v------PROGRESS BAR------v": Integer;
-        intProgressI: array[10] of Integer;
         diaProgress: array[10] of Dialog;
-        intProgress: array[10] of Integer;
-        intProgressTotal: array[10] of Integer;
-        intProgressStep: array[10] of Integer;
-        intNextProgressStep: array[10] of Integer;
-        timProgress: array[10] of Time;
         interval: array[10] of Integer;
+        intNextProgressStep: array[10] of Integer;
+        intProgress: array[10] of Integer;
+        intProgressI: array[10] of Integer;
+        intProgressStep: array[10] of Integer;
+        intProgressTotal: array[10] of Integer;
+        journalLastLineNo_Int: Integer;
+        "v------PROGRESS BAR------v": Integer;
+        ERROR_TXT: Label 'ERREUR\Source : %1\Function : %2\Reason : %3';
+        timProgress: array[10] of Time;
 
 
     procedure FNC_TransferToJournal(postingDate_Da_Par: Date; postingDateExt_Da_Par: Date; isCurrentPeriod_Bo_Par: Boolean)
     var
-        sps_Re_Loc: Record "50042";
+        sps_Re_Loc: Record "DEL Shipment Provision Select.";
         actual: Code[20];
-        intProgressI: Integer;
         diaProgress: Dialog;
+        interval: Integer;
         intProgress: Integer;
+        intProgressI: Integer;
         intProgressTotal: Integer;
         timProgress: Time;
-        interval: Integer;
     begin
         //Initialisation
 
@@ -86,13 +84,13 @@ codeunit 50033 Provision
 
         COMMIT();
 
-        PAGE.RUN(39);
+        PAGE.RUN(Page::"General Journal");
     end;
 
 
     procedure FNC_CreateLedgerEntries(isExtourne: Boolean; isCurrentPeriod: Boolean)
     var
-        sps_Re_Loc: Record "50042";
+        sps_Re_Loc: Record "DEL Shipment Provision Select.";
         description_Te_Loc: Text[50];
     begin
         //Crée le jeu d'écritures pour la provision d'une livraison
@@ -151,11 +149,11 @@ codeunit 50033 Provision
     end;
 
 
-    procedure FNC_CreateLedgerEntry(sps_Re_Par: Record "50042"; PostingDate_Da_Par: Date; Amount_Dec_Par: Decimal; IsMainEntry_Bo_Par: Boolean; Description_Te_Par: Text[50])
+    procedure FNC_CreateLedgerEntry(sps_Re_Par: Record "DEL Shipment Provision Select."; PostingDate_Da_Par: Date; Amount_Dec_Par: Decimal; IsMainEntry_Bo_Par: Boolean; Description_Te_Par: Text[50])
     var
-        GenJnlLine_Re_Loc: Record "81";
-        DealShipmentSelection_Re_Loc: Record "50031";
-        DealShipment_Re_Loc: Record "50030";
+        DealShipment_Re_Loc: Record "DEL Deal Shipment";
+        DealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
+        GenJnlLine_Re_Loc: Record "Gen. Journal Line";
     begin
         journalLastLineNo_Int += 10000;
 
@@ -191,7 +189,7 @@ codeunit 50033 Provision
 
     procedure FNC_SetLastGenJnlLineNo()
     var
-        GenJnlLine_Re_Loc: Record "81";
+        GenJnlLine_Re_Loc: Record "Gen. Journal Line";
     begin
         GenJnlLine_Re_Loc.RESET();
         GenJnlLine_Re_Loc.SETRANGE("Journal Template Name", 'GÉNÉRAL');
@@ -205,7 +203,7 @@ codeunit 50033 Provision
 
     procedure FNC_GetShipmentProvisionAmount(ShipmentID_Co_Par: Code[20]): Decimal
     var
-        sps_Re_Loc: Record "50042";
+        sps_Re_Loc: Record "DEL Shipment Provision Select.";
         amount_Dec_Loc: Decimal;
     begin
         amount_Dec_Loc := 0;
@@ -223,7 +221,7 @@ codeunit 50033 Provision
     end;
 
 
-    procedure FNC_Add2TempSPS(sps_Re_Par: Record "50042")
+    procedure FNC_Add2TempSPS(sps_Re_Par: Record "DEL Shipment Provision Select.")
     begin
         /*
         On ajoute la ligne à un record temporaire global (TempSPS_Re)
@@ -288,7 +286,7 @@ codeunit 50033 Provision
 
     procedure FNC_UpdateSPS(docNo_Co_Par: Code[20]; postingDate_Da_Par: Date; isExtourne: Boolean)
     var
-        sps_Re_Loc: Record "50042";
+        sps_Re_Loc: Record "DEL Shipment Provision Select.";
     begin
         //renseinge le numéro de document pour les écritures ou les extournes
 
@@ -324,16 +322,16 @@ codeunit 50033 Provision
 
     procedure FNC_RunTest()
     var
-        sps_Re_Loc: Record "50042";
-        element_Re_Loc: Record "50021";
-        intProgressI: Integer;
+        element_Re_Loc: Record "DEL Element";
+        sps_Re_Loc: Record "DEL Shipment Provision Select.";
         diaProgress: Dialog;
-        intProgress: Integer;
-        intProgressTotal: Integer;
-        intProgressStep: Integer;
-        intNextProgressStep: Integer;
-        timProgress: Time;
         interval: Integer;
+        intNextProgressStep: Integer;
+        intProgress: Integer;
+        intProgressI: Integer;
+        intProgressStep: Integer;
+        intProgressTotal: Integer;
+        timProgress: Time;
     begin
         sps_Re_Loc.RESET();
         sps_Re_Loc.SETFILTER(USER_ID, USERID);
@@ -379,16 +377,16 @@ codeunit 50033 Provision
 
     procedure FNC_Dispatch(Element_ID_Co_Loc: Code[20]; ProvisionAmount_Dec_Loc: Decimal)
     var
-        element_Re_Loc: Record "50021";
-        fee_Re_Loc: Record "50024";
-        value_Ar_Loc: array[300] of Decimal;
+        applyElement_Re_Loc: Record "DEL Element";
+        element_Re_Loc: Record "DEL Element";
+        elementConnection_Re_Loc: Record "DEL Element Connection";
+        fee_Re_Loc: Record "DEL Fee";
+        glEntry_Re_Loc: Record "G/L Entry";
+        amountToDispatch_Dec_Loc: Decimal;
         sum_Dec_Loc: Decimal;
+        value_Ar_Loc: array[300] of Decimal;
         arrayIndex: Integer;
         textArray: Text[255];
-        elementConnection_Re_Loc: Record "50027";
-        applyElement_Re_Loc: Record "50021";
-        glEntry_Re_Loc: Record "17";
-        amountToDispatch_Dec_Loc: Decimal;
     begin
         /*
         DISPATCH UN ELEMENT (Provision) SUR D'AUTRES ELEMENTS
@@ -538,27 +536,27 @@ codeunit 50033 Provision
 
     procedure FNC_Add2Deals()
     var
+        dealShipment_Re_Loc: Record "DEL Deal Shipment";
+        dsc_Re_Loc: Record "DEL Deal Shipment Connection";
+        dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
+        dss_Re_Loc: Record "DEL Deal Shipment Selection";
+        element_Re_Loc: Record "DEL Element";
+        fee_Re_Loc: Record "DEL Fee";
+        feeConnection_Re_Loc: Record "DEL Fee Connection";
+        sps_Re_Loc: Record "DEL Shipment Provision Select.";
+        urm_Re_Loc: Record "DEL Update Request Manager";
+        genJournalLine_Re_Temp: Record "Gen. Journal Line" temporary;
+        BR_Re_Loc: Record "Purch. Rcpt. Header";
         deal_ID_Co_Loc: Code[20];
-        dealShipmentSelection_Re_Loc: Record "50031";
-        element_Re_Loc: Record "50021";
-        BR_Re_Loc: Record "120";
-        genJournalLine_Re_Temp: Record "81" temporary;
-        dealShipment_Re_Loc: Record "50030";
-        feeConnection_Re_Loc: Record "50025";
-        Add_Variant_Op_Loc: Option New,Existing;
-        nextEntry: Code[20];
-        myTab: array[300] of Code[20];
-        dss_Re_Loc: Record "50031";
         element_ID_Co_Loc: Code[20];
-        i: Integer;
-        ConnectionType_Op_Par: Option Element,Shipment;
-        fee_Re_Loc: Record "50024";
+        myTab: array[300] of Code[20];
         myUpdateRequests: array[300] of Code[20];
+        nextEntry: Code[20];
         provisionDealID_Co_Loc: Code[20];
         updateRequest_Co_Loc: Code[20];
-        sps_Re_Loc: Record "50042";
-        urm_Re_Loc: Record "50039";
-        dsc_Re_Loc: Record "50032";
+        i: Integer;
+        ConnectionType_Op_Par: Option Element,Shipment;
+        Add_Variant_Op_Loc: Option New,Existing;
     begin
         element_ID_Co_Loc := '';
         provisionDealID_Co_Loc := '';
@@ -685,7 +683,7 @@ codeunit 50033 Provision
 
     procedure FNC_DeleteProvisions()
     var
-        element_Re_Loc: Record "50021";
+        element_Re_Loc: Record "DEL Element";
     begin
         //supprime les éléments de type Provision de la base de données
 
@@ -711,7 +709,7 @@ codeunit 50033 Provision
 
     procedure FNC_Prune()
     var
-        element_Re_Loc: Record "50021";
+        element_Re_Loc: Record "DEL Element";
         date_Loc: Date;
         dateTime_Loc: DateTime;
     begin

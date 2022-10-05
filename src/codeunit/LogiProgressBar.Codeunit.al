@@ -1,4 +1,4 @@
-codeunit 50037 LogiProgressBar
+codeunit 50037 "DEL LogiProgressBar"
 {
 
     trigger OnRun()
@@ -7,7 +7,7 @@ codeunit 50037 LogiProgressBar
     end;
 
     var
-        LogiProgressBar_Cu: Codeunit "50037";
+        LogiProgressBar_Cu: Codeunit 50037;
         "v------PROGRESS BAR------v": Integer;
         intProgressI: array[10] of Integer;
         diaProgress: array[10] of Dialog;
@@ -64,40 +64,28 @@ codeunit 50037 LogiProgressBar
         usage:
           //check toutes les 500ms si 1% d'avancé (100)
           LogiProgressBar.FNC_ProgressBar_Init(1,500,100,'Updating1...',deal_Re_Loc.count())
-        
         L'index permet d'avoir plusieur barres de progression lors d'un meme traitement.
-        
         valeur par defaut :
         interval 1000;
         step progress 1000;
-        
-        -> Signifie qu'on met à jour la barre de controle toutes les 1000ms si le traitement a avancé d'au moins 10%
-        */
-
+        -> Signifie qu'on met à jour la barre de controle toutes les 1000ms si le traitement a avancé d'au moins 10% */
         // nombre de milisecondes après lesquelles il faut vérifier l'avancement
         interval[index_Int_Par] := interval_Int_Par;
-
         // avancement minimum nécessaire pour la mise à jour de la barre
         intProgressStep[index_Int_Par] := stepProgress_Int_Par;
-
         // valeur minimum à atteindre pour que la barre soit mise à jour
         intNextProgressStep[index_Int_Par] := stepProgress_Int_Par;
-
         // représente la variable d'itération
         intProgressI[index_Int_Par] := 0;
-
         // représente le pourcentage d'avancement affiché dans la barre d'avancement
         intProgress[index_Int_Par] := 0;
-
         // la barre d'avancement
         diaProgress[index_Int_Par].OPEN(
           text_Te_Par + '\@1@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\',
           intProgress[index_Int_Par]
         );
-
         // représente le 100% de l'avancement
         intProgressTotal[index_Int_Par] := total_Int_Par;
-
         // contient le temps pour comparer les milisecondes
         timProgress[index_Int_Par] := TIME;
 

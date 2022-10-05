@@ -5,7 +5,7 @@ codeunit 50034 "AUTO Update Request Manager"
 
     trigger OnRun()
     var
-        UpdateRequestManager_Cu: Codeunit "50032";
+        UpdateRequestManager_Cu: Codeunit "DEL Update Request Manager";
     begin
         UpdateRequestManager_Cu.FNC_Import_All();
         updateRequest_Re.RESET();
@@ -13,6 +13,6 @@ codeunit 50034 "AUTO Update Request Manager"
     end;
 
     var
-        updateRequest_Re: Record "50039";
+        updateRequest_Re: Record "DEL Update Request Manager";
 }
 

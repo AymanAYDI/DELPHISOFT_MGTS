@@ -33,7 +33,7 @@ tableextension 50001 "DEL SalesShipmentHeader" extends "Sales Shipment Header"
                     Trackinggeneral.SETRANGE(Trackinggeneral.Order_no, SalesShipmentLine."Shortcut Dimension 1 Code");
                     Trackinggeneral.SETFILTER(Trackinggeneral.Container_no, '<>%1', '');
                     //Trackinggeneral_Page.SETTABLEVIEW(Trackinggeneral);
-                    IF PAGE.RUNMODAL(50140, Trackinggeneral) = ACTION::LookupOK THEN
+                    IF PAGE.RUNMODAL(Page::"DEL JSON Requests logs", Trackinggeneral) = ACTION::LookupOK THEN
                         //VALIDATE("Primary Contact No.",Cont."No.");
                         //MESSAGE(Trackinggeneral.Container_no);
             VALIDATE("DEL Container_no", Trackinggeneral.Container_no);
@@ -106,8 +106,8 @@ tableextension 50001 "DEL SalesShipmentHeader" extends "Sales Shipment Header"
     }
 
     var
-        SalesShipmentLine: Record 111;
-        Trackinggeneral: Record 50013;
-        Trackinggeneral_Page: Page 50140;
+        SalesShipmentLine: Record "Sales Shipment Line";
+        Trackinggeneral: Record "DEL Tracking général";
+        Trackinggeneral_Page: Page "DEL JSON Requests logs";
 }
 
