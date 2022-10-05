@@ -1,4 +1,4 @@
-tableextension 50018 "DEL RequisitionLine" extends "Requisition Line"
+tableextension 50018 "DEL RequisitionLine" extends "Requisition Line" //246
 {
 
     fields

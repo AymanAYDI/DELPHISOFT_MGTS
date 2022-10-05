@@ -41,9 +41,10 @@ codeunit 50058 "DEL Sales Event Mgt."
     procedure UpdateSalesOrderPrices(SalesHeader: Record "Sales Header")
     var
         SalesLine: Record "Sales Line";
+        PriceCalcMgt: Codeunit "Sales Price Calc. Mgt.";
         NothingToHandleErr: Label 'There is nothing to handle.';
         UpdatedPriceMess: Label 'Update completed.';
-        PriceCalcMgt: Codeunit "Sales Price Calc. Mgt.";
+
         Win: Dialog;
         UpdatePricesInProgress: Label 'Updating prices...';
         CofirmMessage: Label 'Are you sure you want to update the order prices?';

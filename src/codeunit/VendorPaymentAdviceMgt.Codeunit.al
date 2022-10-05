@@ -1,11 +1,5 @@
-codeunit 50057 "Vendor Payment Advice Mgt."
+codeunit 50057 "DEL Vendor Payment Advice Mgt."
 {
-    // MGTS10.00.06.00    | 07.01.2022 | Send Payment Advice : Create Object
-
-
-    trigger OnRun()
-    begin
-    end;
 
     var
         JournalBatchName: Code[10];
@@ -17,12 +11,12 @@ codeunit 50057 "Vendor Payment Advice Mgt."
 
     procedure SendPaymentAdvice(_JournalTemplateName: Code[10]; _JournalBatchName: Code[10])
     var
-        Cst001: Label 'We must add a e email template';
-        GenJournalLine: Record "81";
-        TempVendor: Record "23" temporary;
-        Vendor: Record "23";
-        CompanyInfo: Record "79";
-        GeneralSetup: Record "50000";
+
+        GenJournalLine: Record "Gen. Journal Line";
+        TempVendor: Record Vendor temporary;
+        Vendor: Record Vendor;
+        CompanyInfo: Record "Company Information";
+        GeneralSetup: Record "DEL General Setup";
         SendFromName: Text;
         SendFromAddress: Text;
         SendToAddress: Text;
@@ -79,7 +73,7 @@ codeunit 50057 "Vendor Payment Advice Mgt."
                 SendToAddress := Vendor."E-Mail";
 
                 //Mail Subject and Body-Text
-                GetMailSubjectAndBodyFromModel(Vendor."Email Payment Advice", Vendor."Language Code", SubjectMail, MailBody);
+                GetMailSubjectAndBodyFromModel(Vendor."DEL Email Payment Advice", Vendor."Language Code", SubjectMail, MailBody);
 
                 //Create PDF file
                 SavePDF(_JournalTemplateName, _JournalBatchName, Vendor."No.", ServerFile);
@@ -95,21 +89,35 @@ codeunit 50057 "Vendor Payment Advice Mgt."
         END;
     end;
 
-    local procedure SendSMTPmail(_SenderName: Text; _SenderAddress: Text; _Recipients: Text; _Subject: Text; _Body: Text; _AttachementFullPathFileName: Text; _FileName: Text)
+    // local procedure SendSMTPmail(_SenderName: Text; _SenderAddress: Text; _Recipients: Text; _Subject: Text; _Body: Text; _AttachementFullPathFileName: Text; _FileName: Text)
+    // var
+    //     //TODO: à vérifier
+    //     SMTPMail: Codeunit "Email Message";
+    // begin
+    //    // SMTPMail.CreateMessage(_SenderName, _SenderAddress, _Recipients, _Subject, '', TRUE);
+    //    SMTPMail.Create(_SenderName, _SenderAddress, _Recipients, _Subject, '', TRUE);
+    //     SMTPMail.AppendBody(_Body);
+    //     SMTPMail.AddAttachment(_AttachementFullPathFileName, _FileName);
+    //     SMTPMail.Send;
+    // end;
+    local procedure SendSMTPmail(_SenderName: List of [Text]; _SenderAddress: Text;
+    _Recipients: Text; _Subject: Text; _Body: Text; _AttachementFullPathFileName: List of [Text]; _FileName: Text)
     var
-        SMTPMail: Codeunit "400";
+
+        SMTPMail: Codeunit "Email Message";
     begin
-        SMTPMail.CreateMessage(_SenderName, _SenderAddress, _Recipients, _Subject, '', TRUE);
-        SMTPMail.AppendBody(_Body);
-        SMTPMail.AddAttachment(_AttachementFullPathFileName, _FileName);
-        SMTPMail.Send;
+        SMTPMail.Create(_SenderName, _SenderAddress, _Recipients, _Subject, '', TRUE);
+
+        SMTPMail.AppendToBody(_Body);
+        //TODO SMTPMail.AddAttachment(_AttachementFullPathFileName, _FileName);
+        //TODO SMTPMail.Send;
     end;
 
     local procedure GetMailSubjectAndBodyFromModel(EmailCode: Code[20]; LanguageCode: Code[10]; var MySubject: Text; var TextBody: Text)
     var
-        DocMatrixEmailCodes: Record "50070";
-        GeneralSetup: Record "50000";
-        BLOBInStream: InStream;
+        DocMatrixEmailCodes: Record "DEL DocMatrix Email Codes";
+        GeneralSetup: Record "DEL General Setup";
+
         I: Integer;
     begin
         IF EmailCode = '' THEN BEGIN
@@ -133,50 +141,58 @@ codeunit 50057 "Vendor Payment Advice Mgt."
             END;
         END;
 
-        // get the Subject text
         MySubject := DocMatrixEmailCodes.Subject;
 
-        // extract the Body text from the BLOB
+
         TextBody := GetBody(DocMatrixEmailCodes);
     end;
-
-    local procedure GetBody(var DocMatrixEmailCodes: Record "50070"): Text
+    //TODO
+    //----------- j'ai essayé de modifier la procedure GetBOdy : à valider !!----//
+    local procedure GetBody(var DocMatrixEmailCodes: Record "DEL DocMatrix Email Codes"): Text
     var
-        TempBlob: Record "99008535" temporary;
+        //TempBlob: Record "99008535" temporary;
+        TypeHelper: Codeunit "Type Helper";
+        TempBlob: Codeunit "Temp Blob";
+        InStream: InStream;
+
         CR: Text;
     begin
         DocMatrixEmailCodes.CALCFIELDS(Body);
         IF NOT DocMatrixEmailCodes.Body.HASVALUE THEN
             EXIT('');
         CR := '<p>';
-        //CR[2] := 10;
-        TempBlob.Blob := DocMatrixEmailCodes.Body;
-        EXIT(TempBlob.ReadAsText(CR, TEXTENCODING::UTF8));
+        //   TempBlob.Blob := DocMatrixEmailCodes.Body;
+        //    EXIT(TempBlob.ReadAsText(CR, TEXTENCODING::UTF8));
+        TempBlob.FromRecord(DocMatrixEmailCodes, DocMatrixEmailCodes.FieldNo(Body));
+        TempBlob.CreateInStream(InStream, TEXTENCODING::UTF8);
+
+        exit(TypeHelper.ReadAsTextWithSeparator(InStream, CR));
+
     end;
 
 
-    procedure SavePDF(_JournalTemplateName: Code[10]; _JournalBatchName: Code[10]; _VendorNo: Code[20]; var _ServerAttachmentFilePath: Text)
-    var
-        lErr001: Label 'Not able to save PDF %1. \\ERROR: %2';
-        Vendor: Record "23";
-        GenJournalLine: Record "81";
-        FileMgt: Codeunit "419";
-        VendorPaymentAdvice: Report "50035";
-    begin
-        _ServerAttachmentFilePath := COPYSTR(FileMgt.ServerTempFileName('pdf'), 1, 250);
+    //TODO procedure SavePDF(_JournalTemplateName: Code[10]; _JournalBatchName: Code[10]; _VendorNo: Code[20]; var _ServerAttachmentFilePath: Text)
+    // var
 
-        GenJournalLine."Journal Template Name" := _JournalTemplateName;
-        GenJournalLine."Journal Batch Name" := _JournalBatchName;
+    //     Vendor: Record Vendor;
+    //     GenJournalLine: Record "Gen. Journal Line";
+    //     FileMgt: Codeunit "File Management";
+    // //TODO VendorPaymentAdvice: Report 50035;
+    // begin
+    //     _ServerAttachmentFilePath := COPYSTR(FileMgt.ServerTempFileName('pdf'), 1, 250);
 
-        Vendor.SETRANGE("No.", _VendorNo);
-        VendorPaymentAdvice.SETTABLEVIEW(Vendor);
-        VendorPaymentAdvice.DefineJourBatch(GenJournalLine);
-        VendorPaymentAdvice.SkipMessage(TRUE);
-        VendorPaymentAdvice.SAVEASPDF(_ServerAttachmentFilePath);
-    end;
+    //     GenJournalLine."Journal Template Name" := _JournalTemplateName;
+    //     GenJournalLine."Journal Batch Name" := _JournalBatchName;
+
+    //     Vendor.SETRANGE("No.", _VendorNo);
+    //     VendorPaymentAdvice.SETTABLEVIEW(Vendor);
+    //     VendorPaymentAdvice.DefineJourBatch(GenJournalLine);
+    //     VendorPaymentAdvice.SkipMessage(TRUE);
+    //     VendorPaymentAdvice.SAVEASPDF(_ServerAttachmentFilePath);
+    // end;
 
 
-    procedure DefineJourBatch(_GnlJourLine: Record "81")
+    procedure DefineJourBatch(_GnlJourLine: Record "Gen. Journal Line")
     begin
         JournalBatchName := _GnlJourLine."Journal Batch Name";
         JournalTemplateName := _GnlJourLine."Journal Template Name";

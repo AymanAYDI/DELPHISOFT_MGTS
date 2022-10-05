@@ -5,13 +5,15 @@ codeunit 50020 "DEL Deal"
     end;
 
     var
+
         Element_Cu: Codeunit "DEL Element";
         Position_Cu: Codeunit "DEL Position";
         Fee_Cu: Codeunit "DEL Fee";
         NoSeriesMgt_Cu: Codeunit NoSeriesManagement;
+
+        DealShipment_Cu: Codeunit "Deal Shipment";
         ERROR_TXT: Label 'ERREUR\Source : %1\Function : %2\Reason : %3';
         Setup: Record "DEL General Setup";
-        DealShipment_Cu: Codeunit "Deal Shipment";
         DealItem_Cu: Codeunit "DEL Deal Item";
         Currency_Exchange_Re: Record "DEL Currency Exchange";
 
@@ -279,11 +281,10 @@ codeunit 50020 "DEL Deal"
     end;
 
 
+
+
     procedure FNC_Get_ACO(var element_Re_Par: Record "DEL Element"; dealID_Co_Par: Code[20])
     begin
-        //filtre un record element (passé par REF) sur le premier élément ACO d'une affaire
-
-        /*_On cherche l'ACO liée à l'affaire_*/
         element_Re_Par.RESET();
         element_Re_Par.SETCURRENTKEY(Deal_ID, Type, Instance);
         element_Re_Par.SETRANGE(Deal_ID, dealID_Co_Par);
@@ -558,7 +559,6 @@ codeunit 50020 "DEL Deal"
         END;
 
     end;
-
 
     procedure FNC_Get_VCO_Amount(Deal_ID_Co_Par: Code[20]; DealShipment_No_Co_Par: Code[20]) Amount_Dec_Ret: Decimal
     var

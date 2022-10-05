@@ -1,4 +1,4 @@
-tableextension 50035 "DEL ItemCrossReference" extends "Item Cross Reference"
+tableextension 50035 "DEL ItemReference" extends "Item Reference"
 {
 
     fields

@@ -1,8 +1,9 @@
-tableextension 50016 "DEL ShiptoAddress" extends "Ship-to Address"
+tableextension 50016 "DEL ShiptoAddress" extends "Ship-to Address" //222
 {
 
     fields
     {
+
         modify("Shipment Method Code")
         {
             Caption = 'Sales Shipment Method Code';

@@ -1,22 +1,16 @@
-codeunit 50029 "Deal Shipment"
+codeunit 50029 "DEL Deal Shipment"
 {
-    // GRC01    23.10.09   modify fnc_insert
-
-
-    trigger OnRun()
-    begin
-    end;
 
     var
-        Deal_Cu: Codeunit "50020";
+        Deal_Cu: Codeunit "DEL Deal";
         ERROR_TXT: Label 'ERREUR\Source : %1\Function : %2\Reason : %3';
 
 
     procedure FNC_Insert(Deal_ID_Co_Par: Code[20]; Date_Par: Date; BR_No_Co_Par: Code[20]) DealShipment_ID_Ret: Code[20]
     var
-        dealShipment_Re_Loc: Record "50030";
-        AlertMgt_Cu_Loc: Codeunit "50028";
-        Logistic_Re_Loc: Record "50034";
+        dealShipment_Re_Loc: Record "DEL Deal Shipment";
+        AlertMgt_Cu_Loc: Codeunit "DEL Alert and fee copy Mgt";
+        Logistic_Re_Loc: Record "DEL Logistic";
     begin
         DealShipment_ID_Ret := FNC_GetNextShipmentNo(Deal_ID_Co_Par);
 
@@ -50,7 +44,7 @@ codeunit 50029 "Deal Shipment"
 
     procedure FNC_GetFirstShipmentNo(Deal_ID_Co_Par: Code[20]) ShipmentNo_Co_Ret: Code[20]
     var
-        dealShipment_Re_Loc: Record "50030";
+        dealShipment_Re_Loc: Record "DEL Deal Shipment";
     begin
         /*__Retourne l'ID du premier Shipment trouvé pour this.Deal__*/
         ShipmentNo_Co_Ret := '';
@@ -66,7 +60,7 @@ codeunit 50029 "Deal Shipment"
 
     procedure FNC_GetNextShipmentNo(Deal_ID_Co_Par: Code[20]) ShipmentNo_Co_Ret: Code[20]
     var
-        deal_Re_Loc: Record "50020";
+        deal_Re_Loc: Record "DEL Deal";
     begin
         WITH deal_Re_Loc DO BEGIN
             IF GET(Deal_ID_Co_Par) THEN BEGIN
@@ -85,8 +79,8 @@ codeunit 50029 "Deal Shipment"
 
     procedure FNC_GetPurchaseInvoiceNo(DealShipmentID_Co_Par: Code[20]) PurchInvNo_Co_Ret: Code[20]
     var
-        dealShipmentConnection_Re_Loc: Record "50032";
-        element_Re_Loc: Record "50021";
+        dealShipmentConnection_Re_Loc: Record "DEL Deal Shipment Connection";
+        element_Re_Loc: Record "DEL Element";
     begin
         /*__Retourne le numéro de Purchase Invoice associé au shipmentNo si il existe, sinon retourne ''__*/
 
@@ -115,8 +109,8 @@ codeunit 50029 "Deal Shipment"
 
     procedure FNC_GetSalesInvoiceNo(DealShipmentID_Co_Par: Code[20]) SalesInvNo_Co_Ret: Code[20]
     var
-        dealShipmentConnection_Re_Loc: Record "50032";
-        element_Re_Loc: Record "50021";
+        dealShipmentConnection_Re_Loc: Record "DEL Deal Shipment Connection";
+        element_Re_Loc: Record "DEL Element";
     begin
         /*__Retourne le numéro de Purchase Invoice associé au shipmentNo si il existe, sinon retourne ''__*/
 
@@ -145,8 +139,8 @@ codeunit 50029 "Deal Shipment"
 
     procedure FNC_GetBRNo(DealShipmentID_Co_Par: Code[20]) BRNo_Co_Ret: Code[20]
     var
-        dealShipmentConnection_Re_Loc: Record "50032";
-        element_Re_Loc: Record "50021";
+        dealShipmentConnection_Re_Loc: Record "DEL Deal Shipment Connection";
+        element_Re_Loc: Record "DEL Element";
     begin
         /*__Retourne le numéro de BR associé au shipmentNo si il existe, sinon retourne ''__*/
 
@@ -174,8 +168,8 @@ codeunit 50029 "Deal Shipment"
 
     procedure FNC_GetPurchInvoiceElementID(DealShipmentID_Co_Par: Code[20]) PurchInvID_Co_Ret: Code[20]
     var
-        dealShipmentConnection_Re_Loc: Record "50032";
-        element_Re_Loc: Record "50021";
+        dealShipmentConnection_Re_Loc: Record "DEL Deal Shipment Connection";
+        element_Re_Loc: Record "DEL Element";
     begin
         /*__Retourne l'ID de l'élément Purchase Invoice associé au shipmentNo si il existe, sinon retourne ''__*/
 
@@ -202,8 +196,8 @@ codeunit 50029 "Deal Shipment"
 
     procedure FNC_GetSalesInvoiceElementID(DealShipmentID_Co_Par: Code[20]) SalesInvID_Co_Ret: Code[20]
     var
-        dealShipmentConnection_Re_Loc: Record "50032";
-        element_Re_Loc: Record "50021";
+        dealShipmentConnection_Re_Loc: Record "DEL Deal Shipment Connection";
+        element_Re_Loc: Record "DEL Element";
     begin
         /*__Retourne l'ID de l'élément Purchase Invoice associé au shipmentNo si il existe, sinon retourne ''__*/
 
@@ -230,8 +224,8 @@ codeunit 50029 "Deal Shipment"
 
     procedure FNC_GetBRElementID(DealShipmentID_Co_Par: Code[20]) BRID_Co_Ret: Code[20]
     var
-        dealShipmentConnection_Re_Loc: Record "50032";
-        element_Re_Loc: Record "50021";
+        dealShipmentConnection_Re_Loc: Record "DEL Deal Shipment Connection";
+        element_Re_Loc: Record "DEL Element";
     begin
         /*__Retourne l'ID de l'élément BR associé au shipmentNo si il existe, sinon retourne ''__*/
 
@@ -258,8 +252,8 @@ codeunit 50029 "Deal Shipment"
 
     procedure FNC_GetSalesCrMemoElementID(DealShipmentID_Co_Par: Code[20]) CrMemoID_Co_Ret: Code[20]
     var
-        dealShipmentConnection_Re_Loc: Record "50032";
-        element_Re_Loc: Record "50021";
+        dealShipmentConnection_Re_Loc: Record "DEL Deal Shipment Connection";
+        element_Re_Loc: Record "DEL Element";
     begin
         /*__Retourne l'ID de l'élément Sales Cr. Memo associé au shipmentNo si il existe, sinon retourne ''__*/
 
@@ -286,8 +280,8 @@ codeunit 50029 "Deal Shipment"
 
     procedure FNC_GetPurchCrMemoElementID(DealShipmentID_Co_Par: Code[20]) CrMemoID_Co_Ret: Code[20]
     var
-        dealShipmentConnection_Re_Loc: Record "50032";
-        element_Re_Loc: Record "50021";
+        dealShipmentConnection_Re_Loc: Record "DEL Deal Shipment Connection";
+        element_Re_Loc: Record "DEL Element";
     begin
         /*__Retourne l'ID de l'élément Purch. Cr. Memo associé au shipmentNo si il existe, sinon retourne ''__*/
 
@@ -314,7 +308,7 @@ codeunit 50029 "Deal Shipment"
 
     procedure FNC_GetSalesInvoicePeriod(DealShipmentID_Co_Par: Code[20]) period_Da_Ret: Date
     var
-        salesInvoiceHeader_Co_Loc: Record "112";
+        salesInvoiceHeader_Co_Loc: Record "Sales Invoice Header";
         salesInvoiceNo_Co_Loc: Code[20];
     begin
         //Retourne la période (premier jour du mois de la date de comptabilisation) de la première facture vente pour une livraison
@@ -333,7 +327,7 @@ codeunit 50029 "Deal Shipment"
 
     procedure FNC_SetPurchaseInvoiceNo(DealShipmentID_Co_Par: Code[20]; PurchaseInvoiceNo_Co_Par: Code[20])
     var
-        dealShipment_Re_Loc: Record "50030";
+        dealShipment_Re_Loc: Record "DEL Deal Shipment";
     begin
         IF dealShipment_Re_Loc.GET(DealShipmentID_Co_Par) THEN BEGIN
             dealShipment_Re_Loc."Purchase Invoice No." := PurchaseInvoiceNo_Co_Par;
@@ -344,7 +338,7 @@ codeunit 50029 "Deal Shipment"
 
     procedure FNC_SetSalesInvoiceNo(DealShipmentID_Co_Par: Code[20]; SalesInvoiceNo_Co_Par: Code[20])
     var
-        dealShipment_Re_Loc: Record "50030";
+        dealShipment_Re_Loc: Record "DEL Deal Shipment";
     begin
         IF dealShipment_Re_Loc.GET(DealShipmentID_Co_Par) THEN BEGIN
             dealShipment_Re_Loc."Sales Invoice No." := SalesInvoiceNo_Co_Par;
@@ -355,7 +349,7 @@ codeunit 50029 "Deal Shipment"
 
     procedure FNC_SetBRNo(DealShipmentID_Co_Par: Code[20]; BRNo_Co_Par: Code[20])
     var
-        dealShipment_Re_Loc: Record "50030";
+        dealShipment_Re_Loc: Record "DEL Deal Shipment";
     begin
         IF dealShipment_Re_Loc.GET(DealShipmentID_Co_Par) THEN BEGIN
             dealShipment_Re_Loc."BR No." := BRNo_Co_Par;
