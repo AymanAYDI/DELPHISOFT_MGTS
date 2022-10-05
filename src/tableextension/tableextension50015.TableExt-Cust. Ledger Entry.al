@@ -1,4 +1,4 @@
-// tableextension 50015 "DEL Cust. Ledger Entry" extends "Cust. Ledger Entry"
+//tableextension 50015 "DEL Cust. Ledger Entry" extends "Cust. Ledger Entry"//21
 // {
 
 // TODO    fields

@@ -47,10 +47,6 @@ codeunit 50015 "DEL DocMatrix Management"
         END;
     end;
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 74bd8910beea14b80a9c2f1ed60aa139a7854d71
     procedure ProcessDocumentMatrix(pUsage: Integer; pProcessType: Option Manual,Automatic; pRecordVariant: Variant; pFieldNo: Integer; pFieldDocNo: Integer; precDocMatrixSelection: Record "50071"; pFieldPurchCode: Integer)
     var
         DummyReportSelections: Record "Report Selections";
@@ -173,10 +169,6 @@ codeunit 50015 "DEL DocMatrix Management"
         lcuProgressBar.FNC_ProgressBar_Close(1);
     end;
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 74bd8910beea14b80a9c2f1ed60aa139a7854d71
     procedure ProcessDocumentMatrixAutomatic(pUsage: Integer)
     var
         lrecCustomer: Record Customer;
@@ -358,13 +350,13 @@ codeunit 50015 "DEL DocMatrix Management"
     var
         [RunOnClient]
         ProcessStartInfo: DotNet ProcessStartInfo;
-    [RunOnClient]
+        [RunOnClient]
 
-    ProcessWindowStyle: DotNet ProcessWindowStyle;
+        ProcessWindowStyle: DotNet ProcessWindowStyle;
         [RunOnClient]
         Process: DotNet Process;
-                     AppMgt: Codeunit "1";
-                     ltxPrinterName: Text;
+        AppMgt: Codeunit "1";
+        ltxPrinterName: Text;
     begin
         IF ISNULL(ProcessStartInfo) THEN
             ProcessStartInfo := ProcessStartInfo.ProcessStartInfo;
@@ -621,25 +613,25 @@ codeunit 50015 "DEL DocMatrix Management"
     local procedure TryUploadFileToFTP(ptxFTPServer: Text; ptxFTPUser: Text; ptxFTPPassword: Text; ptxFullPathFileName: Text; var pStatusDescription: Text)
     var
         FTPWebRequest: DotNet FtpWebRequest;
-                           FTPWebResponse: DotNet FtpWebResponse;
-                           NetworkCredential: DotNet NetworkCredential;
-                           WebRequestMethods: DotNet WebRequestMethods_File;
-                           UTF8Encoding: DotNet UTF8Encoding;
-                           ResponseStream: InStream;
-                           FileStream: DotNet FileStream;
-                           Stream: DotNet Stream;
-                           FileDotNet: DotNet File;
-                           TempBlob: Record "99008535" temporary;
-                           FileName: Text;
-                           OutStream: OutStream;
-    [RunOnClient]
+        FTPWebResponse: DotNet FtpWebResponse;
+        NetworkCredential: DotNet NetworkCredential;
+        WebRequestMethods: DotNet WebRequestMethods_File;
+        UTF8Encoding: DotNet UTF8Encoding;
+        ResponseStream: InStream;
+        FileStream: DotNet FileStream;
+        Stream: DotNet Stream;
+        FileDotNet: DotNet File;
+        TempBlob: Record "99008535" temporary;
+        FileName: Text;
+        OutStream: OutStream;
+        [RunOnClient]
 
-    SearchOption: DotNet SearchOption;
-    i: Integer;
-    RelativeServerPath: Text;
+        SearchOption: DotNet SearchOption;
+        i: Integer;
+        RelativeServerPath: Text;
         [RunOnClient]
         ClientFilePath: DotNet String;
-                            PathHelper: DotNet Path;
+        PathHelper: DotNet Path;
     begin
         FTPWebRequest := FTPWebRequest.Create(ptxFTPServer + '/' + PathHelper.GetFileName(ptxFullPathFileName));
         FTPWebRequest.Credentials := NetworkCredential.NetworkCredential(ptxFTPUser, ptxFTPPassword);

@@ -101,7 +101,7 @@ codeunit 50032 "DEL Update Request Manager"
         IF UpdateRequest_Re.GET(Request_ID_Co_Par) THEN
             UpdateRequest_Re.DELETE();
 
-    END
+
     end;
 
 

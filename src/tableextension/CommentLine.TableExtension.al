@@ -1,4 +1,4 @@
-tableextension 50048 "DEL CommentLine" extends "Comment Line"
+tableextension 50048 "DEL CommentLine" extends "Comment Line" //97
 {
     fields
     {
@@ -16,7 +16,7 @@ tableextension 50048 "DEL CommentLine" extends "Comment Line"
             var
                 UserMgt: Codeunit "User Management";
             begin
-                //TODO UserMgt.LookupUserID("User ID");
+                UserMgt.LookupUserID("DEL User ID");
             end;
         }
     }
