@@ -1,4 +1,4 @@
-enum 50050 "DEL Event Code"
+enum 50052 "DEL Event Code"
 {
     Extensible = false;
 

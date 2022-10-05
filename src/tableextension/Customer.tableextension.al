@@ -5,14 +5,26 @@ tableextension 50013 "DEL Customer" extends Customer
 
     fields
     {
-        // TODO    modify("Customer Price Group")
+        // TODO    
+        // modify("Customer Price Group")
         //     {
 
         // //Unsupported feature: Property Modification (Data type) on ""Customer Price Group"(Field 23)".
 
         //         Description = 'MGTS0124';
-        //     }
+        // Customer Price Group;Code20        ;OnLookup=BEGIN
 
+        //                                                         //MGTS0124; MHH; begin
+        //                                                         CustPriceGroup.RESET;
+        //                                                         IF PAGE.RUNMODAL(0, CustPriceGroup) = ACTION::LookupOK THEN BEGIN
+        //                                                           IF "Customer Price Group" = '' THEN
+        //                                                             "Customer Price Group" := CustPriceGroup.Code
+        //                                                           ELSE
+        //                                                             "Customer Price Group" := STRSUBSTNO(Text50000, "Customer Price Group", CustPriceGroup.Code);
+        //                                                         END;
+        //                                                         //MGTS0124; MHH; end
+        //                                                     END;
+        //     }
 
         field(50000; "DEL No TVA intracomm. NGTS"; Code[30])
         {

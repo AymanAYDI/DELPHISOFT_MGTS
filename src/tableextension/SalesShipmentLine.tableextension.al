@@ -26,11 +26,6 @@ tableextension 50002 "DEL SalesShipmentLine" extends "Sales Shipment Line"
         }
     }
 
-    //Unsupported feature: Variable Insertion (Variable: Text50000) (VariableCollection) on "InsertInvLineFromShptLine(PROCEDURE 2)".
-
-
-    //Unsupported feature: Variable Insertion (Variable: Text50001) (VariableCollection) on "InsertInvLineFromShptLine(PROCEDURE 2)".
-
 
 
     //Unsupported feature: Code Modification on "InsertInvLineFromShptLine(PROCEDURE 2)".
@@ -96,5 +91,9 @@ tableextension 50002 "DEL SalesShipmentLine" extends "Sales Shipment Line"
     #25..147
     */
     //end;
+
+    var
+        Text50000: Label 'Order NGTS N %1, y/reference %2';
+        Text50001: Label 'ENU=%1 - %2 %3';
 }
 

@@ -2,7 +2,7 @@ tableextension 50036 "DEL ProductGroup" extends "Product Group"
 {
     fields
     {
-        field(50000; "DEL Item Category Label"; Text[50])
+        field(50000; "DEL Item Category Label"; Text[100])
         {
             CalcFormula = Lookup("Item Category".Description WHERE(Code = FIELD("Item Category Code")));
             Editable = false;

@@ -1,18 +1,19 @@
-codeunit 50036 "Import commande vente"
+codeunit 50036 "DEL Import commande vente"
 {
-    TableNo = 50002;
+    TableNo = "DEL Import Commande vente";
 
     trigger OnRun()
     begin
         InsertLine(Rec);
     end;
 
-    local procedure InsertLine(REImportCdeVente: Record "50002")
+    local procedure InsertLine(REImportCdeVente: Record "DEL Import Commande vente")
     var
-        SalesLine: Record "37";
-        ItemCrossRef: Record "5717";
+        SalesLine: Record "Sales Line";
+        ItemRef: Record "Item Reference";
+
     begin
-        SalesLine.INIT;
+        SalesLine.INIT();
         SalesLine."Document Type" := SalesLine."Document Type"::Order;
         SalesLine."Document No." := REImportCdeVente."Document No.";
         SalesLine."Line No." := REImportCdeVente."Line No.";
@@ -24,13 +25,13 @@ codeunit 50036 "Import commande vente"
             SalesLine.VALIDATE("No.");
         END
         ELSE BEGIN
-            ItemCrossRef.SETRANGE("Cross-Reference No.", REImportCdeVente."Cross-Reference No.");
-            IF ItemCrossRef.FINDFIRST THEN
+            ItemRef.SETRANGE("Reference No.", REImportCdeVente."Cross-Reference No.");
+            IF ItemRef.FINDFIRST() THEN
                 REPEAT
-                    ItemCrossRef.CALCFIELDS(ItemCrossRef."Sale blocked");
-                    IF ItemCrossRef."Sale blocked" = FALSE THEN
-                        SalesLine.VALIDATE("No.", ItemCrossRef."Item No.");
-                UNTIL (ItemCrossRef.NEXT = 0) OR (SalesLine."No." <> '');
+                    ItemRef.CALCFIELDS(ItemRef."DEL Sale blocked");
+                    IF ItemRef."DEL Sale blocked" = FALSE THEN
+                        SalesLine.VALIDATE("No.", ItemRef."Item No.");
+                UNTIL (ItemRef.NEXT() = 0) OR (SalesLine."No." <> '');
         END;
         IF REImportCdeVente.Description <> '' THEN //DEL.SAZ 18.08.2018
             SalesLine.Description := REImportCdeVente.Description;
@@ -46,13 +47,13 @@ codeunit 50036 "Import commande vente"
         END;
 
         IF SalesLine.INSERT(TRUE) THEN
-            REImportCdeVente.DELETE;
+            REImportCdeVente.DELETE();
     end;
 
 
     procedure InsertError(var TextErreur: Text)
     var
-        ErrorImportvente: Record "50062";
+        ErrorImportvente: Record "DEL Error Import vente";
         DocNum: Code[20];
         LineNo: Text;
         Pos: Text;
@@ -68,7 +69,7 @@ codeunit 50036 "Import commande vente"
         EVALUATE(ErrorImportvente."Line No.", LineNo);
         ErrorImportvente.Position := Pos;
         ErrorImportvente.Error := COPYSTR(TextErreur, 1, 250);
-        ErrorImportvente.INSERT;
+        ErrorImportvente.INSERT();
     end;
 }
 
