@@ -1,27 +1,26 @@
-codeunit 50047 "Job Queue Entry To Ready"
+codeunit 50047 "DEL Job Queue Entry To Ready"
 {
-    // //>>MGTS10.00.01.01
-    // 14/01/10 : Restart Job Queue Entries on error
 
-    TableNo = 472;
+
+    TableNo = "Job Queue Entry";
 
     trigger OnRun()
     var
-        JobQueueEntry: Record "472";
+        JobQueueEntry: Record "Job Queue Entry";
     begin
         IF NOT JobQueueEntry.ISEMPTY THEN BEGIN
-            JobQueueEntry.FINDSET;
+            JobQueueEntry.FINDSET();
             REPEAT
                 IF IsJobToRestart(JobQueueEntry) THEN BEGIN
                     JobQueueEntry.SetStatus(JobQueueEntry.Status::"On Hold");
                     COMMIT();
                     JobQueueEntry.SetStatus(JobQueueEntry.Status::Ready);
                 END;
-            UNTIL JobQueueEntry.NEXT = 0;
+            UNTIL JobQueueEntry.NEXT() = 0;
         END;
     end;
 
-    local procedure IsJobToRestart(RecLJobQueueEntry: Record "472"): Boolean
+    local procedure IsJobToRestart(RecLJobQueueEntry: Record "Job Queue Entry"): Boolean
     begin
         IF (RecLJobQueueEntry.Status = RecLJobQueueEntry.Status::Error) THEN
             EXIT(TRUE);

@@ -14,13 +14,17 @@ codeunit 50019 "DEL Create Purch. EDI"
         Param: Option " ",CreateAndValidateReqWorksheet,CreateDeal;
         DocNo: Code[20];
 
+
     procedure SetParam(pParam: Option " ",CreateAndValidateReqWorksheet,CreateDeal; pDocNo: Code[20])
     begin
         Param := pParam;
         DocNo := pDocNo;
     end;
 
+    procedure CreateAndValidateReqWorksheet(DocNo: Code[20])
     var
+        RequisitionLine: Record "Requisition Line";
+        GeneralSetup: Record "DEL General Setup";
         GetSalesOrder: Report "Get Sales Orders";
         PerformAction: Report "Carry Out Action Msg. - Req.";
     begin
@@ -38,7 +42,7 @@ codeunit 50019 "DEL Create Purch. EDI"
 
         //Extract Sales Line To Requisition Line
         CLEAR(GetSalesOrder);
-        GetSalesOrder.SetSalesDocNo(DocNo);
+        // GetSalesOrder.SetSalesDocNo(DocNo); TODO:
         GetSalesOrder.SetReqWkshLine(RequisitionLine, 1);
         GetSalesOrder.USEREQUESTPAGE(FALSE);
         GetSalesOrder.RUNMODAL();
@@ -47,15 +51,19 @@ codeunit 50019 "DEL Create Purch. EDI"
         CLEAR(PerformAction);
         PerformAction.SetReqWkshLine(RequisitionLine);
         PerformAction.SetHideDialog(TRUE);
-        PerformAction.SetEdiParam(TRUE);
+        // PerformAction.SetEdiParam(TRUE); TODO:
         PerformAction.USEREQUESTPAGE(FALSE);
         PerformAction.RUNMODAL();
     end;
 
 
+    procedure CreateDeal(DocNo: Code[20])
     var
+        PurchaseLine: Record "Purchase Line";
+        Deal_Cu: Codeunit "DEL Deal";
         LastDocNo: Code[20];
         affaireNo_Co_Loc: Code[20];
+
     begin
         LastDocNo := '';
         PurchaseLine.SETRANGE("Special Order Sales No.", DocNo);

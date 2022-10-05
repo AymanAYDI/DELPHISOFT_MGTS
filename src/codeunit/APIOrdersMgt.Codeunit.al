@@ -1,10 +1,6 @@
-codeunit 50045 "API Orders  Mgt."
+codeunit 50045 "DEL API Orders  Mgt."
 {
-    // Mgts10.00.01.00 | 11.01.2020 | Order API Management
-    // 
-    // Mgts10.00.01.02 | 24.02.2020 | Order API Management : Add C\AL in : OnRun
-    // 
-    // Mgts10.00.03.01 | 21.04.2020 | Order API Management : Add C\AL in : SendAPIRequest
+
 
 
     trigger OnRun()
@@ -13,13 +9,13 @@ codeunit 50045 "API Orders  Mgt."
         JsonText: Text;
         APIURL: Text;
         APIKEY: Text;
-        HttpStatusCode: DotNet HttpStatusCode;
-        OrderAPIRecordTracking: Record "50074";
-        OrderAPIRecordTracking2: Record "50074";
-        JSONRequestslog: Record "50073";
-        MgtsSetup: Record "50000";
+        //TODO HttpStatusCode: DotNet HttpStatusCode;
+        OrderAPIRecordTracking: Record "DEL Order API Record Tracking";
+        OrderAPIRecordTracking2: Record "DEL Order API Record Tracking";
+        JSONRequestslog: Record "DEL JSON Requests log";
+        MgtsSetup: Record "DEL General Setup";
         IsError: Boolean;
-        JsonMgt: Codeunit "50041";
+        JsonMgt: Codeunit "JSON Mgt";
     begin
         //Init request parameters
         MgtsSetup.GET;
@@ -87,9 +83,9 @@ codeunit 50045 "API Orders  Mgt."
 
     local procedure GetRequestBody(OrderAPIRecordTracking: Record "50074") JsonText: Text
     var
-        TempBlob: Record "99008535" temporary;
-        AdvancedJSONMgt: Codeunit "50043";
-        DealsAPIXml: XMLport "50015";
+        TempBlob: Record TempBlob temporary;
+        AdvancedJSONMgt: Codeunit "Advanced JSON Mgt";
+        DealsAPIXml: XMLport 50015 ;
         XmlDocument: DotNet XmlDocument;
         OutStrm: OutStream;
         Instrm: InStream;

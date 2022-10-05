@@ -198,7 +198,7 @@ codeunit 50010 "Export Mail Prod Nouv Et Suiv"
         BuyfromVendorName: Text;
         Vendor_Rec: Record Vendor;
         // SMTPMailSetup: Record "409";
-        SMTPMailSetup: "Email – SMTP";
+        SMTPMailSetup: Record "Email Account";
         PurchaseHeader_Nouv: Record "Purchase Header";
         PurchaseHeader_Suiv: Record "Purchase Header";
         motif: Text[100];

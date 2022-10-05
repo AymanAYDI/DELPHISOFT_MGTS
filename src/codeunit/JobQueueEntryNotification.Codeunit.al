@@ -1,14 +1,11 @@
-codeunit 50054 "Job Queue Entry Notification"
+codeunit 50054 "DEL Job Queue Entry Notification"
 {
-    // +--------------------------------------------------------------------+
-    // | D365FM14.00.00.11      | 30.11.21 | Job Queue Notification
-    // |                                      Create codeunit
-    // +--------------------------------------------------------------------+
+
 
 
     trigger OnRun()
     var
-        JobQueueEntry: Record "472";
+        JobQueueEntry: Record "Job Queue Entry";
     begin
         IF NOT JobQueueEntry.ISEMPTY THEN BEGIN
             JobQueueEntry.FINDSET;
@@ -19,9 +16,9 @@ codeunit 50054 "Job Queue Entry Notification"
     end;
 
     var
-        Company: Record "2000000006";
+        Company: Record Company;
 
-    local procedure CheckNotificationToSend(RecLJobQueueEntry: Record "472"): Boolean
+    local procedure CheckNotificationToSend(RecLJobQueueEntry: Record "Job Queue Entry"): Boolean
     begin
         IF (RecLJobQueueEntry."Notify By Email Inactive" = FALSE) AND
            (RecLJobQueueEntry."Notify By Email On Hold" = FALSE) AND
@@ -53,8 +50,8 @@ codeunit 50054 "Job Queue Entry Notification"
 
     local procedure SendNotification(MailTemplate: Text[250]; JobQueueID: Guid; RecipientEmail: Text[250])
     var
-        EmailSend: Codeunit "50053";
-        RecLJobQueueEntry: Record "472";
+        EmailSend: Codeunit "DEL D365FM PDF Email Send";
+        RecLJobQueueEntry: Record "Job Queue Entry";
         recRef: RecordRef;
         EmailObject: Text;
         Sender: Text;

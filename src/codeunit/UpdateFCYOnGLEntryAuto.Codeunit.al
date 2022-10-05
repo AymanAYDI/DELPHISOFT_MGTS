@@ -118,15 +118,15 @@ codeunit 50009 "Update FCY On G/L Entry Auto"
         //YAH01+
         GLAccount_Re_Loc.RESET();
         GLEntry2_Re_Loc.RESET();
-        GLAccount_Re_Loc.SETFILTER("Currency Code", '<>%1', '');
+        // GLAccount_Re_Loc.SETFILTER("Currency Code", '<>%1', ''); TODO: filed range Id 3M
         IF GLAccount_Re_Loc.FINDFIRST() THEN
             REPEAT
-                Currency2_Co_Loc := GLAccount_Re_Loc."Currency Code";
+                // Currency2_Co_Loc := GLAccount_Re_Loc."Currency Code"; TODO: filed range Id 3M
                 GLEntry2_Re_Loc.SETFILTER("G/L Account No.", GLAccount_Re_Loc."No.");
                 IF GLEntry2_Re_Loc.FINDFIRST() THEN
                     REPEAT
                         GLEntry2_Re_Loc."DEL Initial Currency (FCY)" := Currency2_Co_Loc;
-                        GLEntry2_Re_Loc."DEL Initial Amount (FCY)" := GLEntry2_Re_Loc."Amount (FCY)";
+                        // GLEntry2_Re_Loc."DEL Initial Amount (FCY)" := GLEntry2_Re_Loc."Amount (FCY)"; TODO: filed range Id 3M
                         GLEntry2_Re_Loc.MODIFY();
                         // START STG02
                         GLEntry3_Re_Loc.SETCURRENTKEY("Document No.", "Posting Date");
@@ -134,13 +134,13 @@ codeunit 50009 "Update FCY On G/L Entry Auto"
                         GLEntry3_Re_Loc.SETFILTER("Entry No.", '<>%1', GLEntry2_Re_Loc."Entry No.");
                         IF GLEntry3_Re_Loc.FINDFIRST() THEN
                             REPEAT
-                                IF (GLEntry2_Re_Loc."Amount (FCY)" <> 0) THEN BEGIN
-                                    factor_Dec_Loc := GLEntry2_Re_Loc.Amount / GLEntry2_Re_Loc."Amount (FCY)";
-                                    GLEntry3_Re_Loc."DEL Initial Currency (FCY)" := Currency2_Co_Loc;
-                                    IF (GLEntry2_Re_Loc.Amount <> 0) AND (factor_Dec_Loc <> 0) THEN
-                                        GLEntry3_Re_Loc."DEL Initial Amount (FCY)" := GLEntry3_Re_Loc.Amount / factor_Dec_Loc;
-                                    GLEntry3_Re_Loc.MODIFY();
-                                END;
+                            // IF (GLEntry2_Re_Loc."Amount (FCY)" <> 0) THEN BEGIN TODO: filed range Id 3M
+                            //     factor_Dec_Loc := GLEntry2_Re_Loc.Amount / GLEntry2_Re_Loc."Amount (FCY)";
+                            //     GLEntry3_Re_Loc."DEL Initial Currency (FCY)" := Currency2_Co_Loc;
+                            //     IF (GLEntry2_Re_Loc.Amount <> 0) AND (factor_Dec_Loc <> 0) THEN
+                            //         GLEntry3_Re_Loc."DEL Initial Amount (FCY)" := GLEntry3_Re_Loc.Amount / factor_Dec_Loc;
+                            //     GLEntry3_Re_Loc.MODIFY();
+                            // END;
                             UNTIL GLEntry3_Re_Loc.NEXT() = 0;
                     // STOP STG02
                     UNTIL GLEntry2_Re_Loc.NEXT() = 0;

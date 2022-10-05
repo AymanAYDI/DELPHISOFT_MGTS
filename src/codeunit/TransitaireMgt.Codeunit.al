@@ -149,7 +149,7 @@ codeunit 50002 "DEL TransitaireMgt"
 
     procedure CopyDocDimToDocDim(var TempDocDim: Record "Gen. Jnl. Dim. Filter" temporary; "Table ID": Integer; DocType: Integer; DocNo: Code[20]; LineNo: Integer)
     var
-        DocDim: Record "IC Document Dimension";
+        DocDim: Record 357;
     begin
         TempDocDim.RESET();
         TempDocDim.DELETEALL();

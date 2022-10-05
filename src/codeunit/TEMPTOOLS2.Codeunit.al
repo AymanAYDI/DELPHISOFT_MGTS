@@ -1,15 +1,17 @@
-codeunit 50099 "TEMP TOOLS 2"
+codeunit 50099 "DEL TEMP TOOLS 2"
 {
-    Permissions = TableData 112 = rimd;
+    Permissions = TableData "Sales Invoice Header" = rimd;
 
     trigger OnRun()
     var
-        SalesInvoiceHeader: Record "112";
-        OrderAPIRecordTracking: Record "50074";
-        PurchaseHeader: Record "38";
-        PurchaseHeader2: Record "38";
-        JSONRequestslog: Record "50073";
+
+        JSONRequestslog: Record "DEL JSON Requests log";
     begin
+
+
+
+        JSONRequestslog.SETRANGE(Error, TRUE);
+
         //SalesInvoiceHeader.GET('0555691');
         //SalesInvoiceHeader."Order No." := 'VCO22607';
         //SalesInvoiceHeader.MODIFY;
@@ -28,6 +30,7 @@ codeunit 50099 "TEMP TOOLS 2"
         END;
         */
         JSONRequestslog.SETRANGE(Error(), TRUE);
+
 
         MESSAGE('%1', JSONRequestslog.COUNT);
 

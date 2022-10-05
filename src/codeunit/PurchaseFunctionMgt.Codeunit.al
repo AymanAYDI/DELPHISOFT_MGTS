@@ -1,19 +1,13 @@
-codeunit 50089 "PurchaseFunction Mgt"
+codeunit 50089 "DEL PurchaseFunction Mgt"
 {
-    // MGTS10.035 :  18.03.2022  Create codeunit AND Add function : UpdateSalesOrderPrices
 
 
-    trigger OnRun()
-    begin
-    end;
-
-
-    procedure UpdatePurchaseOrderPrices(PurchaseHeader: Record "38")
+    procedure UpdatePurchaseOrderPrices(PurchaseHeader: Record "Purchase Header")
     var
-        PurchaseLine: Record "39";
+        PurchaseLine: Record "Purchase Line";
         NothingToHandleErr: Label 'There is nothing to handle.';
         UpdatedPriceMess: Label 'Update completed.';
-        PriceCalcMgt: Codeunit "7010";
+        PriceCalcMgt: Codeunit "Purch. Price Calc. Mgt.";
         Win: Dialog;
         UpdatePricesInProgress: Label 'Updating prices...';
         CofirmMessage: Label 'Are you sure you want to update the order prices?';
@@ -28,14 +22,14 @@ codeunit 50089 "PurchaseFunction Mgt"
             ERROR(NothingToHandleErr);
         IF GUIALLOWED THEN
             Win.OPEN(UpdatePricesInProgress);
-        PurchaseLine.FINDSET;
+        PurchaseLine.FINDSET();
         REPEAT
             CLEAR(PriceCalcMgt);
             PriceCalcMgt.FindPurchLineLineDisc(PurchaseHeader, PurchaseLine);
             PriceCalcMgt.FindPurchLinePrice(PurchaseHeader, PurchaseLine, PurchaseLine.FIELDNO(Quantity));
             PurchaseLine.VALIDATE("Direct Unit Cost");
             PurchaseLine.MODIFY(TRUE);
-        UNTIL PurchaseLine.NEXT = 0;
+        UNTIL PurchaseLine.NEXT() = 0;
         IF GUIALLOWED THEN BEGIN
             Win.CLOSE();
             MESSAGE(UpdatedPriceMess);

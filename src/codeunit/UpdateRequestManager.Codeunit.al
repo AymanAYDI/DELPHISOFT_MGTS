@@ -1,5 +1,6 @@
 codeunit 50032 "DEL Update Request Manager"
 {
+
     trigger OnRun()
     begin
         FNC_Import_All();
@@ -12,10 +13,6 @@ codeunit 50032 "DEL Update Request Manager"
         Setup: Record "DEL General Setup";
         NoSeriesMgt_Cu: Codeunit NoSeriesManagement;
         Deal_Cu: Codeunit "DEL Deal";
-        "v------PROGRESS BAR------v": Integer;
-        intProgressI: array[10] of Integer;
-        diaProgress: array[10] of Dialog;
-        intProgress: array[10] of Integer;
         intProgressTotal: array[10] of Integer;
         intProgressStep: array[10] of Integer;
         intNextProgressStep: array[10] of Integer;
@@ -24,28 +21,9 @@ codeunit 50032 "DEL Update Request Manager"
 
     procedure FNC_Process_Requests(updateRequest_Re_Par: Record "DEL Update Request Manager"; deleteWhenUpdated: Boolean; UpdatePlanned_Bo_Par: Boolean; processSilently_Bo_Par: Boolean)
     var
-        intProgressI: Integer;
-        diaProgress: Dialog;
-        intProgress: Integer;
-        intProgressTotal: Integer;
-        timProgress: Time;
+
     begin
-        /*
-        usage:
-        
-          //create a request
-            requestID_Co_Loc := UpdateRequestManager_Cu.FNC_Add_Request(
-              ACOConnection_Re_Loc.Deal_ID,
-              urm_Re_Loc.Requested_By_Type::"Sales Header",
-              "No.",
-              currentdatetime
-            );
-        
-          //get the created request and process it
-            urm_Re_Loc.get(requestid_co_loc);
-            UpdateRequestManager_Cu.FNC_Process_Requests(urm_re_loc,false,true);
-        
-        */
+
 
         //Traite la liste des update requests passé dans le record en paramètre
 
@@ -93,24 +71,10 @@ codeunit 50032 "DEL Update Request Manager"
 
     procedure FNC_Add_Request(Requested_For_Deal_ID_Co_Par: Code[20]; Requested_By_Type_Co_Par: Option; Requested_By_TypeNo_Co_Par: Code[20]; Requested_At_DateTime_Par: DateTime) updateRequest_ID_Ret: Code[20]
     begin
-        //Ajoute une update request à la liste
-        /*
-        usage :
-        
-          UpdateRequestManager_Cu.FNC_Add_Request(
-            Requested_For_Deal_ID_Co_Par,
-            Requested_By_Type_Co_Par,
-            Requested_By_TypeNo_Co_Par,
-            Requested_At_DateTime_Par //currentdatetime
-          );
-        */
 
         Setup.GET();
 
         updateRequest_ID_Ret := NoSeriesMgt_Cu.GetNextNo(Setup."Update Request Nos.", TODAY, TRUE);
-
-        //MESSAGE('%1', updateRequest_ID_Ret);
-
         UpdateRequest_Re.INIT();
 
         UpdateRequest_Re.ID := updateRequest_ID_Ret;
@@ -134,7 +98,7 @@ codeunit 50032 "DEL Update Request Manager"
 
         IF UpdateRequest_Re.GET(Request_ID_Co_Par) THEN
             UpdateRequest_Re.DELETE();
-        //UpdateRequest_Re.MODIFY();
+
     end;
 
 
@@ -170,11 +134,6 @@ codeunit 50032 "DEL Update Request Manager"
             EXIT(FALSE);
         END;
 
-        //TEST2
-        //if testpascool then exit(false);
-
-        //TEST3
-        //if testpascool then exit(false);
 
         EXIT(TRUE);
     end;
@@ -213,14 +172,9 @@ codeunit 50032 "DEL Update Request Manager"
 
                 FNC_ProgressBar_Update(1);
 
-                //ajoute seulement les affaires qui ont des éléments ajoutés plus récent que la dernière update de l'affaire
-                //element_Re_Loc.RESET();
-                //element_Re_Loc.SETFILTER(Deal_ID, deal_Re_Loc.ID);
-                //element_Re_Loc.SETFILTER("Add DateTime", '>%1', deal_Re_Loc."Last Update");
-                //IF element_Re_Loc.FINDFIRST THEN BEGIN
                 FNC_Add_Request(deal_Re_Loc.ID, UpdateRequest_Re.Requested_By_Type::CUSTOM, 'All', CURRENTDATETIME);
                 counter_Loc += 1;
-            //END
+
 
             UNTIL (deal_Re_Loc.NEXT() = 0);
 
@@ -233,7 +187,6 @@ codeunit 50032 "DEL Update Request Manager"
 
     procedure FNC_Import_BlankInvoices()
     var
-        deal_Re_Loc: Record "DEL Deal";
         element_Re_Loc: Record "DEL Element";
         position_Re_Loc: Record "DEL Position";
         counter_Loc: Integer;
@@ -345,28 +298,8 @@ codeunit 50032 "DEL Update Request Manager"
 
     procedure FNC_Process_RequestsDeal(updateRequest_Re_Par: Record "DEL Update Request Manager"; deleteWhenUpdated: Boolean; UpdatePlanned_Bo_Par: Boolean; processSilently_Bo_Par: Boolean; NumID: Code[20])
     var
-        intProgressI: Integer;
-        diaProgress: Dialog;
-        intProgress: Integer;
-        intProgressTotal: Integer;
-        timProgress: Time;
     begin
-        /*
-        usage:
-        
-          //create a request
-            requestID_Co_Loc := UpdateRequestManager_Cu.FNC_Add_Request(
-              ACOConnection_Re_Loc.Deal_ID,
-              urm_Re_Loc.Requested_By_Type::"Sales Header",
-              "No.",
-              currentdatetime
-            );
-        
-          //get the created request and process it
-            urm_Re_Loc.get(requestid_co_loc);
-            UpdateRequestManager_Cu.FNC_Process_Requests(urm_re_loc,false,true);
-        
-        */
+
 
         //Traite la liste des update requests passé dans le record en paramètre
 
@@ -415,11 +348,7 @@ codeunit 50032 "DEL Update Request Manager"
 
     procedure FNC_Process_RequestsFilter(updateRequest_Re_Par: Record "DEL Update Request Manager"; deleteWhenUpdated: Boolean; UpdatePlanned_Bo_Par: Boolean; processSilently_Bo_Par: Boolean; FilterDeal: Text)
     var
-        intProgressI: Integer;
-        diaProgress: Dialog;
-        intProgress: Integer;
-        intProgressTotal: Integer;
-        timProgress: Time;
+
     begin
 
         //Traite la liste des update requests passé dans le record en paramètre
