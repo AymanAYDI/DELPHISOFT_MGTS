@@ -4,35 +4,6 @@ tableextension 50023 "DEL Vendor" extends Vendor
     fields
     {
 
-
-        //Unsupported feature: Code Modification on ""IC Partner Code"(Field 119).OnValidate".
-
-        //trigger OnValidate()
-        //Parameters and return type have not been exported.
-        //>>>> ORIGINAL CODE:
-        //begin
-        /*
-        IF xRec."IC Partner Code" <> "IC Partner Code" THEN BEGIN
-          IF NOT VendLedgEntry.SETCURRENTKEY("Vendor No.",Open) THEN
-            VendLedgEntry.SETCURRENTKEY("Vendor No.");
-        #4..29
-          ICPartner."Vendor No." := '';
-          ICPartner.MODIFY;
-        END;
-        */
-        //end;
-        //>>>> MODIFIED CODE:
-        //begin
-        /*
-        //MIG2017 START
-        // LOCO/ChC/EDI -
-        {
-        #1..32
-        }
-        // LOCO/ChC/EDI -
-        //MIG2017 EN
-        */
-        //end;
         field(50000; "DEL Forwarding Agent Code"; Code[20])
         {
             Caption = 'Forwarding Agent Code';
@@ -364,13 +335,6 @@ tableextension 50023 "DEL Vendor" extends Vendor
                     ERROR(TextVar);
                 END;
 
-                //MGTS10.020; 002; ehh; begin
-                //deleted line: TESTFIELD("DEL Revision Date quality");
-                /*
-                TESTFIELD("DEL Revision Date Soc");
-                TESTFIELD("DEL Revision Date env");
-                */
-                //MGTS10.020; 002; ehh; begin
 
                 "DEL Date updated" := TODAY;
 
@@ -448,49 +412,6 @@ tableextension 50023 "DEL Vendor" extends Vendor
         TextVar: Text;
         Text50001: Label 'must be greater than';
         Text50002: Label 'must be less than';
-
-    //Unsupported feature: Code Modification on "OnModify".
-
-    //trigger OnModify()
-    //>>>> ORIGINAL CODE:
-    //begin
-    /*
-    "Last Date Modified" := TODAY;
-
-    IF (Name <> xRec.Name) OR
-    #4..27
-        IF FIND THEN;
-      END;
-    END;
-    */
-    //end;
-    //>>>> MODIFIED CODE:
-    //begin
-    /*
-    #1..30
-
-    //MIG2017 START
-    // START T-00652
-    //IF "Vendor Posting Group"='MARCH' THEN
-    //BEGIN
-    //IF ("Quality status"="Quality status"::Actif) AND ("Social status"="Social status"::Actif) AND ("Environmental status"="Environmental status"::Actif) THEN
-     //BEGIN
-      //"Qualified vendor":=TRUE;
-      //"Date updated":=TODAY;
-      //MODIFY;
-     //END
-     //ELSE
-     //BEGIN
-      //"Qualified vendor":=FALSE;
-      //"Date updated":=TODAY;
-      //MODIFY;
-     //END;
-     //END;
-
-    //START T-00652
-    //MIG2017 END
-    */
-    //end;
 
 
 }

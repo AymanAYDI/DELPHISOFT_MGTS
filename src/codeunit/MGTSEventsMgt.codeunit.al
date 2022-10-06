@@ -4,12 +4,11 @@ codeunit 50100 "DEL MGTS_EventsMgt"
     local procedure T18_OnAfterModifyEvent_Customer(var Rec: Record Customer; RunTrigger: Boolean)
 
     begin
-        if not RunTrigger then //if (Runtrigger = false) then exit
+        if not RunTrigger then
             exit;
         if Rec.IsTemporary then
             exit;
         IF Rec."DEL Last Accounting Date" <> 0D THEN BEGIN
-            //START T-00738
             IF Rec."DEL Fréquence de facturation" = "DEL Fréquence de facturation"::"12 mois" THEN
                 Rec."DEL Date de proch. fact." := CALCDATE('<+12M>', Rec."DEL Last Accounting Date");
             IF Rec."DEL Fréquence de facturation" = "DEL Fréquence de facturation"::"6 mois" THEN
@@ -20,7 +19,6 @@ codeunit 50100 "DEL MGTS_EventsMgt"
                 Rec."DEL Date de proch. fact." := CALCDATE('<+3M>', Rec."DEL Last Accounting Date");
             IF Rec."DEL Fréquence de facturation" = "DEL Fréquence de facturation"::" " THEN
                 Rec."DEL Date de proch. fact." := CALCDATE('<+0M>', Rec."DEL Last Accounting Date");
-            //STOP T-00738
             rec."DEL Nbr jr avant proch. fact." := Rec."DEL Date de proch. fact." - TODAY;
         END;
         Rec.Modify();
@@ -58,9 +56,8 @@ codeunit 50100 "DEL MGTS_EventsMgt"
 
         SalesLine.INSERT();
         NextLineNo := NextLineNo + 10000;
-
-
     end;
+
     //7002
     [EventSubscriber(ObjectType::Table, Database::"Sales Price", 'OnBeforeItemNoOnValidate', '', false, false)]
     local procedure T7002_OnBeforeItemNoOnValidate_SalesPrice(var SalesPrice: Record "Sales Price"; var xSalesPrice: Record "Sales Price"; var IsHandled: Boolean)
@@ -71,5 +68,12 @@ codeunit 50100 "DEL MGTS_EventsMgt"
             Item.GET(SalesPrice."Item No.");
             SalesPrice."DEL Vendor No." := Item."Vendor No.";
         end;
+    end;
+
+
+    ///////////////////////////////////////////////////////////////
+    [EventSubscriber(ObjectType::Table, Database::"Sales Price", 'OnBeforeItemNoOnValidate', '', false, false)]
+    local procedure OnAfterCheckSellToCust(var SalesHeader: Record "Sales Header"; xSalesHeader: Record "Sales Header"; Customer: Record Customer; CurrentFieldNo: Integer)
+    begin
     end;
 }
