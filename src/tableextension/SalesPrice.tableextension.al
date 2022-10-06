@@ -33,7 +33,7 @@ tableextension 50040 "DEL SalesPrice" extends "Sales Price"
           //THM010218 END
         #5..13
         */
-        //end;
+        //end;P
         field(50000; "DEL Vendor No."; Code[20])
         {
             Caption = 'Vendor No.';
