@@ -3,7 +3,7 @@ table 50081 "DEL EDI Delivery GLN Customer"
 
 {
     Caption = 'EDI Delivery GLN Customer';
-    //TODO //LookupPageID = 50145;
+    LookupPageID = "DEL EDI Delivery GLN Customer";
 
     fields
     {

@@ -1,14 +1,10 @@
 codeunit 50053 "DEL D365FM PDF Email Send"
 {
-    // +--------------------------------------------------------------------+
-    // | D365FM-INV14.00.00.05  | 30.06.21 | Create Codeunit
-    // | D365FM14.00.00.11      | 30.11.21 | Job Queue Notification
-    // |
-    // +--------------------------------------------------------------------+
 
-    Permissions = TableData 297 = rm,
-                  TableData 5900 = rm,
-                  TableData 5992 = rm;
+
+    Permissions = TableData "Issued Reminder Header" = rm,
+                  TableData "Service Header" = rm,
+                  TableData "Service Invoice Header" = rm;
 
     trigger OnRun()
     begin
@@ -19,7 +15,7 @@ codeunit 50053 "DEL D365FM PDF Email Send"
     end;
 
     var
-        CduGSMTPMail: Codeunit "400";
+        //TODO  CduGSMTPMail: Codeunit 400;
         BooGManualyRun: Boolean;
         IntGLanguage: Integer;
         TxtGObject: Text[250];
@@ -34,7 +30,7 @@ codeunit 50053 "DEL D365FM PDF Email Send"
         RemLevelInt: Integer;
         AttachmentInstream: InStream;
         AttachmentOutStream: OutStream;
-        TempBlob: Record "99008535";
+        //TODO TempBlob: Record "99008535";
         ServerAttachmentFilePath: Text;
         RenewalStdTextCode: Code[20];
         PrintPicture: Boolean;
@@ -50,25 +46,25 @@ codeunit 50053 "DEL D365FM PDF Email Send"
         Text003: Label 'Adresse de facturation ne doit pas être vide.';
         Text004: Label 'Adresse de livraison de doit pas être vide.';
         Text005: Label 'Adresse de commande ne doit pas être vide.';
-        ServiceInvoiceHeader: Record "5992";
-        IssuedReminderHeader: Record "297";
-        RecLCompanyInfo: Record "79";
-        RecLCust: Record "18";
+        ServiceInvoiceHeader: Record "Service Invoice Header";
+        IssuedReminderHeader: Record "Issued Reminder Header";
+        RecLCompanyInfo: Record "Company Information";
+        RecLCust: Record Customer;
         RefLRecordRef: RecordRef;
         FldLFieldRef: FieldRef;
         TxtLEmailBodyText: Text;
         ToFile: Text;
         OutSteam: OutStream;
-        RecLBLOBRef: Record "99008535";
+        //TODO  RecLBLOBRef: Record "99008535";
         Text006: Label 'E-mail is empty.';
         Text007: Label 'E-mail template to apply not found.';
         Text008: Label 'Sender is empty.';
-        LanguageTemplateMail: Record "50082";
-        ServiceHeader: Record "5900";
-        ServiceInvoiceHeader2: Record "5992";
-        IssuedReminderHeader2: Record "297";
-        ServiceHeader2: Record "5900";
-        JobQueueEntry: Record "472";
+        LanguageTemplateMail: Record "DEL D365FM Mail Template";
+        ServiceHeader: Record "Service Header";
+        ServiceInvoiceHeader2: Record "Service Invoice Header";
+        IssuedReminderHeader2: Record "Issued Reminder Header";
+        ServiceHeader2: Record "Service Header";
+        JobQueueEntry: Record "Job Queue Entry";
     begin
         RecRefMaster.SETRECFILTER();
 
@@ -314,13 +310,13 @@ codeunit 50053 "DEL D365FM PDF Email Send"
         DecLValue1: Decimal;
         DecLValue2: Decimal;
         RecLActiveSession: Record "2000000110";
-        RecLCompanyInfo: Record "79";
-        ServiceInvoiceHeader: Record "5992";
-        IssuedReminderHeader: Record "297";
+        RecLCompanyInfo: Record "Company Information";
+        ServiceInvoiceHeader: Record "Service Invoice Header";
+        IssuedReminderHeader: Record "Issued Reminder Header";
         DocNo: Code[20];
         PostingDate: Date;
-        ServiceHeader: Record "5900";
-        JobQueueEntry: Record "472";
+        ServiceHeader: Record "Service Header";
+        JobQueueEntry: Record "Job Queue Entry";
     begin
         IF TextNo = '' THEN
             EXIT;

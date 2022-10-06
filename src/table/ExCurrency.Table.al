@@ -48,11 +48,9 @@ table 99200 "DEL Ex_Currency"
             Caption = 'Invoice Rounding Precision';
             InitValue = 1;
         }
-        field(12; "Invoice Rounding Type"; Option)
+        field(12; "Invoice Rounding Type"; Enum "DEL Invoice Rounding Type")
         {
             Caption = 'Invoice Rounding Type';
-            OptionCaption = 'Nearest,Up,Down';
-            OptionMembers = Nearest,Up,Down;
         }
         field(13; "Amount Rounding Precision"; Decimal)
         {
@@ -383,6 +381,7 @@ table 99200 "DEL Ex_Currency"
             Editable = false;
             MinValue = 0;
         }
+        //------ spécifique pays suisse---//
 
         field(3010541; "ISO Currency Code"; Code[3])
 
@@ -409,13 +408,8 @@ table 99200 "DEL Ex_Currency"
     fieldgroups
     {
     }
-    //TODO // Trigger
-    // trigger OnDelete()
-    // var
-    //     CustLedgEntry: Record 21;
-    //     VendLedgEntry: Record 25;
-    // begin
-    // end;
+
+
 
     var
         Text000: Label 'must be rounded to the nearest %1';

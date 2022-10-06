@@ -1,13 +1,6 @@
 page 50076 "DEL Comment Sheet Contrats"
 {
-    // +---------------------------------------------------------------+
-    // | Logico SA                                                     |
-    // | Status:                                                       |
-    // | Customer/Project:                                             |
-    // +---------------------------------------------------------------+
-    // Requirement UserID   Date       Where   Description
-    // -----------------------------------------------------------------
-    // T-00652      THM     24.03.14           Change SourceTableView
+
 
     AutoSplitKey = true;
     Caption = 'Comment Sheet';
@@ -24,7 +17,7 @@ page 50076 "DEL Comment Sheet Contrats"
     {
         area(content)
         {
-            repeater()
+            repeater(Control1)
             {
                 field("Date"; Rec.Date)
                 {

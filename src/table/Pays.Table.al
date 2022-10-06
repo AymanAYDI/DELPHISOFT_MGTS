@@ -2,8 +2,8 @@
 table 50052 "DEL Pays"
 {
     Caption = 'Country';
-    // TODO // DrillDownPageID = 50088;
-    // LookupPageID = 50088;
+    DrillDownPageID = "DEL Pays";
+    LookupPageID = "DEL Pays";
 
 
     fields

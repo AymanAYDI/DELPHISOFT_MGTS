@@ -2,7 +2,7 @@ page 50108 "DEL Gen.product regul. List"
 {
 
     Caption = 'General product regulation';
-    CardPageID = "General regulation Card";
+    CardPageID = "DEL General regulation Card";
     Editable = false;
     PageType = List;
     SourceTable = "DEL Regulation";

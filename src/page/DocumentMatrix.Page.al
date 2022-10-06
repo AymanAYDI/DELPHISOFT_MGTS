@@ -13,54 +13,71 @@ page 50130 "DEL Document Matrix"
             {
                 field(Type; Rec.Type)
                 {
+                    Caption = 'Type';
                 }
                 field("No."; Rec."No.")
                 {
+                    Caption = 'No.';
                 }
                 field(Name; Rec.Name)
                 {
+                    Caption = 'Name';
                 }
                 field("Process Type"; Rec."Process Type")
                 {
+                    Caption = 'Process Type';
                 }
                 field(Usage; Rec.Usage)
                 {
+                    Caption = 'Usage';
                 }
                 field("Report ID"; Rec."Report ID")
                 {
+                    Caption = 'Report ID';
                 }
                 field("Report Caption"; Rec."Report Caption")
                 {
+                    Caption = 'Report Caption';
                 }
                 field(Post; Rec.Post)
                 {
+                    Caption = 'Post';
                 }
                 field("Send to FTP 1"; Rec."Send to FTP 1")
                 {
+                    Caption = 'Send to FTP 1';
                 }
                 field("Send to FTP 2"; Rec."Send to FTP 2")
                 {
+                    Caption = 'Send to FTP 2';
                 }
                 field("E-Mail from Sales Order"; Rec."E-Mail from Sales Order")
                 {
+                    Caption = 'E-Mail from Sales Order';
                 }
                 field("E-Mail To 1"; Rec."E-Mail To 1")
                 {
+                    Caption = 'E-Mail To 1';
                 }
                 field("E-Mail To 2"; Rec."E-Mail To 2")
                 {
+                    Caption = 'E-Mail To 2';
                 }
                 field("E-Mail To 3"; Rec."E-Mail To 3")
                 {
+                    Caption = 'E-Mail To 3';
                 }
                 field("E-Mail From"; Rec."E-Mail From")
                 {
+                    Caption = 'E-Mail From';
                 }
                 field("Save PDF"; Rec."Save PDF")
                 {
+                    Caption = 'Save PDF';
                 }
                 field("Print PDF"; Rec."Print PDF")
                 {
+                    Caption = 'Print PDF';
                 }
                 field("Mail Text Code"; Rec."Mail Text Code")
                 {
@@ -68,11 +85,12 @@ page 50130 "DEL Document Matrix"
                     DrillDown = false;
                     //TODO DrillDownPageID = 50132;  //50132 n'existe pas 
                     Lookup = true;
+                    Caption = 'Mail Text Code';
 
                     trigger OnLookup(var Text: Text): Boolean
                     var
                         lrecDocMatrixEmailCodes: Record "DEL DocMatrix Email Codes";
-                        lpgDocMatrixMailCodes: Page 50134;
+                        lpgDocMatrixMailCodes: Page "DEL DocMatrix Mail Codes";
                     begin
                         lrecDocMatrixEmailCodes.RESET();
                         IF Rec."Mail Text Langauge Code" <> '' THEN
@@ -89,6 +107,7 @@ page 50130 "DEL Document Matrix"
                 }
                 field("Mail Text Langauge Code"; Rec."Mail Text Langauge Code")
                 {
+                    Caption = 'Mail Text Language Code';
                 }
             }
         }
@@ -114,7 +133,7 @@ page 50130 "DEL Document Matrix"
 
                     trigger OnAction()
                     var
-                        pgDocMatrixMailCodes: Page 50134;
+                        pgDocMatrixMailCodes: Page "DEL DocMatrix Mail Codes";
                     begin
                         pgDocMatrixMailCodes.RUN();
                     end;
@@ -127,7 +146,7 @@ page 50130 "DEL Document Matrix"
                     PromotedCategory = Process;
                     PromotedIsBig = true;
                     PromotedOnly = true;
-                    RunObject = Page 50131;
+                    RunObject = Page "DEL DocMatrix Setup";
                     RunPageMode = Edit;
                 }
                 action("Customer FTP Settings")
@@ -170,7 +189,7 @@ page 50130 "DEL Document Matrix"
 
                     trigger OnAction()
                     var
-                        lpgDocMatrixRequestPagePar: Page 50136;
+                        lpgDocMatrixRequestPagePar: Page "DEL DocMatrix Request Page Par";
                     begin
                         lpgDocMatrixRequestPagePar.LOOKUPMODE(TRUE);
                         lpgDocMatrixRequestPagePar.SETRECORD(Rec);
@@ -185,7 +204,7 @@ page 50130 "DEL Document Matrix"
                     PromotedCategory = "Report";
                     PromotedIsBig = true;
                     PromotedOnly = true;
-                    RunObject = Page 50138;
+                    RunObject = Page "DEL DocMatrix Log Entries";
                     RunPageLink = Type = FIELD(Type),
                                   "No." = FIELD("No."),
                                   "Process Type" = FIELD("Process Type"),
@@ -201,7 +220,7 @@ page 50130 "DEL Document Matrix"
                     PromotedCategory = "Report";
                     PromotedIsBig = true;
                     PromotedOnly = true;
-                    RunObject = Page 50138;
+                    RunObject = Page "DEL DocMatrix Log Entries";
                     RunPageView = SORTING("Date Time Stamp")
                                   ORDER(Descending)
                                   WHERE(Error = CONST(true),

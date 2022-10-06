@@ -1,4 +1,4 @@
-enum 50052 "DEL Status Purchase Order"
+enum 50100 "DEL Status Purchase Order"
 {
     Extensible = false;
 

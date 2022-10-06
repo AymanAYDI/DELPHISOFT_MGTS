@@ -7,20 +7,21 @@ codeunit 50024 "DEL Deal Item"
     end;
 
     var
-        ERROR_TXT: Label 'ERREUR\Source : %1\Function : %2\Reason : %3';
-        Position_Cu: Codeunit Position;
-        Element_Cu: Codeunit Element;
-        Deal_Cu: Codeunit Deal;
+
+        Position_Cu: Codeunit "DEL Position";
+        Element_Cu: Codeunit "DEL Element";
+        Deal_Cu: Codeunit "DEL Deal";
         Type_Op: Option Cost,Price;
         UpdateRequestManager_Cu: Codeunit "DEL Update Request Manager";
 
+        ERROR_TXT: Label 'ERREUR\Source : %1\Function : %2\Reason : %3';
 
     procedure FNC_Add(Deal_ID_Co_Par: Code[20]; Item_No_Co_Par: Code[20])
     var
         dealItem_Re_Loc: Record "DEL Deal Item";
         item_Re_Loc: Record Item;
     begin
-        /*Ajoute seulement si pas déjà présent dans la table*/
+
 
         IF NOT dealItem_Re_Loc.GET(Deal_ID_Co_Par, Item_No_Co_Par) THEN
             FNC_Insert(Deal_ID_Co_Par, Item_No_Co_Par)
@@ -33,27 +34,24 @@ codeunit 50024 "DEL Deal Item"
         dealItem_Re_Loc: Record "DEL Deal Item";
         item_Re_Loc: Record Item;
     begin
-        /*Insère un Deal Item sans le Unit Cost ni le Unit Price*/
-
         IF item_Re_Loc.GET(Item_No_Co_Par) THEN BEGIN
 
             FNC_checkForZero(item_Re_Loc);
 
-            //les valeurs à 0 dans item_Re_Loc devraient être signalées !!!
+
 
             dealItem_Re_Loc.INIT();
             dealItem_Re_Loc.VALIDATE(Deal_ID, Deal_ID_Co_Par);
             dealItem_Re_Loc.VALIDATE("Item No.", item_Re_Loc."No.");
 
-            dealItem_Re_Loc.VALIDATE("Net Weight", item_Re_Loc."Weight net");
-            dealItem_Re_Loc.VALIDATE("Gross Weight", item_Re_Loc."Weight brut");
-            //>>Mgts10.00.05.00
-            //dealItem_Re_Loc.VALIDATE("Volume CMB", item_Re_Loc."Vol cbm");
+            dealItem_Re_Loc.VALIDATE("Net Weight", item_Re_Loc."DEL Weight net");
+            dealItem_Re_Loc.VALIDATE("Gross Weight", item_Re_Loc."DEL Weight brut");
+
             dealItem_Re_Loc.VALIDATE("Volume CMB", item_Re_Loc.GetVolCBM(TRUE));
-            //<<Mgts10.00.05.00
-            dealItem_Re_Loc.VALIDATE("Volume CMB carton transport", item_Re_Loc."Vol cbm carton transport");
-            dealItem_Re_Loc.VALIDATE(PCB, item_Re_Loc.PCB);
-            dealItem_Re_Loc.VALIDATE("Droit de douane reduit", item_Re_Loc."Droit de douane reduit");
+
+            dealItem_Re_Loc.VALIDATE("Volume CMB carton transport", item_Re_Loc."DEL Vol cbm carton transport");
+            dealItem_Re_Loc.VALIDATE(PCB, item_Re_Loc."DEL PCB");
+            dealItem_Re_Loc.VALIDATE("Droit de douane reduit", item_Re_Loc."DEL Droit de douane reduit");
 
             IF NOT dealItem_Re_Loc.INSERT() THEN
                 ERROR(ERROR_TXT, 'Co50024', 'FNC_Insert()', 'Insertion impossible dans la table Deal Item')
@@ -68,19 +66,15 @@ codeunit 50024 "DEL Deal Item"
     var
         dealItem_Re_Loc: Record "DEL Deal Item";
     begin
-        /*
-        Met à jour Unit Cost
-        //STG01 Update seulement si le Unit Cost n'a jamais été défini !
-        */
 
         IF dealItem_Re_Loc.GET(Deal_ID_Co_Par, ItemNo_Co_Par) THEN BEGIN
 
-            //START STG01 IF dealItem_Re_Loc."Unit Cost" = 0 THEN BEGIN
+
             dealItem_Re_Loc.VALIDATE("Unit Cost", UnitCost_De_Par);
             dealItem_Re_Loc.VALIDATE("Currency Cost", CurrencyCost_Co_Par);
             IF NOT dealItem_Re_Loc.MODIFY() THEN
                 ERROR(ERROR_TXT, 'Co50024', 'FNC_Update_Unit_Cost()', 'Update Cost impossible dans la table Deal Item')
-            //STOP STG01 END
+
 
         END ELSE
             ERROR(ERROR_TXT, 'Co50024', 'FNC_Update_Unit_Cost()',
@@ -92,19 +86,16 @@ codeunit 50024 "DEL Deal Item"
     var
         dealItem_Re_Loc: Record "DEL Deal Item";
     begin
-        /*
-        Met à jour Unit Price
-        //STG01 Update seulement si le Unit Price n'a jamais été défini !
-        */
+
 
         IF dealItem_Re_Loc.GET(Deal_ID_Co_Par, ItemNo_Co_Par) THEN BEGIN
 
-            //START STG01 IF dealItem_Re_Loc."Unit Price" = 0 THEN BEGIN
+
             dealItem_Re_Loc.VALIDATE("Unit Price", UnitPrice_De_Par);
             dealItem_Re_Loc.VALIDATE("Currency Price", CurrencyPrice_Co_Par);
             IF NOT dealItem_Re_Loc.MODIFY() THEN
                 ERROR(ERROR_TXT, 'Co50024', 'FNC_Update_Unit_Price()', 'Update Price impossible dans la table Deal Item')
-            //STOP STG01 END
+
 
         END ELSE
             ERROR(ERROR_TXT, 'Co50024', 'FNC_Update_Unit_Price()',
@@ -206,8 +197,7 @@ codeunit 50024 "DEL Deal Item"
 
                     IF purchRcptLine_Re_Loc.FINDFIRST() THEN
                         REPEAT
-                            //le montant de la ligne n'existe pas sur les BR, il faut donc aller chercher le cout
-                            //de l'article dans la table Deal Item
+
                             IF dealItem_Re_Loc.GET(Deal_ID_Co_Par, purchRcptLine_Re_Loc."No.") THEN
                                 Amount_Dec_Ret += purchRcptLine_Re_Loc.Quantity * dealItem_Re_Loc."Unit Price"
                             ELSE
@@ -220,7 +210,7 @@ codeunit 50024 "DEL Deal Item"
 
                 END
 
-                //Without Shipment No
+
             END ELSE BEGIN
 
                 position_Re_Loc.RESET();
@@ -253,13 +243,11 @@ codeunit 50024 "DEL Deal Item"
                         Element_Cu.FNC_Set_Element(element_Re_Loc, position_Re_Loc.Element_ID);
                         IF ((element_Re_Loc.Type = element_Re_Loc.Type::"Sales Invoice")
                           OR (element_Re_Loc.Type = element_Re_Loc.Type::"Sales Cr. Memo")) THEN
-
-                            //Without Shipment No
                             IF ShipmentNo_Co_Par = '' THEN
                                 Amount_Dec_Ret += Position_Cu.FNC_Get_Amount(position_Re_Loc.ID)
-                            //Without Shipment No
+
                             ELSE
-                                //on controle si l'élément fait partie de la livraison sélectionnée
+
                                 IF dealShipmentConnection_Re_Loc.GET(Deal_ID_Co_Par, ShipmentNo_Co_Par, position_Re_Loc.Element_ID) THEN
                                     Amount_Dec_Ret += Position_Cu.FNC_Get_Amount(position_Re_Loc.ID);
 
@@ -280,14 +268,14 @@ codeunit 50024 "DEL Deal Item"
         purchRcptLine_Re_Loc: Record "Purch. Rcpt. Line";
         dealItem_Re_Loc: Record "DEL Deal Item";
     begin
-        /*RETOURNE LE MONTANT DES VENTES POUR UN ARTICLE EN PRENANT EN COMPTE LE NUMERO DE LIVRAISON SI IL EST SPECIFIE*/
+
 
         Amount_Dec_Ret := 0;
 
-        //Planned
+
         IF Instance_Op_Par = Instance_Op_Par::Planned THEN BEGIN
 
-            //With Shipment No
+
             IF dealShipment_Re_Loc.GET(ShipmentNo_Co_Par) THEN BEGIN
 
                 IF BR_Header_Re_Loc.GET(dealShipment_Re_Loc."BR No.") THEN BEGIN
@@ -298,8 +286,7 @@ codeunit 50024 "DEL Deal Item"
 
                     IF purchRcptLine_Re_Loc.FINDFIRST() THEN
                         REPEAT
-                            //le montant de la ligne n'existe pas sur les BR, il faut donc aller chercher le cout
-                            //de l'article dans la table Deal Item
+
                             IF dealItem_Re_Loc.GET(Deal_ID_Co_Par, purchRcptLine_Re_Loc."No.") THEN
                                 Amount_Dec_Ret += purchRcptLine_Re_Loc.Quantity * dealItem_Re_Loc."Unit Cost"
                             ELSE
@@ -312,7 +299,7 @@ codeunit 50024 "DEL Deal Item"
 
                 END
 
-                //Without Shipment No
+
             END ELSE BEGIN
 
                 position_Re_Loc.RESET();
@@ -330,7 +317,6 @@ codeunit 50024 "DEL Deal Item"
 
             END
 
-            //Real
         END ELSE
             IF Instance_Op_Par = Instance_Op_Par::Real THEN BEGIN
 
@@ -345,13 +331,11 @@ codeunit 50024 "DEL Deal Item"
                         Element_Cu.FNC_Set_Element(element_Re_Loc, position_Re_Loc.Element_ID);
                         IF ((element_Re_Loc.Type = element_Re_Loc.Type::"Purchase Invoice")
                           OR (element_Re_Loc.Type = element_Re_Loc.Type::"Purch. Cr. Memo")) THEN
-
-                            //Without Shipment No
                             IF ShipmentNo_Co_Par = '' THEN
                                 Amount_Dec_Ret += Position_Cu.FNC_Get_Amount(position_Re_Loc.ID)
-                            //Without Shipment No
+
                             ELSE
-                                //on controle si l'élément fait partie de la livraison sélectionnée
+
                                 IF dealShipmentConnection_Re_Loc.GET(Deal_ID_Co_Par, ShipmentNo_Co_Par, position_Re_Loc.Element_ID) THEN
                                     Amount_Dec_Ret += Position_Cu.FNC_Get_Amount(position_Re_Loc.ID);
 
@@ -372,14 +356,14 @@ codeunit 50024 "DEL Deal Item"
         purchRcptLine_Re_Loc: Record "Purch. Rcpt. Line";
         dealItem_Re_Loc: Record "DEL Deal Item";
     begin
-        /*RETOURNE LE MONTANT DES ACHATS POUR UN ARTICLE*/
+
 
         Amount_Dec_Ret := 0;
 
-        //Planned
+
         IF Instance_Op_Par = Instance_Op_Par::Planned THEN BEGIN
 
-            //With Shipment No
+
             IF dealShipment_Re_Loc.GET(ShipmentNo_Co_Par) THEN BEGIN
 
                 IF BR_Header_Re_Loc.GET(dealShipment_Re_Loc."BR No.") THEN BEGIN
@@ -408,7 +392,7 @@ codeunit 50024 "DEL Deal Item"
 
                 END
 
-                //Without Shipment No
+
             END ELSE BEGIN
 
                 position_Re_Loc.RESET();
@@ -438,12 +422,11 @@ codeunit 50024 "DEL Deal Item"
                     REPEAT
 
                         Element_Cu.FNC_Set_Element(element_Re_Loc, position_Re_Loc.Element_ID);
-                        IF element_Re_Loc.Type = element_Re_Loc.Type::Invoice THEN   //CHG-DEV-PROVISION si type = Invoice|Provision
-
+                        IF element_Re_Loc.Type = element_Re_Loc.Type::Invoice THEN
                             IF ShipmentNo_Co_Par = '' THEN
                                 Amount_Dec_Ret += Position_Cu.FNC_Get_Amount(position_Re_Loc.ID)
                             ELSE
-                                //on controle si l'élément et le subelement fait partie de la livraison sélectionnée
+
                                 IF (dealShipmentConnection_Re_Loc.GET(Deal_ID_Co_Par, ShipmentNo_Co_Par, position_Re_Loc.Element_ID)) AND (
                                    dealShipmentConnection_Re_Loc.GET(Deal_ID_Co_Par, ShipmentNo_Co_Par, position_Re_Loc."Sub Element_ID")) THEN
                                     Amount_Dec_Ret += Position_Cu.FNC_Get_Amount(position_Re_Loc.ID);
@@ -603,7 +586,6 @@ codeunit 50024 "DEL Deal Item"
     begin
         CampaignCode_Co_Ret := '';
 
-        //chercher l'articles dans la/les VCO(s) de l'affaire
         element_Re_Loc.RESET();
         element_Re_Loc.SETCURRENTKEY(Deal_ID, Type, Instance);
         element_Re_Loc.SETRANGE(Deal_ID, Deal_ID_Co_Par);
@@ -616,7 +598,7 @@ codeunit 50024 "DEL Deal Item"
                 salesLine_Re_Loc.SETRANGE("Document No.", element_Re_Loc."Type No.");
                 salesLine_Re_Loc.SETRANGE("No.", ItemNo_Co_Par);
                 IF salesLine_Re_Loc.FINDFIRST() THEN BEGIN
-                    CampaignCode_Co_Ret := salesLine_Re_Loc."Campaign Code";
+                    CampaignCode_Co_Ret := salesLine_Re_Loc."DEL Campaign Code";
                     EXIT(CampaignCode_Co_Ret);
                 END
 
@@ -630,15 +612,12 @@ codeunit 50024 "DEL Deal Item"
     begin
         message_Te_Loc := '';
 
-        IF Item_Re_Par."Weight net" = 0 THEN message_Te_Loc += 'Weight net';
-        IF Item_Re_Par."Weight brut" = 0 THEN message_Te_Loc += ', Weight brut';
-        //>>Mgts10.00.05.00
-        //IF Item_Re_Par."Vol cbm"                 = 0  THEN message_Te_Loc += ', Vol cbm';
+        IF Item_Re_Par."DEL Weight net" = 0 THEN message_Te_Loc += 'Weight net';
+        IF Item_Re_Par."DEL Weight brut" = 0 THEN message_Te_Loc += ', Weight brut';
+
         IF Item_Re_Par.GetVolCBM(TRUE) = 0 THEN message_Te_Loc += ', Vol cbm';
-        IF Item_Re_Par."Vol cbm carton transport" = 0 THEN message_Te_Loc += ', Vol cbm carton transport';
-        IF Item_Re_Par.PCB = 0 THEN message_Te_Loc += ', PCB';
-        //if item_Re_par."Container No."                 = 0  then message_Te_Loc += ', Container No.';
-        //IF Item_Re_Par."Droit de douane reduit"        = 0  THEN message_Te_Loc += ', Droit de douane reduit';
+        IF Item_Re_Par."DEL Vol cbm carton transport" = 0 THEN message_Te_Loc += ', Vol cbm carton transport';
+        IF Item_Re_Par."DEL PCB" = 0 THEN message_Te_Loc += ', PCB';
 
         IF message_Te_Loc <> '' THEN BEGIN
             message_Te_Loc += ' de l''article ' + FORMAT(Item_Re_Par."No.") + ' à 0 sur la fiche article !';
@@ -652,32 +631,29 @@ codeunit 50024 "DEL Deal Item"
         Item_Re_Loc: Record Item;
         DealItem_Re_Loc: Record "DEL Deal Item";
     begin
-        /*Mise à jour des champs "Net Weight", "Gross Weight", "Volume CMB", "Volume CMB Carton" et "PCB"*/
 
-        //on cherche l'article
         IF Item_Re_Loc.GET(ItemNo_Co_Par) THEN BEGIN
 
-            //on cherche les deal items correspondant à cet article
+
             DealItem_Re_Loc.RESET();
             DealItem_Re_Loc.SETFILTER("Item No.", Item_Re_Loc."No.");
-            //THM161117
+
             DealItem_Re_Loc.SETFILTER(DealItem_Re_Loc.Status, '%1|%2|%3', DealItem_Re_Loc.Status::"In order", DealItem_Re_Loc.Status::"In progress", DealItem_Re_Loc.Status::Invoiced);
-            //END THM161117
+
             IF DealItem_Re_Loc.FINDFIRST() THEN
                 REPEAT
 
-                    FNC_Update_Net_Weight(DealItem_Re_Loc.Deal_ID, DealItem_Re_Loc."Item No.", Item_Re_Loc."Weight net");
-                    FNC_Update_Gross_Weight(DealItem_Re_Loc.Deal_ID, DealItem_Re_Loc."Item No.", Item_Re_Loc."Weight brut");
-                    //>>Mgts10.00.05.00
-                    //FNC_Update_Volume_CMB(DealItem_Re_Loc.Deal_ID, DealItem_Re_Loc."Item No.", Item_Re_Loc."Vol cbm");
-                    FNC_Update_Volume_CMB(DealItem_Re_Loc.Deal_ID, DealItem_Re_Loc."Item No.", Item_Re_Loc.GetVolCBM(TRUE));
-                    //<<Mgts10.00.05.00
-                    FNC_Update_Volume_CMB_Carton(DealItem_Re_Loc.Deal_ID, DealItem_Re_Loc."Item No.", Item_Re_Loc."Vol cbm carton transport");
-                    FNC_Update_PCB(DealItem_Re_Loc.Deal_ID, DealItem_Re_Loc."Item No.", Item_Re_Loc.PCB);
+                    FNC_Update_Net_Weight(DealItem_Re_Loc.Deal_ID, DealItem_Re_Loc."Item No.", Item_Re_Loc."DEL Weight net");
+                    FNC_Update_Gross_Weight(DealItem_Re_Loc.Deal_ID, DealItem_Re_Loc."Item No.", Item_Re_Loc."DEL Weight brut");
 
-                    //START CHG02
+                    FNC_Update_Volume_CMB(DealItem_Re_Loc.Deal_ID, DealItem_Re_Loc."Item No.", Item_Re_Loc.GetVolCBM(TRUE));
+
+                    FNC_Update_Volume_CMB_Carton(DealItem_Re_Loc.Deal_ID, DealItem_Re_Loc."Item No.", Item_Re_Loc."DEL Vol cbm carton transport");
+                    FNC_Update_PCB(DealItem_Re_Loc.Deal_ID, DealItem_Re_Loc."Item No.", Item_Re_Loc."DEL PCB");
+
+
                     Deal_Cu.FNC_Reinit_Deal(DealItem_Re_Loc.Deal_ID, TRUE, FALSE);
-                //STOP CHG02
+
 
                 UNTIL (DealItem_Re_Loc.NEXT() = 0);
 
@@ -698,16 +674,9 @@ codeunit 50024 "DEL Deal Item"
         ACO_Line_Re_Loc: Record "Purchase Line";
         UpdateRequest_Re: Record "DEL Update Request Manager";
     begin
-        //Cette fonction est appelée lorsque des modifications sont effectuées sur les lignes ACO au niveau du prix d'achat
-        //-> si p.e. on change la quantité, alors le prix d'achat est validé et cette fonction est appelé
-        //-> si p.e. on change la devise du document, chaque ligne voit son prix d'achat validé et cette fonction est appelée aussi..
 
-        //si la quantité est plus grande que zéro on envisage une mise à jour sinon ca sert à rien
         IF ACOLine_Re_Par.Quantity > 0 THEN BEGIN
 
-            //MESSAGE('entering');
-
-            //si une affaire existe pour cette ACO
             element_Re_Loc.RESET();
             element_Re_Loc.SETCURRENTKEY(Type, "Type No.");
             element_Re_Loc.SETRANGE(Type, element_Re_Loc.Type::ACO);
@@ -715,21 +684,20 @@ codeunit 50024 "DEL Deal Item"
             element_Re_Loc.SETRANGE(Instance, element_Re_Loc.Instance::planned);
             IF element_Re_Loc.FINDFIRST() THEN BEGIN
 
-                //on traite directement toutes les lignes sur l'ACO
                 ACO_Line_Re_Loc.RESET();
                 ACO_Line_Re_Loc.SETCURRENTKEY("Document Type", "Document No.", "Line No.");
                 ACO_Line_Re_Loc.SETRANGE("Document Type", ACO_Line_Re_Loc."Document Type"::Order);
                 ACO_Line_Re_Loc.SETRANGE("Document No.", element_Re_Loc."Type No.");
                 ACO_Line_Re_Loc.SETRANGE(Type, ACO_Line_Re_Loc.Type::Item);
                 ACO_Line_Re_Loc.SETFILTER(Quantity, '>%1', 0);
-                //si il y a des lignes sur l'ACO
+
                 IF ACO_Line_Re_Loc.FINDFIRST() THEN
                     REPEAT
 
-                        //La fonction ajoute seulement si l'item n'a jamais été enregistré !
+
                         FNC_Add(element_Re_Loc.Deal_ID, ACO_Line_Re_Loc."No.");
 
-                        //détecte si une mise à jour est nécessaire au niveau des deal item (prix et devise)
+
                         IF FNC_NeedsToBeUpdated(
                           element_Re_Loc.Deal_ID,
                           ACO_Line_Re_Loc."No.",
@@ -737,7 +705,7 @@ codeunit 50024 "DEL Deal Item"
                           ACO_Line_Re_Loc."Direct Unit Cost",
                           ACO_Line_Re_Loc."Currency Code") THEN BEGIN
 
-                            //La fonction met à jour Unit Cost
+
                             FNC_Update_Unit_Cost(
                               element_Re_Loc.Deal_ID,
                               ACO_Line_Re_Loc."No.",
@@ -745,46 +713,40 @@ codeunit 50024 "DEL Deal Item"
                               ACO_Line_Re_Loc."Currency Code"
                             );
 
-                            //on ajoute une update request seulement si on a pas déjà une request pour le meme cas
-                            //car ca sert à rien de faire 10x la meme mise à jour de l'affaire
                             UpdateRequest_Re.RESET();
                             UpdateRequest_Re.SETCURRENTKEY(Request_For_Deal_ID, Requested_By_Type, "Requested_By_Type No.");
                             UpdateRequest_Re.SETRANGE(Request_For_Deal_ID, element_Re_Loc.Deal_ID);
                             UpdateRequest_Re.SETRANGE(Requested_By_Type, UpdateRequest_Re.Requested_By_Type::"Deal Item");
-                            //UpdateRequest_Re.SETRANGE("Requested_By_Type No.", ACOLine_Re_Par."No.");
+
                             UpdateRequest_Re.SETRANGE(Request_Status, UpdateRequest_Re.Request_Status::NOK);
                             UpdateRequest_Re.SETRANGE("To be ignored", FALSE);
                             IF NOT UpdateRequest_Re.FINDFIRST() THEN
                                 UpdateRequestManager_Cu.FNC_Add_Request(
                                   element_Re_Loc.Deal_ID,
                                   UpdateRequest_Re.Requested_By_Type::"Deal Item",
-                                  '', //ACOLine_Re_Par."No.",
+                                  '',
                                   CURRENTDATETIME
                                 );
-                            //MESSAGE('ajout request opur deal %1', element_Re_Loc.Deal_ID);
 
-                            //si la nouvelle quantité est différente de la quantitée précédente
                         END ELSE
                             IF ACOLine_Re_Par.Quantity <> xACOLine_Re_Par.Quantity THEN BEGIN
 
-                                //MESSAGE('*%1 - %2', ACOLine_Re_Par.Quantity, xACOLine_Re_Par.Quantity);
-                                //on ajoute une update request seulement si on a pas déjà une request pour le meme cas
-                                //car ca sert à rien de faire 10x la meme mise à jour de l'affaire
+
                                 UpdateRequest_Re.RESET();
                                 UpdateRequest_Re.SETCURRENTKEY(Request_For_Deal_ID, Requested_By_Type, "Requested_By_Type No.");
                                 UpdateRequest_Re.SETRANGE(Request_For_Deal_ID, element_Re_Loc.Deal_ID);
                                 UpdateRequest_Re.SETRANGE(Requested_By_Type, UpdateRequest_Re.Requested_By_Type::"Deal Item");
-                                //UpdateRequest_Re.SETRANGE("Requested_By_Type No.", ACOLine_Re_Par."No.");
+
                                 UpdateRequest_Re.SETRANGE(Request_Status, UpdateRequest_Re.Request_Status::NOK);
                                 UpdateRequest_Re.SETRANGE("To be ignored", FALSE);
                                 IF NOT UpdateRequest_Re.FINDFIRST() THEN
                                     UpdateRequestManager_Cu.FNC_Add_Request(
                                       element_Re_Loc.Deal_ID,
                                       UpdateRequest_Re.Requested_By_Type::"Deal Item",
-                                      '', //ACOLine_Re_Par."No.",
+                                      '',
                                       CURRENTDATETIME
                                     );
-                                //MESSAGE('ajout request opur deal %1', element_Re_Loc.Deal_ID);
+
 
                             END;
 
@@ -967,14 +929,14 @@ codeunit 50024 "DEL Deal Item"
             IF DealItem_Re_Loc.FINDFIRST() THEN
                 REPEAT
 
-                    FNC_Update_Net_Weight(DealItem_Re_Loc.Deal_ID, DealItem_Re_Loc."Item No.", Item_Re_Loc."Weight net");
-                    FNC_Update_Gross_Weight(DealItem_Re_Loc.Deal_ID, DealItem_Re_Loc."Item No.", Item_Re_Loc."Weight brut");
+                    FNC_Update_Net_Weight(DealItem_Re_Loc.Deal_ID, DealItem_Re_Loc."Item No.", Item_Re_Loc."DEL Weight net");
+                    FNC_Update_Gross_Weight(DealItem_Re_Loc.Deal_ID, DealItem_Re_Loc."Item No.", Item_Re_Loc."DEL Weight brut");
                     //>>Mgts10.00.05.00
                     //FNC_Update_Volume_CMB(DealItem_Re_Loc.Deal_ID, DealItem_Re_Loc."Item No.", Item_Re_Loc."Vol cbm");
                     FNC_Update_Volume_CMB(DealItem_Re_Loc.Deal_ID, DealItem_Re_Loc."Item No.", Item_Re_Loc.GetVolCBM(TRUE));
                     //<<Mgts10.00.05.00
-                    FNC_Update_Volume_CMB_Carton(DealItem_Re_Loc.Deal_ID, DealItem_Re_Loc."Item No.", Item_Re_Loc."Vol cbm carton transport");
-                    FNC_Update_PCB(DealItem_Re_Loc.Deal_ID, DealItem_Re_Loc."Item No.", Item_Re_Loc.PCB);
+                    FNC_Update_Volume_CMB_Carton(DealItem_Re_Loc.Deal_ID, DealItem_Re_Loc."Item No.", Item_Re_Loc."DEL Vol cbm carton transport");
+                    FNC_Update_PCB(DealItem_Re_Loc.Deal_ID, DealItem_Re_Loc."Item No.", Item_Re_Loc."DEL PCB");
 
                     //START CHG02
                     Deal_Cu.FNC_Reinit_Deal(DealItem_Re_Loc.Deal_ID, TRUE, TRUE);

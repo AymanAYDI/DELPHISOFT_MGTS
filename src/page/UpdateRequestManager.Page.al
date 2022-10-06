@@ -14,9 +14,11 @@ page 50048 "DEL Update Request Manager"
             {
                 field(ID; Rec.ID)
                 {
+                    Caption = 'ID';
                 }
                 field(Requested_By_User; Rec.Requested_By_User)
                 {
+                    Caption = 'Requested_By_User';
                 }
                 field(Request_For_Deal_ID; Rec.Request_For_Deal_ID)
                 {
@@ -44,6 +46,7 @@ page 50048 "DEL Update Request Manager"
                 }
                 field(Description; Rec.Description)
                 {
+                    Caption = 'Description';
                 }
             }
         }
@@ -66,7 +69,7 @@ page 50048 "DEL Update Request Manager"
 
                     trigger OnAction()
                     begin
-                        // TODO  //DealItemCompleter_Cu.CompleteDeal_FNC(Rec.Request_For_Deal_ID);
+                        DealItemCompleter_Cu.CompleteDeal_FNC(Rec.Request_For_Deal_ID);
 
                         MESSAGE('Done !');
                     end;
@@ -85,7 +88,7 @@ page 50048 "DEL Update Request Manager"
 
                     trigger OnAction()
                     begin
-                        // TODO //UpdateRequestManager_Cu.FNC_Import_BlankInvoices();
+                        UpdateRequestManager_Cu.FNC_Import_BlankInvoices();
                     end;
                 }
                 action(All)
@@ -98,7 +101,7 @@ page 50048 "DEL Update Request Manager"
 
                     trigger OnAction()
                     begin
-                        // TODO // UpdateRequestManager_Cu.FNC_Import_All();
+                        UpdateRequestManager_Cu.FNC_Import_All();
                     end;
                 }
             }
@@ -116,7 +119,7 @@ page 50048 "DEL Update Request Manager"
 
                     trigger OnAction()
                     begin
-                        // TODO // UpdateRequestManager_Cu.FNC_Process_Requests(Rec, FALSE, FALSE, TRUE);
+                        UpdateRequestManager_Cu.FNC_Process_Requests(Rec, FALSE, FALSE, TRUE);
                     end;
                 }
                 action("Mise à jour (y compris le prévu)")
@@ -130,7 +133,7 @@ page 50048 "DEL Update Request Manager"
 
                     trigger OnAction()
                     begin
-                        // TODO //  UpdateRequestManager_Cu.FNC_Process_Requests(Rec, FALSE, TRUE, TRUE);
+                        UpdateRequestManager_Cu.FNC_Process_Requests(Rec, FALSE, TRUE, TRUE);
                     end;
                 }
                 action("Update")
@@ -140,16 +143,16 @@ page 50048 "DEL Update Request Manager"
                     Promoted = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
-                    // RunObject = Report 50003;
+                    // TODO RunObject = Report 50003;
                 }
             }
         }
     }
 
     var
-        // TODO 
-        // UpdateRequestManager_Cu: Codeunit 50032;
-        //DealItemCompleter_Cu: Codeunit "50038";
+
+        UpdateRequestManager_Cu: Codeunit "DEL Update Request Manager";
+        DealItemCompleter_Cu: Codeunit "DEL Deal Item Completer";
         Text19018791: Label 'U P D A T E   R E Q U E S T   M A N A G E R';
 }
 

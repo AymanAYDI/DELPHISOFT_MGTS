@@ -1,7 +1,7 @@
 table 50022 "DEL Position"
 {
 
-    //TODO LookupPageID = 50022;
+    LookupPageID = "DEL Position";
 
     Caption = 'Position';
 

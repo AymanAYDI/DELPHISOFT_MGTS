@@ -1,13 +1,6 @@
 page 50089 "DEL Usage"
 {
-    // +---------------------------------------------------------------+
-    // | Logico SA                                                     |
-    // | Status:                                                       |
-    // | Customer/Project:                                             |
-    // +---------------------------------------------------------------+
-    // Requirement UserID   Date       Where   Description
-    // -----------------------------------------------------------------
-    // T-00716      THM     27.08.15           Create Object
+
 
     Caption = 'Usage';
     PageType = List;
@@ -21,9 +14,11 @@ page 50089 "DEL Usage"
             {
                 field("Code"; Rec.Code)
                 {
+                    Caption = 'Code';
                 }
                 field(Description; Rec.Description)
                 {
+                    Caption = 'Description';
                 }
             }
         }

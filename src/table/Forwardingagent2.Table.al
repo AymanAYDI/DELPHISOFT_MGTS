@@ -3,7 +3,7 @@ table 50009 "DEL Forwarding agent 2"
 
 
     Caption = 'Forwarding agent';
-    //TODO LookupPageID = 50013;
+    LookupPageID = "DEL Forwarding agent";
 
     fields
     {

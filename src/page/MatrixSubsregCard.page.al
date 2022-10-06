@@ -118,6 +118,6 @@ page 50095 "DEL Matrix Subs. reg Card"
 
     var
         Pays_Rec: Record "DEL Pays";
-        Pays_Page: Page Pays;
+        Pays_Page: Page "DEL Pays";
 }
 

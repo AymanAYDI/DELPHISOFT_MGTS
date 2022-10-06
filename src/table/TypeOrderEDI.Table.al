@@ -3,7 +3,7 @@ table 50079 "DEL Type Order EDI"
 {
 
 
-    LookupPageID = "Type Order EDI";
+    LookupPageID = "DEL Type Order EDI";
     Caption = 'Type Order EDI';
 
     fields

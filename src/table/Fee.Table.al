@@ -2,7 +2,7 @@ table 50024 "DEL Fee"
 {
 
 
-    //TODOLookupPageID = 50024;
+    LookupPageID = "DEL Fee";
     Caption = 'Fee';
 
     fields
@@ -47,8 +47,7 @@ table 50024 "DEL Fee"
             TableRelation = Currency.Code;
             Caption = 'Currency';
         }
-        field(8; "Field"; Enum "DEL   
-        ield")
+        field(8; "Field"; Enum "DEL Field")
         {
             Caption = 'Field';
         }

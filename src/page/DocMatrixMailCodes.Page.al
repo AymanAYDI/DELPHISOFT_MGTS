@@ -46,7 +46,7 @@ page 50134 "DEL DocMatrix Mail Codes"
 
                     trigger OnAction()
                     var
-                        lpgDocMatrixEmailText: Page "DocMatrix Email Body";
+                        lpgDocMatrixEmailText: Page "DEL DocMatrix Email Body";
                     begin
                         lpgDocMatrixEmailText.SETRECORD(Rec);
                         lpgDocMatrixEmailText.RUNMODAL();
@@ -83,57 +83,25 @@ page 50134 "DEL DocMatrix Mail Codes"
 
     procedure ReadBLOB(pCode: Code[20]; pLanguage: Code[10])
     var
-        DocMatrixEmailCodes: Record "DEL DocMatrix Email Codes";
-        MyBigText: BigText;
-        BLOBInStream: InStream;
-        lpgDocMatrixEmailText: Page "DocMatrix Email Body";
+
     begin
-        /*--- Code obsolete ---
-        //To stream a BLOB into a BigText variable use the command READ.
-        IF DocMatrixEmailCodes.GET(pCode, pLanguage) THEN BEGIN
-        
-          // get the text from the BLOB field
-          DocMatrixEmailCodes.CALCFIELDS(Body);
-          IF DocMatrixEmailCodes.Body.HASVALUE THEN BEGIN
-            CLEAR(MyBigText);
-            DocMatrixEmailCodes.Body.CREATEINSTREAM(BLOBInStream);
-            MyBigText.READ(BLOBInStream);
-            MyBigText.GETSUBTEXT(MyBigText, 1);
-          END;
-        
-          // set the read text to the page global variable to show the value in the page
-          lpgDocMatrixEmailText.SETRECORD(DocMatrixEmailCodes);
-          lpgDocMatrixEmailText.SetBodyText(MyBigText);
-          lpgDocMatrixEmailText.RUNMODAL;
-        
-        END;
-        ---*/
+
 
     end;
 
 
     procedure WriteBLOB(pCode: Code[20]; pLanguage: Code[10])
     var
-        MyBigText: BigText;
-        BLOBOutStream: OutStream;
+
     begin
-        /*--- Code obsolete ---
-        //To stream a BigText variable into a BLOB use the command WRITE.
-        MyBigText.ADDTEXT('Text to be stored in a BLOB field');
-        Body.CREATEOUTSTREAM(BLOBOutStream);
-        MyBigText.WRITE(BLOBOutStream);
-        IF NOT INSERT THEN
-          MODIFY;
-        ---*/
+
 
     end;
 
 
     procedure SetBodyText(pbtxBigText: BigText)
     begin
-        /*--- Code obsolete ---
-        pbtxBigText.GETSUBTEXT(BodyText,1);
-        ---*/
+
 
     end;
 }

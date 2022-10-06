@@ -127,7 +127,7 @@ page 50094 "DEL Matrix General Reg. Card"
 
     var
         Pays_Rec: Record "DEL Pays";
-        Pays_Page: Page Pays;
+        Pays_Page: Page "DEL Pays";
 
 }
 

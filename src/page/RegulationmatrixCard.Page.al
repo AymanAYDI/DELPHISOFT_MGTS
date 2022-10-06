@@ -106,7 +106,7 @@ page 50086 "DEL Regulation matrix Card"
                 field("List Items Associated"; Rec."List Items Associated")
                 {
                     DrillDown = true;
-                    DrillDownPageID = "Item Quality List";
+                    DrillDownPageID = "DEL Item Quality List";
                     Caption = 'List Items Associated';
                 }
             }

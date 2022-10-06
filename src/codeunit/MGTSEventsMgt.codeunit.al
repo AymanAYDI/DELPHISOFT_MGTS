@@ -144,7 +144,7 @@ codeunit 50100 "DEL MGTS_EventsMgt"
         Rec.ModifCategory(Rec."Item Category Code");
 
     end;
-    // proc TryGetItemNoOpenCardWithView tab 27
+    //TODO: elle n'a aucun sens proc TryGetItemNoOpenCardWithView tab 27
 
     [EventSubscriber(ObjectType::Table, database::Item, 'OnTryGetItemNoOpenCardWithViewOnBeforeShowCreateItemOption', '', false, false)]
     local procedure OnTryGetItemNoOpenCardWithViewOnBeforeShowCreateItemOption(var Item: Record Item)

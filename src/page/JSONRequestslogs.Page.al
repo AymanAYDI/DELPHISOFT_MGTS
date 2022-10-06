@@ -1,4 +1,4 @@
-page 50140 "DEL JSON Requests logs"
+page 50140 "DEL JSON Requests logs" //TODO
 {
 
 
@@ -43,10 +43,10 @@ page 50140 "DEL JSON Requests logs"
                     {
                     }
                 }
-                part(Message; Message)
-                {
-                    SubPageLink = "Entry No." = FIELD("Entry No.");
-                }
+                // part(Message; Message)
+                // {
+                //     SubPageLink = "Entry No." = FIELD("Entry No.");
+                // }
             }
         }
     }
