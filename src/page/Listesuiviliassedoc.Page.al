@@ -2,7 +2,7 @@ page 50070 "DEL Liste suivi liasse doc"
 {
 
     Caption = 'follow General contract doc case List';
-    CardPageID = "Fiche suivi liasse doc";
+    CardPageID = "DEL Fiche suivi liasse doc";
     Editable = false;
     PageType = List;
     SourceTable = Vendor;
@@ -32,18 +32,18 @@ page 50070 "DEL Liste suivi liasse doc"
                 field(Contact; Rec.Contact)
                 {
                 }
-                // TODO/ field("Statut CG"; "DEL Statut CG")
-                // {
-                // }
-                // field("Date de maj statut CG"; "Date de maj statut CG")
-                // {
-                // }
-                // field("Statut CE"; "Statut CE")
-                // {
-                // }
-                // field("Date de maj statut CE"; "Date de maj statut CE")
-                // {
-                // }
+                field("Statut CG"; Rec."DEL Statut CG")
+                {
+                }
+                field("Date de maj statut CG"; Rec."DEL Date de maj statut CG")
+                {
+                }
+                field("Statut CE"; Rec."DEL Statut CE")
+                {
+                }
+                field("Date de maj statut CE"; Rec."DEL Date de maj statut CE")
+                {
+                }
             }
         }
     }

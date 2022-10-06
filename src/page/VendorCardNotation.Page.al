@@ -63,39 +63,39 @@ page 50064 "DEL Vendor Card Notation"
             group("Audit Quality")
             {
                 Caption = 'Audit Quality';
-                //TODO:tableext
-                // field("URL Quality"; "URL Quality")
-                // {
-                // }
-                // field("Note Quality"; "Note Quality")
-                // {
-                //     Importance = Promoted;
-                // }
-                // field("Realisation Date Quality"; "Realisation Date Quality")
-                // {
-                // }
-                // field("Revision Date quality"; "Revision Date quality")
-                // {
-                // }
+
+                field("URL Quality"; Rec."DEL URL Quality")
+                {
+                }
+                field("Note Quality"; Rec."DEL Note Quality")
+                {
+                    Importance = Promoted;
+                }
+                field("Realisation Date Quality"; Rec."DEL Realisation Date Quality")
+                {
+                }
+                field("Revision Date quality"; Rec."DEL Revision Date quality")
+                {
+                }
             }
             group("Audit  Social")
             {
                 Caption = 'Audit  Social';
-                //TODO:tableexxt
-                // field("URL social"; "URL social")
-                // {
-                // }
-                // field("Note Soc"; "Note Soc")
-                // {
-                //     Caption = 'Social rating';
-                //     Importance = Promoted;
-                // }
-                // field("Realisation Date Soc"; "Realisation Date Soc")
-                // {
-                // }
-                // field("Revision Date Soc"; "Revision Date Soc")
-                // {
-                // }
+
+                field("URL social"; Rec."DEL URL social")
+                {
+                }
+                field("Note Soc"; Rec."DEL Note Soc")
+                {
+                    Caption = 'Social rating';
+                    Importance = Promoted;
+                }
+                field("Realisation Date Soc"; Rec."DEL Realisation Date Soc")
+                {
+                }
+                field("Revision Date Soc"; Rec."DEL Revision Date Soc")
+                {
+                }
                 part(Control1; "DEL Detail Social Audit")
                 {
                     SubPageLink = "Vendor/Contact No." = FIELD("No."),
@@ -105,36 +105,36 @@ page 50064 "DEL Vendor Card Notation"
             group("Environmental Audit")
             {
                 Caption = 'Environmental Audit';
-                //TODO:TABLEEXTT
-                // field("URL Environmental";"URL Environmental")
-                // {
-                // }
-                // field("Note Env";"Note Env")
-                // {
-                //     Importance = Promoted;
-                // }
-                // field("Realisation Date Env";"Realisation Date Env")
-                // {
-                // }
-                // field("Revision Date env";"Revision Date env")
-                // {
-                // }
+
+                field("URL Environmental"; Rec."DEL URL Environmental")
+                {
+                }
+                field("Note Env"; Rec."DEL Note Env")
+                {
+                    Importance = Promoted;
+                }
+                field("Realisation Date Env"; Rec."DEL Realisation Date Env")
+                {
+                }
+                field("Revision Date env"; Rec."DEL Revision Date env")
+                {
+                }
             }
             group("Vendor Qualification")
             {
                 Caption = 'Vendor Qualification';
-                //TODO:TABLEEXTT
-                // field("Qualified vendor";"Qualified vendor")
-                // {
-                //     Importance = Promoted;
-                // }
-                // field("Date updated";"Date updated")
-                // {
-                //     Importance = Promoted;
-                // }
-                // field(Derogation;Derogation)
-                // {
-                // }
+
+                field("Qualified vendor"; Rec."DEL Qualified vendor")
+                {
+                    Importance = Promoted;
+                }
+                field("Date updated"; Rec."DEL Date updated")
+                {
+                    Importance = Promoted;
+                }
+                field(Derogation; Rec."DEL Derogation")
+                {
+                }
             }
             part(Comment; "Comment Sheet")
             {
@@ -326,12 +326,12 @@ page 50064 "DEL Vendor Card Notation"
     var
         Vendor_Fo_Loc: Page "Vendor List";
         Vendor_Re_Loc: Record Vendor;
-    //TODO FeeMgt_Cu_Loc: Codeunit 50028;
+        FeeMgt_Cu_Loc: Codeunit "DEL Alert and fee copy Mgt";
     begin
         Vendor_Fo_Loc.LOOKUPMODE(TRUE);
         IF Vendor_Fo_Loc.RUNMODAL() = ACTION::LookupOK THEN BEGIN
             Vendor_Fo_Loc.GETRECORD(Vendor_Re_Loc);
-            //TODO FeeMgt_Cu_Loc.FNC_FeeCopy(1, Vendor_Re_Loc."No.", Rec."No.");
+            FeeMgt_Cu_Loc.FNC_FeeCopy(1, Vendor_Re_Loc."No.", Rec."No.");
         END;
     end;
 }

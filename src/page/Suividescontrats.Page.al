@@ -19,57 +19,70 @@ page 50073 "DEL Suivi des contrats"
                 field("No."; Rec."No.")
                 {
                     Editable = false;
+                    Caption = 'No.';
                 }
                 field(Name; Rec.Name)
                 {
                     Editable = false;
+                    Caption = 'Name';
                 }
                 field(Address; Rec.Address)
                 {
                     Enabled = false;
+                    Caption = 'Address';
                 }
                 field("Post Code"; Rec."Post Code")
                 {
                     Editable = false;
+                    Caption = 'Post Code';
                 }
                 field(City; Rec.City)
                 {
                     Editable = false;
+                    Caption = 'City';
                 }
                 field("Country/Region Code"; Rec."Country/Region Code")
                 {
                     Editable = false;
+                    Caption = 'Country/Region Code';
                 }
                 field("Salesperson Code"; Rec."Salesperson Code")
                 {
                     Editable = false;
+                    Caption = 'Salesperson Code';
                 }
                 field("Gen. Bus. Posting Group"; Rec."Gen. Bus. Posting Group")
                 {
                     Editable = false;
+                    Caption = 'Gen. Bus. Posting Group';
                 }
                 field("Primary Contact No."; Rec."Primary Contact No.")
                 {
                     Editable = false;
+                    Caption = 'Primary Contact No.';
                 }
-                field(Contact; Rec.Contact)
-                {
-                    Editable = false;
-                }
+                //TODO: is already defined field(Contact; Contact)
+                // {
+                //     Editable = false;
+                // }
                 field("Phone No."; Rec."Phone No.")
                 {
                     Editable = false;
+                    Caption = 'Phone No.';
                 }
                 field("E-Mail"; Rec."E-Mail")
                 {
                     Editable = false;
+                    Caption = 'Email';
                 }
                 field("Language Code"; Rec."Language Code")
                 {
                     Editable = false;
+                    Caption = 'Language Code';
                 }
                 field("Parent Company"; Rec."DEL Parent Company")
                 {
+                    Caption = 'DEL Parent Company';
                 }
             }
             group("Suivi partnership agreement")
@@ -77,53 +90,64 @@ page 50073 "DEL Suivi des contrats"
                 Caption = 'Partnership agreement follow up';
                 field("Partnership agreement"; Rec."DEL Partnership agreement")
                 {
+                    Caption = 'DEL Partnership agreement';
                 }
                 field("Libellé PA"; Rec."DEL Libellé PA")
                 {
+                    Caption = 'Partnership agreement description';
                 }
                 field("Statut PA"; Rec."DEL Statut PA")
                 {
+                    Caption = 'Partnership agreement status';
                 }
                 group(Annexes)
                 {
                     Caption = 'Annexes:';
                     field("Annexe A PA"; Rec."DEL Annexe A PA")
                     {
+                        Caption = 'A';
                     }
                     field("Annexe B PA"; Rec."DEL Annexe B PA")
                     {
+                        Caption = 'B';
                     }
                     field("Annexe C PA"; Rec."DEL Annexe C PA")
                     {
+                        Caption = 'C';
                     }
                     field("Annexe D PA"; Rec."DEL Annexe D PA")
                     {
+                        Caption = 'D';
                     }
                 }
                 field("Date de début PA"; Rec."DEL Date de début PA")
                 {
+                    Caption = 'Starting date PA';
                 }
                 field("Date de fin PA"; Rec."DEL Date de fin PA")
                 {
+                    Caption = 'End date PA';
                 }
                 field("URL document PA"; Rec."DEL URL document PA")
                 {
+                    Caption = 'URL document PA';
 
                     trigger OnLookup(var Text: Text): Boolean
 
                     begin
 
                         CLEAR(DocumentLine);
-                        DocumentLine.RESET;
+                        DocumentLine.RESET();
                         DocumentLine.SETRANGE(DocumentLine."Table Name", DocumentLine."Table Name"::Customer);
                         DocumentLine.SETRANGE(DocumentLine."No.", Rec."No.");
                         DocumentLine.SETRANGE(DocumentLine."Type contrat", DocumentLine."Type contrat"::Partnership);
                         DocumentContrat.SETTABLEVIEW(DocumentLine);
-                        DocumentContrat.RUN;
+                        DocumentContrat.RUN();
                     end;
                 }
                 field("Comment PA"; Rec."DEL Comment PA")
                 {
+                    Caption = 'Comment PA';
                 }
             }
             group("Suivi service agreement")
@@ -134,38 +158,46 @@ page 50073 "DEL Suivi des contrats"
                     Caption = 'Perimeter of the contract';
                     field("Service agreement"; Rec."DEL Service agreement")
                     {
+                        Caption = 'Service agreement';
                     }
                     field("Libellé SSA"; Rec."DEL Libellé SSA")
                     {
+                        Caption = 'Service agreement description';
                     }
                     field("Statut SSA"; Rec."DEL Statut SSA")
                     {
+                        Caption = 'Status SSA';
                     }
                     field("Date de début SSA"; Rec."DEL Date de début SSA")
                     {
+                        Caption = 'Starting date SSA';
                     }
                     field("Date de fin SSA"; Rec."DEL Date de fin SSA")
                     {
+                        Caption = 'End date SSA';
                     }
                     field("Comment SSA"; Rec."DEL Comment SSA")
                     {
+                        Caption = 'Comment SSA';
                     }
                     field("URL document SSA"; Rec."DEL URL document SSA")
                     {
+                        Caption = 'URL document SSA';
 
                         trigger OnLookup(var Text: Text): Boolean
                         begin
                             CLEAR(DocumentLine);
-                            DocumentLine.RESET;
+                            DocumentLine.RESET();
                             DocumentLine.SETRANGE(DocumentLine."Table Name", DocumentLine."Table Name"::Customer);
                             DocumentLine.SETRANGE(DocumentLine."No.", Rec."No.");
                             DocumentLine.SETRANGE(DocumentLine."Type contrat", DocumentLine."Type contrat"::Service);
                             DocumentContrat.SETTABLEVIEW(DocumentLine);
-                            DocumentContrat.RUN;
+                            DocumentContrat.RUN();
                         end;
                     }
                     field(Level; Rec."DEL Level")
                     {
+                        Caption = 'Level';
                     }
                     label(AnnexesSSA)
                     {
@@ -175,32 +207,38 @@ page 50073 "DEL Suivi des contrats"
                     }
                     field("Annexe A SSA"; Rec."DEL Annexe A SSA")
                     {
+                        Caption = 'A';
                     }
                     field("Renouvellement tacite"; Rec."DEL Renouvellement tacite")
                     {
+                        Caption = 'Tacit renewal';
                     }
                     field("Renewal by mail"; Rec."DEL Renewal by mail")
                     {
+                        Caption = 'Renewal by mail';
                     }
                     field("Renewal by endorsement"; Rec."DEL Renewal by endorsement")
                     {
+                        Caption = 'Renewal by endorsement';
                     }
                     field("Reporting vente"; Rec."DEL Reporting vente")
                     {
+                        Caption = 'Sales reports';
                     }
                     field("Segmentation Prod Niveau"; Rec."DEL Segmentation Prod Niveau")
                     {
+                        Caption = 'Segmentation Produit Niveau';
 
                         trigger OnLookup(var Text: Text): Boolean
                         begin
-                            DimensionValue_Rec.RESET;
+                            DimensionValue_Rec.RESET();
                             DimensionValue_Rec.FILTERGROUP(2);
                             DimensionValue_Rec.SETRANGE(DimensionValue_Rec."Dimension Code", 'SEGMENT');
 
                             CLEAR(PDimensionValue);
                             PDimensionValue.SETTABLEVIEW(DimensionValue_Rec);
                             PDimensionValue.LOOKUPMODE(TRUE);
-                            IF PDimensionValue.RUNMODAL = ACTION::LookupOK THEN BEGIN
+                            IF PDimensionValue.RUNMODAL() = ACTION::LookupOK THEN BEGIN
                                 PDimensionValue.GETRECORD(DimensionValue_Rec);
                                 DimensionValue_Rec.TESTFIELD(DimensionValue_Rec."Dimension Value Type", DimensionValue_Rec."Dimension Value Type"::Standard);
                                 IF Rec."DEL Segmentation Prod Niveau" = '' THEN BEGIN
@@ -223,6 +261,7 @@ page 50073 "DEL Suivi des contrats"
                     field("Segmentation Description"; Rec."DEL Segmentation Description")
                     {
                         Editable = false;
+                        Caption = 'Segmentation Description';
                     }
                     label(Mark)
                     {
@@ -232,9 +271,11 @@ page 50073 "DEL Suivi des contrats"
                     }
                     field("National Mark"; Rec."DEL National Mark")
                     {
+                        Caption = 'National Mark';
                     }
                     field(MDD; Rec."DEL MDD")
                     {
+                        Caption = 'DEL MDD';
                     }
                     label(Signboard)
                     {
@@ -244,27 +285,35 @@ page 50073 "DEL Suivi des contrats"
                     }
                     field(NORAUTO; Rec."DEL NORAUTO")
                     {
+                        Caption = 'DEL NORAUTO';
                     }
-                    field(MIDAS; "DEL MIDAS")
+                    field(MIDAS; Rec."DEL MIDAS")
                     {
+                        Caption = 'DEL MIDAS';
                     }
                     field(ATU; Rec."DEL ATU")
                     {
+                        Caption = 'DEL ATU';
                     }
                     field(ATYSE; Rec."DEL ATYSE")
                     {
+                        Caption = 'DEL ATYSE';
                     }
                     field("CARTER CASH"; Rec."DEL CARTER CASH")
                     {
+                        Caption = 'DEL CARTER CASH';
                     }
                     field(SYNCHRO; Rec."DEL SYNCHRO")
                     {
+                        Caption = 'DEL SYNCHRO';
                     }
                     field(Shruvat; Rec."DEL Shruvat")
                     {
+                        Caption = 'DEL Shruvat';
                     }
                     field(Bythjul; Rec."DEL Bythjul")
                     {
+                        Caption = 'DEL Bythjul';
                     }
                 }
                 group("Monitoring the denunciation")
@@ -272,6 +321,7 @@ page 50073 "DEL Suivi des contrats"
                     Caption = 'Monitoring the denunciation';
                     field("Starting date of Relationship"; Rec."DEL Start date of Relationship")
                     {
+                        Caption = 'Starting date of Relationship';
                     }
                     group("Quote Part")
                     {
@@ -297,10 +347,12 @@ page 50073 "DEL Suivi des contrats"
                                 field("Quote part 2 Mobivia/CA %"; Rec."DEL Quote part 2 Mobivia/CA %")
                                 {
                                     ShowCaption = false;
+                                    Caption = 'Quote part 2 Mobivia/CA %';
                                 }
                                 field("Quote part 2 Mobivia/CA Year"; Rec."DEL Qte part 2 Mobivia/CA Year")
                                 {
                                     ShowCaption = false;
+                                    Caption = 'Quote part 2 Mobivia/CA Year';
                                 }
                             }
                         }
@@ -308,33 +360,39 @@ page 50073 "DEL Suivi des contrats"
                     field("Period of denunciation"; Rec."DEL Period of denunciation")
                     {
                         Editable = Editablefield;
+                        Caption = 'Period of denunciation';
                     }
                     field("Denunciation to analyze"; Rec."DEL Denunciation to analyze")
                     {
                         Editable = false;
+                        Caption = 'Denunciation to analyze';
                     }
                     field("Denunciation Replanned"; Rec."DEL Denunciation Replanned")
                     {
+                        Caption = 'Denunciation Replanned';
 
                         trigger OnValidate()
                         begin
                             Editablefield := FALSE;
-                            IF "DEL Denunciation Replanned" THEN BEGIN
+                            IF Rec."DEL Denunciation Replanned" THEN
                                 Editablefield := TRUE;
-                            END;
                         end;
                     }
                     field("Denunciation realised"; Rec."DEL Denunciation realised")
                     {
+                        Caption = 'Denunciation realised';
                     }
                     field("Denunciation date"; Rec."DEL Denunciation date")
                     {
+                        Caption = 'Denunciation Date';
                     }
                     field("Not denunciation"; Rec."DEL Not denunciation")
                     {
+                        Caption = 'Pas de dénonciation';
                     }
                     field("Comment denunciation"; Rec."DEL Comment denunciation")
                     {
+                        Caption = 'Comment denunciation';
                     }
                 }
                 group("Invoice tracking")
@@ -342,9 +400,11 @@ page 50073 "DEL Suivi des contrats"
                     Caption = 'Invoice tracking';
                     field("En facturation"; Rec."DEL En facturation")
                     {
+                        Caption = 'Invoicing';
                     }
                     field("Fréquence de facturation"; Rec."DEL Fréquence de facturation")
                     {
+                        Caption = 'Frequency of invoicing';
 
                         trigger OnValidate()
                         begin
@@ -354,24 +414,28 @@ page 50073 "DEL Suivi des contrats"
                     field("Date de prochaine facturation"; Rec."DEL Date de proch. fact.")
                     {
                         Editable = false;
+                        Caption = 'Next invoice date';
                     }
                     field("Nbre jour avant proch. fact."; Rec."DEL Nbr jr avant proch. fact.")
                     {
                         Editable = false;
+                        Caption = 'Nb of days before invoicing';
                     }
                     field("Last Accounting Date"; Rec."DEL Last Accounting Date")
                     {
                         Editable = false;
+                        Caption = 'Last accounting date';
                     }
                     field(Facture; Rec."DEL Facture")
                     {
                         Editable = false;
+                        Caption = 'Invoce No.';
 
                         trigger OnLookup(var Text: Text): Boolean
                         begin
-                            IF "DEL Facture" <> '' THEN BEGIN
-                                SalesInvoiceHeader.RESET;
-                                SalesInvoiceHeader.SETRANGE(SalesInvoiceHeader."No.", "DEL Facture");
+                            IF Rec."DEL Facture" <> '' THEN BEGIN
+                                SalesInvoiceHeader.RESET();
+                                SalesInvoiceHeader.SETRANGE(SalesInvoiceHeader."No.", Rec."DEL Facture");
                                 PAGE.RUN(Page::"Posted Sales Invoice", SalesInvoiceHeader);
                             END;
                         end;
@@ -379,18 +443,21 @@ page 50073 "DEL Suivi des contrats"
                     field(Montant; Rec."DEL Montant")
                     {
                         Editable = false;
+                        Caption = 'Amount';
                     }
                     field("Montant ouvert"; Rec."DEL Montant ouvert")
                     {
                         Editable = false;
+                        Caption = 'Pending amount';
                     }
                     field("Amount YTD"; Rec."DEL Amount YTD")
                     {
                         CaptionClass = '3,' + CustDateFilter[1];
+                        Caption = 'Amount YTD';
 
                         trigger OnLookup(var Text: Text): Boolean
                         begin
-                            CustLedgerEntry2.RESET;
+                            CustLedgerEntry2.RESET();
                             CustLedgerEntry2.FILTERGROUP(2);
                             CustLedgerEntry2.SETRANGE(CustLedgerEntry2."Customer No.", Rec."No.");
                             CustLedgerEntry2.SETFILTER(CustLedgerEntry2."Sales (LCY)", '<>0');
@@ -402,10 +469,11 @@ page 50073 "DEL Suivi des contrats"
                     field("Amount YTD-1"; Rec."DEL Amount YTD-1")
                     {
                         CaptionClass = '3,' + CustDateFilter[2];
+                        Caption = 'Amount YTD-1';
 
                         trigger OnLookup(var Text: Text): Boolean
                         begin
-                            CustLedgerEntry2.RESET;
+                            CustLedgerEntry2.RESET();
                             CustLedgerEntry2.FILTERGROUP(2);
                             CustLedgerEntry2.SETRANGE(CustLedgerEntry2."Customer No.", Rec."No.");
                             CustLedgerEntry2.SETFILTER(CustLedgerEntry2."Sales (LCY)", '<>0');
@@ -416,10 +484,11 @@ page 50073 "DEL Suivi des contrats"
                     field("Amount YTD-2"; Rec."DEL Amount YTD-2")
                     {
                         CaptionClass = '3,' + CustDateFilter[3];
+                        Caption = 'Amount YTD-2';
 
                         trigger OnLookup(var Text: Text): Boolean
                         begin
-                            CustLedgerEntry2.RESET;
+                            CustLedgerEntry2.RESET();
                             CustLedgerEntry2.FILTERGROUP(2);
                             CustLedgerEntry2.SETRANGE(CustLedgerEntry2."Customer No.", Rec."No.");
                             CustLedgerEntry2.SETFILTER(CustLedgerEntry2."Sales (LCY)", '<>0');
@@ -436,93 +505,123 @@ page 50073 "DEL Suivi des contrats"
                 {
                     Style = Strong;
                     StyleExpr = True;
+                    Caption = 'Central trading';
                 }
                 field("Frequency of delivery 1"; Rec."DEL Frequency of delivery 1")
                 {
+                    Caption = 'Frequency of delivery';
                 }
                 field("Invoicing Frequency 1"; Rec."DEL Invoicing Frequency 1")
                 {
+                    Caption = 'Invoicing Frequency';
                 }
                 field("Sales data report"; Rec."DEL Sales data report")
                 {
+                    Caption = 'Sales data report';
                 }
                 field("Frequency of delivery 2"; Rec."DEL Frequency of delivery 2")
                 {
+                    Caption = 'Frequency of delivery';
                 }
                 field("Invoicing Frequency 2"; Rec."DEL Invoicing Frequency 2")
                 {
+                    Caption = 'Invoicing Frequency';
                 }
                 field("Assist in relat. with the BU"; Rec."DEL Ass. in relat. with the BU")
                 {
+                    Caption = 'Assist in relations with the BU (Blue Helmets)';
                 }
                 field("Frequency of delivery 3"; Rec."DEL Frequency of delivery 3")
                 {
+                    Caption = 'Frequency of delivery';
                 }
                 field("Invoicing Frequency 3"; Rec."DEL Invoicing Frequency 3")
                 {
+                    Caption = 'Invoicing Frequency';
                 }
                 field("Organization of visits"; Rec."DEL Organization of visits")
                 {
+                    Caption = 'Organization of visits';
                 }
                 field("Frequency of delivery 4"; Rec."DEL Frequency of delivery 4")
                 {
+                    Caption = 'Frequency of delivery';
                 }
                 field("Invoicing Frequency 4"; Rec."DEL Invoicing Frequency 4")
                 {
+                    Caption = 'Invoicing Frequency';
                 }
                 field("Vision and Market Analysis"; Rec."DEL Vision and Market Analysis")
                 {
+                    Caption = 'Vision and Market Analysis';
                 }
                 field("Frequency of delivery 5"; Rec."DEL Frequency of delivery 5")
                 {
+                    Caption = 'Frequency of delivery';
                 }
                 field("Invoicing Frequency 5"; Rec."DEL Invoicing Frequency 5")
                 {
+                    Caption = 'Invoicing Frequency';
                 }
                 field("Presentation provider strategy"; Rec."DEL Pres. provider strategy")
                 {
+                    Caption = 'Presentation provider strategy';
                 }
                 field("Frequency of delivery 6"; Rec."DEL Frequency of delivery 6")
                 {
+                    Caption = 'Frequency of delivery';
                 }
                 field("Invoicing Frequency 6"; Rec."DEL Invoicing Frequency 6")
                 {
+                    Caption = 'Invoicing Frequency';
                 }
                 field("Presentation MOBIVIA strategy"; Rec."DEL Pres. MOBIVIA strategy")
                 {
+                    Caption = 'Presentation MOBIVIA strategy';
                 }
                 field("Frequency of delivery 7"; Rec."DEL Frequency of delivery 7")
                 {
+                    Caption = 'Frequency of delivery';
                 }
                 field("Invoicing Frequency 7"; Rec."DEL Invoicing Frequency 7")
                 {
+                    Caption = 'Invoicing Frequency';
                 }
                 field("Adv on the adapt. of the offer"; Rec."DEL Adv on the adapt.of the offer")
                 {
+                    Caption = 'Advising on the adaptation of the offer';
                 }
                 field("Frequency of delivery 8"; Rec."DEL Frequency of delivery 8")
                 {
+                    Caption = 'Frequency of delivery';
                 }
                 field("Invoicing Frequency 8"; Rec."DEL Invoicing Frequency 8")
                 {
+                    Caption = 'Invoicing Frequency';
                 }
                 field("Favorite referencing by BU"; Rec."DEL Favorite referencing by BU")
                 {
+                    Caption = 'Favorite referencing by BU';
                 }
                 field("Frequency of delivery 9"; Rec."DEL Frequency of delivery 9")
                 {
+                    Caption = 'Frequency of delivery';
                 }
                 field("Invoicing Frequency 9"; Rec."DEL Invoicing Frequency 9")
                 {
+                    Caption = 'Invoicing Frequency';
                 }
                 field(Forecast; Rec."DEL Forecast")
                 {
+                    Caption = 'Forecast';
                 }
                 field("Frequency of delivery 10"; Rec."DEL Frequency of delivery 10")
                 {
+                    Caption = 'Frequency of delivery';
                 }
                 field("Invoicing Frequency 10"; Rec."DEL Invoicing Frequency 10")
                 {
+                    Caption = 'Invoicing Frequency';
                 }
             }
             group("Charte ethique")
@@ -530,23 +629,27 @@ page 50073 "DEL Suivi des contrats"
                 Caption = 'Ethical charter';
                 field("Statut CE"; Rec."DEL Statut CE")
                 {
+                    Caption = 'Ethical Charter status';
                 }
                 field("Date Signature CE"; Rec."DEL Date Signature CE")
                 {
+                    Caption = 'Date of signature EC';
                 }
                 field("URL document CE"; Rec."DEL URL document CE")
                 {
+                    Caption = 'URL document CE';
 
-                    trigger OnLookup(var Text: Text): Boolean
-                    begin
-                        CLEAR(DocumentLine);
-                        DocumentLine.RESET;
-                        DocumentLine.SETRANGE(DocumentLine."Table Name", DocumentLine."Table Name"::Customer);
-                        DocumentLine.SETRANGE(DocumentLine."No.", Rec."No.");
-                        DocumentLine.SETRANGE(DocumentLine."Type contrat", DocumentLine."Type contrat"::"Charte ethique");
-                        DocumentContrat.SETTABLEVIEW(DocumentLine);
-                        DocumentContrat.RUN;
-                    end;
+                    //TODO trigger OnLookup(var Text: Text): Boolean
+                    // begin
+                    //     CLEAR(DocumentLine);
+                    //     DocumentLine.RESET();
+                    //     DocumentLine.SETRANGE(DocumentLine."Table Name", DocumentLine."Table Name"::Customer);
+                    //     DocumentLine.SETRANGE(DocumentLine."No.", Rec."No.");
+                    //     DocumentLine.SETRANGE(DocumentLine."Type contrat",
+                    //      DocumentLine."Type contrat"::'Charte ethique' );
+                    //     DocumentContrat.SETTABLEVIEW(DocumentLine);
+                    //     DocumentContrat.RUN();
+                    // end;
                 }
             }
             group(Quality)
@@ -557,9 +660,11 @@ page 50073 "DEL Suivi des contrats"
                     Caption = 'Audit Quality';
                     field("Note Quality"; Rec."DEL Note Quality")
                     {
+                        Caption = 'Quality rating';
                     }
                     field("Realisation Date Quality"; Rec."DEL Realisation Date Quality")
                     {
+                        Caption = 'Creation date QA';
                     }
                 }
                 group("Social Audit")
@@ -567,9 +672,11 @@ page 50073 "DEL Suivi des contrats"
                     Caption = 'Social Audit';
                     field("Note Soc"; Rec."DEL Note Soc")
                     {
+                        Caption = 'Social rating';
                     }
                     field("Realisation Date Soc"; Rec."DEL Realisation Date Soc")
                     {
+                        Caption = 'Creation date';
                     }
                 }
                 group("Environmental Audit")
@@ -577,19 +684,21 @@ page 50073 "DEL Suivi des contrats"
                     Caption = 'Environmental Audit';
                     field("Note Env"; Rec."DEL Note Env")
                     {
+                        Caption = 'Environmental rating';
                     }
                     field("Realisation Date Env"; Rec."DEL Realisation Date Env")
                     {
+                        Caption = 'Creation date';
                     }
                 }
             }
-            part("Contact Contrat"; Rec."Contact Contrat")
+            part("Contact Contrat"; "DEL Contact Contrat")
             {
                 Caption = 'Contact';
                 Editable = false;
-               //TODO SubPageLink = "Customer No." = FIELD("No.");
-                // SubPageView = SORTING("No.")
-                //               ORDER(Ascending);
+                SubPageLink = "DEL Customer No." = FIELD("No.");
+                SubPageView = SORTING("No.")
+                              ORDER(Ascending);
             }
         }
     }
@@ -610,7 +719,7 @@ page 50073 "DEL Suivi des contrats"
                     PromotedCategory = Process;
                     PromotedIsBig = true;
                     RunObject = Page "Customer Card";
-                                    RunPageLink = "No." = FIELD("No.");
+                    RunPageLink = "No." = FIELD("No.");
                 }
                 action("<Page Document Sheet>")
                 {
@@ -619,9 +728,9 @@ page 50073 "DEL Suivi des contrats"
                     Promoted = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
-                    RunObject = Page "Document Sheet Contrats";
-                                    RunPageLink = "No." = FIELD("No.");
-                                    RunPageView = SORTING("DEL Table Name", "No.", "Comment Entry No.", "Line No.")
+                    RunObject = Page "DEL Document Sheet Contrats";
+                    RunPageLink = "No." = FIELD("No.");
+                    RunPageView = SORTING("Table Name", "No.", "Comment Entry No.", "Line No.")
                                   WHERE("Table Name" = CONST(Customer),
                                         "Notation Type" = FILTER(' '),
                                         "Type liasse" = FILTER(' '));
@@ -633,8 +742,8 @@ page 50073 "DEL Suivi des contrats"
                     Promoted = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
-                    RunObject = Page "Comment Sheet Contrats";
-                                    RunPageLink = "Table Name" = CONST(Customer),
+                    RunObject = Page "DEL Comment Sheet Contrats";
+                    RunPageLink = "Table Name" = CONST(Customer),
                                   "No." = FIELD("No.");
                 }
                 action(Contact)
@@ -642,8 +751,8 @@ page 50073 "DEL Suivi des contrats"
                     Image = AddContacts;
                     Promoted = true;
                     PromotedIsBig = true;
-                    RunObject = Page "Contact Contrat";
-                                    RunPageLink = "Customer No." = FIELD("No.");
+                    RunObject = Page "DEL Contact Contrat";
+                    RunPageLink = "DEL Customer No." = FIELD("No.");
                 }
                 action(Print)
                 {
@@ -654,7 +763,7 @@ page 50073 "DEL Suivi des contrats"
 
                     trigger OnAction()
                     begin
-                        Customer.RESET;
+                        Customer.RESET();
                         Customer.SETRANGE("No.", Rec."No.");
                         REPORT.RUN(50028, TRUE, TRUE, Customer);
                     end;
@@ -667,8 +776,8 @@ page 50073 "DEL Suivi des contrats"
                     PromotedCategory = Process;
                     PromotedIsBig = true;
                     RunObject = Page "DEL Contract comment";
-                                    RunPageLink = "No." = FIELD("No.");
-                                    RunPageView = SORTING("No.", "Line No.");
+                    RunPageLink = "No." = FIELD("No.");
+                    RunPageView = SORTING("No.", "Line No.");
                 }
             }
         }
@@ -676,74 +785,51 @@ page 50073 "DEL Suivi des contrats"
 
     trigger OnOpenPage()
     begin
-        Customer.RESET;
-        Customer.SETRANGE(Customer."No.", "No.");
-        IF Customer.FINDFIRST THEN BEGIN
-            CustLedgerEntry.RESET;
+        Customer.RESET();
+        Customer.SETRANGE(Customer."No.", Rec."No.");
+        IF Customer.FINDFIRST() THEN BEGIN
+            CustLedgerEntry.RESET();
             CustLedgerEntry.SETRANGE(CustLedgerEntry."Customer No.", Customer."No.");
             CustLedgerEntry.SETRANGE(CustLedgerEntry."Document Type", CustLedgerEntry."Document Type"::Invoice);
-            //CustLedgerEntry.SETRANGE();
-            IF CustLedgerEntry.FINDLAST THEN BEGIN
+
+            IF CustLedgerEntry.FINDLAST() THEN BEGIN
                 CustLedgerEntry.CALCFIELDS(CustLedgerEntry.Amount, CustLedgerEntry."Remaining Amount");
-                Customer."Last Accounting Date" := CustLedgerEntry."Posting Date";
-                Customer.Facture := CustLedgerEntry."Document No.";
-                Customer.Montant := CustLedgerEntry.Amount;
-                Customer."Montant ouvert" := CustLedgerEntry."Remaining Amount";
+                Customer."DEL Last Accounting Date" := CustLedgerEntry."Posting Date";
+                Customer."DEL Facture" := CustLedgerEntry."Document No.";
+                Customer."DEL Montant" := CustLedgerEntry.Amount;
+                Customer."DEL Montant ouvert" := CustLedgerEntry."Remaining Amount";
 
-                //START T-00738
-                IF Customer."Fréquence de facturation" = Customer."Fréquence de facturation"::"12 mois" THEN
-                    Customer."Date de prochaine facturation" := CALCDATE('<+12M>', CustLedgerEntry."Posting Date");
-                IF Customer."Fréquence de facturation" = Customer."Fréquence de facturation"::"6 mois" THEN
-                    Customer."Date de prochaine facturation" := CALCDATE('<+6M>', CustLedgerEntry."Posting Date");
-                IF Customer."Fréquence de facturation" = Customer."Fréquence de facturation"::"4 mois" THEN
-                    Customer."Date de prochaine facturation" := CALCDATE('<+4M>', CustLedgerEntry."Posting Date");
-                IF Customer."Fréquence de facturation" = Customer."Fréquence de facturation"::"3 mois" THEN
-                    Customer."Date de prochaine facturation" := CALCDATE('<+3M>', CustLedgerEntry."Posting Date");
-                IF Customer."Fréquence de facturation" = Customer."Fréquence de facturation"::" " THEN
-                    Customer."Date de prochaine facturation" := CALCDATE('<+0M>', CustLedgerEntry."Posting Date");
-                //STOP T-00738
-                Customer."Nbre jour avant proch. fact." := Customer."Date de prochaine facturation" - TODAY;
+
+                IF Customer."DEL Fréquence de facturation" = Customer."DEL Fréquence de facturation"::"12 mois" THEN
+                    Customer."DEL Date de proch. fact." := CALCDATE('<+12M>', CustLedgerEntry."Posting Date");
+                IF Customer."DEL Fréquence de facturation" = Customer."DEL Fréquence de facturation"::"6 mois" THEN
+                    Customer."DEL Date de proch. fact." := CALCDATE('<+6M>', CustLedgerEntry."Posting Date");
+                IF Customer."DEL Fréquence de facturation" = Customer."DEL Fréquence de facturation"::"4 mois" THEN
+                    Customer."DEL Date de proch. fact." := CALCDATE('<+4M>', CustLedgerEntry."Posting Date");
+                IF Customer."DEL Fréquence de facturation" = Customer."DEL Fréquence de facturation"::"3 mois" THEN
+                    Customer."DEL Date de proch. fact." := CALCDATE('<+3M>', CustLedgerEntry."Posting Date");
+                IF Customer."DEL Fréquence de facturation" = Customer."DEL Fréquence de facturation"::" " THEN
+                    Customer."DEL Date de proch. fact." := CALCDATE('<+0M>', CustLedgerEntry."Posting Date");
+
+                Customer."DEL Nbr jr avant proch. fact." := Customer."DEL Date de proch. fact." - TODAY;
             END;
-            IF Customer."Date de fin PA" < TODAY THEN
-                Customer."Statut PA" := Customer."Statut PA"::Échu;
-            IF Customer."Date de fin SSA" < TODAY THEN
-                Customer."Statut SSA" := Customer."Statut SSA"::Échu;
+            IF Customer."DEL Date de fin PA" < TODAY THEN
+                Customer."DEL Statut PA" := Customer."DEL Statut PA"::Échu;
+            IF Customer."DEL Date de fin SSA" < TODAY THEN
+                Customer."DEL Statut SSA" := Customer."DEL Statut SSA"::Échu;
 
-            //START T-00767
-            IF Customer."Period of denunciation" < TODAY THEN
-                Customer."Denunciation to analyze" := TRUE
+
+            IF Customer."DEL Period of denunciation" < TODAY THEN
+                Customer."DEL Denunciation to analyze" := TRUE
             ELSE
-                Customer."Denunciation to analyze" := FALSE;
-            //STOP T-00767
+                Customer."DEL Denunciation to analyze" := FALSE;
+
 
             Editablefield := FALSE;
-            IF "Denunciation Replanned" THEN BEGIN
+            IF Rec."DEL Denunciation Replanned" THEN
                 Editablefield := TRUE;
-            END;
-            /*
-            CustDateFilter[1]:=FORMAT(DMY2DATE(1,1,DATE2DMY(TODAY,3)))+'..'+FORMAT(DMY2DATE(31,12,DATE2DMY(TODAY,3)));
-            CustDateFilter[2]:=FORMAT(DMY2DATE(1,1,DATE2DMY(TODAY,3)-1))+'..'+FORMAT(DMY2DATE(31,12,DATE2DMY(TODAY,3)-1));
-            CustDateFilter[3]:=FORMAT(DMY2DATE(1,1,DATE2DMY(TODAY,3)-2))+'..'+FORMAT(DMY2DATE(31,12,DATE2DMY(TODAY,3)-2));
-            DateFilter1:=CustDateFilter[1];
-            DateFilter2:=CustDateFilter[2];
-            DateFilter3:=CustDateFilter[3];
 
-            FOR i := 1 TO 3 DO BEGIN
-              SETFILTER("Date Filter",CustDateFilter[i]);
-              CALCFIELDS("Sales (LCY)");
-              CustSalesLCY[i] := "Sales (LCY)";
-
-            END;
-
-            CustDateFilter[1]:=Text001+' '+FORMAT(DMY2DATE(1,1,DATE2DMY(TODAY,3)),0,'<Year4>');
-            CustDateFilter[2]:=Text001+' '+FORMAT(DMY2DATE(1,1,DATE2DMY(TODAY,3)-1),0,'<Year4>');
-            CustDateFilter[3]:=Text001+' '+FORMAT(DMY2DATE(1,1,DATE2DMY(TODAY,3)-2),0,'<Year4>');
-
-            Customer."Amount YTD":=CustSalesLCY[1];
-            Customer."Amount YTD-1":=CustSalesLCY[2];
-            Customer."Amount YTD-2":=CustSalesLCY[3];
-            */
-            Customer.MODIFY;
+            Customer.MODIFY();
 
         END;
 
@@ -751,18 +837,18 @@ page 50073 "DEL Suivi des contrats"
 
     trigger OnQueryClosePage(CloseAction: Action): Boolean
     begin
-        //START T-00767
-        IF "Denunciation Replanned" THEN
-            TESTFIELD("Period of denunciation");
 
-        IF "Denunciation realised" THEN
-            TESTFIELD("Denunciation date");
+        IF Rec."DEL Denunciation Replanned" THEN
+            Rec.TESTFIELD("DEL Period of denunciation");
 
-        IF ("Denunciation Replanned") AND ("Period of denunciation" <> 0D) THEN BEGIN
-            "Denunciation Replanned" := FALSE;
-            MODIFY;
+        IF Rec."DEL Denunciation realised" THEN
+            Rec.TESTFIELD("DEL Denunciation date");
+
+        IF (Rec."DEL Denunciation Replanned") AND (Rec."DEL Period of denunciation" <> 0D) THEN BEGIN
+            Rec."DEL Denunciation Replanned" := FALSE;
+            Rec.MODIFY();
         END;
-        //STOP T-00767
+
     end;
 
     var
@@ -780,14 +866,14 @@ page 50073 "DEL Suivi des contrats"
         // CustLedgerEntry2: Record "21";
         CustLedgerEntry2: Record "Cust. Ledger Entry";
         // DocumentContrat: Page 50075;
-        DocumentContrat: Page "Document Sheet Contrats";
-                             // PDimensionValue: Page 560;
-                             PDimensionValue: Page "Dimension Value List";
-                             Editablefield: Boolean;
-                             CustSalesLCY: array [4] of Decimal;
-                             CustDateFilter: array [4] of Text[30];
-                             i: Integer;
-                             Text001: Label 'Sales (LCY)';
+        DocumentContrat: Page "DEL Document Sheet Contrats";
+        // PDimensionValue: Page 560;
+        PDimensionValue: Page "Dimension Value List";
+        Editablefield: Boolean;
+        CustSalesLCY: array[4] of Decimal;
+        CustDateFilter: array[4] of Text[30];
+        i: Integer;
+        Text001: Label 'Sales (LCY)';
 
         DateFilter1: Text;
         DateFilter2: Text;

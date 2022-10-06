@@ -60,54 +60,54 @@ page 50071 "DEL Fiche suivi liasse doc"
                     Editable = false;
                 }
             }
-            //TODO group("CG d'achats NGTS")
-            // {
-            //     Caption = 'General purchasing term';
-            //     field("Statut CG"; "Statut CG")
-            //     {
-            //     }
-            //     field("Date de maj statut CG"; "Date de maj statut CG")
-            //     {
-            //     }
-            //     field("URL document CG"; "URL document CG")
-            //     {
+            group("CG d'achats NGTS")
+            {
+                Caption = 'General purchasing term';
+                field("Statut CG"; Rec."DEL Statut CG")
+                {
+                }
+                field("Date de maj statut CG"; Rec."DEL Date de maj statut CG")
+                {
+                }
+                field("URL document CG"; Rec."DEL URL document CG")
+                {
 
-            //         trigger OnLookup(var Text: Text): Boolean
-            //         begin
-            //             CLEAR(DocumentLine);
-            //             DocumentLine.RESET;
-            //             DocumentLine.SETRANGE(DocumentLine."Table Name", DocumentLine."Table Name"::Vendor);
-            //             DocumentLine.SETRANGE(DocumentLine."No.", "No.");
-            //             DocumentLine.SETRANGE(DocumentLine."Type liasse", 1);
-            //             Documentliasse.SETTABLEVIEW(DocumentLine);
-            //             Documentliasse.RUN;
-            //         end;
-            //     }
-            // }
-            // group("Charte ethique")
-            // {
-            //     Caption = 'Ethical Charter';
-            //     field("Statut CE"; "Statut CE")
-            //     {
-            //     }
-            //     field("Date de maj statut CE"; "Date de maj statut CE")
-            //     {
-            //     }
-            //     field("URL document CE"; "URL document CE")
-            //     {
+                    trigger OnLookup(var Text: Text): Boolean
+                    begin
+                        CLEAR(DocumentLine);
+                        DocumentLine.RESET();
+                        DocumentLine.SETRANGE(DocumentLine."Table Name", DocumentLine."Table Name"::Vendor);
+                        DocumentLine.SETRANGE(DocumentLine."No.", Rec."No.");
+                        DocumentLine.SETRANGE(DocumentLine."Type liasse", 1);
+                        Documentliasse.SETTABLEVIEW(DocumentLine);
+                        Documentliasse.RUN();
+                    end;
+                }
+            }
+            group("Charte ethique")
+            {
+                Caption = 'Ethical Charter';
+                field("Statut CE"; Rec."DEL Statut CE")
+                {
+                }
+                field("Date de maj statut CE"; Rec."DEL Date de maj statut CE")
+                {
+                }
+                field("URL document CE"; Rec."DEL URL document CE")
+                {
 
-            //         trigger OnLookup(var Text: Text): Boolean
-            //         begin
-            //             CLEAR(DocumentLine);
-            //             DocumentLine.RESET;
-            //             DocumentLine.SETRANGE(DocumentLine."Table Name", DocumentLine."Table Name"::Vendor);
-            //             DocumentLine.SETRANGE(DocumentLine."No.", "No.");
-            //             DocumentLine.SETRANGE(DocumentLine."Type liasse", 2);
-            //             Documentliasse.SETTABLEVIEW(DocumentLine);
-            //             Documentliasse.RUN;
-            //         end;
-            //     }
-            // }
+                    trigger OnLookup(var Text: Text): Boolean
+                    begin
+                        CLEAR(DocumentLine);
+                        DocumentLine.RESET();
+                        DocumentLine.SETRANGE(DocumentLine."Table Name", DocumentLine."Table Name"::Vendor);
+                        DocumentLine.SETRANGE(DocumentLine."No.", Rec."No.");
+                        DocumentLine.SETRANGE(DocumentLine."Type liasse", 2);
+                        Documentliasse.SETTABLEVIEW(DocumentLine);
+                        Documentliasse.RUN();
+                    end;
+                }
+            }
         }
     }
 

@@ -99,12 +99,12 @@ page 50065 "DEL Document Sheet"
     end;
 
     var
-        Document_CU: Codeunit "50007";
+        Document_CU: Codeunit "DEL Document Sheet";
 
     local procedure Add()
     var
         DocumentLine: Record "DEL Document Line";
-        oFile: File;
+
         InStr: InStream;
         OutStr: OutStream;
         ImportFileName: Text;
@@ -116,20 +116,20 @@ page 50065 "DEL Document Sheet"
 
         IF ServerFileName = '' THEN
             EXIT;
-
-        DocumentLine.SETRANGE(Rec."Table Name", Rec."Table Name");
-        DocumentLine.SETRANGE(Rec."No.", Rec."No.");
+        //TODO 
+        // DocumentLine.SETRANGE(Rec."Table Name", Rec."Table Name");
+        // DocumentLine.SETRANGE(Rec."No.", Rec."No.");
         IF DocumentLine.FINDLAST() THEN
             LastLineNo := DocumentLine."Line No.";
 
         Rec.INIT();
         Rec."Line No." := LastLineNo + 10000;
 
-        oFile.OPEN(ServerFileName);
-        oFile.CREATEINSTREAM(InStr);
+        //TODO Cannot be used for a cloud dev oFile.OPEN(ServerFileName);
+        // oFile.CREATEINSTREAM(InStr);
         Rec.Document.CREATEOUTSTREAM(OutStr);
         COPYSTREAM(OutStr, InStr);
-        oFile.CLOSE;
+        //TODO: Cannot be used for a cloud dev oFile.CLOSE;
 
         Rec."Insert Date" := TODAY;
         Rec."Insert Time" := TIME;
@@ -143,12 +143,7 @@ page 50065 "DEL Document Sheet"
 
     local procedure SaveAs()
     var
-        oFile: File;
-        InStr: InStream;
-        OutStr: OutStream;
-        ClientFileName: Text;
-        ServerFileName: Text;
-        cNoDocument: Label 'No document found.';
+
     begin
     end;
 
@@ -158,21 +153,21 @@ page 50065 "DEL Document Sheet"
         InStr: InStream;
         OutStr: OutStream;
         Directory: Text;
-        ExportFileName: Text;
-        cNoDocument: Label 'No document found.';
+
     begin
 
 
 
         Directory := Document_CU.TempDirectory;
+        //TODO: Cannot be used for a cloud dev
 
-        oFile.CREATE(Directory + Rec."File Name");
-        oFile.CREATEOUTSTREAM(OutStr);
+        // oFile.CREATE(Directory + Rec."File Name");
+        // oFile.CREATEOUTSTREAM(OutStr);
 
         Rec.Document.CREATEINSTREAM(InStr);
         COPYSTREAM(OutStr, InStr);
 
-        oFile.CLOSE;
+        //TODO oFile.CLOSE; Cannot be used for a cloud dev
 
         HYPERLINK(Directory + Rec."File Name");
     end;

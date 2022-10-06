@@ -138,10 +138,10 @@ page 50033 "DEL Subform Planned"
     begin
         FeeDescription_Te := '';
         IF Rec.Fee_ID <> '' THEN
-            //TODO  FeeDescription_Te := Fee_Cu.FNC_Get_Description(Fee_ID);
+            FeeDescription_Te := Fee_Cu.FNC_Get_Description(Fee_ID);
 
 
-            Currency_Code := '';
+        Currency_Code := '';
         Currency_Rate_Dec := 0;
 
         position_Re_Loc.RESET();
@@ -166,9 +166,9 @@ page 50033 "DEL Subform Planned"
     end;
 
     var
-        //TODO Fee_Cu: Codeunit 50023;
+        Fee_Cu: Codeunit "DEL Fee";
         FeeDescription_Te: Text[50];
-        //TODO Element_Cu: Codeunit 50021;
+        Element_Cu: Codeunit "DEL Element";
         Amount_Dec: Decimal;
         Raw_Amount_Dec: Decimal;
         Currency_Code: Code[10];

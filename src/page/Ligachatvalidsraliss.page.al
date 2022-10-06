@@ -294,11 +294,13 @@ page 50007 "DEL Lig achat validés/réalisés"
                 {
                     Caption = 'Responsibility Center';
                 }
-                field("Cross-Reference No."; Rec."Cross-Reference No.")
+                //corss- Reference
+                field("Cross-Reference No."; Rec."Item Reference No.")
                 {
                     Caption = 'Cross-Reference No.';
                 }
-                field("Unit of Measure (Cross Ref.)"; Rec."Unit of Measure (Cross Ref.)")
+                //Unit of Measure (Cross Ref.)
+                field("Unit of Measure (Cross Ref.)"; Rec."Unit of Measure")
                 {
                     Caption = 'Unit of Measure (Cross Ref.)';
                 }

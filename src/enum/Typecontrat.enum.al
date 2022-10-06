@@ -18,5 +18,9 @@ enum 50004 "DEL Type contrat"
     {
         Caption = 'Denunciation';
     }
+    value(4; "Charte ethique")
+    {
+        Caption = 'Charte ethique';
+    }
 
 }
