@@ -1,9 +1,57 @@
-tableextension 50020 "DEL Item" extends Item
+tableextension 50020 "DEL Item" extends Item //27
 {
+
 
     fields
     {
 
+        // TODO:table product group code has been removed modify("Product Group Code"){
+        //      ProductGroup_Rec@1000000000 : Record 5723;
+        //                                                           BEGIN
+        //                                                             //MIG2017
+        //                                                              //T-00712
+        //                                                              IF ProductGroup_Rec.GET("Item Category Code","Product Group Code") THEN
+        //                                                                 IF ProductGroup_Rec."Code Segment" = '' THEN ERROR(Text0027,"Product Group Code");
+        //                                                              //END T-00712
+
+        //                                                              //START THM220817
+        //                                                              IF Rec."Product Group Code"<> '' THEN
+        //                                                              BEGIN
+        //                                                                RecMatriseGroupArtGroup.RESET;
+        //                                                                RecMatriseGroupArtGroup.SETRANGE(RecMatriseGroupArtGroup."Product Group Code",Rec."Product Group Code");
+        //                                                                IF RecMatriseGroupArtGroup.FINDFIRST THEN
+        //                                                                BEGIN
+        //                                                                 IF RecMatriseGroupArtGroup.COUNT=1 THEN
+        //                                                                   Standardartikelgruppe:=RecMatriseGroupArtGroup."Standard Item Group Code"
+        //                                                                   ELSE
+        //                                                                   BEGIN
+        //                                                                     CLEAR(PageMatriseGroupArtGroup);
+        //                                                                     PageMatriseGroupArtGroup.SETTABLEVIEW(RecMatriseGroupArtGroup);
+        //                                                                     PageMatriseGroupArtGroup.LOOKUPMODE:=TRUE;
+        //                                                                     //PageMatriseGroupArtGroup.EDITABLE(FALSE);
+        //                                                                     PageMatriseGroupArtGroup.SETRECORD(RecMatriseGroupArtGroup);
+        //                                                                     IF PageMatriseGroupArtGroup.RUNMODAL=ACTION::LookupOK THEN
+        //                                                                     BEGIN
+        //                                                                       PageMatriseGroupArtGroup.GETRECORD(RecMatriseGroupArtGroup);
+        //                                                                       Standardartikelgruppe:=RecMatriseGroupArtGroup."Standard Item Group Code";
+        //                                                                     END;
+        //                                                                   END;
+        //                                                                END
+        //                                                                 ELSE
+        //                                                                   Standardartikelgruppe:='';
+        //                                                              END
+        //                                                              ELSE
+        //                                                              BEGIN
+        //                                                                Standardartikelgruppe:='';
+        //                                                              END;
+        //                                                              //END THM220817
+        //                                                              //MIG2017 END
+
+        //                                                             //>>DELSupport
+        //                                                             ModifSegment("Product Group Code","Item Category Code");
+        //                                                             //<<DELSupport
+        //                                                           END;
+        // }
         field(50000; "DEL Weight net"; Decimal)
         {
         }
@@ -207,7 +255,7 @@ tableextension 50020 "DEL Item" extends Item
         }
         field(50096; "DEL Segment Code"; Code[20])
         {
-            //TODO CalcFormula = Lookup("Product Group"."Code Segment" 
+            //TODO  CalcFormula = Lookup("DEL Product Group"."Code Segment" 
             // WHERE ("Item Category Code"=FIELD("Item Category Code"),
             //         Code=FIELD("Product Group Code")));
             Caption = 'Segment Code';
@@ -288,7 +336,7 @@ tableextension 50020 "DEL Item" extends Item
             //   Mark=FIELD(Marque Produit),
             //          Product Description=FIELD(Product Description)));
             Caption = 'Subtance Regulation';
-            Description = 'T-00716';
+
             Editable = false;
             FieldClass = FlowField;
         }
@@ -543,740 +591,7 @@ tableextension 50020 "DEL Item" extends Item
 
             MinValue = 0;
         }
-        field(4006496; "DEL EAN Code Katalog"; Text[13])
-        {
-            Caption = 'EAN Catalogue Code';
 
-        }
-        field(4006497; "DEL EAN Nummernserie Katalog"; Code[10])
-        {
-            Caption = 'Catalogue EAN Number Series';
-
-            TableRelation = "No. Series";
-        }
-        field(4006498; "DEL Katalogbezeichnung"; Text[80])
-        {
-            Caption = 'Catalogue Description';
-
-        }
-        field(4006499; "DEL Katalogbezeichnung 2"; Text[80])
-        {
-            Caption = 'Catalogue Description 2';
-
-        }
-        field(4006500; "DEL Hersteller"; Text[50])
-        {
-            CalcFormula = Lookup(Manufacturer.Name WHERE(Code = FIELD("Manufacturer Code")));
-            Caption = 'Manufacturer';
-
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(4006501; "DEL Kurztext Katalog"; Text[100])
-        {     //TODO: Katalogkopf is missing
-            //CalcFormula = Lookup(Katalogkopf.Kurztext WHERE (Code=FIELD(Hauptkatalogcode)));
-            Caption = 'Catalogue Short Text';
-
-            FieldClass = FlowField;
-        }
-        field(4006502; "DEL Vorlagencode"; Code[20])
-        {
-            Caption = 'Template Code';
-            // TODO: Vorlage ismissing. 
-            //TableRelation = "Vorlage".Code WHERE (Dokumententyp=CONST(InDesign));
-        }
-        field(4006503; "DEL Standardartikelgruppe"; Code[20])
-        {
-            Caption = 'Standard Item Group';
-            ////TODO: Artikelgruppe Katalog is missing
-            // TableRelation = "Artikelgruppe Katalog";
-        }
-        field(4006504; "DEL Katalogpreis"; Decimal)
-        {
-            Caption = 'Catalogue Price';
-
-        }
-        field(4006505; "DEL Katalogartikelnr."; Text[30])
-        {
-            Caption = 'Sub. Item No.';
-
-        }
-        field(4006506; "DEL MDM Angelegt am"; Date)
-        {
-            Caption = 'Created On';
-
-            Editable = false;
-        }
-        field(4006507; "DEL MDM Angelegt von"; Code[30])
-        {
-            Caption = 'Created By';
-
-            Editable = false;
-            TableRelation = User;
-        }
-        field(4006508; "DEL MDM Aktualisiert am"; Date)
-        {
-            Caption = 'Last Date Modified';
-
-            Editable = false;
-        }
-        field(4006509; "DEL MDM Aktualisiert vom"; Code[30])
-        {
-            Caption = 'Modified By';
-
-            Editable = false;
-            TableRelation = User;
-        }
-        field(4006510; "DEL Bilddokument ID"; Code[20])
-        {
-            Caption = 'Picture Document ID';
-
-            //TODO TableRelation = "Dokument Katalog" WHERE (Art=CONST(Bild));
-
-            // trigger OnLookup()
-            // begin
-
-            //     CLEAR(gfrmDoklisteB);
-
-
-            //     gfrmDoklisteB.FilterSetzen(goptQuellenart::Artikel,"No.",0);
-
-            //     gfrmDoklisteB.LOOKUPMODE(TRUE);
-            //     IF gfrmDoklisteB.RUNMODAL = ACTION::LookupOK THEN BEGIN
-            //       gfrmDoklisteB.GETRECORD(grecKatDok);
-            //       IF grecKatDok.Nummer <> "Bilddokument ID" THEN
-            //         VALIDATE("Bilddokument ID",grecKatDok.Nummer);
-            //     END;
-
-            // end;
-
-            //TODO trigger OnValidate()
-            // begin
-            //     // --- AL.KVK6.0 --- //
-            //     IF Rec."Bilddokument ID" <> '' THEN BEGIN
-            //       // --- Katalogdokument --- //
-            //       grecKatDok.RESET;
-            //       grecKatDok.SETRANGE(Quelle,grecKatDok.Quelle::Artikel);
-            //       grecKatDok.SETRANGE(Art,grecKatDok.Art::Bild);
-            //       grecKatDok.SETRANGE(Code,"No.");
-            //       grecKatDok.SETRANGE(Nummer,"Bilddokument ID");
-            //       IF NOT grecKatDok.FIND('-') THEN
-            //         ERROR(AL0001,"Bilddokument ID");
-            //     END;
-            //     // --- AL.KVK6.0 END --- //
-            // end;
-        }
-        // TODO field(4006512; "DEL Publikationsgruppe"; Code[20])
-        // {
-        //     Caption = 'Publication Group';
-        //     Description = 'AL.KVK4.5';
-        //     TableRelation = Publikationsgruppe;
-        // }
-        // field(4006513; "DEL Dokument ID"; Code[20])
-        // {
-        //     Caption = 'Dokument ID Image';
-        //     Description = 'AL.KVK4.5';
-        //     TableRelation = "Dokument Katalog";
-
-        //     trigger OnLookup()
-        //     begin
-        //         // --- AL.KVK6.0 --- //
-        //         CLEAR(gfrmZeichnung);
-
-        //         // --- Zeichnungsfilter --- //
-        //         grecDokument.RESET;
-        //         grecDokument.SETCURRENTKEY(Art);
-        //         grecDokument.SETRANGE(Art,grecDokument.Art::Zeichnung);
-        //         gfrmZeichnung.SETTABLEVIEW(grecDokument);
-        //         // --- Datensatz holen --- //
-        //         grecDokument.SETRANGE("Dokument ID","Dokument ID");
-        //         IF grecDokument.FIND('-') THEN
-        //           gfrmZeichnung.SETRECORD(grecDokument);
-        //         gfrmZeichnung.LOOKUPMODE(TRUE);
-        //         IF gfrmZeichnung.RUNMODAL = ACTION::LookupOK THEN BEGIN
-        //           gfrmZeichnung.GETRECORD(grecDokument);
-        //           "Dokument ID" := grecDokument."Dokument ID";
-        //         END;
-        //         // --- AL.KVK6.0 END --- //
-        //     end;
-        // }
-        // field(4006514; "DEL Katalogseite Hauptkatalog"; Text[100])
-        // {
-        //     CalcFormula = Lookup("Inhaltsverzeichnis Artikel".Seite WHERE (Aktuell=CONST(Yes),
-        //                                                                    Artikelnr.=FIELD(No.)));
-        //     Caption = 'Main Catalogue Page';
-        //     Description = 'AL.KVK4.5';
-        //     Editable = false;
-        //     FieldClass = FlowField;
-        // }
-        field(4006515; "DEL Nettoartikel"; Boolean)
-        {
-            Caption = 'Netto Product';
-            Description = 'AL.KVK4.5';
-        }
-        field(4006516; "DEL Liquidationsartikel"; Boolean)
-        {
-            Caption = 'Liquidation Item';
-            Description = 'AL.KVK4.5';
-        }
-        field(4006517; "DEL Katalogartikel"; Boolean)
-        {
-            Caption = 'Nonstock Items';
-            Description = 'AL.KVK4.5';
-        }
-        // field(4006520; "DEL Checklistennr."; Code[20])
-        // {
-        //     Caption = 'Checklist Number';
-        //     Description = 'AL.KVK4.5';
-        //     TableRelation = Checklistkopf WHERE (Klasse=CONST(Artikel));
-
-        //     trigger OnValidate()
-        //     begin
-        //         // --- AL.KVK6.0 --- //
-        //         IF xRec."Checklistennr." <> Rec."Checklistennr." THEN
-        //           Systemstatus := Systemstatus::"In Entwicklung";
-        //         // --- AL.KVK6.0, END --- //
-        //     end;
-        // }
-        field(4006521; "DEL Systemstatus"; Option)
-        {
-            Caption = 'System Status';
-            Description = 'AL.KVK4.5';
-            OptionCaption = 'New,Under Development,Certified';
-            OptionMembers = Neu,"In Entwicklung",Zertifiziert;
-
-            //TODO trigger OnValidate()
-            // begin
-            //     // --- AL.KVK6.0 --- //
-            //     IF "Checklistennr." <> '' THEN BEGIN
-            //       CALCFIELDS("Systemstatus pruefen");
-            //       IF NOT gcouSystemVerw.SystemstatusPruefen(goptQuelle::Artikel,
-            //                                                 "No.",
-            //                                                 "Systemstatus pruefen",
-            //                                                 Systemstatus,
-            //                                                 TRUE) THEN
-            //         ERROR(AL0002);
-            //       // --- Zertifizierung --- //
-            //       IF (Rec.Systemstatus <> xRec.Systemstatus) AND (Systemstatus = Systemstatus::Zertifiziert) THEN BEGIN
-            //         grefRecordRef.OPEN(27);
-            //         grefRecordRef.GETTABLE(Rec);
-            //         ZertifizierungID := gcouStammVerw.ZertifizierungEinzVerarbeiten(grefRecordRef,
-            //                                                                         "Checklistennr.",
-            //                                                                         Systemstatus,
-            //                                                                         '');
-            //         IF ZertifizierungID > 0 THEN BEGIN
-            //           grecZertProt.RESET;
-            //           grecZertProt.SETCURRENTKEY(Nummer);
-            //           grecZertProt.SETRANGE(Nummer,"No.");
-            //           grecZertProt.SETRANGE(Meldungsart,grecZertProt.Meldungsart::Fehler);
-            //           IF grecZertProt.FIND('-') THEN BEGIN
-            //             // --- Bereich --- //
-            //             gcouStammVerw.ZertifizierungBereich(Rec,0);
-            //             MESSAGE(AL0003);
-            //             Systemstatus := Systemstatus::"In Entwicklung";
-            //           END
-            //           ELSE BEGIN
-            //             // --- Bereich --- //
-            //             gcouStammVerw.ZertifizierungBereich(Rec,1);
-            //             MESSAGE(AL0004);
-            //           END;
-            //         END
-            //         ELSE
-            //           gcouStammVerw.ZertifizierungBereich(Rec,1);
-            //       END;
-            //     END;
-            //     // --- AL.KVK6.0, END --- //
-            // end;
-        }
-        field(4006522; "DEL Systemstatus pruefen"; Boolean)
-        {
-            // //TODO CalcFormula = Lookup(Checklistkopf."Systemstatus pruefen" WHERE (Code=FIELD(Checklistennr.)));
-            Caption = 'Check System Status';
-            Description = 'AL.KVK4.5';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(4006523; "DEL Katalogverwendung"; Boolean)
-        {
-            Caption = 'Catalogue Usage';
-            Description = 'AL.KVK4.5';
-            Editable = false;
-        }
-        field(4006524; "DEL Hauptkatalogcode"; Code[20])
-        {
-            Caption = 'Main Catalogue Code';
-            Description = 'AL.KVK4.5';
-            //TODO TableRelation = Katalogkopf.Code;
-        }
-        field(4006525; "DEL Bilddokument ID vererbt"; Boolean)
-        {
-            Caption = 'Inherit Picture Document ID';
-            Description = 'AL.KVK4.5';
-        }
-        field(4006528; "DEL Zusatzinfo 1"; Text[20])
-        {
-            Caption = 'Additional Information 1';
-            Description = 'AL.KVK4.5';
-            //TODO TableRelation = Zusatzinfo.Code WHERE (Art=CONST(Zusatzinfo1),
-            //                                        Code=FIELD("Zusatzinfo 1"));
-        }
-        field(4006529; "DEL Zusatzinfo 2"; Text[20])
-        {
-            Caption = 'Additional Information 2';
-            Description = 'AL.KVK4.5';
-            //TODO TableRelation = Zusatzinfo.Code WHERE (Art=CONST(Zusatzinfo2),
-            //                                        Code=FIELD(Zusatzinfo 2));
-        }
-        field(4006530; "DEL Zusatzinfo 3"; Text[20])
-        {
-            Caption = 'Additional Information 3';
-            Description = 'AL.KVK4.5';
-            //TODO TableRelation = Zusatzinfo.Code WHERE (Art=CONST(Zusatzinfo3),
-            //                                        Code=FIELD(Zusatzinfo 3));
-        }
-        field(4006531; "DEL Zusatzinfo 4"; Text[20])
-        {
-            Caption = 'Additional Information 4';
-            Description = 'AL.KVK4.5';
-            // TODO TableRelation = Zusatzinfo.Code WHERE (Art=CONST(Zusatzinfo4),
-            //                                        Code=FIELD(Zusatzinfo 4));
-        }
-        field(4006532; "DEL Zusatzinfo 5"; Text[20])
-        {
-            Caption = 'Additional Information 5';
-            Description = 'AL.KVK4.5';
-            //TODO TableRelation = Zusatzinfo.Code WHERE (Art=CONST(Zusatzinfo5),
-            //                                        Code=FIELD(Zusatzinfo 5));
-        }
-        field(4006533; "DEL Katalogseite"; Text[100])
-        {
-            Caption = 'Catalogue Page';
-            Description = 'AL.KVK4.5';
-            Editable = false;
-        }
-        field(4006534; "DEL Sprache 01"; Code[10])
-        {
-            //TODO CalcFormula = Lookup("Katalog Einrichtung"."Sprache 01" WHERE (Primaerschluessel=CONST()));
-            Caption = 'Language 1';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(4006535; "DEL Sprache 02"; Code[10])
-        {
-            //TODO CalcFormula = Lookup("Katalog Einrichtung"."Sprache 02" WHERE (Primaerschluessel=CONST()));
-            Caption = 'Language 1';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(4006536; "DEL Sprache 03"; Code[10])
-        {
-            //TODO CalcFormula = Lookup("Katalog Einrichtung"."Sprache 03" WHERE (Primaerschluessel=CONST()));
-            Caption = 'Language 3';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(4006537; "DEL Sprache 04"; Code[10])
-        {
-            // TODO CalcFormula = Lookup("Katalog Einrichtung"."Sprache 04" WHERE (Primaerschluessel=CONST()));
-            Caption = 'Language 4';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(4006538; "DEL Sprache 05"; Code[10])
-        {
-            // TODO CalcFormula = Lookup("Katalog Einrichtung"."Sprache 05" WHERE (Primaerschluessel=CONST()));
-            Caption = 'Language 5';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(4006539; "DEL Sprache 06"; Code[10])
-        {
-            //TODO CalcFormula = Lookup("Katalog Einrichtung"."Sprache 06" WHERE (Primaerschluessel=CONST()));
-            Caption = 'Language 6';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(4006540; "DEL Sprache 07"; Code[10])
-        {
-            //TODO CalcFormula = Lookup("Katalog Einrichtung"."Sprache 07" WHERE (Primaerschluessel=CONST()));
-            Caption = 'Language 7';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(4006541; "DEL Sprache 08"; Code[10])
-        {
-            //TODO  CalcFormula = Lookup("Katalog Einrichtung"."Sprache 08" WHERE (Primaerschluessel=CONST()));
-            Caption = 'Language 8';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(4006542; "DEL Sprache 09"; Code[10])
-        {
-            //TODO CalcFormula = Lookup("Katalog Einrichtung"."Sprache 09" WHERE (Primaerschluessel=CONST()));
-            Caption = 'Language 9';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(4006543; "DEL Sprache 10"; Code[10])
-        {
-            //TODO CalcFormula = Lookup("Katalog Einrichtung"."Sprache 10" WHERE (Primaerschluessel=CONST()));
-            Caption = 'Language 10';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(4006544; "DEL ML Bezeichnung 01"; Boolean)
-        {
-            Caption = 'ML Short Description';
-            Description = 'AL.KVK4.5';
-        }
-        field(4006545; "DEL ML Bezeichnung 02"; Boolean)
-        {
-            Caption = 'ML Short Description';
-            Description = 'AL.KVK4.5';
-        }
-        field(4006546; "DEL ML Bezeichnung 03"; Boolean)
-        {
-            Caption = 'ML Short Description';
-            Description = 'AL.KVK4.5';
-        }
-        field(4006547; "DEL ML Bezeichnung 04"; Boolean)
-        {
-            Caption = 'ML Short Description';
-            Description = 'AL.KVK4.5';
-        }
-        field(4006548; "DEL ML Bezeichnung 05"; Boolean)
-        {
-            Caption = 'ML Short Description';
-            Description = 'AL.KVK4.5';
-        }
-        field(4006549; "DEL ML Bezeichnung 06"; Boolean)
-        {
-            Caption = 'ML Short Description';
-            Description = 'AL.KVK4.5';
-        }
-        field(4006550; "DEL ML Bezeichnung 07"; Boolean)
-        {
-            Caption = 'ML Short Description';
-            Description = 'AL.KVK4.5';
-        }
-        field(4006551; "DEL ML Bezeichnung 08"; Boolean)
-        {
-            Caption = 'ML Short Description';
-            Description = 'AL.KVK4.5';
-        }
-        field(4006552; "DEL ML Bezeichnung 09"; Boolean)
-        {
-            Caption = 'ML Short Description';
-            Description = 'AL.KVK4.5';
-        }
-        field(4006553; "DEL ML Bezeichnung 10"; Boolean)
-        {
-            Caption = 'ML Short Description';
-            Description = 'AL.KVK4.5';
-        }
-        field(4006554; "DEL ML Beschrieb 01"; Boolean)
-        {
-            Caption = 'ML Description';
-            Description = 'AL.KVK4.5';
-        }
-        field(4006555; "DEL ML Beschrieb 02"; Boolean)
-        {
-            Caption = 'ML Description';
-            Description = 'AL.KVK4.5';
-        }
-        field(4006556; "DEL ML Beschrieb 03"; Boolean)
-        {
-            Caption = 'ML Description';
-            Description = 'AL.KVK4.5';
-        }
-        field(4006557; "DEL ML Beschrieb 04"; Boolean)
-        {
-            Caption = 'ML Description';
-            Description = 'AL.KVK4.5';
-        }
-        field(4006558; "DEL ML Beschrieb 05"; Boolean)
-        {
-            Caption = 'ML Description';
-            Description = 'AL.KVK4.5';
-        }
-        field(4006559; "DEL ML Beschrieb 06"; Boolean)
-        {
-            Caption = 'ML Description';
-            Description = 'AL.KVK4.5';
-        }
-        field(4006560; "DEL ML Beschrieb 07"; Boolean)
-        {
-            Caption = 'ML Description';
-            Description = 'AL.KVK4.5';
-        }
-        field(4006561; "DEL ML Beschrieb 08"; Boolean)
-        {
-            Caption = 'ML Description';
-            Description = 'AL.KVK4.5';
-        }
-        field(4006562; "DEL ML Beschrieb 09"; Boolean)
-        {
-            Caption = 'ML Description';
-            Description = 'AL.KVK4.5';
-        }
-        field(4006563; "DEL ML Beschrieb 10"; Boolean)
-        {
-            Caption = 'ML Description';
-            Description = 'AL.KVK4.5';
-        }
-        field(4006564; "DEL Klassifikationscode"; Text[8])
-        {
-            Caption = 'Classification Code';
-            Description = 'AL.KVK4.5';
-        }
-        field(4006565; "DEL Datanaustausch ID"; Code[20])
-        {
-            Caption = 'Data Exchange ID';
-            Description = 'AL.KVK4.5';
-            Editable = false;
-        }
-        field(4006566; "DEL Datenaustauschart"; Option)
-        {
-            Caption = 'Data Exchange Type';
-            Description = 'AL.KVK4.5';
-            Editable = false;
-            OptionCaption = 'Import,Export,Archive Import,Archive Export';
-            OptionMembers = Import,Export,ArchivImport,ArchivExport;
-        }
-        field(4006567; "DEL Transaktionsart"; Option)
-        {
-            Caption = 'Transaction Type';
-            Description = 'AL.KVK4.5';
-            Editable = false;
-            OptionCaption = 'Create,Change,Delete';
-            OptionMembers = Neuanlage,"Änderung","Löschnung";
-        }
-        field(4006571; "DEL Manipulation ID"; Integer)
-        {
-            Caption = 'Manipulation ID';
-            Description = 'AL.KVK4.5';
-        }
-        field(4006575; "DEL Langtextnummer"; Text[15])
-        {
-            Caption = 'Long Text No.';
-            Description = 'AL.KVK4.5';
-        }
-        field(4006576; "DEL Vererbung Beschreibungen"; Boolean)
-        {
-            Caption = 'Inherit Descriptions';
-            Description = 'AL.KVK4.5';
-        }
-        field(4006577; "DEL Vererbung Merkmale"; Boolean)
-        {
-            Caption = 'Inherit Features';
-            Description = 'AL.KVK4.5';
-        }
-        field(4006578; "DEL Vererbung Schlagworte"; Boolean)
-        {
-            Caption = 'Inherit Keywords';
-            Description = 'AL.KVK4.5';
-        }
-        field(4006579; "DEL Vererbung Bilder"; Boolean)
-        {
-            Caption = 'Inherit Pictures';
-            Description = 'AL.KVK4.5';
-        }
-        field(4006580; "DEL Vererbung Dokumente"; Boolean)
-        {
-            Caption = 'Inherit Documents';
-            Description = 'AL.KVK4.5';
-        }
-        field(4006581; "DEL Vererbung Grafik"; Boolean)
-        {
-            Caption = 'Inherit Graphic';
-            Description = 'AL.KVK4.5';
-        }
-        field(4006582; "DEL Vererbung Bezeichnung"; Boolean)
-        {
-            Caption = 'Inherit Short Description';
-            Description = 'AL.KVK4.5';
-        }
-        field(4006583; "DEL Uebersetzung"; Boolean)
-        {
-            Caption = 'Translation';
-            Description = 'AL.KVK4.5';
-        }
-        field(4006584; "DEL Akt. Kampagnenummer"; Code[20])
-        {
-            //TODO CalcFormula = Lookup("Katalog Einrichtung".Kampagnenummer WHERE (Primaerschluessel=CONST()));
-            Caption = 'Act. Campaign No.';
-            Description = 'AL.KVK4.5';
-            FieldClass = FlowField;
-            TableRelation = Campaign;
-        }
-        field(4006585; "DEL Verwendung Print"; Boolean)
-        {
-            Caption = 'Print Usage';
-            Description = 'AL.KVK4.5';
-        }
-        field(4006586; "DEL Verwendung Web"; Boolean)
-        {
-            Caption = 'Web Usage';
-            Description = 'AL.KVK4.5';
-        }
-        field(4006587; "DEL Vererbung Merkmalwerte"; Boolean)
-        {
-            Caption = 'Inherit Feature Values';
-            Description = 'AL.KVK4.5';
-        }
-        field(4006588; "DEL ZertifizierungID"; BigInteger)
-        {
-            Caption = 'Certification ID';
-            Description = 'AL.KVK4.5';
-        }
-        field(4006592; "DEL Kurztext"; Text[100])
-        {
-            Caption = 'Short Text';
-            Description = 'AL.KVK4.5';
-        }
-        field(4006594; "DEL Neuer Artikel"; Boolean)
-        {
-            Caption = 'New Item';
-            Description = 'AL.KVK4.5';
-        }
-        field(4006595; "DEL Vererbung Referenzen"; Boolean)
-        {
-            Caption = 'Inherit References';
-            Description = 'AL.KVK4.5';
-        }
-        field(4006596; "DEL Bereich 01"; Code[10])
-        {
-            Caption = 'Area 1';
-            Description = 'AL.KVK4.5';
-            Editable = false;
-            //TODO TableRelation = Datenbereich;
-        }
-        field(4006597; "DEL Bereich 02"; Code[10])
-        {
-            Caption = 'Area 2';
-            Description = 'AL.KVK4.5';
-            Editable = false;
-            ////TODO TableRelation = Datenbereich;
-        }
-        field(4006598; "DEL Bereich 03"; Code[10])
-        {
-            Caption = 'Area 3';
-            Description = 'AL.KVK4.5';
-            Editable = false;
-            //TODO TableRelation = Datenbereich;
-        }
-        field(4006599; "DEL Bereich 04"; Code[10])
-        {
-            Caption = 'Area 4';
-            Description = 'AL.KVK4.5';
-            Editable = false;
-            //TODO TableRelation = Datenbereich;
-        }
-        field(4006600; "DEL Bereich 05"; Code[10])
-        {
-            Caption = 'Area 5';
-            Description = 'AL.KVK4.5';
-            Editable = false;
-            //TODO TableRelation = Datenbereich;
-        }
-        field(4006601; "DEL Bereich 06"; Code[10])
-        {
-            Caption = 'Area 6';
-            Description = 'AL.KVK4.5';
-            Editable = false;
-            //TODO TableRelation = Datenbereich;
-        }
-        field(4006602; "DEL Bereich 07"; Code[10])
-        {
-            Caption = 'Area 7';
-            Description = 'AL.KVK4.5';
-            Editable = false;
-            //TODO TableRelation = Datenbereich;
-        }
-        field(4006603; "DEL Bereich 08"; Code[10])
-        {
-            Caption = 'Area 8';
-            Description = 'AL.KVK4.5';
-            Editable = false;
-            //TODO TableRelation = Datenbereich;
-        }
-        field(4006604; "DEL Bereich 09"; Code[10])
-        {
-            Caption = 'Area 9';
-            Description = 'AL.KVK4.5';
-            Editable = false;
-            //TODO TableRelation = Datenbereich;
-        }
-        field(4006605; "DEL Bereich 10"; Code[10])
-        {
-            Caption = 'Area 10';
-            Description = 'AL.KVK4.5';
-            Editable = false;
-            //TODO TableRelation = Datenbereich;
-        }
-        field(4006606; "DEL Systemstatus Ber. 01"; Option)
-        {
-            Caption = 'System Status Area 01';
-            Description = 'AL.KVK4.5';
-            OptionCaption = 'New,Under Development,Certified';
-            OptionMembers = Neu,"In Entwicklung",Zertifiziert;
-        }
-        field(4006607; "DEL Systemstatus Ber. 02"; Option)
-        {
-            Caption = 'System Status Area 02';
-            Description = 'AL.KVK4.5';
-            OptionCaption = 'New,Under Development,Certified';
-            OptionMembers = Neu,"In Entwicklung",Zertifiziert;
-        }
-        field(4006608; "DEL Systemstatus Ber. 03"; Option)
-        {
-            Caption = 'System Status Area 03';
-            Description = 'AL.KVK4.5';
-            OptionCaption = 'New,Under Development,Certified';
-            OptionMembers = Neu,"In Entwicklung",Zertifiziert;
-        }
-        field(4006609; "DEL Systemstatus Ber. 04"; Option)
-        {
-            Caption = 'System Status Area 04';
-            Description = 'AL.KVK4.5';
-            OptionCaption = 'New,Under Development,Certified';
-            OptionMembers = Neu,"In Entwicklung",Zertifiziert;
-        }
-        field(4006610; "DEL Systemstatus Ber. 05"; Option)
-        {
-            Caption = 'System Status Area 05';
-            Description = 'AL.KVK4.5';
-            OptionCaption = 'New,Under Development,Certified';
-            OptionMembers = Neu,"In Entwicklung",Zertifiziert;
-        }
-        field(4006611; "DEL Systemstatus Ber. 06"; Option)
-        {
-            Caption = 'System Status Area 06';
-            Description = 'AL.KVK4.5';
-            OptionCaption = 'New,Under Development,Certified';
-            OptionMembers = Neu,"In Entwicklung",Zertifiziert;
-        }
-        field(4006612; "DEL Systemstatus Ber. 07"; Option)
-        {
-            Caption = 'System Status Area 07';
-            Description = 'AL.KVK4.5';
-            OptionCaption = 'New,Under Development,Certified';
-            OptionMembers = Neu,"In Entwicklung",Zertifiziert;
-        }
-        field(4006613; "DEL Systemstatus Ber. 08"; Option)
-        {
-            Caption = 'System Status Area 08';
-            Description = 'AL.KVK4.5';
-            OptionCaption = 'New,Under Development,Certified';
-            OptionMembers = Neu,"In Entwicklung",Zertifiziert;
-        }
-        field(4006614; "DEL Systemstatus Ber. 09"; Option)
-        {
-            Caption = 'System Status Area 09';
-            Description = 'AL.KVK4.5';
-            OptionCaption = 'New,Under Development,Certified';
-            OptionMembers = Neu,"In Entwicklung",Zertifiziert;
-        }
     }
     keys
     {//TODO
@@ -1321,59 +636,43 @@ tableextension 50020 "DEL Item" extends Item
         DefaultDimension_Rec: Record "Default Dimension";
         ItemCategory_Rec: Record "Item Category";
     begin
-        //MIG2017
-        // T-00746 START
+
         IF DefaultDimension_Rec.GET(27, "No.", 'Categorie') THEN BEGIN
             IF DefaultDimension_Rec."Dimension Value Code" <> CategCode THEN BEGIN
                 DefaultDimension_Rec.VALIDATE("Dimension Value Code", CategCode);
                 DefaultDimension_Rec.MODIFY();
             END;
         END
-        // T-00746 END
+
         ELSE BEGIN
-            // T-00746 START
+
             DefaultDimension_Rec.INIT();
             DefaultDimension_Rec.VALIDATE("Table ID", 27);
             DefaultDimension_Rec.VALIDATE("No.", "No.");
             DefaultDimension_Rec.VALIDATE("Dimension Code", 'Categorie');
             DefaultDimension_Rec.VALIDATE("Dimension Value Code", CategCode);
             DefaultDimension_Rec.INSERT();
-            // T-00746 END
+
         END;
-        //END MIG2017
+
     end;
 
     procedure GetVolCBM(Update: Boolean): Decimal
     begin
-        //>>Mgts10.00.05.00
+
         IF ("DEL Vol cbm" = 0) AND ("DEL PCB" <> 0) THEN BEGIN
             "DEL Vol cbm" := ROUND(("DEL Vol cbm carton transport" / "DEL PCB"), 0.00001, '>');
             IF Update THEN
                 MODIFY();
         END;
         EXIT("DEL Vol cbm")
-        //<<Mgts10.00.05.00
+
     end;
 
     var
         ItemCategory: Record "Item Category";
         "--- AL.KVK ---": Integer;
-        // TODO    grecDokEinr: Record "4024041";
-        //     grecDokument: Record "4024045";
-        //     grecArtikelGrp: Record "4006519";
-        //     grecKatDok: Record "4006515";
-        //     grecZertProt: Record "4024050";
-        //     grecCheckZeile: Record "4006524";
-        //     grecCheckZeileRef: Record "4006524";
-        //     gfrmDoklisteB: Page "4024073";
-        //     gfrmZeichnung: Page "4006563";
-        //                        gcouKatVerw: Codeunit "4006500";
-        //                        gcouSystemVerw: Codeunit "4006498";
-        //                        gcouDokVerw: Codeunit "4006497";
-        //                        gcouStammVerw: Codeunit "4006496";
-        //                        grefRecordRef: RecordRef;
-        // goptQuelle: Option Artikel,Artikelgruppe,Kapitel,Kataloggruppe,Gruppensystem,Katalog,Checkliste,Textbaustein,Vorlage;
-        // goptQuellenart: Option Artikel,Artikelgruppe,Warengruppe,Kapitel,Kataloggruppe,Textbaustein;
+
         // //TODO RecMatriseGroupArtGroup: Record "DEL Matrise Group Art./Group Std";
         PageMatriseGroupArtGroup: Page "DEL Matrice Grp art./Group std";
         Text0027: Label 'Segment code missing product code %1';

@@ -80,5 +80,5 @@ page 50055 "DEL Propostition tracking"
     end;
 }
 
-#pragma implicitwith restore
+
 

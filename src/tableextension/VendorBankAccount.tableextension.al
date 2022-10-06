@@ -4,5 +4,6 @@ tableextension 50022 "DEL VendorBankAccount" extends "Vendor Bank Account"
 
     //Unsupported feature: Insertion (FieldGroupCollection) on "(FieldGroup: DropDown)".
 
+
 }
 

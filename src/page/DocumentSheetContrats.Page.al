@@ -21,21 +21,27 @@ page 50075 "DEL Document Sheet Contrats"
             {
                 field("Insert Date"; Rec."Insert Date")
                 {
+                    Caption = 'Date';
                 }
                 field("Insert Time"; Rec."Insert Time")
                 {
+                    Caption = 'Time';
                 }
                 field(Path; Rec.Path)
                 {
+                    Caption = 'Path';
                 }
                 field("File Name"; Rec."File Name")
                 {
+                    Caption = 'File Name';
                 }
                 field("Type contrat"; Rec."Type contrat")
                 {
+                    Caption = 'Type of contract';
                 }
                 field("User ID"; Rec."User ID")
                 {
+                    Caption = 'User ID';
                 }
             }
         }
@@ -82,7 +88,7 @@ page 50075 "DEL Document Sheet Contrats"
     end;
 
     var
-    //TODODocument_CU: Codeunit 50007;
+        Document_CU: Codeunit "DEL Document Sheet";
 
     local procedure Add()
     var
@@ -94,55 +100,47 @@ page 50075 "DEL Document Sheet Contrats"
         ServerFileName: Text;
         LastLineNo: Integer;
     begin
-        //TODO IF NOT Document_CU.OpenFile(ImportFileName, ServerFileName) THEN
-        //     EXIT;
+        IF NOT Document_CU.OpenFile(ImportFileName, ServerFileName) THEN
+            EXIT;
 
         IF ServerFileName = '' THEN
             EXIT;
 
-        DocumentLine.SETRANGE("Table Name", "Table Name");
-        DocumentLine.SETRANGE("No.", "No.");
+        DocumentLine.SETRANGE("Table Name", Rec."Table Name");
+        DocumentLine.SETRANGE("No.", Rec."No.");
         IF DocumentLine.FINDLAST() THEN
             LastLineNo := DocumentLine."Line No.";
 
-        INIT();
-        "Line No." := LastLineNo + 10000;
+        Rec.INIT();
+        Rec."Line No." := LastLineNo + 10000;
 
         //TODO oFile.OPEN(ServerFileName);
         // oFile.CREATEINSTREAM(InStr);
-        Document.CREATEOUTSTREAM(OutStr);
+        Rec.Document.CREATEOUTSTREAM(OutStr);
         COPYSTREAM(OutStr, InStr);
         //TODO oFile.CLOSE;
 
-        "Insert Date" := TODAY;
-        "Insert Time" := TIME;
+        Rec."Insert Date" := TODAY;
+        Rec."Insert Time" := TIME;
 
         //TODO Path := Document_CU.GetDirectoryName(ImportFileName);
         // "File Name" := Document_CU.GetFileName(ImportFileName);
 
-        INSERT(TRUE);
+        Rec.INSERT(TRUE);
         CurrPage.UPDATE(FALSE);
     end;
 
     local procedure SaveAs()
     var
-        oFile: File;
-        InStr: InStream;
-        OutStr: OutStream;
-        ClientFileName: Text;
-        ServerFileName: Text;
-        cNoDocument: Label 'No document found.';
+
     begin
     end;
 
     local procedure Open()
     var
-        oFile: File;
-        InStr: InStream;
-        OutStr: OutStream;
+
         Directory: Text;
-        ExportFileName: Text;
-        cNoDocument: Label 'No document found.';
+
     begin
         //CALCFIELDS(Document);
         //IF NOT Document.HASVALUE THEN
@@ -159,7 +157,7 @@ page 50075 "DEL Document Sheet Contrats"
 
         // oFile.CLOSE;
 
-        HYPERLINK(Directory + "File Name");
+        HYPERLINK(Directory + Rec."File Name");
     end;
 }
 

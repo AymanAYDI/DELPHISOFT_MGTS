@@ -219,7 +219,7 @@ page 50060 "DEL Correctif Purchase Invoice"
                     element_ID_Ret: Code[20];
                     requestID_Co_Loc: Code[20];
 
-                    //TODO UpdateRequestManager_Cu: Codeunit 50032;
+                    UpdateRequestManager_Cu: Codeunit "DEL Update Request Manager";
                     ID_num: Code[20];
                     Text: Text;
                 begin
@@ -235,12 +235,12 @@ page 50060 "DEL Correctif Purchase Invoice"
                     Text := 'AFF' + Text;
 
                     ID_num := Text;
-                    //TODO requestID_Co_Loc := UpdateRequestManager_Cu.FNC_Add_Request(
-                    //   ID_num,
-                    //   urm_Re_Loc.Requested_By_Type::CUSTOM,
-                    //   USERID,
-                    //   CURRENTDATETIME
-                    // );
+                    requestID_Co_Loc := UpdateRequestManager_Cu.FNC_Add_Request(
+                       ID_num,
+                       urm_Re_Loc.Requested_By_Type::CUSTOM,
+                       USERID,
+                       CURRENTDATETIME
+                     );
 
                     urm_Re_Loc.GET(requestID_Co_Loc);
 
@@ -266,7 +266,7 @@ page 50060 "DEL Correctif Purchase Invoice"
     var
         PurchInvHeader: Record "Purch. Inv. Header";
         ChangeExchangeRate: Page "Change Exchange Rate";
-        //TODO Deal_Cu: Codeunit 50020;
+        Deal_Cu: Codeunit "DEL Deal";
         PurchInvLine: Record "Purch. Inv. Line";
 }
 

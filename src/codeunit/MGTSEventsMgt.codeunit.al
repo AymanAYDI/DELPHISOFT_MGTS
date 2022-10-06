@@ -4,12 +4,11 @@ codeunit 50100 "DEL MGTS_EventsMgt"
     local procedure T18_OnAfterModifyEvent_Customer(var Rec: Record Customer; RunTrigger: Boolean)
 
     begin
-        if not RunTrigger then //if (Runtrigger = false) then exit
+        if not RunTrigger then
             exit;
         if Rec.IsTemporary then
             exit;
         IF Rec."DEL Last Accounting Date" <> 0D THEN BEGIN
-            //START T-00738
             IF Rec."DEL Fréquence de facturation" = "DEL Fréquence de facturation"::"12 mois" THEN
                 Rec."DEL Date de proch. fact." := CALCDATE('<+12M>', Rec."DEL Last Accounting Date");
             IF Rec."DEL Fréquence de facturation" = "DEL Fréquence de facturation"::"6 mois" THEN
@@ -20,7 +19,6 @@ codeunit 50100 "DEL MGTS_EventsMgt"
                 Rec."DEL Date de proch. fact." := CALCDATE('<+3M>', Rec."DEL Last Accounting Date");
             IF Rec."DEL Fréquence de facturation" = "DEL Fréquence de facturation"::" " THEN
                 Rec."DEL Date de proch. fact." := CALCDATE('<+0M>', Rec."DEL Last Accounting Date");
-            //STOP T-00738
             rec."DEL Nbr jr avant proch. fact." := Rec."DEL Date de proch. fact." - TODAY;
         END;
         Rec.Modify();
@@ -58,9 +56,8 @@ codeunit 50100 "DEL MGTS_EventsMgt"
 
         SalesLine.INSERT();
         NextLineNo := NextLineNo + 10000;
-
-
     end;
+
     //7002
     [EventSubscriber(ObjectType::Table, Database::"Sales Price", 'OnBeforeItemNoOnValidate', '', false, false)]
     local procedure T7002_OnBeforeItemNoOnValidate_SalesPrice(var SalesPrice: Record "Sales Price"; var xSalesPrice: Record "Sales Price"; var IsHandled: Boolean)
@@ -122,4 +119,44 @@ codeunit 50100 "DEL MGTS_EventsMgt"
         DimMgt.UpdateAllShortDimFromDimSetID(Rec."Dimension Set ID", Rec."DEL Shortcut Dim 3 Code", Rec."DEL Shortcut Dim 4 Code", Rec."DEL Shortcut Dim 5 Code",
                                                 Rec."DEL Shortcut Dim 6 Code", Rec."DEL Shortcut Dim 7 Code", Rec."DEL Shortcut Dim 8 Code");
     end;
+    ///////////////////////////////////////////////////////////////
+    [EventSubscriber(ObjectType::Table, Database::"Sales Price", 'OnBeforeItemNoOnValidate', '', false, false)]
+    local procedure OnAfterCheckSellToCust(var SalesHeader: Record "Sales Header"; xSalesHeader: Record "Sales Header"; Customer: Record Customer; CurrentFieldNo: Integer)
+    begin
+    end;
+    ////// tab 97
+    [EventSubscriber(ObjectType::Table, Database::"Comment Line", 'OnAfterSetUpNewLine', '', false, false)]
+
+    local procedure OnAfterSetUpNewLine(var CommentLineRec: Record "Comment Line"; var CommentLineFilter: Record "Comment Line")
+    begin
+        CommentLineRec."DEL User ID" := USERID;
+
+    end;
+
+    //// tab 27 
+
+    [EventSubscriber(ObjectType::Table, database::Item, 'OnBeforeValidateEvent', 'Item Category Code', false, false)]
+    local procedure T27_OnBeforeValidateEvent_Item_ItemCategoryCode(var Rec: Record Item; var xRec: Record Item; CurrFieldNo: Integer)
+    begin
+
+        xRec.TESTFIELD("Item Category Code");
+
+        Rec.ModifCategory(Rec."Item Category Code");
+
+    end;
+    // proc TryGetItemNoOpenCardWithView tab 27
+
+    [EventSubscriber(ObjectType::Table, database::Item, 'OnTryGetItemNoOpenCardWithViewOnBeforeShowCreateItemOption', '', false, false)]
+    local procedure OnTryGetItemNoOpenCardWithViewOnBeforeShowCreateItemOption(var Item: Record Item)
+    var
+        FoundRecordCount: Integer;
+        SelectItemErr: Label 'You must select an existing item.';
+    begin
+
+        IF FoundRecordCount = 0 THEN
+            ERROR(SelectItemErr);
+
+    end;
+
+
 }
