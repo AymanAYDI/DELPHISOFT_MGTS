@@ -2,7 +2,20 @@ tableextension 50044 "DEL GenJournalLine" extends "Gen. Journal Line"
 {
     fields
     {
+        modify("Account No.")
+        {
+            trigger OnAfterValidate()
+            var
+                dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
+            begin
+                dealShipmentSelection_Re_Loc.RESET();
+                dealShipmentSelection_Re_Loc.SETFILTER("Journal Template Name", "Journal Template Name");
+                dealShipmentSelection_Re_Loc.SETFILTER("Journal Batch Name", "Journal Batch Name");
+                dealShipmentSelection_Re_Loc.SETRANGE("Line No.", "Line No.");
+                dealShipmentSelection_Re_Loc.DELETEALL();
+            end;
 
+        }
 
         //Unsupported feature: Code Insertion (VariableCollection) on ""Account No."(Field 4).OnValidate".
 
@@ -45,6 +58,15 @@ tableextension 50044 "DEL GenJournalLine" extends "Gen. Journal Line"
         */
         //end;
 
+        modify("Payment Reference")
+        {
+            trigger OnAfterValidate()
+            var
+            begin
+                IF "Payment Reference" <> '' THEN
+                    TESTFIELD("Creditor No.");
+            end;
+        }
 
         //Unsupported feature: Code Modification on ""Payment Reference"(Field 171).OnValidate".
 
@@ -69,6 +91,16 @@ tableextension 50044 "DEL GenJournalLine" extends "Gen. Journal Line"
         */
         //end;
 
+        modify("Dimension Set ID")
+        {
+            trigger OnAfterValidate()
+            var
+                DimMgt: Codeunit DimensionManagement;
+            begin
+                // DimMgt.UpdateAllShortDimFromDimSetID("Dimension Set ID", "DEL Shortcut Dim 3 Code", "DEL Shortcut Dim 4 Code", "DEL Shortcut Dim 5 Code",
+                //                                         "DEL Shortcut Dim 6 Code", "DEL Shortcut Dim 7 Code", "DEL Shortcut Dim 8 Code"); TODO: ajouter la fonction "UpdateAllShortDimFromDimSetID" dalns la codeunit 408 DimensionManagement
+            end;
+        }
 
         //Unsupported feature: Code Modification on ""Dimension Set ID"(Field 480).OnValidate".
 
@@ -181,7 +213,7 @@ tableextension 50044 "DEL GenJournalLine" extends "Gen. Journal Line"
     //Unsupported feature: Code Insertion (VariableCollection) on "OnDelete".
 
     //trigger (Variable: dealShipmentSelection_Re_Loc)()
-    //Parameters and return type have not been exported.
+    //Parameters and return type have not been exported. TODO: Yes
     //begin
     /*
     */
@@ -221,7 +253,7 @@ tableextension 50044 "DEL GenJournalLine" extends "Gen. Journal Line"
     //end;
 
 
-    //Unsupported feature: Code Modification on "InitNewLine(PROCEDURE 94)".
+    //Unsupported feature: Code Modification on "InitNewLine(PROCEDURE 94)". TODO: yes
 
     //procedure InitNewLine();
     //Parameters and return type have not been exported.
@@ -250,7 +282,7 @@ tableextension 50044 "DEL GenJournalLine" extends "Gen. Journal Line"
     //end;
 
 
-    //Unsupported feature: Code Modification on "CreateDim(PROCEDURE 13)".
+    //Unsupported feature: Code Modification on "CreateDim(PROCEDURE 13)". TODO: yes
 
     //procedure CreateDim();
     //Parameters and return type have not been exported.
@@ -278,7 +310,7 @@ tableextension 50044 "DEL GenJournalLine" extends "Gen. Journal Line"
     //end;
 
 
-    //Unsupported feature: Code Modification on "ValidateShortcutDimCode(PROCEDURE 14)".
+    //Unsupported feature: Code Modification on "ValidateShortcutDimCode(PROCEDURE 14)". TODO: yes
 
     //procedure ValidateShortcutDimCode();
     //Parameters and return type have not been exported.
@@ -303,7 +335,7 @@ tableextension 50044 "DEL GenJournalLine" extends "Gen. Journal Line"
     //end;
 
 
-    //Unsupported feature: Code Modification on "ShowDimensions(PROCEDURE 26)".
+    //Unsupported feature: Code Modification on "ShowDimensions(PROCEDURE 26)". TODO: yes
 
     //procedure ShowDimensions();
     //Parameters and return type have not been exported.

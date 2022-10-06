@@ -3,11 +3,6 @@ tableextension 50046 "DEL GeneralLedgerSetup" extends "General Ledger Setup"
     fields
     {
 
-        //Unsupported feature: Property Modification (InitValue) on ""Amount Rounding Precision"(Field 73)".
-
-
-        //Unsupported feature: Property Modification (InitValue) on ""Unit-Amount Rounding Precision"(Field 74)".
-
 
         field(50000; "DEL Provision Source Code"; Code[20])
         {

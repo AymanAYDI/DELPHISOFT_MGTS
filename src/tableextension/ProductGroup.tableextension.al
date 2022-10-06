@@ -75,6 +75,11 @@ tableextension 50036 "DEL ProductGroup" extends "Product Group"
 
     //Unsupported feature: Insertion (FieldGroupCollection) on "(FieldGroup: DropDown)".
 
+    // fieldgroups
+    // {
+    //     addlast(DropDown; "Item Category Code",Code,Description,"DEL Code Segment"){} TODO:
+    // }
+
 
     var
         VendeurRec: Record "Salesperson/Purchaser";

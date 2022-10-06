@@ -72,4 +72,54 @@ codeunit 50100 "DEL MGTS_EventsMgt"
             SalesPrice."DEL Vendor No." := Item."Vendor No.";
         end;
     end;
+
+
+    [EventSubscriber(ObjectType::Table, Database::"Gen. Journal Line", 'OnAfterDeleteEvent', '', false, false)]
+    local procedure T81_OnAfterDeleteEvent_GenJournalLine(var Rec: Record "Gen. Journal Line"; RunTrigger: Boolean)
+    var
+        dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
+    begin
+        if not RunTrigger then
+            exit;
+        if Rec.IsTemporary then
+            exit;
+        dealShipmentSelection_Re_Loc.RESET();
+        dealShipmentSelection_Re_Loc.SETRANGE("Journal Template Name", Rec."Journal Template Name");
+        dealShipmentSelection_Re_Loc.SETRANGE("Journal Batch Name", Rec."Journal Batch Name");
+        dealShipmentSelection_Re_Loc.SETRANGE("Line No.", Rec."Line No.");
+        dealShipmentSelection_Re_Loc.DELETEALL();
+    end;
+
+    [EventSubscriber(ObjectType::Table, Database::"Gen. Journal Line", 'OnAfterInitNewLine', '', false, false)]
+    local procedure T81_OnAfterInitNewLine_GenJournalLine(var GenJournalLine: Record "Gen. Journal Line")
+    begin
+        UpdateAllShortDimFromDimSetID(GenJournalLine);
+    end;
+
+    [EventSubscriber(ObjectType::Table, Database::"Gen. Journal Line", 'OnAfterCreateDim', '', false, false)]
+    local procedure T81_OnAfterCreateDim_GenJournalLine(var GenJournalLine: Record "Gen. Journal Line"; CurrFieldNo: Integer)
+    begin
+        UpdateAllShortDimFromDimSetID(GenJournalLine);
+    end;
+
+    [EventSubscriber(ObjectType::Table, Database::"Gen. Journal Line", 'OnAfterValidateShortcutDimCode', '', false, false)]
+    local procedure T81_OnAfterValidateShortcutDimCode_GenJournalLine(var GenJournalLine: Record "Gen. Journal Line"; var xGenJournalLine: Record "Gen. Journal Line"; FieldNumber: Integer; var ShortcutDimCode: Code[20])
+    begin
+        UpdateAllShortDimFromDimSetID(GenJournalLine);
+    end;
+
+    [EventSubscriber(ObjectType::Table, Database::"Gen. Journal Line", 'OnBeforeShowDimensions', '', false, false)]
+    local procedure T81_OnBeforeShowDimensions__GenJournalLine(var GenJournalLine: Record "Gen. Journal Line"; xGenJournalLine: Record "Gen. Journal Line"; var IsHandled: Boolean)
+    begin
+        UpdateAllShortDimFromDimSetID(GenJournalLine);
+    end;
+
+
+    local procedure UpdateAllShortDimFromDimSetID(var Rec: Record "Gen. Journal Line")
+    var
+        DimMgt: Codeunit "DEL MGTS_FctMgt";
+    begin
+        DimMgt.UpdateAllShortDimFromDimSetID(Rec."Dimension Set ID", Rec."DEL Shortcut Dim 3 Code", Rec."DEL Shortcut Dim 4 Code", Rec."DEL Shortcut Dim 5 Code",
+                                                Rec."DEL Shortcut Dim 6 Code", Rec."DEL Shortcut Dim 7 Code", Rec."DEL Shortcut Dim 8 Code");
+    end;
 }
