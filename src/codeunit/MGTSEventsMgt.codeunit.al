@@ -76,4 +76,39 @@ codeunit 50100 "DEL MGTS_EventsMgt"
     local procedure OnAfterCheckSellToCust(var SalesHeader: Record "Sales Header"; xSalesHeader: Record "Sales Header"; Customer: Record Customer; CurrentFieldNo: Integer)
     begin
     end;
+    ////// tab 97
+    [EventSubscriber(ObjectType::Table, Database::"Comment Line", 'OnAfterSetUpNewLine', '', false, false)]
+
+    local procedure OnAfterSetUpNewLine(var CommentLineRec: Record "Comment Line"; var CommentLineFilter: Record "Comment Line")
+    begin
+        CommentLineRec."DEL User ID" := USERID;
+
+    end;
+
+    //// tab 27 
+
+    [EventSubscriber(ObjectType::Table, database::Item, 'OnBeforeValidateEvent', 'Item Category Code', false, false)]
+    local procedure T27_OnBeforeValidateEvent_Item_ItemCategoryCode(var Rec: Record Item; var xRec: Record Item; CurrFieldNo: Integer)
+    begin
+
+        xRec.TESTFIELD("Item Category Code");
+
+        Rec.ModifCategory(Rec."Item Category Code");
+
+    end;
+    // proc TryGetItemNoOpenCardWithView tab 27
+
+    [EventSubscriber(ObjectType::Table, database::Item, 'OnTryGetItemNoOpenCardWithViewOnBeforeShowCreateItemOption', '', false, false)]
+    local procedure OnTryGetItemNoOpenCardWithViewOnBeforeShowCreateItemOption(var Item: Record Item)
+    var
+        FoundRecordCount: Integer;
+        SelectItemErr: Label 'You must select an existing item.';
+    begin
+
+        IF FoundRecordCount = 0 THEN
+            ERROR(SelectItemErr);
+
+    end;
+    
+
 }

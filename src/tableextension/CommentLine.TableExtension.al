@@ -1,4 +1,4 @@
-tableextension 50048 "DEL CommentLine" extends "Comment Line"
+tableextension 50048 "DEL CommentLine" extends "Comment Line" //97
 {
     fields
     {
@@ -12,25 +12,21 @@ tableextension 50048 "DEL CommentLine" extends "Comment Line"
             Caption = 'User ID';
             DataClassification = CustomerContent;
             TableRelation = User."User Name";
-            trigger OnLookup()
-            var
-                UserMgt: Codeunit "User Management";
-            begin
-                //TODO UserMgt.LookupUserID("User ID");
-            end;
+            //TODO: dans le standard 20 this method is not supported
+            // trigger OnLookup()
+            // var
+            //     UserMgt: Codeunit "User Management";
+            // begin
+            //     UserMgt.LookupUserID("DEL User ID");
+            // end;
         }
     }
-    procedure SetUpNewLine()
-    var
-        CommentLine: Record "Comment Line";
-    begin
-        CommentLine.SETRANGE("Table Name", "Table Name");
-        CommentLine.SETRANGE("No.", "No.");
-        CommentLine.SETRANGE(Date, WORKDATE());
-        IF NOT CommentLine.FINDFIRST() THEN
-            Date := WORKDATE();
+    keys
+    {
+        key(Key2; "Date")
+        {
 
-        "DEL User ID" := USERID;
+        }
+    }
 
-    end;
 }

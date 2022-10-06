@@ -1,8 +1,6 @@
 codeunit 50032 "DEL Update Request Manager"
 {
 
-
-
     trigger OnRun()
     begin
         FNC_Import_All();
@@ -101,7 +99,7 @@ codeunit 50032 "DEL Update Request Manager"
         IF UpdateRequest_Re.GET(Request_ID_Co_Par) THEN
             UpdateRequest_Re.DELETE();
 
-    END
+
     end;
 
 
@@ -299,11 +297,7 @@ codeunit 50032 "DEL Update Request Manager"
         diaProgress[index_Int_Par].CLOSE();
     end;
 
-
-
     procedure FNC_Process_RequestsDeal(updateRequest_Re_Par: Record "DEL Update Request Manager"; deleteWhenUpdated: Boolean; UpdatePlanned_Bo_Par: Boolean; processSilently_Bo_Par: Boolean; NumID: Code[20])
-
-
     var
     begin
 

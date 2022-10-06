@@ -234,9 +234,9 @@ page 50010 "DEL Lignes achat en cours"
                 {
                     Caption = 'Entry Point';
                 }
-                //       TODO  field("Area"; Area)
-                // {
-                // }
+                field("Area"; Rec.Area)
+                {
+                }
                 field("Transaction Specification"; Rec."Transaction Specification")
                 {
                     Caption = 'Transaction Specification';

@@ -1,3 +1,4 @@
+
 page 50034 "DEL Subform Real"
 {
 
@@ -7,7 +8,7 @@ page 50034 "DEL Subform Real"
 
     layout
     {
-        area(content)
+        area(Content)
         {
             repeater(Controle1)
             {
@@ -38,7 +39,7 @@ page 50034 "DEL Subform Real"
                 field(Amount; Rec.Amount)
                 {
                     Caption = 'Amount';
-                    DrillDownPageID = "DEL Position";
+                    DrillDownPageId = "DEL Position";
                 }
                 field("<Currency Code>"; Currency_Code)
                 {
@@ -52,7 +53,7 @@ page 50034 "DEL Subform Real"
                 field("Amount(EUR)"; Rec."Amount(EUR)")
                 {
                     Caption = 'Amount (EUR)';
-                    DrillDownPageID = "DEL Position";
+                    DrillDownPageId = "DEL Position";
                 }
                 field("Date"; Rec.Date)
                 {
@@ -63,7 +64,7 @@ page 50034 "DEL Subform Real"
 
     actions
     {
-        area(processing)
+        area(Processing)
         {
             action(SeeButton)
             {
@@ -84,126 +85,126 @@ page 50034 "DEL Subform Real"
                     postedSalesCrMemoHeader_Re_Loc: Record "Sales Cr.Memo Header";
                 begin
 
-                    CASE Rec.Type OF
+                    case Rec.Type of
                         Rec.Type::"Purchase Invoice":
-                            BEGIN
+                            begin
 
-                                IF purchInvHeader_Re_Loc.GET(Rec."Type No.") THEN BEGIN
+                                if purchInvHeader_Re_Loc.Get(Rec."Type No.") then begin
 
-                                    PAGE.RUN(PAGE::"Posted Purchase Invoice", purchInvHeader_Re_Loc);
-                                    EXIT
-                                END;
+                                    Page.Run(Page::"Posted Purchase Invoice", purchInvHeader_Re_Loc);
+                                    exit
+                                end;
 
-                                MESSAGE('Document non trouvé..');
+                                Message('Document non trouvé..');
 
-                            END;
+                            end;
 
                         Rec.Type::"Sales Cr. Memo":
-                            BEGIN
+                            begin
 
-                                IF postedSalesCrMemoHeader_Re_Loc.GET(Rec."Type No.") THEN BEGIN
+                                if postedSalesCrMemoHeader_Re_Loc.Get(Rec."Type No.") then begin
 
-                                    PAGE.RUN(PAGE::"Posted Sales Credit Memos", postedSalesCrMemoHeader_Re_Loc);
-                                    EXIT
-                                END;
+                                    Page.Run(Page::"Posted Sales Credit Memos", postedSalesCrMemoHeader_Re_Loc);
+                                    exit
+                                end;
 
-                                MESSAGE('Document non trouvé..');
+                                Message('Document non trouvé..');
 
-                            END;
+                            end;
 
                         Rec.Type::"Purch. Cr. Memo":
-                            BEGIN
+                            begin
 
-                                IF postedPurchCrMemoHeader_Re_Loc.GET(Rec."Type No.") THEN BEGIN
+                                if postedPurchCrMemoHeader_Re_Loc.Get(Rec."Type No.") then begin
 
-                                    PAGE.RUN(PAGE::"Posted Purchase Credit Memo", postedPurchCrMemoHeader_Re_Loc);
-                                    EXIT
-                                END;
+                                    Page.Run(Page::"Posted Purchase Credit Memo", postedPurchCrMemoHeader_Re_Loc);
+                                    exit
+                                end;
 
-                                MESSAGE('Document non trouvé..');
+                                Message('Document non trouvé..');
 
-                            END;
+                            end;
 
                         Rec.Type::"Sales Invoice":
-                            BEGIN
+                            begin
 
-                                IF salesInvHeader_Re_Loc.GET(Rec."Type No.") THEN BEGIN
+                                if salesInvHeader_Re_Loc.Get(Rec."Type No.") then begin
 
-                                    PAGE.RUN(PAGE::"Posted Sales Invoice", salesInvHeader_Re_Loc);
-                                    EXIT
-                                END;
+                                    Page.Run(Page::"Posted Sales Invoice", salesInvHeader_Re_Loc);
+                                    exit
+                                end;
 
-                                MESSAGE('Document non trouvé..');
+                                Message('Document non trouvé..');
 
-                            END;
+                            end;
 
                         Rec.Type::Invoice:
 
-                            IF Rec."Subject Type" = Rec."Subject Type"::Vendor THEN BEGIN
+                            if Rec."Subject Type" = Rec."Subject Type"::Vendor then begin
 
 
-                                vendorLedgerEntry_Re_Loc.RESET();
-                                vendorLedgerEntry_Re_Loc.SETFILTER("Document Type", '%1|%2|%3',
+                                vendorLedgerEntry_Re_Loc.Reset();
+                                vendorLedgerEntry_Re_Loc.SetFilter("Document Type", '%1|%2|%3',
                                   vendorLedgerEntry_Re_Loc."Document Type"::Invoice,
                                   vendorLedgerEntry_Re_Loc."Document Type"::Payment,
                                   vendorLedgerEntry_Re_Loc."Document Type"::"Credit Memo");
-                                vendorLedgerEntry_Re_Loc.SETRANGE("Document No.", Rec."Type No.");
-                                vendorLedgerEntry_Re_Loc.SETRANGE("Vendor No.", Rec."Subject No.");
+                                vendorLedgerEntry_Re_Loc.SetRange("Document No.", Rec."Type No.");
+                                vendorLedgerEntry_Re_Loc.SetRange("Vendor No.", Rec."Subject No.");
 
-                                IF vendorLedgerEntry_Re_Loc.FIND('-') THEN BEGIN
-                                    PAGE.RUN(PAGE::"Vendor Ledger Entries", vendorLedgerEntry_Re_Loc);
-                                    EXIT
-                                END;
+                                if vendorLedgerEntry_Re_Loc.Find('-') then begin
+                                    Page.Run(Page::"Vendor Ledger Entries", vendorLedgerEntry_Re_Loc);
+                                    exit
+                                end;
 
-                            END ELSE
-                                IF Rec."Subject Type" = Rec."Subject Type"::Customer THEN BEGIN
+                            end else
+                                if Rec."Subject Type" = Rec."Subject Type"::Customer then begin
 
-                                    customerLedgerEntry_Re_Loc.RESET();
-                                    customerLedgerEntry_Re_Loc.SETFILTER("Document Type", '%1|%2|%3',
+                                    customerLedgerEntry_Re_Loc.Reset();
+                                    customerLedgerEntry_Re_Loc.SetFilter("Document Type", '%1|%2|%3',
                                       customerLedgerEntry_Re_Loc."Document Type"::Invoice,
                                       customerLedgerEntry_Re_Loc."Document Type"::Payment,
                                       customerLedgerEntry_Re_Loc."Document Type"::"Credit Memo");
-                                    customerLedgerEntry_Re_Loc.SETRANGE("Document No.", Rec."Type No.");
-                                    customerLedgerEntry_Re_Loc.SETRANGE("Customer No.", Rec."Subject No.");
+                                    customerLedgerEntry_Re_Loc.SetRange("Document No.", Rec."Type No.");
+                                    customerLedgerEntry_Re_Loc.SetRange("Customer No.", Rec."Subject No.");
 
-                                    IF customerLedgerEntry_Re_Loc.FIND('-') THEN BEGIN
-                                        PAGE.RUN(PAGE::"Customer Ledger Entries", customerLedgerEntry_Re_Loc);
-                                        EXIT
-                                    END;
+                                    if customerLedgerEntry_Re_Loc.Find('-') then begin
+                                        Page.Run(Page::"Customer Ledger Entries", customerLedgerEntry_Re_Loc);
+                                        exit
+                                    end;
 
-                                END ELSE
-                                    IF Rec."Subject Type" = Rec."Subject Type"::"G/L Account" THEN BEGIN
+                                end else
+                                    if Rec."Subject Type" = Rec."Subject Type"::"G/L Account" then begin
 
 
 
-                                        //TODO Deal_Cu.FNC_Get_ACO(element_Re_Loc, Deal_ID);
-                                        IF element_Re_Loc.FIND('-') THEN BEGIN
+                                        Deal_Cu.FNC_Get_ACO(element_Re_Loc, Rec.Deal_ID);
+                                        if element_Re_Loc.Find('-') then begin
 
-                                            GLEntry_Re_Loc.RESET();
-                                            GLEntry_Re_Loc.SETRANGE("G/L Account No.", Rec."Subject No.");
+                                            GLEntry_Re_Loc.Reset();
+                                            GLEntry_Re_Loc.SetRange("G/L Account No.", Rec."Subject No.");
 
-                                            IF GLEntry_Re_Loc."Document Type" = GLEntry_Re_Loc."Document Type"::Invoice THEN BEGIN
-                                                GLEntry_Re_Loc.SETRANGE("Document Type", GLEntry_Re_Loc."Document Type"::Invoice);
-                                                GLEntry_Re_Loc.SETFILTER(Amount, '<%1', 0);
-                                            END ELSE
-                                                IF GLEntry_Re_Loc."Document Type" = GLEntry_Re_Loc."Document Type"::Payment THEN BEGIN
-                                                    GLEntry_Re_Loc.SETRANGE("Document Type", GLEntry_Re_Loc."Document Type"::Payment);
-                                                    GLEntry_Re_Loc.SETFILTER(Amount, '>%1', 0);
-                                                END;
+                                            if GLEntry_Re_Loc."Document Type" = GLEntry_Re_Loc."Document Type"::Invoice then begin
+                                                GLEntry_Re_Loc.SetRange("Document Type", GLEntry_Re_Loc."Document Type"::Invoice);
+                                                GLEntry_Re_Loc.SetFilter(Amount, '<%1', 0);
+                                            end else
+                                                if GLEntry_Re_Loc."Document Type" = GLEntry_Re_Loc."Document Type"::Payment then begin
+                                                    GLEntry_Re_Loc.SetRange("Document Type", GLEntry_Re_Loc."Document Type"::Payment);
+                                                    GLEntry_Re_Loc.SetFilter(Amount, '>%1', 0);
+                                                end;
 
-                                            GLEntry_Re_Loc.SETRANGE("Document No.", Rec."Type No.");
-                                            GLEntry_Re_Loc.SETFILTER("Global Dimension 1 Code", '%1|%2', '', element_Re_Loc."Type No.");
+                                            GLEntry_Re_Loc.SetRange("Document No.", Rec."Type No.");
+                                            GLEntry_Re_Loc.SetFilter("Global Dimension 1 Code", '%1|%2', '', element_Re_Loc."Type No.");
 
-                                            IF GLEntry_Re_Loc.FIND('-') THEN BEGIN
-                                                PAGE.RUN(PAGE::"General Ledger Entries", GLEntry_Re_Loc);
-                                                EXIT
-                                            END
-                                        END
+                                            if GLEntry_Re_Loc.Find('-') then begin
+                                                Page.Run(Page::"General Ledger Entries", GLEntry_Re_Loc);
+                                                exit
+                                            end
+                                        end
 
-                                    END ELSE
-                                        MESSAGE('Document non trouvé..');
+                                    end else
+                                        Message('Document non trouvé..');
 
-                    END
+                    end
 
                 end;
             }
@@ -217,31 +218,31 @@ page 50034 "DEL Subform Real"
     begin
         FeeDescription_Te := '';
 
-        IF Rec.Fee_ID <> '' THEN
-            //TODOFeeDescription_Te := Fee_Cu.FNC_Get_Description(Rec.Fee_ID);
+        if Rec.Fee_ID <> '' then
+            FeeDescription_Te := Fee_Cu.FNC_Get_Description(Rec.Fee_ID);
 
 
         Currency_Code := '';
         Currency_Rate_Dec := 0;
 
-        position_Re_Loc.RESET();
-        position_Re_Loc.SETRANGE(Element_ID, Rec.ID);
-        IF position_Re_Loc.FINDFIRST() THEN BEGIN
+        position_Re_Loc.Reset();
+        position_Re_Loc.SetRange(Element_ID, Rec.ID);
+        if position_Re_Loc.FindFirst() then begin
             Currency_Code := position_Re_Loc.Currency;
             Currency_Rate_Dec := position_Re_Loc.Rate;
-        END
+        end
 
     end;
 
     var
-        // TODO Fee_Cu: Codeunit "50023";
-        // Element_Cu: Codeunit "50021";
+        Fee_Cu: Codeunit "DEL Fee";
+        Element_Cu: Codeunit "DEL Element";
         FeeDescription_Te: Text[250];
         Raw_Amount_Dec: Decimal;
         Currency_Code: Code[10];
         Currency_Rate_Dec: Decimal;
         Amount_Dec: Decimal;
-    //TODO  Deal_Cu: Codeunit 50020;
+        Deal_Cu: Codeunit "DEL Deal";
 
 
     procedure FNC_Get_GL_Amount(Element: Record "DEL Element"): Decimal
@@ -251,16 +252,16 @@ page 50034 "DEL Subform Real"
     begin
 
 
-        //TODO Deal_Cu.FNC_Get_ACO(element_Re_Loc, Element.Deal_ID);
-        IF element_Re_Loc.FINDFIRST() THEN BEGIN
-            GLEntry_Re_Loc.RESET();
-            GLEntry_Re_Loc.SETRANGE("G/L Account No.", Element."Subject No.");
-            GLEntry_Re_Loc.SETRANGE("Document Type", GLEntry_Re_Loc."Document Type"::Invoice);
-            GLEntry_Re_Loc.SETRANGE("Document No.", Element."Type No.");
-            GLEntry_Re_Loc.SETRANGE("Global Dimension 1 Code", element_Re_Loc."Type No.");
-            IF GLEntry_Re_Loc.FINDFIRST() THEN
-                EXIT(GLEntry_Re_Loc.Amount);
-        END;
+        Deal_Cu.FNC_Get_ACO(element_Re_Loc, Element.Deal_ID);
+        if element_Re_Loc.FindFirst() then begin
+            GLEntry_Re_Loc.Reset();
+            GLEntry_Re_Loc.SetRange("G/L Account No.", Element."Subject No.");
+            GLEntry_Re_Loc.SetRange("Document Type", GLEntry_Re_Loc."Document Type"::Invoice);
+            GLEntry_Re_Loc.SetRange("Document No.", Element."Type No.");
+            GLEntry_Re_Loc.SetRange("Global Dimension 1 Code", element_Re_Loc."Type No.");
+            if GLEntry_Re_Loc.FindFirst() then
+                exit(GLEntry_Re_Loc.Amount);
+        end;
     end;
 
 
@@ -273,25 +274,25 @@ page 50034 "DEL Subform Real"
         position_Re_Loc: Record "DEL Position";
     begin
 
-        vendorLedgerEntry_Re_Loc.RESET();
-        vendorLedgerEntry_Re_Loc.SETCURRENTKEY("Document No.", "Document Type", "Vendor No.");
-        vendorLedgerEntry_Re_Loc.SETRANGE("Document No.", Element."Type No.");
-        vendorLedgerEntry_Re_Loc.SETRANGE("Document Type", vendorLedgerEntry_Re_Loc."Document Type"::Invoice);
-        IF vendorLedgerEntry_Re_Loc.FINDFIRST() THEN
-            EXIT(vendorLedgerEntry_Re_Loc."Currency Code");
+        vendorLedgerEntry_Re_Loc.Reset();
+        vendorLedgerEntry_Re_Loc.SetCurrentKey("Document No.", "Document Type", "Vendor No.");
+        vendorLedgerEntry_Re_Loc.SetRange("Document No.", Element."Type No.");
+        vendorLedgerEntry_Re_Loc.SetRange("Document Type", vendorLedgerEntry_Re_Loc."Document Type"::Invoice);
+        if vendorLedgerEntry_Re_Loc.FindFirst() then
+            exit(vendorLedgerEntry_Re_Loc."Currency Code");
 
 
-        customerLedgerEntry_Re_Loc.RESET();
-        customerLedgerEntry_Re_Loc.SETCURRENTKEY("Document No.", "Document Type", "Customer No.");
-        customerLedgerEntry_Re_Loc.SETRANGE("Document No.", Element."Type No.");
-        customerLedgerEntry_Re_Loc.SETRANGE("Document Type", customerLedgerEntry_Re_Loc."Document Type"::Invoice);
-        IF customerLedgerEntry_Re_Loc.FINDFIRST() THEN
-            EXIT(customerLedgerEntry_Re_Loc."Currency Code");
+        customerLedgerEntry_Re_Loc.Reset();
+        customerLedgerEntry_Re_Loc.SetCurrentKey("Document No.", "Document Type", "Customer No.");
+        customerLedgerEntry_Re_Loc.SetRange("Document No.", Element."Type No.");
+        customerLedgerEntry_Re_Loc.SetRange("Document Type", customerLedgerEntry_Re_Loc."Document Type"::Invoice);
+        if customerLedgerEntry_Re_Loc.FindFirst() then
+            exit(customerLedgerEntry_Re_Loc."Currency Code");
 
-        position_Re_Loc.RESET();
-        position_Re_Loc.SETRANGE(Element_ID, Rec.ID);
-        IF position_Re_Loc.FINDFIRST() THEN
-            EXIT(position_Re_Loc.Currency)
+        position_Re_Loc.Reset();
+        position_Re_Loc.SetRange(Element_ID, Rec.ID);
+        if position_Re_Loc.FindFirst() then
+            exit(position_Re_Loc.Currency)
     end;
 
 
@@ -304,25 +305,25 @@ page 50034 "DEL Subform Real"
         position_Re_Loc: Record "DEL Position";
     begin
 
-        vendorLedgerEntry_Re_Loc.RESET();
-        vendorLedgerEntry_Re_Loc.SETCURRENTKEY("Document No.", "Document Type", "Vendor No.");
-        vendorLedgerEntry_Re_Loc.SETRANGE("Document No.", Element."Type No.");
-        vendorLedgerEntry_Re_Loc.SETRANGE("Document Type", vendorLedgerEntry_Re_Loc."Document Type"::Invoice);
-        IF vendorLedgerEntry_Re_Loc.FINDFIRST() THEN
-            EXIT(vendorLedgerEntry_Re_Loc."Adjusted Currency Factor");
+        vendorLedgerEntry_Re_Loc.Reset();
+        vendorLedgerEntry_Re_Loc.SetCurrentKey("Document No.", "Document Type", "Vendor No.");
+        vendorLedgerEntry_Re_Loc.SetRange("Document No.", Element."Type No.");
+        vendorLedgerEntry_Re_Loc.SetRange("Document Type", vendorLedgerEntry_Re_Loc."Document Type"::Invoice);
+        if vendorLedgerEntry_Re_Loc.FindFirst() then
+            exit(vendorLedgerEntry_Re_Loc."Adjusted Currency Factor");
 
 
-        customerLedgerEntry_Re_Loc.RESET();
-        customerLedgerEntry_Re_Loc.SETCURRENTKEY("Document No.", "Document Type", "Customer No.");
-        customerLedgerEntry_Re_Loc.SETRANGE("Document No.", Element."Type No.");
-        customerLedgerEntry_Re_Loc.SETRANGE("Document Type", customerLedgerEntry_Re_Loc."Document Type"::Invoice);
-        IF customerLedgerEntry_Re_Loc.FINDFIRST() THEN
-            EXIT(customerLedgerEntry_Re_Loc."Adjusted Currency Factor");
+        customerLedgerEntry_Re_Loc.Reset();
+        customerLedgerEntry_Re_Loc.SetCurrentKey("Document No.", "Document Type", "Customer No.");
+        customerLedgerEntry_Re_Loc.SetRange("Document No.", Element."Type No.");
+        customerLedgerEntry_Re_Loc.SetRange("Document Type", customerLedgerEntry_Re_Loc."Document Type"::Invoice);
+        if customerLedgerEntry_Re_Loc.FindFirst() then
+            exit(customerLedgerEntry_Re_Loc."Adjusted Currency Factor");
 
-        position_Re_Loc.RESET();
-        position_Re_Loc.SETRANGE(Element_ID, Rec.ID);
-        IF position_Re_Loc.FINDFIRST() THEN
-            EXIT(1)
+        position_Re_Loc.Reset();
+        position_Re_Loc.SetRange(Element_ID, Rec.ID);
+        if position_Re_Loc.FindFirst() then
+            exit(1)
     end;
 
 
@@ -330,7 +331,7 @@ page 50034 "DEL Subform Real"
     var
         CurrExchgRate_Re_Loc: Record "Currency Exchange Rate";
     begin
-        EXIT(CurrExchgRate_Re_Loc.ExchangeAmtFCYToFCY(Date, FromCurrencyCode, ToCurrencyCode, Amount))
+        exit(CurrExchgRate_Re_Loc.ExchangeAmtFCYToFCY(Date, FromCurrencyCode, ToCurrencyCode, Amount))
     end;
 
 
@@ -338,12 +339,14 @@ page 50034 "DEL Subform Real"
     var
         CurrExchgRate_Re_Loc: Record "Currency Exchange Rate";
     begin
-        CurrExchgRate_Re_Loc.SETRANGE("Currency Code", ToCurrencyCode);
-        CurrExchgRate_Re_Loc.SETRANGE("Starting Date", 0D, Date);
-        IF CurrExchgRate_Re_Loc.FINDLAST() THEN
-            EXIT(CurrExchgRate_Re_Loc."Relational Exch. Rate Amount")
-        ELSE
-            EXIT(0)
+        CurrExchgRate_Re_Loc.SetRange("Currency Code", ToCurrencyCode);
+        CurrExchgRate_Re_Loc.SetRange("Starting Date", 0D, Date);
+        if CurrExchgRate_Re_Loc.FindLast() then
+            exit(CurrExchgRate_Re_Loc."Relational Exch. Rate Amount")
+        else
+            exit(0)
     end;
 }
+
+#pragma implicitwith restore
 

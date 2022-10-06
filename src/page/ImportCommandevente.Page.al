@@ -47,7 +47,7 @@ page 50002 "DEL Import Commande vente"
         }
         area(factboxes)
         {
-            part(List; "DEL Error Import") //Can it bechanged to a listpart?
+            part(List; "DEL Error Import") //Can it be changed to a listpart?
             {
                 SubPageLink = "Document No." = FIELD("Document No."),
                               "Line No." = FIELD("Line No."),

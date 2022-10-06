@@ -124,30 +124,30 @@ codeunit 50050 "DEL JSON WS : Item Mgt"
         MgtsSetup: Record "DEL General Setup";
         ConfigTemplateHeader: Record "Config. Template Header";
         ConfigTemplateManagement: Codeunit "Config. Template Management";
-=======
 
-    procedure CreateUpdateItem(JsonAsObject: DotNet JObject) ErpItemCode: Code[20]
-    var
-        Item: Record "27";
-        ProductGroup: Record "5723";
-        MatriseGroupArtGroup: Record "50059";
-        JsonMgt: Codeunit "50041";
-        Text0001: Label 'Segment code missing product code %1';
-    begin
-        WITH Item DO BEGIN
-            IF (JsonMgt.GetValueFromJsonObject(JsonAsObject, 'ProductErpCode', 20) = '') THEN BEGIN
-            end;
+    //TODO: dotnet n'existe pas
+    // procedure CreateUpdateItem(JsonAsObject: DotNet JObject) ErpItemCode: Code[20]
+    // var
+    //     Item: Record "27";
+    //     ProductGroup: Record "5723";
+    //     MatriseGroupArtGroup: Record "50059";
+    //     JsonMgt: Codeunit "50041";
+    //     Text0001: Label 'Segment code missing product code %1';
+    // begin
+    //     WITH Item DO BEGIN
+    //         IF (JsonMgt.GetValueFromJsonObject(JsonAsObject, 'ProductErpCode', 20) = '') THEN BEGIN
+    //         end;
     //TODO: triggers are not valid
     // trigger JsonAsArrayGlobal::ListChanged(sender: Variant; e: DotNet ListChangedEventArgs)
     // begin
     // end;
 
-            // trigger JsonAsArrayGlobal::AddingNew(sender: Variant; e: DotNet AddingNewEventArgs)
-            // begin
-            // end;
+    // trigger JsonAsArrayGlobal::AddingNew(sender: Variant; e: DotNet AddingNewEventArgs)
+    // begin
+    // end;
 
-            // trigger JsonAsArrayGlobal::CollectionChanged(sender: Variant; e: DotNet NotifyCollectionChangedEventArgs)
-            // begin
-            // end;
+    // trigger JsonAsArrayGlobal::CollectionChanged(sender: Variant; e: DotNet NotifyCollectionChangedEventArgs)
+    // begin
+    // end;
 }
 

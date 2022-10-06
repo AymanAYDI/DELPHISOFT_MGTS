@@ -119,12 +119,12 @@ page 50083 "DEL M Deal Pur. Cr. Memo Link"
 
     var
         //TODO: until we get codeunits
-        // Element_Cu: Codeunit "50021";
-        // Deal_Cu: Codeunit "50020";
-        // UpdateRequestManager_Cu: Codeunit "50032";
-        // DealShipment_Cu: Codeunit "50029";
-        // ShipmentConnection_Cu: Codeunit "50027";
-        // Position_CU: Codeunit "50022";
+        Element_Cu: Codeunit "DEL Element";
+        Deal_Cu: Codeunit "DEL Deal";
+        UpdateRequestManager_Cu: Codeunit "DEL Update Request Manager";
+        DealShipment_Cu: Codeunit "DEL Deal Shipment";
+        ShipmentConnection_Cu: Codeunit "DEL Deal Shipment Connection";
+        Position_CU: Codeunit "DEL Position";
         Text19022230: Label 'M A N U A L   L I N K I N G';
 
 

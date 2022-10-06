@@ -118,8 +118,8 @@ page 50061 "DEL Correct Purch. Inv Subform"
         Rec.ShowLineComments();
     end;
 
-
-    //TODO procedure ShowDocumentLineTracking()
+    //TODO:"Document Lines Tracking" ne'existe pas
+    // procedure ShowDocumentLineTracking()
     // var
     //     DocumentLineTracking: Page "Document Lines Tracking";
     // begin
