@@ -383,12 +383,6 @@ table 99210 "DEL Ex_Campaign"
         }
     }
 
-    // trigger OnDelete()
-    // var
-    //     SalesPrice: Record "7002";
-    //     SalesLineDisc: Record "7004";
-    // begin
-    // end;
 
     var
         Campaign: Record Campaign;

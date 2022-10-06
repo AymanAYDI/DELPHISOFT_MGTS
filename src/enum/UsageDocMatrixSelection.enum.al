@@ -27,3 +27,4 @@ enum 50036 "DEL Usage DocMatrix Selection"
         Caption = 'C.Statement';
     }
 }
+//,S.Order,S.Invoice,S.Cr.Memo,,,P.Order,P.Invoice,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,Relevé

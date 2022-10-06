@@ -1,17 +1,6 @@
 page 50097 "DEL General regulation Card"
 {
-    // +---------------------------------------------------------------+
-    // | Logico SA                                                     |
-    // | Status:                                                       |
-    // | Customer/Project:                                             |
-    // +---------------------------------------------------------------+
-    // Requirement UserID   Date       Where   Description
-    // -----------------------------------------------------------------
-    // T-00716      THM     27.08.15           Create Object
-    // T-00757      THM     07.01.16           add and modify Field
-    // T-00758      THM     12.01.16           add new field
-    // T-00783      THM     04.04.16           delete Field
-    //              THM     26.08.16           modify captionML
+
 
     Caption = 'General product regulation Card';
     PageType = Card;
@@ -30,12 +19,15 @@ page 50097 "DEL General regulation Card"
                 field(Type; Rec.Type)
                 {
                     Editable = false;
+                    Caption = 'Type';
                 }
                 field("No."; Rec."No.")
                 {
+                    Caption = 'No.';
                 }
                 field("Description pays"; Rec."Description pays")
                 {
+                    Caption = 'Country';
 
                     trigger OnLookup(var Text: Text): Boolean
                     begin
@@ -65,39 +57,50 @@ page 50097 "DEL General regulation Card"
                 }
                 field(Nature; Rec.Nature)
                 {
+                    Caption = 'Type of regulation';
                 }
                 field("Title in French"; Rec."Title in French")
                 {
                     MultiLine = true;
+                    Caption = 'Title in French';
                 }
                 field("Title in English"; Rec."Title in English")
                 {
                     MultiLine = true;
+                    Caption = 'Title in English';
                 }
                 field(Description; Rec.Description)
                 {
                     MultiLine = true;
+                    Caption = 'Description';
                 }
                 field("Starting date"; Rec."Starting date")
                 {
+                    Caption = 'Starting date';
                 }
                 field("Date Fin"; Rec."Date Fin")
                 {
+                    Caption = 'End date';
                 }
                 field("Publication date"; Rec."Publication date")
                 {
+                    Caption = 'Publication date';
                 }
                 field("Date limit of the application"; Rec."Date limit of the application")
                 {
+                    Caption = 'Date limit of the application';
                 }
                 field("Texte rattachement"; Rec."Texte rattachement")
                 {
+                    Caption = 'Text of connection';
                 }
                 field(Statut; Rec.Statut)
                 {
+                    Caption = 'Status';
                 }
                 field("Texte de remplacement"; Rec."Texte de remplacement")
                 {
+                    Caption = 'Text of substitution';
                 }
                 field("Referent Laboratory"; Rec."Referent Laboratory")
                 {
@@ -112,7 +115,7 @@ page 50097 "DEL General regulation Card"
     }
 
     var
-        Pays_Page: Page Pays;
+        Pays_Page: Page "DEL Pays";
         Pays_Rec: Record "DEL Pays";
 }
 

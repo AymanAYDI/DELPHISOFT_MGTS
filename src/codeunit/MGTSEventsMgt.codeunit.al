@@ -147,6 +147,7 @@ codeunit 50100 "DEL MGTS_EventsMgt"
     //     FoundRecordCount: Integer;
     //     SelectItemErr: Label 'You must select an existing item.';
     // begin
+    //TODO: elle n'a aucun sens proc TryGetItemNoOpenCardWithView tab 27
 
     //     IF FoundRecordCount = 0 THEN
     //         ERROR(SelectItemErr);

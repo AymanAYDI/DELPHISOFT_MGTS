@@ -12,11 +12,11 @@ page 50018 "DEL Group Reporting"
         {
             repeater(Control1)
             {
-                field("Reporting Dimension 1 Code"; "Reporting Dimension 1 Code")
+                field("Reporting Dimension 1 Code"; Rec."DEL Reporting Dimension 1 Code")
                 {
                     Editable = false;
                 }
-                field("Reporting Dimension 2 Code"; "Reporting Dimension 2 Code")
+                field("Reporting Dimension 2 Code"; Rec."DEL Reporting Dimension 2 Code")
                 {
                     Editable = false;
                 }
@@ -41,7 +41,7 @@ page 50018 "DEL Group Reporting"
                     Editable = false;
                     Visible = false;
                 }
-                field(CalcBalance; CalcBalance())
+                field("Calc Balance"; CalcBalance())
                 {
                     Caption = 'Balance';
                     Editable = false;
@@ -53,7 +53,7 @@ page 50018 "DEL Group Reporting"
 
                 trigger OnValidate()
                 var
-                    ApplicationManagement: Codeunit 1;
+
                 begin
                     Rec.SETFILTER("Date Filter", DateFilterBalance);
                     UpdateAmount();
@@ -65,7 +65,7 @@ page 50018 "DEL Group Reporting"
 
                 trigger OnValidate()
                 var
-                    ApplicationManagement: Codeunit 1;
+
                 begin
                     Rec.SETFILTER("Date Filter", DateFilterIncome);
                     UpdateAmount();
@@ -85,11 +85,11 @@ page 50018 "DEL Group Reporting"
 
     trigger OnOpenPage()
     var
-        GLAccount: Record 5;
+
     begin
         Rec.SETRANGE("Account Type", Rec."Account Type"::Posting);
-        Rec.SETFILTER("Reporting Dimension 1 Code", '<>%1', '');
-        Rec.SETFILTER("Reporting Dimension 2 Code", '<>%1', '');
+        Rec.SETFILTER("DEL Reporting Dimension 1 Code", '<>%1', '');
+        Rec.SETFILTER("DEL Reporting Dimension 2 Code", '<>%1', '');
         UpdateAmount();
     end;
 
@@ -109,10 +109,9 @@ page 50018 "DEL Group Reporting"
         IF Rec."Income/Balance" = Rec."Income/Balance"::"Income Statement" THEN BEGIN
             IF DateFilterIncome <> '' THEN
                 Rec.SETFILTER("Date Filter", DateFilterIncome)
-        END ELSE BEGIN
+        END ELSE
             IF DateFilterBalance <> '' THEN
-                Rec.SETFILTER("Date Filter", DateFilterBalance)
-        END;
+                Rec.SETFILTER("Date Filter", DateFilterBalance);
 
         Rec.CALCFIELDS("Net Change");
         EXIT(Rec."Net Change");
@@ -121,23 +120,22 @@ page 50018 "DEL Group Reporting"
 
     procedure UpdateAmount()
     var
-        GLAccount: Record 15;
+        GLAccount: Record "G/L Account";
     begin
         TotalAmount := 0;
 
         GLAccount.SETRANGE("Account Type", Rec."Account Type"::Posting);
-        GLAccount.SETFILTER("Reporting Dimension 1 Code", '<>%1', '');
-        GLAccount.SETFILTER("Reporting Dimension 2 Code", '<>%1', '');
+        GLAccount.SETFILTER("DEL Reporting Dimension 1 Code", '<>%1', '');
+        GLAccount.SETFILTER("DEL Reporting Dimension 2 Code", '<>%1', '');
         IF GLAccount.FINDFIRST() THEN
             REPEAT
                 GLAccount.SETRANGE("Date Filter");
                 IF GLAccount."Income/Balance" = GLAccount."Income/Balance"::"Income Statement" THEN BEGIN
                     IF DateFilterIncome <> '' THEN
                         GLAccount.SETFILTER("Date Filter", DateFilterIncome)
-                END ELSE BEGIN
+                END ELSE
                     IF DateFilterBalance <> '' THEN
-                        GLAccount.SETFILTER("Date Filter", DateFilterBalance)
-                END;
+                        GLAccount.SETFILTER("Date Filter", DateFilterBalance);
                 GLAccount.CALCFIELDS("Net Change");
                 TotalAmount := TotalAmount + GLAccount."Net Change";
             UNTIL GLAccount.NEXT() = 0;
@@ -146,16 +144,16 @@ page 50018 "DEL Group Reporting"
 
     procedure PrepareFile()
     var
-        GeneralSetup: Record 50000;
+        GeneralSetup: Record "DEL General Setup";
     begin
         GeneralSetup.GET();
-
-        Filename.TEXTMODE := TRUE;
-        Filename.WRITEMODE := TRUE;
-        Filename.QUERYREPLACE := TRUE;
-        Filename.CREATE(GeneralSetup."Reporting File");
-        WriteData();
-        Filename.CLOSE();
+        //TODO: methods are not used for cloud dev---------------
+        // Filename.TEXTMODE := TRUE;
+        // Filename.WRITEMODE := TRUE;
+        // Filename.QUERYREPLACE := TRUE;
+        // Filename.CREATE(GeneralSetup."Reporting File");
+        // WriteData();
+        // Filename.CLOSE();
 
         MESSAGE(Text000, GeneralSetup."Reporting File");
     end;
@@ -163,26 +161,25 @@ page 50018 "DEL Group Reporting"
 
     procedure WriteData()
     var
-        GLAccount: Record 15;
+        GLAccount: Record "G/L Account";
         ExportData: Text[250];
     begin
         GLAccount.SETRANGE("Account Type", Rec."Account Type"::Posting);
-        GLAccount.SETFILTER("Reporting Dimension 1 Code", '<>%1', '');
-        GLAccount.SETFILTER("Reporting Dimension 2 Code", '<>%1', '');
+        GLAccount.SETFILTER("DEL Reporting Dimension 1 Code", '<>%1', '');
+        GLAccount.SETFILTER("DEL Reporting Dimension 2 Code", '<>%1', '');
         IF GLAccount.FINDFIRST() THEN
             REPEAT
                 GLAccount.SETRANGE("Date Filter");
                 IF GLAccount."Income/Balance" = GLAccount."Income/Balance"::"Income Statement" THEN BEGIN
                     IF DateFilterIncome <> '' THEN
                         GLAccount.SETFILTER("Date Filter", DateFilterIncome)
-                END ELSE BEGIN
+                END ELSE
                     IF DateFilterBalance <> '' THEN
-                        GLAccount.SETFILTER("Date Filter", DateFilterBalance)
-                END;
+                        GLAccount.SETFILTER("Date Filter", DateFilterBalance);
                 GLAccount.CALCFIELDS("Net Change");
-                ExportData := GLAccount."Reporting Dimension 1 Code" + '$' + GLAccount."Reporting Dimension 2 Code" + '$' + GLAccount."No." + '$' +
+                ExportData := GLAccount."DEL Reporting Dimension 1 Code" + '$' + GLAccount."DEL Reporting Dimension 2 Code" + '$' + GLAccount."No." + '$' +
                               GLAccount."No. 2" + '$' + GLAccount.Name + '$' + FORMAT(GLAccount."Income/Balance") + '$' + FORMAT(GLAccount."Net Change");
-                Filename.WRITE(ExportData);
+            //TODO Filename.WRITE(ExportData);
             UNTIL GLAccount.NEXT() = 0;
     end;
 }

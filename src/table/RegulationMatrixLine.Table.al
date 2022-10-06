@@ -380,7 +380,7 @@ table 50051 "DEL Regulation Matrix Line"
             Caption = 'Description';
             Description = 'Plan Of control';
             FieldClass = FlowField;
-            //TODO TableRelation = "Description Plan of control".Description;
+            TableRelation = "DEL Desc Plan of control".Description;
         }
 
         field(68; "Title in English"; Text[250])

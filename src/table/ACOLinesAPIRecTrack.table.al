@@ -18,7 +18,7 @@ table 50075 "DEL ACO Lines API Rec. Track."
         {
             Caption = 'ACO Line No.';
         }
-        field(4; "ACO Line Type"; Enum "DEL ACO Line Type")
+        field(4; "ACO Line Type"; Enum "Purchase Line Type")
         {
             Caption = 'ACO Line Type';
         }

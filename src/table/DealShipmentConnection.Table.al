@@ -1,7 +1,7 @@
 table 50032 "DEL Deal Shipment Connection"
 {
     Caption = 'DEL Deal Shipment Connection';
-    //TODO LookupPageID = 50042;
+    LookupPageID = "DEL Deal Shipment connection";
 
     fields
     {

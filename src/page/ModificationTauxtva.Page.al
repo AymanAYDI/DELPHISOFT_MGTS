@@ -32,10 +32,7 @@ page 50084 "DEL Modification Taux tva"
 
                 trigger OnAction()
                 begin
-                    // begin  T-00559   THM
-                    //IF  (Taux = 0) THEN
-                    //  ERROR('le champs Client et Taux doivent être renseigné');
-                    // end T-00559 THM
+                   
 
                     SalesLine2.SETRANGE("Document Type", SalesLine2."Document Type"::Order);
                     SalesLine2.SETRANGE("Document No.", Rec."No.");

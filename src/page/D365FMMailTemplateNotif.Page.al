@@ -1,9 +1,6 @@
 page 50146 "D365FM Mail Template Notif."
 {
-    // +--------------------------------------------------------------------+
-    // | D365FM14.00.00.11      | 30.11.21 | Job Queue Notification
-    // |                                      Create Page
-    // +--------------------------------------------------------------------+
+
 
     Caption = 'D365FM Mail Template Notif.';
     PageType = List;
@@ -19,18 +16,23 @@ page 50146 "D365FM Mail Template Notif."
             {
                 field("Parameter String"; Rec."Parameter String")
                 {
+                    Caption = 'Paramètre';
                 }
                 field("Template mail"; Rec."Template mail")
                 {
+                    Caption = 'Template';
                 }
                 field(Title; Rec.Title)
                 {
+                    Caption = 'Objet';
                 }
                 field("Sender Address"; Rec."Sender Address")
                 {
+                    Caption = 'Emetteur email';
                 }
                 field(Cci; Rec.Cci)
                 {
+                    Caption = 'Cci';
                 }
             }
         }

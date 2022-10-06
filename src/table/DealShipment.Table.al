@@ -3,7 +3,7 @@ table 50030 "DEL Deal Shipment"
     Caption = 'DEL Deal Shipment';
 
 
-    //TODO LookupPageID = 50040;
+    LookupPageID = "DEL Deal Ship. Sele.";
 
     fields
     {
@@ -27,7 +27,7 @@ table 50030 "DEL Deal Shipment"
             Caption = 'Deal_ID';
         }
 
-        field(20; Date; Date)
+        field(20; "Date"; Date)
 
         {
             Caption = 'Date';

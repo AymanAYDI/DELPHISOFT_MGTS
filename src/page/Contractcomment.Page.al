@@ -14,9 +14,11 @@ page 50119 "DEL Contract comment"
                 field("Line No."; Rec."Line No.")
                 {
                     Editable = false;
+                    Caption = 'Line No.';
                 }
                 field(Comment; Rec.Comment)
                 {
+                    Caption = 'Comment';
                 }
             }
         }

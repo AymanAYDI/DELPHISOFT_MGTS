@@ -12,14 +12,14 @@ page 50137 "DEL DocMatrix Selection Card"
                 Visible = boPostVisible;
                 field(Post; Rec.Post)
                 {
-                    //TODO CODEUNIT 
-                    // trigger OnValidate()
-                    // var
-                    // lcuDocMatrixMgt: Codeunit "50015";
-                    // begin
-                    //     lcuDocMatrixMgt.UpdateDocMatrixSelection("No.", "Process Type", 1, Rec, Post = Post::" ");
-                    //     CurrPage.UPDATE(TRUE);
-                    // end;
+
+                    trigger OnValidate()
+                    var
+                        lcuDocMatrixMgt: Codeunit "DEL DocMatrix Management";
+                    begin
+                        lcuDocMatrixMgt.UpdateDocMatrixSelection(REC."No.", "Process Type", 1, Rec, REC.Post = REC.Post::" ");
+                        CurrPage.UPDATE(TRUE);
+                    end;
                 }
             }
             group(Document)

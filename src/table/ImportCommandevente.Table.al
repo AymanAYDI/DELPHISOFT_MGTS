@@ -35,24 +35,13 @@ table 50002 "DEL Import Commande vente"
         {
             Caption = 'Quantity';
 
-            trigger OnValidate()
-            var
-                ItemLedgEntry: Record "Item Ledger Entry";
-            begin
-            end;
+
         }
         field(7; "Unit Price"; Text[100])
         {
             Caption = 'Unit Price';
 
-            trigger OnValidate()
-            var
 
-                ACOConnection_Re_Loc: Record "DEL ACO Connection";
-            //TODO DealItem_Cu: Codeunit "50024";
-            // Deal_Cu: Codeunit "50020";
-            begin
-            end;
         }
         field(8; Amount; Text[100])
         {

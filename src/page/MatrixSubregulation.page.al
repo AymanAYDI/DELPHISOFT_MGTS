@@ -199,7 +199,7 @@ page 50091 "DEL Matrix Sub. regulation"
     var
         Reglementation: Record "DEL Regulation";
         RegulationMatrixLine: Record "DEL Regulation Matrix Line";
-        RegMat: Page "Substance regulation 2";
+        RegMat: Page "DEL Substance regulation 2";
 
 
         ProductCode: Code[20];

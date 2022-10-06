@@ -52,53 +52,40 @@ page 50083 "DEL M Deal Pur. Cr. Memo Link"
 
                     trigger OnAction()
                     var
-                        element_Re_Loc: Record "DEL Element";
-                        element_ID_Loc: Code[20];
-                        dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
-                        salesInvLine_Re_Loc: Record "Sales Invoice Line";
-                        salesInvHeader_Re_Loc: Record "Sales Invoice Header";
-                        last: Code[20];
-                        shipmentID_Co_Loc: Code[20];
-                        salesInvID_Co_Loc: Code[20];
+                        ACOElement_Re_Loc: Record "DEL Element";
+                        urm_Re_Loc: Record "DEL Update Request Manager";
                         PurchCrMemoHeader_Re_Loc: Record "Purch. Cr. Memo Hdr.";
                         add_Variant_Op_Loc: Option New,Existing;
                         requestID_Co_Loc: Code[20];
-                        urm_Re_Loc: Record "DEL Update Request Manager";
-                        ACOElement_Re_Loc: Record "DEL Element";
+
+
                     begin
 
 
-                        IF "Shipment Selection" = '' THEN
+                        IF Rec."Shipment Selection" = '' THEN
                             ERROR('Veuillez sélectionner au moins 1 livraison !')
                         ELSE BEGIN
 
-                            //changer la référence sur l'ACO dans l'entete de la note de crédit (champ code achat) et sur les lignes
-                            Deal_Cu.FNC_Get_ACO(ACOElement_Re_Loc, "Shipment Selection");
+
+                            Deal_Cu.FNC_Get_ACO(ACOElement_Re_Loc, Rec."Shipment Selection");
                             ChangeCodeAchat_FNC();
 
-                            //Créer un élément Note de crédit achat pour la nouvelle affaire
-                            PurchCrMemoHeader_Re_Loc.GET("Purch Cr. Memo No.");
+                            PurchCrMemoHeader_Re_Loc.GET(Rec."Purch Cr. Memo No.");
 
                             Element_Cu.FNC_Add_Purch_Cr_Memo(
-                               "Deal ID",
+                               Rec."Deal ID",
                                PurchCrMemoHeader_Re_Loc,
-                               "Shipment Selection",
+                               Rec."Shipment Selection",
                                add_Variant_Op_Loc::New);
 
-                            Position_CU.FNC_Add_PurchCrMemo_Position("Deal ID", FALSE);
+                            Position_CU.FNC_Add_PurchCrMemo_Position(Rec."Deal ID", FALSE);
 
-                            //mettre l'affaire à jour
                             requestID_Co_Loc := UpdateRequestManager_Cu.FNC_Add_Request(
-                              "Deal ID",
+                              Rec."Deal ID",
                               urm_Re_Loc.Requested_By_Type::"Purch. Cr. Memo",
-                              "Purch Cr. Memo No.",
+                              Rec."Purch Cr. Memo No.",
                               CURRENTDATETIME
                             );
-
-
-
-                            // urm_Re_Loc.GET(requestID_Co_Loc);
-                            // UpdateRequestManager_Cu.FNC_Process_Requests(urm_Re_Loc,FALSE,TRUE);
 
                             Rec.DELETE();
 
@@ -111,14 +98,14 @@ page 50083 "DEL M Deal Pur. Cr. Memo Link"
 
     trigger OnOpenPage()
     begin
-        DELETEALL();
-        FILTERGROUP(3);
-        SETFILTER("User ID Filter", USERID);
-        FILTERGROUP(0);
+        Rec.DELETEALL();
+        Rec.FILTERGROUP(3);
+        Rec.SETFILTER("User ID Filter", USERID);
+        Rec.FILTERGROUP(0);
     end;
 
     var
-        //TODO: until we get codeunits
+
         Element_Cu: Codeunit "DEL Element";
         Deal_Cu: Codeunit "DEL Deal";
         UpdateRequestManager_Cu: Codeunit "DEL Update Request Manager";
@@ -130,30 +117,31 @@ page 50083 "DEL M Deal Pur. Cr. Memo Link"
 
     procedure ChangeCodeAchat_FNC()
     var
-        DealShipment_Rec_Loc: Record "DEL Deal Shipment";
+
         PurchCreditMemoHeader_Re_Loc: Record "Purch. Cr. Memo Hdr.";
         PurchCreditMemoLine_Re_Loc: Record "Purch. Cr. Memo Line";
-        //PostedLine_Re_Loc: Record 359;
+        //---j'ai changé le record 359 par le record 480 => à vérifier---//
+        // PostedLine_Re_Loc: Record 359;
         PostedLine_Re_Loc: Record "Dimension Set Entry";
         ACOConnection_Rec_Loc: Record "DEL ACO Connection";
         NewCodeAchatNo_Co_Par: Code[20];
 
     begin
 
-        ACOConnection_Rec_Loc.SETRANGE(Deal_ID, "Deal ID");
+        ACOConnection_Rec_Loc.SETRANGE(Deal_ID, Rec."Deal ID");
         IF ACOConnection_Rec_Loc.FINDFIRST() THEN
             NewCodeAchatNo_Co_Par := ACOConnection_Rec_Loc."ACO No.";
 
 
 
 
-        IF PurchCreditMemoHeader_Re_Loc.GET("Purch Cr. Memo No.") THEN BEGIN
+        IF PurchCreditMemoHeader_Re_Loc.GET(Rec."Purch Cr. Memo No.") THEN BEGIN
             PurchCreditMemoHeader_Re_Loc."Shortcut Dimension 1 Code" := NewCodeAchatNo_Co_Par;
             PurchCreditMemoHeader_Re_Loc.MODIFY();
         END;
 
         PurchCreditMemoLine_Re_Loc.RESET();
-        PurchCreditMemoLine_Re_Loc.SETRANGE("Document No.", "Purch Cr. Memo No.");
+        PurchCreditMemoLine_Re_Loc.SETRANGE("Document No.", Rec."Purch Cr. Memo No.");
         IF PurchCreditMemoLine_Re_Loc.FINDFIRST() THEN
             REPEAT
                 PurchCreditMemoLine_Re_Loc."Shortcut Dimension 1 Code" := NewCodeAchatNo_Co_Par;
@@ -161,7 +149,8 @@ page 50083 "DEL M Deal Pur. Cr. Memo Link"
             UNTIL PurchCreditMemoLine_Re_Loc.NEXT() = 0;
 
         PostedLine_Re_Loc.RESET();
-        //à voir PostedLine_Re_Loc.SETFILTER("Table ID", '%1|%2', 124, 125);
+        //à voir: j'ai changé "table id" par "dimension set id" 
+        //PostedLine_Re_Loc.SETFILTER("Table ID", '%1|%2', 124, 125);
         PostedLine_Re_Loc.SETFILTER("Dimension Set ID", '%1|%2', 124, 125);
         //TODO PostedLine_Re_Loc.SETRANGE("Document No.", "Purch Cr. Memo No.");
         PostedLine_Re_Loc.SETRANGE("Dimension Code", 'ACHAT');

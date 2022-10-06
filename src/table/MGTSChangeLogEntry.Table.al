@@ -30,7 +30,7 @@ table 50076 "DEL MGTS Change Log Entry"
             var
                 UserMgt: Codeunit 418;
             begin
-                //  TODO // UserMgt.LookupUserID("User ID");
+                //  TODO // UserMgt.LookupUserID("User ID"); IS NOT SUPPORTED IN V20
             end;
         }
         field(5; "Table No."; Integer)

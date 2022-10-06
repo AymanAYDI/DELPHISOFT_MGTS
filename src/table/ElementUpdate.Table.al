@@ -1,7 +1,7 @@
 table 50041 "DEL Element Update"
 {
     Caption = 'DEL Element Update';
-    //TODO  LookupPageID = 50021;
+    LookupPageID = "DEL Element";
 
     fields
     {
