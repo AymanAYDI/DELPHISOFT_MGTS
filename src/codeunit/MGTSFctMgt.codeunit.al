@@ -34,4 +34,5 @@ codeunit 50101 "DEL MGTS_FctMgt"
                 ShortDimVal8 := DimSetEntry."Dimension Value Code";
     End;
 
+
 }

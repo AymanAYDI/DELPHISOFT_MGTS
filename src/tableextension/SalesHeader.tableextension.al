@@ -14,228 +14,29 @@ tableextension 50026 "DEL SalesHeader" extends "Sales Header"
         // }
 
 
-        //Unsupported feature: Code Modification on ""Sell-to Customer No."(Field 2).OnValidate".
 
-        //trigger "(Field 2)()
-        //Parameters and return type have not been exported.
-        //>>>> ORIGINAL CODE:
-        //begin
-        /*
-        CheckCreditLimitIfLineNotInsertedYet;
-        IF "No." = '' THEN
-          InitRecord;
-        #4..105
+        //TODO //unsupprted   modifs On lookup 
+        // modify("Customer Price Group")
+        // {
+        //     trigger OnAfterValidate()
 
-        IF NOT SkipSellToContact THEN
-          UpdateSellToCont("Sell-to Customer No.");
-        */
-        //end;
-        //>>>> MODIFIED CODE:
-        //begin
-        /*
-        #1..108
-        //MIG2017
-        // LOCO/ChC/T-00551-SPEC35 -
-        "Fiscal Repr." := Cust."Fiscal Repr.";
-        // LOCO/ChC/T-00551-SPEC35 +
-        //MIG2017
-        */
-        //end;
+        //     begin
+        //         CustPriceGroup.RESET();
+        //         IF PAGE.RUNMODAL(0, CustPriceGroup) = ACTION::LookupOK THEN
+        //             IF "Customer Price Group" = '' THEN
+        //                 "Customer Price Group" := CustPriceGroup.Code
+        //             ELSE
+        //                 "Customer Price Group" := STRSUBSTNO(Text50000, "Customer Price Group", CustPriceGroup.Code);
+        //     end;
 
+        // }
 
-        //Unsupported feature: Code Modification on ""Bill-to Customer No."(Field 4).OnValidate".
-
-        //trigger "(Field 4)()
-        //Parameters and return type have not been exported.
-        //>>>> ORIGINAL CODE:
-        //begin
-        /*
-        TESTFIELD(Status,Status::Open);
-        BilltoCustomerNoChanged := xRec."Bill-to Customer No." <> "Bill-to Customer No.";
-        IF BilltoCustomerNoChanged THEN
-        #4..21
-          END;
-
-        GetCust("Bill-to Customer No.");
-        Cust.CheckBlockedCustOnDocs(Cust,"Document Type",FALSE,FALSE);
-        Cust.TESTFIELD("Customer Posting Group");
-        CheckCrLimit;
-        #28..93
-
-        "Bill-to IC Partner Code" := Cust."IC Partner Code";
-        "Send IC Document" := ("Bill-to IC Partner Code" <> '') AND ("IC Direction" = "IC Direction"::Outgoing);
-        */
-        //end;
-        //>>>> MODIFIED CODE:
-        //begin
-        /*
-        #1..24
-        //>>MGTS10.029
-        IF (Cust."Fiscal Repr." <> '') THEN
-          "Fiscal Repr." := Cust."Fiscal Repr.";
-        //<<MGTS10.029
-
-        #25..96
-        */
-        //end;
-
-
-        //Unsupported feature: Code Modification on ""Ship-to Code"(Field 12).OnValidate".
-
-        //trigger OnValidate()
-        //Parameters and return type have not been exported.
-        //>>>> ORIGINAL CODE:
-        //begin
-        /*
-        IF ("Document Type" = "Document Type"::Order) AND
-           (xRec."Ship-to Code" <> "Ship-to Code")
-        THEN BEGIN
-        #4..53
-              "Shipping Agent Service Code" := Cust."Shipping Agent Service Code";
-            END;
-
-        GetShippingTime(FIELDNO("Ship-to Code"));
-
-        IF (xRec."Sell-to Customer No." = "Sell-to Customer No.") AND
-        #60..70
-            IF xRec."Tax Liable" <> "Tax Liable" THEN
-              VALIDATE("Tax Liable");
-          END;
-        */
-        //end;
-        //>>>> MODIFIED CODE:
-        //begin
-        /*
-        #1..56
-        //MGTS10.014; 005; mhh; begin
-        SalesLine.RESET;
-        SalesLine.SETRANGE("Document Type",SalesLine."Document Type"::Order);
-        SalesLine.SETRANGE("Document No.","No.");
-        IF SalesLine.FINDSET THEN
-          REPEAT
-            SalesLine."Ship-to Code" := "Ship-to Code";
-            SalesLine."Ship-to Name" := "Ship-to Name";
-            SalesLine.MODIFY;
-          UNTIL SalesLine.NEXT = 0;
-        //MGTS10.014; 005; mhh; end
-
-        #57..73
-        */
-        //end;
-
-
-        //Unsupported feature: Code Modification on ""Posting Date"(Field 20).OnValidate".
-
-        //trigger OnValidate()
-        //Parameters and return type have not been exported.
-        //>>>> ORIGINAL CODE:
-        //begin
-        /*
-        TestNoSeriesDate(
-          "Posting No.","Posting No. Series",
-          FIELDCAPTION("Posting No."),FIELDCAPTION("Posting No. Series"));
-        #4..16
-          PriceMessageIfSalesLinesExist(FIELDCAPTION("Posting Date"));
-
-        IF "Currency Code" <> '' THEN BEGIN
-          UpdateCurrencyFactor;
-          IF "Currency Factor" <> xRec."Currency Factor" THEN
-            ConfirmUpdateCurrencyFactor;
-        #23..25
-          IF DeferralHeadersExist THEN
-            ConfirmUpdateDeferralDate;
-        SynchronizeAsmHeader;
-        */
-        //end;
-        //>>>> MODIFIED CODE:
-        //begin
-        /*
-        #1..19
-          //THM12.12.17
-          HideValidationDialog:=TRUE;
-          //END THM121217
-        #20..28
-        */
-        //end;
-
-
-        //Unsupported feature: Code Insertion on ""Customer Price Group"(Field 34)".
-
-        //trigger OnLookup(var Text: Text): Boolean
-        //begin
-        /*
-
-          //MGTS0124; MHH; begin
-          CustPriceGroup.RESET;
-          IF PAGE.RUNMODAL(0, CustPriceGroup) = ACTION::LookupOK THEN BEGIN
-            IF "Customer Price Group" = '' THEN
-              "Customer Price Group" := CustPriceGroup.Code
-            ELSE
-              "Customer Price Group" := STRSUBSTNO(Text50000, "Customer Price Group", CustPriceGroup.Code);
-          END;
-          //MGTS0124; MHH; end
-        */
-        //end;
 
         //Unsupported feature: Property Deletion (TableRelation) on ""Customer Price Group"(Field 34)".
 
 
 
-        //Unsupported feature: Code Modification on ""Campaign No."(Field 5050).OnValidate".
 
-        //trigger "(Field 5050)()
-        //Parameters and return type have not been exported.
-        //>>>> ORIGINAL CODE:
-        //begin
-        /*
-        CreateDim(
-          DATABASE::Campaign,"Campaign No.",
-          DATABASE::Customer,"Bill-to Customer No.",
-          DATABASE::"Salesperson/Purchaser","Salesperson Code",
-          DATABASE::"Responsibility Center","Responsibility Center",
-          DATABASE::"Customer Template","Bill-to Customer Template Code");
-        */
-        //end;
-        //>>>> MODIFIED CODE:
-        //begin
-        /*
-        #1..6
-        //MIG2017
-        // LOCO/ChC/T-00551-SPEC40 -
-        IF "Campaign No." <> xRec."Campaign No." THEN
-          UpdateSalesLines(FIELDCAPTION("Campaign No."),CurrFieldNo<>0);
-        // LOCO/ChC/T-00551-SPEC40 +
-        //MIG2017
-        */
-        //end;
-
-
-        //Unsupported feature: Code Modification on ""Requested Delivery Date"(Field 5790).OnValidate".
-
-        //trigger OnValidate()
-        //Parameters and return type have not been exported.
-        //>>>> ORIGINAL CODE:
-        //begin
-        /*
-        TESTFIELD(Status,Status::Open);
-        IF "Promised Delivery Date" <> 0D THEN
-          ERROR(
-        #4..6
-
-        IF "Requested Delivery Date" <> xRec."Requested Delivery Date" THEN
-          UpdateSalesLines(FIELDCAPTION("Requested Delivery Date"),CurrFieldNo <> 0);
-        */
-        //end;
-        //>>>> MODIFIED CODE:
-        //begin
-        /*
-        #1..9
-        //DEL.SAZ 21.06.19
-        //IF "Estimated Delivery Date"
-          VALIDATE("Estimated Delivery Date","Requested Delivery Date");
-        //END DEL.SAZ
-        */
-        //end;
         field(50000; "DEL Fiscal Repr."; Code[10])
         {
             Caption = 'Fiscal Repr.';
