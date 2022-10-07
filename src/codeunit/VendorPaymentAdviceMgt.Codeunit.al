@@ -161,7 +161,7 @@ codeunit 50057 "DEL Vendor Payment Advice Mgt."
         IF NOT DocMatrixEmailCodes.Body.HASVALUE THEN
             EXIT('');
         CR := '<p>';
-        //   TempBlob.Blob := DocMatrixEmailCodes.Body;
+        //   TempBlob.Blob := DocMatrixEmailCodes.Body; => code source
         //    EXIT(TempBlob.ReadAsText(CR, TEXTENCODING::UTF8));
         TempBlob.FromRecord(DocMatrixEmailCodes, DocMatrixEmailCodes.FieldNo(Body));
         TempBlob.CreateInStream(InStream, TEXTENCODING::UTF8);
