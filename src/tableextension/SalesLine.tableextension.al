@@ -64,11 +64,9 @@ tableextension 50027 "DEL SalesLine" extends "Sales Line"
         GeneralSetup: Record "DEL General Setup";
         element_Re_Loc: Record "DEL Element";
         ACOConnection_Re_Loc: Record "DEL ACO Connection";
-        //TODO
-        // DealItem_Cu: Codeunit "50024";
-        // Deal_Cu: Codeunit "50020";
-        // UpdateRequestManager_Cu: Codeunit "50032";
-
+        DealItem_Cu: Codeunit "DEL Deal Item";
+        Deal_Cu: Codeunit "DEL Deal";
+        UpdateRequestManager_Cu: Codeunit "DEL Update Request Manager";
         requestID_Co_Loc: Code[20];
         ArchQte: Label 'Voulez vous archivé l''ancienne quantité';
         Text50000: Label '%1|%2';

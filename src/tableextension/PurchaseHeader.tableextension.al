@@ -4,7 +4,6 @@ tableextension 50028 "DEL PurchaseHeader" extends "Purchase Header"
 
     {
 
-
         field(50000; "DEL Ship Per"; enum "DEL Ship Per")
         {
 
@@ -107,7 +106,7 @@ tableextension 50028 "DEL PurchaseHeader" extends "Purchase Header"
     }
 
 
-    //Unsupported feature: Code Insertion (VariableCollection) on "OnDelete".
+    //Unsupported feature: Code Insertion (VariableCollection) on "OnDelete". TODO: yes
 
     //trigger (Variable: NTO_DocDim)()
     //Parameters and return type have not been exported.
@@ -117,7 +116,7 @@ tableextension 50028 "DEL PurchaseHeader" extends "Purchase Header"
     //end;
 
 
-    //Unsupported feature: Code Modification on "OnDelete".
+    //Unsupported feature: Code Modification on "OnDelete".  
 
     //trigger OnDelete()
     //>>>> ORIGINAL CODE:
@@ -151,7 +150,7 @@ tableextension 50028 "DEL PurchaseHeader" extends "Purchase Header"
     //end;
 
 
-    //Unsupported feature: Code Modification on "OnInsert".
+    //Unsupported feature: Code Modification on "OnInsert". TODO: yes
 
     //trigger OnInsert()
     //>>>> ORIGINAL CODE:

@@ -95,10 +95,10 @@ tableextension 50044 "DEL GenJournalLine" extends "Gen. Journal Line"
         {
             trigger OnAfterValidate()
             var
-                DimMgt: Codeunit DimensionManagement;
+                DimMgt: Codeunit "DEL MGTS_FctMgt";
             begin
-                // DimMgt.UpdateAllShortDimFromDimSetID("Dimension Set ID", "DEL Shortcut Dim 3 Code", "DEL Shortcut Dim 4 Code", "DEL Shortcut Dim 5 Code",
-                //                                         "DEL Shortcut Dim 6 Code", "DEL Shortcut Dim 7 Code", "DEL Shortcut Dim 8 Code"); TODO: ajouter la fonction "UpdateAllShortDimFromDimSetID" dalns la codeunit 408 DimensionManagement
+                DimMgt.UpdateAllShortDimFromDimSetID("Dimension Set ID", "DEL Shortcut Dim 3 Code", "DEL Shortcut Dim 4 Code", "DEL Shortcut Dim 5 Code",
+                                                        "DEL Shortcut Dim 6 Code", "DEL Shortcut Dim 7 Code", "DEL Shortcut Dim 8 Code");
             end;
         }
 

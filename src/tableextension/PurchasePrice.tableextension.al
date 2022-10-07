@@ -17,7 +17,7 @@ tableextension 50041 "DEL PurchasePrice" extends "Purchase Price"
     keys
     {
 
-        //Unsupported feature: Deletion (KeyCollection) on ""Item No.,Vendor No.,Starting Date,Currency Code,Variant Code,Unit of Measure Code,Minimum Quantity"(Key)".
+        //Unsupported feature: Deletion (KeyCollection) on ""Item No.,Vendor No.,Starting Date,Currency Code,Variant Code,Unit of Measure Code,Minimum Quantity"(Key)". TODO:
 
         // key(Key3; "Item No.", "Vendor No.", "Starting Date", "Currency Code", "Variant Code", "Unit of Measure Code", "Minimum Quantity", "Qty. optimale")
         // {
@@ -25,7 +25,7 @@ tableextension 50041 "DEL PurchasePrice" extends "Purchase Price"
         // }
         key(Key4; "Item No.", "Starting Date", "Ending Date")
         {
-            // SumIndexFields = "DEL Qty. optimale"; TODO;
+            // SumIndexFields = "DEL Qty. optimale"; TODO:
         }
         key(Key5; "DEL Entry No.")
         {

@@ -4,7 +4,7 @@ tableextension 50040 "DEL SalesPrice" extends "Sales Price"
     {
 
 
-        //Unsupported feature: Code Modification on ""Item No."(Field 1).OnValidate".
+        //Unsupported feature: Code Modification on ""Item No."(Field 1).OnValidate". TODO: yes
 
         //trigger "(Field 1)()
         //Parameters and return type have not been exported.

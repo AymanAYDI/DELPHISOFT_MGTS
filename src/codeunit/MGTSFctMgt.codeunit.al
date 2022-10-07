@@ -34,4 +34,14 @@ codeunit 50101 "DEL MGTS_FctMgt"
                 ShortDimVal8 := DimSetEntry."Dimension Value Code";
     End;
 
+    procedure HasItemChargeAssignment(PurchaseHeader: Record "Purchase Header"): Boolean
+    var
+        ItemChargeAssgntPurch: Record "Item Charge Assignment (Purch)";
+    begin
+        ItemChargeAssgntPurch.SetRange("Document Type", PurchaseHeader."Document Type");
+        ItemChargeAssgntPurch.SetRange("Document No.", PurchaseHeader."No.");
+        ItemChargeAssgntPurch.SetFilter("Amount to Assign", '<>%1', 0);
+        exit(not ItemChargeAssgntPurch.IsEmpty);
+    end;
+
 }
