@@ -103,8 +103,8 @@ table 50071 "DEL DocMatrix Selection"
                     IF NOT "Save PDF" THEN BEGIN
                         "Save PDF" := TRUE;
                         IF "E-Mail From" = '' THEN
-                            //  "E-Mail From" := CheckEmailFromAddress();
-                            "E-Mail From" := CopyStr(CheckEmailFromAddress(), 1, MaxStrLen("E-Mail From"));
+                            "E-Mail From" := CheckEmailFromAddress();
+
                     END;
             end;
         }
@@ -119,7 +119,7 @@ table 50071 "DEL DocMatrix Selection"
                     IF NOT "Save PDF" THEN BEGIN
                         "Save PDF" := TRUE;
                         IF "E-Mail From" = '' THEN
-                            "E-Mail From" := CopyStr(CheckEmailFromAddress(), 1, MaxStrLen("E-Mail From"));
+                            "E-Mail From" := CheckEmailFromAddress;
                     END;
             end;
         }
@@ -139,11 +139,7 @@ table 50071 "DEL DocMatrix Selection"
             Caption = 'Save PDF';
             DataClassification = ToBeClassified;
 
-            trigger OnValidate()
-            begin
-                //TODO IF SavePDFmandatory AND ("Save PDF" = FALSE) AND (xRec."Save PDF" = TRUE) THEN
-                ERROR(Err002);
-            end;
+
         }
         field(40; "Print PDF"; Boolean)
         {

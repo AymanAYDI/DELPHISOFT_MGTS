@@ -3,7 +3,7 @@ table 50050 "DEL Regulation Matrix"
 {
 
     Caption = 'Regulation Matrix';
-    // TODO // LookupPageID = 50085;
+    LookupPageID = "DEL Regulation Matrix";
 
 
     fields

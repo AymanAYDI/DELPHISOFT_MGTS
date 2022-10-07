@@ -21,9 +21,9 @@ table 50067 "DEL Document Matrix"
 
             trigger OnValidate()
             begin
-                //TODO //codeunit 50015
-                // Name := DocumentMatrixMgt.GetCustVendName(Type, "No.");
-                //"Mail Text Langauge Code" := DocumentMatrixMgt.GetCustVendLanguageCode(Type, "No.");
+                // TODO codeunit 50015
+                //TODO Name := DocumentMatrixMgt.GetCustVendName(Type, "No.");
+                // "Mail Text Langauge Code" := DocumentMatrixMgt.GetCustVendLanguageCode(Type, "No.");
             end;
         }
         field(3; "Process Type"; Enum "DEL Process Type")
@@ -69,7 +69,7 @@ table 50067 "DEL Document Matrix"
             trigger OnValidate()
             begin
                 CheckSetup();
-                //TODO VALIDATE("Report ID", DocumentMatrixMgt.GetReportIDWithUsage(Usage));
+                VALIDATE("Report ID", DocumentMatrixMgt.GetReportIDWithUsage(Usage));
                 IF Usage = Usage::"C.Statement" THEN BEGIN
                     "Process Type" := "Process Type"::Automatic;
                     "Save PDF" := TRUE;
@@ -259,7 +259,7 @@ table 50067 "DEL Document Matrix"
 
     var
         DocumentMatrixSetup: Record "DEL DocMatrix Setup";
-        //TODO DocumentMatrixMgt: Codeunit "DocMatrix Management";
+        DocumentMatrixMgt: Codeunit "DEL DocMatrix Management";
 
         Err001: Label 'Please enter the Document Matrix Setup first.';
         Err002: Label 'You can not desactivate "Save PDF" if EMail or FTP is active, or if "Process Type" is "Automatic".';

@@ -363,7 +363,7 @@ page 50030 "DEL Deal Mainboard"
                     realElement_Re_Loc.RESET();
                     realElement_Re_Loc.SETCURRENTKEY(Deal_ID, Type);
                     realElement_Re_Loc.SETRANGE(Deal_ID, Rec.ID);
-                    realElement_Re_Loc.SETRANGE(Type, realElement_Re_Loc.Type::Invoice); /
+                    realElement_Re_Loc.SETRANGE(Type, realElement_Re_Loc.Type::Invoice);
                     realElement_Re_Loc.SETRANGE(Fee_ID, plannedElement_Re_Loc.Fee_ID);
                     realElement_Re_Loc.SETRANGE(Fee_Connection_ID, plannedElement_Re_Loc.Fee_Connection_ID);
 
@@ -480,7 +480,7 @@ page 50030 "DEL Deal Mainboard"
 
                             IF NOT PositionSummary_Re_Temp.GET(position_Re_Loc."Deal Item No.") THEN BEGIN
 
-                                /
+
 
                                 PositionSummary_Re_Temp.INIT();
 
@@ -550,18 +550,11 @@ page 50030 "DEL Deal Mainboard"
 
                     CurrPage.PositionDetails.PAGE.SetTempRecord(PositionSummary_Re_Temp);
 
-    end;
+   
+        end;
+        end;
 
-
-
-
-
-
-
-
-
-
-    trigger OnInit()
+ trigger OnInit()
     begin
 
         FNC_InitVars();

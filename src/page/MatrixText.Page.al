@@ -83,7 +83,7 @@ page 50114 "DEL Matrix Text"
     procedure EditText()
     var
         RecRef: RecordRef;
-        //TODO: codeunit is still not imported yet  TextEdit: Codeunit "50010";
+        TextEdit: Codeunit "Export Mail Prod Nouv Et Suiv";
         Text00001: Label 'Edit Document Text';
     begin
 

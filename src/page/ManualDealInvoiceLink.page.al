@@ -1,19 +1,7 @@
-#pragma implicitwith disable
-page 50080 "Manual Deal Invoice Linking"
+
+page 50080 "DEL Manual Deal Invoice Link."
 {
-    // +-------------------------------------------------------------------------------+
-    // | Logico SA - Logiciels & Conseils                                              |
-    // | Stand: 02.03.09                                                               |
-    // |                                                                               |
-    // +-------------------------------------------------------------------------------+
-    // 
-    // ID     Version     Story-Card    Date       Description
-    // ---------------------------------------------------------------------------------
-    // CHG01                            02.03.09   created page
-    // CHG02                            06.04.09   adapté l'appel de fonction de création de l'affaire
-    // CHG03                            06.04.09   added requestUpdateManagement handling
-    // CHG04                            22.07.10   Ajouté code pour supprimer les éléments existants associés à une facture qu'on veut
-    //                                             répartir à nouveau.
+
 
     Caption = 'Manual Deal Invoice Linking';
     PageType = Card;
@@ -25,6 +13,7 @@ page 50080 "Manual Deal Invoice Linking"
         {
             field("Entry No."; Rec."Entry No.")
             {
+                Caption = 'Entry No.';
 
                 trigger OnValidate()
                 begin
@@ -34,13 +23,16 @@ page 50080 "Manual Deal Invoice Linking"
             field("Document No."; Rec."Document No.")
             {
                 Editable = false;
+                Caption = 'Document No.';
             }
             field("Account No."; Rec."Account No.")
             {
                 Editable = false;
+                Caption = 'Account No.';
             }
             field("Shipment Selection"; Rec."Shipment Selection")
             {
+                Caption = 'Shipment Selection';
 
                 trigger OnDrillDown()
                 begin
@@ -88,8 +80,7 @@ page 50080 "Manual Deal Invoice Linking"
                         IF Rec."Shipment Selection" = 0 THEN
                             ERROR('Veuillez sélectionner au moins 1 livraison !');
 
-                        //START CHG04
-                        //On supprime les Elements existants associés à la facture qu'on veut répartir à nouveau
+
                         element_Re_Loc.RESET();
                         element_Re_Loc.SETCURRENTKEY("Entry No.", ID);
                         element_Re_Loc.SETRANGE("Entry No.", Rec."Entry No.");
@@ -97,21 +88,16 @@ page 50080 "Manual Deal Invoice Linking"
                             REPEAT
                                 Element_Cu.FNC_Delete_Element(element_Re_Loc.ID);
                             UNTIL (element_Re_Loc.NEXT() = 0);
-                        //STOP CHG04
+
 
                         nextEntry := '';
                         element_ID_Co_Loc := '';
                         i := 1;
                         CLEAR(myTab);
-                        /*
-                        SPLITTINDEX INFORMATION :
-                        Si une facture est liée à 3 livraisons, 3 éléments de type "Invoice" sont créés.
-                        Splitt Index indique le numéro de la facture partielle de l'élément et est utilisé pour définir la proportion du montant
-                        lors de la création des positions.
-                        */
+
                         splittIndex := 1;
 
-                        //On cherche quelles livraisons ont été sélectionnées pour la facture
+
                         dealShipmentSelection_Re_Loc.RESET();
                         dealShipmentSelection_Re_Loc.SETRANGE(USER_ID, USERID);
                         dealShipmentSelection_Re_Loc.SETRANGE("Account Entry No.", Rec."Entry No.");
@@ -119,18 +105,16 @@ page 50080 "Manual Deal Invoice Linking"
                         IF dealShipmentSelection_Re_Loc.FIND('-') THEN
                             REPEAT
 
-                                //on ajoute la facture à l'affaire
                                 element_ID_Co_Loc := Element_Cu.FNC_Add_New_Invoice(dealShipmentSelection_Re_Loc, splittIndex);
                                 splittIndex += 1;
 
-                                //ajouter une shipment connection
                                 IF element_ID_Co_Loc <> '' THEN
                                     Element_Cu.FNC_Add_New_Invoice_Connection(element_ID_Co_Loc, dealShipmentSelection_Re_Loc, ConnectionType_Op_Par::Shipment,
                               0)
                                 ELSE
                                     ERROR('element id vide !');
 
-                                //ajouter les elements connections
+
                                 elementConnectionSplitIndex := 1;
                                 dss_Re_Loc.RESET();
                                 dss_Re_Loc.SETRANGE(USER_ID, USERID);
@@ -142,25 +126,23 @@ page 50080 "Manual Deal Invoice Linking"
                                         Element_Cu.FNC_Add_New_Invoice_Connection(
                                           element_ID_Co_Loc, dss_Re_Loc, ConnectionType_Op_Par::Element, elementConnectionSplitIndex);
                                         elementConnectionSplitIndex += 1;
-                                    //MESSAGE('insert invoice connection ok');
+
 
                                     UNTIL (dss_Re_Loc.NEXT() = 0);
 
-                                //si l'élément fait partie d'une nouvelle affaire, on crée une nouvelle update request
+
                                 IF nextEntry <> dealShipmentSelection_Re_Loc.Deal_ID THEN BEGIN
 
                                     myTab[i] := dealShipmentSelection_Re_Loc.Deal_ID;
 
-                                    //START CHG03
+
                                     myUpdateRequests[i] := UpdateRequestManager_Cu.FNC_Add_Request(
                                       dealShipmentSelection_Re_Loc.Deal_ID,
                                       dealShipmentSelection_Re_Loc."Document Type",
                                       dealShipmentSelection_Re_Loc."Document No.",
                                       CURRENTDATETIME
                                     );
-                                    //STOP CHG03
 
-                                    //MESSAGE('update for ' + myTab[i]);
                                     i += 1;
                                 END;
 
@@ -168,27 +150,10 @@ page 50080 "Manual Deal Invoice Linking"
 
                             UNTIL (dealShipmentSelection_Re_Loc.NEXT() = 0);
 
-                        //deleteall
+
                         dealShipmentSelection_Re_Loc.DELETEALL();
 
-                        /*
-                        i := 1;
-                        WHILE i <= 100 DO BEGIN
-                        
-                          //START CHG02
-                          IF myTab[i] <> '' THEN
-                            Deal_Cu.FNC_Reinit_Deal(myTab[i],TRUE,FALSE);
-                          //STOP CHG02
-                        
-                          //START CHG03
-                          IF myUpdateRequests[i] <> '' THEN
-                            UpdateRequestManager_Cu.FNC_Validate_Request(myUpdateRequests[i]);
-                          //STOP CHG03
-                        
-                          i += 1;
-                        
-                        END;
-                        */
+
 
                         Rec.DELETE();
 
@@ -207,9 +172,9 @@ page 50080 "Manual Deal Invoice Linking"
     end;
 
     var
-        // Element_Cu: Codeunit "50021";
-        // Deal_Cu: Codeunit "50020";
-        // UpdateRequestManager_Cu: Codeunit "50032"; TODO:
+        Element_Cu: Codeunit "DEL Element";
+        Deal_Cu: Codeunit "DEL Deal";
+        UpdateRequestManager_Cu: Codeunit "DEL Update Request Manager";
         Text19022230: Label 'M A N U A L   L I N K I N G';
 
 
@@ -220,11 +185,7 @@ page 50080 "Manual Deal Invoice Linking"
         dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
         dealShipmentSelection_page_Loc: Page "DEL Deal Shipment Selection";
     begin
-        /*_
-        1. On recherche des sélections ont été générées pour cette ligne de facture achat et si oui -> on les supprime
-        2. On génère des sélections pour cette ligne de facture. On crée une ligne par livraison pour toutes les affaire non terminées
-           -> Plus il y a d'affaires non terminées, plus le nombre de ligne est grand. Attention aux perpageances !
-        _*/
+
 
         IF Rec."Entry No." = 0 THEN
             ERROR('Choisir un document !');
@@ -234,7 +195,7 @@ page 50080 "Manual Deal Invoice Linking"
         dealShipmentSelection_Re_Loc.SETRANGE(dealShipmentSelection_Re_Loc.USER_ID, USERID);
         dealShipmentSelection_Re_Loc.DELETEALL();
 
-        //Lister les deal, puis les livraisons qui y sont rattachées
+
         deal_Re_Loc.RESET();
         deal_Re_Loc.SETFILTER(Status, '<>%1', deal_Re_Loc.Status::Closed);
         IF deal_Re_Loc.FINDFIRST() THEN
@@ -253,18 +214,17 @@ page 50080 "Manual Deal Invoice Linking"
                         dealShipmentSelection_Re_Loc."Shipment No." := dealShipment_Re_Loc.ID;
                         dealShipmentSelection_Re_Loc.USER_ID := USERID;
 
-                        //dealShipmentSelection_Re_Loc."BR No."              := DealShipment_Cu.FNC_GetBRNo(dealShipment_Re_Loc.ID);
+
                         dealShipmentSelection_Re_Loc."BR No." := dealShipment_Re_Loc."BR No.";
 
-                        //dealShipmentSelection_Re_Loc."Purchase Invoice No."  := DealShipment_Cu.FNC_GetPurchaseInvoiceNo(dealShipment_Re_Loc.ID);
+
                         dealShipmentSelection_Re_Loc."Purchase Invoice No." := dealShipment_Re_Loc."Purchase Invoice No.";
 
-                        //dealShipmentSelection_Re_Loc."Sales Invoice No."   := DealShipment_Cu.FNC_GetSalesInvoiceNo(dealShipment_Re_Loc.ID);
+
                         dealShipmentSelection_Re_Loc."Sales Invoice No." := dealShipment_Re_Loc."Sales Invoice No.";
 
-                        //START GRC01
+
                         IF ((dealShipmentSelection_Re_Loc."BR No." <> '') OR (dealShipmentSelection_Re_Loc."Purchase Invoice No." <> '')) THEN
-                            //STOP GRC01
                             dealShipmentSelection_Re_Loc.INSERT();
 
                     UNTIL (dealShipment_Re_Loc.NEXT() = 0);
@@ -272,7 +232,7 @@ page 50080 "Manual Deal Invoice Linking"
             UNTIL (deal_Re_Loc.NEXT() = 0);
 
         CLEAR(dealShipmentSelection_page_Loc);
-        //dealShipmentSelection_page_Loc.FNC_SetGenJnlLine(Rec);
+
         dealShipmentSelection_page_Loc.SETTABLEVIEW(dealShipmentSelection_Re_Loc);
         dealShipmentSelection_page_Loc.SETRECORD(dealShipmentSelection_Re_Loc);
 
@@ -290,5 +250,5 @@ page 50080 "Manual Deal Invoice Linking"
     end;
 }
 
-#pragma implicitwith restore
+
 

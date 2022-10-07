@@ -203,7 +203,7 @@ page 50127 "DEL Gen. Ledger Entr. Reverse"
                 Image = Entry;
                 action(Dimensions)
                 {
-                    AccessByPermission = TableData 348 = R;
+                    AccessByPermission = TableData Dimension = R;
                     ApplicationArea = Suite;
                     Caption = 'Dimensions';
                     Image = Dimensions;
@@ -219,7 +219,7 @@ page 50127 "DEL Gen. Ledger Entr. Reverse"
                 }
                 action(GLDimensionOverview)
                 {
-                    AccessByPermission = TableData 348 = R;
+                    AccessByPermission = TableData Dimension = R;
                     ApplicationArea = Suite;
                     Caption = 'G/L Dimension Overview';
                     Image = Dimensions;
@@ -238,7 +238,7 @@ page 50127 "DEL Gen. Ledger Entr. Reverse"
                 }
                 action("Value Entries")
                 {
-                    AccessByPermission = TableData 27 = R;
+                    AccessByPermission = TableData Item = R;
                     ApplicationArea = Basic, Suite;
                     Caption = 'Value Entries';
                     Image = ValueLedger;
@@ -301,7 +301,7 @@ page 50127 "DEL Gen. Ledger Entr. Reverse"
                     }
                     action(SelectIncomingDoc)
                     {
-                        AccessByPermission = TableData 130 = R;
+                        AccessByPermission = TableData "Incoming Document" = R;
                         ApplicationArea = Basic, Suite;
                         Caption = 'Select Incoming Document';
                         Enabled = NOT HasIncomingDocument;
@@ -398,7 +398,7 @@ page 50127 "DEL Gen. Ledger Entr. Reverse"
     procedure SetGLEntry(var GLEntry: Record "G/L Entry")
     begin
 
-        //MGTS10.00.001; 001; mhh; entire function
+
         CurrPage.SETSELECTIONFILTER(GLEntry);
     end;
 }

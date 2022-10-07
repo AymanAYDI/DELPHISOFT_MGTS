@@ -137,8 +137,8 @@ table 50057 "DEL Regulation"
         {
             Caption = 'Test Type';
 
-            //TODO  TableRelation = "Test Type".Description;
-            //ValidateTableRelation = false;
+            TableRelation = "DEL Test Type".Description;
+            ValidateTableRelation = false;
         }
         field(55; Descriptive; Boolean)
         {

@@ -2,7 +2,7 @@ table 50031 "DEL Deal Shipment Selection"
 {
 
     Caption = 'Deal Shipment Selection';
-    //TODO LookupPageID = 50038;
+    LookupPageID = "DEL Deal Shipment Selection";
 
     fields
     {
@@ -60,9 +60,7 @@ table 50031 "DEL Deal Shipment Selection"
 
             trigger OnValidate()
             var
-                dealShipment_Re_Loc: Record "DEL Deal Shipment";
-                purchInvHeader: Record "Purch. Inv. Header";
-                purchRcptHeader: Record "Purch. Rcpt. Header";
+
             begin
             end;
         }

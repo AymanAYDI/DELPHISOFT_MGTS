@@ -12,30 +12,38 @@ page 50037 "DEL Subform Logistic"
             {
                 field(ID; Rec.ID)
                 {
+                    Caption = 'ID';
                 }
                 field(Deal_ID; Rec.Deal_ID)
                 {
                     Visible = false;
+                    Caption = 'Deal_ID';
                 }
                 field("Date"; Rec.Date)
                 {
+                    Caption = 'Date';
                 }
                 field("BR No."; Rec."BR No.")
                 {
                     Editable = false;
+                    Caption = 'BR No.';
                 }
                 field(PI; Rec.PI)
                 {
+                    Caption = 'PI';
                 }
                 field("A facturer"; Rec."A facturer")
                 {
+                    Caption = 'A facturer';
                 }
                 field("Depart shipment"; Rec."Depart shipment")
                 {
+                    Caption = 'Depart shipment';
                 }
                 field("Arrival ship"; Rec."Arrival ship")
                 {
                     Editable = false;
+                    Caption = 'Arrival ship';
                 }
             }
         }
@@ -50,11 +58,11 @@ page 50037 "DEL Subform Logistic"
                 Caption = 'Create';
                 Promoted = true;
                 PromotedCategory = Process;
-                //TODO //   
-                // trigger OnAction()
-                // begin
-                //    DealShipment_Cu.FNC_Insert(Deal_ID_Co, 0D, '');
-                // end;
+
+                trigger OnAction()
+                begin
+                    DealShipment_Cu.FNC_Insert(Deal_ID_Co, 0D, '');
+                end;
             }
             action(Card)
             {
@@ -73,20 +81,21 @@ page 50037 "DEL Subform Logistic"
 
     trigger OnInsertRecord(BelowxRec: Boolean): Boolean
     var
-        deal_Re_Loc: Record "DEL Deal";
+
     begin
-        //TODO
-        //  VALIDATE(ID, DealShipment_Cu.FNC_GetNextShipmentNo(Deal_ID_Co));
+
+        Rec.VALIDATE(ID, DealShipment_Cu.FNC_GetNextShipmentNo(Deal_ID_Co));
         Rec.VALIDATE(Deal_ID, Deal_ID_Co);
         Rec.VALIDATE(Date, TODAY);
     end;
 
     var
+        AlertMgt: Codeunit "DEL Alert and fee copy Mgt";
         Deal_ID_Co: Code[20];
 
-    //Todo codeunit 
-    // AlertMgt: Codeunit 50028;
-    // DealShipment_Cu: Codeunit 50029;
+
+
+        DealShipment_Cu: Codeunit "DEL Deal Shipment";
 
 
     procedure FNC_Set_Deal_ID(Deal_ID_Co_Par: Code[20])
@@ -101,7 +110,7 @@ page 50037 "DEL Subform Logistic"
     begin
         Logistic_Re_Loc.SETRANGE(ID, Rec.ID);
         Logistic_Re_Loc.SETRANGE(Deal_ID, Rec.Deal_ID);
-        //Logistic_Re_Loc.SETRANGE("BR No.","BR No.");
+
 
         IF Logistic_Re_Loc.ISEMPTY THEN BEGIN
             Logistic_Re_Loc.INIT();
@@ -113,14 +122,14 @@ page 50037 "DEL Subform Logistic"
         END;
         Logistic_Re_Loc.SETRANGE(ID, Rec.ID);
         Logistic_Re_Loc.SETRANGE(Deal_ID, Rec.Deal_ID);
-        //Logistic_Re_Loc.SETrange("BR No.","BR No.");
+
         Logistic_Re_Loc.FINDFIRST();
 
         IF Rec."BR No." <> '' THEN BEGIN
             Logistic_Re_Loc."BR No." := Rec."BR No.";
             Logistic_Re_Loc.FNC_PackEstim(Logistic_Re_Loc);
         END;
-        //test ou récup les valeures par défault !
+
         Logistic_Re_Loc.FNC_DateValidate();
         COMMIT();
         Logistic_Re_Loc.RESET();
@@ -130,7 +139,7 @@ page 50037 "DEL Subform Logistic"
         Logistic_Re_Loc.SETRANGE("BR No.", Rec."BR No.");
         Logistic_Re_Loc.FILTERGROUP(0);
 
-        IF PAGE.RUNMODAL(Page::Logistic, Logistic_Re_Loc) = ACTION::LookupOK THEN;
+        IF PAGE.RUNMODAL(Page::"DEL Logistic", Logistic_Re_Loc) = ACTION::LookupOK THEN;
     end;
 }
 

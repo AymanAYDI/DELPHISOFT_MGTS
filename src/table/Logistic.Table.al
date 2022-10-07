@@ -137,15 +137,15 @@ table 50034 "DEL Logistic"
         {
             Caption = 'Certificate N°';
         }
-        field(210; "Shipment mode"; Enum "DEL Shipment mode")
+        field(210; "Shipment mode"; Enum "DEL Ship Per")
         {
 
             Caption = 'Shipment mode';
-            //TODO 
-            // trigger OnValidate()
-            // begin
-            //     FNC_DateValidate;
-            // end;
+
+            trigger OnValidate()
+            begin
+                FNC_DateValidate();
+            end;
         }
         field(220; "B/C client"; Boolean)
         {
@@ -158,20 +158,20 @@ table 50034 "DEL Logistic"
         field(240; "ETD Requested"; Date)
         {
             Caption = 'ETD Requested';
-            //TODO
-            // trigger OnValidate()
-            // begin
-            //     FNC_DateValidate;
-            // end;
+
+            trigger OnValidate()
+            begin
+                FNC_DateValidate();
+            end;
         }
         field(250; "Revised ETD"; Date)
         {
             Caption = 'Revised ETD';
-            //TODO
-            // trigger OnValidate()
-            // begin
-            //     FNC_DateValidate;
-            // end;
+
+            trigger OnValidate()
+            begin
+                FNC_DateValidate();
+            end;
         }
         field(260; "Actual departure date"; Date)
         {
@@ -325,44 +325,37 @@ table 50034 "DEL Logistic"
                 Logistic_Re_Par."Supplier Name" := Vendor_Re.Name;
 
             Logistic_Re_Par."Forwarder Name" := PurchHead_Re."DEL Forwarding Agent Code";
-            Logistic_Re_Par.VALIDATE("Shipment mode", PurchHead_Re."Ship Per");
+            Logistic_Re_Par.VALIDATE("Shipment mode", PurchHead_Re."DEL Ship Per");
             Logistic_Re_Par."ETD Requested" := PurchHead_Re."Requested Receipt Date";
-            //Changer port
+
             Logistic_Re_Par."Arrival port" := PurchHead_Re."Port d'arrivée";
             Logistic_Re_Par."Departure Port" := PurchHead_Re."Port de départ";
             Logistic_Re_Par."Payment Terms Code" := PurchHead_Re."Payment Terms Code";
         END;
 
+        PurchLine_Re.SETRANGE("Document No.", PurchHead_Re."No.");
+        PurchLine_Re.SETFILTER(Quantity, '<>0');
+        IF PurchLine_Re.FIND('-') THEN
+            REPEAT
+                IF (Item_Re.GET(PurchLine_Re."No.")) AND (PurchLine_Re.Type = PurchRcptLine_Re.Type::Item) THEN BEGIN
 
-        // // + Pièce par cartons Total + calcul M3 + poids
-        // PurchLine_Re.SETRANGE("Document No.",PurchHead_Re."No.");
-        // PurchLine_Re.SETFILTER(Quantity,'<>0');
-        // IF PurchLine_Re.FIND('-') THEN REPEAT
-        //   IF (Item_Re.GET(PurchLine_Re."No.")) AND (PurchLine_Re.Type=PurchRcptLine_Re.Type::Item) THEN BEGIN
+                    IF Item_Re."DEL PCB" <> 0 THEN
+                        PackNumber_De_Loc := PackNumber_De_Loc + (PurchLine_Re.Quantity / Item_Re."DEL PCB")
+                    ELSE
+                        PackNumber_De_Loc := PackNumber_De_Loc + PurchLine_Re.Quantity;
 
-        //     IF Item_Re.PCB <> 0 THEN
-        //       PackNumber_De_Loc := PackNumber_De_Loc +(PurchLine_Re.Quantity / Item_Re.PCB)
-        //     ELSE
-        //       PackNumber_De_Loc := PackNumber_De_Loc + PurchLine_Re.Quantity;
-        //       //>>
 
-        // //<<Mgts10.00.05.00
-        //      //IF Item_Re."vol cbm" <> 0 THEN
-        //       //Cubic_De_Loc := Cubic_De_Loc + (Item_Re."vol cbm" * PurchLine_Re.Quantity)
+                    IF Item_Re.GetVolCBM(TRUE) <> 0 THEN
+                        Cubic_De_Loc := Cubic_De_Loc + (Item_Re.GetVolCBM(TRUE) * PurchLine_Re.Quantity)
 
-        //      IF Item_Re.GetVolCBM(TRUE) <> 0 THEN
-        //       Cubic_De_Loc := Cubic_De_Loc + (Item_Re.GetVolCBM(TRUE) * PurchLine_Re.Quantity)
-        //       //<<
-
-        // //<<Mgts10.00.05.00
-        //     ELSE
-        //       Cubic_De_Loc := Cubic_De_Loc + PurchLine_Re.Quantity;
-        //      IF Item_Re."Weight brut" <> 0 THEN
-        //       Weight_De_Loc := Weight_De_Loc + (Item_Re."Weight brut" * PurchLine_Re.Quantity)
-        //     ELSE
-        //       Weight_De_Loc := Weight_De_Loc + PurchLine_Re.Quantity;
-        //     END;
-        // UNTIL PurchLine_Re.NEXT = 0;
+                    ELSE
+                        Cubic_De_Loc := Cubic_De_Loc + PurchLine_Re.Quantity;
+                    IF Item_Re."DEL Weight brut" <> 0 THEN
+                        Weight_De_Loc := Weight_De_Loc + (Item_Re."DEL Weight brut" * PurchLine_Re.Quantity)
+                    ELSE
+                        Weight_De_Loc := Weight_De_Loc + PurchLine_Re.Quantity;
+                END;
+            UNTIL PurchLine_Re.NEXT = 0;
 
 
         IF Logistic_Re_Par."Shipment mode" = Logistic_Re_Par."Shipment mode"::"Sea Vessel" THEN BEGIN
@@ -385,7 +378,7 @@ table 50034 "DEL Logistic"
         Logistic_Re_Par."Estimated Weight" := Weight_De_Loc;
 
 
-        Logistic_Re_Par.VALIDATE(Deal_ID);//grc new
+        Logistic_Re_Par.VALIDATE(Deal_ID);
 
         Logistic_Re_Par.INSERT();
     end;
@@ -422,30 +415,24 @@ table 50034 "DEL Logistic"
             PurchRcptLine_Re.SETFILTER(Quantity, '<>0');
             IF PurchRcptLine_Re.FINDFIRST() THEN
                 REPEAT
-                //TODO // tabext 
-                // IF (Item_Re.GET(PurchRcptLine_Re."No.")) AND (PurchRcptLine_Re.Type = PurchRcptLine_Re.Type::Item) THEN BEGIN
 
-                //     IF Item_Re.PCB <> 0 THEN
-                //         PackNumber_De_Loc := PackNumber_De_Loc + (PurchRcptLine_Re.Quantity / Item_Re.PCB)
-                //     ELSE
-                //         PackNumber_De_Loc := PackNumber_De_Loc + PurchRcptLine_Re.Quantity;
-                //     //>>
+                    IF (Item_Re.GET(PurchRcptLine_Re."No.")) AND (PurchRcptLine_Re.Type = PurchRcptLine_Re.Type::Item) THEN BEGIN
 
-                //     //<<Mgts10.00.05.00
-                //     // IF Item_Re."vol cbm" <> 0 THEN
-                //     //Cubic_De_Loc := Cubic_De_Loc + (Item_Re."vol cbm" * PurchRcptLine_Re.Quantity)
-                //     IF Item_Re.GetVolCBM(TRUE) <> 0 THEN
-                //         Cubic_De_Loc := Cubic_De_Loc + (Item_Re.GetVolCBM(TRUE) * PurchRcptLine_Re.Quantity)
-                //     //<<
+                        IF Item_Re."DEL PCB" <> 0 THEN
+                            PackNumber_De_Loc := PackNumber_De_Loc + (PurchRcptLine_Re.Quantity / Item_Re."DEL PCB")
+                        ELSE
+                            PackNumber_De_Loc := PackNumber_De_Loc + PurchRcptLine_Re.Quantity;
 
-                //     //<<Mgts10.00.05.00
-                //     ELSE
-                //         Cubic_De_Loc := Cubic_De_Loc + PurchRcptLine_Re.Quantity;
-                //     IF Item_Re."Weight brut" <> 0 THEN
-                //         Weight_De_Loc := Weight_De_Loc + (Item_Re."Weight brut" * PurchRcptLine_Re.Quantity)
-                //     ELSE
-                //         Weight_De_Loc := Weight_De_Loc + PurchRcptLine_Re.Quantity;
-                // END;
+                        IF Item_Re.GetVolCBM(TRUE) <> 0 THEN
+                            Cubic_De_Loc := Cubic_De_Loc + (Item_Re.GetVolCBM(TRUE) * PurchRcptLine_Re.Quantity)
+
+                        ELSE
+                            Cubic_De_Loc := Cubic_De_Loc + PurchRcptLine_Re.Quantity;
+                        IF Item_Re."DEL Weight brut" <> 0 THEN
+                            Weight_De_Loc := Weight_De_Loc + (Item_Re."DEL Weight brut" * PurchRcptLine_Re.Quantity)
+                        ELSE
+                            Weight_De_Loc := Weight_De_Loc + PurchRcptLine_Re.Quantity;
+                    END;
                 UNTIL PurchRcptLine_Re.NEXT() = 0;
 
         END;

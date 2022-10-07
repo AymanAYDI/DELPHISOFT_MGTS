@@ -16,13 +16,16 @@ page 50043 "DEL Position Detail"
                 field(ID; Rec.ID)
                 {
                     Visible = false;
+                    Caption = 'ID';
                 }
                 field(Type; Rec.Type)
                 {
+                    Caption = 'Type';
                 }
                 field("Type No."; Rec."Type No.")
                 {
                     Visible = "Type No.Visible";
+                    Caption = 'Type No.';
                 }
                 field(Fee_ID; Rec.Fee_ID)
                 {

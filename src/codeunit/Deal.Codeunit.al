@@ -11,7 +11,7 @@ codeunit 50020 "DEL Deal"
         Fee_Cu: Codeunit "DEL Fee";
         NoSeriesMgt_Cu: Codeunit NoSeriesManagement;
 
-        DealShipment_Cu: Codeunit "Deal Shipment";
+        DealShipment_Cu: Codeunit "DEL Deal Shipment";
         ERROR_TXT: Label 'ERREUR\Source : %1\Function : %2\Reason : %3';
         Setup: Record "DEL General Setup";
         DealItem_Cu: Codeunit "DEL Deal Item";

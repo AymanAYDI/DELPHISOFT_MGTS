@@ -89,8 +89,8 @@ page 50104 "DEL Gen. product regulation 2"
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
-                RunObject = Page "General regulation Card";
-                //TODO  // RunPageLink = "No." = FIELD("No."),Type = FIELD(Type);
+                RunObject = Page "DEL General regulation Card";
+                RunPageLink = "No." = FIELD("No."), Type = FIELD(Type);
                 RunPageMode = View;
             }
         }

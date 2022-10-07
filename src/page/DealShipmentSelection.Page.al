@@ -17,36 +17,44 @@ page 50038 "DEL Deal Shipment Selection"
                 {
                     Editable = false;
                     Visible = false;
+                    Caption = 'Document Type';
                 }
                 field("Document No."; Rec."Document No.")
                 {
                     Editable = false;
                     Visible = false;
+                    Caption = 'Document No.';
                 }
                 field(Deal_ID; Rec.Deal_ID)
                 {
                     Editable = false;
+                    Caption = 'Deal_ID';
                 }
                 field("Shipment No."; Rec."Shipment No.")
                 {
                     Editable = false;
+                    Caption = 'Shipment No.';
                 }
                 field("BR No."; Rec."BR No.")
                 {
                     Editable = false;
+                    Caption = 'BR No.';
                 }
                 field("Purchase Invoice No."; Rec."Purchase Invoice No.")
                 {
                     Editable = false;
+                    Caption = 'Purchase Invoice No.';
                 }
                 field("Sales Invoice No."; Rec."Sales Invoice No.")
                 {
                     Editable = false;
+                    Caption = 'Sales Invoice No.';
                 }
                 field("Fee Connection"; Rec."Fee Connection")
                 {
                     Enabled = false;
                     Visible = false;
+                    Caption = 'Fee Connection';
 
                     trigger OnLookup(var Text: Text): Boolean
                     begin
@@ -56,35 +64,33 @@ page 50038 "DEL Deal Shipment Selection"
                 field("Connected Fee Description"; Rec."Connected Fee Description")
                 {
                     Editable = false;
+                    Caption = 'Connected Fee Description';
                 }
                 field(Checked; Rec.Checked)
                 {
+                    Caption = 'Checked';
 
                     trigger OnValidate()
                     var
                         FeeConnectionID_Co_Loc: Code[20];
                         ErrorMsg_Te_Loc: Text[250];
                     begin
-                        //if field "checked" changes from true to false
+
                         IF xRec.Checked AND NOT Rec.Checked THEN BEGIN
 
-                            //reset fee connection field
                             Rec."Fee Connection" := '';
                             Rec."Connected Fee Description" := '';
 
-                            //if field "checked" changes from false to true
                         END ELSE BEGIN
 
                             IF ((Rec."Document Type" = Rec."Document Type"::Invoice) OR (Rec."Document Type" = Rec."Document Type"::Payment)) THEN
-
-                                //find the fee connection for a deal according to an account no
                                 IF FindFeeConnection_FNC(FeeConnectionID_Co_Loc, FeeDescription_Te, ErrorMsg_Te_Loc) THEN BEGIN
                                     Rec."Fee Connection" := FeeConnectionID_Co_Loc;
                                     Rec."Connected Fee Description" := FeeDescription_Te;
                                 END ELSE
                                     ERROR(ErrorMsg_Te_Loc);
 
-                            //should never happend cause an error is thrown if fee connection can't be found..
+
                             IF Rec."Fee Connection" = '' THEN BEGIN
                                 Rec.Checked := FALSE;
                                 Rec.MODIFY();
@@ -108,7 +114,7 @@ page 50038 "DEL Deal Shipment Selection"
     var
         dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
     begin
-        //on supprime tous les deal shipment selection qui sont pas flagée et qui ont été créé par l'user id actuel
+
         dealShipmentSelection_Re_Loc.RESET();
         dealShipmentSelection_Re_Loc.SETRANGE(Checked, FALSE);
         dealShipmentSelection_Re_Loc.SETRANGE(USER_ID, USERID);
@@ -130,7 +136,7 @@ page 50038 "DEL Deal Shipment Selection"
     procedure FNC_OpenedBy(openerType_Op_Par: Option Invoice,"Purchase Header","Sales Header"; openerNo_Co_Par: Code[20])
     begin
         openerType_Op := openerType_Op_Par;
-        OpenerNo_Co := openerNo_Co_Par;
+
     end;
 
 
@@ -142,11 +148,9 @@ page 50038 "DEL Deal Shipment Selection"
 
     procedure FNC_FeeConnectionLookup()
     var
-        feeConnection_Re_Loc: Record "DEL Fee Connection";
-        genJournalLine_Re_Loc: Record "Gen. Journal Line";
-        fee_Re_Loc: Record "DEL Fee";
+
         element_Re_Loc: Record "DEL Element";
-        feeConnection_page_Loc: Page "Fee Connection";
+
         element_page_Loc: Page "DEL Element";
     begin
         element_Re_Loc.RESET();

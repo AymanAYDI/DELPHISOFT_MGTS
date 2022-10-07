@@ -12,21 +12,27 @@ page 50021 "DEL Element"
             {
                 field(ID; Rec.ID)
                 {
+                    Caption = 'ID';
                 }
                 field(Deal_ID; Rec.Deal_ID)
                 {
+                    Caption = 'Deal_ID';
                 }
                 field(Instance; Rec.Instance)
                 {
+                    Caption = 'Instance';
                 }
                 field(Type; Rec.Type)
                 {
+                    Caption = 'Type';
                 }
                 field("Type No."; Rec."Type No.")
                 {
+                    Caption = 'Type No.';
                 }
                 field(Fee_ID; Rec.Fee_ID)
                 {
+                    Caption = 'Fee_ID';
                 }
                 //TODO
                 // field(Fee_Cu.FNC_Get_Description(Fee_ID);
@@ -35,15 +41,19 @@ page 50021 "DEL Element"
                 // }
                 field(Fee_Connection_ID; Rec.Fee_Connection_ID)
                 {
+                    Caption = 'Fee_Connection_ID';
                 }
                 field("Subject Type"; Rec."Subject Type")
                 {
+                    Caption = 'Subject Type';
                 }
                 field("Subject No."; Rec."Subject No.")
                 {
+                    Caption = 'Subject No.';
                 }
                 field("Date"; Rec.Date)
                 {
+                    Caption = 'Date';
                 }
             }
         }
@@ -54,8 +64,8 @@ page 50021 "DEL Element"
     }
 
     var
-    //TODO CodeUnit 
-    // Element_Cu: Codeunit "50021";
-    // Fee_Cu: Codeunit "50023";
+
+        Element_Cu: Codeunit "DEL Element";
+        Fee_Cu: Codeunit "DEL Fee";
 }
 

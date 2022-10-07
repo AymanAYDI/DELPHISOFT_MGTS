@@ -44,4 +44,5 @@ codeunit 50101 "DEL MGTS_FctMgt"
         exit(not ItemChargeAssgntPurch.IsEmpty);
     end;
 
+
 }

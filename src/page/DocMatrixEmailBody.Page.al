@@ -1,6 +1,6 @@
 page 50135 "DEL DocMatrix Email Body"
 {
-    // 20190227/DEL/PD/LOP003 - object created (adapted form P9700 "Email Dialog")
+
 
     Caption = 'Email Text';
     PageType = StandardDialog;
@@ -14,14 +14,17 @@ page 50135 "DEL DocMatrix Email Body"
             field("Code"; Rec.Code)
             {
                 Editable = false;
+                Caption = 'Code';
             }
             field("Language Code"; Rec."Language Code")
             {
                 Editable = false;
+                Caption = 'Language Code';
             }
             field("All Language Codes"; Rec."All Language Codes")
             {
                 Editable = false;
+                Caption = 'All Language Codes';
             }
             group(group)
             {
@@ -68,7 +71,7 @@ page 50135 "DEL DocMatrix Email Body"
 
     trigger OnOpenPage()
     var
-        OrigMailBodyText: Text;
+
     begin
         BodyText := '';
     end;

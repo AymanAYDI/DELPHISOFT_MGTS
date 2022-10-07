@@ -1,6 +1,6 @@
 table 50038 "DEL Purchase Price Worksheet"
 {
-    // NGTS/LOCO/GRC 13.03.09 create table
+
 
     Caption = 'Purchase Price';
     LookupPageID = "Purchase Prices";
@@ -118,7 +118,7 @@ table 50038 "DEL Purchase Price Worksheet"
         PurchPrice: Record "Purchase Price";
     begin
         PurchPrice.SETRANGE("Item No.", "Item No.");
-        //PurchPrice.SETRANGE("Sales Type","Sales Type");
+
         PurchPrice.SETRANGE("Vendor No.", "Vendor No.");
         PurchPrice.SETRANGE("Currency Code", "Currency Code");
         PurchPrice.SETRANGE("Unit of Measure Code", "Unit of Measure Code");
@@ -127,10 +127,7 @@ table 50038 "DEL Purchase Price Worksheet"
         PurchPrice.SETRANGE("Variant Code", "Variant Code");
         IF PurchPrice.FIND('+') THEN BEGIN
             "Direct Unit Cost" := PurchPrice."Direct Unit Cost";
-            //"Price Includes VAT" := PurchPrice."Price Includes VAT";
-            //"Allow Line Disc." := PurchPrice."Allow Line Disc.";
-            //"Allow Invoice Disc." := PurchPrice."Allow Invoice Disc.";
-            //"VAT Bus. Posting Gr. (Price)" := PurchPrice."VAT Bus. Posting Gr. (Price)";
+
             PriceAlreadyExists := PurchPrice."Starting Date" = "Starting Date";
         END ELSE BEGIN
             "Direct Unit Cost" := 0;

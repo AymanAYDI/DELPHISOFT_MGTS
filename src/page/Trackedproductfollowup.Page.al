@@ -18,6 +18,7 @@ page 50012 "DEL Tracked product follow up"
             {
                 field("Buy-from Vendor No."; Rec."Buy-from Vendor No.")
                 {
+                    Caption = 'Buy-from Vendor No.';
                 }
                 field(BuyfromVendorName; BuyfromVendorName)
                 {
@@ -28,18 +29,22 @@ page 50012 "DEL Tracked product follow up"
                 field("Document No."; Rec."Document No.")
                 {
                     Editable = false;
+                    Caption = 'Document No.';
                 }
                 field("No."; Rec."No.")
                 {
                     Editable = false;
+                    Caption = 'No.';
                 }
                 field(Description; Rec.Description)
                 {
                     Editable = false;
+                    Caption = 'Description';
                 }
                 field("Order Date"; Rec."Order Date")
                 {
                     Editable = false;
+                    Caption = 'Order Date';
                 }
                 field("Expected Receipt Date"; Rec."Expected Receipt Date")
                 {
@@ -48,6 +53,7 @@ page 50012 "DEL Tracked product follow up"
                 field(Quantity; Rec.Quantity)
                 {
                     Editable = false;
+                    Caption = 'Quantity';
                 }
                 field("Photo Risk Item Taked"; Rec."DEL Photo Risk Item Taked")
                 {
@@ -111,7 +117,7 @@ page 50012 "DEL Tracked product follow up"
             PurchCode := PurchaseHeader_Rec."Purchaser Code"
         ELSE
             PurchCode := '';
-        //DEL.SAZ 17.09.2018
+
         motif := '';
         IF Item.GET(Rec."No.") THEN
             IF Listedesmotifs.GET(Item."DEL Code motif de suivi") THEN
@@ -120,11 +126,10 @@ page 50012 "DEL Tracked product follow up"
 
     trigger OnOpenPage()
     begin
-        //DEL.SAZ 17.09.2018
-        //afficher dans la liste toutes les commandes pour lesquelles la date de reception prevue + 5 jours < date système
+
         DateRecCalc := CALCDATE('<-5D>', WORKDATE());
         Rec.SETFILTER("Expected Receipt Date", '>%1', DateRecCalc);
-        //END DEL.SAZ 17.09.2018
+
     end;
 
     var

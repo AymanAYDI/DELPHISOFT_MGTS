@@ -43,7 +43,7 @@ tableextension 50027 "DEL SalesLine" extends "Sales Line"
 
 
         }
-        field(50009; "DEL Ship-to Name"; Text[50])
+        field(50009; "DEL Ship-to Name"; Text[100])
         {
             Caption = 'Ship-to Name';
             Description = 'MGTS10.014';

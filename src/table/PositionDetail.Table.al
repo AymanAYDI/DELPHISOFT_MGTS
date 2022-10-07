@@ -10,12 +10,12 @@ table 50033 "DEL Position Detail"
         {
 
             Caption = 'ID';
-            //TODO //Codeunit 
-            // trigger OnValidate()
-            // begin
-            //     IF ID <> '' THEN
-            //         "Line Amount" := Position_Cu.FNC_Get_Amount(ID);
-            // end;
+
+            trigger OnValidate()
+            begin
+                IF ID <> '' THEN
+                    "Line Amount" := Position_Cu.FNC_Get_Amount(ID);
+            end;
         }
         field(2; Deal_ID; Code[20])
         {
@@ -84,9 +84,9 @@ table 50033 "DEL Position Detail"
     {
     }
 
-    //TODO //Codeunit 
-    // var
-    //     Position_Cu: Codeunit "50022";
+
+    var
+        Position_Cu: Codeunit "DEL Position";
 
 }
 

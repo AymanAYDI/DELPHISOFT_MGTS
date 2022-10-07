@@ -1,9 +1,8 @@
 table 50053 "DEL Regulation Matrix Text"
 {
 
-    // TODO 
-    // DrillDownPageID = 50114;
-    // LookupPageID = 50114;
+    DrillDownPageID = "DEL Matrix Text";
+    LookupPageID = "DEL Matrix Text";
     Caption = 'Regulation Matrix Text';
 
     fields

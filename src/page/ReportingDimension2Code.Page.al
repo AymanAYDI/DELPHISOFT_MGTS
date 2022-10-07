@@ -12,9 +12,11 @@ page 50017 "DEL Reporting Dimension 2 Code"
             {
                 field("Code"; Rec.Code)
                 {
+                    Caption = 'Code';
                 }
                 field(Description; Rec.Description)
                 {
+                    Caption = 'Description';
                 }
             }
         }

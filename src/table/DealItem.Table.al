@@ -2,7 +2,7 @@ table 50023 "DEL Deal Item"
 {
     Caption = 'Deal Item';
 
-    //TODO LookupPageID = 50023;
+    LookupPageID = "DEL Deal Item";
 
     fields
     {

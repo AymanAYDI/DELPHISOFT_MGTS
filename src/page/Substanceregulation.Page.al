@@ -3,7 +3,7 @@ page 50102 "DEL Substance regulation"
 
 
     Caption = 'Substance regulation';
-    CardPageID = "Subs. regulation Card";
+    CardPageID = "DEL Subs. regulation Card";
     Editable = false;
     PageType = List;
     SourceTable = "DEL Regulation";

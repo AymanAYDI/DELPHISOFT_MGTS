@@ -5,7 +5,7 @@ page 50126 "DEL GL Entries For Reverse"
     DataCaptionExpression = GetCaption();
     Editable = false;
     PageType = List;
-    Permissions = TableData 17 = rm;
+    Permissions = TableData "G/L Entry" = rm;
     SourceTable = "G/L Entry";
     SourceTableView = SORTING("G/L Account No.", "Posting Date")
                       ORDER(Descending);
@@ -178,7 +178,7 @@ page 50126 "DEL GL Entries For Reverse"
         }
         area(factboxes)
         {
-            part(IncomingDocAttachFactBox; 193)
+            part(IncomingDocAttachFactBox; "Incoming Doc. Attach. FactBox")
             {
                 ApplicationArea = Basic, Suite;
                 ShowFilter = false;
@@ -204,7 +204,7 @@ page 50126 "DEL GL Entries For Reverse"
                 Image = Entry;
                 action(Dimensions)
                 {
-                    AccessByPermission = TableData 348 = R;
+                    AccessByPermission = TableData Dimension = R;
                     ApplicationArea = Suite;
                     Caption = 'Dimensions';
                     Image = Dimensions;
@@ -220,7 +220,7 @@ page 50126 "DEL GL Entries For Reverse"
                 }
                 action(GLDimensionOverview)
                 {
-                    AccessByPermission = TableData 348 = R;
+                    AccessByPermission = TableData Dimension = R;
                     ApplicationArea = Suite;
                     Caption = 'G/L Dimension Overview';
                     Image = Dimensions;
@@ -239,7 +239,7 @@ page 50126 "DEL GL Entries For Reverse"
                 }
                 action("Value Entries")
                 {
-                    AccessByPermission = TableData 27 = R;
+                    AccessByPermission = TableData Item = R;
                     ApplicationArea = Basic, Suite;
                     Caption = 'Value Entries';
                     Image = ValueLedger;
@@ -344,7 +344,7 @@ page 50126 "DEL GL Entries For Reverse"
         GLEntries: Page "DEL Gen. Ledger Entr. Reverse";
     begin
 
-        //MGTS10.00.001; 001; mhh; entire function
+
         IF NOT GLSetup.GET() THEN
             GLSetup.INIT();
 
