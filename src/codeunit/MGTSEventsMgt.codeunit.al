@@ -327,11 +327,12 @@ codeunit 50100 "DEL MGTS_EventsMgt"
     begin
         MGTSFactMgt.OnAfterInsertPostedHeaders(SalesHeader, SalesShipmentHeader, SalesInvoiceHeader, SalesCrMemoHdr, ReceiptHeader);
     end;
+    //TODO:I suppose CommitIsSupressed say if the commit is suppressed (Skipped) during the posting
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnBeforePostSalesDoc', '', false, false)]
     local procedure OnBeforePostSalesDoc(var SalesHeader: Record "Sales Header"; CommitIsSuppressed: Boolean; PreviewMode: Boolean; var HideProgressWindow: Boolean; var IsHandled: Boolean)
     VAR
-
+        SkipCommit: Boolean; //Cdu 80
     begin
 
 
@@ -342,9 +343,50 @@ codeunit 50100 "DEL MGTS_EventsMgt"
 
     end;
 
-
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnAfterPostSalesDoc', '', false, false)]
+    local procedure OnAfterPostSalesDoc(var SalesHeader: Record "Sales Header";
+     var GenJnlPostLine: Codeunit "Gen. Jnl.-Post Line"; SalesShptHdrNo: Code[20];
+      RetRcpHdrNo: Code[20];
+      SalesInvHdrNo: Code[20]; SalesCrMemoHdrNo: Code[20]; CommitIsSuppressed: Boolean;
+      InvtPickPutaway: Boolean; var CustLedgerEntry: Record "Cust. Ledger Entry";
+       WhseShip: Boolean; WhseReceiv: Boolean)
     var
-        SkipCommit: Boolean; //Cdu 80
+        Cust: Record Customer;
+        SalesInvHeader: Record "Sales Invoice Header";
+        MGTSEDIManagement: Codeunit "DEL MGTS EDI Management";
+        Text50050: Label 'Do you want to export the invoice %2 from document No. %1 with EDI', Comment = 'FRA="Voulez-vous exporter la facture %2 du document n° %1 avec EDI?"';
+
+    begin
+
+
+        IF SalesHeader.Invoice THEN BEGIN
+            IF NOT Cust.GET(SalesHeader."Sell-to Customer No.") THEN
+                Cust.INIT();
+
+            IF Cust."DEL EDI" THEN
+                IF CONFIRM(STRSUBSTNO(Text50050, SalesHeader."No.", SalesInvHeader."No.")) THEN BEGIN
+                    SalesHeader."DEL Export With EDI" := TRUE;
+                    MGTSEDIManagement.GenerateSalesInvoiceEDIBuffer(SalesInvHeader."No.", TRUE);
+                END;
+        END;
+
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnCheckAndUpdateOnBeforeCheckPostRestrictions', '', false, false)]
+    local procedure OnCheckAndUpdateOnBeforeCheckPostRestrictions(var SalesHeader: Record "Sales Header"; PreviewMode: Boolean)
+    var
+        SkipCommit: Boolean;
+    begin
+        with SalesHeader do begin
+            IF NOT SkipCommit THEN
+         
+
+
+    end;
+
+
+
+
 
 
 }
