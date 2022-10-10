@@ -380,6 +380,7 @@ codeunit 50100 "DEL MGTS_EventsMgt"
             Confirmed := ConfirmManagement.GetResponseOrDefault(StrSubstNo(ConfirmText, ChangedFieldName), true);
         end;
     end;
+
     ////COD 231
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post", 'OnBeforeCode', '', false, false)]
     local procedure COD231_OnBeforeCode_GenJnlPost(var GenJournalLine: Record "Gen. Journal Line"; var HideDialog: Boolean)
@@ -399,6 +400,32 @@ codeunit 50100 "DEL MGTS_EventsMgt"
         MGTSFactMgt.OnCodeOnAfterGenJnlPostBatchRunfct(GenJnlLine);
     end;
 
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnAfterInsertPostedHeaders', '', false, false)]
+    local procedure OnAfterInsertPostedHeaders_SalesHeader(var SalesHeader: Record "Sales Header"; var SalesShipmentHeader: Record "Sales Shipment Header"; var SalesInvoiceHeader: Record "Sales Invoice Header"; var SalesCrMemoHdr: Record "Sales Cr.Memo Header"; var ReceiptHeader: Record "Return Receipt Header")
+    var
+        MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
+    begin
+        MGTSFactMgt.OnAfterInsertPostedHeaders(SalesHeader, SalesShipmentHeader, SalesInvoiceHeader, SalesCrMemoHdr, ReceiptHeader);
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnBeforePostSalesDoc', '', false, false)]
+    local procedure OnBeforePostSalesDoc(var SalesHeader: Record "Sales Header"; CommitIsSuppressed: Boolean; PreviewMode: Boolean; var HideProgressWindow: Boolean; var IsHandled: Boolean)
+    VAR
+
+    begin
+
+
+        IF SkipCommit THEN BEGIN
+            CLEARALL();
+            SkipCommit := TRUE;
+        END;
+
+    end;
+
+
+    var
+        SkipCommit: Boolean; //Cdu 80
 
 
 }
