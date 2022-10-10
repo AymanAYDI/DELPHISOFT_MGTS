@@ -119,11 +119,77 @@ codeunit 50100 "DEL MGTS_EventsMgt"
         DimMgt.UpdateAllShortDimFromDimSetID(Rec."Dimension Set ID", Rec."DEL Shortcut Dim 3 Code", Rec."DEL Shortcut Dim 4 Code", Rec."DEL Shortcut Dim 5 Code",
                                                 Rec."DEL Shortcut Dim 6 Code", Rec."DEL Shortcut Dim 7 Code", Rec."DEL Shortcut Dim 8 Code");
     end;
-    ///////////////////////////////////////////////////////////////
-    // [EventSubscriber(ObjectType::Table, Database::"Sales Price", 'OnBeforeItemNoOnValidate', '', false, false)]
-    // local procedure OnAfterCheckSellToCust(var SalesHeader: Record "Sales Header"; xSalesHeader: Record "Sales Header"; Customer: Record Customer; CurrentFieldNo: Integer)
-    // begin
-    // end;
+
+
+    ////TAB 36 
+    [EventSubscriber(ObjectType::Table, Database::"Sales Header", 'OnAfterCheckSellToCust', '', false, false)]
+    local procedure T36_OnAfterCheckSellToCust_SalesHeader(var SalesHeader: Record "Sales Header"; xSalesHeader: Record "Sales Header"; Customer: Record Customer; CurrentFieldNo: Integer)
+
+    begin
+        SalesHeader."DEL Fiscal Repr." := Customer."DEL Fiscal Repr.";
+    end;
+    ////
+    [EventSubscriber(ObjectType::Table, Database::"Sales Header", 'OnAfterCheckBillToCust', '', false, false)]
+
+    local procedure T36_OnAfterCheckBillToCust_SalesHeader(var SalesHeader: Record "Sales Header"; xSalesHeader: Record "Sales Header"; Customer: Record Customer)
+
+    begin
+        IF (Customer."DEL Fiscal Repr." <> '') THEN
+            SalesHeader."DEL Fiscal Repr." := Customer."DEL Fiscal Repr.";
+    end;
+    /////
+    [EventSubscriber(ObjectType::Table, Database::"Sales Header", 'OnValidateShipToCodeOnBeforeCopyShipToAddress', '', false, false)]
+
+    local procedure T36_OnValidateShipToCodeOnBeforeCopyShipToAddress_SalesHeader(var SalesHeader: Record "Sales Header"; var xSalesHeader: Record "Sales Header"; var CopyShipToAddress: Boolean)
+    var
+        SalesLine: Record "Sales Line";
+    begin
+        SalesLine.RESET();
+        SalesLine.SETRANGE("Document Type", SalesLine."Document Type"::Order);
+        SalesLine.SETRANGE("Document No.", SalesHeader."No.");
+        IF SalesLine.FINDSET() THEN
+            REPEAT
+                SalesLine."DEL Ship-to Code" := SalesHeader."Ship-to Code";
+                SalesLine."DEL Ship-to Name" := SalesHeader."Ship-to Name";
+                SalesLine.MODIFY();
+            UNTIL SalesLine.NEXT() = 0;
+    end;
+    /////
+    [EventSubscriber(ObjectType::Table, Database::"Sales Header", 'OnValidatePostingDateOnBeforeCheckNeedUpdateCurrencyFactor', '', false, false)]
+
+    local procedure T36_OnValidatePostingDateOnBeforeCheckNeedUpdateCurrencyFactor_SalesHeader(var SalesHeader: Record "Sales Header"; var IsConfirmed: Boolean; var NeedUpdateCurrencyFactor: Boolean; xSalesHeader: Record "Sales Header")
+
+    begin
+        IF NeedUpdateCurrencyFactor THEN
+            SalesHeader.SetHideValidationDialog(true);
+
+    end;
+    ///////
+    [EventSubscriber(ObjectType::Table, DataBase::"Sales Header", 'OnAfterValidateEvent', 'Campaign No.', false, false)]
+    local procedure T36_OnAfterValidateEvent_SalesHeader_CompaignNo(var Rec: Record "Sales Header"; var xRec: Record "Sales Header"; CurrFieldNo: Integer)
+    begin
+
+        IF Rec."Campaign No." <> xRec."Campaign No." THEN
+            Rec.UpdateSalesLines(Rec.FIELDCAPTION(Rec."Campaign No."), CurrFieldNo <> 0);
+    end;
+    ///////
+    /// 
+    [EventSubscriber(ObjectType::Table, DataBase::"Sales Header", 'OnAfterOnInsert', '', false, false)]
+    local procedure OnAfterOnInsert(var SalesHeader: Record "Sales Header")
+    begin
+        SalesHeader."DEL Create By" := USERID;
+        SalesHeader."DEL Create Date" := TODAY;
+        SalesHeader."DEL Create Time" := TIME;
+    end;
+    //////
+    ///////
+    [EventSubscriber(ObjectType::Table, DataBase::"Sales Header", 'OnAfterValidateEvent', 'Requested Delivery Date', false, false)]
+    local procedure T36_OnAfterValidateEvent_SalesHeader_rqstDelivDate(var Rec: Record "Sales Header"; var xRec: Record "Sales Header"; CurrFieldNo: Integer)
+    begin
+        rec.VALIDATE(Rec."DEL Estimated Delivery Date", Rec."Requested Delivery Date");
+    end;
+
+
     ////// tab 97
     [EventSubscriber(ObjectType::Table, Database::"Comment Line", 'OnAfterSetUpNewLine', '', false, false)]
 
@@ -138,12 +204,10 @@ codeunit 50100 "DEL MGTS_EventsMgt"
     [EventSubscriber(ObjectType::Table, database::Item, 'OnBeforeValidateEvent', 'Item Category Code', false, false)]
     local procedure T27_OnBeforeValidateEvent_Item_ItemCategoryCode(var Rec: Record Item; var xRec: Record Item; CurrFieldNo: Integer)
     begin
-
         xRec.TESTFIELD("Item Category Code");
-
         Rec.ModifCategory(Rec."Item Category Code");
-
     end;
+
     // proc TryGetItemNoOpenCardWithView tab 27
 
     // [EventSubscriber(ObjectType::Table, database::Item, 'OnTryGetItemNoOpenCardWithViewOnBeforeShowCreateItemOption', '', false, false)]
@@ -157,9 +221,6 @@ codeunit 50100 "DEL MGTS_EventsMgt"
     //         ERROR(SelectItemErr);
 
     // end;
-
-
-
 
 
     [EventSubscriber(ObjectType::Table, Database::"Purchase Header", 'OnAfterInsertEvent', '', false, false)]
@@ -319,5 +380,25 @@ codeunit 50100 "DEL MGTS_EventsMgt"
             Confirmed := ConfirmManagement.GetResponseOrDefault(StrSubstNo(ConfirmText, ChangedFieldName), true);
         end;
     end;
+    ////COD 231
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post", 'OnBeforeCode', '', false, false)]
+    local procedure COD231_OnBeforeCode_GenJnlPost(var GenJournalLine: Record "Gen. Journal Line"; var HideDialog: Boolean)
+    var
+        MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
+    begin
+        MGTSFactMgt.OnBeforeCodeFct(GenJournalLine, HideDialog);
+    end;
+
+    /////
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post", 'OnCodeOnAfterGenJnlPostBatchRun', '', false, false)]
+
+    local procedure COD231_OnCodeOnAfterGenJnlPostBatchRun_GenJnlPost(var GenJnlLine: Record "Gen. Journal Line")
+    var
+        MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
+    begin
+        MGTSFactMgt.OnCodeOnAfterGenJnlPostBatchRunfct(GenJnlLine);
+    end;
+
+
 
 }
