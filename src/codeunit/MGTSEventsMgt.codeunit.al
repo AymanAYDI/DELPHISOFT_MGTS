@@ -299,6 +299,7 @@ codeunit 50100 "DEL MGTS_EventsMgt"
     [EventSubscriber(ObjectType::Table, Database::"Purchase Header", 'OnRecreatePurchLinesOnBeforeConfirm', '', false, false)]
     local procedure T38_OnRecreatePurchLinesOnBeforeConfirm_PurchaseHeader(var PurchaseHeader: Record "Purchase Header"; xPurchaseHeader: Record "Purchase Header"; ChangedFieldName: Text[100]; HideValidationDialog: Boolean; var Confirmed: Boolean; var IsHandled: Boolean)
     var
+        SpecPurchLine: Record "Purchase Line";
         MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
         ConfirmManagement: Codeunit "Confirm Management";
         ConfirmText: Text;
@@ -314,10 +315,145 @@ codeunit 50100 "DEL MGTS_EventsMgt"
                 ConfirmText := ResetItemChargeAssignMsg
             else
                 ConfirmText := RecreatePurchLinesMsg;
-            IF ChangedFieldName = PurchaseHeader.FIELDCAPTION("VAT Bus. Posting Group") THEN
+            IF ChangedFieldName = PurchaseHeader.FIELDCAPTION("VAT Bus. Posting Group") THEN begin
                 Confirmed := TRUE;
+                SpecPurchLine.RESET();
+                SpecPurchLine.SETRANGE("Document Type", PurchaseHeader."Document Type");
+                SpecPurchLine.SETRANGE("Document No.", PurchaseHeader."No.");
+                IF SpecPurchLine.FINDSET() THEN
+                    REPEAT
+                        SpecPurchLine."Special Order Sales Line No." := 0;
+                        SpecPurchLine.MODIFY();
+                    UNTIL SpecPurchLine.NEXT() = 0;
+            end;
             Confirmed := ConfirmManagement.GetResponseOrDefault(StrSubstNo(ConfirmText, ChangedFieldName), true);
         end;
     end;
 
+
+    [EventSubscriber(ObjectType::Table, Database::"Purchase Header", 'OnBeforeTransferSavedFieldsSpecialOrder', '', false, false)]
+    local procedure T38_OnBeforeTransferSavedFieldsSpecialOrder_PurchaseHeader(var DestinationPurchaseLine: Record "Purchase Line"; var SourcePurchaseLine: Record "Purchase Line"; var IsHandled: Boolean)
+    var
+        SalesLine: Record "Sales Line";
+        CopyDocMgt: Codeunit "Copy Document Mgt.";
+    begin
+        SalesLine.LOCKTABLE();
+        IF SalesLine.GET(SalesLine."Document Type"::Order, SourcePurchaseLine."Special Order Sales No.", SourcePurchaseLine."Special Order Sales Line No.") THEN
+            CopyDocMgt.TransfldsFromSalesToPurchLine(SalesLine, DestinationPurchaseLine);
+        DestinationPurchaseLine."Special Order" := SourcePurchaseLine."Special Order";
+        DestinationPurchaseLine."Purchasing Code" := SalesLine."Purchasing Code";
+        DestinationPurchaseLine."Special Order Sales No." := SourcePurchaseLine."Special Order Sales No.";
+        DestinationPurchaseLine."Special Order Sales Line No." := SourcePurchaseLine."Special Order Sales Line No.";
+        DestinationPurchaseLine.Validate("Unit of Measure Code", SourcePurchaseLine."Unit of Measure Code");
+        if SourcePurchaseLine.Quantity <> 0 then
+            DestinationPurchaseLine.Validate(Quantity, SourcePurchaseLine.Quantity);
+
+        IF SalesLine.GET(SalesLine."Document Type"::Order, SourcePurchaseLine."Special Order Sales No.", SourcePurchaseLine."Special Order Sales Line No.") THEN BEGIN
+            SalesLine.Validate("Unit Cost (LCY)", DestinationPurchaseLine."Unit Cost (LCY)");
+            SalesLine."Special Order Purchase No." := DestinationPurchaseLine."Document No.";
+            SalesLine."Special Order Purch. Line No." := DestinationPurchaseLine."Line No.";
+            SalesLine.Modify();
+        END;
+        IsHandled := true;
+    end;
+
+    // [EventSubscriber(ObjectType::Table, Database::"Purchase Header", 'OnAfterCopyBuyFromVendorAddressFieldsFromVendor', '', false, false)]
+    // local procedure T38_OnAfterCopyBuyFromVendorAddressFieldsFromVendor_PurchaseHeader(var PurchaseHeader: Record "Purchase Header"; BuyFromVendor: Record Vendor)
+    // begin
+    //     "Ship Per" := BuyFromVendor."Ship Per";   TODO: Check
+    // end;
+
+    [EventSubscriber(ObjectType::Table, Database::"Purchase Header", 'OnBeforeTestStatusOpen', '', false, false)]
+    local procedure T38_OnBeforeTestStatusOpen_PurchaseHeader(var PurchHeader: Record "Purchase Header"; xPurchHeader: Record "Purchase Header"; CallingFieldNo: Integer)
+    var
+        Vend: Record Vendor;
+    begin
+        IF Vend.GET(PurchHeader."Buy-from Vendor No.") THEN
+            IF Vend."Vendor Posting Group" = 'MARCH' THEN
+                IF (Vend."DEL Qualified vendor" = FALSE) AND (Vend."DEL Derogation" = false) THEN
+                    Vend.TESTFIELD(Vend."DEL Qualified vendor", true);
+
+        PurchHeader.SuspendStatusCheck(false);
+    end;
+
+
+    [EventSubscriber(ObjectType::Table, Database::"Purchase Header", 'OnValidateBuyFromVendorNoOnAfterUpdateBuyFromCont', '', false, false)]
+    local procedure T38_OnValidateBuyFromVendorNoOnAfterUpdateBuyFromCont_PurchaseHeader(var PurchaseHeader: Record "Purchase Header"; xPurchaseHeader: Record "Purchase Header"; CallingFieldNo: Integer; var SkipBuyFromContact: Boolean)
+    begin
+        PurchaseHeader.NTO_UpdateForwardingAgent();
+    end;
+
+
+    [EventSubscriber(ObjectType::Table, Database::"Purchase Line", 'OnAfterInsertEvent', '', false, false)]
+    local procedure T39_OnAfterInsertEvent_PurchaseLine(var Rec: Record "Purchase Line"; RunTrigger: Boolean)
+    VAR
+        element_Re_Loc: Record "DEL Element";
+        urm_Re_Loc: Record "DEL Update Request Manager";
+        ACOConnection_Re_Loc: Record "DEL ACO Connection";
+        DealItem_Cu: Codeunit "DEL Deal Item";
+        UpdateRequestManager_Cu: Codeunit "DEL Update Request Manager";
+        requestID_Co_Loc: Code[20];
+    begin
+        if not RunTrigger then
+            exit;
+        if Rec.IsTemporary then
+            exit;
+        ACOConnection_Re_Loc.RESET();
+        ACOConnection_Re_Loc.SETCURRENTKEY("ACO No.");
+        ACOConnection_Re_Loc.SETRANGE("ACO No.", Rec."Document No.");
+        IF ACOConnection_Re_Loc.FINDFIRST THEN BEGIN
+
+            requestID_Co_Loc := UpdateRequestManager_Cu.FNC_Add_Request(
+              ACOConnection_Re_Loc.Deal_ID,
+              urm_Re_Loc.Requested_By_Type::"Purchase Header",
+              Rec."Document No.",
+              CURRENTDATETIME
+            );
+
+            Rec.INSERT();
+
+            urm_Re_Loc.GET(requestID_Co_Loc);
+            UpdateRequestManager_Cu.FNC_Process_Requests(urm_Re_Loc, FALSE, FALSE, TRUE);
+
+            Rec.DELETE();
+
+        END;
+        Rec.Modify();
+    end;
+
+    [EventSubscriber(ObjectType::Table, Database::"Purchase Line", 'OnBeforeUpdateSpecialSalesOrderLineFromOnDelete', '', false, false)]
+    local procedure T39_OnBeforeUpdateSpecialSalesOrderLineFromOnDelete_PurchaseLine(var PurchaseLine: Record "Purchase Line"; var SalesOrderLine: Record "Sales Line"; var IsHandled: Boolean)
+    begin
+        IF PurchaseLine."Special Order Sales Line No." <> 0 THEN BEGIN
+            PurchaseLine.LOCKTABLE;
+            SalesOrderLine.LOCKTABLE;
+            IF PurchaseLine."Document Type" = SalesOrderLine."Document Type"::Order THEN BEGIN
+                //START MIG2017
+                //SalesOrderLine.GET(SalesOrderLine."Document Type"::Order,"Special Order Sales No.","Special Order Sales Line No.");
+                SalesOrderLine.RESET;
+                SalesOrderLine.SETRANGE("Document Type", "Document Type"::Order);
+                SalesOrderLine.SETRANGE("Special Order Purchase No.", "Document No.");
+                SalesOrderLine.SETRANGE("No.", "No.");
+                //    SalesOrderLine."Special Order Purchase No." := '';
+                //    SalesOrderLine."Special Order Purch. Line No." := 0;
+                //    SalesOrderLine.MODIFY;
+                //  END ELSE
+                //    IF SalesOrderLine.GET(SalesOrderLine."Document Type"::Order,"Special Order Sales No.","Special Order Sales Line No.") THEN
+                //      BEGIN
+                //         SalesOrderLine."Special Order Purchase No." := '';
+                //         SalesOrderLine."Special Order Purch. Line No." := 0;
+                //         SalesOrderLine.MODIFY;
+                //    END;
+
+                IF SalesOrderLine.FIND('-') THEN
+                    REPEAT
+                        SalesOrderLine."Special Order Purchase No." := '';
+                        SalesOrderLine."Special Order Purch. Line No." := 0;
+                        SalesOrderLine.MODIFY;
+                    UNTIL SalesOrderLine.NEXT = 0;
+                // STOP Interne1
+                //END MIG2017
+            END;
+        END;
+    end;
 }
