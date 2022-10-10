@@ -536,7 +536,7 @@ codeunit 50100 "DEL MGTS_EventsMgt"
         MGTSFactMgt.OnCodeOnAfterGenJnlPostBatchRunfct(GenJnlLine);
     end;
 
-
+    //CDU 80 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnAfterInsertPostedHeaders', '', false, false)]
     local procedure OnAfterInsertPostedHeaders_SalesHeader(var SalesHeader: Record "Sales Header"; var SalesShipmentHeader: Record "Sales Shipment Header"; var SalesInvoiceHeader: Record "Sales Invoice Header"; var SalesCrMemoHdr: Record "Sales Cr.Memo Header"; var ReceiptHeader: Record "Return Receipt Header")
     var
@@ -588,21 +588,91 @@ codeunit 50100 "DEL MGTS_EventsMgt"
         END;
 
     end;
+    //TODO
+    // [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnCheckAndUpdateOnBeforeCheckPostRestrictions', '', false, false)]
+    // local procedure OnCheckAndUpdateOnBeforeCheckPostRestrictions(var SalesHeader: Record "Sales Header"; PreviewMode: Boolean)
+    // var
+    //     MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
+    //     SuppressCommit: Boolean;
+    //     SalesPost: Codeunit "Sales-Post";
+    // begin
+    //     MGTSFactMgt.SetSuppressCommit(true);
+    //     IF NOT SuppressCommit THEN
+    //         if SalesHeader.Invoice then
+    //             SalesHeader.Invoice := CalcInvoice(SalesHeader);
 
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnCheckAndUpdateOnBeforeCheckPostRestrictions', '', false, false)]
-    local procedure OnCheckAndUpdateOnBeforeCheckPostRestrictions(var SalesHeader: Record "Sales Header"; PreviewMode: Boolean)
+    // end;
+
+
+    //TODO: je n'ai pas trouvé un evenement qui appel la "SuppressCommit"
+    // [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnBeforeUpdateWhseDocuments', '', false, false)]
+    // local procedure OnBeforeUpdateWhseDocuments(var SalesHeader: Record "Sales Header";
+    //  var IsHandled: Boolean; WhseReceive: Boolean; WhseShip: Boolean;
+    // WhseRcptHeader: Record "Warehouse Receipt Header";
+    //  WhseShptHeader: Record "Warehouse Shipment Header"; var TempWhseRcptHeader:
+    //  Record "Warehouse Receipt Header" temporary; var TempWhseShptHeader:
+    //  Record "Warehouse Shipment Header" temporary)
+    // var
+    //     WhsePostRcpt: Codeunit "Whse.-Post Receipt";
+
+    // begin
+    //     IsHandled := true;
+    //     if WhseReceive then begin
+    //         WhsePostRcpt.SetSuppressCommit(SuppressCommit);
+    //     end;
+    //     IsHandled:=true;
+    //     if WhseShip then begin
+    //     WhsePostShpt.SetSuppressCommit(SuppressCommit);    
+    // end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnBeforeDeleteAfterPosting', '', false, false)]
+    local procedure OnBeforeDeleteAfterPosting(var SalesHeader: Record "Sales Header"; var SalesInvoiceHeader: Record "Sales Invoice Header"; var SalesCrMemoHeader: Record "Sales Cr.Memo Header"; var SkipDelete: Boolean; CommitIsSuppressed: Boolean; EverythingInvoiced: Boolean; var TempSalesLineGlobal: Record "Sales Line" temporary)
     var
-        SkipCommit: Boolean;
+        MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
     begin
-        with SalesHeader do begin
-            IF NOT SkipCommit THEN
-         
-
-
+        MGTSFactMgt.ReverseProvisionEntries(SalesHeader);
     end;
 
+    //CDU 81 
 
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post (Yes/No)", 'OnBeforeConfirmSalesPost', '', false, false)]
+    local procedure COD81_OnBeforeConfirmSalesPost(var SalesHeader: Record "Sales Header"; var HideDialog: Boolean; var IsHandled: Boolean; var DefaultOption: Integer; var PostAndSend: Boolean)
 
+    var
+        MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
+    begin
+        MGTSFactMgt.OnBeforeConfirmSalesPostFct(SalesHeader, HideDialog, IsHandled, DefaultOption, PostAndSend);
+    end;
+    ////
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post (Yes/No)", 'OnAfterConfirmPost', '', false, false)]
+    local procedure COD81_OnAfterConfirmPost(var SalesHeader: Record "Sales Header")
+    var
+        MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
+    begin
+        MGTSFactMgt.OnAfterConfirmPost(SalesHeader);
+    end;
+    ////
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post (Yes/No)", 'OnConfirmPostOnBeforeSetSelection', '', false, false)]
+    local procedure COD81_OnConfirmPostOnBeforeSetSelection(var SalesHeader: Record "Sales Header")
+    var
+        Deal_Cu: Codeunit "DEL Deal";
+        dealShipmentSelection_Re: Record "DEL Deal Shipment Selection";
+    begin
+        IF (SalesHeader."Document Type" = SalesHeader."Document Type"::Order) THEN
+            Deal_Cu.FNC_Reinit_Deal(dealShipmentSelection_Re.Deal_ID, FALSE, FALSE);
+    end;
+
+    //----------CDU 82 
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post + Print", 'OnBeforeConfirmPost', '', false, false)]
+    local procedure COD82_OnBeforeConfirmPost(var SalesHeader: Record "Sales Header"; var HideDialog: Boolean; var IsHandled: Boolean; var SendReportAsEmail: Boolean; var DefaultOption: Integer)
+    var
+        MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
+    begin
+        MGTSFactMgt.OnBeforeConfirmPostFct(SalesHeader, HideDialog, IsHandled, SendReportAsEmail, DefaultOption);
+    end;
+    ///////aprés   Code;
+    // Rec := SalesHeader;
 
 
 }
