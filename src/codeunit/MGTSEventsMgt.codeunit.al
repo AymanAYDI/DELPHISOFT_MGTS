@@ -670,9 +670,35 @@ codeunit 50100 "DEL MGTS_EventsMgt"
         MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
     begin
         MGTSFactMgt.OnBeforeConfirmPostFct(SalesHeader, HideDialog, IsHandled, SendReportAsEmail, DefaultOption);
+
+
     end;
-    ///////aprés   Code;
-    // Rec := SalesHeader;
+    ///////
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post + Print", 'OnAfterConfirmPost', '', false, false)]
+    local procedure OnAfterConfirmPost(var SalesHeader: Record "Sales Header")
+    var
+        element_Re_Loc: Record "DEL Element";
+        dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
+        updateRequestID_Co_Loc: Code[20];
+        updateRequestManager_Cu: Codeunit "DEL Update Request Manager";
+        shipmentSelected_Bo_Loc: Boolean;
+        salesLine_Re_Loc: Record "Sales Line";
+        GLAccount_Re_Loc: Record "G/L Account";
+        Deal_Cu: Codeunit "DEL Deal";
+
+    begin
+        IF shipmentSelected_Bo_Loc THEN BEGIN
+            Deal_Cu.FNC_Reinit_Deal(dealShipmentSelection_Re_Loc.Deal_ID, FALSE, FALSE);
+            updateRequestManager_Cu.FNC_Validate_Request(updateRequestID_Co_Loc);
+            dealShipmentSelection_Re_Loc.RESET();
+            dealShipmentSelection_Re_Loc.SETRANGE("Document No.", SalesHeader."No.");
+            dealShipmentSelection_Re_Loc.SETRANGE(USER_ID, USERID);
+            dealShipmentSelection_Re_Loc.DELETEALL();
+        END;
+
+    end;
+    //---------CDU 90
+
 
 
 }
