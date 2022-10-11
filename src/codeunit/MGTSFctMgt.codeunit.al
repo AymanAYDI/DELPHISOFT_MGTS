@@ -208,7 +208,7 @@ codeunit 50101 "DEL MGTS_FctMgt"
 
 
 
-
+    /////COD 231
     procedure OnBeforeCodeFct(var GenJournalLine: Record "Gen. Journal Line"; var HideDialog: Boolean)
     var
 
@@ -271,31 +271,31 @@ codeunit 50101 "DEL MGTS_FctMgt"
     var
         "---- MIG----": Integer;
         deal_ID_Co_Loc: Code[20];
-        dealShipmentSelection_Re_Loc: Record 50031;
-        element_Re_Loc: Record 50021;
-        BR_Re_Loc: Record 120;
-        genJournalLine_Re_Temp: Record 81 TEMPORARY;
-        dealShipment_Re_Loc: Record 50030;
-        feeConnection_Re_Loc: Record 50025;
+        dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
+        element_Re_Loc: Record "DEL Element";
+        BR_Re_Loc: Record "Purch. Rcpt. Header";
+        genJournalLine_Re_Temp: Record "Gen. Journal Line" TEMPORARY;
+        dealShipment_Re_Loc: Record "DEL Deal Shipment";
+        feeConnection_Re_Loc: Record "DEL Fee Connection";
         Add_Variant_Op_Loc: Option New,Existing;
         nextEntry: Code[20];
         myTab: ARRAY[300] OF Code[20];
-        dss_Re_Loc: Record 50031;
+        dss_Re_Loc: Record "DEL Deal Shipment Selection";
         element_ID_Co_Loc: Code[20];
         i: Integer;
         splittIndex: Integer;
         elementConnectionSplitIndex: Integer;
         ConnectionType_Op_Par: Option Element,Shipment;
-        fee_Re_Loc: Record 50024;
+        fee_Re_Loc: Record "DEL Fee";
         myUpdateRequests: ARRAY[300] OF Code[20];
         provisionDealID_Co_Loc: Code[20];
         updateRequest_Co_Loc: Code[20];
-        sps_Re_Loc: Record 50042;
-        urm_Re_Loc: Record 50039;
-        Provision_Cu: Codeunit 50033;
-        Deal_Cu: Codeunit 50020;
-        UpdateRequestManager_Cu: Codeunit 50032;
-        Element_Cu: Codeunit 50021;
+        sps_Re_Loc: Record "DEL Shipment Provision Select.";
+        urm_Re_Loc: Record "DEL Update Request Manager";
+        Provision_Cu: Codeunit "DEL Provision";
+        Deal_Cu: Codeunit "DEL Deal";
+        UpdateRequestManager_Cu: Codeunit "DEL Update Request Manager";
+        Element_Cu: Codeunit "DEL Element";
 
     begin
         genJournalLine_Re_Temp.RESET();
@@ -402,5 +402,16 @@ codeunit 50101 "DEL MGTS_FctMgt"
         END;
     end;
 
+    procedure OnGenJnlLineSetFilter_Fct(var GenJournalLine: Record "Gen. Journal Line")
+    var
+        Provision_Cu: Codeunit "DEL Provision";
+        genJournalLine_Re_Temp: Record "Gen. Journal Line" TEMPORARY;
+    begin
+        genJournalLine_Re_Temp.RESET();
+        genJournalLine_Re_Temp.SETRANGE("Journal Batch Name", 'PROVISION');
+        IF genJournalLine_Re_Temp.FIND('-') THEN
+            Provision_Cu.FNC_Add2Deals();
+
+    end;
 
 }

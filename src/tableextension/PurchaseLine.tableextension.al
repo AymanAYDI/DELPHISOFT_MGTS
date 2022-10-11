@@ -256,7 +256,7 @@ tableextension 50029 "DEL PurchaseLine" extends "Purchase Line"
             Caption = 'Total volume';
             DecimalPlaces = 2 : 5;
         }
-        field(50002; "DEL External reference NGTS"; Text[30])
+        field(50002; "DEL External reference NGTS"; Text[50])
         {
             Caption = 'External reference NGTS';
         }
