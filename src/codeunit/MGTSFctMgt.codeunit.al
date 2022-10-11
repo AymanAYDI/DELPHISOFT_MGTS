@@ -93,12 +93,11 @@ codeunit 50101 "DEL MGTS_FctMgt"
             end;
     end;
 
-    procedure SkipCUCommit(Skip: Boolean)
+    procedure SetSuppressCommit(NewSuppressCommit: Boolean)
     var
-
-        SkipCommit: Boolean;
+        SuppressCommit: Boolean;
     begin
-        SkipCommit := Skip;
+        SuppressCommit := NewSuppressCommit;
     end;
 
     procedure ReverseProvisionEntries(SalesHeader: Record "Sales Header")
@@ -271,31 +270,31 @@ codeunit 50101 "DEL MGTS_FctMgt"
     var
         "---- MIG----": Integer;
         deal_ID_Co_Loc: Code[20];
-        dealShipmentSelection_Re_Loc: Record 50031;
-        element_Re_Loc: Record 50021;
-        BR_Re_Loc: Record 120;
-        genJournalLine_Re_Temp: Record 81 TEMPORARY;
-        dealShipment_Re_Loc: Record 50030;
-        feeConnection_Re_Loc: Record 50025;
+        dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
+        element_Re_Loc: Record "DEL Element";
+        BR_Re_Loc: Record "Purch. Rcpt. Header";
+        genJournalLine_Re_Temp: Record "Gen. Journal Line" TEMPORARY;
+        dealShipment_Re_Loc: Record "DEL Deal Shipment";
+        feeConnection_Re_Loc: Record "DEL Fee Connection";
         Add_Variant_Op_Loc: Option New,Existing;
         nextEntry: Code[20];
         myTab: ARRAY[300] OF Code[20];
-        dss_Re_Loc: Record 50031;
+        dss_Re_Loc: Record "DEL Deal Shipment Selection";
         element_ID_Co_Loc: Code[20];
         i: Integer;
         splittIndex: Integer;
         elementConnectionSplitIndex: Integer;
         ConnectionType_Op_Par: Option Element,Shipment;
-        fee_Re_Loc: Record 50024;
+        fee_Re_Loc: Record "DEL Fee";
         myUpdateRequests: ARRAY[300] OF Code[20];
         provisionDealID_Co_Loc: Code[20];
         updateRequest_Co_Loc: Code[20];
-        sps_Re_Loc: Record 50042;
-        urm_Re_Loc: Record 50039;
-        Provision_Cu: Codeunit 50033;
-        Deal_Cu: Codeunit 50020;
-        UpdateRequestManager_Cu: Codeunit 50032;
-        Element_Cu: Codeunit 50021;
+        sps_Re_Loc: Record "DEL Shipment Provision Select.";
+        urm_Re_Loc: Record "DEL Update Request Manager";
+        Provision_Cu: Codeunit "DEL Provision";
+        Deal_Cu: Codeunit "DEL Deal";
+        UpdateRequestManager_Cu: Codeunit "DEL Update Request Manager";
+        Element_Cu: Codeunit "DEL Element";
 
     begin
         genJournalLine_Re_Temp.RESET();
@@ -401,6 +400,265 @@ codeunit 50101 "DEL MGTS_FctMgt"
             UNTIL (genJournalLine_Re_Temp.NEXT() = 0);
         END;
     end;
+    //----------------- CDU81
+    procedure OnBeforeConfirmSalesPostFct(var SalesHeader: Record "Sales Header"; var HideDialog: Boolean; var IsHandled: Boolean; var DefaultOption: Integer; var PostAndSend: Boolean)
+    var
+        dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
+        shipmentSelected_Bo_Loc: Boolean;
+
+        dealShipmentSelection_Re: Record "DEL Deal Shipment Selection";
+        updateRequestID_Co_Loc: Code[20];
+        updateRequestManager_Cu: Codeunit "DEL Update Request Manager";
+        salesLine_Re_Loc: Record "Sales Line";
+        GLAccount_Re_Loc: Record "G/L Account";
+    begin
+
+        shipmentSelected_Bo_Loc := FALSE;
+
+        IF
+        (
+          (SalesHeader."Document Type" = SalesHeader."Document Type"::Order)
+          OR
+          (SalesHeader."Document Type" = SalesHeader."Document Type"::"Credit Memo")
+          OR
+          (SalesHeader."Document Type" = SalesHeader."Document Type"::Invoice)
+        )
+        THEN BEGIN
+            dealShipmentSelection_Re_Loc.RESET();
+            dealShipmentSelection_Re_Loc.SETRANGE("Document No.", SalesHeader."No.");
+            dealShipmentSelection_Re_Loc.SETRANGE(Checked, TRUE);
+            dealShipmentSelection_Re_Loc.SETRANGE(USER_ID, USERID);
+            IF dealShipmentSelection_Re_Loc.FIND('-') THEN BEGIN
+
+                dealShipmentSelection_Re := dealShipmentSelection_Re_Loc;
+                shipmentSelected_Bo_Loc := TRUE;
+                IF SalesHeader."Document Type" = SalesHeader."Document Type"::Invoice THEN BEGIN
+
+                    IF dealShipmentSelection_Re_Loc.COUNT() > 1 THEN
+                        ERROR('Il faut choisir au maximum 1 livraison li‚e !');
+
+                END ELSE
+                    IF (SalesHeader."Document Type" = SalesHeader."Document Type"::Order) THEN BEGIN
+
+                        IF dealShipmentSelection_Re_Loc.COUNT() > 1 THEN
+                            ERROR('Il faut choisir exactement 1 livraison li‚e !');
+
+                    END ELSE
+                        IF (SalesHeader."Document Type" = SalesHeader."Document Type"::"Credit Memo") THEN BEGIN
+
+                            IF dealShipmentSelection_Re_Loc.COUNT() > 1 THEN
+                                ERROR('Il faut choisir exactement 1 livraison li‚e !');
+
+                            IF dealShipmentSelection_Re_Loc."Sales Invoice No." = '' THEN
+                                ERROR('La livraison li‚e n''a pas de Sales Invoice sur laquelle elle doit ˆtre li‚e !');
+
+                        END;
+
+                updateRequestID_Co_Loc := updateRequestManager_Cu.FNC_Add_Request(
+                  dealShipmentSelection_Re_Loc.Deal_ID,
+                  dealShipmentSelection_Re_Loc."Document Type",
+                  dealShipmentSelection_Re_Loc."Document No.",
+                  CURRENTDATETIME
+                );
 
 
+            END ELSE BEGIN
+
+                IF SalesHeader."Document Type" = SalesHeader."Document Type"::Order THEN BEGIN
+
+                    ERROR('Il faut choisir exactement 1 livraison li‚e !');
+
+
+                END ELSE
+                    IF SalesHeader."Document Type" = SalesHeader."Document Type"::"Credit Memo" THEN BEGIN
+
+
+                        salesLine_Re_Loc.RESET();
+                        salesLine_Re_Loc.SETRANGE("Document Type", salesLine_Re_Loc."Document Type"::"Credit Memo");
+                        salesLine_Re_Loc.SETRANGE("Document No.", SalesHeader."No.");
+                        IF salesLine_Re_Loc.FIND('-') THEN BEGIN
+                            REPEAT
+
+                                IF (salesLine_Re_Loc.Type <> salesLine_Re_Loc.Type::"G/L Account") THEN
+                                    ERROR('Il faut choisir exactement 1 livraison li‚e !')
+                                ELSE
+                                    IF (GLAccount_Re_Loc.GET(salesLine_Re_Loc."No.")) THEN
+                                        IF NOT (GLAccount_Re_Loc."DEL Shipment Binding Control") THEN
+                                            ERROR('Il faut choisir exactement 1 livraison li‚e !')
+                            UNTIL (salesLine_Re_Loc.NEXT() = 0);
+                        END;
+                    END
+                    ELSE
+                        IF SalesHeader."Document Type" = SalesHeader."Document Type"::Invoice THEN BEGIN
+
+                            salesLine_Re_Loc.RESET();
+                            salesLine_Re_Loc.SETRANGE("Document Type", salesLine_Re_Loc."Document Type"::Invoice);
+                            salesLine_Re_Loc.SETRANGE("Document No.", SalesHeader."No.");
+                            IF salesLine_Re_Loc.FIND('-') THEN BEGIN
+                                REPEAT
+
+                                    IF (salesLine_Re_Loc.Type <> salesLine_Re_Loc.Type::"G/L Account") THEN
+                                        ERROR('Il faut choisir exactement 1 livraison li‚e !')
+                                    ELSE
+                                        IF (GLAccount_Re_Loc.GET(salesLine_Re_Loc."No.")) THEN
+                                            IF NOT (GLAccount_Re_Loc."DEL Shipment Binding Control") THEN
+                                                ERROR('Il faut choisir exactement 1 livraison li‚e !')
+                                UNTIL (salesLine_Re_Loc.NEXT() = 0);
+
+                            END;
+                        END;
+            END;
+        END;
+
+    end;
+
+    ////////
+    procedure OnAfterConfirmPost(var SalesHeader: Record "Sales Header")
+    var
+        shipmentSelected_Bo_Loc: Boolean;
+        updateRequestManager_Cu: Codeunit "DEL Update Request Manager";
+        dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
+        Deal_Cu: Codeunit "DEL Deal";
+        updateRequestID_Co_Loc: Code[20];
+    begin
+        IF shipmentSelected_Bo_Loc THEN BEGIN
+            //La facture a ‚t‚ associ‚e … une et une seule livraison et donc, on r‚initialise l'affaire qui appartient … cette livraison
+            Deal_Cu.FNC_Reinit_Deal(dealShipmentSelection_Re_Loc.Deal_ID, FALSE, FALSE);
+
+            //Le deal a ‚t‚ r‚initialis‚, on peut valider l'updateRequest
+            updateRequestManager_Cu.FNC_Validate_Request(updateRequestID_Co_Loc);
+
+            //On vide la table Deal Shipment Selection pour qu'elle soit mise … jour lors de la prochaine ouverture..
+            dealShipmentSelection_Re_Loc.RESET();
+            dealShipmentSelection_Re_Loc.SETRANGE("Document No.", SalesHeader."No.");
+            dealShipmentSelection_Re_Loc.SETRANGE(USER_ID, USERID);
+            dealShipmentSelection_Re_Loc.DELETEALL();
+        END;
+
+    end;
+
+    //-------CDU82 ---
+    procedure OnBeforeConfirmPostFct(var SalesHeader: Record "Sales Header"; var HideDialog: Boolean; var IsHandled: Boolean; var SendReportAsEmail: Boolean; var DefaultOption: Integer)
+    var
+        element_Re_Loc: Record "DEL Element";
+        dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
+        updateRequestID_Co_Loc: Code[20];
+        updateRequestManager_Cu: Codeunit "DEL Update Request Manager";
+        shipmentSelected_Bo_Loc: Boolean;
+        salesLine_Re_Loc: Record "Sales Line";
+        GLAccount_Re_Loc: Record "G/L Account";
+    begin
+        // T-00551-DEAL -
+        shipmentSelected_Bo_Loc := FALSE;
+
+        //On gŠre les "Document Type" commandes, notes de cr‚dit et les factures
+        IF
+        (
+          (SalesHeader."Document Type" = SalesHeader."Document Type"::Order)
+          OR
+          (SalesHeader."Document Type" = SalesHeader."Document Type"::"Credit Memo")
+          OR
+          (SalesHeader."Document Type" = SalesHeader."Document Type"::Invoice)
+        )
+        THEN BEGIN
+            dealShipmentSelection_Re_Loc.RESET();
+            dealShipmentSelection_Re_Loc.SETRANGE("Document No.", SalesHeader."No.");
+            dealShipmentSelection_Re_Loc.SETRANGE(Checked, TRUE);
+            dealShipmentSelection_Re_Loc.SETRANGE(USER_ID, USERID);
+            IF dealShipmentSelection_Re_Loc.FIND('-') THEN BEGIN
+
+                shipmentSelected_Bo_Loc := TRUE;
+
+                IF SalesHeader."Document Type" = SalesHeader."Document Type"::Invoice THEN BEGIN
+
+                    //pour les factures vente, on veut 0 ou 1 livraison li‚e
+                    IF dealShipmentSelection_Re_Loc.COUNT() > 1 THEN
+                        ERROR('Il faut choisir au maximum 1 livraison li‚e !');
+
+                END ELSE
+                    IF (SalesHeader."Document Type" = SalesHeader."Document Type"::Order) THEN BEGIN
+
+                        //pour les commandes il faut exactement 1 livraison li‚e
+                        IF dealShipmentSelection_Re_Loc.COUNT() > 1 THEN
+                            ERROR('Il faut choisir exactement 1 livraison li‚e !');
+
+                    END ELSE
+                        IF (SalesHeader."Document Type" = SalesHeader."Document Type"::"Credit Memo") THEN BEGIN
+
+                            //pour les notes de cr‚dit, il faut exactement 1 livraison li‚e
+                            IF dealShipmentSelection_Re_Loc.COUNT() > 1 THEN
+                                ERROR('Il faut choisir exactement 1 livraison li‚e !');
+
+                            //il faut aussi imp‚rativement avoir une facture li‚e … cette note de cr‚dit
+                            IF dealShipmentSelection_Re_Loc."Sales Invoice No." = '' THEN
+                                ERROR('La livraison li‚e n''a pas de Sales Invoice sur laquelle elle doit ˆtre li‚e !');
+
+                        END;
+
+                //On cr‚e une updateRequest, comme ca, si NAV plante plus loin, on sait ce qui n'a pas ‚t‚ updat‚ comme il faut
+                updateRequestID_Co_Loc := updateRequestManager_Cu.FNC_Add_Request(
+                  dealShipmentSelection_Re_Loc.Deal_ID,
+                  dealShipmentSelection_Re_Loc."Document Type",
+                  dealShipmentSelection_Re_Loc."Document No.",
+                  CURRENTDATETIME
+                );
+
+                //aucune livraison n'a ‚t‚ s‚lectionn‚e
+            END ELSE BEGIN
+
+                IF SalesHeader."Document Type" = SalesHeader."Document Type"::Order THEN BEGIN
+
+                    ERROR('Il faut choisir exactement 1 livraison li‚e !');
+
+                    //si le type de ligne est "G/L Account" et le num 3400, 3401 ou 3410, ... alors pas d'erreur
+                END ELSE
+                    IF SalesHeader."Document Type" = SalesHeader."Document Type"::"Credit Memo" THEN BEGIN
+
+                        //on v‚rifie les lignes du document
+                        salesLine_Re_Loc.RESET();
+                        salesLine_Re_Loc.SETRANGE("Document Type", salesLine_Re_Loc."Document Type"::"Credit Memo");
+                        salesLine_Re_Loc.SETRANGE("Document No.", SalesHeader."No.");
+                        IF salesLine_Re_Loc.FIND('-') THEN BEGIN
+                            REPEAT
+                                //si c'est pas un compte alors c'est d‚j… grill‚ -> erreur
+                                IF (salesLine_Re_Loc.Type <> salesLine_Re_Loc.Type::"G/L Account") THEN
+                                    ERROR('Il faut choisir exactement 1 livraison li‚e !')
+                                ELSE
+                                    IF (GLAccount_Re_Loc.GET(salesLine_Re_Loc."No.")) THEN
+                                        // si coch‚, exclure du contr“le de liaison
+                                        IF NOT (GLAccount_Re_Loc."DEL Shipment Binding Control") THEN
+                                            ERROR('Il faut choisir exactement 1 livraison li‚e !')
+
+                            UNTIL (salesLine_Re_Loc.NEXT() = 0);
+                        END;
+                    END
+                    ELSE
+                        IF SalesHeader."Document Type" = SalesHeader."Document Type"::Invoice THEN BEGIN
+
+                            //on v‚rifie les lignes du document
+                            salesLine_Re_Loc.RESET();
+                            salesLine_Re_Loc.SETRANGE("Document Type", salesLine_Re_Loc."Document Type"::Invoice);
+                            salesLine_Re_Loc.SETRANGE("Document No.", SalesHeader."No.");
+                            IF salesLine_Re_Loc.FIND('-') THEN BEGIN
+                                REPEAT
+                                    //si c'est pas un compte alors c'est d‚j… grill‚ -> erreur
+                                    IF (salesLine_Re_Loc.Type <> salesLine_Re_Loc.Type::"G/L Account") THEN
+                                        ERROR('Il faut choisir exactement 1 livraison li‚e !')
+                                    ELSE
+                                        IF (GLAccount_Re_Loc.GET(salesLine_Re_Loc."No.")) THEN
+                                            // si coch‚, exclure du contr“le de liaison
+                                            IF NOT (GLAccount_Re_Loc."DEL Shipment Binding Control") THEN
+                                                ERROR('Il faut choisir exactement 1 livraison li‚e !')
+                                UNTIL (salesLine_Re_Loc.NEXT() = 0);
+
+                            END;
+                        END;
+            END;
+        END;
+
+    end;
 }
+
+
+
+
