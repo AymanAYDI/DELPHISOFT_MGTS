@@ -533,7 +533,7 @@ tableextension 50029 "DEL PurchaseLine" extends "Purchase Line"
     */
     //end;
 
-    local procedure ExistOldPurch(ItemNo: Code[20]; DocNo: Code[20]): Boolean
+    procedure ExistOldPurch(ItemNo: Code[20]; DocNo: Code[20]): Boolean
     var
         PurchaseLine: Record "Purchase Line";
         PurchInvLine: Record "Purch. Inv. Line";
@@ -549,65 +549,68 @@ tableextension 50029 "DEL PurchaseLine" extends "Purchase Line"
         ELSE
             EXIT(TRUE);
     end;
-    //TODO
-    // procedure UpdateSalesEstimatedDelivery()
-    // var
-    //     SalesLine: Record "Sales Line";
-    // begin
 
-    //     //MGTS10.00.006; 001; mhh; entire function
-    //     IF ("Special Order Sales No." = '') OR ("Special Order Sales Line No." = 0) OR ("Expected Receipt Date" = 0D) THEN
-    //         EXIT;
 
-    //     IF NOT PurchSetup.GET() THEN
-    //         PurchSetup.INIT();
+    procedure UpdateSalesEstimatedDelivery()
+    var
+        SalesLine: Record "Sales Line";
+        PurchHeader: Record "Purchase Header";
+        PurchSetup: Record "Purchases & Payables Setup";
+    begin
 
-    //     GetPurchHeader();
+        //MGTS10.00.006; 001; mhh; entire function
+        IF ("Special Order Sales No." = '') OR ("Special Order Sales Line No." = 0) OR ("Expected Receipt Date" = 0D) THEN
+            EXIT;
 
-    //     SalesLine.RESET();
-    //     SalesLine.SETRANGE("Document Type", SalesLine."Document Type"::Order);
-    //     SalesLine.SETRANGE("Document No.", "Special Order Sales No.");
-    //     SalesLine.SETRANGE("Line No.", "Special Order Sales Line No.");
-    //     IF SalesLine.FINDFIRST() THEN
-    //         CASE PurchHeader."Ship Per" OF
-    //             PurchHeader."Ship Per"::"Air Flight":
-    //                 BEGIN
-    //                     SalesLine."DEL Estimated Delivery Date" := CALCDATE(PurchSetup."Sales Ship Time By Air Flight", "Expected Receipt Date");
-    //                     SalesLine.MODIFY();
-    //                 END;
+        IF NOT PurchSetup.GET() THEN
+            PurchSetup.INIT();
 
-    //             PurchHeader."Ship Per"::"Sea Vessel":
-    //                 BEGIN
-    //                     SalesLine."DEL Estimated Delivery Date" := CALCDATE(PurchSetup."Sales Ship Time By Sea Vessel", "Expected Receipt Date");
-    //                     SalesLine.MODIFY();
-    //                 END;
+        PurchHeader.get(rec."Document Type", rec."Document No.");
 
-    //             PurchHeader."Ship Per"::"Sea/Air":
-    //                 BEGIN
-    //                     SalesLine."DEL Estimated Delivery Date" := CALCDATE(PurchSetup."Sales Ship Time By Sea/Air", "Expected Receipt Date");
-    //                     SalesLine.MODIFY();
-    //                 END;
+        SalesLine.RESET();
+        SalesLine.SETRANGE("Document Type", SalesLine."Document Type"::Order);
+        SalesLine.SETRANGE("Document No.", "Special Order Sales No.");
+        SalesLine.SETRANGE("Line No.", "Special Order Sales Line No.");
+        IF SalesLine.FINDFIRST() THEN
+            CASE PurchHeader."DEL Ship Per" OF
+                PurchHeader."DEL Ship Per"::"Air Flight":
+                    BEGIN
+                        SalesLine."DEL Estimated Delivery Date" := CALCDATE(PurchSetup."DEL Sales Ship Time By Air Flight", "Expected Receipt Date");
+                        SalesLine.MODIFY();
+                    END;
 
-    //             PurchHeader."Ship Per"::Train:
-    //                 BEGIN
-    //                     SalesLine."DEL Estimated Delivery Date" := CALCDATE(PurchSetup."Sales Ship Time By Train", "Expected Receipt Date");
-    //                     SalesLine.MODIFY();
-    //                 END;
+                PurchHeader."DEL Ship Per"::"Sea Vessel":
+                    BEGIN
+                        SalesLine."DEL Estimated Delivery Date" := CALCDATE(PurchSetup."DEL Sales Ship Time By Sea Vessel", "Expected Receipt Date");
+                        SalesLine.MODIFY();
+                    END;
 
-    //             PurchHeader."Ship Per"::Truck:
-    //                 BEGIN
-    //                     SalesLine."DEL Estimated Delivery Date" := CALCDATE(PurchSetup."Sales Ship Time By Truck", "Expected Receipt Date");
-    //                     SalesLine.MODIFY();
-    //                 END;
-    //         END;
+                PurchHeader."DEL Ship Per"::"Sea/Air":
+                    BEGIN
+                        SalesLine."DEL Estimated Delivery Date" := CALCDATE(PurchSetup."DEL Sales Ship Time By Sea/Air", "Expected Receipt Date");
+                        SalesLine.MODIFY();
+                    END;
 
-    // end;
+                PurchHeader."DEL Ship Per"::Train:
+                    BEGIN
+                        SalesLine."DEL Estimated Delivery Date" := CALCDATE(PurchSetup."DEL Sales Ship Time By Train", "Expected Receipt Date");
+                        SalesLine.MODIFY();
+                    END;
+
+                PurchHeader."DEL Ship Per"::Truck:
+                    BEGIN
+                        SalesLine."DEL Estimated Delivery Date" := CALCDATE(PurchSetup."DEL Sales Ship Time By Truck", "Expected Receipt Date");
+                        SalesLine.MODIFY();
+                    END;
+            END;
+
+    end;
 
     var
 
-        //TODO //CODEUNIT 
-        // DealItem_Cu: Codeunit 50024;
-        // Deal_Cu: Codeunit 50020;
+       
+        DealItem_Cu: Codeunit "DEL Deal Item";
+        Deal_Cu: Codeunit "DEL Deal";
 
 
         requestID_Co_Loc: Code[20];
@@ -642,11 +645,9 @@ tableextension 50029 "DEL PurchaseLine" extends "Purchase Line"
     //Variable type has not been exported.
 
     var
-
-        //TODO     
-        // UpdateRequestManager_Cu: Codeunit 50032;
         Item_Rec: Record Item;
         SalesHeader_Rec: Record "Sales Header";
-        ItemCrossReference: Record "Item Cross Reference";
+        ItemCrossReference: Record "Item Reference";
+        UpdateRequestManager_Cu: Codeunit "DEL Update Request Manager";
 }
 

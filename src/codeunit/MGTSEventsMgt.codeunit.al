@@ -360,6 +360,7 @@ codeunit 50100 "DEL MGTS_EventsMgt"
     [EventSubscriber(ObjectType::Table, Database::"Purchase Header", 'OnRecreatePurchLinesOnBeforeConfirm', '', false, false)]
     local procedure T38_OnRecreatePurchLinesOnBeforeConfirm_PurchaseHeader(var PurchaseHeader: Record "Purchase Header"; xPurchaseHeader: Record "Purchase Header"; ChangedFieldName: Text[100]; HideValidationDialog: Boolean; var Confirmed: Boolean; var IsHandled: Boolean)
     var
+        SpecPurchLine: Record "Purchase Line";
         MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
         ConfirmManagement: Codeunit "Confirm Management";
         ConfirmText: Text;
@@ -375,8 +376,17 @@ codeunit 50100 "DEL MGTS_EventsMgt"
                 ConfirmText := ResetItemChargeAssignMsg
             else
                 ConfirmText := RecreatePurchLinesMsg;
-            IF ChangedFieldName = PurchaseHeader.FIELDCAPTION("VAT Bus. Posting Group") THEN
+            IF ChangedFieldName = PurchaseHeader.FIELDCAPTION("VAT Bus. Posting Group") THEN begin
                 Confirmed := TRUE;
+                SpecPurchLine.RESET();
+                SpecPurchLine.SETRANGE("Document Type", PurchaseHeader."Document Type");
+                SpecPurchLine.SETRANGE("Document No.", PurchaseHeader."No.");
+                IF SpecPurchLine.FINDSET() THEN
+                    REPEAT
+                        SpecPurchLine."Special Order Sales Line No." := 0;
+                        SpecPurchLine.MODIFY();
+                    UNTIL SpecPurchLine.NEXT() = 0;
+            end;
             Confirmed := ConfirmManagement.GetResponseOrDefault(StrSubstNo(ConfirmText, ChangedFieldName), true);
         end;
     end;
@@ -398,6 +408,116 @@ codeunit 50100 "DEL MGTS_EventsMgt"
             CLEARALL();
             SkipCommit := TRUE;
         END;
+    [EventSubscriber(ObjectType::Table, Database::"Purchase Header", 'OnBeforeTransferSavedFieldsSpecialOrder', '', false, false)]
+    local procedure T38_OnBeforeTransferSavedFieldsSpecialOrder_PurchaseHeader(var DestinationPurchaseLine: Record "Purchase Line"; var SourcePurchaseLine: Record "Purchase Line"; var IsHandled: Boolean)
+    var
+        SalesLine: Record "Sales Line";
+        CopyDocMgt: Codeunit "Copy Document Mgt.";
+    begin
+        SalesLine.LOCKTABLE();
+        IF SalesLine.GET(SalesLine."Document Type"::Order, SourcePurchaseLine."Special Order Sales No.", SourcePurchaseLine."Special Order Sales Line No.") THEN
+            CopyDocMgt.TransfldsFromSalesToPurchLine(SalesLine, DestinationPurchaseLine);
+        DestinationPurchaseLine."Special Order" := SourcePurchaseLine."Special Order";
+        DestinationPurchaseLine."Purchasing Code" := SalesLine."Purchasing Code";
+        DestinationPurchaseLine."Special Order Sales No." := SourcePurchaseLine."Special Order Sales No.";
+        DestinationPurchaseLine."Special Order Sales Line No." := SourcePurchaseLine."Special Order Sales Line No.";
+        DestinationPurchaseLine.Validate("Unit of Measure Code", SourcePurchaseLine."Unit of Measure Code");
+        if SourcePurchaseLine.Quantity <> 0 then
+            DestinationPurchaseLine.Validate(Quantity, SourcePurchaseLine.Quantity);
+
+        IF SalesLine.GET(SalesLine."Document Type"::Order, SourcePurchaseLine."Special Order Sales No.", SourcePurchaseLine."Special Order Sales Line No.") THEN BEGIN
+            SalesLine.Validate("Unit Cost (LCY)", DestinationPurchaseLine."Unit Cost (LCY)");
+            SalesLine."Special Order Purchase No." := DestinationPurchaseLine."Document No.";
+            SalesLine."Special Order Purch. Line No." := DestinationPurchaseLine."Line No.";
+            SalesLine.Modify();
+        END;
+        IsHandled := true;
+    end;
+
+    // [EventSubscriber(ObjectType::Table, Database::"Purchase Header", 'OnAfterCopyBuyFromVendorAddressFieldsFromVendor', '', false, false)]
+    // local procedure T38_OnAfterCopyBuyFromVendorAddressFieldsFromVendor_PurchaseHeader(var PurchaseHeader: Record "Purchase Header"; BuyFromVendor: Record Vendor)
+    // begin
+    //     "Ship Per" := BuyFromVendor."Ship Per";   TODO: Check
+    // end;
+
+    [EventSubscriber(ObjectType::Table, Database::"Purchase Header", 'OnBeforeTestStatusOpen', '', false, false)]
+    local procedure T38_OnBeforeTestStatusOpen_PurchaseHeader(var PurchHeader: Record "Purchase Header"; xPurchHeader: Record "Purchase Header"; CallingFieldNo: Integer)
+    var
+        Vend: Record Vendor;
+    begin
+        IF Vend.GET(PurchHeader."Buy-from Vendor No.") THEN
+            IF Vend."Vendor Posting Group" = 'MARCH' THEN
+                IF (Vend."DEL Qualified vendor" = FALSE) AND (Vend."DEL Derogation" = false) THEN
+                    Vend.TESTFIELD(Vend."DEL Qualified vendor", true);
+
+        PurchHeader.SuspendStatusCheck(false);
+    end;
+
+
+    [EventSubscriber(ObjectType::Table, Database::"Purchase Header", 'OnValidateBuyFromVendorNoOnAfterUpdateBuyFromCont', '', false, false)]
+    local procedure T38_OnValidateBuyFromVendorNoOnAfterUpdateBuyFromCont_PurchaseHeader(var PurchaseHeader: Record "Purchase Header"; xPurchaseHeader: Record "Purchase Header"; CallingFieldNo: Integer; var SkipBuyFromContact: Boolean)
+    begin
+        PurchaseHeader.NTO_UpdateForwardingAgent();
+    end;
+
+
+    [EventSubscriber(ObjectType::Table, Database::"Purchase Line", 'OnAfterInsertEvent', '', false, false)]
+    local procedure T39_OnAfterInsertEvent_PurchaseLine(var Rec: Record "Purchase Line"; RunTrigger: Boolean)
+    VAR
+        element_Re_Loc: Record "DEL Element";
+        urm_Re_Loc: Record "DEL Update Request Manager";
+        ACOConnection_Re_Loc: Record "DEL ACO Connection";
+        DealItem_Cu: Codeunit "DEL Deal Item";
+        UpdateRequestManager_Cu: Codeunit "DEL Update Request Manager";
+        requestID_Co_Loc: Code[20];
+    begin
+        if not RunTrigger then
+            exit;
+        if Rec.IsTemporary then
+            exit;
+        ACOConnection_Re_Loc.RESET();
+        ACOConnection_Re_Loc.SETCURRENTKEY("ACO No.");
+        ACOConnection_Re_Loc.SETRANGE("ACO No.", Rec."Document No.");
+        IF ACOConnection_Re_Loc.FINDFIRST THEN BEGIN
+
+            requestID_Co_Loc := UpdateRequestManager_Cu.FNC_Add_Request(
+              ACOConnection_Re_Loc.Deal_ID,
+              urm_Re_Loc.Requested_By_Type::"Purchase Header",
+              Rec."Document No.",
+              CURRENTDATETIME
+            );
+
+            Rec.INSERT();
+
+            urm_Re_Loc.GET(requestID_Co_Loc);
+            UpdateRequestManager_Cu.FNC_Process_Requests(urm_Re_Loc, FALSE, FALSE, TRUE);
+
+            Rec.DELETE();
+
+        END;
+        Rec.Modify();
+    end;
+
+    [EventSubscriber(ObjectType::Table, Database::"Purchase Line", 'OnBeforeUpdateSpecialSalesOrderLineFromOnDelete', '', false, false)]
+    local procedure T39_OnBeforeUpdateSpecialSalesOrderLineFromOnDelete_PurchaseLine(var PurchaseLine: Record "Purchase Line"; var SalesOrderLine: Record "Sales Line"; var IsHandled: Boolean)
+    begin
+        IF PurchaseLine."Special Order Sales Line No." <> 0 THEN BEGIN
+            PurchaseLine.LOCKTABLE;
+            SalesOrderLine.LOCKTABLE;
+            IF PurchaseLine."Document Type" = SalesOrderLine."Document Type"::Order THEN BEGIN
+                SalesOrderLine.RESET;
+                SalesOrderLine.SETRANGE("Document Type", PurchaseLine."Document Type"::Order);
+                SalesOrderLine.SETRANGE("Special Order Purchase No.", PurchaseLine."Document No.");
+                SalesOrderLine.SETRANGE("No.", PurchaseLine."No.");
+                IF SalesOrderLine.FIND('-') THEN
+                    REPEAT
+                        SalesOrderLine."Special Order Purchase No." := '';
+                        SalesOrderLine."Special Order Purch. Line No." := 0;
+                        SalesOrderLine.MODIFY;
+                    UNTIL SalesOrderLine.NEXT = 0;
+            END;
+        END;
+        IsHandled := true;
     end;
 
     ////COD 231
@@ -420,6 +540,10 @@ codeunit 50100 "DEL MGTS_EventsMgt"
     /////COD231
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post", 'OnGenJnlLineSetFilter', '', false, false)]
     local procedure COD231_OnGenJnlLineSetFilter_GenJnlPost(var GenJournalLine: Record "Gen. Journal Line")
+
+    //CDU 80 
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnAfterInsertPostedHeaders', '', false, false)]
+    local procedure OnAfterInsertPostedHeaders_SalesHeader(var SalesHeader: Record "Sales Header"; var SalesShipmentHeader: Record "Sales Shipment Header"; var SalesInvoiceHeader: Record "Sales Invoice Header"; var SalesCrMemoHdr: Record "Sales Cr.Memo Header"; var ReceiptHeader: Record "Return Receipt Header")
     var
         MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
     begin
@@ -593,6 +717,261 @@ codeunit 50100 "DEL MGTS_EventsMgt"
             end
     end;
 
+    //TODO:I suppose CommitIsSupressed say if the commit is suppressed (Skipped) during the posting
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnBeforePostSalesDoc', '', false, false)]
+    local procedure OnBeforePostSalesDoc(var SalesHeader: Record "Sales Header"; CommitIsSuppressed: Boolean; PreviewMode: Boolean; var HideProgressWindow: Boolean; var IsHandled: Boolean)
+    VAR
+        SkipCommit: Boolean; //Cdu 80
+    begin
+
+
+        IF SkipCommit THEN BEGIN
+            CLEARALL();
+            SkipCommit := TRUE;
+        END;
+
+    end;
+
+
+    [EventSubscriber(ObjectType::Table, Database::"Purchase Line", 'OnDeleteOnBeforePurchLineDeleteAll', '', false, false)]
+    local procedure T39_OnDeleteOnBeforePurchLineDeleteAll_PurchaseLine(var PurchaseLine: Record "Purchase Line")
+    var
+        ACOConnection_Re_Loc: Record "DEL ACO Connection";
+        element_Re_Loc: Record "DEL Element";
+        urm_Re_Loc: Record "DEL Update Request Manager";
+        UpdateRequestManager_Cu: Codeunit "DEL Update Request Manager";
+        requestID_Co_Loc: Code[20];
+    begin
+        ACOConnection_Re_Loc.RESET();
+        ACOConnection_Re_Loc.SETCURRENTKEY("ACO No.");
+        ACOConnection_Re_Loc.SETRANGE("ACO No.", PurchaseLine."Document No.");
+        IF ACOConnection_Re_Loc.FIND('-') THEN BEGIN
+
+            requestID_Co_Loc := UpdateRequestManager_Cu.FNC_Add_Request(
+              ACOConnection_Re_Loc.Deal_ID,
+              urm_Re_Loc.Requested_By_Type::"Purchase Header",
+              PurchaseLine."Document No.",
+              CURRENTDATETIME
+            );
+
+            urm_Re_Loc.GET(requestID_Co_Loc);
+            UpdateRequestManager_Cu.FNC_Process_Requests(urm_Re_Loc, FALSE, FALSE, TRUE);
+
+            EXIT;
+        END;
+    end;
+
+    [EventSubscriber(ObjectType::Table, Database::"Purchase Line", 'OnBeforeJobTaskIsSet', '', false, false)]
+    local procedure T39_OnBeforeJobTaskIsSet_PurchaseLine(PurchLine: Record "Purchase Line"; var IsJobLine: Boolean)
+    var
+        Item_Rec: Record Item;
+        SalesHeader_Rec: Record "Sales Header";
+        ItemCrossReference: Record "Item Reference";
+    begin
+        PurchLine.Get();
+        IF Item_Rec.GET(Item_Rec."No.") THEN
+            PurchLine.VALIDATE("DEL Total volume", (Item_Rec."DEL Vol cbm carton transport" * PurchLine.Quantity / Item_Rec."DEL PCB")
+            );
+
+        SalesHeader_Rec.SETRANGE("No.", PurchLine."Special Order Sales No.");
+        SalesHeader_Rec.SETRANGE("Document Type", "Document Type"::Order);
+
+        IF SalesHeader_Rec.FINDFIRST THEN BEGIN
+            ItemCrossReference.RESET;
+            ItemCrossReference.SETRANGE(ItemCrossReference."Reference Type", ItemCrossReference."Reference Type"::Customer);
+            ItemCrossReference.SETRANGE(ItemCrossReference."Reference Type No.", SalesHeader_Rec."Sell-to Customer No.");
+            ItemCrossReference.SETRANGE(ItemCrossReference."Item No.", PurchLine."No.");
+            IF ItemCrossReference.FINDFIRST THEN
+                PurchLine."DEL External reference NGTS" := ItemCrossReference."Reference No."
+            ELSE
+                PurchLine."DEL External reference NGTS" := '';
+        END;
+        IF PurchLine.Type = PurchLine.Type::Item THEN BEGIN
+            IF PurchLine.ExistOldPurch(PurchLine."No.", PurchLine."Document No.") THEN
+                PurchLine."DEL First Purch. Order" := TRUE;
+            IF Item_Rec."DEL Risk Item" = TRUE THEN
+                Item_Rec."DEL Risk Item" := TRUE
+            ELSE
+                Item_Rec."DEL Risk Item" := FALSE;
+        end;
+    end;
+
+    [EventSubscriber(ObjectType::Table, Database::"Purchase Line", 'OnValidateLocationCodeOnBeforeSpecialOrderError', '', false, false)]
+    local procedure T39_OnValidateLocationCodeOnBeforeSpecialOrderError_PurchaseLine(PurchaseLine: Record "Purchase Line"; var IsHandled: Boolean; CurrFieldNo: Integer)
+    begin
+        IsHandled := true;
+    end;
+
+    // [EventSubscriber(ObjectType::Table, Database::"Purchase Line", 'OnBeforeValidatePlannedReceiptDateWithCustomCalendarChange', '', false, false)]
+    // local procedure T39_OnBeforeValidatePlannedReceiptDateWithCustomCalendarChange_PurchaseLine(var PurchaseLine: Record "Purchase Line"; var xPurchaseLine: Record "Purchase Line"; var InHandled: Boolean);
+    // var
+    //     CalendarMgmt: Codeunit "Calendar Management";
+    //     CalChange: Record "Customized Calendar Change";
+    // begin
+    //     // PurchaseLine.Validate(
+    //     //     "Planned Receipt Date",
+    //     //     CalendarMgmt.CalcDateBOC2(PurchaseLine.InternalLeadTimeDays(PurchaseLine."Expected Receipt Date"), PurchaseLine."Expected Receipt Date",
+    //     //         CalChange."Source Type"::Location, PurchaseLine."Location Code", '',
+    //     //         CalChange."Source Type"::Location, PurchaseLine."Location Code", '', FALSE));
+
+    //     PurchaseLine.Validate(
+    //         "Planned Receipt Date",
+    //         CalendarMgmt.CalcDateBOC2(PurchaseLine.ReversedInternalLeadTimeDays(PurchaseLine."Expected Receipt Date"), PurchaseLine."Expected Receipt Date", CustomCalendarChange, false));
+
+    //     IF NOT (xPurchaseLine."Expected Receipt Date" = PurchaseLine."Expected Receipt Date") THEN
+    //         PurchaseLine.UpdateSalesEstimatedDelivery();
+    // end; TODO: check filed 10 : "Expected Receipt Date"
+
+
+    [EventSubscriber(ObjectType::Table, Database::"Purchase Line", 'OnValidateQuantityOnAfterPlanPriceCalcByField', '', false, false)]
+    local procedure T39_OnValidateQuantityOnAfterPlanPriceCalcByField_PurchaseLine(var PurchaseLine: Record "Purchase Line"; xPurchaseLine: Record "Purchase Line")
+    var
+        Item_Rec: Record Item;
+        Item: Record Item; // TODO: check
+    begin
+        IF Item_Rec.GET(PurchaseLine."No.") THEN
+            PurchaseLine.VALIDATE(PurchaseLine."DEL Total volume", (Item."DEL Vol cbm carton transport" * PurchaseLine.Quantity / Item."DEL PCB"));
+    end;
+
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnAfterPostSalesDoc', '', false, false)]
+    local procedure OnAfterPostSalesDoc(var SalesHeader: Record "Sales Header";
+     var GenJnlPostLine: Codeunit "Gen. Jnl.-Post Line"; SalesShptHdrNo: Code[20];
+      RetRcpHdrNo: Code[20];
+      SalesInvHdrNo: Code[20]; SalesCrMemoHdrNo: Code[20]; CommitIsSuppressed: Boolean;
+      InvtPickPutaway: Boolean; var CustLedgerEntry: Record "Cust. Ledger Entry";
+       WhseShip: Boolean; WhseReceiv: Boolean)
+    var
+        Cust: Record Customer;
+        SalesInvHeader: Record "Sales Invoice Header";
+        MGTSEDIManagement: Codeunit "DEL MGTS EDI Management";
+        Text50050: Label 'Do you want to export the invoice %2 from document No. %1 with EDI', Comment = 'FRA="Voulez-vous exporter la facture %2 du document n° %1 avec EDI?"';
+
+    begin
+
+
+        IF SalesHeader.Invoice THEN BEGIN
+            IF NOT Cust.GET(SalesHeader."Sell-to Customer No.") THEN
+                Cust.INIT();
+
+            IF Cust."DEL EDI" THEN
+                IF CONFIRM(STRSUBSTNO(Text50050, SalesHeader."No.", SalesInvHeader."No.")) THEN BEGIN
+                    SalesHeader."DEL Export With EDI" := TRUE;
+                    MGTSEDIManagement.GenerateSalesInvoiceEDIBuffer(SalesInvHeader."No.", TRUE);
+                END;
+        END;
+
+    end;
+    //TODO
+    // [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnCheckAndUpdateOnBeforeCheckPostRestrictions', '', false, false)]
+    // local procedure OnCheckAndUpdateOnBeforeCheckPostRestrictions(var SalesHeader: Record "Sales Header"; PreviewMode: Boolean)
+    // var
+    //     MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
+    //     SuppressCommit: Boolean;
+    //     SalesPost: Codeunit "Sales-Post";
+    // begin
+    //     MGTSFactMgt.SetSuppressCommit(true);
+    //     IF NOT SuppressCommit THEN
+    //         if SalesHeader.Invoice then
+    //             SalesHeader.Invoice := CalcInvoice(SalesHeader);
+
+    // end;
+
+
+    //TODO: je n'ai pas trouvé un evenement qui appel la "SuppressCommit"
+    // [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnBeforeUpdateWhseDocuments', '', false, false)]
+    // local procedure OnBeforeUpdateWhseDocuments(var SalesHeader: Record "Sales Header";
+    //  var IsHandled: Boolean; WhseReceive: Boolean; WhseShip: Boolean;
+    // WhseRcptHeader: Record "Warehouse Receipt Header";
+    //  WhseShptHeader: Record "Warehouse Shipment Header"; var TempWhseRcptHeader:
+    //  Record "Warehouse Receipt Header" temporary; var TempWhseShptHeader:
+    //  Record "Warehouse Shipment Header" temporary)
+    // var
+    //     WhsePostRcpt: Codeunit "Whse.-Post Receipt";
+
+    // begin
+    //     IsHandled := true;
+    //     if WhseReceive then begin
+    //         WhsePostRcpt.SetSuppressCommit(SuppressCommit);
+    //     end;
+    //     IsHandled:=true;
+    //     if WhseShip then begin
+    //     WhsePostShpt.SetSuppressCommit(SuppressCommit);    
+    // end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnBeforeDeleteAfterPosting', '', false, false)]
+    local procedure OnBeforeDeleteAfterPosting(var SalesHeader: Record "Sales Header"; var SalesInvoiceHeader: Record "Sales Invoice Header"; var SalesCrMemoHeader: Record "Sales Cr.Memo Header"; var SkipDelete: Boolean; CommitIsSuppressed: Boolean; EverythingInvoiced: Boolean; var TempSalesLineGlobal: Record "Sales Line" temporary)
+    var
+        MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
+    begin
+        MGTSFactMgt.ReverseProvisionEntries(SalesHeader);
+    end;
+
+    //CDU 81 
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post (Yes/No)", 'OnBeforeConfirmSalesPost', '', false, false)]
+    local procedure COD81_OnBeforeConfirmSalesPost(var SalesHeader: Record "Sales Header"; var HideDialog: Boolean; var IsHandled: Boolean; var DefaultOption: Integer; var PostAndSend: Boolean)
+    var
+        MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
+    begin
+        MGTSFactMgt.OnBeforeConfirmSalesPostFct(SalesHeader, HideDialog, IsHandled, DefaultOption, PostAndSend);
+    end;
+    ////
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post (Yes/No)", 'OnAfterConfirmPost', '', false, false)]
+    local procedure COD81_OnAfterConfirmPost(var SalesHeader: Record "Sales Header")
+    var
+        MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
+    begin
+        MGTSFactMgt.OnAfterConfirmPost(SalesHeader);
+    end;
+    ////
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post (Yes/No)", 'OnConfirmPostOnBeforeSetSelection', '', false, false)]
+    local procedure COD81_OnConfirmPostOnBeforeSetSelection(var SalesHeader: Record "Sales Header")
+    var
+        Deal_Cu: Codeunit "DEL Deal";
+        dealShipmentSelection_Re: Record "DEL Deal Shipment Selection";
+    begin
+        IF (SalesHeader."Document Type" = SalesHeader."Document Type"::Order) THEN
+            Deal_Cu.FNC_Reinit_Deal(dealShipmentSelection_Re.Deal_ID, FALSE, FALSE);
+    end;
+
+    //----------CDU 82 
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post + Print", 'OnBeforeConfirmPost', '', false, false)]
+    local procedure COD82_OnBeforeConfirmPost(var SalesHeader: Record "Sales Header"; var HideDialog: Boolean; var IsHandled: Boolean; var SendReportAsEmail: Boolean; var DefaultOption: Integer)
+    var
+        MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
+    begin
+        MGTSFactMgt.OnBeforeConfirmPostFct(SalesHeader, HideDialog, IsHandled, SendReportAsEmail, DefaultOption);
+
+
+    end;
+    ///////
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post + Print", 'OnAfterConfirmPost', '', false, false)]
+    local procedure OnAfterConfirmPost(var SalesHeader: Record "Sales Header")
+    var
+        element_Re_Loc: Record "DEL Element";
+        dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
+        updateRequestID_Co_Loc: Code[20];
+        updateRequestManager_Cu: Codeunit "DEL Update Request Manager";
+        shipmentSelected_Bo_Loc: Boolean;
+        salesLine_Re_Loc: Record "Sales Line";
+        GLAccount_Re_Loc: Record "G/L Account";
+        Deal_Cu: Codeunit "DEL Deal";
+
+    begin
+        IF shipmentSelected_Bo_Loc THEN BEGIN
+            Deal_Cu.FNC_Reinit_Deal(dealShipmentSelection_Re_Loc.Deal_ID, FALSE, FALSE);
+            updateRequestManager_Cu.FNC_Validate_Request(updateRequestID_Co_Loc);
+            dealShipmentSelection_Re_Loc.RESET();
+            dealShipmentSelection_Re_Loc.SETRANGE("Document No.", SalesHeader."No.");
+            dealShipmentSelection_Re_Loc.SETRANGE(USER_ID, USERID);
+            dealShipmentSelection_Re_Loc.DELETEALL();
+        END;
+
+    end;
+    //---------CDU 90
 
 
 
