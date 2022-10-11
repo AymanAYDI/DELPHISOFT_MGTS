@@ -488,33 +488,19 @@ codeunit 50100 "DEL MGTS_EventsMgt"
             PurchaseLine.LOCKTABLE;
             SalesOrderLine.LOCKTABLE;
             IF PurchaseLine."Document Type" = SalesOrderLine."Document Type"::Order THEN BEGIN
-                //START MIG2017
-                //SalesOrderLine.GET(SalesOrderLine."Document Type"::Order,"Special Order Sales No.","Special Order Sales Line No.");
                 SalesOrderLine.RESET;
-                SalesOrderLine.SETRANGE("Document Type", "Document Type"::Order);
-                SalesOrderLine.SETRANGE("Special Order Purchase No.", "Document No.");
-                SalesOrderLine.SETRANGE("No.", "No.");
-                //    SalesOrderLine."Special Order Purchase No." := '';
-                //    SalesOrderLine."Special Order Purch. Line No." := 0;
-                //    SalesOrderLine.MODIFY;
-                //  END ELSE
-                //    IF SalesOrderLine.GET(SalesOrderLine."Document Type"::Order,"Special Order Sales No.","Special Order Sales Line No.") THEN
-                //      BEGIN
-                //         SalesOrderLine."Special Order Purchase No." := '';
-                //         SalesOrderLine."Special Order Purch. Line No." := 0;
-                //         SalesOrderLine.MODIFY;
-                //    END;
-
+                SalesOrderLine.SETRANGE("Document Type", PurchaseLine."Document Type"::Order);
+                SalesOrderLine.SETRANGE("Special Order Purchase No.", PurchaseLine."Document No.");
+                SalesOrderLine.SETRANGE("No.", PurchaseLine."No.");
                 IF SalesOrderLine.FIND('-') THEN
                     REPEAT
                         SalesOrderLine."Special Order Purchase No." := '';
                         SalesOrderLine."Special Order Purch. Line No." := 0;
                         SalesOrderLine.MODIFY;
                     UNTIL SalesOrderLine.NEXT = 0;
-                // STOP Interne1
-                //END MIG2017
             END;
         END;
+        IsHandled := true;
     end;
 
     ////COD 231
@@ -559,6 +545,108 @@ codeunit 50100 "DEL MGTS_EventsMgt"
         END;
 
     end;
+
+
+    [EventSubscriber(ObjectType::Table, Database::"Purchase Line", 'OnDeleteOnBeforePurchLineDeleteAll', '', false, false)]
+    local procedure T39_OnDeleteOnBeforePurchLineDeleteAll_PurchaseLine(var PurchaseLine: Record "Purchase Line")
+    var
+        ACOConnection_Re_Loc: Record "DEL ACO Connection";
+        element_Re_Loc: Record "DEL Element";
+        urm_Re_Loc: Record "DEL Update Request Manager";
+        UpdateRequestManager_Cu: Codeunit "DEL Update Request Manager";
+        requestID_Co_Loc: Code[20];
+    begin
+        ACOConnection_Re_Loc.RESET();
+        ACOConnection_Re_Loc.SETCURRENTKEY("ACO No.");
+        ACOConnection_Re_Loc.SETRANGE("ACO No.", PurchaseLine."Document No.");
+        IF ACOConnection_Re_Loc.FIND('-') THEN BEGIN
+
+            requestID_Co_Loc := UpdateRequestManager_Cu.FNC_Add_Request(
+              ACOConnection_Re_Loc.Deal_ID,
+              urm_Re_Loc.Requested_By_Type::"Purchase Header",
+              PurchaseLine."Document No.",
+              CURRENTDATETIME
+            );
+
+            urm_Re_Loc.GET(requestID_Co_Loc);
+            UpdateRequestManager_Cu.FNC_Process_Requests(urm_Re_Loc, FALSE, FALSE, TRUE);
+
+            EXIT;
+        END;
+    end;
+
+    [EventSubscriber(ObjectType::Table, Database::"Purchase Line", 'OnBeforeJobTaskIsSet', '', false, false)]
+    local procedure T39_OnBeforeJobTaskIsSet_PurchaseLine(PurchLine: Record "Purchase Line"; var IsJobLine: Boolean)
+    var
+        Item_Rec: Record Item;
+        SalesHeader_Rec: Record "Sales Header";
+        ItemCrossReference: Record "Item Reference";
+    begin
+        PurchLine.Get();
+        IF Item_Rec.GET(Item_Rec."No.") THEN
+            PurchLine.VALIDATE("DEL Total volume", (Item_Rec."DEL Vol cbm carton transport" * PurchLine.Quantity / Item_Rec."DEL PCB")
+            );
+
+        SalesHeader_Rec.SETRANGE("No.", PurchLine."Special Order Sales No.");
+        SalesHeader_Rec.SETRANGE("Document Type", "Document Type"::Order);
+
+        IF SalesHeader_Rec.FINDFIRST THEN BEGIN
+            ItemCrossReference.RESET;
+            ItemCrossReference.SETRANGE(ItemCrossReference."Reference Type", ItemCrossReference."Reference Type"::Customer);
+            ItemCrossReference.SETRANGE(ItemCrossReference."Reference Type No.", SalesHeader_Rec."Sell-to Customer No.");
+            ItemCrossReference.SETRANGE(ItemCrossReference."Item No.", PurchLine."No.");
+            IF ItemCrossReference.FINDFIRST THEN
+                PurchLine."DEL External reference NGTS" := ItemCrossReference."Reference No."
+            ELSE
+                PurchLine."DEL External reference NGTS" := '';
+        END;
+        IF PurchLine.Type = PurchLine.Type::Item THEN BEGIN
+            IF PurchLine.ExistOldPurch(PurchLine."No.", PurchLine."Document No.") THEN
+                PurchLine."DEL First Purch. Order" := TRUE;
+            IF Item_Rec."DEL Risk Item" = TRUE THEN
+                Item_Rec."DEL Risk Item" := TRUE
+            ELSE
+                Item_Rec."DEL Risk Item" := FALSE;
+        end;
+    end;
+
+    [EventSubscriber(ObjectType::Table, Database::"Purchase Line", 'OnValidateLocationCodeOnBeforeSpecialOrderError', '', false, false)]
+    local procedure T39_OnValidateLocationCodeOnBeforeSpecialOrderError_PurchaseLine(PurchaseLine: Record "Purchase Line"; var IsHandled: Boolean; CurrFieldNo: Integer)
+    begin
+        IsHandled := true;
+    end;
+
+    // [EventSubscriber(ObjectType::Table, Database::"Purchase Line", 'OnBeforeValidatePlannedReceiptDateWithCustomCalendarChange', '', false, false)]
+    // local procedure T39_OnBeforeValidatePlannedReceiptDateWithCustomCalendarChange_PurchaseLine(var PurchaseLine: Record "Purchase Line"; var xPurchaseLine: Record "Purchase Line"; var InHandled: Boolean);
+    // var
+    //     CalendarMgmt: Codeunit "Calendar Management";
+    //     CalChange: Record "Customized Calendar Change";
+    // begin
+    //     // PurchaseLine.Validate(
+    //     //     "Planned Receipt Date",
+    //     //     CalendarMgmt.CalcDateBOC2(PurchaseLine.InternalLeadTimeDays(PurchaseLine."Expected Receipt Date"), PurchaseLine."Expected Receipt Date",
+    //     //         CalChange."Source Type"::Location, PurchaseLine."Location Code", '',
+    //     //         CalChange."Source Type"::Location, PurchaseLine."Location Code", '', FALSE));
+
+    //     PurchaseLine.Validate(
+    //         "Planned Receipt Date",
+    //         CalendarMgmt.CalcDateBOC2(PurchaseLine.ReversedInternalLeadTimeDays(PurchaseLine."Expected Receipt Date"), PurchaseLine."Expected Receipt Date", CustomCalendarChange, false));
+
+    //     IF NOT (xPurchaseLine."Expected Receipt Date" = PurchaseLine."Expected Receipt Date") THEN
+    //         PurchaseLine.UpdateSalesEstimatedDelivery();
+    // end; TODO: check filed 10 : "Expected Receipt Date"
+
+
+    [EventSubscriber(ObjectType::Table, Database::"Purchase Line", 'OnValidateQuantityOnAfterPlanPriceCalcByField', '', false, false)]
+    local procedure T39_OnValidateQuantityOnAfterPlanPriceCalcByField_PurchaseLine(var PurchaseLine: Record "Purchase Line"; xPurchaseLine: Record "Purchase Line")
+    var
+        Item_Rec: Record Item;
+        Item: Record Item; // TODO: check
+    begin
+        IF Item_Rec.GET(PurchaseLine."No.") THEN
+            PurchaseLine.VALIDATE(PurchaseLine."DEL Total volume", (Item."DEL Vol cbm carton transport" * PurchaseLine.Quantity / Item."DEL PCB"));
+    end;
+
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnAfterPostSalesDoc', '', false, false)]
     local procedure OnAfterPostSalesDoc(var SalesHeader: Record "Sales Header";
@@ -637,7 +725,6 @@ codeunit 50100 "DEL MGTS_EventsMgt"
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post (Yes/No)", 'OnBeforeConfirmSalesPost', '', false, false)]
     local procedure COD81_OnBeforeConfirmSalesPost(var SalesHeader: Record "Sales Header"; var HideDialog: Boolean; var IsHandled: Boolean; var DefaultOption: Integer; var PostAndSend: Boolean)
-
     var
         MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
     begin
