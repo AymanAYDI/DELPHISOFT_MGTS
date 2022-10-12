@@ -207,7 +207,7 @@ codeunit 50101 "DEL MGTS_FctMgt"
 
 
 
-
+    /////COD 231
     procedure OnBeforeCodeFct(var GenJournalLine: Record "Gen. Journal Line"; var HideDialog: Boolean)
     var
 
@@ -461,6 +461,17 @@ codeunit 50101 "DEL MGTS_FctMgt"
                   CURRENTDATETIME
                 );
 
+    procedure OnGenJnlLineSetFilter_Fct(var GenJournalLine: Record "Gen. Journal Line")
+    var
+        Provision_Cu: Codeunit "DEL Provision";
+        genJournalLine_Re_Temp: Record "Gen. Journal Line" TEMPORARY;
+    begin
+        genJournalLine_Re_Temp.RESET();
+        genJournalLine_Re_Temp.SETRANGE("Journal Batch Name", 'PROVISION');
+        IF genJournalLine_Re_Temp.FIND('-') THEN
+            Provision_Cu.FNC_Add2Deals();
+
+    end;
 
             END ELSE BEGIN
 

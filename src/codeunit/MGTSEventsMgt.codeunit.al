@@ -391,6 +391,23 @@ codeunit 50100 "DEL MGTS_EventsMgt"
         end;
     end;
 
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnAfterInsertPostedHeaders', '', false, false)]
+    local procedure OnAfterInsertPostedHeaders_SalesHeader(var SalesHeader: Record "Sales Header"; var SalesShipmentHeader: Record "Sales Shipment Header"; var SalesInvoiceHeader: Record "Sales Invoice Header"; var SalesCrMemoHdr: Record "Sales Cr.Memo Header"; var ReceiptHeader: Record "Return Receipt Header")
+    var
+        MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
+    begin
+        MGTSFactMgt.OnAfterInsertPostedHeaders(SalesHeader, SalesShipmentHeader, SalesInvoiceHeader, SalesCrMemoHdr, ReceiptHeader);
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnBeforePostSalesDoc', '', false, false)]
+    local procedure OnBeforePostSalesDoc(var SalesHeader: Record "Sales Header"; CommitIsSuppressed: Boolean; PreviewMode: Boolean; var HideProgressWindow: Boolean; var IsHandled: Boolean)
+    var
+        SkipCommit: Boolean; //Cdu 80
+    begin
+        IF SkipCommit THEN BEGIN
+            CLEARALL();
+            SkipCommit := TRUE;
+        END;
     [EventSubscriber(ObjectType::Table, Database::"Purchase Header", 'OnBeforeTransferSavedFieldsSpecialOrder', '', false, false)]
     local procedure T38_OnBeforeTransferSavedFieldsSpecialOrder_PurchaseHeader(var DestinationPurchaseLine: Record "Purchase Line"; var SourcePurchaseLine: Record "Purchase Line"; var IsHandled: Boolean)
     var
@@ -514,13 +531,15 @@ codeunit 50100 "DEL MGTS_EventsMgt"
 
     /////
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post", 'OnCodeOnAfterGenJnlPostBatchRun', '', false, false)]
-
     local procedure COD231_OnCodeOnAfterGenJnlPostBatchRun_GenJnlPost(var GenJnlLine: Record "Gen. Journal Line")
     var
         MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
     begin
         MGTSFactMgt.OnCodeOnAfterGenJnlPostBatchRunfct(GenJnlLine);
     end;
+    /////COD231
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post", 'OnGenJnlLineSetFilter', '', false, false)]
+    local procedure COD231_OnGenJnlLineSetFilter_GenJnlPost(var GenJournalLine: Record "Gen. Journal Line")
 
     //CDU 80 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnAfterInsertPostedHeaders', '', false, false)]
@@ -528,8 +547,176 @@ codeunit 50100 "DEL MGTS_EventsMgt"
     var
         MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
     begin
-        MGTSFactMgt.OnAfterInsertPostedHeaders(SalesHeader, SalesShipmentHeader, SalesInvoiceHeader, SalesCrMemoHdr, ReceiptHeader);
+        MGTSFactMgt.OnGenJnlLineSetFilter_Fct(GenJournalLine);
     end;
+    ////COD 232 
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post+Print", 'OnBeforePostJournalBatch', '', false, false)]
+    local procedure COD232_OnBeforePostJournalBatch_GenJnlPostPrint(var GenJournalLine: Record "Gen. Journal Line"; var HideDialog: Boolean)
+    var
+        MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
+    begin
+        MGTSFactMgt.OnBeforeCodeFct(GenJournalLine, HideDialog);
+    end;
+    ////COD 232
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post+Print", 'OnAfterPostJournalBatch', '', false, false)]
+    local procedure COD232_OnAfterPostJournalBatch_GenJnlPostPrint(var GenJournalLine: Record "Gen. Journal Line");
+    var
+        MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
+    begin
+        MGTSFactMgt.OnCodeOnAfterGenJnlPostBatchRunfct(GenJournalLine);
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post+Print", 'OnGenJnlLineSetFilter', '', false, false)]
+
+    local procedure COD232_OnGenJnlLineSetFilter_GenJnlPostPrint(var GenJournalLine: Record "Gen. Journal Line")
+    var
+        MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
+    begin
+        MGTSFactMgt.OnGenJnlLineSetFilter_Fct(GenJournalLine);
+    end;
+    //TODO 
+    // [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post+Print", 'OnAfterConfirmPostJournalBatch', '', false, false)]
+
+    // local procedure OnAfterConfirmPostJournalBatch(var GenJournalLine: Record "Gen. Journal Line"; var IsHandled: Boolean)
+    // var
+    //     TempJnlBatchName: Code[10];
+    //     RecRefToPrint: RecordRef;
+    //     GeneralLedgerSetup: Record "General Ledger Setup";
+    //     GenJnlsScheduled: Boolean;
+    //     BatchPostingPrintMgt: Codeunit "Batch Posting Print Mgt.";
+    //     GenJnlPostviaJobQueue: Codeunit "Gen. Jnl.-Post via Job Queue";
+    //     JournalsScheduledMsg: Label 'Journal lines have been scheduled for posting.';
+    //     Text000: Label 'cannot be filtered when posting recurring journals';
+    //     Text001: Label 'Do you want to post the journal lines and print the report(s)?';
+    //     Text002: Label 'There is nothing to post.';
+    //     Text003: Label 'The journal lines were successfully posted.';
+    //     Text004: Label 'The journal lines were successfully posted. You are now in the %1 journal.';
+    // begin
+
+    //     GeneralLedgerSetup.Get();
+    //     RecRefToPrint.GetTable(GenJournalLine);
+    //     if GeneralLedgerSetup."Post & Print with Job Queue" then begin
+    //         // Add job queue entry for each document no.
+    //         GenJournalLine.SetCurrentKey("Document No.");
+    //         while GenJournalLine.FindFirst() do begin
+    //             GenJnlsScheduled := true;
+    //             GenJournalLine."Print Posted Documents" := true;
+    //             GenJournalLine.Modify();
+    //             GenJnlPostviaJobQueue.EnqueueGenJrnlLineWithUI(GenJournalLine, false);
+    //             GenJournalLine.SetFilter("Document No.", '>%1', GenJournalLine."Document No.");
+    //         end;
+
+    //         if GenJnlsScheduled then
+    //             Message(JournalsScheduledMsg);
+    //     end else begin
+    //         CODEUNIT.Run(CODEUNIT::"Gen. Jnl.-Post Batch", GenJournalLine);
+    //         OnAfterPostJournalBatch(GenJournalLine);
+
+    //         RecRefToPrint.GetTable(GenJournalLine);
+    //         BatchPostingPrintMgt.PrintJournal(RecRefToPrint);
+
+    //         if not HideDialog then
+    //             if GenJournalLine."Line No." = 0 then
+    //                 Message(Text002)
+    //             else
+    //                 if TempJnlBatchName = GenJournalLine."Journal Batch Name" then
+    //                     Message(Text003)
+    //                 else
+    //                     Message(Text004, GenJournalLine."Journal Batch Name");
+    //     end;
+
+    //     if not GenJournalLine.Find('=><') or (TempJnlBatchName <> GenJournalLine."Journal Batch Name") or GenJournalLine.GeneralLedgerSetup."Post & Print with Job Queue" then begin
+    //         GenJournalLine.Reset;
+    //         GenJournalLine.FilterGroup(2);
+    //         GenJournalLine.SetRange("Journal Template Name", GenJournalLine."Journal Template Name");
+    //         GenJournalLine.SetRange("Journal Batch Name", GenJournalLine."Journal Batch Name");
+    //         OnGenJnlLineSetFilter(GenJournalLine);
+    //         GenJournalLine.FilterGroup(0);
+    //         GenJournalLine."Line No." := 1;
+    //     end;
+    // end;
+
+
+    //// COD 333
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Req. Wksh.-Make Order", 'OnCodeOnBeforeFinalizeOrderHeader', '', false, false)]
+    local procedure OnCodeOnBeforeFinalizeOrderHeader(PurchOrderHeader: Record "Purchase Header"; var ReqLine: Record "Requisition Line"; var IsHandled: Boolean)
+    var
+        ReqwkshMorder: Codeunit "Req. Wksh.-Make Order";
+        ReleasePurchaseDocument: Codeunit "Release Purchase Document";
+    begin
+        IsHandled := true;
+        if PurchOrderHeader."Buy-from Vendor No." <> '' then begin
+            IF ReqLine."Action Message" = ReqLine."Action Message"::New THEN
+                ReleasePurchaseDocument.ReleasePurchaseHeader(PurchOrderHeader, FALSE);
+            ReqwkshMorder.FinalizeOrderHeader(PurchOrderHeader, ReqLine);
+        end;
+
+    end;
+    ///// COD333
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Req. Wksh.-Make Order", 'OnBeforeInitPurchOrderLineUpdateQuantity', '', false, false)]
+
+    local procedure COD333_OnBeforeInitPurchOrderLineUpdateQuantity_ReqWeshMOrder(var PurchOrderLine: Record "Purchase Line"; var RequisitionLine: Record "Requisition Line"; var IsHandled: Boolean)
+    var
+        ReqLineTEMP: Record "Requisition Line";
+        Qty: Decimal;
+    begin
+        IsHandled := true;
+        Qty := RequisitionLine.Quantity;
+        ReqLineTEMP.RESET();
+        ReqLineTEMP.SETCURRENTKEY("Worksheet Template Name", "Journal Batch Name", Type, "No.", "Due Date");
+        ReqLineTEMP.SETRANGE("Worksheet Template Name", RequisitionLine."Worksheet Template Name");
+        ReqLineTEMP.SETRANGE("Journal Batch Name", RequisitionLine."Journal Batch Name");
+        ReqLineTEMP.SETRANGE(Type, ReqLineTEMP.Type::Item);
+        ReqLineTEMP.SETRANGE("No.", RequisitionLine."No.");
+        ReqLineTEMP.SETRANGE("Location Code", RequisitionLine."Location Code");
+        ReqLineTEMP.SETRANGE("DEL Requested Delivery Date", RequisitionLine."DEL Requested Delivery Date");
+        ReqLineTEMP.SETFILTER("Line No.", '<>%1', RequisitionLine."Line No.");
+        IF ReqLineTEMP.FIND('-') THEN
+            REPEAT
+                Qty := Qty + ReqLineTEMP.Quantity;
+            UNTIL ReqLineTEMP.NEXT() = 0;
+        PurchOrderLine.Validate(Quantity, Qty);
+    end;
+
+    ////// 
+    //TODO VAR GLOBAL 
+    // [EventSubscriber(ObjectType::Codeunit, Codeunit::"Req. Wksh.-Make Order", 'OnInsertPurchOrderLineOnAfterCheckInsertFinalizePurchaseOrderHeader', '', false, false)]
+
+    // local procedure COD333_OnInsertPurchOrderLineOnAfterCheckInsertFinalizePurchOrderHeader_ReqWeshMOrder(var RequisitionLine: Record "Requisition Line"; var PurchaseHeader: Record "Purchase Header"; var NextLineNo: Integer)
+    // begin
+    //     PrevReqDeliveryDate := RequisitionLine."DEL Requested Delivery Date";
+    // end;
+
+    /////
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Req. Wksh.-Make Order", 'OnInitPurchOrderLineOnAfterValidateLineDiscount', '', false, false)]
+
+    local procedure COD333_OnInitPurchOrderLineOnAfterValidateLineDiscount_ReqWeshMOrder(var PurchOrderLine: Record "Purchase Line"; PurchOrderHeader: Record "Purchase Header"; RequisitionLine: Record "Requisition Line")
+    begin
+        IF PurchOrderHeader."Expected Receipt Date" <> 0D THEN
+            PurchOrderLine."Expected Receipt Date" := PurchOrderHeader."Expected Receipt Date"
+        ELSE
+            PurchOrderLine."Expected Receipt Date" := RequisitionLine."Due Date";
+    end;
+    ///
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Req. Wksh.-Make Order", 'OnInsertPurchOrderLineOnBeforeTransferReqLine', '', false, false)]
+    //check line 535
+    local procedure COD333_OnInsertPurchOrderLineOnBeforeTransferReqLine_ReqWeshMOrder(var PurchOrderHeader: Record "Purchase Header"; PurchOrderLine: Record "Purchase Line")
+    var
+        PurchasingCode: Record Purchasing;
+        ItemReference: record "Item Reference";
+    begin
+        IF PurchasingCode.GET(PurchOrderLine."Purchasing Code") THEN
+            IF PurchasingCode."Special Order" THEN BEGIN
+                ItemReference.RESET();
+                ItemReference.SETRANGE(ItemReference."Reference Type", ItemReference."Reference Type"::Customer);
+                ItemReference.SETRANGE(ItemReference."Reference Type No.", PurchOrderHeader."Sell-to Customer No.");
+                ItemReference.SETRANGE(ItemReference."Item No.", PurchOrderHeader."No.");
+                IF ItemReference.FINDFIRST() THEN
+                    PurchOrderLine."DEL External reference NGTS" := ItemReference."Reference No.";
+            end
+    end;
+
     //TODO:I suppose CommitIsSupressed say if the commit is suppressed (Skipped) during the posting
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnBeforePostSalesDoc', '', false, false)]
