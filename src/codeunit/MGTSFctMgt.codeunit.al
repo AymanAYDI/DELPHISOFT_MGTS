@@ -400,7 +400,7 @@ codeunit 50101 "DEL MGTS_FctMgt"
             UNTIL (genJournalLine_Re_Temp.NEXT() = 0);
         END;
     end;
-    //----------------- CDU81
+    //-----------------PROC CDU81
     procedure OnBeforeConfirmSalesPostFct(var SalesHeader: Record "Sales Header"; var HideDialog: Boolean; var IsHandled: Boolean; var DefaultOption: Integer; var PostAndSend: Boolean)
     var
         dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
@@ -537,7 +537,7 @@ codeunit 50101 "DEL MGTS_FctMgt"
 
     end;
 
-    //-------CDU82 ---
+    //-------PROC CDU82 ---
     procedure OnBeforeConfirmPostFct(var SalesHeader: Record "Sales Header"; var HideDialog: Boolean; var IsHandled: Boolean; var SendReportAsEmail: Boolean; var DefaultOption: Integer)
     var
         element_Re_Loc: Record "DEL Element";
@@ -657,7 +657,197 @@ codeunit 50101 "DEL MGTS_FctMgt"
         END;
 
     end;
-    /////
+    /////--------- PROC CDU 91
+
+
+
+    procedure OnBeforeConfirmPostfct(var PurchaseHeader: Record "Purchase Header"; var HideDialog: Boolean; var IsHandled: Boolean; var DefaultOption: Integer)
+    var
+        element_Re_Loc: Record "DEL Element";
+        dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
+        updateRequestID_Co_Loc: Code[20];
+        updateRequestManager_Cu: Codeunit "DEL Update Request Manager";
+        shipmentSelected_Bo_Loc: Boolean;
+        PurchaseLine_Re_Loc: Record "Purchase Line";
+        GLAccount_Re_Loc: Record "G/L Account";
+
+
+    begin
+
+        //MIG2017 START
+        //On gŠre les "Document Type" commandes, notes de cr‚dit et les factures
+        IF
+        (
+          (PurchaseHeader."Document Type" = PurchaseHeader."Document Type"::Order)
+          OR
+          (PurchaseHeader."Document Type" = PurchaseHeader."Document Type"::"Credit Memo")
+          OR
+          (PurchaseHeader."Document Type" = PurchaseHeader."Document Type"::Invoice)
+        )
+        THEN BEGIN
+
+            dealShipmentSelection_Re_Loc.RESET();
+            dealShipmentSelection_Re_Loc.SETRANGE("Document No.", PurchaseHeader."No.");
+            dealShipmentSelection_Re_Loc.SETRANGE(Checked, TRUE);
+            dealShipmentSelection_Re_Loc.SETRANGE(USER_ID, USERID);
+            IF dealShipmentSelection_Re_Loc.FIND('-') THEN BEGIN
+
+                shipmentSelected_Bo_Loc := TRUE;
+
+                IF PurchaseHeader."Document Type" = PurchaseHeader."Document Type"::Invoice THEN BEGIN
+
+                    //pour les factures achat, on veut 0 ou 1 livraison li‚e
+                    IF dealShipmentSelection_Re_Loc.COUNT() > 1 THEN
+                        ERROR('Il faut choisir au maximum 1 livraison li‚e !');
+
+                END ELSE
+                    IF (PurchaseHeader."Document Type" = PurchaseHeader."Document Type"::Order) THEN BEGIN
+
+                        //pour les commandes il faut exactement 1 livraison li‚e
+                        IF dealShipmentSelection_Re_Loc.COUNT() > 1 THEN
+                            ERROR('Il faut choisir exactement 1 livraison li‚e !');
+
+                    END ELSE
+                        IF (PurchaseHeader."Document Type" = PurchaseHeader."Document Type"::"Credit Memo") THEN BEGIN
+
+                            //pour les notes de cr‚dit, il faut exactement 1 livraison li‚e
+                            IF dealShipmentSelection_Re_Loc.COUNT() > 1 THEN
+                                ERROR('Il faut choisir exactement 1 livraison li‚e !');
+
+                            //il faut aussi imp‚rativement avoir une facture li‚e … cette note de cr‚dit
+                            //CHG06 START
+                            //orig
+                            //IF dealShipmentSelection_Re_Loc."Sales Invoice No." = '' THEN
+                            IF dealShipmentSelection_Re_Loc."Purchase Invoice No." = '' THEN
+                                //CHG06 STOP
+                                ERROR('La livraison li‚e n''a pas de Purchase Invoice sur laquelle elle doit ˆtre li‚e !');
+
+                        END;
+
+
+                //On cr‚e une updateRequest, comme ca, si NAV plante plus loin, on sait ce qui n'a pas ‚t‚ updat‚ comme il faut
+                updateRequestID_Co_Loc := updateRequestManager_Cu.FNC_Add_Request(
+                  dealShipmentSelection_Re_Loc.Deal_ID,
+                  dealShipmentSelection_Re_Loc."Document Type",
+                  dealShipmentSelection_Re_Loc."Document No.",
+                  CURRENTDATETIME);
+
+
+            END ELSE BEGIN
+                //Si aucune livraison n'est s‚lectionn‚e
+                IF PurchaseHeader."Document Type" = PurchaseHeader."Document Type"::Order THEN BEGIN
+                    ERROR('Il faut choisir exactement 1 livraison li‚e !');
+                END
+
+
+                //si le type de ligne est "G/L Account" et le num 3400, 3401 ou 3410, ... alors pas d'erreur
+                ELSE
+                    IF PurchaseHeader."Document Type" = PurchaseHeader."Document Type"::"Credit Memo" THEN BEGIN
+
+                        //on v‚rifie les lignes du document
+                        PurchaseLine_Re_Loc.RESET();
+                        PurchaseLine_Re_Loc.SETRANGE("Document Type", PurchaseLine_Re_Loc."Document Type"::"Credit Memo");
+                        PurchaseLine_Re_Loc.SETRANGE("Document No.", PurchaseHeader."No.");
+                        IF PurchaseLine_Re_Loc.FIND('-') THEN BEGIN
+                            REPEAT
+                                //si c'est pas un compte alors c'est d‚j… grill‚ -> erreur
+                                IF (PurchaseLine_Re_Loc.Type <> PurchaseLine_Re_Loc.Type::"G/L Account") THEN
+                                    ERROR('Il faut choisir exactement 1 livraison li‚e !')
+                                ELSE
+                                    IF (GLAccount_Re_Loc.GET(PurchaseLine_Re_Loc."No.")) THEN
+                                        // si coch‚, exclure du contr“le de liaison
+                                        IF NOT (GLAccount_Re_Loc."DEL Shipment Binding Control") THEN
+                                            ERROR('Il faut choisir exactement 1 livraison li‚e !')
+                            UNTIL (PurchaseLine_Re_Loc.NEXT() = 0);
+                        END;
+                    END
+                    // THM
+                    ELSE
+                        IF PurchaseHeader."Document Type" = PurchaseHeader."Document Type"::Invoice THEN BEGIN
+
+                            //on v‚rifie les lignes du document
+                            PurchaseLine_Re_Loc.RESET();
+                            PurchaseLine_Re_Loc.SETRANGE("Document Type", PurchaseLine_Re_Loc."Document Type"::Invoice);
+                            PurchaseLine_Re_Loc.SETRANGE("Document No.", PurchaseHeader."No.");
+                            IF PurchaseLine_Re_Loc.FIND('-') THEN BEGIN
+                                REPEAT
+                                    //si c'est pas un compte alors c'est d‚j… grill‚ -> erreur
+                                    IF (PurchaseLine_Re_Loc.Type <> PurchaseLine_Re_Loc.Type::"G/L Account") THEN
+                                        ERROR('Il faut choisir exactement 1 livraison li‚e !')
+                                    ELSE
+                                        IF (GLAccount_Re_Loc.GET(PurchaseLine_Re_Loc."No.")) THEN
+                                            // si coch‚, exclure du contr“le de liaison
+                                            IF NOT (GLAccount_Re_Loc."DEL Shipment Binding Control") THEN
+                                                ERROR('Il faut choisir exactement 1 livraison li‚e !')
+                                UNTIL (PurchaseLine_Re_Loc.NEXT() = 0);
+
+                            END;
+                        END;
+            END;
+
+        END;
+    end;
+
+    procedure SelectPostReturnOrderOption(var PurchaseHeader: Record "Purchase Header"; DefaultOption: Integer) Result: Boolean //cdu91
+    var
+        Selection: Integer;
+        IsHandled: Boolean;
+        ShipInvoiceQst: Label '&Ship,&Invoice,Ship &and Invoice';
+
+    begin
+        with PurchaseHeader do begin
+            Selection := StrMenu(ShipInvoiceQst, DefaultOption);
+            if Selection = 0 then
+                exit(false);
+            Ship := Selection in [1, 3];
+            Invoice := Selection in [2, 3];
+        end;
+
+        exit(true);
+    end;
+
+    procedure SelectPostOrderOption(var PurchaseHeader: Record "Purchase Header"; DefaultOption: Integer) Result: Boolean
+    var
+        Selection: Integer;
+        ReceiveInvoiceQst: Label '&Receive,&Invoice,Receive &and Invoice';
+
+
+    begin
+        with PurchaseHeader do begin
+            Selection := StrMenu(ReceiveInvoiceQst, DefaultOption);
+            if Selection = 0 then
+                exit(false);
+            Receive := Selection in [1, 3];
+            Invoice := Selection in [2, 3];
+        end;
+
+        exit(true);
+    end;
+
+    PROCEDURE SetSpecOrderPosting(NewSpecOrderPosting: Boolean);
+    var
+        SpecOrderPost: Boolean;
+    BEGIN
+        SpecOrderPost := NewSpecOrderPosting;
+    END;
+
+    PROCEDURE GetSpecialOrderBuffer(VAR pTempSH: Record "Sales Header"); //temporary
+    var
+        tempSpecialSHBuffer: Record "Sales Header";
+
+    BEGIN
+        pTempSH.RESET;
+        pTempSH.DELETEALL;
+        tempSpecialSHBuffer.RESET;
+        IF tempSpecialSHBuffer.FINDSET THEN
+            REPEAT
+                pTempSH := tempSpecialSHBuffer;
+                pTempSH.INSERT;
+            UNTIL tempSpecialSHBuffer.NEXT = 0;
+    END;
+
+
+
 }
 
 

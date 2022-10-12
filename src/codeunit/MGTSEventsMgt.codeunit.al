@@ -524,7 +524,7 @@ codeunit 50100 "DEL MGTS_EventsMgt"
 
     //CDU 80 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnAfterInsertPostedHeaders', '', false, false)]
-    local procedure OnAfterInsertPostedHeaders_SalesHeader(var SalesHeader: Record "Sales Header"; var SalesShipmentHeader: Record "Sales Shipment Header"; var SalesInvoiceHeader: Record "Sales Invoice Header"; var SalesCrMemoHdr: Record "Sales Cr.Memo Header"; var ReceiptHeader: Record "Return Receipt Header")
+    local procedure COD80_OnAfterInsertPostedHeaders_SalesHeader(var SalesHeader: Record "Sales Header"; var SalesShipmentHeader: Record "Sales Shipment Header"; var SalesInvoiceHeader: Record "Sales Invoice Header"; var SalesCrMemoHdr: Record "Sales Cr.Memo Header"; var ReceiptHeader: Record "Return Receipt Header")
     var
         MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
     begin
@@ -533,7 +533,7 @@ codeunit 50100 "DEL MGTS_EventsMgt"
     //TODO:I suppose CommitIsSupressed say if the commit is suppressed (Skipped) during the posting
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnBeforePostSalesDoc', '', false, false)]
-    local procedure OnBeforePostSalesDoc(var SalesHeader: Record "Sales Header"; CommitIsSuppressed: Boolean; PreviewMode: Boolean; var HideProgressWindow: Boolean; var IsHandled: Boolean)
+    local procedure COD80_OnBeforePostSalesDoc(var SalesHeader: Record "Sales Header"; CommitIsSuppressed: Boolean; PreviewMode: Boolean; var HideProgressWindow: Boolean; var IsHandled: Boolean)
     VAR
         SkipCommit: Boolean; //Cdu 80
     begin
@@ -762,7 +762,7 @@ codeunit 50100 "DEL MGTS_EventsMgt"
     end;
     ///////
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post + Print", 'OnAfterConfirmPost', '', false, false)]
-    local procedure OnAfterConfirmPost(var SalesHeader: Record "Sales Header")
+    local procedure COD82_OnAfterConfirmPost(var SalesHeader: Record "Sales Header")
     var
         element_Re_Loc: Record "DEL Element";
         dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
@@ -784,8 +784,188 @@ codeunit 50100 "DEL MGTS_EventsMgt"
         END;
 
     end;
-    //---------CDU 90
+    //---------CDU 91
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post (Yes/No)", 'OnBeforeConfirmPost', '', false, false)]
+    local procedure COD91_OnBeforeConfirmPost(var PurchaseHeader: Record "Purchase Header"; var HideDialog: Boolean; var IsHandled: Boolean; var DefaultOption: Integer)
+    var
+        MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
+    begin
+        MGTSFactMgt.OnBeforeConfirmPostfct(PurchaseHeader, HideDialog, IsHandled, DefaultOption);
+    end;
+    ////////
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post (Yes/No)", 'OnAfterPost', '', false, false)]
+    local procedure COD91_OnAfterPost(var PurchaseHeader: Record "Purchase Header")
+    var
+        element_Re_Loc: Record "DEL Element";
+        dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
+        updateRequestID_Co_Loc: Code[20];
+        updateRequestManager_Cu: Codeunit "DEL Update Request Manager";
+        shipmentSelected_Bo_Loc: Boolean;
+        Deal_Cu: Codeunit "DEL Deal";
 
+    begin
+
+        IF shipmentSelected_Bo_Loc THEN BEGIN
+            Deal_Cu.FNC_Reinit_Deal(dealShipmentSelection_Re_Loc.Deal_ID, FALSE, FALSE);
+            updateRequestManager_Cu.FNC_Validate_Request(updateRequestID_Co_Loc);
+            dealShipmentSelection_Re_Loc.RESET();
+            dealShipmentSelection_Re_Loc.SETRANGE("Document No.", PurchaseHeader."No.");
+            dealShipmentSelection_Re_Loc.SETRANGE(USER_ID, USERID);
+            dealShipmentSelection_Re_Loc.DELETEALL();
+        END;
+    end;
+    ////////TODO CHECK
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post (Yes/No)", 'OnBeforeConfirmPostProcedure', '', false, false)]
+    local procedure COD91_OnBeforeConfirmPostProcedure(var PurchaseHeader: Record "Purchase Header"; var DefaultOption: Integer; var Result: Boolean; var IsHandled: Boolean) Result: Boolean
+    var
+        ACOConnection_Re_Loc: Record "DEL ACO Connection";
+        Deal_Cu: Codeunit "DEL Deal";
+        MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
+        ConfirmManagement: Codeunit "Confirm Management";
+        PostConfirmQst: Label 'Do you want to post the %1?', Comment = '%1 = Document Type';
+
+    begin
+        IsHandled := true;
+        if DefaultOption > 3 then
+            DefaultOption := 3;
+        if DefaultOption <= 0 then
+            DefaultOption := 1;
+
+        with PurchaseHeader do begin
+            case "Document Type" of
+                "Document Type"::Order:
+                    if not MGTSFactMgt.SelectPostOrderOption(PurchaseHeader, DefaultOption) then
+                        exit(false);
+                "Document Type"::"Return Order":
+                    if not MGTSFactMgt.SelectPostReturnOrderOption(PurchaseHeader, DefaultOption) then
+                        exit(false);
+                else
+                    if not ConfirmManagement.GetResponseOrDefault(
+                         StrSubstNo(PostConfirmQst, Format("Document Type")), true)
+                    then
+                        exit(false);
+            end;
+            IF PurchaseHeader."Document Type" = PurchaseHeader."Document Type"::Order THEN BEGIN
+                ACOConnection_Re_Loc.RESET();
+                ACOConnection_Re_Loc.SETCURRENTKEY("ACO No.");
+                ACOConnection_Re_Loc.SETRANGE("ACO No.", PurchaseHeader."No.");
+                IF ACOConnection_Re_Loc.FIND('-') THEN
+                    Deal_Cu.FNC_Reinit_Deal(ACOConnection_Re_Loc.Deal_ID, FALSE, FALSE);
+            END;
+
+        end;
+    end;
+    //TODO: les variables "tempSpecialSHBuffer" et "SpecOrderPost"sont globales.-----------------------///
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post (Yes/No)", 'OnBeforeRunPurchPost', '', false, false)]
+    local procedure COD91_OnBeforeRunPurchPost(var PurchaseHeader: Record "Purchase Header")
+    var
+        MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
+        PostPurchCU: Codeunit "Purch.-Post";
+
+    begin
+        IF SpecOrderPost THEN BEGIN
+            CLEAR(PostPurchCU);
+            MGTSFactMgt.SetSpecOrderPosting(TRUE);
+            PostPurchCU.RUN(PurchaseHeader);
+            MGTSFactMgt.GetSpecialOrderBuffer(tempSpecialSHBuffer);
+        END ELSE
+            CODEUNIT.Run(CODEUNIT::"Purch.-Post", PurchaseHeader);
+
+    end;
+    //-----------------------------------------------------------------------------///
+    //----------CDU 92
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post + Print", 'OnBeforeConfirmPost', '', false, false)]
+
+    local procedure COD92_OnBeforeConfirmPost(var PurchaseHeader: Record "Purchase Header"; var HideDialog: Boolean; var IsHandled: Boolean; var DefaultOption: Integer)
+    var
+        MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
+    begin
+        MGTSFactMgt.OnBeforeConfirmPostfct(PurchaseHeader, HideDialog, IsHandled, DefaultOption);
+
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post + Print", 'OnAfterPost', '', false, false)]
+
+    local procedure COD92_OnAfterPost(var PurchaseHeader: Record "Purchase Header")
+    var
+        element_Re_Loc: Record "DEL Element";
+        dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
+        updateRequestID_Co_Loc: Code[20];
+        updateRequestManager_Cu: Codeunit "DEL Update Request Manager";
+        shipmentSelected_Bo_Loc: Boolean;
+        Deal_Cu: Codeunit "DEL Deal";
+    begin
+        IF shipmentSelected_Bo_Loc THEN BEGIN
+            Deal_Cu.FNC_Reinit_Deal(dealShipmentSelection_Re_Loc.Deal_ID, FALSE, FALSE);
+            updateRequestManager_Cu.FNC_Validate_Request(updateRequestID_Co_Loc);
+            dealShipmentSelection_Re_Loc.RESET();
+            dealShipmentSelection_Re_Loc.SETRANGE("Document No.", PurchaseHeader."No.");
+            dealShipmentSelection_Re_Loc.SETRANGE(USER_ID, USERID);
+            dealShipmentSelection_Re_Loc.DELETEALL();
+        END;
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post + Print", 'OnBeforeConfirmPostProcedure', '', false, false)]
+
+    local procedure COD92_OnBeforeConfirmPostProcedure(var PurchHeader: Record "Purchase Header"; var DefaultOption: Integer; var Result: Boolean; var IsHandled: Boolean) Result: Boolean
+    var
+        ACOConnection_Re_Loc: Record "DEL ACO Connection";
+        Deal_Cu: Codeunit "DEL Deal";
+        MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
+        ConfirmManagement: Codeunit "Confirm Management";
+        PostAndPrintQst: Label 'Do you want to post and print the %1?', Comment = '%1 = Document Type';
+
+    begin
+        IsHandled := true;
+        with PurchHeader do begin
+            case "Document Type" of
+                "Document Type"::Order:
+                    if not MGTSFactMgt.SelectPostOrderOption(PurchHeader, DefaultOption) then
+                        exit(false);
+                "Document Type"::"Return Order":
+                    if not MGTSFactMgt.SelectPostReturnOrderOption(PurchHeader, DefaultOption) then
+                        exit(false);
+                else
+                    if not ConfirmManagement.GetResponseOrDefault(
+                         StrSubstNo(PostAndPrintQst, "Document Type"), true)
+                    then
+                        exit(false);
+
+                    IF PurchHeader."Document Type" = PurchHeader."Document Type"::Order THEN BEGIN
+                        ACOConnection_Re_Loc.RESET();
+                        ACOConnection_Re_Loc.SETCURRENTKEY("ACO No.");
+                        ACOConnection_Re_Loc.SETRANGE("ACO No.", PurchHeader."No.");
+                        IF ACOConnection_Re_Loc.FIND('-') THEN
+                            Deal_Cu.FNC_Reinit_Deal(ACOConnection_Re_Loc.Deal_ID, FALSE, FALSE);
+                    END;
+            end;
+        end;
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post + Print", 'OnBeforeRunPurchPost', '', false, false)]
+
+    local procedure COD92_OnBeforeRunPurchPost(var PurchHeader: Record "Purchase Header"; var IsHandled: Boolean)
+    var
+        PostPurchCU: Codeunit "Purch.-Post + Print";
+    begin
+        IF SpecOrderPost THEN BEGIN
+            CLEAR(PostPurchCU);
+            PostPurchCU.SetSpecOrderPosting(TRUE);
+            PostPurchCU.RUN(PurchHeader);
+
+            PostPurchCU.GetSpecialOrderBuffer(tempSpecialSHBuffer);
+
+
+            GetReport(PurchHeader);
+
+            PostPurchCU.GetSpecialOrderBuffer(lTempSHBuffer);
+            IF lTempSHBuffer.FINDSET THEN
+                REPEAT
+                    lSalesPostPrint.GetReport(lTempSHBuffer);
+                UNTIL lTempSHBuffer.NEXT = 0;
+
+
+        end;
 
 
 }
