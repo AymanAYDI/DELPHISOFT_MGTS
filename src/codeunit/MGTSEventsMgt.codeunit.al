@@ -542,13 +542,13 @@ codeunit 50100 "DEL MGTS_EventsMgt"
     /////COD231
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post", 'OnGenJnlLineSetFilter', '', false, false)]
     local procedure COD231_OnGenJnlLineSetFilter_GenJnlPost(var GenJournalLine: Record "Gen. Journal Line")
-      var
+    var
         MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
     begin
         MGTSFactMgt.OnGenJnlLineSetFilter_Fct(GenJournalLine);
     end;
 
- 
+
     ////COD 232 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post+Print", 'OnBeforePostJournalBatch', '', false, false)]
     local procedure COD232_OnBeforePostJournalBatch_GenJnlPostPrint(var GenJournalLine: Record "Gen. Journal Line"; var HideDialog: Boolean)
@@ -1003,7 +1003,7 @@ codeunit 50100 "DEL MGTS_EventsMgt"
     end;
     ////////TODO CHECK
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post (Yes/No)", 'OnBeforeConfirmPostProcedure', '', false, false)]
-    local procedure COD91_OnBeforeConfirmPostProcedure(var PurchaseHeader: Record "Purchase Header"; var DefaultOption: Integer; var Result: Boolean; var IsHandled: Boolean) Result: Boolean
+    local procedure COD91_OnBeforeConfirmPostProcedure(var PurchaseHeader: Record "Purchase Header"; var DefaultOption: Integer; var Result: Boolean; var IsHandled: Boolean)
     var
         ACOConnection_Re_Loc: Record "DEL ACO Connection";
         Deal_Cu: Codeunit "DEL Deal";
@@ -1022,15 +1022,15 @@ codeunit 50100 "DEL MGTS_EventsMgt"
             case "Document Type" of
                 "Document Type"::Order:
                     if not MGTSFactMgt.SelectPostOrderOption(PurchaseHeader, DefaultOption) then
-                        exit(false);
+                        exit; // when false 
                 "Document Type"::"Return Order":
                     if not MGTSFactMgt.SelectPostReturnOrderOption(PurchaseHeader, DefaultOption) then
-                        exit(false);
+                        exit; // when false 
                 else
                     if not ConfirmManagement.GetResponseOrDefault(
                          StrSubstNo(PostConfirmQst, Format("Document Type")), true)
                     then
-                        exit(false);
+                        exit; // when false 
             end;
             IF PurchaseHeader."Document Type" = PurchaseHeader."Document Type"::Order THEN BEGIN
                 ACOConnection_Re_Loc.RESET();
@@ -1050,13 +1050,13 @@ codeunit 50100 "DEL MGTS_EventsMgt"
         PostPurchCU: Codeunit "Purch.-Post";
 
     begin
-        IF SpecOrderPost THEN BEGIN
-            CLEAR(PostPurchCU);
-            MGTSFactMgt.SetSpecOrderPosting(TRUE);
-            PostPurchCU.RUN(PurchaseHeader);
-            MGTSFactMgt.GetSpecialOrderBuffer(tempSpecialSHBuffer);
-        END ELSE
-            CODEUNIT.Run(CODEUNIT::"Purch.-Post", PurchaseHeader);
+        //TODO: var global IF SpecOrderPost THEN BEGIN
+        //     CLEAR(PostPurchCU);
+        //     MGTSFactMgt.SetSpecOrderPosting(TRUE);
+        //     PostPurchCU.RUN(PurchaseHeader);
+        //     MGTSFactMgt.GetSpecialOrderBuffer(tempSpecialSHBuffer);
+        // END ELSE
+        //     CODEUNIT.Run(CODEUNIT::"Purch.-Post", PurchaseHeader);
 
     end;
     //-----------------------------------------------------------------------------///
@@ -1094,7 +1094,7 @@ codeunit 50100 "DEL MGTS_EventsMgt"
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post + Print", 'OnBeforeConfirmPostProcedure', '', false, false)]
 
-    local procedure COD92_OnBeforeConfirmPostProcedure(var PurchHeader: Record "Purchase Header"; var DefaultOption: Integer; var Result: Boolean; var IsHandled: Boolean) Result: Boolean
+    local procedure COD92_OnBeforeConfirmPostProcedure(var PurchHeader: Record "Purchase Header"; var DefaultOption: Integer; var Result: Boolean; var IsHandled: Boolean)
     var
         ACOConnection_Re_Loc: Record "DEL ACO Connection";
         Deal_Cu: Codeunit "DEL Deal";
@@ -1108,15 +1108,15 @@ codeunit 50100 "DEL MGTS_EventsMgt"
             case "Document Type" of
                 "Document Type"::Order:
                     if not MGTSFactMgt.SelectPostOrderOption(PurchHeader, DefaultOption) then
-                        exit(false);
+                        exit; // when false 
                 "Document Type"::"Return Order":
                     if not MGTSFactMgt.SelectPostReturnOrderOption(PurchHeader, DefaultOption) then
-                        exit(false);
+                        exit; // when false 
                 else
                     if not ConfirmManagement.GetResponseOrDefault(
                          StrSubstNo(PostAndPrintQst, "Document Type"), true)
                     then
-                        exit(false);
+                        exit; // when false 
 
                     IF PurchHeader."Document Type" = PurchHeader."Document Type"::Order THEN BEGIN
                         ACOConnection_Re_Loc.RESET();
@@ -1128,8 +1128,8 @@ codeunit 50100 "DEL MGTS_EventsMgt"
             end;
         end;
     end;
-    END;
-    
+
+
     //TODO: les variables "tempSpecialSHBuffer" et "SpecOrderPost"sont globales.-----------------
     //TODO [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post + Print", 'OnBeforeRunPurchPost', '', false, false)]
 
@@ -1154,25 +1154,39 @@ codeunit 50100 "DEL MGTS_EventsMgt"
     //             UNTIL lTempSHBuffer.NEXT = 0;
 
 
-         //     end;
+    //     end;
 
-       ///// COD 90 : to be continued 
+    ///// COD 90 : to be continued 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post", 'OnBeforePostPurchaseDoc', '', false, false)]
 
-    local procedure OnBeforePostPurchaseDoc(var PurchaseHeader: Record "Purchase Header"; PreviewMode: Boolean; CommitIsSupressed: Boolean; var HideProgressWindow: Boolean; var ItemJnlPostLine: Codeunit "Item Jnl.-Post Line"; var IsHandled: Boolean)
+    local procedure COD90_OnBeforePostPurchaseDoc(var PurchaseHeader: Record "Purchase Header"; PreviewMode: Boolean; CommitIsSupressed: Boolean; var HideProgressWindow: Boolean; var ItemJnlPostLine: Codeunit "Item Jnl.-Post Line"; var IsHandled: Boolean)
     var
         MGTSgetset: Codeunit "DEL MGTS Set/Get Functions";
     begin
 
-        IF SpecOrderPosting THEN BEGIN
-            CLEARALL;
-            SpecOrderPosting := TRUE;
-        END ELSE
-            CLEARALL;
+        // TODO : IF SpecOrderPosting THEN BEGIN
+        //     CLEARALL;
+        //     SpecOrderPosting := TRUE;
+        // END ELSE
+        //     CLEARALL;
 
     end;
-    ///////aprés   Code;
-    // Rec := SalesHeader;
+    ////
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post", 'OnBeforePostCommitPurchaseDoc', '', false, false)]
+
+    local procedure COD90_OnBeforePostCommitPurchaseDoc(var PurchaseHeader: Record "Purchase Header"; var GenJnlPostLine: Codeunit "Gen. Jnl.-Post Line"; PreviewMode: Boolean; ModifyHeader: Boolean; var CommitIsSupressed: Boolean; var TempPurchLineGlobal: Record "Purchase Line" temporary)
+    var
+    //TODO IF SpecOrderPosting THEN
+    //   SpecialOrder := UpdateAssosSpecialOrderPostingNos(PurchHeader)
+    // ELSE
+    //   SpecialOrder := FALSE;
+
+
+    begin
+    end;
+
+
+
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"GLN Calculator", 'OnBeforeIsValidCheckDigit', '', false, false)]
     procedure COD1607_OnBeforeIsValidCheckDigit(GLNValue: Code[20]; ExpectedSize: Integer; var IsValid: Boolean; var IsHandled: Boolean)
     var

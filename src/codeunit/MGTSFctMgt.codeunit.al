@@ -894,7 +894,7 @@ codeunit 50101 "DEL MGTS_FctMgt"
 
     end;
 
-    PROCEDURE UpdateAssosSpecialOrderPostingNos(PurchHeader: Record "Purchase Header") SpecialOrder: Boolean;
+    PROCEDURE UpdateAssosSpecialOrderPostingNos(PurchHeader: Record "Purchase Header"; var PreviewMode: Boolean) SpecialOrder: Boolean;
     VAR
         TempPurchLine: Record "Purchase Line" TEMPORARY;
         SalesOrderHeader: Record "Sales Header";
@@ -914,8 +914,9 @@ codeunit 50101 "DEL MGTS_FctMgt"
                             SalesOrderHeader.GET(SalesOrderHeader."Document Type"::Order, TempPurchLine."Special Order Sales No.");
                             SalesOrderHeader.TESTFIELD("Bill-to Customer No.");
                             SalesOrderHeader.Ship := TRUE;
-                            //TODO:PreviewMode is a global var
-                            // ReleaseSalesDocument.ReleaseSalesHeader(SalesOrderHeader, PreviewMode);
+                            //TODO:PreviewMode is a global var ---- To check
+
+                            ReleaseSalesDocument.ReleaseSalesHeader(SalesOrderHeader, PreviewMode);
                             IF SalesOrderHeader."Shipping No." = '' THEN BEGIN
                                 SalesOrderHeader.TESTFIELD("Shipping No. Series");
                                 SalesOrderHeader."Shipping No." :=

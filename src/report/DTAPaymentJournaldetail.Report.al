@@ -1,6 +1,5 @@
-report 50001 "DTA Payment Journal detail"
+report 50001 "DEL DTA Payment Journal detail"
 {
-    // DD-NAV-MGTS     13.06.18 Report
     DefaultLayout = RDLC;
     RDLCLayout = './DTAPaymentJournaldetail.rdlc';
 
@@ -8,9 +7,9 @@ report 50001 "DTA Payment Journal detail"
 
     dataset
     {
-        dataitem(DataItem7024; Table81)
+        dataitem(DataItem7024; "Gen. Journal Line")
         {
-            DataItemTableView = SORTING (Journal Template Name, Journal Batch Name, Posting Date, Clearing, Debit Bank);
+            DataItemTableView = SORTING("Journal Template Name", "Journal Batch Name", "Posting Date", Clearing, "Debit Bank");
             column(JournalBatchName_GenJournalLine; "Journal Batch Name")
             {
             }
@@ -41,7 +40,7 @@ report 50001 "DTA Payment Journal detail"
             column(Amount_GenJournalLine; Amount)
             {
             }
-            column(CashDiscAmtFC; CashDiscAmtFC)
+            column(CashDiscAmtFC; "CashDiscAmtFC")
             {
             }
             column(CashDeductAmt; CashDeductAmt)
@@ -212,10 +211,10 @@ report 50001 "DTA Payment Journal detail"
                                Applies-to ID=FIELD(Document No.);
                 DataItemTableView = SORTING(Entry No.)
                                     WHERE(Open=CONST(Yes));
-                column(DocumentNo;"Document No.")
+                column(DocumentNo; "Document No.")
                 {
                 }
-                column(RemainingAmount;"Remaining Amount")
+                column(RemainingAmount; "Remaining Amount")
                 {
                 }
 
@@ -385,7 +384,7 @@ report 50001 "DTA Payment Journal detail"
                 group(Options)
                 {
                     Caption = 'Options';
-                    field(Layout;Layout)
+                    field(Layout; Layout)
                     {
                         ApplicationArea = Basic,Suite;
                         Caption = 'Layout';
@@ -419,12 +418,12 @@ report 50001 "DTA Payment Journal detail"
         Text006Msg: Label 'Total bank';
         Text007Lbl: Label 'Total Payment in %1';
         Text008Lbl: Label 'Largest Amount in %1';
-        VendorBankAccount: Record "288";
-        VendorLedgerEntry: Record "25";
-        CurrencyExchangeRate: Record "330";
-        GLSetup: Record "98";
-        Vendor: Record "23";
-        DTAMgt: Codeunit "3010541";
+        VendorBankAccount: Record "Vendor Bank Account";
+        VendorLedgerEntry: Record "Vendor Ledger Entry";
+        CurrencyExchangeRate: Record "Currency Exchange Rate";
+        GLSetup: Record "General Ledger Setup";
+        Vendor: Record Vendor;
+        //TODO DTAMgt: Codeunit "DTA Setup"; //3010541
         n: Integer;
         "Layout": Option Amounts,Bank;
         xTxt: Text[40];
