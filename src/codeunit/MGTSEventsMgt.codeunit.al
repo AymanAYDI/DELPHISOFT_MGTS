@@ -408,6 +408,8 @@ codeunit 50100 "DEL MGTS_EventsMgt"
             CLEARALL();
             SkipCommit := TRUE;
         END;
+
+
     [EventSubscriber(ObjectType::Table, Database::"Purchase Header", 'OnBeforeTransferSavedFieldsSpecialOrder', '', false, false)]
     local procedure T38_OnBeforeTransferSavedFieldsSpecialOrder_PurchaseHeader(var DestinationPurchaseLine: Record "Purchase Line"; var SourcePurchaseLine: Record "Purchase Line"; var IsHandled: Boolean)
     var
@@ -911,11 +913,11 @@ codeunit 50100 "DEL MGTS_EventsMgt"
     //CDU 81 
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post (Yes/No)", 'OnBeforeConfirmSalesPost', '', false, false)]
-    local procedure COD81_OnBeforeConfirmSalesPost(var SalesHeader: Record "Sales Header"; var HideDialog: Boolean; var IsHandled: Boolean; var DefaultOption: Integer; var PostAndSend: Boolean)
+    local procedure COD81_OnBeforeConfirmSalesPostFct_SalesHeader(var SalesHeader: Record "Sales Header"; var HideDialog: Boolean; var IsHandled: Boolean; var DefaultOption: Integer; var PostAndSend: Boolean)
     var
         MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
     begin
-        MGTSFactMgt.OnBeforeConfirmSalesPostFct(SalesHeader, HideDialog, IsHandled, DefaultOption, PostAndSend);
+        MGTSFactMgt.OnBeforeConfirmSalesPostFct_SalesHeader(SalesHeader, HideDialog, IsHandled, DefaultOption, PostAndSend);
     end;
     ////
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post (Yes/No)", 'OnAfterConfirmPost', '', false, false)]
@@ -939,11 +941,11 @@ codeunit 50100 "DEL MGTS_EventsMgt"
     //----------CDU 82 
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post + Print", 'OnBeforeConfirmPost', '', false, false)]
-    local procedure COD82_OnBeforeConfirmPost(var SalesHeader: Record "Sales Header"; var HideDialog: Boolean; var IsHandled: Boolean; var SendReportAsEmail: Boolean; var DefaultOption: Integer)
+    local procedure COD82_OnBeforeConfirmPostFct(var SalesHeader: Record "Sales Header"; var HideDialog: Boolean; var IsHandled: Boolean; var SendReportAsEmail: Boolean; var DefaultOption: Integer)
     var
         MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
     begin
-        MGTSFactMgt.OnBeforeConfirmPostFct(SalesHeader, HideDialog, IsHandled, SendReportAsEmail, DefaultOption);
+        MGTSFactMgt.OnBeforeConfirmPostFct_COD82(SalesHeader, HideDialog, IsHandled, SendReportAsEmail, DefaultOption);
 
 
     end;
@@ -973,11 +975,11 @@ codeunit 50100 "DEL MGTS_EventsMgt"
     end;
     //---------CDU 91
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post (Yes/No)", 'OnBeforeConfirmPost', '', false, false)]
-    local procedure COD91_OnBeforeConfirmPost(var PurchaseHeader: Record "Purchase Header"; var HideDialog: Boolean; var IsHandled: Boolean; var DefaultOption: Integer)
+    local procedure COD91_OnBeforeConfirmPost_PurchaseHeader(var PurchaseHeader: Record "Purchase Header"; var HideDialog: Boolean; var IsHandled: Boolean; var DefaultOption: Integer)
     var
         MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
     begin
-        MGTSFactMgt.OnBeforeConfirmPostfct(PurchaseHeader, HideDialog, IsHandled, DefaultOption);
+        MGTSFactMgt.OnBeforeConfirmPostfct_PurchaseHeader(PurchaseHeader, HideDialog, IsHandled, DefaultOption);
     end;
     ////////
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post (Yes/No)", 'OnAfterPost', '', false, false)]
@@ -1067,7 +1069,7 @@ codeunit 50100 "DEL MGTS_EventsMgt"
     var
         MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
     begin
-        MGTSFactMgt.OnBeforeConfirmPostfct(PurchaseHeader, HideDialog, IsHandled, DefaultOption);
+        MGTSFactMgt.OnBeforeConfirmPostfct_PurchaseHeader(PurchaseHeader, HideDialog, IsHandled, DefaultOption);
 
     end;
 
@@ -1128,31 +1130,49 @@ codeunit 50100 "DEL MGTS_EventsMgt"
             end;
         end;
     end;
+    END;
+    
+    //TODO: les variables "tempSpecialSHBuffer" et "SpecOrderPost"sont globales.-----------------
+    //TODO [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post + Print", 'OnBeforeRunPurchPost', '', false, false)]
 
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post + Print", 'OnBeforeRunPurchPost', '', false, false)]
+    // local procedure COD92_OnBeforeRunPurchPost(var PurchHeader: Record "Purchase Header"; var IsHandled: Boolean)
+    // var
+    //     PostPurchCU: Codeunit "Purch.-Post + Print";
+    // begin
+    //     IF SpecOrderPost THEN BEGIN
+    //         CLEAR(PostPurchCU);
+    //         PostPurchCU.SetSpecOrderPosting(TRUE);
+    //         PostPurchCU.RUN(PurchHeader);
 
-    local procedure COD92_OnBeforeRunPurchPost(var PurchHeader: Record "Purchase Header"; var IsHandled: Boolean)
+    //         PostPurchCU.GetSpecialOrderBuffer(tempSpecialSHBuffer);
+
+
+    //         GetReport(PurchHeader);
+
+    //         PostPurchCU.GetSpecialOrderBuffer(lTempSHBuffer);
+    //         IF lTempSHBuffer.FINDSET THEN
+    //             REPEAT
+    //                 lSalesPostPrint.GetReport(lTempSHBuffer);
+    //             UNTIL lTempSHBuffer.NEXT = 0;
+
+
+         //     end;
+
+       ///// COD 90 : to be continued 
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post", 'OnBeforePostPurchaseDoc', '', false, false)]
+
+    local procedure OnBeforePostPurchaseDoc(var PurchaseHeader: Record "Purchase Header"; PreviewMode: Boolean; CommitIsSupressed: Boolean; var HideProgressWindow: Boolean; var ItemJnlPostLine: Codeunit "Item Jnl.-Post Line"; var IsHandled: Boolean)
     var
-        PostPurchCU: Codeunit "Purch.-Post + Print";
+        MGTSgetset: Codeunit "DEL MGTS Set/Get Functions";
     begin
-        IF SpecOrderPost THEN BEGIN
-            CLEAR(PostPurchCU);
-            PostPurchCU.SetSpecOrderPosting(TRUE);
-            PostPurchCU.RUN(PurchHeader);
 
-            PostPurchCU.GetSpecialOrderBuffer(tempSpecialSHBuffer);
+        IF SpecOrderPosting THEN BEGIN
+            CLEARALL;
+            SpecOrderPosting := TRUE;
+        END ELSE
+            CLEARALL;
 
-
-            GetReport(PurchHeader);
-
-            PostPurchCU.GetSpecialOrderBuffer(lTempSHBuffer);
-            IF lTempSHBuffer.FINDSET THEN
-                REPEAT
-                    lSalesPostPrint.GetReport(lTempSHBuffer);
-                UNTIL lTempSHBuffer.NEXT = 0;
-
-
-        end;
+    end;
 
 
 }

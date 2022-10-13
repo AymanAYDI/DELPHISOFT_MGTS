@@ -400,8 +400,8 @@ codeunit 50101 "DEL MGTS_FctMgt"
             UNTIL (genJournalLine_Re_Temp.NEXT() = 0);
         END;
     end;
-    //-----------------PROC CDU81
-    procedure OnBeforeConfirmSalesPostFct(var SalesHeader: Record "Sales Header"; var HideDialog: Boolean; var IsHandled: Boolean; var DefaultOption: Integer; var PostAndSend: Boolean)
+    //----------------- CDU81
+    procedure OnBeforeConfirmSalesPostFct_SalesHeader(var SalesHeader: Record "Sales Header"; var HideDialog: Boolean; var IsHandled: Boolean; var DefaultOption: Integer; var PostAndSend: Boolean)
     var
         dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
         shipmentSelected_Bo_Loc: Boolean;
@@ -460,19 +460,6 @@ codeunit 50101 "DEL MGTS_FctMgt"
                   dealShipmentSelection_Re_Loc."Document No.",
                   CURRENTDATETIME
                 );
-
-    procedure OnGenJnlLineSetFilter_Fct(var GenJournalLine: Record "Gen. Journal Line")
-    var
-        Provision_Cu: Codeunit "DEL Provision";
-        genJournalLine_Re_Temp: Record "Gen. Journal Line" TEMPORARY;
-    begin
-        genJournalLine_Re_Temp.RESET();
-        genJournalLine_Re_Temp.SETRANGE("Journal Batch Name", 'PROVISION');
-        IF genJournalLine_Re_Temp.FIND('-') THEN
-            Provision_Cu.FNC_Add2Deals();
-
-    end;
-
             END ELSE BEGIN
 
                 IF SalesHeader."Document Type" = SalesHeader."Document Type"::Order THEN BEGIN
@@ -522,6 +509,19 @@ codeunit 50101 "DEL MGTS_FctMgt"
         END;
 
     end;
+
+    procedure OnGenJnlLineSetFilter_Fct(var GenJournalLine: Record "Gen. Journal Line")
+    var
+        Provision_Cu: Codeunit "DEL Provision";
+        genJournalLine_Re_Temp: Record "Gen. Journal Line" TEMPORARY;
+    begin
+        genJournalLine_Re_Temp.RESET();
+        genJournalLine_Re_Temp.SETRANGE("Journal Batch Name", 'PROVISION');
+        IF genJournalLine_Re_Temp.FIND('-') THEN
+            Provision_Cu.FNC_Add2Deals();
+
+    end;
+
 
     ////////
     procedure OnAfterConfirmPost(var SalesHeader: Record "Sales Header")
@@ -548,8 +548,8 @@ codeunit 50101 "DEL MGTS_FctMgt"
 
     end;
 
-    //-------PROC CDU82 ---
-    procedure OnBeforeConfirmPostFct(var SalesHeader: Record "Sales Header"; var HideDialog: Boolean; var IsHandled: Boolean; var SendReportAsEmail: Boolean; var DefaultOption: Integer)
+    //-------CDU82 ---
+    procedure OnBeforeConfirmPostFct_COD82(var SalesHeader: Record "Sales Header"; var HideDialog: Boolean; var IsHandled: Boolean; var SendReportAsEmail: Boolean; var DefaultOption: Integer)
     var
         element_Re_Loc: Record "DEL Element";
         dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
@@ -559,10 +559,8 @@ codeunit 50101 "DEL MGTS_FctMgt"
         salesLine_Re_Loc: Record "Sales Line";
         GLAccount_Re_Loc: Record "G/L Account";
     begin
-        // T-00551-DEAL -
         shipmentSelected_Bo_Loc := FALSE;
 
-        //On gŠre les "Document Type" commandes, notes de cr‚dit et les factures
         IF
         (
           (SalesHeader."Document Type" = SalesHeader."Document Type"::Order)
@@ -581,32 +579,23 @@ codeunit 50101 "DEL MGTS_FctMgt"
                 shipmentSelected_Bo_Loc := TRUE;
 
                 IF SalesHeader."Document Type" = SalesHeader."Document Type"::Invoice THEN BEGIN
-
-                    //pour les factures vente, on veut 0 ou 1 livraison li‚e
                     IF dealShipmentSelection_Re_Loc.COUNT() > 1 THEN
                         ERROR('Il faut choisir au maximum 1 livraison li‚e !');
 
                 END ELSE
                     IF (SalesHeader."Document Type" = SalesHeader."Document Type"::Order) THEN BEGIN
-
-                        //pour les commandes il faut exactement 1 livraison li‚e
                         IF dealShipmentSelection_Re_Loc.COUNT() > 1 THEN
                             ERROR('Il faut choisir exactement 1 livraison li‚e !');
 
                     END ELSE
                         IF (SalesHeader."Document Type" = SalesHeader."Document Type"::"Credit Memo") THEN BEGIN
-
-                            //pour les notes de cr‚dit, il faut exactement 1 livraison li‚e
                             IF dealShipmentSelection_Re_Loc.COUNT() > 1 THEN
                                 ERROR('Il faut choisir exactement 1 livraison li‚e !');
 
-                            //il faut aussi imp‚rativement avoir une facture li‚e … cette note de cr‚dit
                             IF dealShipmentSelection_Re_Loc."Sales Invoice No." = '' THEN
                                 ERROR('La livraison li‚e n''a pas de Sales Invoice sur laquelle elle doit ˆtre li‚e !');
 
                         END;
-
-                //On cr‚e une updateRequest, comme ca, si NAV plante plus loin, on sait ce qui n'a pas ‚t‚ updat‚ comme il faut
                 updateRequestID_Co_Loc := updateRequestManager_Cu.FNC_Add_Request(
                   dealShipmentSelection_Re_Loc.Deal_ID,
                   dealShipmentSelection_Re_Loc."Document Type",
@@ -614,29 +603,24 @@ codeunit 50101 "DEL MGTS_FctMgt"
                   CURRENTDATETIME
                 );
 
-                //aucune livraison n'a ‚t‚ s‚lectionn‚e
             END ELSE BEGIN
 
                 IF SalesHeader."Document Type" = SalesHeader."Document Type"::Order THEN BEGIN
 
                     ERROR('Il faut choisir exactement 1 livraison li‚e !');
 
-                    //si le type de ligne est "G/L Account" et le num 3400, 3401 ou 3410, ... alors pas d'erreur
                 END ELSE
                     IF SalesHeader."Document Type" = SalesHeader."Document Type"::"Credit Memo" THEN BEGIN
 
-                        //on v‚rifie les lignes du document
                         salesLine_Re_Loc.RESET();
                         salesLine_Re_Loc.SETRANGE("Document Type", salesLine_Re_Loc."Document Type"::"Credit Memo");
                         salesLine_Re_Loc.SETRANGE("Document No.", SalesHeader."No.");
                         IF salesLine_Re_Loc.FIND('-') THEN BEGIN
                             REPEAT
-                                //si c'est pas un compte alors c'est d‚j… grill‚ -> erreur
                                 IF (salesLine_Re_Loc.Type <> salesLine_Re_Loc.Type::"G/L Account") THEN
                                     ERROR('Il faut choisir exactement 1 livraison li‚e !')
                                 ELSE
                                     IF (GLAccount_Re_Loc.GET(salesLine_Re_Loc."No.")) THEN
-                                        // si coch‚, exclure du contr“le de liaison
                                         IF NOT (GLAccount_Re_Loc."DEL Shipment Binding Control") THEN
                                             ERROR('Il faut choisir exactement 1 livraison li‚e !')
 
@@ -646,18 +630,15 @@ codeunit 50101 "DEL MGTS_FctMgt"
                     ELSE
                         IF SalesHeader."Document Type" = SalesHeader."Document Type"::Invoice THEN BEGIN
 
-                            //on v‚rifie les lignes du document
                             salesLine_Re_Loc.RESET();
                             salesLine_Re_Loc.SETRANGE("Document Type", salesLine_Re_Loc."Document Type"::Invoice);
                             salesLine_Re_Loc.SETRANGE("Document No.", SalesHeader."No.");
                             IF salesLine_Re_Loc.FIND('-') THEN BEGIN
                                 REPEAT
-                                    //si c'est pas un compte alors c'est d‚j… grill‚ -> erreur
                                     IF (salesLine_Re_Loc.Type <> salesLine_Re_Loc.Type::"G/L Account") THEN
                                         ERROR('Il faut choisir exactement 1 livraison li‚e !')
                                     ELSE
                                         IF (GLAccount_Re_Loc.GET(salesLine_Re_Loc."No.")) THEN
-                                            // si coch‚, exclure du contr“le de liaison
                                             IF NOT (GLAccount_Re_Loc."DEL Shipment Binding Control") THEN
                                                 ERROR('Il faut choisir exactement 1 livraison li‚e !')
                                 UNTIL (salesLine_Re_Loc.NEXT() = 0);
@@ -668,11 +649,8 @@ codeunit 50101 "DEL MGTS_FctMgt"
         END;
 
     end;
-    /////--------- PROC CDU 91
-
-
-
-    procedure OnBeforeConfirmPostfct(var PurchaseHeader: Record "Purchase Header"; var HideDialog: Boolean; var IsHandled: Boolean; var DefaultOption: Integer)
+    /////COD91
+    procedure OnBeforeConfirmPostfct_PurchaseHeader(var PurchaseHeader: Record "Purchase Header"; var HideDialog: Boolean; var IsHandled: Boolean; var DefaultOption: Integer)
     var
         element_Re_Loc: Record "DEL Element";
         dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
@@ -835,28 +813,142 @@ codeunit 50101 "DEL MGTS_FctMgt"
         exit(true);
     end;
 
-    PROCEDURE SetSpecOrderPosting(NewSpecOrderPosting: Boolean);
+    ///// COD 90 
+    procedure ResetTempLines(var TempPurchLineLocal: Record "Purchase Line" temporary)
     var
-        SpecOrderPost: Boolean;
+        TempPurchLineGlobal: Record "Purchase Line" temporary;
+
+    begin
+        TempPurchLineLocal.Reset();
+        TempPurchLineLocal.Copy(TempPurchLineGlobal, true);
+
+    end;
+
+    PROCEDURE UpdateAssosSpecialOrderPostingNos(PurchHeader: Record "Purchase Header") SpecialOrder: Boolean;
+    VAR
+        TempPurchLine: Record "Purchase Line" TEMPORARY;
+        SalesOrderHeader: Record "Sales Header";
+        NoSeriesMgt: Codeunit "NoSeriesManagement";
+        ReleaseSalesDocument: Codeunit "Release Sales Document";
     BEGIN
-        SpecOrderPost := NewSpecOrderPosting;
-    END;
 
-    PROCEDURE GetSpecialOrderBuffer(VAR pTempSH: Record "Sales Header"); //temporary
-    var
-        tempSpecialSHBuffer: Record "Sales Header";
+        WITH PurchHeader DO BEGIN
+            ResetTempLines(TempPurchLine);
+            TempPurchLine.SETFILTER("Special Order Sales Line No.", '<>0');
+            IF NOT TempPurchLine.ISEMPTY THEN BEGIN
+                SpecialOrder := TRUE;
+                IF Receive THEN BEGIN
+                    TempPurchLine.FINDSET;
+                    REPEAT
+                        IF SalesOrderHeader."No." <> TempPurchLine."Special Order Sales No." THEN BEGIN
+                            SalesOrderHeader.GET(SalesOrderHeader."Document Type"::Order, TempPurchLine."Special Order Sales No.");
+                            SalesOrderHeader.TESTFIELD("Bill-to Customer No.");
+                            SalesOrderHeader.Ship := TRUE;
+     //TODO:PreviewMode is a global var
+       // ReleaseSalesDocument.ReleaseSalesHeader(SalesOrderHeader, PreviewMode);
+                            IF SalesOrderHeader."Shipping No." = '' THEN BEGIN
+                                SalesOrderHeader.TESTFIELD("Shipping No. Series");
+                                SalesOrderHeader."Shipping No." :=
+                                  NoSeriesMgt.GetNextNo(SalesOrderHeader."Shipping No. Series", "Posting Date", TRUE);
+                                SalesOrderHeader.MODIFY;
+                            END;
+                        END;
+                    UNTIL TempPurchLine.NEXT = 0;
+                END;
+            END ELSE
+                SpecialOrder := FALSE;
+        END;
+        EXIT(SpecialOrder);
+    END;
+    //////COD 90
+    PROCEDURE CheckSalesDealShipment(PurchOrderNo: Code[20]; SalesOrderNo: Code[20]);
+    VAR
+        DealShipmentSelection: Record "DEL Deal Shipment Selection";
+        Element: Record "DEL Element";
+        DealID: Code[20];
+        Deal: Record "DEL Deal";
+        DealShipment: Record "DEL Deal Shipment";
+        DealShipmentConnection: Record "DEL Deal Shipment Connection";
+        DealShipmentSelectionCopy: Page "DEL Deal Shipment Selection";
+        DealShptSalesLine: Record "Sales Line";
+        ValueSpecial: Code[20];
+        PurchDealShipmentSelection: Record "DEL Deal Shipment Selection";
+        DocMatrixManagement: Codeunit "DEL DocMatrix Management"; //Var global dans le spécifique
+        DealCU: Codeunit "DEL Deal"; //Var global dans le spécifique
+        PostDealShipmentSelection: Record "DEL Deal Shipment Selection"; //Var global dans le spécifique
+        ShptUpdateRequestID: Code[20]; //Var global dans le spécifique
+        ShipmentSelected: Boolean; //Var global dans le spécifique
+        SalesHeader: Record "Sales Header"; //Var global dans le spécifique
+
 
     BEGIN
-        pTempSH.RESET;
-        pTempSH.DELETEALL;
-        tempSpecialSHBuffer.RESET;
-        IF tempSpecialSHBuffer.FINDSET THEN
-            REPEAT
-                pTempSH := tempSpecialSHBuffer;
-                pTempSH.INSERT;
-            UNTIL tempSpecialSHBuffer.NEXT = 0;
-    END;
 
+        PurchDealShipmentSelection.RESET;
+        PurchDealShipmentSelection.SETRANGE("Document Type", PurchDealShipmentSelection."Document Type"::"Purchase Header");
+        PurchDealShipmentSelection.SETRANGE("Document No.", PurchOrderNo);
+        PurchDealShipmentSelection.SETRANGE(Checked, TRUE);
+        IF PurchDealShipmentSelection.FINDFIRST THEN BEGIN
+            DealShipmentSelection.RESET;
+            DealShipmentSelection.SETRANGE("Document Type", DealShipmentSelection."Document Type"::"Sales Header");
+            DealShipmentSelection.SETRANGE("Document No.", SalesOrderNo);
+            DealShipmentSelection.SETRANGE(Deal_ID, PurchDealShipmentSelection.Deal_ID);
+            DealShipmentSelection.SETRANGE("Shipment No.", PurchDealShipmentSelection."Shipment No.");
+            DealShipmentSelection.SETRANGE(Checked, TRUE);
+            IF NOT DealShipmentSelection.FINDFIRST THEN BEGIN
+                ValueSpecial := '';
+                DealShipmentSelection.RESET();
+                DealShipmentSelection.SETRANGE("Document Type", DealShipmentSelection."Document Type"::"Sales Header");
+                DealShipmentSelection.SETRANGE("Document No.", SalesOrderNo);
+                DealShipmentSelection.DELETEALL();
+
+                DealShptSalesLine.RESET;
+                DealShptSalesLine.SETCURRENTKEY("Special Order Purchase No.");
+                DealShptSalesLine.ASCENDING(FALSE);
+                DealShptSalesLine.SETRANGE("Document Type", DealShptSalesLine."Document Type"::Order);
+                DealShptSalesLine.SETRANGE("Document No.", SalesOrderNo);
+                DealShptSalesLine.SETFILTER("Special Order Purchase No.", '<>%1', '');
+                IF DealShptSalesLine.FIND('-') THEN BEGIN
+                    REPEAT
+                        IF ValueSpecial <> DealShptSalesLine."Special Order Purchase No." THEN BEGIN
+                            Element.SETRANGE("Type No.", DealShptSalesLine."Special Order Purchase No.");
+                            IF Element.FIND('-') THEN BEGIN
+                                Deal.RESET();
+                                Deal.SETRANGE(ID, Element.Deal_ID);
+                                Deal.SETFILTER(Status, '<>%1', Deal.Status::Closed);
+                                IF Deal.FIND('-') THEN
+                                    REPEAT
+                                        DealShipment.RESET();
+                                        DealShipment.SETRANGE(Deal_ID, Deal.ID);
+                                        IF DealShipment.FIND('-') THEN
+                                            REPEAT
+                                                DealShipmentSelection.INIT();
+                                                DealShipmentSelection."Document Type" := DealShipmentSelection."Document Type"::"Sales Header";
+                                                DealShipmentSelection."Document No." := SalesOrderNo;
+                                                DealShipmentSelection.Deal_ID := Deal.ID;
+                                                DealShipmentSelection."Shipment No." := DealShipment.ID;
+                                                DealShipmentSelection.USER_ID := USERID;
+                                                DealShipmentSelection."BR No." := DealShipment."BR No.";
+                                                DealShipmentSelection."Purchase Invoice No." := DealShipment."Purchase Invoice No.";
+                                                DealShipmentSelection."Sales Invoice No." := DealShipment."Sales Invoice No.";
+
+                                                IF (Deal.ID = PurchDealShipmentSelection.Deal_ID) AND (DealShipment.ID = PurchDealShipmentSelection."Shipment No.") THEN
+                                                    DealShipmentSelection.Checked := TRUE;
+
+                                                DealShipmentSelection.INSERT;
+                                            UNTIL DealShipment.NEXT = 0;
+                                    UNTIL Deal.NEXT = 0;
+
+                                ValueSpecial := DealShptSalesLine."Special Order Purchase No.";
+                            END;
+                        END;
+                    UNTIL DealShptSalesLine.NEXT = 0;
+                END;
+            END;
+        END;
+
+        DocMatrixManagement.TestShipmentSelectionBeforeUptdateRequest(SalesHeader, PostDealShipmentSelection, ShptUpdateRequestID, ShipmentSelected);
+        DealCU.FNC_Reinit_Deal(PostDealShipmentSelection.Deal_ID, FALSE, TRUE);
+    END;
 
 
 }
