@@ -253,26 +253,26 @@ codeunit 50100 "DEL MGTS_EventsMgt"
                 SalesLine.MODIFY();
             UNTIL SalesLine.NEXT() = 0;
     end;
-
+    ////
     [EventSubscriber(ObjectType::Table, Database::"Purchase Header", 'OnAfterValidateShipToCode', '', false, false)]
     local procedure T38_OnAfterValidateShipToCode_PurchaseHeader(var PurchHeader: Record "Purchase Header"; Cust: Record Customer; ShipToAddr: Record "Ship-to Address")
     begin
         PurchHeader."Shipment Method Code" := ShipToAddr."DEL Purch Shipment Method Code";
     end;
-
+    ////
     [EventSubscriber(ObjectType::Table, Database::"Purchase Header", 'OnBeforeUpdateCurrencyFactor', '', false, false)]
     local procedure T38_OnBeforeUpdateCurrencyFactor_PurchaseHeader(var PurchaseHeader: Record "Purchase Header"; var Updated: Boolean; var CurrencyExchangeRate: Record "Currency Exchange Rate"; CurrentFieldNo: Integer)
     begin
         PurchaseHeader.SetHideValidationDialog(true);
     end;
-
+    ////
     [EventSubscriber(ObjectType::Table, Database::"Purchase Header", 'OnAfterUpdateCurrencyFactor', '', false, false)]
     local procedure T38_OnAfterUpdateCurrencyFactor_PurchaseHeader(var PurchaseHeader: Record "Purchase Header"; HideValidationDialog: Boolean)
     begin
         IF PurchaseHeader."Currency Factor" <> 0 THEN
             PurchaseHeader.VALIDATE(PurchaseHeader."DEL Relational Exch. Rate Amount", 1 / PurchaseHeader."Currency Factor");
     end;
-
+    ////
     [EventSubscriber(ObjectType::Table, Database::"Purchase Header", 'OnValidatePaymentTermsCodeOnBeforeValidateDueDate', '', false, false)]
     local procedure T38_OnValidatePaymentTermsCodeOnBeforeValidateDueDate_PurchaseHeader(var PurchaseHeader: Record "Purchase Header"; xPurchaseHeader: Record "Purchase Header"; CurrentFieldNo: Integer; var IsHandled: Boolean)
     begin
@@ -281,7 +281,7 @@ codeunit 50100 "DEL MGTS_EventsMgt"
             IsHandled := true;
         end;
     end;
-
+    ////
     [EventSubscriber(ObjectType::Table, Database::"Purchase Header", 'OnValidatePaymentTermsCodeOnBeforeCalcDueDate', '', false, false)]
     local procedure T38_OnValidatePaymentTermsCodeOnBeforeCalcDueDate_PurchaseHeader(var PurchaseHeader: Record "Purchase Header"; var xPurchaseHeader: Record "Purchase Header"; CalledByFieldNo: Integer; CallingFieldNo: Integer; var IsHandled: Boolean)
     var
@@ -293,7 +293,7 @@ codeunit 50100 "DEL MGTS_EventsMgt"
             IsHandled := true;
         end;
     end;
-
+    ////
     [EventSubscriber(ObjectType::Table, Database::"Purchase Header", 'OnValidatePaymentTermsCodeOnBeforeValidateDueDateWhenBlank', '', false, false)]
     local procedure T38_OnValidatePaymentTermsCodeOnBeforeValidateDueDateWhenBlank_PurchaseHeader(var PurchaseHeader: Record "Purchase Header"; xPurchaseHeader: Record "Purchase Header"; CurrentFieldNo: Integer; var IsHandled: Boolean)
     begin
@@ -302,15 +302,13 @@ codeunit 50100 "DEL MGTS_EventsMgt"
             IsHandled := true;
         end
     end;
-
+    ////
     [EventSubscriber(ObjectType::Table, Database::"Purchase Header", 'OnAfterUpdateInboundWhseHandlingTime', '', false, false)]
     local procedure T38_OnAfterUpdateInboundWhseHandlingTime_PurchaseHeader(var PurchaseHeader: Record "Purchase Header"; CurrentFieldNo: Integer)
     begin
         PurchaseHeader.NTO_UpdateForwardingAgent();
     end;
-
-
-
+    ////
     [EventSubscriber(ObjectType::Table, DataBase::"Purchase Header", 'OnAfterValidateEvent', 'Currency Code', false, false)]
     local procedure T38_OnAfterValidateEvent_PurchaseHeader(var Rec: Record "Purchase Header"; var xRec: Record "Purchase Header"; CurrFieldNo: Integer)
     begin
@@ -319,14 +317,13 @@ codeunit 50100 "DEL MGTS_EventsMgt"
             Rec.Modify();
         end;
     end;
-
+    ////
     [EventSubscriber(ObjectType::Table, Database::"Purchase Header", 'OnBeforeUpdatePurchLinesByFieldNo', '', false, false)]
     local procedure T38_OnBeforeUpdatePurchLinesByFieldNo_PurchaseHeader(var PurchaseHeader: Record "Purchase Header"; ChangedFieldNo: Integer; var AskQuestion: Boolean; var IsHandled: Boolean)
     begin
         AskQuestion := false;
     end;
-
-
+    ////
     [EventSubscriber(ObjectType::Table, Database::"Purchase Header", 'OnValidatePrepmtPaymentTermsCodeOnCaseIfOnBeforeValidatePrepaymentDueDate', '', false, false)]
     local procedure T38_OnValidatePrepmtPaymentTermsCodeOnCaseIfOnBeforeValidatePrepaymentDueDate_PurchaseHeader(var PurchaseHeader: Record "Purchase Header"; xPurchaseHeader: Record "Purchase Header"; CurrFieldNo: Integer; var IsHandled: Boolean)
     begin
@@ -357,6 +354,7 @@ codeunit 50100 "DEL MGTS_EventsMgt"
         end
     end;
 
+    ////
     [EventSubscriber(ObjectType::Table, Database::"Purchase Header", 'OnRecreatePurchLinesOnBeforeConfirm', '', false, false)]
     local procedure T38_OnRecreatePurchLinesOnBeforeConfirm_PurchaseHeader(var PurchaseHeader: Record "Purchase Header"; xPurchaseHeader: Record "Purchase Header"; ChangedFieldName: Text[100]; HideValidationDialog: Boolean; var Confirmed: Boolean; var IsHandled: Boolean)
     var
@@ -390,7 +388,7 @@ codeunit 50100 "DEL MGTS_EventsMgt"
             Confirmed := ConfirmManagement.GetResponseOrDefault(StrSubstNo(ConfirmText, ChangedFieldName), true);
         end;
     end;
-
+    ////
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnAfterInsertPostedHeaders', '', false, false)]
     local procedure OnAfterInsertPostedHeaders_SalesHeader(var SalesHeader: Record "Sales Header"; var SalesShipmentHeader: Record "Sales Shipment Header"; var SalesInvoiceHeader: Record "Sales Invoice Header"; var SalesCrMemoHdr: Record "Sales Cr.Memo Header"; var ReceiptHeader: Record "Return Receipt Header")
     var
@@ -398,16 +396,9 @@ codeunit 50100 "DEL MGTS_EventsMgt"
     begin
         MGTSFactMgt.OnAfterInsertPostedHeaders(SalesHeader, SalesShipmentHeader, SalesInvoiceHeader, SalesCrMemoHdr, ReceiptHeader);
     end;
+    ////
 
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnBeforePostSalesDoc', '', false, false)]
-    local procedure OnBeforePostSalesDoc(var SalesHeader: Record "Sales Header"; CommitIsSuppressed: Boolean; PreviewMode: Boolean; var HideProgressWindow: Boolean; var IsHandled: Boolean)
-    var
-        SkipCommit: Boolean; //Cdu 80
-    begin
-        IF SkipCommit THEN BEGIN
-            CLEARALL();
-            SkipCommit := TRUE;
-        END;
+    ////
     [EventSubscriber(ObjectType::Table, Database::"Purchase Header", 'OnBeforeTransferSavedFieldsSpecialOrder', '', false, false)]
     local procedure T38_OnBeforeTransferSavedFieldsSpecialOrder_PurchaseHeader(var DestinationPurchaseLine: Record "Purchase Line"; var SourcePurchaseLine: Record "Purchase Line"; var IsHandled: Boolean)
     var
@@ -538,17 +529,8 @@ codeunit 50100 "DEL MGTS_EventsMgt"
         MGTSFactMgt.OnCodeOnAfterGenJnlPostBatchRunfct(GenJnlLine);
     end;
     /////COD231
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post", 'OnGenJnlLineSetFilter', '', false, false)]
-    local procedure COD231_OnGenJnlLineSetFilter_GenJnlPost(var GenJournalLine: Record "Gen. Journal Line")
-
-    //CDU 80 
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnAfterInsertPostedHeaders', '', false, false)]
-    local procedure OnAfterInsertPostedHeaders_SalesHeader(var SalesHeader: Record "Sales Header"; var SalesShipmentHeader: Record "Sales Shipment Header"; var SalesInvoiceHeader: Record "Sales Invoice Header"; var SalesCrMemoHdr: Record "Sales Cr.Memo Header"; var ReceiptHeader: Record "Return Receipt Header")
-    var
-        MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
-    begin
-        MGTSFactMgt.OnGenJnlLineSetFilter_Fct(GenJournalLine);
-    end;
+    // [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post", 'OnGenJnlLineSetFilter', '', false, false)]
+    // local procedure COD231_OnGenJnlLineSetFilter_GenJnlPost(var GenJournalLine: Record "Gen. Journal Line")
     ////COD 232 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post+Print", 'OnBeforePostJournalBatch', '', false, false)]
     local procedure COD232_OnBeforePostJournalBatch_GenJnlPostPrint(var GenJournalLine: Record "Gen. Journal Line"; var HideDialog: Boolean)
@@ -574,70 +556,8 @@ codeunit 50100 "DEL MGTS_EventsMgt"
     begin
         MGTSFactMgt.OnGenJnlLineSetFilter_Fct(GenJournalLine);
     end;
-    //TODO 
-    // [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post+Print", 'OnAfterConfirmPostJournalBatch', '', false, false)]
 
-    // local procedure OnAfterConfirmPostJournalBatch(var GenJournalLine: Record "Gen. Journal Line"; var IsHandled: Boolean)
-    // var
-    //     TempJnlBatchName: Code[10];
-    //     RecRefToPrint: RecordRef;
-    //     GeneralLedgerSetup: Record "General Ledger Setup";
-    //     GenJnlsScheduled: Boolean;
-    //     BatchPostingPrintMgt: Codeunit "Batch Posting Print Mgt.";
-    //     GenJnlPostviaJobQueue: Codeunit "Gen. Jnl.-Post via Job Queue";
-    //     JournalsScheduledMsg: Label 'Journal lines have been scheduled for posting.';
-    //     Text000: Label 'cannot be filtered when posting recurring journals';
-    //     Text001: Label 'Do you want to post the journal lines and print the report(s)?';
-    //     Text002: Label 'There is nothing to post.';
-    //     Text003: Label 'The journal lines were successfully posted.';
-    //     Text004: Label 'The journal lines were successfully posted. You are now in the %1 journal.';
-    // begin
-
-    //     GeneralLedgerSetup.Get();
-    //     RecRefToPrint.GetTable(GenJournalLine);
-    //     if GeneralLedgerSetup."Post & Print with Job Queue" then begin
-    //         // Add job queue entry for each document no.
-    //         GenJournalLine.SetCurrentKey("Document No.");
-    //         while GenJournalLine.FindFirst() do begin
-    //             GenJnlsScheduled := true;
-    //             GenJournalLine."Print Posted Documents" := true;
-    //             GenJournalLine.Modify();
-    //             GenJnlPostviaJobQueue.EnqueueGenJrnlLineWithUI(GenJournalLine, false);
-    //             GenJournalLine.SetFilter("Document No.", '>%1', GenJournalLine."Document No.");
-    //         end;
-
-    //         if GenJnlsScheduled then
-    //             Message(JournalsScheduledMsg);
-    //     end else begin
-    //         CODEUNIT.Run(CODEUNIT::"Gen. Jnl.-Post Batch", GenJournalLine);
-    //         OnAfterPostJournalBatch(GenJournalLine);
-
-    //         RecRefToPrint.GetTable(GenJournalLine);
-    //         BatchPostingPrintMgt.PrintJournal(RecRefToPrint);
-
-    //         if not HideDialog then
-    //             if GenJournalLine."Line No." = 0 then
-    //                 Message(Text002)
-    //             else
-    //                 if TempJnlBatchName = GenJournalLine."Journal Batch Name" then
-    //                     Message(Text003)
-    //                 else
-    //                     Message(Text004, GenJournalLine."Journal Batch Name");
-    //     end;
-
-    //     if not GenJournalLine.Find('=><') or (TempJnlBatchName <> GenJournalLine."Journal Batch Name") or GenJournalLine.GeneralLedgerSetup."Post & Print with Job Queue" then begin
-    //         GenJournalLine.Reset;
-    //         GenJournalLine.FilterGroup(2);
-    //         GenJournalLine.SetRange("Journal Template Name", GenJournalLine."Journal Template Name");
-    //         GenJournalLine.SetRange("Journal Batch Name", GenJournalLine."Journal Batch Name");
-    //         OnGenJnlLineSetFilter(GenJournalLine);
-    //         GenJournalLine.FilterGroup(0);
-    //         GenJournalLine."Line No." := 1;
-    //     end;
-    // end;
-
-
-    //// COD 333
+    //// COD333
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Req. Wksh.-Make Order", 'OnCodeOnBeforeFinalizeOrderHeader', '', false, false)]
     local procedure OnCodeOnBeforeFinalizeOrderHeader(PurchOrderHeader: Record "Purchase Header"; var ReqLine: Record "Requisition Line"; var IsHandled: Boolean)
     var
@@ -652,7 +572,7 @@ codeunit 50100 "DEL MGTS_EventsMgt"
         end;
 
     end;
-    ///// COD333
+    //// COD333
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Req. Wksh.-Make Order", 'OnBeforeInitPurchOrderLineUpdateQuantity', '', false, false)]
 
@@ -761,7 +681,7 @@ codeunit 50100 "DEL MGTS_EventsMgt"
             EXIT;
         END;
     end;
-
+    ////
     [EventSubscriber(ObjectType::Table, Database::"Purchase Line", 'OnBeforeJobTaskIsSet', '', false, false)]
     local procedure T39_OnBeforeJobTaskIsSet_PurchaseLine(PurchLine: Record "Purchase Line"; var IsJobLine: Boolean)
     var
@@ -971,7 +891,42 @@ codeunit 50100 "DEL MGTS_EventsMgt"
         END;
 
     end;
-    //---------CDU 90
+
+
+    /////COD 333
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Req. Wksh.-Make Order", 'OnAfterInsertPurchOrderLine', '', false, false)]
+
+    local procedure OnAfterInsertPurchOrderLine(var PurchOrderLine: Record "Purchase Line"; var NextLineNo: Integer; var RequisitionLine: Record "Requisition Line"; var PurchOrderHeader: Record "Purchase Header")
+    begin
+        PurchOrderHeader.NTO_ReportPurchDim2SalesLines(PurchOrderHeader);
+    end;
+    ////COD 333 //TODO
+    // local procedure OnBeforeInsertHeader(RequisitionLine: Record "Requisition Line"; PurchaseHeader: Record "Purchase Header"; var OrderDateReq: Date; var PostingDateReq: Date; var ReceiveDateReq: Date; var ReferenceReq: Text[35])
+    // begin
+    //     IF HideDialog THEN
+    //         PurchaseHeader.SetHideValidationDialog(TRUE);
+    // end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Req. Wksh.-Make Order", 'OnAfterInsertPurchOrderHeader', '', false, false)]
+
+    local procedure OnAfterInsertPurchOrderHeader(var RequisitionLine: Record "Requisition Line"; var PurchaseOrderHeader: Record "Purchase Header"; CommitIsSuppressed: Boolean; SpecialOrder: Boolean)
+    var
+
+        MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
+    begin
+        MGTSFactMgt.OnAfterInsertPurchOrderHeaderFct(RequisitionLine, PurchaseOrderHeader, CommitIsSuppressed, SpecialOrder)
+    end;
+
+
+
+
+
+
+
+
+
+
+
 
 
 
