@@ -657,6 +657,74 @@ codeunit 50101 "DEL MGTS_FctMgt"
         END;
 
     end;
+
+
+    // COD 7000
+    procedure CopySalesPriceToSalesPrice(var FromSalesPrice: Record "Sales Price"; var ToSalesPrice: Record "Sales Price")
+    begin
+        with ToSalesPrice do
+            if FromSalesPrice.FindSet() then
+                repeat
+                    ToSalesPrice := FromSalesPrice;
+                    Insert;
+                until FromSalesPrice.Next() = 0;
+    end;
+
+    // procedure specifique codeunit 431 "IC Outbox Export"
+    PROCEDURE SendTrans(ICOutboxTransaction: Record "IC Outbox Transaction");
+    VAR
+        TransitaireMgt: Codeunit "DEL TransitaireMgt";
+    BEGIN
+        TransitaireMgt.SendToTransitairePartner(ICOutboxTransaction);
+        // SendToExternalPartner(ICOutboxTransaction);
+        // SendToInternalPartner(ICOutboxTransaction); TODO: procedure local
+    END;
+
+
+    // Duplicate procedure from codeunit 427 ICInboxOutboxMgt
+    procedure CheckICPurchaseDocumentAlreadySent(PurchaseHeader: Record "Purchase Header")
+    var
+        HandledICOutboxTrans: Record "Handled IC Outbox Trans.";
+        ConfirmManagement: Codeunit "Confirm Management";
+        TransactionAlreadyExistsInOutboxHandledQst: Label '%1 %2 has already been sent to intercompany partner %3. Resending it will create a duplicate %1 for them. Do you want to send it again?', Comment = '%1 - Document Type, %2 - Document No, %3 - IC parthner code';
+
+    begin
+        HandledICOutboxTrans.SetRange("Source Type", HandledICOutboxTrans."Source Type"::"Purchase Document");
+        case PurchaseHeader."Document Type" of
+            PurchaseHeader."Document Type"::"Credit Memo":
+                HandledICOutboxTrans.SetRange("Document Type", HandledICOutboxTrans."Document Type"::"Credit Memo");
+            PurchaseHeader."Document Type"::Invoice:
+                HandledICOutboxTrans.SetRange("Document Type", HandledICOutboxTrans."Document Type"::Invoice);
+            PurchaseHeader."Document Type"::Order:
+                HandledICOutboxTrans.SetRange("Document Type", HandledICOutboxTrans."Document Type"::Order);
+            PurchaseHeader."Document Type"::"Return Order":
+                HandledICOutboxTrans.SetRange("Document Type", HandledICOutboxTrans."Document Type"::"Return Order");
+            else
+                exit;
+        end;
+        HandledICOutboxTrans.SetRange("Document No.", PurchaseHeader."No.");
+
+        if HandledICOutboxTrans.FindFirst() then
+            if not ConfirmManagement.GetResponseOrDefault(
+                StrSubstNo(
+                    TransactionAlreadyExistsInOutboxHandledQst, HandledICOutboxTrans."Document Type",
+                    HandledICOutboxTrans."Document No.", HandledICOutboxTrans."IC Partner Code"),
+                true)
+            then
+                Error('');
+    end;
+
+    // procedure from codeunit 365 "Format Address"
+    procedure NTO_SalesFiscCtct(VAR AddrArray: ARRAY[8] OF Text[50]; VAR NTO_Contact: Record Contact);
+    var
+        ForAdr: Codeunit "Format Address";
+    begin
+        WITH NTO_Contact DO
+            ForAdr.FormatAddr(AddrArray, Name, "Name 2", '', Address, "Address 2", City, "Post Code", County, "Country/Region Code");
+    end;
+
+
+
 }
 
 

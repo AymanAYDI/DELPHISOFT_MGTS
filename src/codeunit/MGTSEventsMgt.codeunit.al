@@ -760,6 +760,216 @@ codeunit 50100 "DEL MGTS_EventsMgt"
     end;
     ///////aprés   Code;
     // Rec := SalesHeader;
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"GLN Calculator", 'OnBeforeIsValidCheckDigit', '', false, false)]
+    procedure COD1607_OnBeforeIsValidCheckDigit(GLNValue: Code[20]; ExpectedSize: Integer; var IsValid: Boolean; var IsHandled: Boolean)
+    var
+        GLNCheckDigitErr: Label 'The GLN %1 is not valid.';
+        GLNLengthErr: Label 'The GLN length should be %1 and not %2.';
+    begin
+        if GLNValue = '' then begin
+            MESSAGE(GLNCheckDigitErr, GLNValue);
+            IsValid := true;
+            IsHandled := true;
+        end else begin
+            if StrLen(GLNValue) <> ExpectedSize then
+                Error(GLNLengthErr, ExpectedSize, StrLen(GLNValue));
+
+            if Format(StrCheckSum(CopyStr(GLNValue, 1, ExpectedSize - 1), '131313131313')) = Format(GLNValue[ExpectedSize]) then
+                MESSAGE(GLNCheckDigitErr, GLNValue);
+            IsValid := true;
+            IsHandled := true;
+        end;
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"CustVendBank-Update", 'OnAfterUpdateCustomer', '', false, false)]
+    local procedure COD5055_OnAfterUpdateCustomer(var Customer: Record Customer; Contact: Record Contact; var ContBusRel: Record "Contact Business Relation")
+    var
+        NoteAuditSocial: Record "DEL Note Audit Social";
+        DocumentLine: Record "DEL Document Line";
+        NoteAuditSocial_Re: Record "DEL Note Audit Social";
+        DocumentLine_Re: Record "DEL Document Line";
+        RlshpMgtCommentLine: Record "Rlshp. Mgt. Comment Line";
+        CommentLine: Record "Comment Line";
+        Var_RecRef: RecordRef;
+        Var_recLink: Record "Record Link";
+        Var_recLink2: Record "Record Link";
+        Num_seq: Integer;
+        Vend: Record Vendor;
+    begin
+        NoteAuditSocial.RESET;
+        NoteAuditSocial.SETRANGE(NoteAuditSocial.Type, NoteAuditSocial.Type::Contact);
+        NoteAuditSocial.SETRANGE(NoteAuditSocial."Vendor/Contact No.", Contact."No.");
+        IF NoteAuditSocial.FINDFIRST THEN BEGIN
+            REPEAT
+                NoteAuditSocial_Re.INIT;
+                NoteAuditSocial_Re."No." := NoteAuditSocial."No.";
+                NoteAuditSocial_Re."Vendor/Contact No." := Vend."No.";
+                NoteAuditSocial_Re.Type := NoteAuditSocial_Re.Type::Vendor;
+                NoteAuditSocial_Re.Note := NoteAuditSocial.Note;
+                NoteAuditSocial_Re.INSERT;
+            UNTIL NoteAuditSocial.NEXT = 0;
+        END;
+
+        DocumentLine.RESET;
+        DocumentLine.SETRANGE(DocumentLine."Table Name", DocumentLine."Table Name"::Contact);
+        DocumentLine.SETRANGE(DocumentLine."No.", Contact."No.");
+        IF DocumentLine.FINDFIRST THEN
+            REPEAT
+                DocumentLine_Re.INIT;
+                DocumentLine_Re."Table Name" := DocumentLine_Re."Table Name"::Vendor;
+                DocumentLine_Re."No." := Vend."No.";
+                DocumentLine_Re."Comment Entry No." := DocumentLine."Comment Entry No.";
+                DocumentLine_Re."Line No." := DocumentLine."Line No.";
+                DocumentLine_Re."Insert Date" := DocumentLine."Insert Date";
+                DocumentLine_Re."Insert Time" := DocumentLine."Insert Time";
+                DocumentLine_Re."File Name" := DocumentLine."File Name";
+                DocumentLine_Re.Path := DocumentLine.Path;
+                DocumentLine_Re."User ID" := DocumentLine."User ID";
+                DocumentLine_Re."Notation Type" := DocumentLine."Notation Type";
+                DocumentLine_Re.Document := DocumentLine.Document;
+                DocumentLine_Re.INSERT;
+            UNTIL DocumentLine.NEXT = 0;
+
+        RlshpMgtCommentLine.RESET;
+        RlshpMgtCommentLine.SETRANGE(RlshpMgtCommentLine."Table Name", RlshpMgtCommentLine."Table Name"::Contact);
+        RlshpMgtCommentLine.SETRANGE(RlshpMgtCommentLine."No.", Contact."No.");
+        IF RlshpMgtCommentLine.FINDFIRST THEN
+            REPEAT
+                CommentLine.INIT;
+                CommentLine."Table Name" := CommentLine."Table Name"::Vendor;
+                CommentLine."No." := Vend."No.";
+                CommentLine."Line No." := RlshpMgtCommentLine."Line No.";
+                CommentLine.Date := RlshpMgtCommentLine.Date;
+                CommentLine.Comment := RlshpMgtCommentLine.Comment;
+                CommentLine.INSERT;
+            UNTIL RlshpMgtCommentLine.NEXT = 0;
+
+        IF Var_recLink.FINDLAST THEN
+            Num_seq := Var_recLink."Link ID" + 1
+        ELSE
+            Num_seq := 1;
+
+        Var_RecRef.GETTABLE(Contact);
+        Var_recLink.RESET;
+        Var_recLink.SETRANGE(Var_recLink."Record ID", Var_RecRef.RECORDID);
+
+        IF Var_recLink.FINDFIRST THEN BEGIN
+            Var_RecRef.GETTABLE(Vend);
+            REPEAT
+                Var_recLink2.INIT;
+                Var_recLink2."Link ID" := Num_seq;
+                Var_recLink2."Record ID" := Var_RecRef.RECORDID;
+                Var_recLink2.URL1 := Var_recLink.URL1;
+                Var_recLink2.Description := Var_recLink.Description;
+                Var_recLink2.Type := Var_recLink.Type;
+                Var_recLink2.Note := Var_recLink.Note;
+                Var_recLink2.Created := Var_recLink.Created;
+                Var_recLink2."User ID" := Var_recLink."User ID";
+                Var_recLink2.Company := Var_recLink.Company;
+                Var_recLink2.Notify := Var_recLink.Notify;
+                Var_recLink2."To User ID" := Var_recLink."To User ID";
+                Var_recLink2.INSERT;
+                Num_seq := Num_seq + 1;
+            UNTIL Var_recLink.NEXT = 0;
+        END;
+    end;
+    //  Codeunit 7000
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales Price Calc. Mgt.", 'OnBeforeSalesLinePriceExists', '', false, false)]
+    local procedure COD7000_OnBeforeSalesLinePriceExists(var SalesLine: Record "Sales Line"; var SalesHeader: Record "Sales Header"; var TempSalesPrice: Record "Sales Price" temporary; Currency: Record Currency; CurrencyFactor: Decimal; StartingDate: Date; Qty: Decimal; QtyPerUOM: Decimal; ShowAll: Boolean; var InHandled: Boolean)
+    var
+        SalesPriceCalcMgt: Codeunit "Sales Price Calc. Mgt.";
+    begin
+        // SalesPriceCalcMgt.FindSalesPrice(
+        //     TempSalesPrice,SalesLine."Bill-to Customer No.",SalesHeader."Bill-to Contact No.",
+        //     SalesLine."Customer Price Group",SalesHeader."Campaign No.",
+        //     SalesLine."No.",SalesLine."Variant Code",SalesLine."Unit of Measure Code",
+        //     SalesHeader."Currency Code",SalesPriceCalcMgt.SalesHeaderStartDate(SalesHeader,DateCaption),ShowAll); TODO: variable global "DateCaption"
+    end;
+
+    // [EventSubscriber(ObjectType::Codeunit, Codeunit::"IC Outbox Export", 'OnBeforeRunOutboxTransactions', '', false, false)] TODO: procedure local
+    // local procedure COD431_OnBeforeRunOutboxTransactions(var ICOutboxTransaction: Record "IC Outbox Transaction"; var IsHandled: Boolean)
+    // var
+    //     CopyICOutboxTransaction: Record "IC Outbox Transaction";
+    //     CompanyInfo: Record "Company Information";
+    //     TransitaireMgt: Codeunit "DEL TransitaireMgt";
+    //     ICOutBoxTrans_Loc: Record "IC Outbox Transaction";
+    //     ICOutBoxTrans: Record "IC Outbox Transaction";
+    //     ICOutboxExport: Codeunit "IC Outbox Export";
+    // begin
+    //     CompanyInfo.Get();
+    //     CopyICOutboxTransaction.Copy(ICOutboxTransaction);
+    //     CopyICOutboxTransaction.SetRange("Line Action",
+    //     CopyICOutboxTransaction."Line Action"::"Send to IC Partner");
+    //         IF ICOutBoxTrans.FINDFIRST THEN
+    //         REPEAT
+    //         ICOutBoxTrans_Loc.SETRANGE(ICOutBoxTrans_Loc."Transaction No.",ICOutBoxTrans."Transaction No.");
+    //         ICOutBoxTrans_Loc.SETRANGE(ICOutBoxTrans_Loc."IC Partner Code",ICOutBoxTrans."IC Partner Code");
+    //         ICOutBoxTrans_Loc.SETRANGE(ICOutBoxTrans_Loc."Transaction Source",ICOutBoxTrans."Transaction Source");
+    //         ICOutBoxTrans_Loc.SETRANGE(ICOutBoxTrans_Loc."Document Type",ICOutBoxTrans."Document Type");
+    //         ICOutBoxTrans_Loc.SETRANGE(ICOutBoxTrans_Loc."Line Action","Line Action"::"Send to IC Partner");
+    //         ICOutBoxTrans_Loc.SETRANGE(ICOutBoxTrans_Loc."Document No.",ICOutBoxTrans."Document No.");
+    //         ICOutBoxTrans_Loc.FINDFIRST;
+    //         ICOutboxExport.UpdateICStatus(ICOutBoxTrans_Loc);
+
+    //         IF (ICOutBoxTrans_Loc."Source Type"::"Forwarding Document"= ICOutBoxTrans_Loc."Source Type") THEN BEGIN
+    //           TransitaireMgt.SendToTransitairePartner(ICOutBoxTrans_Loc);
+    //           ICOutboxExport.SendToExternalPartner(ICOutBoxTrans_Loc);
+    //           SendToInternalPartner(ICOutBoxTrans_Loc);
+    //         END ELSE BEGIN // LOCO
+    //           SendToExternalPartner(ICOutBoxTrans_Loc);
+    //           SendToInternalPartner(ICOutBoxTrans_Loc);
+    //           ICOutBoxTrans_Loc.SETRANGE("Line Action","Line Action"::"Return to Inbox");
+    //           ReturnToInbox(ICOutBoxTrans_Loc);
+    //           CancelTrans(ICOutBoxTrans_Loc);
+    //         END;
+    //         UNTIL ICOutBoxTrans.NEXT=0;
+    // end;
 
 
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::ICInboxOutboxMgt, 'OnBeforeSendPurchDoc', '', false, false)]
+    procedure OnBeforeSendPurchDoc(var PurchHeader: Record "Purchase Header"; var Post: Boolean; var IsHandled: Boolean)
+    var
+        ICPartner: Record "IC Partner";
+        PurchaseLine_Rec: Record "Purchase Line";
+        ICOutboxTransaction_Rec: Record "IC Outbox Transaction";
+        ICOutboxExport: Codeunit "IC Outbox Export";
+        ICInboxOutboxMgt: Codeunit ICInboxOutboxMgt;
+        MGTSFctMgt: Codeunit "DEL MGTS_FctMgt";
+        Qte: Decimal;
+        Text002: Label 'You cannot send IC document because %1 %2 has %3 %4.';
+    begin
+        PurchHeader.TestField("Send IC Document");
+        ICPartner.Get(PurchHeader."Buy-from IC Partner Code");
+        if ICPartner."Inbox Type" = ICPartner."Inbox Type"::"No IC Transfer" then
+            if Post then
+                exit
+            else
+                Error(Text002, ICPartner.TableCaption, ICPartner.Code, ICPartner.FieldCaption("Inbox Type"), ICPartner."Inbox Type");
+
+        ICPartner.TestField(Blocked, false);
+        Qte := 0;
+        PurchaseLine_Rec.SETRANGE(PurchaseLine_Rec."Document Type", PurchHeader."Document Type");
+        PurchaseLine_Rec.SETRANGE("Document No.", PurchHeader."No.");
+        PurchaseLine_Rec.SETFILTER(Type, '>0');
+        IF PurchaseLine_Rec.FINDSET THEN BEGIN
+            REPEAT
+                Qte := Qte + PurchaseLine_Rec.Quantity;
+            UNTIL PurchaseLine_Rec.NEXT = 0;
+        END;
+
+        MGTSFctMgt.CheckICPurchaseDocumentAlreadySent(PurchHeader);
+
+        if not Post then
+            IF Qte > 0 THEN
+                CODEUNIT.Run(CODEUNIT::"Release Purchase Document", PurchHeader);
+        ICInboxOutboxMgt.CreateOutboxPurchDocTrans(PurchHeader, false, Post);
+        CLEAR(ICOutboxTransaction_Rec);
+        ICOutboxTransaction_Rec.SETRANGE("Document Type", ICOutboxTransaction_Rec."Document Type"::Order);
+        ICOutboxTransaction_Rec.SETRANGE("Document No.", PurchHeader."No.");
+        IF ICOutboxTransaction_Rec.FINDFIRST THEN BEGIN
+            ICOutboxTransaction_Rec.VALIDATE("Line Action", ICOutboxTransaction_Rec."Line Action"::"Send to IC Partner");
+            ICOutboxTransaction_Rec.MODIFY;
+            MGTSFctMgt.SendTrans(ICOutboxTransaction_Rec);
+        END;
+    end;
 }
