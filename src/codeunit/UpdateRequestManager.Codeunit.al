@@ -18,37 +18,30 @@ codeunit 50032 "DEL Update Request Manager"
         intNextProgressStep: array[10] of Integer;
         timProgress: array[10] of Time;
         interval: array[10] of Integer;
+        intProgress: Integer;
+        intProgressI: Integer;
+        diaProgress: Dialog;
+
 
     procedure FNC_Process_Requests(updateRequest_Re_Par: Record "DEL Update Request Manager"; deleteWhenUpdated: Boolean; UpdatePlanned_Bo_Par: Boolean; processSilently_Bo_Par: Boolean)
     var
 
     begin
 
-
-        //Traite la liste des update requests passé dans le record en paramètre
-
-        //on ne traite que les status pas encore traité, les lignes qui ne doivent pas etre ignorées et que les lignes pour l'utilisateur
-        //loggé ou vide
         updateRequest_Re_Par.SETFILTER(Requested_By_User, '%1|%2', '', USERID);
         updateRequest_Re_Par.SETRANGE(Request_Status, UpdateRequest_Re.Request_Status::NOK);
         updateRequest_Re_Par.SETRANGE("To be ignored", FALSE);
-
-        //check toutes les 500ms si au moins 1% d'avancé
         FNC_ProgressBar_Init(1, 1000, 100, 'Mise à jour en cours...', updateRequest_Re_Par.COUNT());
 
         IF updateRequest_Re_Par.FINDFIRST() THEN
             REPEAT
 
-                //mise à jour de la barre de progression
                 FNC_ProgressBar_Update(1);
 
-                //Test sur une affaire.. si retourne vrai, alors on la met à jour
                 IF FNC_Test(updateRequest_Re_Par.Request_For_Deal_ID) THEN BEGIN
 
-                    //mise à jour sans messages de confirmation
                     Deal_Cu.FNC_Reinit_Silently_Deal(updateRequest_Re_Par.Request_For_Deal_ID, UpdatePlanned_Bo_Par);
 
-                    //supprime ou marque la demande de mise à jour en fonction du paramètre deleteWhenUpdated
                     IF deleteWhenUpdated THEN
                         FNC_Remove_Request(updateRequest_Re_Par.ID)
                     ELSE
@@ -57,12 +50,9 @@ codeunit 50032 "DEL Update Request Manager"
                 END ELSE
                     FNC_Ignore_Request(updateRequest_Re_Par.ID);
 
-                //sauve la transaction
                 COMMIT();
 
             UNTIL (updateRequest_Re_Par.NEXT() = 0);
-
-        //ferme la barre de progression
         FNC_ProgressBar_Close(1);
 
         IF NOT processSilently_Bo_Par THEN MESSAGE('Liste traitée !')
@@ -94,7 +84,6 @@ codeunit 50032 "DEL Update Request Manager"
 
     procedure FNC_Remove_Request(Request_ID_Co_Par: Code[20])
     begin
-        //Supprime une update request
 
         IF UpdateRequest_Re.GET(Request_ID_Co_Par) THEN
             UpdateRequest_Re.DELETE();
@@ -105,7 +94,6 @@ codeunit 50032 "DEL Update Request Manager"
 
     procedure FNC_Validate_Request(Request_ID_Co_Par: Code[20])
     begin
-        //Marque une update request comme étant à ignorer
 
         IF UpdateRequest_Re.GET(Request_ID_Co_Par) THEN BEGIN
             UpdateRequest_Re.VALIDATE(Request_Status, UpdateRequest_Re.Request_Status::OK);
@@ -116,7 +104,6 @@ codeunit 50032 "DEL Update Request Manager"
 
     procedure FNC_Ignore_Request(Request_ID_Co_Par: Code[20])
     begin
-        //Marque une update request comme validée
 
         IF UpdateRequest_Re.GET(Request_ID_Co_Par) THEN BEGIN
             UpdateRequest_Re.VALIDATE("To be ignored", TRUE);
@@ -127,9 +114,6 @@ codeunit 50032 "DEL Update Request Manager"
 
     procedure FNC_Test(DealID_Co_Loc: Code[20]): Boolean
     begin
-        //Test de l'affaire dans le but de pas la mettre à jour si le(s) test(s) révèle(nt) des irrégularités
-
-        //TEST si le numéro de deal existe
         IF DealID_Co_Loc = '' THEN BEGIN
             MESSAGE('Attention ! Il y a une requête de mise à jour sans numéro d''affaire dans la table Update Request Manager !');
             EXIT(FALSE);
@@ -165,7 +149,6 @@ codeunit 50032 "DEL Update Request Manager"
           deal_Re_Loc.Status::Invoiced
           );
 
-        //check toutes les 500ms si au moins 5% d'avancé
         FNC_ProgressBar_Init(1, 500, 500, 'Création des update request...', deal_Re_Loc.COUNT());
 
         IF deal_Re_Loc.FINDFIRST() THEN
@@ -243,15 +226,6 @@ codeunit 50032 "DEL Update Request Manager"
 
     procedure FNC_ProgressBar_Init(index_Int_Par: Integer; interval_Int_Par: Integer; stepProgress_Int_Par: Integer; text_Te_Par: Text[50]; total_Int_Par: Integer)
     begin
-        /*
-        L'index permet d'avoir plusieur barres de progression lors d'un meme traitement.
-        
-        valeur par defaut :
-        interval 1000;
-        step progress 1000;
-        
-        -> Signifie qu'on met à jour la barre de controle toutes les 1000ms si le traitement a avancé d'au moins 10%
-        */
         intProgress[index_Int_Par] := 0;
         interval[index_Int_Par] := interval_Int_Par; //en milisecondes
         intProgressStep[index_Int_Par] := stepProgress_Int_Par; //update si au moins 5% d'avancé (échelle : 10% = 1000)
@@ -265,26 +239,20 @@ codeunit 50032 "DEL Update Request Manager"
     end;
 
 
-    procedure FNC_ProgressBar_Update(index_Int_Par: Integer)
+    procedure FNC_ProgressBar_Update(index_Int_Par: Integer; interval_Int_Par: Integer; stepProgress_Int_Par: Integer; text_Te_Par: Text[50]; total_Int_Par: Integer)
     begin
         intProgressI[index_Int_Par] += 1;
 
-        //toutes les x milisecondes (paramètre interval)
         IF timProgress[index_Int_Par] < TIME - interval[index_Int_Par] THEN BEGIN
 
-            //calcul le pourcentage d'avancement
             intProgress[index_Int_Par] := ROUND(intProgressI[index_Int_Par] / intProgressTotal[index_Int_Par] * 10000, 1);
 
-            //si le pourcentage d'avancement a avancé de x pourcent (paramètre intProgressStep)
             IF intProgress[index_Int_Par] > intNextProgressStep[index_Int_Par] THEN BEGIN
 
-                //définition du prochain niveau de progression
                 intNextProgressStep[index_Int_Par] += intProgressStep[index_Int_Par];
 
-                //mise à jour du temps
                 timProgress[index_Int_Par] := TIME;
 
-                //mise à jour de la barre
                 diaProgress[index_Int_Par].UPDATE();
 
             END;
@@ -392,7 +360,6 @@ codeunit 50032 "DEL Update Request Manager"
             UNTIL (updateRequest_Re_Par.NEXT() = 0);
 
         //ferme la barre de progression
-        //FNC_ProgressBar_Close(1);
     end;
 }
 

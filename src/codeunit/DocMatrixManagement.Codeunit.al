@@ -21,17 +21,8 @@ codeunit 50015 "DEL DocMatrix Management"
         lErr001: Label 'There is no Document Matrix Configuration available for"%1".';
         lType: Option Customer,Vendor;
     begin
-        // -------------------------------------------------------------------------------------------------------------------------------
-        // -- This function will be called from the different page action buttons, where the user can change the saved parameters
-        // -- for the specific document that is processed. The user can change the saved parameters for the specific document that is processed.
-        // -- The function "CheckDocumentMatrixSelection" will check the actions against the User selected values in table "DocMatrix Selection" (T50071),
-        // -- instead against the saved values of the tabel "Document Matrix" (T50067)
-        // -------------------------------------------------------------------------------------------------------------------------------
-
-        // if available create new User record with a copy of the saved record in Document Matrix table
         IF CreateDocMatrixSelection(pNo, pProcessType, pUsage, precDocMatrixSelection, pPrintOnly) THEN BEGIN
 
-            // show the values of the saved process parameters to the user, he can change them to his needs
             lpgDocMatrixSelection.LOOKUPMODE(TRUE);
             lpgDocMatrixSelection.SETRECORD(precDocMatrixSelection);
             lpgDocMatrixSelection.SetPostVisible((pUsage IN [1, 3]) AND (NOT pPrintOnly));  // 1 = S.Order
@@ -67,62 +58,35 @@ codeunit 50015 "DEL DocMatrix Management"
         lErrPrint: Text;
         lPurchCode: Code[10];
     begin
-        // -------------------------------------------------------------------------------------------------------------------------------
-        // -- This is the Main Function for "Process Type"::Manual that is calles from the different page action buttons
-        // -- for now the process is limited to a fixed set of documents (parameter "pUsage")
-        // -- the restriction is done on entering level of the Document Matrix Table (T50067) through the field "Usage"
-        // -- if the field "Usage" will be expanded in the future, it needs to be analyzed whether the functions need to be adapted
-        // -- here are the supported document types:  (see Option field T77.Usage)
-        //    - 1 = S.Order = T36
-        //    - 2 = S.Invoice = T112
-        //    - 3 = S.Cr.Memo = T114
-        //    - 6 = P.Order = T38
-        //    - 7 = P.Invoice = T122
-        //    - 85 = C.Statement (R116)
-        // -------------------------------------------------------------------------------------------------------------------------------
-
-        // init
         CLEAR(ltxClientFile);
         CLEAR(ltxServerFile);
         CLEAR(ltxClientPath);
         CLEAR(lNo);
         CLEAR(lboDeleteFileAtTheEnd);
 
-        // init Progress Bar
         lcuProgressBar.FNC_ProgressBar_Init(1, 100, 1000, 'Process documents...', 6);
 
-        // some NAV standard function call MODIFY statements, that are not allowed in Try-Functions, set a SingleInstance var to prevent error
         lcuDocMatrixSingleInstance.SetDocumentMatrixProcessActive(TRUE);
 
-        // first check what document is processed, and set some variables accordingly
         GetParameters(pUsage, pRecordVariant, pFieldNo, pFieldDocNo, lType, lNo, lDocNo, pFieldPurchCode, lPurchCode);
 
-        // then if the parameters are set, check the Document Matrix and process all available actions
         IF (lNo <> '') AND (lDocNo <> '') THEN BEGIN
 
-            // first filter the record table to the processed document
             FilterRecToProcessedDocument(pUsage, pRecordVariant, lDocNo, pFieldDocNo);
 
-            // create path and file name for the processed document
             CreatePathAndFileName(pUsage, lNo, lDocNo + '-' + GetReportName(GetReportIDWithUsage(pUsage)), ltxClientFile, ltxServerFile, ltxClientPath, FALSE, lPurchCode);
 
-            // create the PDF if the file name and path is available (the PDF will always be created)
             IF ltxClientFile <> '' THEN
                 SavePDF(pUsage, pRecordVariant, ltxClientFile, ltxServerFile);
-
-            // Progress Bar
             lcuProgressBar.FNC_ProgressBar_Update(1);
 
-            // Save PDF (the PDF will be deleted at the end of the process, if it is not needed)
             IF CheckDocumentMatrixSelection(lAction::Save, precDocMatrixSelection) THEN
                 LogAction(lAction::Save, lDocNo, precDocMatrixSelection, FALSE, '')
             ELSE
                 lboDeleteFileAtTheEnd := TRUE;
 
-            // Progress Bar
             lcuProgressBar.FNC_ProgressBar_Update(1);
 
-            // Print
             IF CheckDocumentMatrixSelection(lAction::Print, precDocMatrixSelection) THEN BEGIN
                 IF ltxClientFile <> '' THEN BEGIN
                     lErrPrint := SilentPrint(pUsage, ltxClientFile);
@@ -193,16 +157,6 @@ codeunit 50015 "DEL DocMatrix Management"
         lboFTPsuccessful: Boolean;
         lErr002: Label 'There is no Attachement File available to send by Email.';
     begin
-        // -------------------------------------------------------------------------------------------------------------------------------
-        // -- This is the Main Function for "Process Type"::Automatic that is called from a "Job Queue Entries" record
-        // -- for now the process is limited to the one document (parameter "pReportID") "Statement" (R116)
-        // -- the restriction is done on entering level of the Document Matrix Table (T50067) through the field "Usage"
-        // -- if the field "Usage" will be expanded in the future, it needs to be analyzed whether the functions need to be adapted
-        // -- here are the supported document types: (see Option field T77.Usage)
-        //    - 54 = Statement (R116)
-        // -------------------------------------------------------------------------------------------------------------------------------
-
-        // init
         lReportID := GetReportIDWithUsage(pUsage);
         lDate := TODAY;
         lType := GetTypeWithUsage(pUsage);
@@ -354,28 +308,28 @@ codeunit 50015 "DEL DocMatrix Management"
     end;
 
     [TryFunction]
-    local procedure TrySilentPrint(pUsage: Integer; ptxClientPath: Text)
-    var
-        [RunOnClient]
-        ProcessStartInfo: DotNet ProcessStartInfo;
-        [RunOnClient]
-        ProcessWindowStyle: DotNet ProcessWindowStyle;
-        [RunOnClient]
-        Process: DotNet Process;
-        AppMgt: Codeunit 1;
-        ltxPrinterName: Text;
-    begin
-        IF ISNULL(ProcessStartInfo) THEN
-            ProcessStartInfo := ProcessStartInfo.ProcessStartInfo;
-        ProcessStartInfo.UseShellExecute := TRUE;
-        ProcessStartInfo.Verb := 'print';
-        ProcessStartInfo.WindowStyle := ProcessWindowStyle.Hidden;
-        ltxPrinterName := AppMgt.FindPrinter(GetReportIDWithUsage(pUsage));
-        //ToDo: what happens if no printer is defined in printer selection?
-        ProcessStartInfo.Arguments := ltxPrinterName;
-        ProcessStartInfo.FileName := ptxClientPath;
-        Process.Start(ProcessStartInfo);
-    end;
+    // TODO/ dotnet local procedure TrySilentPrint(pUsage: Integer; ptxClientPath: Text)
+    // var
+    //     [RunOnClient]
+    //     ProcessStartInfo: DotNet ProcessStartInfo;
+    //     [RunOnClient]
+    //     ProcessWindowStyle: DotNet ProcessWindowStyle;
+    //     [RunOnClient]
+    //     Process: DotNet Process;
+    //     AppMgt: Codeunit 1;
+    //     ltxPrinterName: Text;
+    // begin
+    //     IF ISNULL(ProcessStartInfo) THEN
+    //         ProcessStartInfo := ProcessStartInfo.ProcessStartInfo;
+    //     ProcessStartInfo.UseShellExecute := TRUE;
+    //     ProcessStartInfo.Verb := 'print';
+    //     ProcessStartInfo.WindowStyle := ProcessWindowStyle.Hidden;
+    //     ltxPrinterName := AppMgt.FindPrinter(GetReportIDWithUsage(pUsage));
+    //     //ToDo: what happens if no printer is defined in printer selection?
+    //     ProcessStartInfo.Arguments := ltxPrinterName;
+    //     ProcessStartInfo.FileName := ptxClientPath;
+    //     Process.Start(ProcessStartInfo);
+    // end;
 
     local procedure ProcessMail(pUsage: Integer; pProcessType: Option Manual,Automatic; pAction: Option Print,Save,Mail,FTP1,FTP2; pNo: Code[20]; pDocNo: Code[20]; precDocMatrixSelection: Record "DEL DocMatrix Selection"; ptxClientFile: Text; pRecordVariant: Variant): Boolean
     var
@@ -1408,7 +1362,10 @@ codeunit 50015 "DEL DocMatrix Management"
     end;
 
 
-    procedure TestShipmentSelectionBeforeUptdateRequest(precSalesHeader: Record "Sales Header"; var precDealShipmentSelection: Record "DEL Deal Shipment Selection"; var pcdUpdateRequestID: Code[20]; var pboShipmentSelected: Boolean)
+    procedure TestShipmentSelectionBeforeUptdateRequest(precSalesHeader: Record "Sales Header";
+     var precDealShipmentSelection
+    : Record "DEL Deal Shipment Selection"; var pcdUpdateRequestID: Code[20]
+    ; var pboShipmentSelected: Boolean)
     var
         element_Re_Loc: Record "DEL Element";
         dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
@@ -1416,10 +1373,6 @@ codeunit 50015 "DEL DocMatrix Management"
         salesLine_Re_Loc: Record "Sales Line";
         GLAccount_Re_Loc: Record "G/L Account";
     begin
-        //DEL/PD/20190304/LOP003.begin
-
-        //MIG2017 START
-        // T-00551-DEAL -
         pboShipmentSelected := FALSE;
 
         //On gère les "Document Type" commandes, notes de crédit et les factures
@@ -1526,11 +1479,6 @@ codeunit 50015 "DEL DocMatrix Management"
                         END;
             END;
         END;
-        // T-00551-DEAL +
-
-        //MIG2017 END
-
-        //DEL/PD/20190304/LOP003.end
     end;
 
     procedure ManageRequestAfterPosting(pcdSalesHeaderNo: Code[20]; pboShipmentSelected: Boolean; pcdUpdateRequestID: Code[20])
@@ -1539,10 +1487,6 @@ codeunit 50015 "DEL DocMatrix Management"
         updateRequestManager_Cu: Codeunit "DEL Update Request Manager";
         dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
     begin
-        //DEL/PD/20190304/LOP003.begin
-
-        //MIG2017 START
-        // T-00551-DEAL -
         IF pboShipmentSelected THEN BEGIN
             //La facture a été associée à une et une seule livraison et donc, on réinitialise l'affaire qui appartient à cette livraison
             Deal_Cu.FNC_Reinit_Deal(dealShipmentSelection_Re_Loc.Deal_ID, FALSE, FALSE);
@@ -1556,11 +1500,6 @@ codeunit 50015 "DEL DocMatrix Management"
             dealShipmentSelection_Re_Loc.SETRANGE(USER_ID, USERID);
             dealShipmentSelection_Re_Loc.DELETEALL();
         END;
-        // T-00551-DEAL +
-
-        //END MIG2017
-
-        //DEL/PD/20190304/LOP003.end
     end;
 }
 
