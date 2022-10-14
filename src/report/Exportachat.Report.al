@@ -1,14 +1,14 @@
-report 50026 "Export achat"
+report 50026 "DEL Export achat"
 {
     ProcessingOnly = true;
 
     dataset
     {
-        dataitem(DataItem1100113000; Table2000000026)
+        dataitem(Integer; Integer)
         {
-            DataItemTableView = SORTING (Number)
+            DataItemTableView = SORTING(Number)
                                 ORDER(Ascending)
-                                WHERE (Number = FILTER (1));
+                                WHERE(Number = FILTER(1));
 
             trigger OnAfterGetRecord()
             begin
@@ -253,47 +253,48 @@ report 50026 "Export achat"
 
         ExportAchat.RESET;
         ExportAchat.SETFILTER(ExportAchat."Item No.", '<>%1', '');
-        IF ExportAchat.FINDFIRST THEN BEGIN
-            FileVente.WRITEMODE := TRUE;
-            FileVente.TEXTMODE := TRUE;
-            FileVente.CREATE(Path_Txt);
-            FileVente.CREATEOUTSTREAM(VarOut);
-            REPEAT
-                Line := ExportAchat.Mois +
-                      ExportAchat."Code Fournisseur" +
-                      ExportAchat."Type flux" +
-                      ExportAchat.Activité +
-                      ExportAchat.Pays +
-                      ExportAchat.Enseigne +
-                      ExportAchat."Type d'identifiant" +
-                      ExportAchat."Identifiant produit" +
-                      ExportAchat."Identifiant fabricant" +
-                      ExportAchat.Sens +
-                      ExportAchat."Quantity Com.Txt" +
-                      ExportAchat."Quantity Liv. Txt" +
-                      ExportAchat."Quantity Fact. Txt" +
-                      ExportAchat."CA HT Com. Txt" +
-                      ExportAchat."CA HT Liv. Txt" +
-                      ExportAchat."CA HT Fact. Txt" +
-                      ExportAchat.Ean +
-                      ExportAchat."Code Marque" +
-                      ExportAchat.Fournisseur +
-                      ExportAchat."Référence fournisseur" +
-                      ExportAchat.Fabricant +
-                      ExportAchat."Référence fabricant" +
-                      ExportAchat."Fournisseur principal" +
-                      ExportAchat."Référence fournisseur Prin." +
-                      ExportAchat."Code article B.U" +
-                      ExportAchat."Groupe marchandise B.U" +
-                      ExportAchat."Libellé produit" +
-                      ExportAchat."CA HT Liv. Txt";
+        //TODO //FILE 
+        // IF ExportAchat.FINDFIRST THEN BEGIN
+        //     FileVente.WRITEMODE := TRUE;
+        //     FileVente.TEXTMODE := TRUE;
+        //     FileVente.CREATE(Path_Txt);
+        //     FileVente.CREATEOUTSTREAM(VarOut);
+        //     REPEAT
+        //         Line := ExportAchat.Mois +
+        //               ExportAchat."Code Fournisseur" +
+        //               ExportAchat."Type flux" +
+        //               ExportAchat.Activité +
+        //               ExportAchat.Pays +
+        //               ExportAchat.Enseigne +
+        //               ExportAchat."Type d'identifiant" +
+        //               ExportAchat."Identifiant produit" +
+        //               ExportAchat."Identifiant fabricant" +
+        //               ExportAchat.Sens +
+        //               ExportAchat."Quantity Com.Txt" +
+        //               ExportAchat."Quantity Liv. Txt" +
+        //               ExportAchat."Quantity Fact. Txt" +
+        //               ExportAchat."CA HT Com. Txt" +
+        //               ExportAchat."CA HT Liv. Txt" +
+        //               ExportAchat."CA HT Fact. Txt" +
+        //               ExportAchat.Ean +
+        //               ExportAchat."Code Marque" +
+        //               ExportAchat.Fournisseur +
+        //               ExportAchat."Référence fournisseur" +
+        //               ExportAchat.Fabricant +
+        //               ExportAchat."Référence fabricant" +
+        //               ExportAchat."Fournisseur principal" +
+        //               ExportAchat."Référence fournisseur Prin." +
+        //               ExportAchat."Code article B.U" +
+        //               ExportAchat."Groupe marchandise B.U" +
+        //               ExportAchat."Libellé produit" +
+        //               ExportAchat."CA HT Liv. Txt";
 
-                VarOut.WRITETEXT(Line);
-                VarOut.WRITETEXT;
-            UNTIL ExportAchat.NEXT = 0;
-            FileVente.CLOSE;
-            MESSAGE(Text0002);
-        END;
+        //         VarOut.WRITETEXT(Line);
+        //         VarOut.WRITETEXT;
+        //     UNTIL ExportAchat.NEXT = 0;
+        //     FileVente.CLOSE;
+        //     MESSAGE(Text0002);
+        // END;
     end;
 
     trigger OnPreReport()
@@ -302,40 +303,40 @@ report 50026 "Export achat"
     end;
 
     var
-        Item_Rec: Record "27";
-        Vendor_Rec: Record "23";
-        GeneralSetup: Record "50000";
-        Item: Record "27";
+        CurrExchRate: Record "Currency Exchange Rate";
+        ExportAchat: Record "DEL Export Achat";
+        GeneralSetup: Record "DEL General Setup";
+        Item: Record Item;
+        Item_Rec: Record Item;
+        PurchCrMemoHdr: Record "Purch. Cr. Memo Hdr.";
+        PurchCrMemoLine: Record "Purch. Cr. Memo Line";
+        PurchInvHeader: Record "Purch. Inv. Header";
+        PurchInvLine: Record "Purch. Inv. Line";
+        PurchRcptHeader: Record "Purch. Rcpt. Header";
+        PurchRcptLine: Record "Purch. Rcpt. Line";
+        PurchaseHeader: Record "Purchase Header";
+        PurchaseLine: Record "Purchase Line";
+        Vendor_Rec: Record Vendor;
+        ItemList: Page "Item List";
+        VendorList: Page "Vendor List";
         DateDebut: Date;
         DateFin: Date;
+        TauxChange1: Decimal;
+        TauxChange2: Decimal;
+        FileVente: File;
         Mois: Integer;
         Year: Integer;
         Text0001: Label 'Invalid date';
-        FileVente: File;
+        Text0002: Label 'Generated file';
         VarOut: OutStream;
-        Line: Text[383];
-        FiltreFourn: Text;
+        DateNow_Te: Text;
         FiltreArticle: Text;
-        ItemList: Page "31";
-        VendorList: Page "27";
+        FiltreFourn: Text;
         Path_Txt: Text;
         TimeNow_Te: Text;
-        DateNow_Te: Text;
-        PurchaseLine: Record "39";
-        PurchRcptLine: Record "121";
-        PurchInvLine: Record "123";
-        Text0002: Label 'Generated file';
-        PurchCrMemoLine: Record "125";
-        ExportAchat: Record "50007";
-        CurrExchRate: Record "330";
-        TauxChange1: Decimal;
-        TauxChange2: Decimal;
-        PurchInvHeader: Record "122";
-        PurchCrMemoHdr: Record "124";
-        PurchRcptHeader: Record "120";
-        PurchaseHeader: Record "38";
+        Line: Text[383];
 
-    [Scope('Internal')]
+
     procedure CorLengthTxt(VarTxt: Text; Taille: Integer): Text
     var
         NbreCarac: Integer;
@@ -353,7 +354,7 @@ report 50026 "Export achat"
         EXIT(VarTxt);
     end;
 
-    [Scope('Internal')]
+
     procedure CorLengthDec(VarDec: Decimal; Taille: Integer; VarSens: Text): Text
     var
         NbreCarac: Integer;
@@ -374,17 +375,17 @@ report 50026 "Export achat"
         EXIT(VarDecTxt);
     end;
 
-    [Scope('Internal')]
+
     procedure AddInfoLiv(var ItemCode: Code[20])
     begin
     end;
 
-    [Scope('Internal')]
+
     procedure AddInfocomm(var ItemCode: Code[20])
     begin
     end;
 
-    [Scope('Internal')]
+
     procedure AddInfoArticle(CodeArticle: Code[20]; SensLine: Text[1])
     begin
         IF NOT ExportAchat.GET(CodeArticle, SensLine) THEN BEGIN
@@ -411,8 +412,8 @@ report 50026 "Export achat"
             ExportAchat."CA HT Com. Txt" := CorLengthDec(0, 12, SensLine);
             ExportAchat."Quantity Liv. Txt" := CorLengthDec(0, 12, SensLine);
             ExportAchat."CA HT Liv. Txt" := CorLengthDec(0, 12, SensLine);
-            ExportAchat.Ean := CorLengthTxt(Item_Rec."Code EAN 13", 13);
-            ExportAchat."Code Marque" := CorLengthTxt(Item_Rec.Marque, 10);
+            ExportAchat.Ean := CorLengthTxt(Item_Rec."DEL Code EAN 13", 13);
+            ExportAchat."Code Marque" := CorLengthTxt(Item_Rec."DEL Marque", 10);
             ExportAchat.Fournisseur := CorLengthTxt(Item_Rec."Vendor No.", 10);
             ExportAchat."Référence fournisseur" := CorLengthTxt(Item_Rec."Vendor Item No.", 30);
             ExportAchat.Fabricant := CorLengthTxt('', 10);
@@ -421,7 +422,7 @@ report 50026 "Export achat"
             ;
             ExportAchat."Référence fournisseur Prin." := CorLengthTxt(Item_Rec."Vendor Item No.", 30);
             ExportAchat."Code article B.U" := CorLengthTxt(Item_Rec."No.", 10);
-            ExportAchat."Groupe marchandise B.U" := CorLengthTxt(Item_Rec."Product Group Code", 30);
+            //TODO   // ExportAchat."Groupe marchandise B.U" := CorLengthTxt(Item_Rec."DEL Product Group Code", 30);
             ExportAchat."Libellé produit" := CorLengthTxt(Item_Rec.Description, 50);
             ExportAchat.INSERT;
         END;

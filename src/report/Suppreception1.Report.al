@@ -1,11 +1,11 @@
-report 50044 "Supp reception1"
+report 50044 "DEL Supp reception1"
 {
     Permissions = TableData 121 = rimd;
     ProcessingOnly = true;
 
     dataset
     {
-        dataitem(DataItem1000000000; Table120)
+        dataitem("Purch. Rcpt. Header"; "Purch. Rcpt. Header")
         {
             RequestFilterFields = "No.";
 
@@ -22,24 +22,10 @@ report 50044 "Supp reception1"
         }
     }
 
-    requestpage
-    {
 
-        layout
-        {
-        }
-
-        actions
-        {
-        }
-    }
-
-    labels
-    {
-    }
 
     var
-        PurchRcptLine: Record "121";
+        PurchRcptLine: Record 121;
         ReceptionOK: Boolean;
 }
 

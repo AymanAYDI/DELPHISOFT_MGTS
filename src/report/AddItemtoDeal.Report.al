@@ -1,15 +1,15 @@
-report 50030 "Add Item to Deal"
+report 50030 "DEL Add Item to Deal"
 {
     Caption = 'add intem to Deal';
     ProcessingOnly = true;
 
     dataset
     {
-        dataitem(DataItem1000000000; Table2000000026)
+        dataitem(Integer; Integer)
         {
-            DataItemTableView = SORTING (Number)
+            DataItemTableView = SORTING(Number)
                                 ORDER(Ascending)
-                                WHERE (Number = FILTER (1));
+                                WHERE(Number = FILTER(1));
 
             trigger OnAfterGetRecord()
             begin
@@ -50,7 +50,7 @@ report 50030 "Add Item to Deal"
     }
 
     var
-        DealItem: Codeunit "50024";
+        DealItem: Codeunit "DEL Deal Item";
         DealCode: Code[20];
         ItemCode: Code[20];
 }
