@@ -219,9 +219,15 @@ report 50001 "DEL DTA Payment Journal detail"
                 }
 
                 trigger OnPreDataItem()
+                var
+                    GenJournalLine: Record "Gen. Journal Line";
                 begin
-                    IF "Gen. Journal Line"."Applies-to Doc. No." <> '' THEN CurrReport.SKIP;
-                    IF "Gen. Journal Line"."Account Type" <> "Gen. Journal Line"."Account Type"::Vendor THEN CurrReport.SKIP;
+                    IF GenJournalLine."Applies-to Doc. No." <> ''
+                    THEN
+                        CurrReport.SKIP;
+                    IF GenJournalLine."Account Type" <> GenJournalLine."Account Type"::Vendor
+                    THEN
+                        CurrReport.SKIP;
                 end;
             }
 
@@ -310,34 +316,34 @@ report 50001 "DEL DTA Payment Journal detail"
                                 xTxt := VendorLedgerEntry."Reference No.";
                             END;
                         VendorBankAccount."Payment Form"::"Post Payment Domestic":
-                            BEGIN
-                                IF VendorBankAccount.IBAN <> '' THEN
-                                    xAcc := DTAMgt.IBANDELCHR(VendorBankAccount.IBAN)
-                                ELSE
-                                    xAcc := VendorBankAccount."Giro Account No.";
-                            END;
-                        VendorBankAccount."Payment Form"::"Bank Payment Domestic":
-                            IF VendorBankAccount.IBAN <> '' THEN
-                                xAcc := DTAMgt.IBANDELCHR(VendorBankAccount.IBAN)
-                            ELSE BEGIN
-                                xTxt := VendorBankAccount."Clearing No.";
-                                xAcc := VendorBankAccount."Bank Account No.";
-                            END;
-                        VendorBankAccount."Payment Form"::"Post Payment Abroad":
-                            BEGIN
-                                IF VendorBankAccount.IBAN <> '' THEN
-                                    xAcc := DTAMgt.IBANDELCHR(VendorBankAccount.IBAN)
-                                ELSE
-                                    xAcc := VendorBankAccount."Bank Account No.";
-                            END;
-                        VendorBankAccount."Payment Form"::"Bank Payment Abroad":
-                            IF VendorBankAccount.IBAN <> '' THEN
-                                xAcc := DTAMgt.IBANDELCHR(VendorBankAccount.IBAN)
-                            ELSE BEGIN
-                                xTxt := VendorBankAccount."Bank Identifier Code";
-                                xAcc := VendorBankAccount."Bank Account No.";
-                            END;
-                        VendorBankAccount."Payment Form"::"SWIFT Payment Abroad":
+                            // TODO: IBANDELCHR has scope onprem    BEGIN
+                            //         IF VendorBankAccount.IBAN <> '' THEN
+                            //             xAcc := DTAMgt.IBANDELCHR(VendorBankAccount.IBAN)
+                            //         ELSE
+                            //             xAcc := VendorBankAccount."Giro Account No.";
+                            //     END;
+                            // VendorBankAccount."Payment Form"::"Bank Payment Domestic":
+                            //TODO: IBANDELCHR has scope onprem      IF VendorBankAccount.IBAN <> '' THEN
+                            //         xAcc := DTAMgt.IBANDELCHR(VendorBankAccount.IBAN)
+                            //     ELSE BEGIN
+                            //         xTxt := VendorBankAccount."Clearing No.";
+                            //         xAcc := VendorBankAccount."Bank Account No.";
+                            //     END;
+                            // VendorBankAccount."Payment Form"::"Post Payment Abroad":
+                            // TODO BEGIN
+                            //     IF VendorBankAccount.IBAN <> '' THEN
+                            //         xAcc := DTAMgt.IBANDELCHR(VendorBankAccount.IBAN)
+                            //     ELSE
+                            //         xAcc := VendorBankAccount."Bank Account No.";
+                            // END;
+                            //VendorBankAccount."Payment Form"::"Bank Payment Abroad":
+                            //TODO     IF VendorBankAccount.IBAN <> '' THEN
+                            //         xAcc := DTAMgt.IBANDELCHR(VendorBankAccount.IBAN)
+                            //     ELSE BEGIN
+                            //         xTxt := VendorBankAccount."Bank Identifier Code";
+                            //         xAcc := VendorBankAccount."Bank Account No.";
+                            //     END;
+                            // VendorBankAccount."Payment Form"::"SWIFT Payment Abroad":
                             IF VendorBankAccount.IBAN <> '' THEN
                                 xAcc := DTAMgt.IBANDELCHR(VendorBankAccount.IBAN)
                             ELSE BEGIN
@@ -403,6 +409,12 @@ report 50001 "DEL DTA Payment Journal detail"
     end;
 
     var
+        VendorBankAccount: Record "Vendor Bank Account";
+        VendorLedgerEntry: Record "Vendor Ledger Entry";
+        CurrencyExchangeRate: Record "Currency Exchange Rate";
+        GLSetup: Record "General Ledger Setup";
+        Vendor: Record Vendor;
+        DTAMgt: Codeunit "DtaMgt"; //3010541
         Text000Err: Label 'No application number';
         Text001Err: Label 'Vendor entry not found';
         Text002Err: Label 'Vendor entry not open';
@@ -412,12 +424,8 @@ report 50001 "DEL DTA Payment Journal detail"
         Text006Msg: Label 'Total bank';
         Text007Lbl: Label 'Total Payment in %1';
         Text008Lbl: Label 'Largest Amount in %1';
-        VendorBankAccount: Record "Vendor Bank Account";
-        VendorLedgerEntry: Record "Vendor Ledger Entry";
-        CurrencyExchangeRate: Record "Currency Exchange Rate";
-        GLSetup: Record "General Ledger Setup";
-        Vendor: Record Vendor;
-        //TODO DTAMgt: Codeunit "DTA Setup"; //3010541
+
+
         n: Integer;
         "Layout": Option Amounts,Bank;
         xTxt: Text[40];

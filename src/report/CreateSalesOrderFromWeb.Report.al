@@ -108,7 +108,7 @@ report 50000 "DEL CreateSalesOrderFromWeb"
         SH: Record "Sales Header";
         SL: Record "Sales Line";
         Art: Record Item;
-        ActualContact: Code[10];
+        ActualContact: Code[20];
         NextLineNo: Integer;
         TXT_001: Label 'Task running #1###';
         d: Dialog;

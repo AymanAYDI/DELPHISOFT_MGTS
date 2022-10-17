@@ -12,14 +12,17 @@ report 50006 "DEL Import Excel"
 
             trigger OnPreDataItem()
             begin
-                ExcelBuffer.LOCKTABLE;
-                //TODO: cannot be used on cloud 
-                //ExcelBuffer.OpenBook(FileName, sheetName);
-                ExcelBuffer.ReadSheet;
-                GetLastRowandColumns;
+                ExcelBuffer.LOCKTABLE();
+                //TODO: cannot be used on cloud, à vérifier ! 
+                // ExcelBuffer.OpenBook(FileName, sheetName); //code original
+
+                ExcelBuffer.OpenBookStream(FileName, sheetName);
+
+                ExcelBuffer.ReadSheet();
+                GetLastRowandColumns();
                 FOR i := 2 TO Totalrows DO
                     Insertdata(i);
-                ExcelBuffer.DELETEALL;
+                ExcelBuffer.DELETEALL();
                 MESSAGE('Import Completed');
             end;
         }
@@ -37,14 +40,19 @@ report 50006 "DEL Import Excel"
         }
 
         trigger OnQueryClosePage(CloseAction: Action): Boolean
+        var
+            Buffer: Text;
         begin
             IF CloseAction = ACTION::OK THEN BEGIN
-                //TODO: onprem method FileName := FileManagement.UploadFile('Import Excel', ExcelExtension);
-                IF FileName = '' THEN
-                    EXIT(FALSE);
-                //TODO: onprem method sheetName := ExcelBuffer.SelectSheetsName(FileName);
+                //TODO: onprem method 
+                FileName := FileManagement.UploadFile('Import Excel', ExcelExtension);
+
+                IF FileName.ReadText(Buffer) THEN
+                    EXIT(false);
+                //TODO: onprem method 
+                sheetName := ExcelBuffer.SelectSheetsName(FileName);
                 IF sheetName = '' THEN
-                    EXIT(FALSE);
+                    EXIT(false);
             END;
         end;
     }
@@ -55,12 +63,13 @@ report 50006 "DEL Import Excel"
 
     var
         ExcelBuffer: Record "Excel Buffer";
+        SalesPriceWorksheet: Record "Sales Price Worksheet";
+        FileManagement: Codeunit "File Management";
+
         TotalColumns: Integer;
         Totalrows: Integer;
-        SalesPriceWorksheet: Record "Sales Price Worksheet";
-        FileName: Text;
+        FileName: InStream;
         sheetName: Text;
-        FileManagement: Codeunit "File Management";
         ExcelExtension: Label '*.xlsx;*.xls';
         i: Integer;
         ItemNo: Code[20];
@@ -80,8 +89,8 @@ report 50006 "DEL Import Excel"
     begin
         ExcelBuffer.SETRANGE("Row No.", 1);
         TotalColumns := ExcelBuffer.COUNT;
-        ExcelBuffer.RESET;
-        IF ExcelBuffer.FINDLAST THEN
+        ExcelBuffer.RESET();
+        IF ExcelBuffer.FINDLAST() THEN
             Totalrows := ExcelBuffer."Row No.";
     end;
 
@@ -111,7 +120,7 @@ report 50006 "DEL Import Excel"
             SalesTypeOption := SalesTypeOption::Campaign;
 
 
-        SalesPriceWorksheet.RESET;
+        SalesPriceWorksheet.RESET();
         SalesPriceWorksheet.SETRANGE("Starting Date", StartDate);
         SalesPriceWorksheet.SETRANGE("Ending Date", EndDate);
         SalesPriceWorksheet.SETRANGE("Currency Code", CurrencyCode);
@@ -119,13 +128,13 @@ report 50006 "DEL Import Excel"
         SalesPriceWorksheet.SETRANGE("Unit of Measure Code", UnitCode);
         SalesPriceWorksheet.SETRANGE("Sales Type", SalesTypeOption);
         SalesPriceWorksheet.SETRANGE("Sales Code", SalesCode);
-        IF SalesPriceWorksheet.FINDFIRST THEN BEGIN
+        IF SalesPriceWorksheet.FINDFIRST() THEN BEGIN
             SalesPriceWorksheet."New Unit Price" := NewPrice;
             SalesPriceWorksheet.VALIDATE("New Unit Price");
-            SalesPriceWorksheet.MODIFY;
+            SalesPriceWorksheet.MODIFY();
         END
         ELSE BEGIN
-            SalesPriceWorksheet.INIT;
+            SalesPriceWorksheet.INIT();
             SalesPriceWorksheet."Starting Date" := StartDate;
             SalesPriceWorksheet."Ending Date" := EndDate;
             SalesPriceWorksheet."Item No." := ItemNo;
@@ -137,7 +146,7 @@ report 50006 "DEL Import Excel"
             SalesPriceWorksheet."New Unit Price" := NewPrice;
             SalesPriceWorksheet.VALIDATE("New Unit Price");
             //TODO: "vendor no." does not exist  SalesPriceWorksheet."Vendor No." := VendorNo;
-            SalesPriceWorksheet.INSERT;
+            SalesPriceWorksheet.INSERT();
         END;
     end;
 
@@ -150,5 +159,6 @@ report 50006 "DEL Import Excel"
         ELSE
             EXIT('');
     end;
+
 }
 

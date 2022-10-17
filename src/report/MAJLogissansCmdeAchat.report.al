@@ -1,11 +1,11 @@
-report 50020 "MAJ Logistic sans Cmde Achat"
+report 50020 "DEL MAJ Logis sans Cmde Achat"
 {
     DefaultLayout = RDLC;
     RDLCLayout = './MAJLogisticsansCmdeAchat.rdlc';
 
     dataset
     {
-        dataitem(DataItem9818; Table50021)
+        dataitem("DEL Element"; "DEL Element")
         {
             DataItemTableView = SORTING(ID)
                                 ORDER(Ascending)
@@ -18,18 +18,18 @@ report 50020 "MAJ Logistic sans Cmde Achat"
             column(COMPANYNAME; COMPANYNAME)
             {
             }
-            column(CurrReport_PAGENO; CurrReport.PAGENO)
+            column(CurrReport_PAGENO; CurrReport.PAGENO())
             {
             }
-            column(USERID; USERID)
+            column("USERID"; USERID)
             {
             }
             column(Element_Deal_ID; Deal_ID)
             {
             }
-            column(Element_Type; "Customer/Vendor")
-            {
-            }
+            //TODO column(Element_Type; "Customer/Vendor")
+            // {
+            // }
             column(Element__Type_No__; "Type No.")
             {
             }
@@ -42,48 +42,48 @@ report 50020 "MAJ Logistic sans Cmde Achat"
             column(Element_Deal_IDCaption; FIELDCAPTION(Deal_ID))
             {
             }
-            column(Element_TypeCaption; FIELDCAPTION("Customer/Vendor"))
-            {
-            }
+            //TODO column(Element_TypeCaption; FIELDCAPTION("Customer/Vendor"))
+            // {
+            // }
             column(Element__Type_No__Caption; FIELDCAPTION("Type No."))
             {
             }
-            column(Logistic_Deal_IDCaption; Logistic.FIELDCAPTION(Deal_ID))
+            column(Logistic_Deal_IDCaption; "DEL Logistic".FIELDCAPTION(Deal_ID))
             {
             }
-            column(Logistic_Deal_ID_Control1000000010Caption; Logistic.FIELDCAPTION(Deal_ID))
+            column(Logistic_Deal_ID_Control1000000010Caption; "DEL Logistic".FIELDCAPTION(Deal_ID))
             {
             }
-            column(Logistic__ACO_No__Caption; Logistic.FIELDCAPTION("ACO No."))
+            column(Logistic__ACO_No__Caption; "DEL Logistic".FIELDCAPTION("ACO No."))
             {
             }
             column(Element_ID; ID)
             {
             }
-            dataitem(DataItem9969; Table50034)
+            dataitem("DEL Logistic"; "DEL Logistic")
             {
                 DataItemLink = Deal_ID = FIELD(Deal_ID);
                 DataItemTableView = SORTING(ID, Deal_ID)
                                     ORDER(Ascending)
-                                    WHERE(ACO No.=FILTER(''));
-                column(Logistic_Deal_ID;Deal_ID)
+                                    WHERE("ACO No." = FILTER(''));
+                column(Logistic_Deal_ID; Deal_ID)
                 {
                 }
-                column(Logistic_Deal_ID_Control1000000010;Deal_ID)
+                column(Logistic_Deal_ID_Control1000000010; Deal_ID)
                 {
                 }
-                column(Logistic__ACO_No__;"ACO No.")
+                column(Logistic__ACO_No__; "ACO No.")
                 {
                 }
-                column(Logistic_ID;ID)
+                column(Logistic_ID; ID)
                 {
                 }
 
                 trigger OnAfterGetRecord()
                 begin
 
-                    Logistic."ACO No.":=Element."Type No.";
-                    Logistic.MODIFY;
+                    "DEL Logistic"."ACO No." := "DEL Element"."Type No.";
+                    "DEL Logistic".MODIFY();
                 end;
             }
 
