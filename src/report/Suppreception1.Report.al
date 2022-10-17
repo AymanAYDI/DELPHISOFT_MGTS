@@ -1,6 +1,6 @@
 report 50044 "DEL Supp reception1"
 {
-    Permissions = TableData 121 = rimd;
+    Permissions = TableData "Purch. Rcpt. Line" = rimd;
     ProcessingOnly = true;
 
     dataset
@@ -25,7 +25,9 @@ report 50044 "DEL Supp reception1"
 
 
     var
-        PurchRcptLine: Record 121;
+
+        PurchRcptLine: Record "Purch. Rcpt. Line";
+
         ReceptionOK: Boolean;
 }
 

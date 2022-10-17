@@ -1,4 +1,4 @@
-report 50053 "Export Purchase Order"
+report 50053 "DEL Export Purchase Order"
 {
     // 
     //   MGTS10.009; Created object
@@ -7,7 +7,7 @@ report 50053 "Export Purchase Order"
 
     dataset
     {
-        dataitem(DataItem1000000000; Table38)
+        dataitem("Purchase Header"; "Purchase Header")
         {
             RequestFilterFields = "Document Type", "No.";
 
@@ -21,7 +21,7 @@ report 50053 "Export Purchase Order"
                 InsertExcelCell(ColNo, RowNo, Text003, '', FALSE, FALSE, FALSE);
 
                 ColNo += 1;
-                InsertExcelCell(ColNo, RowNo, FORMAT("Requested Delivery Date"), '', FALSE, FALSE, FALSE);
+                InsertExcelCell(ColNo, RowNo, FORMAT("DEL Requested Delivery Date"), '', FALSE, FALSE, FALSE);
 
                 ColNo := 1;
                 RowNo += 1;
@@ -41,7 +41,7 @@ report 50053 "Export Purchase Order"
                 InsertExcelCell(ColNo, RowNo, Vendor.GLN, '@', FALSE, FALSE, FALSE);
 
                 ColNo += 1;
-                InsertExcelCell(ColNo, RowNo, GLN, '@', FALSE, FALSE, FALSE);
+                InsertExcelCell(ColNo, RowNo, "DEL GLN", '@', FALSE, FALSE, FALSE);
 
                 ColNo := 1;
                 RowNo += 1;
@@ -100,7 +100,7 @@ report 50053 "Export Purchase Order"
                         Item.GET(PurchaseLine."No.");
 
                         ANVEDICrossReference.RESET;
-                        ANVEDICrossReference.SETRANGE("External No.", "Purchase Header".GLN);
+                        ANVEDICrossReference.SETRANGE("External No.", "Purchase Header"."DEL GLN");
                         IF NOT ANVEDICrossReference.FINDFIRST THEN
                             ANVEDICrossReference.INIT;
 
@@ -121,7 +121,7 @@ report 50053 "Export Purchase Order"
                         //InsertExcelCell(ColNo, RowNo, FORMAT(PurchaseLine."Requested Receipt Date"), '', FALSE, FALSE, FALSE);
 
                         ColNo += 1;
-                        InsertExcelCell(ColNo, RowNo, "Type Order EDI", '', FALSE, FALSE, FALSE);
+                        InsertExcelCell(ColNo, RowNo, "DEL Type Order EDI", '', FALSE, FALSE, FALSE);
 
                         ColNo += 1;
                         InsertExcelCell(ColNo, RowNo, Vendor."No.", '', FALSE, FALSE, FALSE);
@@ -136,7 +136,7 @@ report 50053 "Export Purchase Order"
                         InsertExcelCell(ColNo, RowNo, PurchaseLine.Description, '', FALSE, FALSE, FALSE);
 
                         ColNo += 1;
-                        InsertExcelCell(ColNo, RowNo, Item."Code EAN 13", '@', FALSE, FALSE, FALSE);
+                        InsertExcelCell(ColNo, RowNo, Item."DEL Code EAN 13", '@', FALSE, FALSE, FALSE);
 
                         ColNo += 1;
                         InsertExcelCell(ColNo, RowNo, PurchaseLine."Cross-Reference No.", '@', FALSE, FALSE, FALSE);
@@ -163,8 +163,8 @@ report 50053 "Export Purchase Order"
                 IF GUIALLOWED THEN
                     Window.CLOSE;
 
-                ExcelBuffer.CreateBookAndOpenExcel('', Text001, Text002, COMPANYNAME, USERID);
-                ExcelBuffer.GiveUserControl();
+                // ExcelBuffer.CreateBookAndOpenExcel('', Text001, Text002, COMPANYNAME, USERID);
+                // ExcelBuffer.GiveUserControl(); // TODO: The application objects or methods have scope 'OnPrem' and cannot be used for 'Cloud' development.
             end;
 
             trigger OnPreDataItem()
@@ -196,7 +196,7 @@ report 50053 "Export Purchase Order"
     }
 
     var
-        ExcelBuffer: Record "370" temporary;
+        ExcelBuffer: Record "Excel Buffer" temporary;
         Text001: Label 'Exported Data';
         Text002: Label 'Purchase Order';
         ColNo: Integer;
@@ -207,8 +207,8 @@ report 50053 "Export Purchase Order"
         Text005: Label 'Emetteur';
         Text006: Label 'Fournisseur';
         Text007: Label 'Livre';
-        CompanyInformation: Record "79";
-        Vendor: Record "23";
+        CompanyInformation: Record "Company Information";
+        Vendor: Record Vendor;
         Text008: Label 'Commande';
         Text009: Label 'Date';
         Text010: Label 'Type code';
@@ -222,10 +222,10 @@ report 50053 "Export Purchase Order"
         Text018: Label 'Unité de qté';
         Text019: Label 'Entrepôt à livrer';
         Text020: Label 'Désignation';
-        PurchaseLine: Record "39";
-        Item: Record "27";
-        ShiptoAddress: Record "222";
-        ANVEDICrossReference: Record "5327362";
+        PurchaseLine: Record "Purchase Line";
+        Item: Record Item;
+        ShiptoAddress: Record "Ship-to Address";
+        ANVEDICrossReference: Record 5327362; // TODO: Record not exist
         Text021: Label 'Réference cde';
 
     local procedure InsertExcelCell(InsertColNo: Integer; InsertRowNo: Integer; InsertValue: Text; InsertFormat: Text; InsertBold: Boolean; InsertItalic: Boolean; InsertUnderline: Boolean)

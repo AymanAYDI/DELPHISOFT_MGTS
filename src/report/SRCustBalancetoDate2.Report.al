@@ -9,9 +9,9 @@ report 50067 "SR Cust. - Balance to Date2"
 
     dataset
     {
-        dataitem(DataItem6836; Table18)
+        dataitem(Customer; Customer)
         {
-            DataItemTableView = SORTING (No.);
+            DataItemTableView = SORTING("No.");
             PrintOnlyIfDetail = true;
             RequestFilterFields = "No.", "Search Name", Blocked;
             column(TodayFormatted; FORMAT(TODAY, 0, 4))
@@ -83,9 +83,9 @@ report 50067 "SR Cust. - Balance to Date2"
             column(TransferCaption; TransferCaptionLbl)
             {
             }
-            dataitem(CustLedgEntry3; Table21)
+            dataitem(CustLedgEntry3; "Cust. Ledger Entry")
             {
-                DataItemTableView = SORTING (Entry No.);
+                DataItemTableView = SORTING("Entry No.");
                 column(PostingDate_CustLedgEntry; FORMAT("Posting Date"))
                 {
                 }
@@ -129,79 +129,79 @@ report 50067 "SR Cust. - Balance to Date2"
                 column(DateFilter_CustLedgEntry; "Date Filter")
                 {
                 }
-                dataitem(DataItem6942; Table379)
+                dataitem(DataItem6942; "Detailed Cust. Ledg. Entry")
                 {
-                    DataItemLink = Cust. Ledger Entry No.=FIELD(Entry No.),
-                                   Posting Date=FIELD(Date Filter);
-                    DataItemTableView = SORTING(Cust. Ledger Entry No.,Posting Date)
-                                        WHERE(Entry Type=FILTER(<>Initial Entry));
-                    column(EntryType_Integer;FORMAT("Entry Type",0,9))
+                    DataItemLink = "Cust. Ledger Entry No." = FIELD("Entry No."),
+                                   "Posting Date" = FIELD("Date Filter");
+                    DataItemTableView = SORTING("Cust. Ledger Entry No.", "Posting Date")
+                                        WHERE("Entry Type" = FILTER(<> "Initial Entry"));
+                    column(EntryType_Integer; FORMAT("Entry Type", 0, 9))
                     {
                     }
-                    column(EntryType_DtldCustLedgEntry;"Entry Type")
+                    column(EntryType_DtldCustLedgEntry; "Entry Type")
                     {
                     }
-                    column(PostingDate_DtldCustLedgEntry;FORMAT("Posting Date"))
+                    column(PostingDate_DtldCustLedgEntry; FORMAT("Posting Date"))
                     {
                     }
-                    column(DocType_DtldCustLedgEntry;"Document Type")
+                    column(DocType_DtldCustLedgEntry; "Document Type")
                     {
                     }
-                    column(DocNo_DtldCustLedgEntry;"Document No.")
+                    column(DocNo_DtldCustLedgEntry; "Document No.")
                     {
                     }
-                    column(Amt;Amt)
-                    {
-                        AutoFormatExpression = CurrencyCode;
-                        AutoFormatType = 1;
-                    }
-                    column(CurrencyCode_DtldCustLedgEntry;CurrencyCode)
-                    {
-                    }
-                    column(AmtLCY;AmtLCY)
+                    column(Amt; Amt)
                     {
                         AutoFormatExpression = CurrencyCode;
                         AutoFormatType = 1;
                     }
-                    column(RemainingAmt;RemainingAmt)
+                    column(CurrencyCode_DtldCustLedgEntry; CurrencyCode)
+                    {
+                    }
+                    column(AmtLCY; AmtLCY)
                     {
                         AutoFormatExpression = CurrencyCode;
                         AutoFormatType = 1;
                     }
-                    column(CustLedgEntry3DocNo;Text001 + ' ' + CustLedgEntry3."Document No.")
-                    {
-                    }
-                    column(RemainingAmtLCY;RemainingAmtLCY)
+                    column(RemainingAmt; RemainingAmt)
                     {
                         AutoFormatExpression = CurrencyCode;
                         AutoFormatType = 1;
                     }
-                    column(EntryNo_DtldCustLedgEntry;"Entry No.")
+                    column(CustLedgEntry3DocNo; Text001 + ' ' + CustLedgEntry3."Document No.")
                     {
                     }
-                    column(ConsNo_DtldCustLedgEntry;ConsNoDtldCustLedgEntry)
+                    column(RemainingAmtLCY; RemainingAmtLCY)
+                    {
+                        AutoFormatExpression = CurrencyCode;
+                        AutoFormatType = 1;
+                    }
+                    column(EntryNo_DtldCustLedgEntry; "Entry No.")
                     {
                     }
-                    column(CustLedgEntryNo_DtldCustLedgEntry;"Cust. Ledger Entry No.")
+                    column(ConsNo_DtldCustLedgEntry; ConsNoDtldCustLedgEntry)
+                    {
+                    }
+                    column(CustLedgEntryNo_DtldCustLedgEntry; "Cust. Ledger Entry No.")
                     {
                     }
 
                     trigger OnAfterGetRecord()
                     begin
                         IF NOT PrintUnappliedEntries THEN
-                          IF Unapplied THEN
-                            CurrReport.SKIP;
+                            IF Unapplied THEN
+                                CurrReport.SKIP;
 
                         AmtLCY := "Amount (LCY)";
                         Amt := Amount;
                         CurrencyCode := "Currency Code";
 
                         IF (Amt = 0) AND (AmtLCY = 0) THEN
-                          CurrReport.SKIP;
+                            CurrReport.SKIP;
 
                         IF CurrencyCode = '' THEN BEGIN
-                          CurrencyCode := GLSetup."LCY Code";
-                          Amt := 0;
+                            CurrencyCode := GLSetup."LCY Code";
+                            Amt := 0;
                         END;
                         ConsNoDtldCustLedgEntry += 1;
                     end;
@@ -214,96 +214,96 @@ report 50067 "SR Cust. - Balance to Date2"
 
                 trigger OnAfterGetRecord()
                 begin
-                    CALCFIELDS("Original Amt. (LCY)","Remaining Amt. (LCY)","Original Amount","Remaining Amount");
+                    CALCFIELDS("Original Amt. (LCY)", "Remaining Amt. (LCY)", "Original Amount", "Remaining Amount");
                     OriginalAmtLCY := "Original Amt. (LCY)";
                     RemainingAmtLCY := "Remaining Amt. (LCY)";
                     OriginalAmt := "Original Amount";
                     RemainingAmt := "Remaining Amount";
                     CurrencyCode := "Currency Code";
                     IF CurrencyCode = '' THEN
-                      CurrencyCode := GLSetup."LCY Code";
+                        CurrencyCode := GLSetup."LCY Code";
 
-                    CurrencyTotalBuffer.UpdateTotal(CurrencyCode,RemainingAmt,RemainingAmtLCY,Counter1);
+                    CurrencyTotalBuffer.UpdateTotal(CurrencyCode, RemainingAmt, RemainingAmtLCY, Counter1);
 
                     AgeDays := FixedDay - "Posting Date";
                     IF ("Due Date" <> 0D) AND (FixedDay > "Due Date") THEN
-                      DueDays := FixedDay - "Due Date"
+                        DueDays := FixedDay - "Due Date"
                     ELSE
-                      DueDays := 0;
+                        DueDays := 0;
                     NoOpenEntries := NoOpenEntries + 1;
 
                     IF CurrencyCode = GLSetup."LCY Code" THEN BEGIN
-                      RemainingAmt := 0;
-                      OriginalAmt := 0;
+                        RemainingAmt := 0;
+                        OriginalAmt := 0;
                     END;
                 end;
 
                 trigger OnPreDataItem()
                 begin
                     RESET;
-                    DtldCustLedgEntry.SETCURRENTKEY("Customer No.","Posting Date","Entry Type");
-                    DtldCustLedgEntry.SETRANGE("Customer No.",Customer."No.");
-                    DtldCustLedgEntry.SETRANGE("Posting Date",CALCDATE('<+1D>',FixedDay),12319999D);
-                    DtldCustLedgEntry.SETRANGE("Entry Type",DtldCustLedgEntry."Entry Type"::Application);
+                    DtldCustLedgEntry.SETCURRENTKEY("Customer No.", "Posting Date", "Entry Type");
+                    DtldCustLedgEntry.SETRANGE("Customer No.", Customer."No.");
+                    DtldCustLedgEntry.SETRANGE("Posting Date", CALCDATE('<+1D>', FixedDay), 19991231D); // TODO: check date 12319999
+                    DtldCustLedgEntry.SETRANGE("Entry Type", DtldCustLedgEntry."Entry Type"::Application);
                     IF NOT PrintUnappliedEntries THEN
-                      DtldCustLedgEntry.SETRANGE(Unapplied,FALSE);
+                        DtldCustLedgEntry.SETRANGE(Unapplied, FALSE);
 
                     IF DtldCustLedgEntry.FINDSET THEN
-                      REPEAT
-                        "Entry No." := DtldCustLedgEntry."Cust. Ledger Entry No.";
-                        MARK(TRUE);
-                      UNTIL DtldCustLedgEntry.NEXT = 0;
+                        REPEAT
+                            "Entry No." := DtldCustLedgEntry."Cust. Ledger Entry No.";
+                            MARK(TRUE);
+                        UNTIL DtldCustLedgEntry.NEXT = 0;
 
-                    SETCURRENTKEY("Customer No.",Open);
-                    SETRANGE("Customer No.",Customer."No.");
-                    SETRANGE(Open,TRUE);
-                    SETRANGE("Posting Date",0D,FixedDay);
+                    SETCURRENTKEY("Customer No.", Open);
+                    SETRANGE("Customer No.", Customer."No.");
+                    SETRANGE(Open, TRUE);
+                    SETRANGE("Posting Date", 0D, FixedDay);
                     IF FINDSET THEN
-                      REPEAT
-                        MARK(TRUE);
-                      UNTIL NEXT = 0;
+                        REPEAT
+                            MARK(TRUE);
+                        UNTIL NEXT = 0;
 
                     SETCURRENTKEY("Entry No.");
                     SETRANGE(Open);
                     MARKEDONLY(TRUE);
-                    SETRANGE("Date Filter",0D,FixedDay);
+                    SETRANGE("Date Filter", 0D, FixedDay);
                 end;
             }
-            dataitem(Integer2;Table2000000026)
+            dataitem(Integer2; Integer)
             {
                 DataItemTableView = SORTING(Number)
-                                    WHERE(Number=FILTER(1..));
-                column(TotalCustName;Text002 + ' ' + Customer.Name)
+                                    WHERE(Number = FILTER(1 ..));
+                column(TotalCustName; Text002 + ' ' + Customer.Name)
                 {
                 }
-                column(CurrencyTotalBuffTotalAmt;CurrencyTotalBuffer."Total Amount")
-                {
-                    AutoFormatExpression = CurrencyTotalBuffer."Currency Code";
-                    AutoFormatType = 1;
-                }
-                column(CurrencyTotalBuffCurrCode;CurrencyTotalBuffer."Currency Code")
-                {
-                }
-                column(CurrencyTotalBuffTotalAmtLCY;CurrencyTotalBuffer."Total Amount (LCY)")
+                column(CurrencyTotalBuffTotalAmt; CurrencyTotalBuffer."Total Amount")
                 {
                     AutoFormatExpression = CurrencyTotalBuffer."Currency Code";
                     AutoFormatType = 1;
                 }
-                column(GLSetupLCYCode;GLSetup."LCY Code")
+                column(CurrencyTotalBuffCurrCode; CurrencyTotalBuffer."Currency Code")
                 {
                 }
-                column(CustomerTotalLCY;CustomerTotalLCY)
+                column(CurrencyTotalBuffTotalAmtLCY; CurrencyTotalBuffer."Total Amount (LCY)")
+                {
+                    AutoFormatExpression = CurrencyTotalBuffer."Currency Code";
+                    AutoFormatType = 1;
+                }
+                column(GLSetupLCYCode; GLSetup."LCY Code")
+                {
+                }
+                column(CustomerTotalLCY; CustomerTotalLCY)
                 {
                 }
 
                 trigger OnAfterGetRecord()
                 begin
                     IF Number = 1 THEN
-                      OK := CurrencyTotalBuffer.FINDSET
+                        OK := CurrencyTotalBuffer.FINDSET
                     ELSE
-                      OK := CurrencyTotalBuffer.NEXT <> 0;
+                        OK := CurrencyTotalBuffer.NEXT <> 0;
                     IF NOT OK THEN
-                      CurrReport.BREAK;
+                        CurrReport.BREAK;
 
                     CurrencyTotalBuffer2.UpdateTotal(
                       CurrencyTotalBuffer."Currency Code",
@@ -316,7 +316,7 @@ report 50067 "SR Cust. - Balance to Date2"
                     IF (CurrencyTotalBuffer."Total Amount" = 0) AND
                        (CurrencyTotalBuffer."Total Amount (LCY)" = 0)
                     THEN
-                      CurrReport.SKIP;
+                        CurrReport.SKIP;
                 end;
 
                 trigger OnPostDataItem()
@@ -332,11 +332,11 @@ report 50067 "SR Cust. - Balance to Date2"
 
             trigger OnAfterGetRecord()
             begin
-                SETRANGE("Date Filter",0D,FixedDay);
+                SETRANGE("Date Filter", 0D, FixedDay);
                 CustomerTotalLCY := 0;
                 NoOpenEntries := 0;
                 IF PrintOnePerPage THEN
-                  OutputNo += 1;
+                    OutputNo += 1;
             end;
 
             trigger OnPreDataItem()
@@ -346,47 +346,47 @@ report 50067 "SR Cust. - Balance to Date2"
                 OutputNo := 0;
             end;
         }
-        dataitem(Integer3;Table2000000026)
+        dataitem(Integer3; Integer)
         {
             DataItemTableView = SORTING(Number)
-                                WHERE(Number=FILTER(1..));
-            column(CurrencyTotalBuff2CurrCode;CurrencyTotalBuffer2."Currency Code")
+                                WHERE(Number = FILTER(1 ..));
+            column(CurrencyTotalBuff2CurrCode; CurrencyTotalBuffer2."Currency Code")
             {
             }
-            column(CurrencyTotalBuff2TotalAmt;CurrencyTotalBuffer2."Total Amount")
+            column(CurrencyTotalBuff2TotalAmt; CurrencyTotalBuffer2."Total Amount")
             {
                 AutoFormatExpression = CurrencyTotalBuffer2."Currency Code";
                 AutoFormatType = 1;
             }
-            column(TotalReportLCY;TotalReportLCY)
+            column(TotalReportLCY; TotalReportLCY)
             {
                 AutoFormatType = 1;
             }
-            column(TotalCaption;TotalCaptionLbl)
+            column(TotalCaption; TotalCaptionLbl)
             {
             }
-            column(TotalBalancetoDateCaption;TotalBalancetoDateCaptionLbl)
+            column(TotalBalancetoDateCaption; TotalBalancetoDateCaptionLbl)
             {
             }
-            column(GLSetupLCYCode_Integer3;GLSetup."LCY Code")
+            column(GLSetupLCYCode_Integer3; GLSetup."LCY Code")
             {
             }
 
             trigger OnAfterGetRecord()
             begin
                 IF Number = 1 THEN
-                  OK := CurrencyTotalBuffer2.FINDSET
+                    OK := CurrencyTotalBuffer2.FINDSET
                 ELSE
-                  OK := CurrencyTotalBuffer2.NEXT <> 0;
+                    OK := CurrencyTotalBuffer2.NEXT <> 0;
                 IF NOT OK THEN
-                  CurrReport.BREAK;
+                    CurrReport.BREAK;
 
                 TotalReportLCY := TotalReportLCY + CurrencyTotalBuffer2."Total Amount (LCY)";
 
                 IF (CurrencyTotalBuffer2."Total Amount" = 0) AND
                    (CurrencyTotalBuffer2."Total Amount (LCY)" = 0)
                 THEN
-                  CurrReport.SKIP;
+                    CurrReport.SKIP;
             end;
 
             trigger OnPostDataItem()
@@ -395,7 +395,7 @@ report 50067 "SR Cust. - Balance to Date2"
 
                 Customer.SETRANGE("Date Filter");
                 IF CheckGLReceivables AND (Customer.GETFILTERS = '') THEN
-                  CheckReceivablesAccounts;
+                    CheckReceivablesAccounts;
             end;
         }
     }
@@ -411,27 +411,27 @@ report 50067 "SR Cust. - Balance to Date2"
                 group(Options)
                 {
                     Caption = 'Options';
-                    field(FixedDay;FixedDay)
+                    field(FixedDay; FixedDay)
                     {
-                        ApplicationArea = Basic,Suite;
+                        ApplicationArea = Basic, Suite;
                         Caption = 'Fixed Day';
                         ToolTip = 'Specifies the date from which due customer payments are included.';
                     }
-                    field(PrintOnePerPage;PrintOnePerPage)
+                    field(PrintOnePerPage; PrintOnePerPage)
                     {
-                        ApplicationArea = Basic,Suite;
+                        ApplicationArea = Basic, Suite;
                         Caption = 'New Page per Customer';
                         ToolTip = 'Specifies if each customer balance is printed on a separate page.';
                     }
-                    field(CheckGLReceivables;CheckGLReceivables)
+                    field(CheckGLReceivables; CheckGLReceivables)
                     {
-                        ApplicationArea = Basic,Suite;
+                        ApplicationArea = Basic, Suite;
                         Caption = 'Check Receivables Accounts';
                         ToolTip = 'Specifies if the calculated balance at close out matches the balance of the combined accounts receivable in the general ledger. A warning message is displayed if there is any variance.';
                     }
-                    field(PrintUnappliedEntries;PrintUnappliedEntries)
+                    field(PrintUnappliedEntries; PrintUnappliedEntries)
                     {
-                        ApplicationArea = Basic,Suite;
+                        ApplicationArea = Basic, Suite;
                         Caption = 'Include Unapplied Entries';
                         ToolTip = 'Specifies if the report includes unapplied entries.';
                     }
@@ -446,7 +446,7 @@ report 50067 "SR Cust. - Balance to Date2"
         trigger OnOpenPage()
         begin
             IF FixedDay = 0D THEN
-              FixedDay := WORKDATE;
+                FixedDay := WORKDATE;
         end;
     }
 
@@ -460,10 +460,10 @@ report 50067 "SR Cust. - Balance to Date2"
     end;
 
     var
-        CurrencyTotalBuffer: Record "332" temporary;
-        CurrencyTotalBuffer2: Record "332" temporary;
-        DtldCustLedgEntry: Record "379";
-        GLSetup: Record "98";
+        CurrencyTotalBuffer: Record "Currency Total Buffer" temporary;
+        CurrencyTotalBuffer2: Record "Currency Total Buffer" temporary;
+        DtldCustLedgEntry: Record "Detailed Cust. Ledg. Entry";
+        GLSetup: Record "General Ledger Setup";
         PrintOnePerPage: Boolean;
         CustFilter: Text[250];
         FixedDay: Date;
@@ -507,36 +507,36 @@ report 50067 "SR Cust. - Balance to Date2"
         ConsNoDtldCustLedgEntry: Integer;
         OutputNo: Integer;
 
-    [Scope('Internal')]
+
     procedure CheckReceivablesAccounts()
     var
-        CustPostGroup: Record "92";
-        GLAcc: Record "15";
-        TmpGLAcc: Record "15" temporary;
+        CustPostGroup: Record "Customer Posting Group";
+        GLAcc: Record "G/L Account";
+        TmpGLAcc: Record "G/L Account" temporary;
         TotalReceivables: Decimal;
     begin
         IF CustPostGroup.FINDSET THEN BEGIN
-          // Insert Receivabels Accounts in temp. table because the same account can be in
-          // more than one posting groups
-          REPEAT
-            IF (NOT TmpGLAcc.GET(CustPostGroup."Receivables Account")) AND
-               (CustPostGroup."Receivables Account" <> '')
-            THEN BEGIN
-              TmpGLAcc."No." := CustPostGroup."Receivables Account";
-              TmpGLAcc.INSERT;
-            END;
-          UNTIL CustPostGroup.NEXT = 0;
-
-          IF TmpGLAcc.FINDSET THEN
+            // Insert Receivabels Accounts in temp. table because the same account can be in
+            // more than one posting groups
             REPEAT
-              GLAcc.GET(TmpGLAcc."No.");
-              GLAcc.SETFILTER("Date Filter",'..%1',FixedDay);
-              GLAcc.CALCFIELDS("Balance at Date");
-              TotalReceivables := TotalReceivables + GLAcc."Balance at Date";
-            UNTIL TmpGLAcc.NEXT = 0;
+                IF (NOT TmpGLAcc.GET(CustPostGroup."Receivables Account")) AND
+                   (CustPostGroup."Receivables Account" <> '')
+                THEN BEGIN
+                    TmpGLAcc."No." := CustPostGroup."Receivables Account";
+                    TmpGLAcc.INSERT;
+                END;
+            UNTIL CustPostGroup.NEXT = 0;
 
-          IF TotalReportLCY <> TotalReceivables THEN
-            MESSAGE(Text003,GLSetup."LCY Code",ABS(TotalReportLCY - TotalReceivables));
+            IF TmpGLAcc.FINDSET THEN
+                REPEAT
+                    GLAcc.GET(TmpGLAcc."No.");
+                    GLAcc.SETFILTER("Date Filter", '..%1', FixedDay);
+                    GLAcc.CALCFIELDS("Balance at Date");
+                    TotalReceivables := TotalReceivables + GLAcc."Balance at Date";
+                UNTIL TmpGLAcc.NEXT = 0;
+
+            IF TotalReportLCY <> TotalReceivables THEN
+                MESSAGE(Text003, GLSetup."LCY Code", ABS(TotalReportLCY - TotalReceivables));
         END;
     end;
 }

@@ -5,6 +5,8 @@ report 50043 "DEL Insert axe segument"
 
     dataset
     {
+
+
         dataitem(Item; Item)
         {
             RequestFilterFields = "No.";
@@ -13,6 +15,7 @@ report 50043 "DEL Insert axe segument"
             // begin
             //     ModifSegment("Product Group Code", "Item Category Code");
             // end;
+
         }
     }
 

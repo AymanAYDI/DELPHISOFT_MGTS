@@ -1352,6 +1352,15 @@ codeunit 50100 "DEL MGTS_EventsMgt"
             MGTSFctMgt.SendTrans(ICOutboxTransaction_Rec);
         END;
     end;
+
+
+
+    [EventSubscriber(ObjectType::Page, Page::"Sales Order Subform", 'OnBeforeOpenSpecialPurchOrderForm', '', false, false)]
+    local procedure P46_OnBeforeOpenSpecialPurchOrderForm_SalesOrderSubform(SalesOrderLine: Record "Sales Line"; var PageEditable: Boolean; var IsHandled: Boolean)
+    begin
+        PageEditable := true;
+    end;
+
     //page ext 50030 
     //  [EventSubscriber(ObjectType::Codeunit, Codeunit::ReqJnlManagement, 'OnAfterGetDescriptionAndRcptName', '', false, false)]
 
@@ -1361,5 +1370,6 @@ codeunit 50100 "DEL MGTS_EventsMgt"
     // begin
     //     ColoredPurchDueDate := ReqLine."DEL Purchase Order Due Date" < TODAY;
     // end;
+
 
 }

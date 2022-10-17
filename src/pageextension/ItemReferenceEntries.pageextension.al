@@ -1,19 +1,19 @@
-pageextension 50052 pageextension50052 extends "Item Cross Reference Entries"
+pageextension 50052 "DEL ItemReferenceEntries" extends "Item Reference Entries"
 {
     // T-00778     THM     16.03.16          add "Sale blocked"
     //             THM     14,09,17          add "Item No."
     layout
     {
-        addfirst("Control 1")
+        addfirst(Control1)
         {
-            field("Item No."; "Item No.")
+            field("DEL Item No."; Rec."Item No.")
             {
                 Editable = false;
             }
         }
-        addafter("Control 6")
+        addafter(Control1)
         {
-            field("Sale blocked"; "Sale blocked")
+            field("DEL Sale blocked"; Rec."DEL Sale blocked")
             {
             }
         }

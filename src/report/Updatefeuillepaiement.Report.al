@@ -1,35 +1,29 @@
-report 50050 "Update feuille paiement"
+report 50050 "DEL Update feuille paiement"
 {
     Caption = 'mise à  jour feuille de paiement';
     ProcessingOnly = true;
 
     dataset
     {
-        dataitem(DataItem1000000000; Table81)
+        dataitem("Gen. Journal Line"; "Gen. Journal Line")
         {
 
             trigger OnAfterGetRecord()
             begin
-                IF UpdateRef THEN BEGIN
-                    IF VendorLedgerEntry.GET("Gen. Journal Line"."Source Line No.") THEN BEGIN
-                        "Gen. Journal Line"."Reference No." := VendorLedgerEntry."Reference No.";
-                    END;
-                END;
+                IF UpdateRef THEN
+                    IF VendorLedgerEntry.GET("Gen. Journal Line"."Source Line No.") THEN
+                        // "Gen. Journal Line"."Reference No." := VendorLedgerEntry."Reference No."; TODO: field "Reference No." is not exist in "Gen. Journal Line" and "Vendor Ledger Entry" record
 
-                IF UpdateDesc THEN BEGIN
-                    IF VendorLedgerEntry.GET("Gen. Journal Line"."Source Line No.") THEN BEGIN
-                        Vendor.GET(VendorLedgerEntry."Vendor No.");
-                        "Gen. Journal Line".Description := COPYSTR(Vendor.Name, 1, 49 - STRLEN(VendorLedgerEntry."External Document No.")) + '/' + VendorLedgerEntry."External Document No.";
-                    END;
-                END;
+                IF UpdateDesc THEN
+                            IF VendorLedgerEntry.GET("Gen. Journal Line"."Source Line No.") THEN BEGIN
+                                Vendor.GET(VendorLedgerEntry."Vendor No.");
+                                "Gen. Journal Line".Description := COPYSTR(Vendor.Name, 1, 49 - STRLEN(VendorLedgerEntry."External Document No.")) + '/' + VendorLedgerEntry."External Document No.";
+                            END;
 
-                IF UpdateBank THEN BEGIN
-                    IF VendorLedgerEntry.GET("Gen. Journal Line"."Source Line No.") THEN BEGIN
+                IF UpdateBank THEN
+                    IF VendorLedgerEntry.GET("Gen. Journal Line"."Source Line No.") THEN
                         "Gen. Journal Line"."Recipient Bank Account" := VendorLedgerEntry."Recipient Bank Account";
-                    END;
-
-                END;
-                "Gen. Journal Line".MODIFY;
+                "Gen. Journal Line".MODIFY();
             end;
         }
     }
@@ -41,7 +35,7 @@ report 50050 "Update feuille paiement"
         {
             area(content)
             {
-                group(Option)
+                group("Option")
                 {
                     Caption = 'Options';
                     field(UpdateRef; UpdateRef)
@@ -70,10 +64,10 @@ report 50050 "Update feuille paiement"
     }
 
     var
+        Vendor: Record Vendor;
+        VendorLedgerEntry: Record "Vendor Ledger Entry";
         UpdateRef: Boolean;
         UpdateDesc: Boolean;
         UpdateBank: Boolean;
-        Vendor: Record "23";
-        VendorLedgerEntry: Record "25";
 }
 
