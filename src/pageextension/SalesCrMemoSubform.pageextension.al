@@ -1,4 +1,4 @@
-pageextension 50061 pageextension50061 extends "Sales Cr. Memo Subform"
+pageextension 50061 "DEL SalesCrMemoSubform" extends "Sales Cr. Memo Subform"
 {
     // 
     // ------------------------------------------------------------------------------------------
@@ -14,7 +14,7 @@ pageextension 50061 pageextension50061 extends "Sales Cr. Memo Subform"
     // ------------------------------------------------------------------------------------------
     layout
     {
-
+        // TODO: the property 'table relation' cannot be customized
         //Unsupported feature: Property Modification (TableRelation) on "Control 300".
 
 

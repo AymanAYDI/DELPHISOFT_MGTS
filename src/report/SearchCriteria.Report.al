@@ -1,13 +1,11 @@
-report 50054 "Search Criteria"
+report 50054 "DEL Search Criteria"
 {
-    // Mgts10.00.04.00 | 10.09.2020 | Create : Message Filter
-
     Caption = 'Search Criteria';
     ProcessingOnly = true;
 
     dataset
     {
-        dataitem(DataItem100000000; Table50073)
+        dataitem("DEL JSON Requests log"; "DEL JSON Requests log")
         {
             DataItemTableView = SORTING (Date);
             RequestFilterFields = Date, Type, "Function", Error;
@@ -15,7 +13,7 @@ report 50054 "Search Criteria"
             trigger OnAfterGetRecord()
             var
                 IStream: InStream;
-                StreamReader: DotNet StreamReader;
+                // StreamReader: DotNet StreamReader; // TODO: The application object or method 'System.IO.StreamReader' has scope 'OnPrem' and cannot be used for 'Cloud' development
                 JsonMessage: Text;
             begin
                 Counter := Counter + 1;
@@ -24,24 +22,24 @@ report 50054 "Search Criteria"
 
                 CALCFIELDS(Message);
                 Message.CREATEINSTREAM(IStream);
-                StreamReader := StreamReader.StreamReader(IStream, TRUE);
-                JsonMessage := StreamReader.ReadToEnd();
+                // StreamReader := StreamReader.StreamReader(IStream, TRUE);
+                // JsonMessage := StreamReader.ReadToEnd(); // TODO: relate to DotNet StreamReader;
                 IF STRPOS(UPPERCASE(JsonMessage), UPPERCASE(TextToFilter)) <> 0 THEN BEGIN
                     Filtered := TRUE;
-                    MODIFY;
+                    MODIFY();
                     CounterFiltered := CounterFiltered + 1;
                 END;
             end;
 
             trigger OnPostDataItem()
             begin
-                Window.CLOSE;
+                Window.CLOSE();
                 //DIALOG.MESSAGE(Text003,CounterFiltered, CounterTotal);
             end;
 
             trigger OnPreDataItem()
             var
-                JSONRequestslog: Record "50073";
+                JSONRequestslog: Record 50073;
             begin
                 IF GETFILTER(Date) = '' THEN
                     DIALOG.ERROR(Text001, FIELDCAPTION(Date));
@@ -100,10 +98,10 @@ report 50054 "Search Criteria"
         TextToFilter: Text;
         Text004: Label 'Search';
 
-    [Scope('Internal')]
+   
     procedure GetResult(var _TextToFilter: Text)
     begin
-        _TextToFilter := STRSUBSTNO('%1, %2', TextToFilter, "JSON Requests log".GETFILTERS);
+        _TextToFilter := STRSUBSTNO('%1, %2', TextToFilter, "DEL JSON Requests log".GETFILTERS);
     end;
 }
 

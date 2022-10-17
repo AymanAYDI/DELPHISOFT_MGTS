@@ -1,12 +1,5 @@
-report 50042 "Import Facture Kiriba"
+report 50042 "DEL Import Facture Kiriba"
 {
-    // -------------------------------------------------------------------------------------------------
-    // www.delphisoft.ch
-    // -------------------------------------------------------------------------------------------------
-    // CBO: 26/11/2019 - [DEV261119] : - Add New Code in Trigger
-    //                                   import()
-    // -------------------------------------------------------------------------------------------------
-
     ProcessingOnly = true;
 
     dataset
@@ -49,7 +42,7 @@ report 50042 "Import Facture Kiriba"
                     END;
 
                 PaymentToleranceMgt.PmtTolGenJnl(GenJournalLine2);
-                //END DEL.SAZ 20.09.2018
+            //END DEL.SAZ 20.09.2018
             UNTIL GenJournalLine2.NEXT = 0;
         END;
         //DEL.SAZ 28.03.19
@@ -105,23 +98,23 @@ report 50042 "Import Facture Kiriba"
     end;
 
     var
-        ConnectionFTP: Report "50038";
-        SalesReceivablesSetup: Record "311";
+        ConnectionFTP: Report "Connection FTP";
+        SalesReceivablesSetup: Record "Sales & Receivables Setup";
         WTAB: Char;
         fileReadG: File;
         fileNameG: Text[1024];
-        FileManagement: Codeunit "419";
+        FileManagement: Codeunit "File Management";
         ServerFileName: Text;
         sNewPath: Text;
-        CustLedgerEntry: Record "21";
+        CustLedgerEntry: Record "Cust. Ledger Entry";
         InvoiceNo: Code[20];
         RefNo: Text;
-        CustLedgerEntry_Rec: Record "21";
-        PaymentToleranceMgt: Codeunit "426";
-        CustLedgEntry2: Record "21";
-        GenJournalLine2: Record "81";
+        CustLedgerEntry_Rec: Record "Cust. Ledger Entry";
+        PaymentToleranceMgt: Codeunit "Payment Tolerance Management";
+        CustLedgEntry2: Record "Cust. Ledger Entry";
+        GenJournalLine2: Record "Gen. Journal Line";
         SFTP: DotNet SFTP;
-        FileRec: Record "2000000022";
+        FileRec: Record File;
         DayC: Integer;
         MonthC: Integer;
         YearC: Integer;
@@ -129,25 +122,25 @@ report 50042 "Import Facture Kiriba"
         MonthF: Integer;
         YearF: Integer;
         BackPath: Text;
-        GenJournalLine3: Record "81";
+        GenJournalLine3: Record "Gen. Journal Line";
         LineNoJ: Integer;
-        GenJournalBatch: Record "232";
-        NoSeriesMgt: Codeunit "396";
+        GenJournalBatch: Record "Gen. Journal Batch";
+        NoSeriesMgt: Codeunit NoSeriesManagement;
         SFTP2: DotNet SFTP;
         Text001: Label 'You must have emptied the IMP-KIRIBA entry sheet';
         ErrText: Label 'Le fichier contient des erreurs:';
         ErrInvG: Text;
         LineNoInc: Integer;
 
-    [Scope('Internal')]
+
     procedure import(filenameP: Text[1024]; separatorP: Text[1]; pNewTrmt: Integer)
     var
         lineL: Text[1024];
         tblL: array[1000] of Text[1024];
         fileReadL: File;
         IntIteration: Integer;
-        TempKiriba1: Record "50065";
-        TempKiriba2: Record "50065";
+        TempKiriba1: Record "DEL Temp Kiriba";
+        TempKiriba2: Record "DEL Temp Kiriba";
     begin
         IntIteration := 0;
         ServerFileName := filenameP;
@@ -175,10 +168,10 @@ report 50042 "Import Facture Kiriba"
                 IF TempKiriba2.FINDSET THEN
                     //<<CBO: 26/11/2019 - [DEV261119]
                     REPEAT
-                TempKiriba2.Erreur := 'Facture ' + TempKiriba2."N° facture fournisseur" + ' existe déja';
-                TempKiriba2.MODIFY;
+                        TempKiriba2.Erreur := 'Facture ' + TempKiriba2."N° facture fournisseur" + ' existe déja';
+                        TempKiriba2.MODIFY;
                     UNTIL TempKiriba2.NEXT = 0;
-                // END;
+            // END;
             UNTIL TempKiriba1.NEXT = 0;
         END;
         //END SAZ 29.04.19
@@ -211,7 +204,7 @@ report 50042 "Import Facture Kiriba"
         decLineVATAmount: Decimal;
         decVATPrct: Decimal;
         "--- Record ---": Integer;
-        recCustomer: Record "18";
+        recCustomer: Record Customer;
         "--- Report ---": Integer;
         VAR_Axe: Text[30];
         VAR_vendeur: Text;
@@ -230,10 +223,10 @@ report 50042 "Import Facture Kiriba"
         VAR_Clientcode: Text;
         VAR_TauxdeTVA: Text;
         VAR_CodeTVA: Text;
-        GenJournalLine: Record "81";
-        GenJournalLine2: Record "81";
+        GenJournalLine: Record "Gen. Journal Line";
+        GenJournalLine2: Record "Gen. Journal Line";
         TauxTva: Decimal;
-        GLAccount: Record "15";
+        GLAccount: Record "G/L Account";
         VAR_EmplName: Text[100];
         ErrAxeSect: Text;
         ErrAxeEmp: Text;
@@ -245,8 +238,8 @@ report 50042 "Import Facture Kiriba"
         VAR_FactFour: Text;
         VAR_CycledeNetting: Text;
         VAR_Typededocument: Text;
-        TempKiriba: Record "50065";
-        TempKiriba_Rec: Record "50065";
+        TempKiriba: Record "DEL Temp Kiriba";
+        TempKiriba_Rec: Record "DEL Temp Kiriba";
         ErreurInv: Text;
     begin
         // VAR ASSIGNATION
@@ -361,7 +354,6 @@ report 50042 "Import Facture Kiriba"
         END;
     end;
 
-    [Scope('Internal')]
     procedure BackupFile(pPath: Text[1024])
     var
         lFile: File;
@@ -384,17 +376,16 @@ report 50042 "Import Facture Kiriba"
         IF COPY(pPath, newPath) THEN;
     end;
 
-    [Scope('Internal')]
+
     procedure DeleteFile(pPath: Text[1024])
     begin
         //MESSAGE(pPath);
         ERASE(pPath);
     end;
 
-    [Scope('Internal')]
     procedure CreateNewTreatment() NewTrmt: Integer
     var
-        Traitement: Record "50066";
+        Traitement: Record "DEL Historique import Kiriba";
     begin
         //Création nouveau traitement
         IF Traitement.FINDLAST THEN
@@ -436,7 +427,7 @@ report 50042 "Import Facture Kiriba"
         decLineVATAmount: Decimal;
         decVATPrct: Decimal;
         "--- Record ---": Integer;
-        recCustomer: Record "18";
+        recCustomer: Record Customer;
         "--- Report ---": Integer;
         VAR_Axe: Text[30];
         VAR_vendeur: Text;
@@ -455,10 +446,10 @@ report 50042 "Import Facture Kiriba"
         VAR_Clientcode: Text;
         VAR_TauxdeTVA: Text;
         VAR_CodeTVA: Text;
-        GenJournalLine: Record "81";
-        GenJournalLine2: Record "81";
+        GenJournalLine: Record "Gen. Journal Line";
+        GenJournalLine2: Record "Gen. Journal Line";
         TauxTva: Decimal;
-        GLAccount: Record "15";
+        GLAccount: Record "G/L Account";
         VAR_EmplName: Text[100];
         ErrAxeSect: Text;
         ErrAxeEmp: Text;
@@ -470,7 +461,7 @@ report 50042 "Import Facture Kiriba"
         VAR_FactFour: Text;
         VAR_CycledeNetting: Text;
         VAR_Typededocument: Text;
-        TempKiriba: Record "50065";
+        TempKiriba: Record "DEL Temp Kiriba";
     begin
         // VAR ASSIGNATION
         LineNoJ := 0;

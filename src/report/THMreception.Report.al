@@ -1,11 +1,11 @@
-report 50040 "THM reception"
+report 50040 "DEL THM reception"
 {
     DefaultLayout = RDLC;
     RDLCLayout = './THMreception.rdlc';
 
     dataset
     {
-        dataitem(DataItem1000000000; Table120)
+        dataitem("Purch. Rcpt. Header"; "Purch. Rcpt. Header")
         {
             column(No_PurchRcptHeader; "Purch. Rcpt. Header"."No.")
             {
@@ -13,15 +13,15 @@ report 50040 "THM reception"
 
             trigger OnAfterGetRecord()
             begin
-                PurchRcptLine.RESET;
+                PurchRcptLine.RESET();
                 PurchRcptLine.SETRANGE(PurchRcptLine."Document No.", "Purch. Rcpt. Header"."No.");
                 PurchRcptLine.SETFILTER(PurchRcptLine.Type, '%1|%2', PurchRcptLine.Type::Item, PurchRcptLine.Type::"G/L Account");
-                IF PurchRcptLine.FINDFIRST THEN
+                IF PurchRcptLine.FINDFIRST() THEN
                     REPEAT
                         IF PurchRcptLine.Type = PurchRcptLine.Type::Item THEN
                             IF PurchRcptLine.Quantity <> 0 THEN
-                                CurrReport.SKIP;
-                    UNTIL PurchRcptLine.NEXT = 0;
+                                CurrReport.SKIP();
+                    UNTIL PurchRcptLine.NEXT() = 0;
             end;
         }
     }
@@ -43,7 +43,7 @@ report 50040 "THM reception"
     }
 
     var
-        PurchRcptLine: Record "121";
+        PurchRcptLine: Record "Purch. Rcpt. Line";
         ReceptionOK: Boolean;
 }
 

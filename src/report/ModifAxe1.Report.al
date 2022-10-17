@@ -1,12 +1,12 @@
-report 50052 "Modif Axe 1"
+report 50052 "DEL Modif Axe 1"
 {
     DefaultLayout = RDLC;
     RDLCLayout = './ModifAxe1.rdlc';
-    Permissions = TableData 122 = rimd;
+    Permissions = TableData "Purch. Inv. Header" = rimd;
 
     dataset
     {
-        dataitem(DataItem1000000000; Table122)
+        dataitem(DataItem1000000000; "Purch. Inv. Header")
         {
             RequestFilterFields = "No.";
 

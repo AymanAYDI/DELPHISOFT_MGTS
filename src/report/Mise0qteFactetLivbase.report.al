@@ -4,7 +4,7 @@ report 50045 "Mise à 0 qte Fact et Liv base"
 
     dataset
     {
-        dataitem(DataItem1000000000; Table38)
+        dataitem(DataItem1000000000; "Purchase Header")
         {
             RequestFilterFields = "No.";
 
@@ -77,10 +77,10 @@ report 50045 "Mise à 0 qte Fact et Liv base"
     }
 
     var
-        PurchaseLine: Record "39";
-        PurchaseLine2: Record "39";
+        PurchaseLine: Record "Purchase Line";
+        PurchaseLine2: Record "Purchase Line";
         Text0001: Label 'Update Successfully Completed';
         Text0002: Label 'Vous devez choisir un numéro de document';
-        PurchaseLine3: Record "39";
+        PurchaseLine3: Record "Purchase Line";
 }
 

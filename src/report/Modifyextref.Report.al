@@ -1,13 +1,13 @@
-report 50063 "Modify ext ref"
+report 50063 "DEL Modify ext ref"
 {
     ProcessingOnly = true;
 
     dataset
     {
-        dataitem(DataItem100000000; Table39)
+        dataitem(DataItem100000000; "Purchase Line")
         {
-            DataItemTableView = SORTING (Document Type, Document No., Line No.)
-                                WHERE (Document Type=CONST(Order));
+            DataItemTableView = SORTING("Document Type", "Document No.", "Line No.")
+                                WHERE("Document Type" = CONST(Order));
             RequestFilterFields = "Document No.", "Document Type";
 
             trigger OnAfterGetRecord()
@@ -19,14 +19,14 @@ report 50063 "Modify ext ref"
 
                 IF SalesHeader_Rec.GET("Document Type"::Order, "Special Order Sales No.") THEN BEGIN
                     //VALIDATE("External reference NGTS",SalesHeader_Rec."Sell-to Customer No.");
-                    ItemCrossReference.RESET;
-                    ItemCrossReference.SETRANGE(ItemCrossReference."Cross-Reference Type", ItemCrossReference."Cross-Reference Type"::Customer);
-                    ItemCrossReference.SETRANGE(ItemCrossReference."Cross-Reference Type No.", SalesHeader_Rec."Sell-to Customer No.");
+                    ItemCrossReference.RESET();
+                    ItemCrossReference.SETRANGE(ItemCrossReference."Reference Type", ItemCrossReference."Reference Type"::Customer);
+                    ItemCrossReference.SETRANGE(ItemCrossReference."Reference Type No.", SalesHeader_Rec."Sell-to Customer No.");
                     ItemCrossReference.SETRANGE(ItemCrossReference."Item No.", "No.");
-                    IF ItemCrossReference.FINDFIRST THEN
-                        "External reference NGTS" := ItemCrossReference."Cross-Reference No."
+                    IF ItemCrossReference.FINDFIRST() THEN
+                        "DEL External reference NGTS" := ItemCrossReference."Reference No."
                     ELSE
-                        "External reference NGTS" := '';
+                        "DEL External reference NGTS" := '';
                     MODIFY(TRUE);
 
                 END;
@@ -61,8 +61,8 @@ report 50063 "Modify ext ref"
     }
 
     var
-        Item_Rec: Record "27";
-        SalesHeader_Rec: Record "36";
-        ItemCrossReference: Record "5717";
+        Item_Rec: Record Item;
+        SalesHeader_Rec: Record "Sales Header";
+        ItemCrossReference: Record "Item Reference";
 }
 

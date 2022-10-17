@@ -1,47 +1,21 @@
-pageextension 50050 pageextension50050 extends "Purchase Credit Memo"
+pageextension 50050 "DEL PurchaseCreditMemo" extends "Purchase Credit Memo"
 {
-    // 
-    // +-------------------------------------------------------------------------------+
-    // | Logico SA - Logiciels & Conseils                                              |
-    // |                                                                               |
-    // |                                                                               |
-    // +-------------------------------------------------------------------------------+
-    // 
-    // ID     Version     Story-Card    Date       Description
-    // ---------------------------------------------------------------------------------
-    // CHG                              11.05.09   added ShipmentSelection link
-    // 
-    // ------------------------------------------------------------------------------------------
-    // Sign    : Maria Hr. Hristova = mhh
-    // Version : MGTS10.024
-    // 
-    // ------------------------------------------------------------------------------------------
-    // No.    Version          Date        Sign    Description
-    // ------------------------------------------------------------------------------------------
-    // 001    MGTS10.024       09.02.21    mhh     List of changes:
-    //                                             Added new field: "Due Date Calculation"
-    // ------------------------------------------------------------------------------------------
     layout
     {
 
-        //Unsupported feature: Property Modification (SubPageLink) on "Control 15".
-
-
-        //Unsupported feature: Property Modification (SubPageLink) on "Control 5".
-
-        addafter("Control 39")
+        addafter("Buy-from")
         {
-            field("Due Date Calculation"; "Due Date Calculation")
+            field("DEL Due Date Calculation"; Rec."DEL Due Date Calculation")
             {
             }
         }
-        addafter("Control 101")
+        addafter("Buy-from")
         {
-            field("Type Order EDI"; "Type Order EDI")
+            field("DEL Type Order EDI"; Rec."DEL Type Order EDI")
             {
                 Editable = false;
             }
-            field("Type Order EDI Description"; "Type Order EDI Description")
+            field("DEL Type Order EDI Description"; Rec."DEL Type Order EDI Description")
             {
             }
         }
@@ -49,9 +23,8 @@ pageextension 50050 pageextension50050 extends "Purchase Credit Memo"
     actions
     {
 
-        //Unsupported feature: Property Modification (RunPageLink) on "Action 51".
 
-        addafter("Action 132")
+        addafter(Action132)
         {
             action("Livraison Liée")
             {
@@ -63,18 +36,18 @@ pageextension 50050 pageextension50050 extends "Purchase Credit Memo"
 
                 trigger OnAction()
                 var
-                    dealShipmentSelection_Re_Loc: Record "50031";
-                    element_Re_Loc: Record "50021";
+                    dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
+                    element_Re_Loc: Record "DEL Element";
+                    deal_Re_Loc: Record "DEL Deal";
+                    dealShipment_Re_Loc: Record "DEL Deal Shipment";
+                    dealShipmentConnection_Re_Loc: Record "DEL Deal Shipment Connection";
+                    dealShipmentSelection_Page_Loc: Page "DEL Deal Shipment Selection";
                     deal_ID_Co_Loc: Code[20];
-                    deal_Re_Loc: Record "50020";
-                    dealShipment_Re_Loc: Record "50030";
-                    dealShipmentConnection_Re_Loc: Record "50032";
-                    dealShipmentSelection_Page_Loc: Page "50038";
                 begin
 
                     //on cherche si des lignes ont déjà été générée pour cette facture
                     dealShipmentSelection_Re_Loc.RESET();
-                    dealShipmentSelection_Re_Loc.SETRANGE(dealShipmentSelection_Re_Loc."Document No.", "No.");
+                    dealShipmentSelection_Re_Loc.SETRANGE(dealShipmentSelection_Re_Loc."Document No.", Rec."No.");
                     dealShipmentSelection_Re_Loc.SETRANGE("Document Type", dealShipmentSelection_Re_Loc."Document Type"::"Purch. Cr. Memo");
                     dealShipmentSelection_Re_Loc.DELETEALL();
 
@@ -90,7 +63,7 @@ pageextension 50050 pageextension50050 extends "Purchase Credit Memo"
 
                                     dealShipmentSelection_Re_Loc.INIT();
                                     dealShipmentSelection_Re_Loc."Document Type" := dealShipmentSelection_Re_Loc."Document Type"::"Purch. Cr. Memo";
-                                    dealShipmentSelection_Re_Loc."Document No." := "No.";
+                                    dealShipmentSelection_Re_Loc."Document No." := Rec."No.";
                                     dealShipmentSelection_Re_Loc.Deal_ID := deal_Re_Loc.ID;
                                     dealShipmentSelection_Re_Loc."Shipment No." := dealShipment_Re_Loc.ID;
                                     dealShipmentSelection_Re_Loc.USER_ID := USERID;
@@ -113,7 +86,7 @@ pageextension 50050 pageextension50050 extends "Purchase Credit Memo"
                     CLEAR(dealShipmentSelection_Page_Loc);
                     dealShipmentSelection_Page_Loc.SETTABLEVIEW(dealShipmentSelection_Re_Loc);
                     dealShipmentSelection_Page_Loc.SETRECORD(dealShipmentSelection_Re_Loc);
-                    dealShipmentSelection_Page_Loc.RUN
+                    dealShipmentSelection_Page_Loc.RUN();
                 end;
             }
         }

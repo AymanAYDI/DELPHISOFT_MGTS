@@ -7,22 +7,22 @@ report 50046 "Init Order API Record Tracking"
 
     dataset
     {
-        dataitem(DataItem100000000; Table50020)
+        dataitem(DataItem100000000; "DEL Deal")
         {
-            DataItemTableView = SORTING (ID)
-                                WHERE (Status = FILTER (In order|In progress));
+            DataItemTableView = SORTING(ID)
+                                WHERE(Status = FILTER('In order' | 'In progress'));
             RequestFilterFields = ID;
 
             trigger OnAfterGetRecord()
             var
-                APIOrdersTrackRecordsMgt: Codeunit "50044";
+                APIOrdersTrackRecordsMgt: Codeunit "DEL API Orders Track Rec. Mgt.";
             begin
                 APIOrdersTrackRecordsMgt.UpdateOrderAPIRecordTracking(ID);
             end;
 
             trigger OnPostDataItem()
             begin
-                Win.CLOSE;
+                Win.CLOSE();
                 MESSAGE(FinshMsg);
             end;
 

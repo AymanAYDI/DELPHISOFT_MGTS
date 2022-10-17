@@ -1,10 +1,10 @@
-report 50051 "Update lines CAMT054"
+report 50051 "DEL Update lines CAMT054"
 {
     ProcessingOnly = true;
 
     dataset
     {
-        dataitem(DataItem1000000000; Table81)
+        dataitem(DataItem1000000000; "Gen. Journal Line")
         {
 
             trigger OnAfterGetRecord()
@@ -14,12 +14,12 @@ report 50051 "Update lines CAMT054"
                 CustLedgerEntry.SETRANGE("Document Type", CustLedgerEntry."Document Type"::Invoice);
                 CustLedgerEntry.SETRANGE("Document No.", InvoiceNo);
                 CustLedgerEntry.SETRANGE(Open, TRUE);
-                IF CustLedgerEntry.FINDFIRST THEN BEGIN
+                IF CustLedgerEntry.FINDFIRST() THEN BEGIN
                     VALIDATE("Account Type", "Account Type"::Customer);
                     VALIDATE("Account No.", CustLedgerEntry."Customer No.");
                     "Applies-to Doc. Type" := "Applies-to Doc. Type"::Invoice;
                     "Applies-to Doc. No." := InvoiceNo;
-                    MODIFY;
+                    MODIFY();
                     LinesUpdated += 1;
                 END;
             end;
@@ -53,15 +53,15 @@ report 50051 "Update lines CAMT054"
     end;
 
     var
-        CustLedgerEntry: Record "21";
+        CustLedgerEntry: Record "Cust. Ledger Entry";
         InvoiceNo: Code[20];
         LinesUpdated: Integer;
         ML_LinesUpdated: Label '%1 lines updated.';
 
     local procedure TrimInvoiceNo(InInvoiceNo: Code[10]) InvoiceReturn: Code[20]
     var
-        CustLedgEntry: Record "21";
-        CustLedgEntry2: Record "21";
+        CustLedgEntry: Record "Cust. Ledger Entry";
+        CustLedgEntry2: Record "Cust. Ledger Entry";
         InvCount: Integer;
         TmpInvNo: Code[10];
         ReferenceNo: Code[10];
@@ -74,7 +74,7 @@ report 50051 "Update lines CAMT054"
         CustLedgEntry.SETRANGE(Open, TRUE);
         WHILE TmpInvNo[1] = '0' DO BEGIN
             CustLedgEntry.SETRANGE("Document No.", TmpInvNo);
-            IF CustLedgEntry.FINDFIRST THEN BEGIN
+            IF CustLedgEntry.FINDFIRST() THEN BEGIN
                 InvCount := InvCount + 1;
                 IF InvCount > 1 THEN
                     ERROR(Text042, ReferenceNo);
@@ -90,7 +90,7 @@ report 50051 "Update lines CAMT054"
             CustLedgEntry2.SETRANGE("Document Type", CustLedgEntry2."Document Type"::Invoice);
             CustLedgEntry2.SETRANGE(Open, TRUE);
             CustLedgEntry2.SETRANGE("Document No.", TmpInvNo);
-            IF CustLedgEntry2.FINDFIRST THEN
+            IF CustLedgEntry2.FINDFIRST() THEN
                 ERROR(Text042, ReferenceNo);
         END;
 
