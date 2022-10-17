@@ -1352,4 +1352,14 @@ codeunit 50100 "DEL MGTS_EventsMgt"
             MGTSFctMgt.SendTrans(ICOutboxTransaction_Rec);
         END;
     end;
+    //page ext 50030 
+    //  [EventSubscriber(ObjectType::Codeunit, Codeunit::ReqJnlManagement, 'OnAfterGetDescriptionAndRcptName', '', false, false)]
+
+    // local procedure OnAfterGetDescriptionAndRcptName(var ReqLine: Record "Requisition Line"; var Description: Text[100]; var BuyFromVendorName: Text[100]; var LastReqLine: Record "Requisition Line")
+    // var
+    //     ColoredPurchDueDate: Boolean; //TODO : a vérifier 
+    // begin
+    //     ColoredPurchDueDate := ReqLine."DEL Purchase Order Due Date" < TODAY;
+    // end;
+
 }

@@ -1,21 +1,21 @@
-report 50027 "Create Provision2"
+report 50027 "DEL Create Provision2"
 {
     ProcessingOnly = true;
 
     dataset
     {
-        dataitem(DataItem5538; Table50020)
+        dataitem("DEL Deal"; "DEL Deal")
         {
             DataItemTableView = SORTING(ID)
                                 ORDER(Ascending)
-                                WHERE(Status = FILTER(In progress|Invoiced));
+                                WHERE(Status = FILTER("In progress" | "Invoiced"));
             RequestFilterFields = ID;
-            dataitem(DataItem9209; Table50030)
+            dataitem("DEL Deal Shipment"; "DEL Deal Shipment")
             {
-                DataItemLink = Deal_ID = FIELD(ID);
+                DataItemLink = "Deal_ID" = FIELD(ID);
                 DataItemTableView = SORTING(ID);
                 RequestFilterFields = ID;
-                dataitem(DataItem9818; Table50021)
+                dataitem(DataItem9818; "DEL Element")
                 {
                     DataItemLink = Deal_ID = FIELD(Deal_ID);
                     DataItemTableView = SORTING(Deal_ID, Type)
@@ -26,12 +26,12 @@ report 50027 "Create Provision2"
 
                     trigger OnAfterGetRecord()
                     var
-                        currExRate_Re_loc: Record "330";
+                        currExRate_Re_loc: Record "Currency Exchange Rate";
                         rate_Dec_Loc: Decimal;
-                        element_Re_Loc: Record "50021";
-                        dsc_Re_Loc: Record "50032";
+                        element_Re_Loc: Record "DEL Element";
+                        dsc_Re_Loc: Record "DEL Deal Shipment Connection";
                     begin
-                        IF NOT skip THEN BEGIN
+                        IF NOT skip() THEN BEGIN
 
                             IF Element.Deal_ID <> lastDealID THEN BEGIN
                                 lastDealID := Element.Deal_ID;
@@ -176,7 +176,8 @@ report 50027 "Create Provision2"
                 {
                     Caption = 'Date';
                 }
-                field(FORMAT(date_Da,0,'<Month Text>');FORMAT(date_Da,0,'<Month Text>'))
+                field(FORMAT(DEL date_Da,0,'<Month Text>');
+                    FORMAT(date_Da,0,'<Month Text>'))
                 {
                     Caption = 'Mois';
                 }
@@ -184,7 +185,7 @@ report 50027 "Create Provision2"
                 {
                     Caption = 'Année';
                 }
-                field(currentPeriod_Bo;currentPeriod_Bo)
+                field(currentPeriod_Bo; currentPeriod_Bo)
                 {
                     Caption = 'Periode en cours';
                 }
@@ -246,21 +247,21 @@ report 50027 "Create Provision2"
     end;
 
     var
-        sps_Re: Record "50042";
-        Element_Cu: Codeunit "50021";
+        sps_Re: Record 50042;
+        Element_Cu: Codeunit 50021;
         isColored: Boolean;
         lastDealID: Code[20];
-        Fee_Cu: Codeunit "50023";
+        Fee_Cu: Codeunit 50023;
         PeriodMonth: Option Janvier,"Février",Mars,Avril,Mai,Juin,Juillet,Aout,Septembre,Octobre,Novembre,"Décembre";
         PeriodYear: Option;
         date_Da: Date;
-        Deal_Cu: Codeunit "50020";
+        Deal_Cu: Codeunit 50020;
         monthFirstWorkingDay: Date;
         monthLastWorkingDay: Date;
         skip: Boolean;
         currentPeriod_Bo: Boolean;
-        DealShipment_Cu: Codeunit "50029";
-        salesInvoiceElement_Re: Record "50021";
+        DealShipment_Cu: Codeunit 50029;
+        salesInvoiceElement_Re: Record 50021;
         "v------PROGRESS BAR------v": Integer;
         intProgressI: array [10] of Integer;
         diaProgress: array [10] of Dialog;
@@ -272,7 +273,7 @@ report 50027 "Create Provision2"
         interval: array [10] of Integer;
         montantprevu: Decimal;
 
-    [Scope('Internal')]
+
     procedure FNC_RealAmountForPlannedFee(plannedElement_Re_Par: Record "50021") amount_Dec_Ret: Decimal
     var
         realElement_Re_Loc: Record "50021";
@@ -319,7 +320,7 @@ report 50027 "Create Provision2"
           UNTIL(realElement_Re_Loc.NEXT()=0);
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_ProgressBar_Init(index_Int_Par: Integer;interval_Int_Par: Integer;stepProgress_Int_Par: Integer;text_Te_Par: Text[50];total_Int_Par: Integer)
     begin
         /*
@@ -343,7 +344,7 @@ report 50027 "Create Provision2"
 
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_ProgressBar_Update(index_Int_Par: Integer)
     begin
         intProgressI[index_Int_Par] += 1;
@@ -371,7 +372,7 @@ report 50027 "Create Provision2"
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure FNC_ProgressBar_Close(index_Int_Par: Integer)
     begin
         diaProgress[index_Int_Par].CLOSE;

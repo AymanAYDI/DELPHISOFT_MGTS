@@ -1,39 +1,25 @@
-report 50029 "update periode"
+report 50029 "DEL update periode"
 {
     DefaultLayout = RDLC;
     RDLCLayout = './updateperiode.rdlc';
 
     dataset
     {
-        dataitem(DataItem1100113000; Table18)
+        dataitem(Customer; Customer)
         {
 
             trigger OnAfterGetRecord()
             begin
-                IF "Date de fin SSA" <> 0D THEN
-                    "Period of denunciation" := CALCDATE('<-25M>', "Date de fin SSA")
+                IF "DEL Date de fin SSA" <> 0D THEN
+                    "DEL Period of denunciation" := CALCDATE('<-25M>', "DEL Date de fin SSA")
                 ELSE
-                    "Period of denunciation" := 0D;
+                    "DEL Period of denunciation" := 0D;
 
                 MODIFY;
             end;
         }
     }
 
-    requestpage
-    {
 
-        layout
-        {
-        }
-
-        actions
-        {
-        }
-    }
-
-    labels
-    {
-    }
 }
 

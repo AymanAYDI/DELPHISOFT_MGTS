@@ -1,28 +1,26 @@
-report 50046 "Init Order API Record Tracking"
+report 50046 "DEL Init Order API Rec. Track."
 {
-    // Mgts10.00.01.00 | 11.01.2020 | Order API Management
-
     Caption = 'Init Order API Record Tracking';
     ProcessingOnly = true;
 
     dataset
     {
-        dataitem(DataItem100000000; Table50020)
+        dataitem("DEL Deal"; "DEL Deal")
         {
-            DataItemTableView = SORTING (ID)
-                                WHERE (Status = FILTER (In order|In progress));
+            DataItemTableView = SORTING(ID)
+                                WHERE(Status = FILTER("In order" | "In progress"));
             RequestFilterFields = ID;
 
             trigger OnAfterGetRecord()
             var
-                APIOrdersTrackRecordsMgt: Codeunit "50044";
+                APIOrdersTrackRecordsMgt: Codeunit "DEL API Orders Track Rec. Mgt.";
             begin
                 APIOrdersTrackRecordsMgt.UpdateOrderAPIRecordTracking(ID);
             end;
 
             trigger OnPostDataItem()
             begin
-                Win.CLOSE;
+                Win.CLOSE();
                 MESSAGE(FinshMsg);
             end;
 
@@ -33,21 +31,7 @@ report 50046 "Init Order API Record Tracking"
         }
     }
 
-    requestpage
-    {
 
-        layout
-        {
-        }
-
-        actions
-        {
-        }
-    }
-
-    labels
-    {
-    }
 
     var
         ProgressMsg: Label 'Initialization in progress ...';

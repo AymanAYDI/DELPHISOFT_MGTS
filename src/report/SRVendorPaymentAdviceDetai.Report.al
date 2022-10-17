@@ -1,6 +1,6 @@
 report 50035 "SR Vendor Payment Advice Detai"
 {
-    // MGTS10.00.06.00    | 07.01.2022 | Send Payment Advice : Add new function SkipMessage
+
     DefaultLayout = RDLC;
     RDLCLayout = './SRVendorPaymentAdviceDetai.rdlc';
 
@@ -8,7 +8,7 @@ report 50035 "SR Vendor Payment Advice Detai"
 
     dataset
     {
-        dataitem(Vendor; Table23)
+        dataitem(Vendor; Vendor)
         {
             PrintOnlyIfDetail = true;
             RequestFilterFields = "No.", "Vendor Posting Group", "Country/Region Code";
@@ -95,7 +95,7 @@ report 50035 "SR Vendor Payment Advice Detai"
             }
             dataitem(DataItem7024; Table81)
             {
-                DataItemTableView = SORTING (Account Type, Account No., Applies-to Doc. Type, Applies-to Doc. No.);
+                DataItemTableView = SORTING(Account Type, Account No., Applies-to Doc. Type, Applies-to Doc. No.);
                 column(Amount_GenJnlLine; Amount)
                 {
                 }
@@ -171,10 +171,10 @@ report 50035 "SR Vendor Payment Advice Detai"
                 column(LineNo_GenJnlLine; "Line No.")
                 {
                 }
-                dataitem(PmtVendEntryLoop; Table2000000026)
+                dataitem(PmtVendEntryLoop; Integer)
                 {
-                    DataItemTableView = SORTING (Number)
-                                        WHERE (Number = FILTER (1 ..));
+                    DataItemTableView = SORTING(Number)
+                                        WHERE(Number = FILTER(1 ..));
                     column(PostingDate_PartPmtVendorEntry; FORMAT(TempVendLedgEntry."Posting Date"))
                     {
                     }
@@ -216,10 +216,10 @@ report 50035 "SR Vendor Payment Advice Detai"
                             CurrReport.BREAK;
                     end;
                 }
-                dataitem(RelatedPmtVendEntryLoop; Table2000000026)
+                dataitem(RelatedPmtVendEntryLoop; Integer)
                 {
-                    DataItemTableView = SORTING (Number)
-                                        WHERE (Number = FILTER (1 ..));
+                    DataItemTableView = SORTING(Number)
+                                        WHERE(Number = FILTER(1 ..));
                     column(DocNo_PartPmtVendorEntry2; TempRelatedVendLedgEntry."Document No.")
                     {
                     }
@@ -264,41 +264,41 @@ report 50035 "SR Vendor Payment Advice Detai"
                             CurrReport.BREAK;
                     end;
                 }
-                dataitem(DataItem1000000000; Table25)
+                dataitem("Vendor Ledger Entry"; "Vendor Ledger Entry")
                 {
-                    DataItemLink = Vendor No.=FIELD(Account No.),
-                                   Currency Code=FIELD(Currency Code),
-                                   Applies-to ID=FIELD(Document No.);
-                    DataItemTableView = SORTING(Entry No.)
-                                        WHERE(Open=CONST(Yes));
-                    column(DocumentNo;"Document No.")
+                    DataItemLink = "Vendor No." = FIELD("Account No."),
+                                   "Currency Code" = FIELD("Currency Code"),
+                                   "Applies-to ID" = FIELD("Document No.");
+                    DataItemTableView = SORTING("Entry No.")
+                                        WHERE(Open = CONST(true));
+                    column(DocumentNo; "Document No.")
                     {
                     }
-                    column(RemainingAmount;-"Remaining Amount")
+                    column(RemainingAmount; -"Remaining Amount")
                     {
                     }
-                    column(DocNo_PartPmtVendorEntry3;"Document No.")
+                    column(DocNo_PartPmtVendorEntry3; "Document No.")
                     {
                     }
-                    column(CurrCode_PartPmtVendorEntry3;"Currency Code")
+                    column(CurrCode_PartPmtVendorEntry3; "Currency Code")
                     {
                     }
-                    column(ExternalDocNo_PartPmtVendorEntry3;"External Document No.")
+                    column(ExternalDocNo_PartPmtVendorEntry3; "External Document No.")
                     {
                     }
-                    column(PostingDate_PartPmtVendorEntry3;FORMAT("Posting Date"))
+                    column(PostingDate_PartPmtVendorEntry3; FORMAT("Posting Date"))
                     {
                     }
-                    column(DocType_PartPmtVendorEntry3;"Document Type")
+                    column(DocType_PartPmtVendorEntry3; "Document Type")
                     {
                     }
-                    column(EntryNo_PartPmtVendorEntry3;"Entry No.")
+                    column(EntryNo_PartPmtVendorEntry3; "Entry No.")
                     {
                     }
-                    column(ClosedbyEntryNo_PartPmtVendorEntry3;"Closed by Entry No.")
+                    column(ClosedbyEntryNo_PartPmtVendorEntry3; "Closed by Entry No.")
                     {
                     }
-                    column(Amount_PartPmtVendorEntry3;-Amount)
+                    column(Amount_PartPmtVendorEntry3; -Amount)
                     {
                     }
 
@@ -321,12 +321,12 @@ report 50035 "SR Vendor Payment Advice Detai"
                 begin
                     // ESR Zlg nicht avisieren
                     IF NOT ShowEsrPayments THEN BEGIN
-                      IF NOT VendBank.GET("Account No.","Recipient Bank Account") THEN  // Bankverbindung
+                        IF NOT VendBank.GET("Account No.", "Recipient Bank Account") THEN  // Bankverbindung
 
-                        ERROR(Text002,"Recipient Bank Account","Account No.");
+                        ERROR(Text002, "Recipient Bank Account", "Account No.");
 
-                      IF VendBank."Payment Form" IN [VendBank."Payment Form"::ESR,VendBank."Payment Form"::"ESR+"] THEN
-                        CurrReport.SKIP;
+                        IF VendBank."Payment Form" IN [VendBank."Payment Form"::ESR, VendBank."Payment Form"::"ESR+"] THEN
+                            CurrReport.SKIP;
                     END;
 
                     // Rechnungsposten für Rech. Betrag
@@ -336,38 +336,38 @@ report 50035 "SR Vendor Payment Advice Detai"
 
                     VendEntry.SETCURRENTKEY("Document No.");
                     IF "Applies-to Doc. No." <> '' THEN BEGIN
-                      VendEntry.SETRANGE("Document Type",VendEntry."Document Type"::Invoice);
-                      VendEntry.SETRANGE("Document No.","Applies-to Doc. No.");
-                      VendEntry.SETRANGE("Vendor No.","Account No.");
-                      IF NOT VendEntry.FIND('-') THEN
-                        VendEntry.INIT;
+                        VendEntry.SETRANGE("Document Type", VendEntry."Document Type"::Invoice);
+                        VendEntry.SETRANGE("Document No.", "Applies-to Doc. No.");
+                        VendEntry.SETRANGE("Vendor No.", "Account No.");
+                        IF NOT VendEntry.FIND('-') THEN
+                            VendEntry.INIT;
 
-                      VendEntry.CALCFIELDS(Amount,"Remaining Amount");
+                        VendEntry.CALCFIELDS(Amount, "Remaining Amount");
 
-                      IF (VendEntry."Pmt. Discount Date" >= "Posting Date") OR
-                         ((VendEntry."Pmt. Disc. Tolerance Date" >= "Posting Date") AND
-                          VendEntry."Accepted Pmt. Disc. Tolerance")
-                      THEN
-                        PmtDiscAmt := VendEntry."Remaining Pmt. Disc. Possible";
+                        IF (VendEntry."Pmt. Discount Date" >= "Posting Date") OR
+                           ((VendEntry."Pmt. Disc. Tolerance Date" >= "Posting Date") AND
+                            VendEntry."Accepted Pmt. Disc. Tolerance")
+                        THEN
+                            PmtDiscAmt := VendEntry."Remaining Pmt. Disc. Possible";
 
-                      PmtTolerance := VendEntry."Accepted Payment Tolerance";
-                      OpenRemAmtFC := -VendEntry."Remaining Amount";
+                        PmtTolerance := VendEntry."Accepted Payment Tolerance";
+                        OpenRemAmtFC := -VendEntry."Remaining Amount";
 
-                      // Open entry and remaining for multicurrency. Convert to pmt currency
-                      IF VendEntry."Currency Code" <> "Currency Code" THEN
-                        OpenRemAmtFC :=
-                          ExchRate.ExchangeAmtFCYToFCY(
-                            "Posting Date",VendEntry."Currency Code","Currency Code",-VendEntry."Remaining Amount");
+                        // Open entry and remaining for multicurrency. Convert to pmt currency
+                        IF VendEntry."Currency Code" <> "Currency Code" THEN
+                            OpenRemAmtFC :=
+                              ExchRate.ExchangeAmtFCYToFCY(
+                                "Posting Date", VendEntry."Currency Code", "Currency Code", -VendEntry."Remaining Amount");
 
-                      // Applied entry is not closed
-                      IF (OpenRemAmtFC - Amount + PmtDiscAmt + PmtTolerance) > 0 THEN
-                        PmtDiscAmt := 0;
-                      IF Amount > OpenRemAmtFC THEN
-                        PmtDiscAmt := 0;
+                        // Applied entry is not closed
+                        IF (OpenRemAmtFC - Amount + PmtDiscAmt + PmtTolerance) > 0 THEN
+                            PmtDiscAmt := 0;
+                        IF Amount > OpenRemAmtFC THEN
+                            PmtDiscAmt := 0;
                     END ELSE BEGIN
-                      VendEntry."Entry No." := 0;
-                      VendEntry."Document No." := '';
-                      VendEntry.CALCFIELDS(Amount,"Remaining Amount");
+                        VendEntry."Entry No." := 0;
+                        VendEntry."Document No." := '';
+                        VendEntry.CALCFIELDS(Amount, "Remaining Amount");
                     END;
                     BuildPmtVendLedgEntryBuffer(VendEntry."Entry No.");
 
@@ -377,13 +377,13 @@ report 50035 "SR Vendor Payment Advice Detai"
                     // Total pro Währung summieren
                     i := 1;
                     IF "Currency Code" = '' THEN
-                      "Currency Code" := GlSetup."LCY Code";
+                        "Currency Code" := GlSetup."LCY Code";
 
                     WHILE (iCurr[i] <> "Currency Code") AND (iCurr[i] <> '') DO
-                      i := i + 1;
+                        i := i + 1;
 
                     IF i = 6 THEN
-                      ERROR(Text003,i - 1);
+                        ERROR(Text003, i - 1);
 
                     iCurr[i] := "Currency Code";
                     iAmt[i] := iAmt[i] + Amount;
@@ -393,18 +393,18 @@ report 50035 "SR Vendor Payment Advice Detai"
                 trigger OnPostDataItem()
                 begin
                     IF Pos > 0 THEN
-                      NoOfVendors := NoOfVendors + 1;
+                        NoOfVendors := NoOfVendors + 1;
                 end;
 
                 trigger OnPreDataItem()
                 begin
                     // Nur Zeilen vom Typ Kreditor/Zahlungen vom ausgewählten Journal für den aktuellen Kreditor
-                    SETCURRENTKEY("Account Type","Account No.");
-                    SETRANGE("Document Type","Document Type"::Payment);
-                    SETRANGE("Account Type","Account Type"::Vendor);
-                    SETRANGE("Account No.",Vendor."No.");
-                    SETRANGE("Journal Template Name",JourBatchName);
-                    SETRANGE("Journal Batch Name",JourBatch);
+                    SETCURRENTKEY("Account Type", "Account No.");
+                    SETRANGE("Document Type", "Document Type"::Payment);
+                    SETRANGE("Account Type", "Account Type"::Vendor);
+                    SETRANGE("Account No.", Vendor."No.");
+                    SETRANGE("Journal Template Name", JourBatchName);
+                    SETRANGE("Journal Batch Name", JourBatch);
 
                     Pos := 0;
                     CLEAR(iCurr);
@@ -418,15 +418,15 @@ report 50035 "SR Vendor Payment Advice Detai"
                     TempGenJourLine.COPYFILTERS("Gen. Journal Line");
 
                     IF NOT ShowEsrPayments THEN
-                      SetEsrFilter(TempGenJourLine);
+                        SetEsrFilter(TempGenJourLine);
                     IF TempGenJourLine.COUNT < PrintFromNoOfVendorInvoices THEN
-                      CurrReport.BREAK;
+                        CurrReport.BREAK;
                 end;
             }
 
             trigger OnAfterGetRecord()
             begin
-                FormatAdr.Vendor(VendorAdr,Vendor);
+                FormatAdr.Vendor(VendorAdr, Vendor);
             end;
         }
     }
@@ -442,24 +442,24 @@ report 50035 "SR Vendor Payment Advice Detai"
                 group(Options)
                 {
                     Caption = 'Options';
-                    field(PrintFromNoOfVendorInvoices;PrintFromNoOfVendorInvoices)
+                    field(PrintFromNoOfVendorInvoices; PrintFromNoOfVendorInvoices)
                     {
-                        ApplicationArea = Basic,Suite;
+                        ApplicationArea = Basic, Suite;
                         Caption = 'Print from Payments/Vendor';
                     }
-                    field(ShowEsrPayments;ShowEsrPayments)
+                    field(ShowEsrPayments; ShowEsrPayments)
                     {
-                        ApplicationArea = Basic,Suite;
+                        ApplicationArea = Basic, Suite;
                         Caption = 'Advice ESR Payments';
                     }
-                    field(RespPerson;RespPerson)
+                    field(RespPerson; RespPerson)
                     {
-                        ApplicationArea = Basic,Suite;
+                        ApplicationArea = Basic, Suite;
                         Caption = 'Responsible Person';
                     }
-                    field(MsgTxt;MsgTxt)
+                    field(MsgTxt; MsgTxt)
                     {
-                        ApplicationArea = Basic,Suite;
+                        ApplicationArea = Basic, Suite;
                         Caption = 'Message';
                         MultiLine = true;
                     }
@@ -473,18 +473,18 @@ report 50035 "SR Vendor Payment Advice Detai"
 
         trigger OnOpenPage()
         var
-            User: Record "2000000120";
+            User: Record 2000000120;
         begin
             IF MsgTxt = '' THEN
-              MsgTxt := Text004;
+                MsgTxt := Text004;
 
             IF PrintFromNoOfVendorInvoices = 0 THEN
-              PrintFromNoOfVendorInvoices := 1;
+                PrintFromNoOfVendorInvoices := 1;
 
             IF (RespPerson = '') AND (USERID <> '') THEN BEGIN
-              User.SETRANGE("User Name",USERID);
-              IF User.FINDFIRST THEN
-                RespPerson := User."Full Name";
+                User.SETRANGE("User Name", USERID);
+                IF User.FINDFIRST THEN
+                    RespPerson := User."Full Name";
             END;
         end;
     }
@@ -497,20 +497,20 @@ report 50035 "SR Vendor Payment Advice Detai"
     begin
         //>>MGTS10.00.06.00
         IF NOT BooGSkipMessage THEN
-        //<<MGTS10.00.06.00
-        MESSAGE(
+            //<<MGTS10.00.06.00
+            MESSAGE(
           Text001,
-          NoOfVendors,NoOfPayments,"Gen. Journal Line".GETFILTER("Journal Batch Name"));
+          NoOfVendors, NoOfPayments, "Gen. Journal Line".GETFILTER("Journal Batch Name"));
     end;
 
     trigger OnPreReport()
     begin
         CompanyInformation.GET;
-        FormatAdr.Company(CompanyAdr,CompanyInformation);
+        FormatAdr.Company(CompanyAdr, CompanyInformation);
 
         GlSetup.GET;
         IF GlSetup."LCY Code" = '' THEN
-          GlSetup."LCY Code" := Text000;
+            GlSetup."LCY Code" := Text000;
     end;
 
     var
@@ -519,30 +519,30 @@ report 50035 "SR Vendor Payment Advice Detai"
         Text002: Label 'Bank %1 does not exist for vendor %2.';
         Text003: Label 'More than %1 currencies cannot be processed.';
         Text004: Label 'We have advices our bank to remit the following amount to your account in the next few days.';
-        CompanyInformation: Record "79";
-        GlSetup: Record "98";
-        VendEntry: Record "25";
-        TempVendLedgEntry: Record "25" temporary;
-        TempRelatedVendLedgEntry: Record "25" temporary;
-        VendBank: Record "288";
-        ExchRate: Record "330";
-        TempGenJourLine: Record "81";
-        FormatAdr: Codeunit "365";
+        CompanyInformation: Record 79;
+        GlSetup: Record 98;
+        VendEntry: Record 25;
+        TempVendLedgEntry: Record 25 temporary;
+        TempRelatedVendLedgEntry: Record 25 temporary;
+        VendBank: Record 288;
+        ExchRate: Record 330;
+        TempGenJourLine: Record 81;
+        FormatAdr: Codeunit 365;
         JourBatch: Code[20];
         JourBatchName: Code[20];
         ShowEsrPayments: Boolean;
         PrintFromNoOfVendorInvoices: Integer;
         RespPerson: Text[50];
         MsgTxt: Text[250];
-        CompanyAdr: array [8] of Text[50];
-        VendorAdr: array [8] of Text[50];
+        CompanyAdr: array[8] of Text[50];
+        VendorAdr: array[8] of Text[50];
         Pos: Integer;
         NoOfVendors: Integer;
         NoOfPayments: Integer;
         i: Integer;
-        iCurr: array [20] of Code[10];
-        iAmt: array [20] of Decimal;
-        iAmtLCY: array [20] of Decimal;
+        iCurr: array[20] of Code[10];
+        iAmt: array[20] of Decimal;
+        iAmtLCY: array[20] of Decimal;
         PmtDiscAmt: Decimal;
         PmtTolerance: Decimal;
         PaymentCaptionLbl: Label 'Payment';
@@ -559,27 +559,27 @@ report 50035 "SR Vendor Payment Advice Detai"
         YourssincerelyCaptionLbl: Label 'Yours sincerely';
         BooGSkipMessage: Boolean;
 
-    [Scope('Internal')]
-    procedure DefineJourBatch(_GnlJourLine: Record "81")
+
+    procedure DefineJourBatch(_GnlJourLine: Record 81)
     begin
         JourBatch := _GnlJourLine."Journal Batch Name";
         JourBatchName := _GnlJourLine."Journal Template Name";
     end;
 
-    [Scope('Internal')]
-    procedure SetEsrFilter(var TempGenJourLine: Record "81")
+
+    procedure SetEsrFilter(var TempGenJourLine: Record 81)
     var
-        VendBank: Record "288";
+        VendBank: Record 288;
     begin
         IF TempGenJourLine.FIND('-') THEN BEGIN
-          REPEAT
-            IF NOT VendBank.GET(TempGenJourLine."Account No.",TempGenJourLine."Recipient Bank Account") THEN
-              ERROR(Text002,TempGenJourLine."Recipient Bank Account",TempGenJourLine."Account No.");
-            IF NOT (VendBank."Payment Form" IN [VendBank."Payment Form"::ESR,VendBank."Payment Form"::"ESR+"]) THEN
-              TempGenJourLine.MARK(TRUE)
-            ELSE
-              TempGenJourLine.MARK(FALSE);
-          UNTIL TempGenJourLine.NEXT = 0;
+            REPEAT
+                IF NOT VendBank.GET(TempGenJourLine."Account No.", TempGenJourLine."Recipient Bank Account") THEN
+                    ERROR(Text002, TempGenJourLine."Recipient Bank Account", TempGenJourLine."Account No.");
+                IF NOT (VendBank."Payment Form" IN [VendBank."Payment Form"::ESR, VendBank."Payment Form"::"ESR+"]) THEN
+                    TempGenJourLine.MARK(TRUE)
+                ELSE
+                    TempGenJourLine.MARK(FALSE);
+            UNTIL TempGenJourLine.NEXT = 0;
         END;
         TempGenJourLine.MARKEDONLY(TRUE);
     end;
@@ -587,31 +587,31 @@ report 50035 "SR Vendor Payment Advice Detai"
     local procedure BuildPmtVendLedgEntryBuffer(EntryNo: Integer)
     begin
         IF EntryNo = 0 THEN
-          EXIT;
+            EXIT;
 
         TempVendLedgEntry.RESET;
         TempVendLedgEntry.DELETEALL;
         TempRelatedVendLedgEntry.RESET;
         TempRelatedVendLedgEntry.DELETEALL;
 
-        UpdateVendLedgEntryBufferRecursively(TempVendLedgEntry,TempRelatedVendLedgEntry,EntryNo);
+        UpdateVendLedgEntryBufferRecursively(TempVendLedgEntry, TempRelatedVendLedgEntry, EntryNo);
     end;
 
-    local procedure UpdateVendLedgEntryBufferRecursively(var VendLedgEntryBuffer: Record "25";var RelatedVendLedgEntryBuffer: Record "25";EntryNo: Integer)
+    local procedure UpdateVendLedgEntryBufferRecursively(var VendLedgEntryBuffer: Record "25"; var RelatedVendLedgEntryBuffer: Record "25"; EntryNo: Integer)
     var
-        VendLedgEntry: Record "25";
+        VendLedgEntry: Record 25;
     begin
-        VendLedgEntry.SETRANGE("Closed by Entry No.",EntryNo);
+        VendLedgEntry.SETRANGE("Closed by Entry No.", EntryNo);
         IF VendLedgEntry.FINDSET THEN
-          REPEAT
-            VendLedgEntryBuffer := VendLedgEntry;
-            IF VendLedgEntryBuffer.INSERT THEN;
-            UpdateVendLedgEntryBufferRecursively(
-              RelatedVendLedgEntryBuffer,RelatedVendLedgEntryBuffer,VendLedgEntry."Entry No.");
-          UNTIL VendLedgEntry.NEXT = 0;
+            REPEAT
+                VendLedgEntryBuffer := VendLedgEntry;
+                IF VendLedgEntryBuffer.INSERT THEN;
+                UpdateVendLedgEntryBufferRecursively(
+                  RelatedVendLedgEntryBuffer, RelatedVendLedgEntryBuffer, VendLedgEntry."Entry No.");
+            UNTIL VendLedgEntry.NEXT = 0;
     end;
 
-    [Scope('Internal')]
+
     procedure SkipMessage(_SkipMessage: Boolean)
     begin
         BooGSkipMessage := _SkipMessage;

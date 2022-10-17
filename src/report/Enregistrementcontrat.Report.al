@@ -1,11 +1,11 @@
-report 50028 "Enregistrement contrat"
+report 50028 "DEL Enregistrement contrat"
 {
     DefaultLayout = RDLC;
     RDLCLayout = './Enregistrementcontrat.rdlc';
 
     dataset
     {
-        dataitem(DataItem1000000000; Table18)
+        dataitem(Customer; Customer)
         {
             RequestFilterFields = "No.";
             column(CaptionTitre; CaptionTitre)
@@ -25,83 +25,83 @@ report 50028 "Enregistrement contrat"
             {
                 IncludeCaption = true;
             }
-            column(Partnershipagreement_Customer; Customer."Partnership agreement")
+            column(Partnershipagreement_Customer; Customer."DEL Partnership agreement")
             {
                 IncludeCaption = true;
             }
-            column(Serviceagreement_Customer; Customer."Service agreement")
+            column(Serviceagreement_Customer; Customer."DEL Service agreement")
             {
                 IncludeCaption = true;
             }
-            column("LibelléSSA_Customer"; Customer."Libellé SSA")
+            column("LibelléSSA_Customer"; Customer."DEL Libellé SSA")
             {
                 IncludeCaption = true;
             }
-            column("DatededébutSSA_Customer"; Customer."Date de début SSA")
+            column("DatededébutSSA_Customer"; Customer."DEL Date de début SSA")
             {
                 IncludeCaption = true;
             }
-            column(DatedefinSSA_Customer; Customer."Date de fin SSA")
+            column(DatedefinSSA_Customer; Customer."DEL Date de fin SSA")
             {
                 IncludeCaption = true;
             }
-            column(Level_Customer; Customer.Level)
+            column(Level_Customer; Customer."DEL Level")
             {
                 IncludeCaption = true;
             }
-            column(StatutCE_Customer; Customer."Statut CE")
+            column(StatutCE_Customer; Customer."DEL Statut CE")
             {
                 IncludeCaption = true;
             }
-            column(DateSignatureCE_Customer; Customer."Date Signature CE")
+            column(DateSignatureCE_Customer; Customer."DEL Date Signature CE")
             {
                 IncludeCaption = true;
             }
-            column(NationalMark_Customer; Customer."National Mark")
+            column(NationalMark_Customer; Customer."DEL National Mark")
             {
                 IncludeCaption = true;
             }
-            column(MDD_Customer; Customer.MDD)
+            column(MDD_Customer; Customer."DEL MDD")
             {
                 IncludeCaption = true;
             }
-            column(NORAUTO_Customer; Customer.NORAUTO)
+            column(NORAUTO_Customer; Customer."DEL NORAUTO")
             {
                 IncludeCaption = true;
             }
-            column(MIDAS_Customer; Customer.MIDAS)
+            column(MIDAS_Customer; Customer."DEL MIDAS")
             {
                 IncludeCaption = true;
             }
-            column(ATU_Customer; Customer.ATU)
+            column(ATU_Customer; Customer."DEL ATU")
             {
                 IncludeCaption = true;
             }
-            column(ATYSE_Customer; Customer.ATYSE)
+            column(ATYSE_Customer; Customer."DEL ATYSE")
             {
                 IncludeCaption = true;
             }
-            column(CARTERCASH_Customer; Customer."CARTER CASH")
+            column(CARTERCASH_Customer; Customer."DEL CARTER CASH")
             {
                 IncludeCaption = true;
             }
-            column(SYNCHRO_Customer; Customer.SYNCHRO)
+            column(SYNCHRO_Customer; Customer."DEL SYNCHRO")
             {
                 IncludeCaption = true;
             }
-            column(ParentCompany_Customer; Customer."Parent Company")
+            column(ParentCompany_Customer; Customer."DEL Parent Company")
             {
                 IncludeCaption = true;
             }
-            column("DatededébutPA_Customer"; Customer."Date de début PA")
+            column("DatededébutPA_Customer"; Customer."DEL Date de début PA")
             {
                 IncludeCaption = true;
             }
-            column(DatedefinPA_Customer; Customer."Date de fin PA")
+            column(DatedefinPA_Customer; Customer."DEL Date de fin PA")
             {
                 IncludeCaption = true;
             }
-            column(CommentPA_Customer; Customer."Comment PA")
+            column(CommentPA_Customer; Customer."DEL Comment PA")
             {
                 IncludeCaption = true;
             }
@@ -120,15 +120,15 @@ report 50028 "Enregistrement contrat"
             column(CaptionEnseigne; CaptionEnseigne)
             {
             }
-            column("LibelléPA_Customer"; Customer."Libellé PA")
+            column("LibelléPA_Customer"; Customer."DEL Libellé PA")
             {
                 IncludeCaption = true;
             }
-            column(Enfacturation_Customer; Customer."En facturation")
+            column(Enfacturation_Customer; Customer."DEL En facturation")
             {
                 IncludeCaption = true;
             }
-            column(CommentSSA_Customer; Customer."Comment SSA")
+            column(CommentSSA_Customer; Customer."DEL Comment SSA")
             {
                 IncludeCaption = true;
             }
@@ -159,14 +159,14 @@ report 50028 "Enregistrement contrat"
     }
 
     var
+        Vendeur_Rec: Record "Salesperson/Purchaser";
+        CaptionCE: Label 'Charte ethique';
+        CaptionEnseigne: Label 'Signboard';
         CaptionGeneral: Label 'General';
+        CaptionMarque: Label 'Mark';
         CaptionPA: Label 'Partnership agreement follow up';
         CaptionSSA: Label 'Service agreement follow up';
-        CaptionMarque: Label 'Mark';
-        CaptionEnseigne: Label 'Signboard';
-        Vendeur_Rec: Record "13";
-        VendeurName: Text;
-        CaptionCE: Label 'Charte ethique';
         CaptionTitre: Label 'ENREGISTREMENT CONTRAT DE PARTENARIAT/SERVICES';
+        VendeurName: Text;
 }
 

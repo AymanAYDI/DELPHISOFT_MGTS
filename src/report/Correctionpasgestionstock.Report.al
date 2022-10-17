@@ -4,9 +4,9 @@ report 50031 "Correction pas gestion stock"
 
     dataset
     {
-        dataitem(DataItem1100113000; Table27)
+        dataitem(Item; Item)
         {
-            DataItemTableView = SORTING (No.)
+            DataItemTableView = SORTING("No.")
                                 ORDER(Ascending);
             RequestFilterFields = "No.";
             column(CodeArticle; Item."No.")
@@ -23,25 +23,11 @@ report 50031 "Correction pas gestion stock"
             begin
                 Item."Replenishment System" := 0;
                 Item."No Stockkeeping" := TRUE;
-                Item.MODIFY;
+                Item.MODIFY();
             end;
         }
     }
 
-    requestpage
-    {
 
-        layout
-        {
-        }
-
-        actions
-        {
-        }
-    }
-
-    labels
-    {
-    }
 }
 
