@@ -650,7 +650,106 @@ codeunit 50101 "DEL MGTS_FctMgt"
 
     end;
 
+    /////
+    /// COD 333
 
+    PROCEDURE SetEDIParam(pHideDialog: Boolean; pFromEDI: Boolean);
+
+    BEGIN
+        HideDialog := pHideDialog;
+        FromEDI := pFromEDI;
+    END;
+    /////
+    procedure OnAfterInsertPurchOrderHeaderFct(var RequisitionLine: Record "Requisition Line"; var PurchaseOrderHeader: Record "Purchase Header"; CommitIsSuppressed: Boolean; SpecialOrder: Boolean)
+    var
+        SalesHeader: Record "Sales Header";
+        PurchSetup: Record 312;
+    begin
+        IF SalesHeader.GET(SalesHeader."Document Type"::Order, RequisitionLine."Sales Order No.") THEN
+            PurchaseOrderHeader."DEL Requested Delivery Date" := SalesHeader."Requested Delivery Date";
+
+        IF PurchaseOrderHeader."DEL Requested Delivery Date" <> 0D THEN BEGIN
+            IF NOT PurchSetup.GET THEN
+                PurchSetup.INIT;
+
+            CASE PurchaseOrderHeader."DEL Ship Per" OF
+                PurchaseOrderHeader."DEL Ship Per"::"Air Flight":
+                    BEGIN
+                        PurchaseOrderHeader."Expected Receipt Date" := CALCDATE('-' + DELCHR(FORMAT(PurchSetup."DEL Sales Ship Time By Air Flight"), '=', '+'),
+                          PurchaseOrderHeader."DEL Requested Delivery Date");
+                        PurchaseOrderHeader."Requested Receipt Date" := CALCDATE('-' + DELCHR(FORMAT(PurchSetup."DEL Sales Ship Time By Air Flight"), '=', '+'),
+                          PurchaseOrderHeader."DEL Requested Delivery Date");
+                    END;
+
+                PurchaseOrderHeader."DEL Ship Per"::"Sea Vessel":
+                    BEGIN
+                        PurchaseOrderHeader."Expected Receipt Date" := CALCDATE('-' + DELCHR(FORMAT(PurchSetup."DEL Sales Ship Time By Sea Vessel"), '=', '+'),
+                          PurchaseOrderHeader."DEL Requested Delivery Date");
+                        PurchaseOrderHeader."Requested Receipt Date" := CALCDATE('-' + DELCHR(FORMAT(PurchSetup."DEL Sales Ship Time By Sea Vessel"), '=', '+'),
+                          PurchaseOrderHeader."DEL Requested Delivery Date");
+                    END;
+
+                PurchaseOrderHeader."DEL Ship Per"::"Sea/Air":
+                    BEGIN
+                        PurchaseOrderHeader."Expected Receipt Date" := CALCDATE('-' + DELCHR(FORMAT(PurchSetup."DEL Sales Ship Time By Sea/Air"), '=', '+'),
+                          PurchaseOrderHeader."DEL Requested Delivery Date");
+                        PurchaseOrderHeader."Requested Receipt Date" := CALCDATE('-' + DELCHR(FORMAT(PurchSetup."DEL Sales Ship Time By Sea/Air"), '=', '+'),
+                          PurchaseOrderHeader."DEL Requested Delivery Date");
+                    END;
+
+                PurchaseOrderHeader."DEL Ship Per"::Train:
+                    BEGIN
+                        PurchaseOrderHeader."Expected Receipt Date" := CALCDATE('-' + DELCHR(FORMAT(PurchSetup."DEL Sales Ship Time By Train"), '=', '+'),
+                          PurchaseOrderHeader."DEL Requested Delivery Date");
+                        PurchaseOrderHeader."Requested Receipt Date" := CALCDATE('-' + DELCHR(FORMAT(PurchSetup."DEL Sales Ship Time By Train"), '=', '+'),
+                          PurchaseOrderHeader."DEL Requested Delivery Date");
+                    END;
+
+                PurchaseOrderHeader."DEL Ship Per"::Truck:
+                    BEGIN
+                        PurchaseOrderHeader."Expected Receipt Date" := CALCDATE('-' + DELCHR(FORMAT(PurchSetup."DEL Sales Ship Time By Truck"), '=', '+'),
+                          PurchaseOrderHeader."DEL Requested Delivery Date");
+                        PurchaseOrderHeader."Requested Receipt Date" := CALCDATE('-' + DELCHR(FORMAT(PurchSetup."DEL Sales Ship Time By Truck"), '=', '+'),
+                          PurchaseOrderHeader."DEL Requested Delivery Date");
+                    END;
+            END;
+
+
+        END;
+
+
+        IF SalesHeader.GET(SalesHeader."Document Type"::Order, RequisitionLine."Sales Order No.") THEN BEGIN
+            PurchaseOrderHeader."Your Reference" := FORMAT(SalesHeader."DEL Event Code") + '-' + SalesHeader."External Document No.";
+
+            PurchaseOrderHeader."Code événement" := SalesHeader."DEL Event Code";
+
+            PurchaseOrderHeader."Port d'arrivée" := SalesHeader."Location Code";
+
+        END;
+
+        SalesHeader.RESET;
+        SalesHeader.SETRANGE("No.", RequisitionLine."Sales Order No.");
+        IF SalesHeader.FINDFIRST THEN BEGIN
+            PurchaseOrderHeader."DEL Type Order EDI" := SalesHeader."DEL Type Order EDI";
+            PurchaseOrderHeader."DEL GLN" := SalesHeader."DEL GLN";
+            IF SpecialOrder THEN BEGIN
+                SalesHeader."DEL Has Spec. Purch. Order" := TRUE;
+
+                IF FromEDI THEN BEGIN
+                    SalesHeader."DEL Status Purch. Order Create" := SalesHeader."DEL Status Purch. Order Create"::"Create Deal";
+                    SalesHeader."DEL Purchase Order Create Date" := CREATEDATETIME(TODAY, TIME);
+                    SalesHeader."DEL To Create Purchase Order" := FALSE;
+                END;
+                SalesHeader.MODIFY;
+            END;
+
+        END;
+
+
+        PurchaseOrderHeader.VALIDATE("Shortcut Dimension 1 Code", PurchaseOrderHeader."No.");  //TODO :A verifier 
+
+
+    end;
 
     // COD 7000
     procedure CopySalesPriceToSalesPrice(var FromSalesPrice: Record "Sales Price"; var ToSalesPrice: Record "Sales Price")
@@ -714,9 +813,15 @@ codeunit 50101 "DEL MGTS_FctMgt"
     begin
         WITH NTO_Contact DO
             ForAdr.FormatAddr(AddrArray, Name, "Name 2", '', Address, "Address 2", City, "Post Code", County, "Country/Region Code");
+
     end;
 
 
+
+
+    var
+        HideDialog: Boolean;
+        FromEDI: Boolean;
 
 
     /////COD91
@@ -1020,6 +1125,7 @@ codeunit 50101 "DEL MGTS_FctMgt"
         DocMatrixManagement.TestShipmentSelectionBeforeUptdateRequest(SalesHeader, PostDealShipmentSelection, ShptUpdateRequestID, ShipmentSelected);
         DealCU.FNC_Reinit_Deal(PostDealShipmentSelection.Deal_ID, FALSE, TRUE);
     END;
+
 
 }
 
