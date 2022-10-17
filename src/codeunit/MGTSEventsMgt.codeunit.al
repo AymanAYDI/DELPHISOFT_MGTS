@@ -552,10 +552,7 @@ codeunit 50100 "DEL MGTS_EventsMgt"
     end;
 
 
-<<<<<<< HEAD
-=======
 
->>>>>>> 5b64a87eaf50b62b5c3171291a2618176968701d
     ////COD 232 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post+Print", 'OnBeforePostJournalBatch', '', false, false)]
     local procedure COD232_OnBeforePostJournalBatch_GenJnlPostPrint(var GenJournalLine: Record "Gen. Journal Line"; var HideDialog: Boolean)
@@ -1001,7 +998,7 @@ codeunit 50100 "DEL MGTS_EventsMgt"
                     if not ConfirmManagement.GetResponseOrDefault(
                          StrSubstNo(PostConfirmQst, Format("Document Type")), true)
                     then
-                        exit; // when false 
+                        exit;// when false 
             end;
             IF PurchaseHeader."Document Type" = PurchaseHeader."Document Type"::Order THEN BEGIN
                 ACOConnection_Re_Loc.RESET();
@@ -1021,7 +1018,7 @@ codeunit 50100 "DEL MGTS_EventsMgt"
         PostPurchCU: Codeunit "Purch.-Post";
 
     begin
-        //TODO: var global IF SpecOrderPost THEN BEGIN
+        //TODO IF SpecOrderPost THEN BEGIN
         //     CLEAR(PostPurchCU);
         //     MGTSFactMgt.SetSpecOrderPosting(TRUE);
         //     PostPurchCU.RUN(PurchaseHeader);
@@ -1100,11 +1097,7 @@ codeunit 50100 "DEL MGTS_EventsMgt"
         end;
     end;
 
-<<<<<<< HEAD
 
-=======
-    
->>>>>>> 5b64a87eaf50b62b5c3171291a2618176968701d
     //TODO: les variables "tempSpecialSHBuffer" et "SpecOrderPost"sont globales.-----------------
     //TODO [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post + Print", 'OnBeforeRunPurchPost', '', false, false)]
 
@@ -1139,29 +1132,15 @@ codeunit 50100 "DEL MGTS_EventsMgt"
         MGTSgetset: Codeunit "DEL MGTS Set/Get Functions";
     begin
 
-        // TODO : IF SpecOrderPosting THEN BEGIN
+        //TODO IF SpecOrderPosting THEN BEGIN
         //     CLEARALL;
         //     SpecOrderPosting := TRUE;
         // END ELSE
         //     CLEARALL;
 
     end;
-    ////
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post", 'OnBeforePostCommitPurchaseDoc', '', false, false)]
-
-    local procedure COD90_OnBeforePostCommitPurchaseDoc(var PurchaseHeader: Record "Purchase Header"; var GenJnlPostLine: Codeunit "Gen. Jnl.-Post Line"; PreviewMode: Boolean; ModifyHeader: Boolean; var CommitIsSupressed: Boolean; var TempPurchLineGlobal: Record "Purchase Line" temporary)
-    var
-    //TODO IF SpecOrderPosting THEN
-    //   SpecialOrder := UpdateAssosSpecialOrderPostingNos(PurchHeader)
-    // ELSE
-    //   SpecialOrder := FALSE;
-
-
-    begin
-    end;
-
-
-
+    ///////aprés   Code;
+    // Rec := SalesHeader;
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"GLN Calculator", 'OnBeforeIsValidCheckDigit', '', false, false)]
     procedure COD1607_OnBeforeIsValidCheckDigit(GLNValue: Code[20]; ExpectedSize: Integer; var IsValid: Boolean; var IsHandled: Boolean)
     var

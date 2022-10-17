@@ -1,20 +1,11 @@
-report 50003 "Update Request Manager"
+report 50003 "DEL Update Request Manager"
 {
-    // +-------------------------------------------------------------------------------+
-    // | Logico SA - Logiciels & Conseils                                              |
-    // | Stand: 06.04.09                                                               |
-    // |                                                                               |
-    // +-------------------------------------------------------------------------------+
-    // 
-    // ID                  Date           Description
-    // ---------------------------------------------------------------------------------
-    // T-00759            13.01.16        Create Object
 
     ProcessingOnly = true;
 
     dataset
     {
-        dataitem(DataItem1100113001; Table50026)
+        dataitem("DEL ACO Connection"; "DEL ACO Connection")
         {
             RequestFilterFields = Deal_ID, "Vendor No.";
 
@@ -22,32 +13,30 @@ report 50003 "Update Request Manager"
             begin
                 IF UpdatePlanned_Bo_Par THEN BEGIN
                     UpdateRequest.SetValeur(UpdatePlanned_Bo_Par);
-                    IF NOT UpdateRequest.RUN("ACO Connection") THEN BEGIN
+                    IF NOT UpdateRequest.RUN("DEL ACO Connection") THEN BEGIN
                         nbreErreur := nbreErreur + 1;
                         IF DealErreur <> '' THEN
-                            DealErreur := DealErreur + ', ' + "ACO Connection".Deal_ID
+                            DealErreur := DealErreur + ', ' + "DEL ACO Connection".Deal_ID
                         ELSE
-                            DealErreur := "ACO Connection".Deal_ID
+                            DealErreur := "DEL ACO Connection".Deal_ID
                     END;
                 END
                 ELSE BEGIN
                     UpdateRequest.SetValeur(UpdatePlanned_Bo_Par);
-                    IF NOT UpdateRequest.RUN("ACO Connection") THEN BEGIN
+                    IF NOT UpdateRequest.RUN("DEL ACO Connection") THEN BEGIN
                         nbreErreur := nbreErreur + 1;
                         IF DealErreur <> '' THEN
-                            DealErreur := DealErreur + ', ' + "ACO Connection".Deal_ID
+                            DealErreur := DealErreur + ', ' + "DEL ACO Connection".Deal_ID
                         ELSE
-                            DealErreur := "ACO Connection".Deal_ID
+                            DealErreur := "DEL ACO Connection".Deal_ID
                     END;
                 END;
                 i := i + 1;
-                //mise à jour de la barre de progression
-                UpdateRequestManager_CU.FNC_ProgressBar_Update(1);
+                //TODO UpdateRequestManager_CU.FNC_ProgressBar_Update(1);
             end;
 
             trigger OnPostDataItem()
             begin
-                //ferme la barre de progression
                 UpdateRequestManager_CU.FNC_ProgressBar_Close(1);
                 IF i <> 0 THEN
                     MESSAGE('Liste traitée !');
@@ -71,7 +60,7 @@ report 50003 "Update Request Manager"
         {
             area(content)
             {
-                group(Option)
+                group("Option")
                 {
                     field(UpdatePlanned_Bo_Par; UpdatePlanned_Bo_Par)
                     {
@@ -91,11 +80,11 @@ report 50003 "Update Request Manager"
     }
 
     var
-        UpdateRequestManager_CU: Codeunit "50032";
-        UpdateRequest_Re: Record "50039";
+        UpdateRequestManager_CU: Codeunit "DEL Update Request Manager";
+        UpdateRequest_Re: Record "DEL Update Request Manager";
         UpdatePlanned_Bo_Par: Boolean;
         i: Integer;
-        UpdateRequest: Codeunit "50008";
+        UpdateRequest: Codeunit "DEL Update Request";
         nbreErreur: Integer;
         DealErreur: Text[1024];
         TextErreur: Label 'Nombre d''erreur: %1. Liste des affaires: %2.';

@@ -1,13 +1,12 @@
-pageextension 50011 pageextension50011 extends "Posted Sales Shipments"
+pageextension 50011 "DEL PostedSalesShipments" extends "Posted Sales Shipments" //142
 {
 
-    //Unsupported feature: Property Modification (SourceTableView) on ""Posted Sales Shipments"(Page 142)".
 
     layout
     {
-        addafter("Control 2")
+        addafter("No.") //2
         {
-            field("Order No."; "Order No.")
+            field("DEL Order No."; REC."Order No.")
             {
             }
         }
@@ -15,14 +14,9 @@ pageextension 50011 pageextension50011 extends "Posted Sales Shipments"
     actions
     {
 
-        //Unsupported feature: Property Modification (RunPageLink) on "Action 33".
-
-
-        //Unsupported feature: Property Modification (RunPageLink) on "CertificateOfSupplyDetails(Action 3)".
-
-        addafter("Action 21")
+        addafter("&Print") //21 
         {
-            action("Print XML")
+            action("DEL Print XML")
             {
                 ApplicationArea = Basic, Suite;
                 Caption = 'Print XML';
@@ -33,12 +27,10 @@ pageextension 50011 pageextension50011 extends "Posted Sales Shipments"
 
                 trigger OnAction()
                 var
-                    SalesShptHeader: Record "110";
+                    SalesShptHeader: Record "Sales Shipment Header";
                 begin
-                    CLEAR(ExportBL2);
+                    //TODOCLEAR(ExportBL2);
                     CurrPage.SETSELECTIONFILTER(SalesShptHeader);
-                    //SalesShptHeader.PrintRecords(TRUE);
-                    //DESADV_YYYYMMDDJJHHMMSS.
                     IF DATE2DMY(TODAY, 2) < 10 THEN
                         MM := '0' + FORMAT(DATE2DMY(TODAY, 2))
                     ELSE
@@ -49,18 +41,16 @@ pageextension 50011 pageextension50011 extends "Posted Sales Shipments"
                         DD := FORMAT(DATE2DMY(TODAY, 1));
 
                     NMfichier := 'DESADV_' + FORMAT(DATE2DMY(TODAY, 3)) + MM + DD + DELCHR(FORMAT(TIME), '=', ':') + '.xml';
-                    //MESSAGE(NMfichier);
-                    ExportBL2.FILENAME(NMfichier);
-
-                    ExportBL2.SETTABLEVIEW(SalesShptHeader);
-                    ExportBL2.RUN;
+                    //TODO ExportBL2.FILENAME(NMfichier);
+                    // ExportBL2.SETTABLEVIEW(SalesShptHeader);
+                    // ExportBL2.RUN;
                 end;
             }
         }
     }
 
     var
-        ExportBL2: XMLport "50014";
+        //TODO ExportBL2: XMLport 50014;
         NMfichier: Text;
         MM: Text;
         DD: Text;

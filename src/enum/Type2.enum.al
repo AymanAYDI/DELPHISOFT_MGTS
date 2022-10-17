@@ -1,6 +1,6 @@
-enum 50039 type
+enum 50103 "DEL type2"
 {
-    Extensible = false;
+    Extensible = true;
 
     value(0; Customer)
     {

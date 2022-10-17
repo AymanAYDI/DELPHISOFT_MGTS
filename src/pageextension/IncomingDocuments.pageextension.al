@@ -1,26 +1,26 @@
-pageextension 50017 pageextension50017 extends "Incoming Documents"
+pageextension 50017 "DEL IncomingDocuments" extends "Incoming Documents" //190
 {
     actions
     {
-        modify(CreateDocument)
+        //TODO modify(CreateDocument)
+        // {
+        //     Visible = NOT "Swiss QRBill";
+        // }
+        // modify(CreateGenJnlLine)
+        // {
+        //     Visible = NOT "Swiss QRBill";
+        // }
+        // modify(CreateManually)
+        // {
+        //     Visible = NOT "Swiss QRBill";
+        // }
+        addafter("Set View") //73 
         {
-            Visible = NOT "Swiss QRBill";
-        }
-        modify(CreateGenJnlLine)
-        {
-            Visible = NOT "Swiss QRBill";
-        }
-        modify(CreateManually)
-        {
-            Visible = NOT "Swiss QRBill";
-        }
-        addafter("Action 73")
-        {
-            group("Swiss QR-Bill")
+            group("DEL Swiss QR-Bill")
             {
                 Caption = 'Create From QR-Bill';
                 ToolTip = 'QR-Bill processing.';
-                action("Swiss QR-Bill Scan")
+                action("DEL Swiss QR-Bill Scan")
                 {
                     ApplicationArea = Basic, Suite;
                     Caption = 'Scan QR-Bill';
@@ -29,10 +29,10 @@ pageextension 50017 pageextension50017 extends "Incoming Documents"
 
                     trigger OnAction()
                     begin
-                        SwissQRBillIncomingDoc.CreateNewIncomingDocFromQRBill(FALSE);
+                        //TODO SwissQRBillIncomingDoc.CreateNewIncomingDocFromQRBill(FALSE);
                     end;
                 }
-                action("Swiss QR-Bill Import")
+                action("DEL Swiss QR-Bill Import")
                 {
                     ApplicationArea = Basic, Suite;
                     Caption = 'Import Scanned QR-Bill File';
@@ -41,10 +41,10 @@ pageextension 50017 pageextension50017 extends "Incoming Documents"
 
                     trigger OnAction()
                     begin
-                        SwissQRBillIncomingDoc.CreateNewIncomingDocFromQRBill(TRUE);
+                        //TODO SwissQRBillIncomingDoc.CreateNewIncomingDocFromQRBill(TRUE);
                     end;
                 }
-                action("Swiss QR-Bill Create Journal")
+                action("DEL Swiss QR-Bill Create Journal")
                 {
                     ApplicationArea = Basic, Suite;
                     Caption = 'Create Journal Line';
@@ -53,14 +53,14 @@ pageextension 50017 pageextension50017 extends "Incoming Documents"
                     PromotedCategory = Process;
                     PromotedOnly = true;
                     ToolTip = 'Creates a new journal line from the incoming QR-bill document.';
-                    Visible = "Swiss QRBill";
+                    //TODOVisible = "Swiss QRBill";
 
                     trigger OnAction()
                     begin
-                        SwissQRBillIncomingDoc.CreateJournalAction(Rec);
+                        //TODO  SwissQRBillIncomingDoc.CreateJournalAction(Rec);
                     end;
                 }
-                action("Swiss QR-Bill Create Purch Inv")
+                action("DEL Swiss QR-Bill Create Purch Inv")
                 {
                     ApplicationArea = Basic, Suite;
                     Caption = 'Create Purchase Invoice';
@@ -69,19 +69,17 @@ pageextension 50017 pageextension50017 extends "Incoming Documents"
                     PromotedCategory = Process;
                     PromotedOnly = true;
                     ToolTip = 'Creates a new purchase invoice from the incoming QR-bill document.';
-                    Visible = "Swiss QRBill";
+                    //TODO/ REMOVED Visible = "Swiss QRBill";
 
                     trigger OnAction()
                     begin
-                        SwissQRBillIncomingDoc.CreatePurchaseInvoiceAction(Rec);
+                        //TODO SwissQRBillIncomingDoc.CreatePurchaseInvoiceAction(Rec);
                     end;
                 }
             }
         }
     }
 
-
-    //Unsupported feature: Property Modification (ExternalDataType) on "CreateFromCamera(Action 56).OnAction.CameraOptions(Variable 1000)".
 
     //var
     //>>>> ORIGINAL VALUE:
@@ -103,6 +101,6 @@ pageextension 50017 pageextension50017 extends "Incoming Documents"
     //Variable type has not been exported.
 
     var
-        SwissQRBillIncomingDoc: Codeunit "11516";
+    //TODO: removed SwissQRBillIncomingDoc: Codeunit 11516;
 }
 

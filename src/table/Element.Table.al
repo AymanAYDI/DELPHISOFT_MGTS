@@ -1,7 +1,7 @@
 table 50021 "DEL Element"
 {
     Caption = 'DEL Element';
-    LookupPageID = 50021;
+    LookupPageID = "DEL Element";
 
     fields
     {

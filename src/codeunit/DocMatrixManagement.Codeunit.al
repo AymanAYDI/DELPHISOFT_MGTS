@@ -14,7 +14,9 @@ codeunit 50015 "DEL DocMatrix Management"
         Err002: Label 'The Contact %1 in the Sales Order %2 has no Email Address!';
 
 
-    procedure ShowDocMatrixSelection(pNo: Code[20]; pProcessType: Option Manual,Automatic; pUsage: Integer; var precDocMatrixSelection: Record "DEL DocMatrix Selection"; pPrintOnly: Boolean): Boolean
+    procedure ShowDocMatrixSelection(pNo: Code[20]; pProcessType: Enum "DEL Process Type";
+     pUsage: Integer; var precDocMatrixSelection: Record "DEL DocMatrix Selection";
+     pPrintOnly: Boolean): Boolean
     var
         DocumentMatrix: Record "DEL Document Matrix";
         lpgDocMatrixSelection: Page "DEL DocMatrix Selection Card";
@@ -38,7 +40,9 @@ codeunit 50015 "DEL DocMatrix Management"
         END;
     end;
 
-    procedure ProcessDocumentMatrix(pUsage: Integer; pProcessType: Option Manual,Automatic; pRecordVariant: Variant; pFieldNo: Integer; pFieldDocNo: Integer; precDocMatrixSelection: Record "DEL DocMatrix Selection"; pFieldPurchCode: Integer)
+    procedure ProcessDocumentMatrix(pUsage: Integer; pProcessType: Enum "DEL Process Type";
+    pRecordVariant: Variant; pFieldNo: Integer; pFieldDocNo: Integer;
+     precDocMatrixSelection: Record "DEL DocMatrix Selection"; pFieldPurchCode: Integer)
     var
         DummyReportSelections: Record "Report Selections";
         lAction: Option Print,Save,Mail,FTP1,FTP2;

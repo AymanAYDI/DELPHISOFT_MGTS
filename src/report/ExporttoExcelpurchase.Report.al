@@ -1,12 +1,5 @@
-report 50012 "Export to Excel purchase"
+report 50012 "DEL Export to Excel purchase"
 {
-    // Logico SA - Logiciels & Conseils
-    // Status : 11.03.2009
-    // Customer / Project NGTS
-    // 
-    // Version    Requirement        ID       Date           Description
-    // -----------------------------------------------------------------
-    // NGTS                        GRC      11.03.2009      Create object
 
     ProcessingOnly = true;
     ShowPrintStatus = false;
@@ -14,25 +7,26 @@ report 50012 "Export to Excel purchase"
 
     dataset
     {
-        dataitem(DataItem3883; Table50038)
+        dataitem("DEL Purchase Price Worksheet"; "DEL Purchase Price Worksheet")
         {
-            DataItemTableView = SORTING (Item No., Vendor No., Starting Date, Currency Code, Variant Code, Unit of Measure Code, Minimum Quantity, Qty. optimale);
+            DataItemTableView = SORTING("Item No.", "Vendor No.", "Starting Date", "Currency Code",
+            "Variant Code", "Unit of Measure Code", "Minimum Quantity", "Qty. optimale");
 
             trigger OnAfterGetRecord()
             begin
                 Row += 1;
 
-                EnterCell(Row, 1, FORMAT("Purchase Price Worksheet"."Starting Date"), FALSE, FALSE, FALSE);
-                EnterCell(Row, 2, FORMAT("Purchase Price Worksheet"."Ending Date"), FALSE, FALSE, FALSE);
-                EnterCell(Row, 3, "Purchase Price Worksheet"."Vendor No.", FALSE, FALSE, FALSE);
-                EnterCell(Row, 4, "Purchase Price Worksheet"."Currency Code", FALSE, FALSE, FALSE);
-                EnterCell(Row, 5, "Purchase Price Worksheet"."Item No.", FALSE, FALSE, FALSE);
-                EnterCell(Row, 6, "Purchase Price Worksheet"."Variant Code", FALSE, FALSE, FALSE);
-                EnterCell(Row, 7, "Purchase Price Worksheet"."Unit of Measure Code", FALSE, FALSE, FALSE);
-                EnterCell(Row, 8, FORMAT("Purchase Price Worksheet"."Minimum Quantity"), FALSE, FALSE, FALSE);
-                EnterCell(Row, 9, FORMAT("Purchase Price Worksheet"."Qty. optimale"), FALSE, FALSE, FALSE);
-                EnterCell(Row, 10, FORMAT("Purchase Price Worksheet"."Direct Unit Cost"), FALSE, FALSE, FALSE);
-                EnterCell(Row, 11, FORMAT("Purchase Price Worksheet"."New Unit Price"), FALSE, FALSE, FALSE);
+                EnterCell(Row, 1, FORMAT("DEL Purchase Price Worksheet"."Starting Date"), FALSE, FALSE, FALSE);
+                EnterCell(Row, 2, FORMAT("DEL Purchase Price Worksheet"."Ending Date"), FALSE, FALSE, FALSE);
+                EnterCell(Row, 3, "DEL Purchase Price Worksheet"."Vendor No.", FALSE, FALSE, FALSE);
+                EnterCell(Row, 4, "DEL Purchase Price Worksheet"."Currency Code", FALSE, FALSE, FALSE);
+                EnterCell(Row, 5, "DEL Purchase Price Worksheet"."Item No.", FALSE, FALSE, FALSE);
+                EnterCell(Row, 6, "DEL Purchase Price Worksheet"."Variant Code", FALSE, FALSE, FALSE);
+                EnterCell(Row, 7, "DEL Purchase Price Worksheet"."Unit of Measure Code", FALSE, FALSE, FALSE);
+                EnterCell(Row, 8, FORMAT("DEL Purchase Price Worksheet"."Minimum Quantity"), FALSE, FALSE, FALSE);
+                EnterCell(Row, 9, FORMAT("DEL Purchase Price Worksheet"."Qty. optimale"), FALSE, FALSE, FALSE);
+                EnterCell(Row, 10, FORMAT("DEL Purchase Price Worksheet"."Direct Unit Cost"), FALSE, FALSE, FALSE);
+                EnterCell(Row, 11, FORMAT("DEL Purchase Price Worksheet"."New Unit Price"), FALSE, FALSE, FALSE);
 
                 RecNo += 1;
                 Window.UPDATE(1, ROUND(RecNo / TotalRecNo * 10000, 1));
@@ -42,9 +36,9 @@ report 50012 "Export to Excel purchase"
             begin
                 Window.CLOSE;
 
-                TempExcelBuffer.CreateBook(Text000, Text000);
-                //TempExcelBuffer.CreateSheet(Text000,Text000,COMPANYNAME,USERID);
-                TempExcelBuffer.GiveUserControl;
+                //TODO: NOT USED ON CLOUD
+                // TempExcelBuffer.CreateBook(Text000, Text000);
+                // TempExcelBuffer.GiveUserControl;
             end;
 
             trigger OnPreDataItem()
@@ -53,13 +47,13 @@ report 50012 "Export to Excel purchase"
                   Text001 +
                   '@1@@@@@@@@@@@@@@@@@@@@@\');
                 Window.UPDATE(1, 0);
-                TotalRecNo := "Purchase Price Worksheet".COUNT;
+                //TODO: TotalRecNo := "Purchase Price Worksheet".COUNT;
                 RecNo := 0;
 
                 TempExcelBuffer.DELETEALL;
                 CLEAR(TempExcelBuffer);
                 EnterCell(1, 1, Text000, TRUE, TRUE, FALSE);
-                EnterCell(3, 1, Text002, TRUE, TRUE, FALSE); // dd début
+                EnterCell(3, 1, Text002, TRUE, TRUE, FALSE);
                 EnterCell(3, 2, Text003, TRUE, TRUE, FALSE); // dd fin
                 EnterCell(3, 3, Text004, TRUE, TRUE, FALSE); // n fourni
                 EnterCell(3, 4, Text005, TRUE, TRUE, FALSE); //  code devise
@@ -93,7 +87,7 @@ report 50012 "Export to Excel purchase"
     }
 
     var
-        TempExcelBuffer: Record "370" temporary;
+        TempExcelBuffer: Record "Excel Buffer" temporary;
         Window: Dialog;
         Row: Integer;
         Text000: Label 'Purchase Price list';

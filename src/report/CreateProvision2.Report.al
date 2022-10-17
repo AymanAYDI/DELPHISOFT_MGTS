@@ -6,22 +6,22 @@ report 50027 "Create Provision2"
     {
         dataitem(DataItem5538; Table50020)
         {
-            DataItemTableView = SORTING (ID)
+            DataItemTableView = SORTING(ID)
                                 ORDER(Ascending)
-                                WHERE (Status = FILTER (In progress|Invoiced));
+                                WHERE(Status = FILTER(In progress|Invoiced));
             RequestFilterFields = ID;
             dataitem(DataItem9209; Table50030)
             {
-                DataItemLink = Deal_ID = FIELD (ID);
-                DataItemTableView = SORTING (ID);
+                DataItemLink = Deal_ID = FIELD(ID);
+                DataItemTableView = SORTING(ID);
                 RequestFilterFields = ID;
                 dataitem(DataItem9818; Table50021)
                 {
-                    DataItemLink = Deal_ID = FIELD (Deal_ID);
-                    DataItemTableView = SORTING (Deal_ID, Type)
+                    DataItemLink = Deal_ID = FIELD(Deal_ID);
+                    DataItemTableView = SORTING(Deal_ID, Type)
                                         ORDER(Ascending)
-                                        WHERE (Type = CONST (Fee),
-                                              Instance = CONST (planned));
+                                        WHERE(Type = CONST(Fee),
+                                              Instance = CONST(planned));
                     RequestFilterFields = Fee_ID;
 
                     trigger OnAfterGetRecord()
@@ -69,7 +69,7 @@ report 50027 "Create Provision2"
                             element_Re_Loc.RESET();
                             //element_Re_Loc.SETCURRENTKEY(Deal_ID, Type);
                             element_Re_Loc.SETRANGE(Deal_ID, Element.Deal_ID);
-                            element_Re_Loc.SETRANGE(Type, Element.Type::Provision);
+                            element_Re_Loc.SETRANGE("Customer/Vendor", Element.Type::Provision);
                             element_Re_Loc.SETRANGE(Period, CALCDATE('<-CM>', date_Da));
                             element_Re_Loc.SETRANGE(Fee_ID, Element.Fee_ID);
                             element_Re_Loc.SETRANGE(Fee_Connection_ID, Element.Fee_Connection_ID);

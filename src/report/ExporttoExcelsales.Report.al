@@ -1,12 +1,5 @@
-report 50008 "Export to Excel sales"
+report 50008 "DEL Export to Excel sales"
 {
-    // Logico SA - Logiciels & Conseils
-    // Status : 11.03.2009
-    // Customer / Project NGTS
-    // 
-    // Version    Requirement        ID       Date           Description
-    // -----------------------------------------------------------------
-    // NGTS                        GRC      11.03.2009      Create object
 
     ProcessingOnly = true;
     ShowPrintStatus = false;
@@ -14,9 +7,9 @@ report 50008 "Export to Excel sales"
 
     dataset
     {
-        dataitem(DataItem5995; Table7023)
+        dataitem("Sales Price Worksheet"; "Sales Price Worksheet")
         {
-            DataItemTableView = SORTING (Starting Date, Ending Date, Sales Type, Sales Code, Currency Code, Item No., Variant Code, Unit of Measure Code, Minimum Quantity);
+            DataItemTableView = SORTING("Starting Date", "Ending Date", "Sales Type", "Sales Code", "Currency Code", "Item No.", "Variant Code", "Unit of Measure Code", "Minimum Quantity");
 
             trigger OnAfterGetRecord()
             begin
@@ -46,9 +39,9 @@ report 50008 "Export to Excel sales"
             begin
                 Window.CLOSE;
 
-                TempExcelBuffer.CreateBook(Text000, Text000);
-                //TempExcelBuffer.CreateSheet(Text000,Text000,COMPANYNAME,USERID);
-                TempExcelBuffer.GiveUserControl;
+                //TODO: only for onprem dev ! 
+                // TempExcelBuffer.CreateBook(Text000, Text000);
+                // TempExcelBuffer.GiveUserControl;
             end;
 
             trigger OnPreDataItem()
@@ -101,7 +94,7 @@ report 50008 "Export to Excel sales"
     }
 
     var
-        TempExcelBuffer: Record "370" temporary;
+        TempExcelBuffer: Record "Excel Buffer" temporary;
         Window: Dialog;
         Row: Integer;
         Text000: Label 'Sales Price';

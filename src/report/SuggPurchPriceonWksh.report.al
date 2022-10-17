@@ -1,15 +1,14 @@
-report 50010 "Suggest Purch Price on Wksh."
+report 50010 "DEL Sugg Purch Price on Wksh."
 {
-    // NGTS/LOCO/GRC 13.03.09 create report
 
     Caption = 'Suggest Purchase Price on Wksh.';
     ProcessingOnly = true;
 
     dataset
     {
-        dataitem(DataItem3889; Table7012)
+        dataitem(DataItem3889; "Purchase Price")
         {
-            DataItemTableView = SORTING (Item No.);
+            DataItemTableView = SORTING("Item No.");
             RequestFilterFields = "Item No.", "Currency Code", "Starting Date";
 
             trigger OnAfterGetRecord()
@@ -23,13 +22,7 @@ report 50010 "Suggest Purch Price on Wksh."
 
                 ReplacePurchCode := NOT ("Vendor No." = ToPurchCode);
 
-                //IF (ToSalesCode = '') AND (ToSalesType <> ToSalesType::"All Customers") THEN
-                //  ERROR(Text002,"Sales Type");
-
                 CLEAR(PurchPriceWksh);
-
-                //PurchPriceWksh.VALIDATE("Sales Type",ToSalesType);
-
                 IF NOT ReplacePurchCode THEN
                     PurchPriceWksh.VALIDATE("Vendor No.", "Vendor No.")
                 ELSE
@@ -39,7 +32,7 @@ report 50010 "Suggest Purch Price on Wksh."
                 PurchPriceWksh."New Unit Price" := "Direct Unit Cost";
                 PurchPriceWksh."Minimum Quantity" := "Minimum Quantity";
 
-                PurchPriceWksh."Qty. optimale" := "Purchase Price"."Qty. optimale";
+                //TODO PurchPriceWksh."Qty. optimale" := "Purchase Price"."Qty. optimale";
 
                 IF NOT ReplaceUnitOfMeasure THEN
                     PurchPriceWksh."Unit of Measure Code" := "Unit of Measure Code"
@@ -113,11 +106,6 @@ report 50010 "Suggest Purch Price on Wksh."
                           RoundingMethod."Amount Added After";
                     END;
                 END;
-
-                //SalesPriceWksh."Price Includes VAT" := "Price Includes VAT";
-                //SalesPriceWksh."VAT Bus. Posting Gr. (Price)" := "VAT Bus. Posting Gr. (Price)";
-                //SalesPriceWksh."Allow Invoice Disc." := "Allow Invoice Disc.";
-                //SalesPriceWksh."Allow Line Disc." := "Allow Line Disc.";
                 PurchPriceWksh.CalcCurrentPrice(PriceAlreadyExists);
 
                 IF PriceAlreadyExists OR CreateNewPrices THEN BEGIN
@@ -165,24 +153,19 @@ report 50010 "Suggest Purch Price on Wksh."
                 }
                 field("Ending Date"; ToEndDate)
                 {
-                    OptionCaption = 'Ending Date';
                 }
                 field("Only Prices Above"; PriceLowerLimit)
                 {
-                    OptionCaption = 'Only Prices Above';
                 }
                 field("Adjustment Factor"; UnitPriceFactor)
                 {
-                    OptionCaption = 'Adjustment Factor';
                 }
                 field("Rounding Method"; RoundingMethod.Code)
                 {
-                    OptionCaption = 'Rounding Method';
                     TableRelation = "Rounding Method";
                 }
                 field("Create New Prices"; CreateNewPrices)
                 {
-                    OptionCaption = 'Create New Prices';
                 }
             }
         }
@@ -240,21 +223,21 @@ report 50010 "Suggest Purch Price on Wksh."
 
     var
         Text001: Label 'Processing items  #1##########';
-        SalesPrice2: Record "7002";
-        SalesPriceWksh2: Record "7023";
-        SalesPriceWksh: Record "7023";
-        ToCust: Record "18";
-        ToCustPriceGr: Record "6";
-        ToCampaign: Record "5071";
-        ToUnitOfMeasure: Record "204";
-        ItemUnitOfMeasure: Record "5404";
-        ToCurrency: Record "4";
-        FromCurrency: Record "4";
-        Currency2: Record "4";
-        CurrExchRate: Record "330";
-        RoundingMethod: Record "42";
-        Item: Record "27";
-        UOMMgt: Codeunit "5402";
+        SalesPrice2: Record "Sales Price";
+        SalesPriceWksh2: Record "Sales Price Worksheet";
+        SalesPriceWksh: Record "Sales Price Worksheet";
+        ToCust: Record Customer;
+        ToCustPriceGr: Record "Customer Price Group";
+        ToCampaign: Record Campaign;
+        ToUnitOfMeasure: Record "Unit of Measure";
+        ItemUnitOfMeasure: Record "Item Unit of Measure";
+        ToCurrency: Record Currency;
+        FromCurrency: Record Currency;
+        Currency2: Record Currency;
+        CurrExchRate: Record "Currency Exchange Rate";
+        RoundingMethod: Record "Rounding Method";
+        Item: Record Item;
+        UOMMgt: Codeunit "Unit of Measure Management";
         Window: Dialog;
         PriceAlreadyExists: Boolean;
         CreateNewPrices: Boolean;
@@ -271,16 +254,15 @@ report 50010 "Suggest Purch Price on Wksh."
         ReplaceEndingDate: Boolean;
         Text002: Label 'Purchase Code must be specified when copying from %1 to All Vendors.';
         "+++++++++500000": Integer;
-        PurchPrice2: Record "7012";
-        PurchPriceWksh2: Record "50038";
-        PurchPriceWksh: Record "50038";
-        ToVend: Record "23";
+        PurchPrice2: Record "Purchase Price";
+        PurchPriceWksh2: Record "DEL Purchase Price Worksheet";
+        PurchPriceWksh: Record "DEL Purchase Price Worksheet";
+        ToVend: Record Vendor;
         ToPurchCode: Code[20];
         ReplacePurchCode: Boolean;
         ToPurchType: Option Vendor;
-        Vendor: Record "23";
+        Vendor: Record Vendor;
 
-    [Scope('Internal')]
     procedure InitializeRequest(NewToPurchType: Option Vendor; NewToPurchCode: Code[20]; NewToStartDate: Date; NewToEndDate: Date; NewToCurrCode: Code[10]; NewToUOMCode: Code[10]; NewCreateNewPrices: Boolean)
     begin
         ToPurchType := NewToPurchType;

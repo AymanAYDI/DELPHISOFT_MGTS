@@ -6,7 +6,7 @@ table 50068 "DEL DocMatrix Log"
     {
 
 
-        field(1; Type; Enum type)
+        field(1; Type; Enum "Customer/Vendor")
 
         {
 

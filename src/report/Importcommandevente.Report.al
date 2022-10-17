@@ -1,18 +1,18 @@
-report 50016 "Import commande vente"
+report 50016 "DEL Import commande vente"
 {
     ProcessingOnly = true;
 
     dataset
     {
-        dataitem(DataItem1000000000; Table50002)
+        dataitem("DEL Import Commande vente"; "DEL Import Commande vente")
         {
 
             trigger OnAfterGetRecord()
             begin
 
-                IF NOT CUImportcdevente.RUN("Import Commande vente") THEN BEGIN
+                IF NOT CUImportcdevente.RUN("DEL Import Commande vente") THEN BEGIN
                     i += 1;
-                    MsgErreur[i] := "Import Commande vente"."Document No." + ';' + FORMAT("Import Commande vente"."Line No.") + ';' + "Import Commande vente".Position + ';' + GETLASTERRORTEXT;
+                    MsgErreur[i] := "DEL Import Commande vente"."Document No." + ';' + FORMAT("DEL Import Commande vente"."Line No.") + ';' + "DEL Import Commande vente".Position + ';' + GETLASTERRORTEXT;
                 END;
 
             end;
@@ -23,7 +23,7 @@ report 50016 "Import commande vente"
                     MESSAGE(Text001)
                 ELSE
                     MESSAGE(Text002, i);
-                ErrorImportvente.SETRANGE(ErrorImportvente."Document No.", "Import Commande vente"."Document No.");
+                ErrorImportvente.SETRANGE(ErrorImportvente."Document No.", "DEL Import Commande vente"."Document No.");
                 IF ErrorImportvente.FINDSET THEN
                     ErrorImportvente.DELETEALL;
                 FOR j := 1 TO i DO
@@ -49,10 +49,10 @@ report 50016 "Import commande vente"
     }
 
     var
-        CUImportcdevente: Codeunit "50036";
+        CUImportcdevente: Codeunit "DEL Import commande vente";
         i: Integer;
         MsgErreur: array[1000] of Text;
-        ErrorImportvente: Record "50062";
+        ErrorImportvente: Record "DEL Error Import vente";
         j: Integer;
         Text001: Label 'Import successfully';
         Text002: Label 'Import with %1 error(s)';

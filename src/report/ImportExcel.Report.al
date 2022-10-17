@@ -1,19 +1,20 @@
-report 50006 "Import Excel"
+report 50006 "DEL Import Excel"
 {
     ProcessingOnly = true;
 
     dataset
     {
-        dataitem(DataItem1000000000; Table2000000026)
+        dataitem(Integer; Integer)
         {
-            DataItemTableView = SORTING (Number)
+            DataItemTableView = SORTING(Number)
                                 ORDER(Ascending)
-                                WHERE (Number = FILTER (1));
+                                WHERE(Number = FILTER(1));
 
             trigger OnPreDataItem()
             begin
                 ExcelBuffer.LOCKTABLE;
-                ExcelBuffer.OpenBook(FileName, sheetName);
+                //TODO: cannot be used on cloud 
+                //ExcelBuffer.OpenBook(FileName, sheetName);
                 ExcelBuffer.ReadSheet;
                 GetLastRowandColumns;
                 FOR i := 2 TO Totalrows DO
@@ -38,10 +39,10 @@ report 50006 "Import Excel"
         trigger OnQueryClosePage(CloseAction: Action): Boolean
         begin
             IF CloseAction = ACTION::OK THEN BEGIN
-                FileName := FileManagement.UploadFile('Import Excel', ExcelExtension);
+                //TODO: onprem method FileName := FileManagement.UploadFile('Import Excel', ExcelExtension);
                 IF FileName = '' THEN
                     EXIT(FALSE);
-                sheetName := ExcelBuffer.SelectSheetsName(FileName);
+                //TODO: onprem method sheetName := ExcelBuffer.SelectSheetsName(FileName);
                 IF sheetName = '' THEN
                     EXIT(FALSE);
             END;
@@ -53,13 +54,13 @@ report 50006 "Import Excel"
     }
 
     var
-        ExcelBuffer: Record "370";
+        ExcelBuffer: Record "Excel Buffer";
         TotalColumns: Integer;
         Totalrows: Integer;
-        SalesPriceWorksheet: Record "7023";
+        SalesPriceWorksheet: Record "Sales Price Worksheet";
         FileName: Text;
         sheetName: Text;
-        FileManagement: Codeunit "419";
+        FileManagement: Codeunit "File Management";
         ExcelExtension: Label '*.xlsx;*.xls';
         i: Integer;
         ItemNo: Code[20];
@@ -135,14 +136,14 @@ report 50006 "Import Excel"
             SalesPriceWorksheet."Current Unit Price" := CurrentUnitPrice;
             SalesPriceWorksheet."New Unit Price" := NewPrice;
             SalesPriceWorksheet.VALIDATE("New Unit Price");
-            SalesPriceWorksheet."Vendor No." := VendorNo;
+            //TODO: "vendor no." does not exist  SalesPriceWorksheet."Vendor No." := VendorNo;
             SalesPriceWorksheet.INSERT;
         END;
     end;
 
     local procedure GetValueAtCell(RowNo: Integer; ColNo: Integer): Text
     var
-        ExcelBuffer1: Record "370";
+        ExcelBuffer1: Record "Excel Buffer";
     begin
         IF ExcelBuffer1.GET(RowNo, ColNo) THEN
             EXIT(ExcelBuffer1."Cell Value as Text")

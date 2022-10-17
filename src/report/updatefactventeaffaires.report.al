@@ -1,13 +1,13 @@
-report 50018 "update factures vente/affaires"
+report 50018 "DEL update fact vente/affaires"
 {
     DefaultLayout = RDLC;
     RDLCLayout = './updatefacturesventeaffaires.rdlc';
 
     dataset
     {
-        dataitem(DataItem5581; Table112)
+        dataitem("Sales Invoice Header"; "Sales Invoice Header")
         {
-            DataItemTableView = SORTING (No.)
+            DataItemTableView = SORTING("No.")
                                 ORDER(Ascending);
             PrintOnlyIfDetail = false;
             RequestFilterFields = "Posting Date", "No.";
@@ -20,7 +20,7 @@ report 50018 "update factures vente/affaires"
             column(CurrReport_PAGENO; CurrReport.PAGENO)
             {
             }
-            column(USERID; USERID)
+            column("USERID"; USERID)
             {
             }
             column(Montant_Total; Montant_Total)
@@ -59,13 +59,13 @@ report 50018 "update factures vente/affaires"
             column(Sales_Invoice_Header_No_; "No.")
             {
             }
-            dataitem(DataItem1570; Table113)
+            dataitem("Sales Invoice Line"; "Sales Invoice Line")
             {
-                DataItemLink = Document No.=FIELD(No.);
-                DataItemTableView = SORTING (Document No., Line No.)
+                DataItemLink = "Document No." = FIELD("No.");
+                DataItemTableView = SORTING("Document No.", "Line No.")
                                     ORDER(Ascending)
-                                    WHERE (Quantity = FILTER (<> 0),
-                                          Type = FILTER (Item));
+                                    WHERE(Quantity = FILTER(<> 0),
+                                          Type = FILTER(Item));
                 column(Sales_Invoice_Line__Document_No__; "Document No.")
                 {
                 }
@@ -98,7 +98,6 @@ report 50018 "update factures vente/affaires"
                 begin
                     Montant_Total := Montant_Total + "Sales Invoice Line".Amount;
 
-                    // insert deal Item
                     DealItem.RESET;
                     DealItem.SETRANGE(DealItem.Deal_ID, Deal_ID_Co_Par);
                     DealItem.SETRANGE(DealItem."Item No.", "Sales Invoice Line"."No.");
@@ -111,16 +110,12 @@ report 50018 "update factures vente/affaires"
                         DealItem.INSERT;
                     END;
 
-
-
-                    // insert position
-
                     Setup.GET();
                     position_ID_Co_Loc := NoSeriesMgt_Cu.GetNextNo(Setup."Position Nos.", TODAY, TRUE);
 
                     Position_Re.INIT;
                     Position_Re.ID := position_ID_Co_Loc;
-                    Position_Re.VALIDATE(Deal_ID, Deal_ID_Co_Par);
+                    Position_Re.VALIDATE("Deal_ID", Deal_ID_Co_Par);
                     Position_Re.VALIDATE(Element_ID, element_ID_Ret);
                     Position_Re.VALIDATE(Instance, Position_Re.Instance::Real);
                     Position_Re.VALIDATE(Position_Re."Deal Item No.", "Sales Invoice Line"."No.");
@@ -143,7 +138,6 @@ report 50018 "update factures vente/affaires"
 
             trigger OnAfterGetRecord()
             begin
-                //Element.SETRANGE(Element.Type,7);
                 Deal_ID_Co_Par := '';
                 Element.SETRANGE(Element."Type No.", "Sales Invoice Header"."No.");
                 IF Element.FIND('-') THEN BEGIN
@@ -174,17 +168,15 @@ report 50018 "update factures vente/affaires"
                         Element.ID := element_ID_Ret;
                         Element.VALIDATE(Deal_ID, Deal_ID_Co_Par);
                         Element.VALIDATE(Instance, Element.Instance::real);
-                        Element.VALIDATE(Type, 7);
+                        //TODO Element.VALIDATE("Customer/Vendor", 7);
                         Element.VALIDATE("Type No.", "Sales Invoice Header"."No.");
                         Element.VALIDATE("Subject No.", "Sales Invoice Header"."Sell-to Customer No.");
                         Element.VALIDATE("Subject Type", 2);
-                        //  element.VALIDATE(Fee_ID, Fee_ID_Co_Par);
-                        //  element.VALIDATE(Fee_Connection_ID, Fee_Connection_ID_Co_Par);
                         Element.Date := "Sales Invoice Header"."Posting Date";
                         Element.VALIDATE("Entry No.", 0);
                         Element.VALIDATE("Bill-to Customer No.", "Sales Invoice Header"."Bill-to Customer No.");
                         Element."Add DateTime" := CURRENTDATETIME;
-                        Element.Period := 040113D;
+                        Element.Period := 20130104D;       // 040113D; 
                         Element."Splitt Index" := 0;
                         Element.INSERT;
                     END;
@@ -213,14 +205,14 @@ report 50018 "update factures vente/affaires"
         LastFieldNo: Integer;
         FooterPrinted: Boolean;
         Montant_Total: Decimal;
-        Element: Record "50021";
-        Position_Re: Record "50022";
-        DealItem: Record "50023";
-        Setup: Record "50000";
+        Element: Record "DEL Element";
+        Position_Re: Record "DEL Position";
+        DealItem: Record "DEL Deal Item";
+        Setup: Record "DEL General Setup";
         element_ID_Ret: Code[20];
-        NoSeriesMgt_Cu: Codeunit "396";
-        SalesInvoiceLine: Record "113";
-        ACOConnection: Record "50026";
+        NoSeriesMgt_Cu: Codeunit NoSeriesManagement;
+        SalesInvoiceLine: Record "Sales Invoice Line";
+        ACOConnection: Record "DEL ACO Connection";
         NComAchat: Code[20];
         Deal_ID_Co_Par: Code[20];
         position_ID_Co_Loc: Code[20];

@@ -5,8 +5,8 @@ codeunit 50021 "DEL Element"
         Currency_Exchange_Re: Record "DEL Currency Exchange";
         Setup: Record "DEL General Setup";
         DealItem_Cu: Codeunit "DEL Deal Item";
-        DealShipment_Cu: Codeunit "Deal Shipment";
-        DealShipmentConnection_Cu: Codeunit "Deal Shipment Connection";
+        DealShipment_Cu: Codeunit "DEL Deal Shipment";
+        DealShipmentConnection_Cu: Codeunit "DEL Deal Shipment Connection";
         Deal_Cu: Codeunit "DEL Deal";
         Element_Cu: Codeunit "DEL Element";
         ElementConnection_Cu: Codeunit "DEL Element Connection";

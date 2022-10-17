@@ -1,26 +1,5 @@
-report 50004 "NTO - Purchase Order"
+report 50004 "DEL NTO - Purchase Order"
 {
-    // <changelog>
-    //   <change id="CH4400" dev="SRYSER" request="CH-START-400" date="2004-09-15" area="SR"
-    //     baseversion="CH3.70A" releaseversion="CH4.00">
-    //     Complete Redesign
-    //   </change>
-    // </changelog>
-    // 
-    // NTO    22.08.05/LOCO/WIC- Ajout champ "Location code"
-    // NTO 2  07.10.05/LOCO/MIK - Ajout du champ "Vendor Item No" sur le report
-    // NTO 3  07.10.05/LOCO/MIK - Affichage de divers champs sur le bas de page
-    // NTO 4  12.10.2005 LOCO/JMO  - Company picture inserted and company FONT added "Gil Sans"
-    // 
-    // +-------------------------------------------------------------------------------+
-    // | Logico SA - Logiciels & Conseils                                              |
-    // | Stand: 27.04.09                                                               |
-    // |                                                                               |
-    // +-------------------------------------------------------------------------------+
-    // 
-    // ID     Version     Story-Card    Date       Description
-    // ---------------------------------------------------------------------------------
-    // CHG01                            27.04.09   added "Forwarder" in footer
     DefaultLayout = RDLC;
     RDLCLayout = './NTOPurchaseOrder.rdlc';
 
@@ -28,10 +7,10 @@ report 50004 "NTO - Purchase Order"
 
     dataset
     {
-        dataitem(DataItem4458; Table38)
+        dataitem("Purchase Header"; "Purchase Header")
         {
-            DataItemTableView = SORTING (Document Type, No.)
-                                WHERE (Document Type=CONST(Order));
+            DataItemTableView = SORTING("Document Type", "No.")
+                                WHERE("Document Type" = CONST(Order));
             RequestFilterFields = "No.", "Buy-from Vendor No.", "No. Printed";
             RequestFilterHeading = 'Purchase Order';
             column(Purchase_Header_Document_Type; "Document Type")
@@ -45,7 +24,6 @@ report 50004 "NTO - Purchase Order"
             }
             column(QtyCaption; QtyCaptionLbl)
             {
-                OptionCaption = 'ENU=Qty;DES=Menge;ITS=Qty;FRS=Qté';
             }
             column(PriceCaption; PriceCaptionLbl)
             {
@@ -116,13 +94,13 @@ report 50004 "NTO - Purchase Order"
             column(FooterLabel_9_; FooterLabel[9])
             {
             }
-            dataitem(CopyLoop; Table2000000026)
+            dataitem(CopyLoop; Integer)
             {
-                DataItemTableView = SORTING (Number);
-                dataitem(PageLoop; Table2000000026)
+                DataItemTableView = SORTING(Number);
+                dataitem(PageLoop; Integer)
                 {
-                    DataItemTableView = SORTING (Number)
-                                        WHERE (Number = CONST (1));
+                    DataItemTableView = SORTING(Number)
+                                        WHERE(Number = CONST(1));
                     column(CompanyInfo__Phone_No__; CompanyInfo."Phone No.")
                     {
                     }
@@ -264,11 +242,11 @@ report 50004 "NTO - Purchase Order"
                     column(PageLoop_Number; Number)
                     {
                     }
-                    dataitem(DimensionLoop1; Table2000000026)
+                    dataitem(DimensionLoop1; Integer)
                     {
                         DataItemLinkReference = "Purchase Header";
-                        DataItemTableView = SORTING (Number)
-                                            WHERE (Number = FILTER (1 ..));
+                        DataItemTableView = SORTING(Number)
+                                            WHERE(Number = FILTER(1 ..));
                         column(DimText; DimText)
                         {
                         }
@@ -297,12 +275,12 @@ report 50004 "NTO - Purchase Order"
                                 OldDimText := DimText;
                                 IF DimText = '' THEN
                                     DimText := STRSUBSTNO(
-                                      '%1 %2', DocDim1."Dimension Code", DocDim1."Dimension Value Code")
+                                      '%1 %2', DocDim1."Dimension Code", DocDim1."Dimension Code")
                                 ELSE
                                     DimText :=
                                       STRSUBSTNO(
                                         '%1, %2 %3', DimText,
-                                        DocDim1."Dimension Code", DocDim1."Dimension Value Code");
+                                        DocDim1."Dimension Code", DocDim1."Dimension Code");
                                 IF STRLEN(DimText) > MAXSTRLEN(OldDimText) THEN BEGIN
                                     DimText := OldDimText;
                                     Continue := TRUE;
@@ -317,227 +295,222 @@ report 50004 "NTO - Purchase Order"
                                 CurrReport.BREAK;
                         end;
                     }
-                    dataitem(DataItem6547; Table39)
+                    dataitem("Purchase Line"; "Purchase Line")
                     {
-                        DataItemLink = Document Type=FIELD(Document Type),
-                                       Document No.=FIELD(No.);
+                        DataItemLink = "Document Type" = FIELD("Document Type"),
+                                       "Document No." = FIELD("No.");
                         DataItemLinkReference = "Purchase Header";
-                        DataItemTableView = SORTING(Document Type,Document No.,Line No.);
+                        DataItemTableView = SORTING("Document Type", "Document No.", "Line No.");
 
                         trigger OnPreDataItem()
                         begin
                             CurrReport.BREAK;
                         end;
                     }
-                    dataitem(RoundLoop;Table2000000026)
+                    dataitem(RoundLoop; Integer)
                     {
                         DataItemTableView = SORTING(Number);
-                        column(PurchLine__Line_Amount_;PurchLine."Line Amount")
+                        column(PurchLine__Line_Amount_; PurchLine."Line Amount")
                         {
                             AutoFormatExpression = "Purchase Line"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(Purchase_Line__Description;"Purchase Line".Description)
+                        column(Purchase_Line__Description; "Purchase Line".Description)
                         {
                         }
-                        column(Purchase_Line___No__;"Purchase Line"."No.")
+                        column(Purchase_Line___No__; "Purchase Line"."No.")
                         {
                         }
-                        column(Purchase_Line__Description_Control63;"Purchase Line".Description)
+                        column(Purchase_Line__Description_Control63; "Purchase Line".Description)
                         {
                         }
-                        column(Purchase_Line__Quantity;"Purchase Line".Quantity)
+                        column(Purchase_Line__Quantity; "Purchase Line".Quantity)
                         {
                             Description = 'Qty';
-                            OptionCaption = 'Qty';
                         }
-                        column(Purchase_Line___Unit_of_Measure_;"Purchase Line"."Unit of Measure")
+                        column(Purchase_Line___Unit_of_Measure_; "Purchase Line"."Unit of Measure")
                         {
                         }
-                        column(Purchase_Line___Direct_Unit_Cost_;"Purchase Line"."Direct Unit Cost")
+                        column(Purchase_Line___Direct_Unit_Cost_; "Purchase Line"."Direct Unit Cost")
                         {
                             AutoFormatExpression = "Purchase Header"."Currency Code";
                             AutoFormatType = 2;
-                            OptionCaption = 'Price';
                         }
-                        column(Purchase_Line___Line_Amount_;"Purchase Line"."Line Amount")
-                        {
-                            AutoFormatExpression = "Purchase Header"."Currency Code";
-                            AutoFormatType = 1;
-                            OptionCaption = 'Amount';
-                        }
-                        column(ref_fourn;ref_fourn)
-                        {
-                            OptionCaption = 'Vendor Ref';
-                        }
-                        column(PurchLine__Line_Amount__Control77;PurchLine."Line Amount")
+                        column(Purchase_Line___Line_Amount_; "Purchase Line"."Line Amount")
                         {
                             AutoFormatExpression = "Purchase Header"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(PurchLine__Inv__Discount_Amount_;-PurchLine."Inv. Discount Amount")
+                        column(ref_fourn; ref_fourn)
+                        {
+                        }
+                        column(PurchLine__Line_Amount__Control77; PurchLine."Line Amount")
+                        {
+                            AutoFormatExpression = "Purchase Header"."Currency Code";
+                            AutoFormatType = 1;
+                        }
+                        column(PurchLine__Inv__Discount_Amount_; -PurchLine."Inv. Discount Amount")
                         {
                             AutoFormatExpression = "Purchase Line"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(PurchLine__Line_Amount__Control109;PurchLine."Line Amount")
+                        column(PurchLine__Line_Amount__Control109; PurchLine."Line Amount")
                         {
                             AutoFormatExpression = "Purchase Header"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(PurchLine__Line_Amount__PurchLine__Inv__Discount_Amount_;PurchLine."Line Amount"-PurchLine."Inv. Discount Amount")
+                        column(PurchLine__Line_Amount__PurchLine__Inv__Discount_Amount_; PurchLine."Line Amount" - PurchLine."Inv. Discount Amount")
                         {
                             AutoFormatExpression = "Purchase Header"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(TotalInclVATText;TotalInclVATText)
+                        column(TotalInclVATText; TotalInclVATText)
                         {
                         }
-                        column(VATAmountLine_VATAmountText;VATAmountLine.VATAmountText)
+                        column(VATAmountLine_VATAmountText; VATAmountLine.VATAmountText)
                         {
                         }
-                        column(VATAmount;VATAmount)
-                        {
-                            AutoFormatExpression = "Purchase Header"."Currency Code";
-                            AutoFormatType = 1;
-                        }
-                        column(PurchLine__Line_Amount__PurchLine__Inv__Discount_Amount____VATAmount;PurchLine."Line Amount"-PurchLine."Inv. Discount Amount" + VATAmount)
+                        column(VATAmount; VATAmount)
                         {
                             AutoFormatExpression = "Purchase Header"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(TotalExclVATText;TotalExclVATText)
-                        {
-                        }
-                        column(PurchLine__Line_Amount__PurchLine__Inv__Discount_Amount__Control147;PurchLine."Line Amount"-PurchLine."Inv. Discount Amount")
+                        column(PurchLine__Line_Amount__PurchLine__Inv__Discount_Amount____VATAmount; PurchLine."Line Amount" - PurchLine."Inv. Discount Amount" + VATAmount)
                         {
                             AutoFormatExpression = "Purchase Header"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATDiscountAmount;-VATDiscountAmount)
+                        column(TotalExclVATText; TotalExclVATText)
+                        {
+                        }
+                        column(PurchLine__Line_Amount__PurchLine__Inv__Discount_Amount__Control147; PurchLine."Line Amount" - PurchLine."Inv. Discount Amount")
                         {
                             AutoFormatExpression = "Purchase Header"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine_VATAmountText_Control32;VATAmountLine.VATAmountText)
-                        {
-                        }
-                        column(TotalExclVATText_Control51;TotalExclVATText)
-                        {
-                        }
-                        column(TotalInclVATText_Control69;TotalInclVATText)
-                        {
-                        }
-                        column(VATBaseAmount;VATBaseAmount)
+                        column(VATDiscountAmount; -VATDiscountAmount)
                         {
                             AutoFormatExpression = "Purchase Header"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmount_Control83;VATAmount)
+                        column(VATAmountLine_VATAmountText_Control32; VATAmountLine.VATAmountText)
+                        {
+                        }
+                        column(TotalExclVATText_Control51; TotalExclVATText)
+                        {
+                        }
+                        column(TotalInclVATText_Control69; TotalInclVATText)
+                        {
+                        }
+                        column(VATBaseAmount; VATBaseAmount)
                         {
                             AutoFormatExpression = "Purchase Header"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(TotalAmountInclVAT;TotalAmountInclVAT)
+                        column(VATAmount_Control83; VATAmount)
                         {
                             AutoFormatExpression = "Purchase Header"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(ContinuedCaption;ContinuedCaptionLbl)
+                        column(TotalAmountInclVAT; TotalAmountInclVAT)
+                        {
+                            AutoFormatExpression = "Purchase Header"."Currency Code";
+                            AutoFormatType = 1;
+                        }
+                        column(ContinuedCaption; ContinuedCaptionLbl)
                         {
                         }
-                        column(ContinuedCaption_Control76;ContinuedCaption_Control76Lbl)
+                        column(ContinuedCaption_Control76; ContinuedCaption_Control76Lbl)
                         {
                         }
-                        column(PurchLine__Inv__Discount_Amount_Caption;PurchLine__Inv__Discount_Amount_CaptionLbl)
+                        column(PurchLine__Inv__Discount_Amount_Caption; PurchLine__Inv__Discount_Amount_CaptionLbl)
                         {
                         }
-                        column(SubtotalCaption;SubtotalCaptionLbl)
+                        column(SubtotalCaption; SubtotalCaptionLbl)
                         {
                         }
-                        column(VATDiscountAmountCaption;VATDiscountAmountCaptionLbl)
+                        column(VATDiscountAmountCaption; VATDiscountAmountCaptionLbl)
                         {
                         }
-                        column(RoundLoop_Number;Number)
+                        column(RoundLoop_Number; Number)
                         {
                         }
-                        dataitem(DimensionLoop2;Table2000000026)
+                        dataitem(DimensionLoop2; Integer)
                         {
                             DataItemTableView = SORTING(Number)
-                                                WHERE(Number=FILTER(1..));
-                            column(DimText_Control74;DimText)
+                                                WHERE(Number = FILTER(1 ..));
+                            column(DimText_Control74; DimText)
                             {
                             }
-                            column(Line_DimensionsCaption;Line_DimensionsCaptionLbl)
+                            column(Line_DimensionsCaption; Line_DimensionsCaptionLbl)
                             {
                             }
-                            column(DimensionLoop2_Number;Number)
+                            column(DimensionLoop2_Number; Number)
                             {
                             }
 
                             trigger OnAfterGetRecord()
                             begin
                                 IF Number = 1 THEN BEGIN
-                                  IF NOT DocDim2.FIND('-') THEN
-                                    CurrReport.BREAK;
+                                    IF NOT DocDim2.FIND('-') THEN
+                                        CurrReport.BREAK;
                                 END ELSE
-                                  IF NOT Continue THEN
-                                    CurrReport.BREAK;
+                                    IF NOT Continue THEN
+                                        CurrReport.BREAK;
 
                                 CLEAR(DimText);
                                 Continue := FALSE;
                                 REPEAT
-                                  OldDimText := DimText;
-                                  IF DimText = '' THEN
-                                    DimText := STRSUBSTNO(
-                                      '%1 %2',DocDim2."Dimension Code",DocDim2."Dimension Value Code")
-                                  ELSE
-                                    DimText :=
-                                      STRSUBSTNO(
-                                        '%1, %2 %3',DimText,
-                                        DocDim2."Dimension Code",DocDim2."Dimension Value Code");
-                                  IF STRLEN(DimText) > MAXSTRLEN(OldDimText) THEN BEGIN
-                                    DimText := OldDimText;
-                                    Continue := TRUE;
-                                    EXIT;
-                                  END;
+                                    OldDimText := DimText;
+                                    IF DimText = '' THEN
+                                        DimText := STRSUBSTNO(
+                                          '%1 %2', DocDim2."Dimension Code", DocDim2."Dimension Code")
+                                    ELSE
+                                        DimText :=
+                                          STRSUBSTNO(
+                                            '%1, %2 %3', DimText,
+                                            DocDim2."Dimension Code", DocDim2."Dimension Code");
+                                    IF STRLEN(DimText) > MAXSTRLEN(OldDimText) THEN BEGIN
+                                        DimText := OldDimText;
+                                        Continue := TRUE;
+                                        EXIT;
+                                    END;
                                 UNTIL (DocDim2.NEXT = 0);
                             end;
 
                             trigger OnPreDataItem()
                             begin
                                 IF NOT ShowInternalInfo THEN
-                                  CurrReport.BREAK;
+                                    CurrReport.BREAK;
 
-                                DocDim2.SETRANGE("Table ID",DATABASE::"Purchase Line");
-                                DocDim2.SETRANGE("Document Type","Purchase Line"."Document Type");
-                                DocDim2.SETRANGE("Document No.","Purchase Line"."Document No.");
-                                DocDim2.SETRANGE("Line No.","Purchase Line"."Line No.");
+                                //TODO DocDim2.SETRANGE("Table ID", DATABASE::"Purchase Line");
+                                // DocDim2.SETRANGE("Document Type", "Purchase Line"."Document Type");
+                                // DocDim2.SETRANGE("Document No.", "Purchase Line"."Document No.");
+                                // DocDim2.SETRANGE("Line No.", "Purchase Line"."Line No.");
                             end;
                         }
 
                         trigger OnAfterGetRecord()
                         begin
                             IF Number = 1 THEN
-                              PurchLine.FIND('-')
+                                PurchLine.FIND('-')
                             ELSE
-                              PurchLine.NEXT;
+                                PurchLine.NEXT;
                             "Purchase Line" := PurchLine;
 
                             IF NOT "Purchase Header"."Prices Including VAT" AND
                                (PurchLine."VAT Calculation Type" = PurchLine."VAT Calculation Type"::"Full VAT")
                             THEN
-                              PurchLine."Line Amount" := 0;
+                                PurchLine."Line Amount" := 0;
 
                             IF (PurchLine.Type = PurchLine.Type::"G/L Account") AND (NOT ShowInternalInfo) THEN
-                              "Purchase Line"."No." := '';
-                            IF "Purchase Line".Type="Purchase Line".Type::Item THEN
-                            BEGIN
-                            Item_temp.GET("Purchase Line"."No.");
-                            ref_fourn:=Item_temp."Vendor Item No.";
+                                "Purchase Line"."No." := '';
+                            IF "Purchase Line".Type = "Purchase Line".Type::Item THEN BEGIN
+                                Item_temp.GET("Purchase Line"."No.");
+                                ref_fourn := Item_temp."Vendor Item No.";
                             END
                             ELSE
-                            ref_fourn:='';
+                                ref_fourn := '';
                         end;
 
                         trigger OnPostDataItem()
@@ -549,161 +522,161 @@ report 50004 "NTO - Purchase Order"
                         trigger OnPreDataItem()
                         begin
                             MoreLines := PurchLine.FIND('+');
-                            WHILE MoreLines AND (PurchLine.Description = '') AND (PurchLine."Description 2"= '') AND
+                            WHILE MoreLines AND (PurchLine.Description = '') AND (PurchLine."Description 2" = '') AND
                                   (PurchLine."No." = '') AND (PurchLine.Quantity = 0) AND
                                   (PurchLine.Amount = 0) DO
-                              MoreLines := PurchLine.NEXT(-1) <> 0;
+                                MoreLines := PurchLine.NEXT(-1) <> 0;
                             IF NOT MoreLines THEN
-                              CurrReport.BREAK;
-                            PurchLine.SETRANGE("Line No.",0,PurchLine."Line No.");
-                            SETRANGE(Number,1,PurchLine.COUNT);
-                            CurrReport.CREATETOTALS(PurchLine."Line Amount",PurchLine."Inv. Discount Amount");
+                                CurrReport.BREAK;
+                            PurchLine.SETRANGE("Line No.", 0, PurchLine."Line No.");
+                            SETRANGE(Number, 1, PurchLine.COUNT);
+                            CurrReport.CREATETOTALS(PurchLine."Line Amount", PurchLine."Inv. Discount Amount");
                         end;
                     }
-                    dataitem(VATCounter;Table2000000026)
+                    dataitem(VATCounter; Integer)
                     {
                         DataItemTableView = SORTING(Number);
-                        column(VATAmountLine__VAT_Base_;VATAmountLine."VAT Base")
+                        column(VATAmountLine__VAT_Base_; VATAmountLine."VAT Base")
                         {
                             AutoFormatExpression = "Purchase Header"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__VAT_Amount_;VATAmountLine."VAT Amount")
+                        column(VATAmountLine__VAT_Amount_; VATAmountLine."VAT Amount")
                         {
                             AutoFormatExpression = "Purchase Header"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__Line_Amount_;VATAmountLine."Line Amount")
+                        column(VATAmountLine__Line_Amount_; VATAmountLine."Line Amount")
                         {
                             AutoFormatExpression = "Purchase Header"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__Inv__Disc__Base_Amount_;VATAmountLine."Inv. Disc. Base Amount")
+                        column(VATAmountLine__Inv__Disc__Base_Amount_; VATAmountLine."Inv. Disc. Base Amount")
                         {
                             AutoFormatExpression = "Purchase Header"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__Invoice_Discount_Amount_;VATAmountLine."Invoice Discount Amount")
+                        column(VATAmountLine__Invoice_Discount_Amount_; VATAmountLine."Invoice Discount Amount")
                         {
                             AutoFormatExpression = "Purchase Header"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__VAT___;VATAmountLine."VAT %")
+                        column(VATAmountLine__VAT___; VATAmountLine."VAT %")
                         {
-                            DecimalPlaces = 0:5;
+                            DecimalPlaces = 0 : 5;
                         }
-                        column(VATAmountLine__VAT_Base__Control99;VATAmountLine."VAT Base")
-                        {
-                            AutoFormatExpression = "Purchase Header"."Currency Code";
-                            AutoFormatType = 1;
-                        }
-                        column(VATAmountLine__VAT_Amount__Control100;VATAmountLine."VAT Amount")
+                        column(VATAmountLine__VAT_Base__Control99; VATAmountLine."VAT Base")
                         {
                             AutoFormatExpression = "Purchase Header"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__VAT_Identifier_;VATAmountLine."VAT Identifier")
-                        {
-                        }
-                        column(VATAmountLine__Line_Amount__Control131;VATAmountLine."Line Amount")
+                        column(VATAmountLine__VAT_Amount__Control100; VATAmountLine."VAT Amount")
                         {
                             AutoFormatExpression = "Purchase Header"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__Inv__Disc__Base_Amount__Control132;VATAmountLine."Inv. Disc. Base Amount")
+                        column(VATAmountLine__VAT_Identifier_; VATAmountLine."VAT Identifier")
+                        {
+                        }
+                        column(VATAmountLine__Line_Amount__Control131; VATAmountLine."Line Amount")
                         {
                             AutoFormatExpression = "Purchase Header"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__Invoice_Discount_Amount__Control133;VATAmountLine."Invoice Discount Amount")
+                        column(VATAmountLine__Inv__Disc__Base_Amount__Control132; VATAmountLine."Inv. Disc. Base Amount")
                         {
                             AutoFormatExpression = "Purchase Header"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__VAT_Base__Control103;VATAmountLine."VAT Base")
+                        column(VATAmountLine__Invoice_Discount_Amount__Control133; VATAmountLine."Invoice Discount Amount")
                         {
                             AutoFormatExpression = "Purchase Header"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__VAT_Amount__Control104;VATAmountLine."VAT Amount")
+                        column(VATAmountLine__VAT_Base__Control103; VATAmountLine."VAT Base")
                         {
                             AutoFormatExpression = "Purchase Header"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__Line_Amount__Control56;VATAmountLine."Line Amount")
+                        column(VATAmountLine__VAT_Amount__Control104; VATAmountLine."VAT Amount")
                         {
                             AutoFormatExpression = "Purchase Header"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__Inv__Disc__Base_Amount__Control57;VATAmountLine."Inv. Disc. Base Amount")
+                        column(VATAmountLine__Line_Amount__Control56; VATAmountLine."Line Amount")
                         {
                             AutoFormatExpression = "Purchase Header"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__Invoice_Discount_Amount__Control58;VATAmountLine."Invoice Discount Amount")
+                        column(VATAmountLine__Inv__Disc__Base_Amount__Control57; VATAmountLine."Inv. Disc. Base Amount")
                         {
                             AutoFormatExpression = "Purchase Header"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__VAT_Base__Control107;VATAmountLine."VAT Base")
+                        column(VATAmountLine__Invoice_Discount_Amount__Control58; VATAmountLine."Invoice Discount Amount")
                         {
                             AutoFormatExpression = "Purchase Header"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__VAT_Amount__Control108;VATAmountLine."VAT Amount")
+                        column(VATAmountLine__VAT_Base__Control107; VATAmountLine."VAT Base")
                         {
                             AutoFormatExpression = "Purchase Header"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__Line_Amount__Control59;VATAmountLine."Line Amount")
+                        column(VATAmountLine__VAT_Amount__Control108; VATAmountLine."VAT Amount")
                         {
                             AutoFormatExpression = "Purchase Header"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__Inv__Disc__Base_Amount__Control60;VATAmountLine."Inv. Disc. Base Amount")
+                        column(VATAmountLine__Line_Amount__Control59; VATAmountLine."Line Amount")
                         {
                             AutoFormatExpression = "Purchase Header"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__Invoice_Discount_Amount__Control61;VATAmountLine."Invoice Discount Amount")
+                        column(VATAmountLine__Inv__Disc__Base_Amount__Control60; VATAmountLine."Inv. Disc. Base Amount")
                         {
                             AutoFormatExpression = "Purchase Header"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__VAT___Caption;VATAmountLine__VAT___CaptionLbl)
+                        column(VATAmountLine__Invoice_Discount_Amount__Control61; VATAmountLine."Invoice Discount Amount")
+                        {
+                            AutoFormatExpression = "Purchase Header"."Currency Code";
+                            AutoFormatType = 1;
+                        }
+                        column(VATAmountLine__VAT___Caption; VATAmountLine__VAT___CaptionLbl)
                         {
                         }
-                        column(VATAmountLine__VAT_Base__Control99Caption;VATAmountLine__VAT_Base__Control99CaptionLbl)
+                        column(VATAmountLine__VAT_Base__Control99Caption; VATAmountLine__VAT_Base__Control99CaptionLbl)
                         {
                         }
-                        column(VATAmountLine__VAT_Amount__Control100Caption;VATAmountLine__VAT_Amount__Control100CaptionLbl)
+                        column(VATAmountLine__VAT_Amount__Control100Caption; VATAmountLine__VAT_Amount__Control100CaptionLbl)
                         {
                         }
-                        column(VAT_Amount_SpecificationCaption;VAT_Amount_SpecificationCaptionLbl)
+                        column(VAT_Amount_SpecificationCaption; VAT_Amount_SpecificationCaptionLbl)
                         {
                         }
-                        column(VATAmountLine__VAT_Identifier_Caption;VATAmountLine__VAT_Identifier_CaptionLbl)
+                        column(VATAmountLine__VAT_Identifier_Caption; VATAmountLine__VAT_Identifier_CaptionLbl)
                         {
                         }
-                        column(VATAmountLine__Inv__Disc__Base_Amount__Control132Caption;VATAmountLine__Inv__Disc__Base_Amount__Control132CaptionLbl)
+                        column(VATAmountLine__Inv__Disc__Base_Amount__Control132Caption; VATAmountLine__Inv__Disc__Base_Amount__Control132CaptionLbl)
                         {
                         }
-                        column(VATAmountLine__Line_Amount__Control131Caption;VATAmountLine__Line_Amount__Control131CaptionLbl)
+                        column(VATAmountLine__Line_Amount__Control131Caption; VATAmountLine__Line_Amount__Control131CaptionLbl)
                         {
                         }
-                        column(VATAmountLine__Invoice_Discount_Amount__Control133Caption;VATAmountLine__Invoice_Discount_Amount__Control133CaptionLbl)
+                        column(VATAmountLine__Invoice_Discount_Amount__Control133Caption; VATAmountLine__Invoice_Discount_Amount__Control133CaptionLbl)
                         {
                         }
-                        column(VATAmountLine__VAT_Base_Caption;VATAmountLine__VAT_Base_CaptionLbl)
+                        column(VATAmountLine__VAT_Base_Caption; VATAmountLine__VAT_Base_CaptionLbl)
                         {
                         }
-                        column(VATAmountLine__VAT_Base__Control103Caption;VATAmountLine__VAT_Base__Control103CaptionLbl)
+                        column(VATAmountLine__VAT_Base__Control103Caption; VATAmountLine__VAT_Base__Control103CaptionLbl)
                         {
                         }
-                        column(VATAmountLine__VAT_Base__Control107Caption;VATAmountLine__VAT_Base__Control107CaptionLbl)
+                        column(VATAmountLine__VAT_Base__Control107Caption; VATAmountLine__VAT_Base__Control107CaptionLbl)
                         {
                         }
-                        column(VATCounter_Number;Number)
+                        column(VATCounter_Number; Number)
                         {
                         }
 
@@ -715,18 +688,18 @@ report 50004 "NTO - Purchase Order"
                         trigger OnPreDataItem()
                         begin
                             IF VATAmount = 0 THEN
-                              CurrReport.BREAK;
-                            SETRANGE(Number,1,VATAmountLine.COUNT);
+                                CurrReport.BREAK;
+                            SETRANGE(Number, 1, VATAmountLine.COUNT);
                             CurrReport.CREATETOTALS(
-                              VATAmountLine."Line Amount",VATAmountLine."Inv. Disc. Base Amount",
-                              VATAmountLine."Invoice Discount Amount",VATAmountLine."VAT Base",VATAmountLine."VAT Amount");
+                              VATAmountLine."Line Amount", VATAmountLine."Inv. Disc. Base Amount",
+                              VATAmountLine."Invoice Discount Amount", VATAmountLine."VAT Base", VATAmountLine."VAT Amount");
                         end;
                     }
-                    dataitem(Total;Table2000000026)
+                    dataitem(Total; Integer)
                     {
                         DataItemTableView = SORTING(Number)
-                                            WHERE(Number=CONST(1));
-                        column(Total_Number;Number)
+                                            WHERE(Number = CONST(1));
+                        column(Total_Number; Number)
                         {
                         }
                     }
@@ -738,106 +711,103 @@ report 50004 "NTO - Purchase Order"
                     CLEAR(PurchPost);
                     PurchLine.DELETEALL;
                     VATAmountLine.DELETEALL;
-                    PurchPost.GetPurchLines("Purchase Header",PurchLine,0);
-                    PurchLine.CalcVATAmountLines(0,"Purchase Header",PurchLine,VATAmountLine);
-                    PurchLine.UpdateVATOnLines(0,"Purchase Header",PurchLine,VATAmountLine);
+                    PurchPost.GetPurchLines("Purchase Header", PurchLine, 0);
+                    PurchLine.CalcVATAmountLines(0, "Purchase Header", PurchLine, VATAmountLine);
+                    PurchLine.UpdateVATOnLines(0, "Purchase Header", PurchLine, VATAmountLine);
                     VATAmount := VATAmountLine.GetTotalVATAmount;
                     VATBaseAmount := VATAmountLine.GetTotalVATBase;
                     VATDiscountAmount :=
-                      VATAmountLine.GetTotalVATDiscount("Purchase Header"."Currency Code","Purchase Header"."Prices Including VAT");
+                      VATAmountLine.GetTotalVATDiscount("Purchase Header"."Currency Code", "Purchase Header"."Prices Including VAT");
                     TotalAmountInclVAT := VATAmountLine.GetTotalAmountInclVAT;
 
                     IF Number > 1 THEN
-                      CopyText := Text003;
+                        CopyText := Text003;
                     CurrReport.PAGENO := 1;
                 end;
 
                 trigger OnPostDataItem()
                 begin
                     IF NOT CurrReport.PREVIEW THEN
-                      PurchCountPrinted.RUN("Purchase Header");
+                        PurchCountPrinted.RUN("Purchase Header");
                 end;
 
                 trigger OnPreDataItem()
                 begin
                     NoOfLoops := ABS(NoOfCopies) + 1;
                     CopyText := '';
-                    SETRANGE(Number,1,NoOfLoops);
+                    SETRANGE(Number, 1, NoOfLoops);
                 end;
             }
 
             trigger OnAfterGetRecord()
             begin
-                CurrReport.LANGUAGE := Language.GetLanguageID("Language Code");
+                //TODO CurrReport.LANGUAGE := Language.GetLanguageCode("Language Code");
 
                 CompanyInfo.GET;
-
-                // CH4400.begin
                 PrepareHeader;
                 PrepareFooter;
-                // CH4400.end
-
                 IF RespCenter.GET("Responsibility Center") THEN BEGIN
-                  FormatAddr.RespCenter(CompanyAddr,RespCenter);
-                  CompanyInfo."Phone No." := RespCenter."Phone No.";
-                  CompanyInfo."Fax No." := RespCenter."Fax No.";
+                    FormatAddr.RespCenter(CompanyAddr, RespCenter);
+                    CompanyInfo."Phone No." := RespCenter."Phone No.";
+                    CompanyInfo."Fax No." := RespCenter."Fax No.";
                 END ELSE
-                  FormatAddr.Company(CompanyAddr,CompanyInfo);
+                    FormatAddr.Company(CompanyAddr, CompanyInfo);
 
-                DocDim1.SETRANGE("Table ID",DATABASE::"Purchase Header");
-                DocDim1.SETRANGE("Document Type","Purchase Header"."Document Type");
-                DocDim1.SETRANGE("Document No.","Purchase Header"."No.");
+                //TODO/ DOCDIM ne contient pas ces champs
+                // DocDim1.SETRANGE("Table ID", DATABASE::"Purchase Header");
+                // DocDim1.SETRANGE("Document Type", "Purchase Header"."Document Type");
+                // DocDim1.SETRANGE("Document No.", "Purchase Header"."No.");
 
                 IF "Purchaser Code" = '' THEN BEGIN
-                  SalesPurchPerson.INIT;
-                  PurchaserText := '';
+                    SalesPurchPerson.INIT;
+                    PurchaserText := '';
                 END ELSE BEGIN
-                  SalesPurchPerson.GET("Purchaser Code");
-                  PurchaserText := Text000
+                    SalesPurchPerson.GET("Purchaser Code");
+                    PurchaserText := Text000
                 END;
                 IF "Your Reference" = '' THEN
-                  ReferenceText := ''
+                    ReferenceText := ''
                 ELSE
-                  ReferenceText := FIELDCAPTION("Your Reference");
+                    ReferenceText := FIELDCAPTION("Your Reference");
                 IF "VAT Registration No." = '' THEN
-                  VATNoText := ''
+                    VATNoText := ''
                 ELSE
-                  VATNoText := FIELDCAPTION("VAT Registration No.");
+                    VATNoText := FIELDCAPTION("VAT Registration No.");
                 IF "Currency Code" = '' THEN BEGIN
-                  GLSetup.TESTFIELD("LCY Code");
-                  TotalText := STRSUBSTNO(Text001,GLSetup."LCY Code");
-                  TotalInclVATText := STRSUBSTNO(Text002,GLSetup."LCY Code");
-                  TotalExclVATText := STRSUBSTNO(Text006,GLSetup."LCY Code");
+                    GLSetup.TESTFIELD("LCY Code");
+                    TotalText := STRSUBSTNO(Text001, GLSetup."LCY Code");
+                    TotalInclVATText := STRSUBSTNO(Text002, GLSetup."LCY Code");
+                    TotalExclVATText := STRSUBSTNO(Text006, GLSetup."LCY Code");
                 END ELSE BEGIN
-                  TotalText := STRSUBSTNO(Text001,"Currency Code");
-                  TotalInclVATText := STRSUBSTNO(Text002,"Currency Code");
-                  TotalExclVATText := STRSUBSTNO(Text006,"Currency Code");
+                    TotalText := STRSUBSTNO(Text001, "Currency Code");
+                    TotalInclVATText := STRSUBSTNO(Text002, "Currency Code");
+                    TotalExclVATText := STRSUBSTNO(Text006, "Currency Code");
                 END;
 
-                FormatAddr.PurchHeaderBuyFrom(BuyFromAddr,"Purchase Header");
+                FormatAddr.PurchHeaderBuyFrom(BuyFromAddr, "Purchase Header");
                 IF ("Purchase Header"."Buy-from Vendor No." <> "Purchase Header"."Pay-to Vendor No.") THEN
-                  FormatAddr.PurchHeaderPayTo(VendAddr,"Purchase Header");
+                    FormatAddr.PurchHeaderPayTo(VendAddr, "Purchase Header");
                 IF "Payment Terms Code" = '' THEN
-                  PaymentTerms.INIT
+                    PaymentTerms.INIT
                 ELSE
-                  PaymentTerms.GET("Payment Terms Code");
+                    PaymentTerms.GET("Payment Terms Code");
                 IF "Shipment Method Code" = '' THEN
-                  ShipmentMethod.INIT
+                    ShipmentMethod.INIT
                 ELSE
-                  ShipmentMethod.GET("Shipment Method Code");
+                    ShipmentMethod.GET("Shipment Method Code");
 
-                FormatAddr.PurchHeaderShipTo(ShipToAddr,"Purchase Header");
+                FormatAddr.PurchHeaderShipTo(ShipToAddr, "Purchase Header");
 
                 IF NOT CurrReport.PREVIEW THEN BEGIN
-                  IF ArchiveDocument THEN
-                    ArchiveManagement.StorePurchDocument("Purchase Header",LogInteraction);
+                    IF ArchiveDocument THEN
+                        ArchiveManagement.StorePurchDocument("Purchase Header", LogInteraction);
 
-                  IF LogInteraction THEN BEGIN
-                    CALCFIELDS("No. of Archived Versions");
-                    SegManagement.LogDocument(
-                      13,"No.","Doc. No. Occurrence","No. of Archived Versions",DATABASE::Vendor,"Buy-from Vendor No.",
-                      "Purchaser Code",'',"Posting Description",'');
-                  END;
+                    IF LogInteraction THEN BEGIN
+                        CALCFIELDS("No. of Archived Versions");
+                        SegManagement.LogDocument(
+                          13, "No.", "Doc. No. Occurrence", "No. of Archived Versions", DATABASE::Vendor, "Buy-from Vendor No.",
+                          "Purchaser Code", '', "Posting Description", '');
+                    END;
                 END;
                 "Purchase Header".CALCFIELDS("Purchase Header".Amount);
             end;
@@ -873,26 +843,26 @@ report 50004 "NTO - Purchase Order"
         Text004: Label 'PURCHASE ORDER N° %1';
         Text005: Label 'Page %1';
         Text006: Label 'Total %1 Excl. VAT';
-        GLSetup: Record "98";
-        CompanyInfo: Record "79";
-        ShipmentMethod: Record "10";
-        PaymentTerms: Record "3";
-        SalesPurchPerson: Record "13";
-        VATAmountLine: Record "290" temporary;
-        PurchLine: Record "39" temporary;
-        DocDim1: Record "357";
-        DocDim2: Record "357";
-        RespCenter: Record "5714";
-        Language: Record "8";
-        PurchCountPrinted: Codeunit "317";
-        FormatAddr: Codeunit "365";
-        PurchPost: Codeunit "90";
-        ArchiveManagement: Codeunit "5063";
-        SegManagement: Codeunit "5051";
-        VendAddr: array [8] of Text[50];
-        ShipToAddr: array [8] of Text[50];
-        CompanyAddr: array [8] of Text[50];
-        BuyFromAddr: array [8] of Text[50];
+        GLSetup: Record "General Ledger Setup";
+        CompanyInfo: Record "Company Information";
+        ShipmentMethod: Record "Shipment Method";
+        PaymentTerms: Record "Payment Terms";
+        SalesPurchPerson: Record "Salesperson/Purchaser";
+        VATAmountLine: Record "VAT Amount Line" temporary;
+        PurchLine: Record "Purchase Line" temporary;
+        DocDim1: Record "Gen. Jnl. Dim. Filter";
+        DocDim2: Record "Gen. Jnl. Dim. Filter";
+        RespCenter: Record "Responsibility Center";
+        Language: Record Language;
+        PurchCountPrinted: Codeunit "Purch.Header-Printed";
+        FormatAddr: Codeunit "Format Address";
+        PurchPost: Codeunit "Purch.-Post";
+        ArchiveManagement: Codeunit ArchiveManagement;
+        SegManagement: Codeunit SegManagement;
+        VendAddr: array[8] of Text[50];
+        ShipToAddr: array[8] of Text[50];
+        CompanyAddr: array[8] of Text[50];
+        BuyFromAddr: array[8] of Text[50];
         PurchaserText: Text[30];
         VATNoText: Text[30];
         ReferenceText: Text[30];
@@ -913,10 +883,10 @@ report 50004 "NTO - Purchase Order"
         VATBaseAmount: Decimal;
         VATDiscountAmount: Decimal;
         TotalAmountInclVAT: Decimal;
-        HeaderLabel: array [20] of Text[30];
-        HeaderTxt: array [20] of Text[120];
-        FooterLabel: array [20] of Text[30];
-        FooterTxt: array [20] of Text[120];
+        HeaderLabel: array[20] of Text[30];
+        HeaderTxt: array[20] of Text[120];
+        FooterLabel: array[20] of Text[30];
+        FooterTxt: array[20] of Text[120];
         ML_OrderNo: Label 'Order No.';
         ML_PurchPerson: Label 'Purchaser';
         ML_Reference: Label 'Reference';
@@ -930,7 +900,7 @@ report 50004 "NTO - Purchase Order"
         ML_Location_code: Label 'Destination';
         ML_Method: Label 'Ship per';
         ML_Date_Receipt: Label 'Shipment Date';
-        Item_temp: Record "27";
+        Item_temp: Record Item;
         ref_fourn: Text[30];
         ML_Forwarder: Label 'Forwarder';
         CompanyInfo__Phone_No__CaptionLbl: Label 'Phone No.';
@@ -961,109 +931,92 @@ report 50004 "NTO - Purchase Order"
         VATAmountLine__VAT_Base__Control103CaptionLbl: Label 'Continued';
         VATAmountLine__VAT_Base__Control107CaptionLbl: Label 'Total';
 
-    [Scope('Internal')]
     procedure PrepareHeader()
     begin
-        //CLEAR(HeaderLabel);
-        //CLEAR(HeaderTxt);
 
         WITH "Purchase Header" DO BEGIN
-          FormatAddr.PurchHeaderBuyFrom(VendAddr,"Purchase Header");
+            FormatAddr.PurchHeaderBuyFrom(VendAddr, "Purchase Header");
 
-          IF SalesPurchPerson.GET("Purchaser Code") THEN BEGIN
-            HeaderLabel[2] := ML_PurchPerson;
-            HeaderTxt[2] := SalesPurchPerson.Name;
-          END;
+            IF SalesPurchPerson.GET("Purchaser Code") THEN BEGIN
+                HeaderLabel[2] := ML_PurchPerson;
+                HeaderTxt[2] := SalesPurchPerson.Name;
+            END;
 
-          IF "Your Reference" <> '' THEN BEGIN
-            HeaderLabel[3] := ML_Reference;
-            HeaderTxt[3] := "Your Reference";
-          END;
+            IF "Your Reference" <> '' THEN BEGIN
+                HeaderLabel[3] := ML_Reference;
+                HeaderTxt[3] := "Your Reference";
+            END;
 
-          COMPRESSARRAY(HeaderLabel);
-          COMPRESSARRAY(HeaderTxt);
+            COMPRESSARRAY(HeaderLabel);
+            COMPRESSARRAY(HeaderTxt);
 
         END;
 
-        //Picture begin
         CompanyInfo.CALCFIELDS(Picture);
-        //Picture end
     end;
 
-    [Scope('Internal')]
     procedure PrepareFooter()
     var
-        PmtMethod: Record "3";
-        ShipMethod: Record "10";
-        transitaire_Re_Loc: Record "50009";
+        PmtMethod: Record "Payment Terms";
+        ShipMethod: Record "Shipment Method";
+        transitaire_Re_Loc: Record "DEL Forwarding agent 2";
     begin
         CLEAR(FooterLabel);
         CLEAR(FooterTxt);
 
-        //"Purchase Header".GET();
-
         WITH "Purchase Header" DO BEGIN
 
-          IF PmtMethod.GET("Payment Terms Code") THEN BEGIN
-            FooterLabel[1] := ML_PmtTerms;
-            FooterTxt[1]  := PmtMethod.Description;
-          END;
-
-          // Shipping Conditions
-          IF ShipMethod.GET("Shipment Method Code") THEN BEGIN
-            FooterLabel[2] := ML_ShipCond;
-            FooterTxt[2]  := ShipMethod.Description;
-          END;
-
-        // NTO 3 -
-
-          //START CHG01
-          // Forwarder
-          IF "Forwarding Agent Code" <> '' THEN BEGIN
-            IF transitaire_Re_Loc.GET("Forwarding Agent Code") THEN BEGIN
-              FooterLabel[3] := ML_Forwarder;
-              FooterTxt[3]  := transitaire_Re_Loc.Description;
+            IF PmtMethod.GET("Payment Terms Code") THEN BEGIN
+                FooterLabel[1] := ML_PmtTerms;
+                FooterTxt[1] := PmtMethod.Description;
             END;
-          END;
-          //STOP CHG01
 
-          // Location Code
-          IF "Location Code" <> '' THEN BEGIN
-            FooterLabel[4] := ML_Location_code;
-            FooterTxt[4]  := "Location Code";
-          END;
+            // Shipping Conditions
+            IF ShipMethod.GET("Shipment Method Code") THEN BEGIN
+                FooterLabel[2] := ML_ShipCond;
+                FooterTxt[2] := ShipMethod.Description;
+            END;
 
-          // Ship per
-          IF FORMAT("Purchase Header"."Ship Per") <> '' THEN BEGIN
-            FooterLabel[5] := ML_Method;
-            FooterTxt[5]  := FORMAT("Purchase Header"."Ship Per");
-          END;
+            IF "DEL Forwarding Agent Code" <> '' THEN BEGIN
+                IF transitaire_Re_Loc.GET("DEL Forwarding Agent Code") THEN BEGIN
+                    FooterLabel[3] := ML_Forwarder;
+                    FooterTxt[3] := transitaire_Re_Loc.Description;
+                END;
+            END;
+            // Location Code
+            IF "Location Code" <> '' THEN BEGIN
+                FooterLabel[4] := ML_Location_code;
+                FooterTxt[4] := "Location Code";
+            END;
+            // Ship per
+            IF FORMAT("Purchase Header"."DEL Ship Per") <> '' THEN BEGIN
+                FooterLabel[5] := ML_Method;
+                FooterTxt[5] := FORMAT("Purchase Header"."DEL Ship Per");
+            END;
 
-          // Shipment Date
-          IF  FORMAT("Purchase Header"."Requested Receipt Date") <> '' THEN BEGIN
-            FooterLabel[6] := ML_Date_Receipt;
-            FooterTxt[6]  := FORMAT("Purchase Header"."Requested Receipt Date");
-          END;
+            // Shipment Date
+            IF FORMAT("Purchase Header"."Requested Receipt Date") <> '' THEN BEGIN
+                FooterLabel[6] := ML_Date_Receipt;
+                FooterTxt[6] := FORMAT("Purchase Header"."Requested Receipt Date");
+            END;
 
-        // NTO 3 +
+            // Invoice and Order Address
+            IF "Buy-from Vendor No." <> "Pay-to Vendor No." THEN BEGIN
+                FooterLabel[7] := ML_InvAdr;
+                FooterTxt[7] := "Pay-to Name" + ', ' + "Pay-to City";
+                FooterLabel[8] := ML_OrderAdr;
+                FooterTxt[8] := "Buy-from Vendor Name" + ', ' + "Buy-from City";
+            END;
 
-          // Invoice and Order Address
-          IF "Buy-from Vendor No." <> "Pay-to Vendor No." THEN BEGIN
-            FooterLabel[7] := ML_InvAdr;
-            FooterTxt[7]  := "Pay-to Name" + ', ' + "Pay-to City";
-            FooterLabel[8] := ML_OrderAdr;
-            FooterTxt[8]  := "Buy-from Vendor Name" + ', ' + "Buy-from City";
-          END;
+            // Shipping Date if <> Document Date
 
-          // Shipping Date if <> Document Date
+            IF NOT ("Purchase Header"."Expected Receipt Date" IN ["Purchase Header"."Document Date", 0D]) THEN BEGIN
+                FooterLabel[9] := ML_ShipDate;
+                FooterTxt[9] := FORMAT("Purchase Header"."Expected Receipt Date", 0, 4);
+            END;
 
-          IF NOT ("Purchase Header"."Expected Receipt Date" IN ["Purchase Header"."Document Date",0D]) THEN BEGIN
-            FooterLabel[9] := ML_ShipDate;
-            FooterTxt[9] := FORMAT("Purchase Header"."Expected Receipt Date",0,4);
-         END;
-
-          COMPRESSARRAY(FooterLabel);
-         COMPRESSARRAY(FooterTxt);
+            COMPRESSARRAY(FooterLabel);
+            COMPRESSARRAY(FooterTxt);
         END;
     end;
 }

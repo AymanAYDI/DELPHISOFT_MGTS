@@ -1,23 +1,15 @@
-report 50013 "Import from Excel purch"
+report 50013 "DEL Import from Excel purch"
 {
-    // +---------------------------------------------------------------------------------------------------------------+
-    // | Logico SA                                                                                                     |
-    // | Status: 27.3.12                                                                                               |
-    // | Customer: NGTS                                                                                                |
-    // +---------------------------------------------------------------------------------------------------------------+
-    // 
-    // Requirement     UserID     Date       Where              Description
-    // -----------------------------------------------------------------------------------------------------------------
-    // CONS489519      CEO/THM    27.3.12    InsertPrice()      Changed findfirst() and findlast() to find(-) and find(+)
 
     Caption = 'Import Budget from Excel';
     ProcessingOnly = true;
 
     dataset
     {
-        dataitem(DataItem3883; Table50038)
+        dataitem("DEL Purchase Price Worksheet"; "DEL Purchase Price Worksheet")
         {
-            DataItemTableView = SORTING (Item No., Vendor No., Starting Date, Currency Code, Variant Code, Unit of Measure Code, Minimum Quantity, Qty. optimale);
+            DataItemTableView = SORTING("Item No.", "Vendor No.", "Starting Date", "Currency Code",
+            "Variant Code", "Unit of Measure Code", "Minimum Quantity", "Qty. optimale");
         }
     }
 
@@ -39,7 +31,7 @@ report 50013 "Import from Excel purch"
 
     trigger OnPostReport()
     var
-        Page2: Page "7023";
+        Page2: Page "Sales Price Worksheet";
     begin
         ExcelBuf.DELETEALL;
         Page2.RUN();
@@ -48,7 +40,7 @@ report 50013 "Import from Excel purch"
     trigger OnPreReport()
     begin
         ExcelBuf.LOCKTABLE;
-        "Purchase Price Worksheet".LOCKTABLE;
+        "DEL Purchase Price Worksheet".LOCKTABLE;
 
         ReadExcelSheet;
         InsertPrice();
@@ -82,19 +74,19 @@ report 50013 "Import from Excel purch"
         Text024: Label 'The combination G/L Account No. - Dimensions - Date must be unique.';
         Text025: Label 'G/L Accounts have not been found in the Excel worksheet.';
         Text026: Label 'Dates have not been recognized in the Excel worksheet.';
-        ExcelBuf: Record "370";
-        Dim: Record "348";
-        DimVal: Record "349";
-        TempDim: Record "348" temporary;
-        TempDimVal: Record "349" temporary;
-        GLBudgetEntry: Record "96";
-        GLBudgetDim: Record "361";
-        GLSetup: Record "98";
-        GLAcc: Record "15";
-        TempGLAcc: Record "15" temporary;
-        GLBudgetName: Record "95";
-        GLBudgetEntry3: Record "96";
-        AnalysisView: Record "363";
+        ExcelBuf: Record "Excel Buffer";
+        Dim: Record Dimension;
+        DimVal: Record "Dimension Value";
+        TempDim: Record Dimension temporary;
+        TempDimVal: Record "Dimension Value" temporary;
+        GLBudgetEntry: Record "G/L Budget Entry";
+        GLBudgetDim: Record "Analysis by Dim. Parameters";
+        GLSetup: Record "General Ledger Setup";
+        GLAcc: Record "G/L Account";
+        TempGLAcc: Record "G/L Account" temporary;
+        GLBudgetName: Record "G/L Budget Name";
+        GLBudgetEntry3: Record "G/L Budget Entry";
+        AnalysisView: Record "Analysis View";
         FileName: Text[250];
         SheetName: Text[250];
         ToGLBudgetName: Code[10];
@@ -114,20 +106,20 @@ report 50013 "Import from Excel purch"
         ImportOption: Option "Replace entries","Add entries";
         Text027: Label 'Replace entries,Add entries';
         Text028: Label 'A filter has been used on the %1 when the budget was exported. When a filter on a dimension has been used, a column with the same dimension must be present in the worksheet imported. The column in the worksheet must specify the dimension value codes the program should use when importing the budget.';
-        PurchPriceWorksheet: Record "50038";
-        ExcelBuf2: Record "370";
+        PurchPriceWorksheet: Record "DEL Purchase Price Worksheet";
+        ExcelBuf2: Record "Excel Buffer";
 
     local procedure ReadExcelSheet()
     begin
-        ExcelBuf.OpenBook(FileName, SheetName);
+        //TODO:CLOUD ExcelBuf.OpenBook(FileName, SheetName);
         ExcelBuf.ReadSheet;
     end;
 
     local procedure AnalyzeData()
     var
-        TempExcelBuf: Record "370" temporary;
-        BudgetBuf: Record "371";
-        TempBudgetBuf: Record "371" temporary;
+        TempExcelBuf: Record "Excel Buffer" temporary;
+        BudgetBuf: Record "Budget Buffer";
+        TempBudgetBuf: Record "Budget Buffer" temporary;
         HeaderRowNo: Integer;
         CountDim: Integer;
         TestDate: Date;
@@ -137,7 +129,7 @@ report 50013 "Import from Excel purch"
     begin
     end;
 
-    local procedure InsertGLBudgetDim(DimCode2: Code[20]; DimValCode2: Code[20]; var GLBudgetEntry2: Record "96")
+    local procedure InsertGLBudgetDim(DimCode2: Code[20]; DimValCode2: Code[20]; var GLBudgetEntry2: Record "G/L Budget Entry")
     begin
     end;
 
@@ -149,17 +141,14 @@ report 50013 "Import from Excel purch"
     begin
     end;
 
-    [Scope('Internal')]
     procedure SetGLBudgetName(NewToGLBudgetName: Code[10])
     begin
     end;
 
-    [Scope('Internal')]
-    procedure SetBudgetDimFilter(DimCode2: Code[20]; DimValCode2: Code[20]; var GLBudgetEntry2: Record "96")
+    procedure SetBudgetDimFilter(DimCode2: Code[20]; DimValCode2: Code[20]; var GLBudgetEntry2: Record "G/L Budget Entry")
     begin
     end;
 
-    [Scope('Internal')]
     procedure InsertPrice()
     var
         FormatInteger: Integer;

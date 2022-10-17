@@ -93,7 +93,7 @@ report 50053 "Export Purchase Order"
                 PurchaseLine.RESET;
                 PurchaseLine.SETRANGE("Document Type", "Document Type");
                 PurchaseLine.SETRANGE("Document No.", "No.");
-                PurchaseLine.SETRANGE(Type, PurchaseLine.Type::Item);
+                PurchaseLine.SETRANGE("Customer/Vendor", PurchaseLine.Type::Item);
                 IF PurchaseLine.FINDSET THEN
                     REPEAT
 

@@ -204,13 +204,13 @@ report 50001 "DEL DTA Payment Journal detail"
             column(TotalText; TotalText)
             {
             }
-            dataitem(DataItem1000000000; Table25)
+            dataitem(DataItem1000000000; "Vendor Ledger Entry")
             {
-                DataItemLink = Vendor No.=FIELD(Account No.),
-                               Currency Code=FIELD(Currency Code),
-                               Applies-to ID=FIELD(Document No.);
-                DataItemTableView = SORTING(Entry No.)
-                                    WHERE(Open=CONST(Yes));
+                DataItemLink = "Vendor No." = FIELD("Account No."),
+                               "Currency Code" = FIELD("Currency Code"),
+                               "Applies-to ID" = FIELD("Document No.");
+                DataItemTableView = SORTING("Entry No.")
+                                    WHERE(Open = CONST(true));
                 column(DocumentNo; "Document No.")
                 {
                 }
@@ -228,11 +228,11 @@ report 50001 "DEL DTA Payment Journal detail"
             trigger OnAfterGetRecord()
             begin
                 IF ("Account No." = '') AND (Amount = 0) THEN
-                  CurrReport.SKIP;
+                    CurrReport.SKIP;
 
                 IF oldAccNo <> "Account No." THEN BEGIN
-                  oldAccNo := "Account No.";
-                  NoOfLinesPerVendor := 0;
+                    oldAccNo := "Account No.";
+                    NoOfLinesPerVendor := 0;
                 END;
 
                 AgeDays := 0;
@@ -247,125 +247,119 @@ report 50001 "DEL DTA Payment Journal detail"
                 CLEAR(VendorBankAccount);
                 Vendor.GET("Account No.");
 
-                // Vendor Entries
                 IF "Applies-to Doc. No." = '' THEN
-                  xTxt := Text000Err
+                    xTxt := Text000Err
                 ELSE BEGIN
-                  VendorLedgerEntry.SETCURRENTKEY("Document No.");
-                  VendorLedgerEntry.SETRANGE("Document Type","Applies-to Doc. Type");
-                  VendorLedgerEntry.SETRANGE("Document No.","Applies-to Doc. No.");
-                  VendorLedgerEntry.SETRANGE("Vendor No.","Account No.");
-                  IF NOT VendorLedgerEntry.FINDFIRST THEN
-                    xTxt := Text001Err
-                  ELSE BEGIN
-                    IF NOT VendorLedgerEntry.Open THEN
-                      xTxt := Text002Err;
+                    VendorLedgerEntry.SETCURRENTKEY("Document No.");
+                    VendorLedgerEntry.SETRANGE("Document Type", "Applies-to Doc. Type");
+                    VendorLedgerEntry.SETRANGE("Document No.", "Applies-to Doc. No.");
+                    VendorLedgerEntry.SETRANGE("Vendor No.", "Account No.");
+                    IF NOT VendorLedgerEntry.FINDFIRST THEN
+                        xTxt := Text001Err
+                    ELSE BEGIN
+                        IF NOT VendorLedgerEntry.Open THEN
+                            xTxt := Text002Err;
 
-                    VendorLedgerEntry.CALCFIELDS("Remaining Amount");
+                        VendorLedgerEntry.CALCFIELDS("Remaining Amount");
 
-                    // Calc day for age, due date and cash disc.
-                    IF VendorLedgerEntry."Posting Date" > 0D THEN
-                      AgeDays := "Posting Date" - VendorLedgerEntry."Posting Date";
-                    IF VendorLedgerEntry."Pmt. Discount Date" > 0D THEN
-                      CashDiscDays := VendorLedgerEntry."Pmt. Discount Date" - "Posting Date";
-                    IF VendorLedgerEntry."Due Date" > 0D THEN
-                      DueDays := VendorLedgerEntry."Due Date" - "Posting Date";
+                        IF VendorLedgerEntry."Posting Date" > 0D THEN
+                            AgeDays := "Posting Date" - VendorLedgerEntry."Posting Date";
+                        IF VendorLedgerEntry."Pmt. Discount Date" > 0D THEN
+                            CashDiscDays := VendorLedgerEntry."Pmt. Discount Date" - "Posting Date";
+                        IF VendorLedgerEntry."Due Date" > 0D THEN
+                            DueDays := VendorLedgerEntry."Due Date" - "Posting Date";
 
-                    OpenRemAmtFC := -VendorLedgerEntry."Remaining Amount";
-                    CashDiscAmtFC := -VendorLedgerEntry."Remaining Pmt. Disc. Possible";
+                        OpenRemAmtFC := -VendorLedgerEntry."Remaining Amount";
+                        CashDiscAmtFC := -VendorLedgerEntry."Remaining Pmt. Disc. Possible";
 
-                    // Open entry and remaining for multicurrency. Convert to pmt currency
-                    IF VendorLedgerEntry."Currency Code" <> "Currency Code" THEN BEGIN
-                      OpenRemAmtFC :=
-                        CurrencyExchangeRate.ExchangeAmtFCYToFCY(
-                          "Posting Date",VendorLedgerEntry."Currency Code","Currency Code",-VendorLedgerEntry."Remaining Amount");
-                      CashDiscAmtFC :=
-                        CurrencyExchangeRate.ExchangeAmtFCYToFCY(
-                          "Posting Date",VendorLedgerEntry."Currency Code","Currency Code",-VendorLedgerEntry."Original Pmt. Disc. Possible");
+                        IF VendorLedgerEntry."Currency Code" <> "Currency Code" THEN BEGIN
+                            OpenRemAmtFC :=
+                              CurrencyExchangeRate.ExchangeAmtFCYToFCY(
+                                "Posting Date", VendorLedgerEntry."Currency Code", "Currency Code", -VendorLedgerEntry."Remaining Amount");
+                            CashDiscAmtFC :=
+                              CurrencyExchangeRate.ExchangeAmtFCYToFCY(
+                                "Posting Date", VendorLedgerEntry."Currency Code", "Currency Code", -VendorLedgerEntry."Original Pmt. Disc. Possible");
+                        END;
+
+                        IF (VendorLedgerEntry."Pmt. Discount Date" >= "Posting Date") OR
+                           ((VendorLedgerEntry."Pmt. Disc. Tolerance Date" >= "Posting Date") AND
+                            VendorLedgerEntry."Accepted Pmt. Disc. Tolerance")
+                        THEN
+                            CashDeductAmt := -VendorLedgerEntry."Remaining Pmt. Disc. Possible";
+
+                        PmtToleranceAmount := -VendorLedgerEntry."Accepted Payment Tolerance";
+
+                        RestAfterPmt := OpenRemAmtFC - Amount - CashDeductAmt - PmtToleranceAmount;
+                        IF RestAfterPmt > 0 THEN BEGIN
+                            RestAfterPmt := RestAfterPmt + CashDeductAmt;
+                            CashDeductAmt := 0;
+                        END;
                     END;
-
-                    IF (VendorLedgerEntry."Pmt. Discount Date" >= "Posting Date") OR
-                       ((VendorLedgerEntry."Pmt. Disc. Tolerance Date" >= "Posting Date") AND
-                        VendorLedgerEntry."Accepted Pmt. Disc. Tolerance")
-                    THEN
-                      CashDeductAmt := -VendorLedgerEntry."Remaining Pmt. Disc. Possible";
-
-                    PmtToleranceAmount := -VendorLedgerEntry."Accepted Payment Tolerance";
-
-                    // Calc rest after pmt (and evtl. cash disc)
-                    RestAfterPmt := OpenRemAmtFC - Amount - CashDeductAmt - PmtToleranceAmount;
-                    IF RestAfterPmt > 0 THEN BEGIN
-                      RestAfterPmt := RestAfterPmt + CashDeductAmt;
-                      CashDeductAmt := 0;
-                    END;
-                  END;
                 END;
-
-                // Vendor Bank Account
                 IF "Recipient Bank Account" = '' THEN
-                  xTxt := Text003Err
+                    xTxt := Text003Err
                 ELSE
-                  IF NOT VendorBankAccount.GET("Account No.","Recipient Bank Account") THEN
-                    xTxt := Text004Err;
+                    IF NOT VendorBankAccount.GET("Account No.", "Recipient Bank Account") THEN
+                        xTxt := Text004Err;
 
                 IF xTxt = '' THEN
-                  CASE VendorBankAccount."Payment Form" OF
-                    VendorBankAccount."Payment Form"::ESR,VendorBankAccount."Payment Form"::"ESR+":
-                      BEGIN
-                        xAcc := VendorBankAccount."ESR Account No.";
-                        xTxt := VendorLedgerEntry."Reference No.";
-                      END;
-                    VendorBankAccount."Payment Form"::"Post Payment Domestic":
-                      BEGIN
-                        IF VendorBankAccount.IBAN <> '' THEN
-                          xAcc := DTAMgt.IBANDELCHR(VendorBankAccount.IBAN)
-                        ELSE
-                          xAcc := VendorBankAccount."Giro Account No.";
-                      END;
-                    VendorBankAccount."Payment Form"::"Bank Payment Domestic":
-                      IF VendorBankAccount.IBAN <> '' THEN
-                        xAcc := DTAMgt.IBANDELCHR(VendorBankAccount.IBAN)
-                      ELSE BEGIN
-                        xTxt := VendorBankAccount."Clearing No.";
-                        xAcc := VendorBankAccount."Bank Account No.";
-                      END;
-                    VendorBankAccount."Payment Form"::"Post Payment Abroad":
-                      BEGIN
-                        IF VendorBankAccount.IBAN <> '' THEN
-                          xAcc := DTAMgt.IBANDELCHR(VendorBankAccount.IBAN)
-                        ELSE
-                          xAcc := VendorBankAccount."Bank Account No.";
-                      END;
-                    VendorBankAccount."Payment Form"::"Bank Payment Abroad":
-                      IF VendorBankAccount.IBAN <> '' THEN
-                        xAcc := DTAMgt.IBANDELCHR(VendorBankAccount.IBAN)
-                      ELSE BEGIN
-                        xTxt := VendorBankAccount."Bank Identifier Code";
-                        xAcc := VendorBankAccount."Bank Account No.";
-                      END;
-                    VendorBankAccount."Payment Form"::"SWIFT Payment Abroad":
-                      IF VendorBankAccount.IBAN <> '' THEN
-                        xAcc := DTAMgt.IBANDELCHR(VendorBankAccount.IBAN)
-                      ELSE BEGIN
-                        xTxt := VendorBankAccount."SWIFT Code";
-                        xAcc := VendorBankAccount."Bank Account No.";
-                      END;
-                  END;
+                    CASE VendorBankAccount."Payment Form" OF
+                        VendorBankAccount."Payment Form"::ESR, VendorBankAccount."Payment Form"::"ESR+":
+                            BEGIN
+                                xAcc := VendorBankAccount."ESR Account No.";
+                                xTxt := VendorLedgerEntry."Reference No.";
+                            END;
+                        VendorBankAccount."Payment Form"::"Post Payment Domestic":
+                            BEGIN
+                                IF VendorBankAccount.IBAN <> '' THEN
+                                    xAcc := DTAMgt.IBANDELCHR(VendorBankAccount.IBAN)
+                                ELSE
+                                    xAcc := VendorBankAccount."Giro Account No.";
+                            END;
+                        VendorBankAccount."Payment Form"::"Bank Payment Domestic":
+                            IF VendorBankAccount.IBAN <> '' THEN
+                                xAcc := DTAMgt.IBANDELCHR(VendorBankAccount.IBAN)
+                            ELSE BEGIN
+                                xTxt := VendorBankAccount."Clearing No.";
+                                xAcc := VendorBankAccount."Bank Account No.";
+                            END;
+                        VendorBankAccount."Payment Form"::"Post Payment Abroad":
+                            BEGIN
+                                IF VendorBankAccount.IBAN <> '' THEN
+                                    xAcc := DTAMgt.IBANDELCHR(VendorBankAccount.IBAN)
+                                ELSE
+                                    xAcc := VendorBankAccount."Bank Account No.";
+                            END;
+                        VendorBankAccount."Payment Form"::"Bank Payment Abroad":
+                            IF VendorBankAccount.IBAN <> '' THEN
+                                xAcc := DTAMgt.IBANDELCHR(VendorBankAccount.IBAN)
+                            ELSE BEGIN
+                                xTxt := VendorBankAccount."Bank Identifier Code";
+                                xAcc := VendorBankAccount."Bank Account No.";
+                            END;
+                        VendorBankAccount."Payment Form"::"SWIFT Payment Abroad":
+                            IF VendorBankAccount.IBAN <> '' THEN
+                                xAcc := DTAMgt.IBANDELCHR(VendorBankAccount.IBAN)
+                            ELSE BEGIN
+                                xTxt := VendorBankAccount."SWIFT Code";
+                                xAcc := VendorBankAccount."Bank Account No.";
+                            END;
+                    END;
 
                 n := n + 1;
                 IF "Amount (LCY)" > LargestAmt THEN
-                  LargestAmt := "Amount (LCY)";
+                    LargestAmt := "Amount (LCY)";
 
                 NoOfLinesPerVendor := NoOfLinesPerVendor + 1;
                 IF NoOfLinesPerVendor > 1 THEN
-                  TotalVendorTxt := Text005Msg + ' ' + "Account No." + ' ' + Vendor.Name;
+                    TotalVendorTxt := Text005Msg + ' ' + "Account No." + ' ' + Vendor.Name;
             end;
 
             trigger OnPreDataItem()
             begin
-                CurrReport.CREATETOTALS(Amount,"Amount (LCY)");
-                SETRANGE("Account Type","Account Type"::Vendor);
-                SETRANGE("Document Type","Document Type"::Payment);
+                CurrReport.CREATETOTALS(Amount, "Amount (LCY)");
+                SETRANGE("Account Type", "Account Type"::Vendor);
+                SETRANGE("Document Type", "Document Type"::Payment);
 
                 intLayout := Layout;
                 oldAccNo := '';
@@ -386,7 +380,7 @@ report 50001 "DEL DTA Payment Journal detail"
                     Caption = 'Options';
                     field(Layout; Layout)
                     {
-                        ApplicationArea = Basic,Suite;
+                        ApplicationArea = Basic, Suite;
                         Caption = 'Layout';
                         OptionCaption = 'Amounts,Bank';
                     }

@@ -7,9 +7,9 @@ report 50020 "MAJ Logistic sans Cmde Achat"
     {
         dataitem(DataItem9818; Table50021)
         {
-            DataItemTableView = SORTING (ID)
+            DataItemTableView = SORTING(ID)
                                 ORDER(Ascending)
-                                WHERE (Type = FILTER (ACO));
+                                WHERE(Type = FILTER(ACO));
             PrintOnlyIfDetail = true;
             RequestFilterFields = ID;
             column(FORMAT_TODAY_0_4_; FORMAT(TODAY, 0, 4))
@@ -27,7 +27,7 @@ report 50020 "MAJ Logistic sans Cmde Achat"
             column(Element_Deal_ID; Deal_ID)
             {
             }
-            column(Element_Type; Type)
+            column(Element_Type; "Customer/Vendor")
             {
             }
             column(Element__Type_No__; "Type No.")
@@ -42,7 +42,7 @@ report 50020 "MAJ Logistic sans Cmde Achat"
             column(Element_Deal_IDCaption; FIELDCAPTION(Deal_ID))
             {
             }
-            column(Element_TypeCaption; FIELDCAPTION(Type))
+            column(Element_TypeCaption; FIELDCAPTION("Customer/Vendor"))
             {
             }
             column(Element__Type_No__Caption; FIELDCAPTION("Type No."))
@@ -62,10 +62,10 @@ report 50020 "MAJ Logistic sans Cmde Achat"
             }
             dataitem(DataItem9969; Table50034)
             {
-                DataItemLink = Deal_ID = FIELD (Deal_ID);
-                DataItemTableView = SORTING (ID, Deal_ID)
+                DataItemLink = Deal_ID = FIELD(Deal_ID);
+                DataItemTableView = SORTING(ID, Deal_ID)
                                     ORDER(Ascending)
-                                    WHERE (ACO No.=FILTER(''));
+                                    WHERE(ACO No.=FILTER(''));
                 column(Logistic_Deal_ID;Deal_ID)
                 {
                 }

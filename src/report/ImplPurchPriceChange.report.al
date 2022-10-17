@@ -1,15 +1,16 @@
-report 50011 "Implement Purch Price Change"
+report 50011 "DEL Impl. Purch Price Change"
 {
-    // NGTS/LOCO/GRC 13.03.09 create report
 
     Caption = 'Implement Price Change';
     ProcessingOnly = true;
 
     dataset
     {
-        dataitem(DataItem3883; Table50038)
+        dataitem("DEL Purchase Price Worksheet"; "DEL Purchase Price Worksheet")
         {
-            DataItemTableView = SORTING (Item No., Vendor No., Starting Date, Currency Code, Variant Code, Unit of Measure Code, Minimum Quantity, Qty. optimale);
+            DataItemTableView = SORTING("Item No.", "Vendor No.", "Starting Date", "Currency Code",
+             "Variant Code",
+             "Unit of Measure Code", "Minimum Quantity", "Qty. optimale");
             RequestFilterFields = "Item No.", "Vendor No.", "Unit of Measure Code", "Currency Code";
 
             trigger OnAfterGetRecord()
@@ -29,7 +30,7 @@ report 50011 "Implement Purch Price Change"
                 PurchPrice.VALIDATE("Variant Code", "Variant Code");
                 PurchPrice.VALIDATE("Unit of Measure Code", "Unit of Measure Code");
                 PurchPrice."Minimum Quantity" := "Minimum Quantity";
-                PurchPrice."Qty. optimale" := "Qty. optimale";
+                PurchPrice."DEL Qty. optimale" := "Qty. optimale";
 
                 PurchPrice.VALIDATE("Ending Date", "Ending Date");
 
@@ -78,13 +79,12 @@ report 50011 "Implement Purch Price Change"
         Text009: Label 'Purchase Code             #3##########\';
         Text010: Label 'Currency Code          #4##########\';
         Text011: Label 'Starting Date          #5######';
-        SalesPrice: Record "7002";
+        SalesPrice: Record "Sales Price";
         Window: Dialog;
         DeleteWhstLine: Boolean;
         "+++++++++++50000++++++++": Integer;
-        PurchPrice: Record "7012";
+        PurchPrice: Record "Purchase Price";
 
-    [Scope('Internal')]
     procedure InitializeRequest(NewDeleteWhstLine: Boolean)
     begin
         DeleteWhstLine := NewDeleteWhstLine;

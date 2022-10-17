@@ -1,4 +1,4 @@
-report 50002 "Customer - Sum. Aging Simp. XX"
+report 50002 "DEL Cust - Sum. Aging Simp. XX"
 {
     DefaultLayout = RDLC;
     RDLCLayout = './CustomerSumAgingSimpXX.rdlc';
@@ -6,7 +6,7 @@ report 50002 "Customer - Sum. Aging Simp. XX"
 
     dataset
     {
-        dataitem(DataItem6836; Table18)
+        dataitem(Customer; Customer)
         {
             RequestFilterFields = "No.", "Search Name", "Customer Posting Group", "Statistics Group", "Payment Terms Code";
             column(FORMAT_TODAY_0_4_; FORMAT(TODAY, 0, 4))
@@ -15,13 +15,13 @@ report 50002 "Customer - Sum. Aging Simp. XX"
             column(STRSUBSTNO_Text001_FORMAT_StartDate__; STRSUBSTNO(Text001, FORMAT(StartDate)))
             {
             }
-            column(CurrReport_PAGENO; CurrReport.PAGENO)
+            column(CurrReport_PAGENO; CurrReport.PAGENO())
             {
             }
             column(COMPANYNAME; COMPANYNAME)
             {
             }
-            column(USERID; USERID)
+            column("USERID"; USERID)
             {
             }
             column(STRSUBSTNO_Text002__Devise_Code_; STRSUBSTNO(Text002, Devise_Code))
@@ -200,7 +200,6 @@ report 50002 "Customer - Sum. Aging Simp. XX"
                     DtldCustLedgEntry.SETRANGE("Posting Date", 0D, StartDate);
                     DtldCustLedgEntry.SETRANGE("Initial Entry Due Date", PeriodStartDate[i], PeriodStartDate[i + 1] - 1);
                     DtldCustLedgEntry.CALCSUMS("Amount (LCY)");
-                    //YAH
                     IF (Devise_Code = 'CHF') OR (Devise_Code = '') THEN
                         CustBalanceDueLCY[i] := DtldCustLedgEntry."Amount (LCY)"
                     ELSE BEGIN
@@ -208,12 +207,11 @@ report 50002 "Customer - Sum. Aging Simp. XX"
                         DtldCustLedgEntry.CALCSUMS(Amount);
                         CustBalanceDueLCY[i] := DtldCustLedgEntry.Amount;
                     END;
-                    //YAH-
                     IF CustBalanceDueLCY[i] <> 0 THEN
                         PrintCust := TRUE;
                 END;
                 IF NOT PrintCust THEN
-                    CurrReport.SKIP;
+                    CurrReport.SKIP();
             end;
 
             trigger OnPreDataItem()
@@ -249,7 +247,7 @@ report 50002 "Customer - Sum. Aging Simp. XX"
         begin
 
             IF StartDate = 0D THEN
-                StartDate := WORKDATE;
+                StartDate := WORKDATE();
         end;
     }
 
@@ -266,14 +264,14 @@ report 50002 "Customer - Sum. Aging Simp. XX"
     begin
         CustFilter := Customer.GETFILTERS;
         PeriodStartDate[6] := StartDate;
-        PeriodStartDate[7] := 12319999D;
+        PeriodStartDate[7] := 19991231D; //12319999D
         FOR i := 5 DOWNTO 2 DO
             PeriodStartDate[i] := CALCDATE('<-30D>', PeriodStartDate[i + 1]);
     end;
 
     var
         Text001: Label 'As of %1';
-        DtldCustLedgEntry: Record "379";
+        DtldCustLedgEntry: Record "Detailed Cust. Ledg. Entry";
         StartDate: Date;
         CustFilter: Text[250];
         PeriodStartDate: array[7] of Date;
