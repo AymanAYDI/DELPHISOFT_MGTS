@@ -1,35 +1,21 @@
-report 50034 "Save marque item"
+report 50034 "DEL Save marque item"
 {
     DefaultLayout = RDLC;
     RDLCLayout = './Savemarqueitem.rdlc';
 
     dataset
     {
-        dataitem(DataItem1100113000; Table27)
+        dataitem(Item; Item)
         {
 
             trigger OnAfterGetRecord()
             begin
-                "OLD marque" := Marque;
+                "DEL OLD marque" := "DEL Marque";
                 MODIFY;
             end;
         }
     }
 
-    requestpage
-    {
 
-        layout
-        {
-        }
-
-        actions
-        {
-        }
-    }
-
-    labels
-    {
-    }
 }
 

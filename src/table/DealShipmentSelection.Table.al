@@ -15,7 +15,7 @@ table 50031 "DEL Deal Shipment Selection"
         {
             Caption = 'Document No.';
         }
-        field(11; "Account Type"; Enum "DEL Account Type")
+        field(11; "Account Type"; Enum "Gen. Journal Account Type")
         {
             Caption = 'Account Type';
 

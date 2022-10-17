@@ -1,7 +1,6 @@
-pageextension 50025 pageextension50025 extends "Cash Receipt Journal"
+pageextension 50025 "DEL CashReceiptJournal" extends "Cash Receipt Journal" //255
 {
-    //             THM     31.05.13  added Shipment Selection
-    // P160049_4   JUH     13.10.17  SEPA actions
+
     layout
     {
 
@@ -25,9 +24,9 @@ pageextension 50025 pageextension50025 extends "Cash Receipt Journal"
 
         //Unsupported feature: Property Modification (SubPageLink) on "Control 1906888607".
 
-        addafter("Control 12")
+        addafter(Control1)
         {
-            field("Shipment Selection"; "Shipment Selection")
+            field("DEL Shipment Selection"; Rec."DEL Shipment Selection")
             {
 
                 trigger OnDrillDown()
@@ -45,9 +44,9 @@ pageextension 50025 pageextension50025 extends "Cash Receipt Journal"
 
         //Unsupported feature: Property Modification (RunPageLink) on "Action 1000014".
 
-        addafter("Action 60")
+        addafter(Dimensions)
         {
-            action("Linked Shipments")
+            action("DEL Linked Shipments")
             {
                 Caption = 'Linked Shipments';
                 Image = Links;
@@ -56,13 +55,13 @@ pageextension 50025 pageextension50025 extends "Cash Receipt Journal"
 
                 trigger OnAction()
                 var
-                    DealShipmentSelection_Page_Loc: Page "50038";
+                    DealShipmentSelection_Page_Loc: Page "DEL Deal Shipment Selection";
                 begin
 
-                    IF "Document No." = '' THEN
+                    IF Rec."Document No." = '' THEN
                         ERROR('Document No. vide !');
 
-                    IF "Document Type" <> "Document Type"::Invoice THEN
+                    IF Rec."Document Type" <> Rec."Document Type"::Invoice THEN
                         ERROR('Document Type doit etre Invoice');
 
                     //DealShipmentSelection_Form_Loc.FNC_OpenedBy("Document No.");
@@ -70,9 +69,9 @@ pageextension 50025 pageextension50025 extends "Cash Receipt Journal"
                 end;
             }
         }
-        addafter("Action 84")
+        addafter("Insert Conv. LCY Rndg. Lines")
         {
-            action(ImportBankStatement)
+            action("DEL ImportBankStatement")
             {
                 ApplicationArea = Basic, Suite;
                 Caption = 'Read SEPA File';
@@ -83,13 +82,11 @@ pageextension 50025 pageextension50025 extends "Cash Receipt Journal"
 
                 trigger OnAction()
                 begin
-                    //P160049_4 START
                     CurrPage.UPDATE;
-                    ImportBankStatement;
-                    //P160049_4 END
+                    Rec.ImportBankStatement;
                 end;
             }
-            action(UpdateLineCamt)
+            action("DEL UpdateLineCamt")
             {
                 Caption = 'Update Line (CAMT054)';
                 Image = UpdateDescription;
@@ -98,14 +95,12 @@ pageextension 50025 pageextension50025 extends "Cash Receipt Journal"
 
                 trigger OnAction()
                 var
-                    GenJournalLine_Loc: Record "81";
+                    GenJournalLine_Loc: Record "Gen. Journal Line";
                 begin
-                    //P160049_4 START
                     GenJournalLine_Loc.RESET;
-                    GenJournalLine_Loc.SETRANGE(GenJournalLine_Loc."Journal Template Name", "Journal Template Name");
-                    GenJournalLine_Loc.SETRANGE(GenJournalLine_Loc."Journal Batch Name", "Journal Batch Name");
+                    GenJournalLine_Loc.SETRANGE(GenJournalLine_Loc."Journal Template Name", Rec."Journal Template Name");
+                    GenJournalLine_Loc.SETRANGE(GenJournalLine_Loc."Journal Batch Name", Rec."Journal Batch Name");
                     REPORT.RUN(REPORT::"Update lines CAMT054", FALSE, FALSE, GenJournalLine_Loc);
-                    //P160049_4 END
                 end;
             }
         }
@@ -113,40 +108,31 @@ pageextension 50025 pageextension50025 extends "Cash Receipt Journal"
 
     procedure FNC_ShipmentLookup()
     var
-        deal_Re_Loc: Record "50020";
-        dealShipment_Re_Loc: Record "50030";
-        dealShipmentSelection_Re_Loc: Record "50031";
-        dealShipmentSelection_Page_Loc: Page "50038";
+        deal_Re_Loc: Record "DEL Deal";
+        dealShipment_Re_Loc: Record "DEL Deal Shipment";
+        dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
+        dealShipmentSelection_Page_Loc: Page "DEL Deal Shipment Selection";
     begin
-        /*_
-        1. On recherche des sélections ont été générées pour cette ligne de facture achat et si oui -> on les supprime
-        2. On génère des sélections pour cette ligne de facture. On crée une ligne par livraison pour toutes les affaire non terminées
-           -> Plus il y a d'affaires non terminées, plus le nombre de ligne est grand. Attention aux performances !
-        _*/
-
-        IF "Document No." = '' THEN
+        IF Rec."Document No." = '' THEN
             ERROR('Document No. vide !');
 
-        IF "Account No." = '' THEN
+        IF Rec."Account No." = '' THEN
             ERROR('Account No. vide !');
 
-        IF "Line No." = 0 THEN
+        IF Rec."Line No." = 0 THEN
             ERROR('Line No. vide !');
 
-        IF "Document Type" <> "Document Type"::Payment THEN
+        IF Rec."Document Type" <> Rec."Document Type"::Payment THEN
             ERROR('Document Type doit être Payment');
 
-        //on cherche si des lignes ont déjà été générées pour cette facture et on les efface !
         dealShipmentSelection_Re_Loc.RESET();
-        //START CHG01
         dealShipmentSelection_Re_Loc.SETCURRENTKEY("Journal Template Name", "Journal Batch Name", "Line No.");
-        dealShipmentSelection_Re_Loc.SETRANGE("Journal Template Name", "Journal Template Name");
-        dealShipmentSelection_Re_Loc.SETRANGE("Journal Batch Name", "Journal Batch Name");
-        dealShipmentSelection_Re_Loc.SETRANGE("Line No.", "Line No.");
-        //STOP CHG01
+        dealShipmentSelection_Re_Loc.SETRANGE("Journal Template Name", Rec."Journal Template Name");
+        dealShipmentSelection_Re_Loc.SETRANGE("Journal Batch Name", Rec."Journal Batch Name");
+        dealShipmentSelection_Re_Loc.SETRANGE("Line No.", Rec."Line No.");
         dealShipmentSelection_Re_Loc.DELETEALL();
 
-        //Lister les deal, puis les livraisons qui y sont rattachées
+
         deal_Re_Loc.RESET();
         deal_Re_Loc.SETFILTER(Status, '<>%1', deal_Re_Loc.Status::Closed);
         IF deal_Re_Loc.FIND('-') THEN
@@ -158,29 +144,24 @@ pageextension 50025 pageextension50025 extends "Cash Receipt Journal"
 
                         dealShipmentSelection_Re_Loc.INIT();
                         dealShipmentSelection_Re_Loc."Document Type" := dealShipmentSelection_Re_Loc."Document Type"::Payment;
-                        dealShipmentSelection_Re_Loc."Document No." := "Document No.";
-                        dealShipmentSelection_Re_Loc."Account Type" := "Account Type";
-                        dealShipmentSelection_Re_Loc."Account No." := "Account No.";
-                        dealShipmentSelection_Re_Loc."Document No." := "Document No.";
+                        dealShipmentSelection_Re_Loc."Document No." := Rec."Document No.";
+                        dealShipmentSelection_Re_Loc."Account Type" := Rec."Account Type";
+                        dealShipmentSelection_Re_Loc."Account No." := Rec."Account No.";
+                        dealShipmentSelection_Re_Loc."Document No." := Rec."Document No.";
                         dealShipmentSelection_Re_Loc.Deal_ID := deal_Re_Loc.ID;
                         dealShipmentSelection_Re_Loc."Shipment No." := dealShipment_Re_Loc.ID;
-                        dealShipmentSelection_Re_Loc."Journal Template Name" := "Journal Template Name";
-                        dealShipmentSelection_Re_Loc."Journal Batch Name" := "Journal Batch Name";
-                        dealShipmentSelection_Re_Loc."Line No." := "Line No.";
+                        dealShipmentSelection_Re_Loc."Journal Template Name" := Rec."Journal Template Name";
+                        dealShipmentSelection_Re_Loc."Journal Batch Name" := Rec."Journal Batch Name";
+                        dealShipmentSelection_Re_Loc."Line No." := Rec."Line No.";
                         dealShipmentSelection_Re_Loc.USER_ID := USERID;
 
-                        //dealShipmentSelection_Re_Loc."BR No."              := DealShipment_Cu.FNC_GetBRNo(dealShipment_Re_Loc.ID);
                         dealShipmentSelection_Re_Loc."BR No." := dealShipment_Re_Loc."BR No.";
 
-                        //dealShipmentSelection_Re_Loc."Purchase Invoice No.":= DealShipment_Cu.FNC_GetPurchaseInvoiceNo(dealShipment_Re_Loc.ID);
                         dealShipmentSelection_Re_Loc."Purchase Invoice No." := dealShipment_Re_Loc."Purchase Invoice No.";
 
-                        //dealShipmentSelection_Re_Loc."Sales Invoice No."   := DealShipment_Cu.FNC_GetSalesInvoiceNo(dealShipment_Re_Loc.ID);
                         dealShipmentSelection_Re_Loc."Sales Invoice No." := dealShipment_Re_Loc."Sales Invoice No.";
 
-                        //START GRC01
                         IF ((dealShipmentSelection_Re_Loc."BR No." <> '') OR (dealShipmentSelection_Re_Loc."Purchase Invoice No." <> '')) THEN
-                            //STOP GRC01
                             dealShipmentSelection_Re_Loc.INSERT();
 
                     UNTIL (dealShipment_Re_Loc.NEXT() = 0);

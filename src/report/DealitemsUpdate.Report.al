@@ -1,14 +1,13 @@
-report 50032 "Deal items Update"
+report 50032 "DEL Deal items Update"
 {
-    //  THM        25.08.17      Create
 
     ProcessingOnly = true;
 
     dataset
     {
-        dataitem(DataItem1000000000; Table27)
+        dataitem(Item; Item)
         {
-            DataItemTableView = SORTING (No.)
+            DataItemTableView = SORTING("No.")
                                 ORDER(Ascending);
             RequestFilterFields = "No.";
 
@@ -31,24 +30,8 @@ report 50032 "Deal items Update"
         }
     }
 
-    requestpage
-    {
-
-        layout
-        {
-        }
-
-        actions
-        {
-        }
-    }
-
-    labels
-    {
-    }
-
     var
-        DealItem_Cu: Codeunit "50024";
+        DealItem_Cu: Codeunit "DEL Deal Item";
         i: Integer;
 }
 

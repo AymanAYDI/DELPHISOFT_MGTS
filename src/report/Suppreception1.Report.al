@@ -22,24 +22,12 @@ report 50044 "DEL Supp reception1"
         }
     }
 
-    requestpage
-    {
 
-        layout
-        {
-        }
-
-        actions
-        {
-        }
-    }
-
-    labels
-    {
-    }
 
     var
+
         PurchRcptLine: Record "Purch. Rcpt. Line";
+
         ReceptionOK: Boolean;
 }
 

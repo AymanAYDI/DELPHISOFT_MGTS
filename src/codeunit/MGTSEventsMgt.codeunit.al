@@ -1097,7 +1097,7 @@ codeunit 50100 "DEL MGTS_EventsMgt"
         end;
     end;
 
-    
+
     //TODO: les variables "tempSpecialSHBuffer" et "SpecOrderPost"sont globales.-----------------
     //TODO [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post + Print", 'OnBeforeRunPurchPost', '', false, false)]
 
@@ -1122,9 +1122,9 @@ codeunit 50100 "DEL MGTS_EventsMgt"
     //             UNTIL lTempSHBuffer.NEXT = 0;
 
 
-         //     end;
+    //     end;
 
-       ///// COD 90 : to be continued 
+    ///// COD 90 : to be continued 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post", 'OnBeforePostPurchaseDoc', '', false, false)]
 
     local procedure OnBeforePostPurchaseDoc(var PurchaseHeader: Record "Purchase Header"; PreviewMode: Boolean; CommitIsSupressed: Boolean; var HideProgressWindow: Boolean; var ItemJnlPostLine: Codeunit "Item Jnl.-Post Line"; var IsHandled: Boolean)
@@ -1354,9 +1354,22 @@ codeunit 50100 "DEL MGTS_EventsMgt"
     end;
 
 
+
     [EventSubscriber(ObjectType::Page, Page::"Sales Order Subform", 'OnBeforeOpenSpecialPurchOrderForm', '', false, false)]
     local procedure P46_OnBeforeOpenSpecialPurchOrderForm_SalesOrderSubform(SalesOrderLine: Record "Sales Line"; var PageEditable: Boolean; var IsHandled: Boolean)
     begin
         PageEditable := true;
     end;
+
+    //page ext 50030 
+    //  [EventSubscriber(ObjectType::Codeunit, Codeunit::ReqJnlManagement, 'OnAfterGetDescriptionAndRcptName', '', false, false)]
+
+    // local procedure OnAfterGetDescriptionAndRcptName(var ReqLine: Record "Requisition Line"; var Description: Text[100]; var BuyFromVendorName: Text[100]; var LastReqLine: Record "Requisition Line")
+    // var
+    //     ColoredPurchDueDate: Boolean; //TODO : a vérifier 
+    // begin
+    //     ColoredPurchDueDate := ReqLine."DEL Purchase Order Due Date" < TODAY;
+    // end;
+
+
 }

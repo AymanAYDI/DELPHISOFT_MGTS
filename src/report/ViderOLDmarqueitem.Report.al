@@ -1,35 +1,21 @@
-report 50036 "Vider OLD marque item"
+report 50036 "DEL Vider OLD marque item"
 {
     DefaultLayout = RDLC;
     RDLCLayout = './ViderOLDmarqueitem.rdlc';
 
     dataset
     {
-        dataitem(DataItem1100113000; Table27)
+        dataitem(Item; Item)
         {
 
             trigger OnAfterGetRecord()
             begin
-                "OLD marque" := '';
-                MODIFY;
+                "DEL OLD marque" := '';
+                MODIFY();
             end;
         }
     }
 
-    requestpage
-    {
 
-        layout
-        {
-        }
-
-        actions
-        {
-        }
-    }
-
-    labels
-    {
-    }
 }
 

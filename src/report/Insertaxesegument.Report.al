@@ -5,14 +5,17 @@ report 50043 "DEL Insert axe segument"
 
     dataset
     {
-        dataitem(DataItem1000000000; "Sales Price")
+
+
+        dataitem(Item; Item)
         {
             RequestFilterFields = "No.";
+            //TODO 
+            // trigger OnAfterGetRecord()
+            // begin
+            //     ModifSegment("Product Group Code", "Item Category Code");
+            // end;
 
-            trigger OnAfterGetRecord()
-            begin
-                // ModifSegment("Product Group Code", "Item Category Code"); // TODO:
-            end;
         }
     }
 
