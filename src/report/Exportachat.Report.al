@@ -237,6 +237,9 @@ report 50026 "DEL Export achat"
     }
 
     trigger OnPostReport()
+    var
+        FileManagement: Codeunit "File Management";
+        TempBlob: Codeunit "Temp Blob";
     begin
         GeneralSetup.GET;
         GeneralSetup.TESTFIELD(GeneralSetup."Purchase File");
@@ -253,48 +256,52 @@ report 50026 "DEL Export achat"
 
         ExportAchat.RESET;
         ExportAchat.SETFILTER(ExportAchat."Item No.", '<>%1', '');
-        //TODO //FILE 
-        // IF ExportAchat.FINDFIRST THEN BEGIN
-        //     FileVente.WRITEMODE := TRUE;
-        //     FileVente.TEXTMODE := TRUE;
-        //     FileVente.CREATE(Path_Txt);
-        //     FileVente.CREATEOUTSTREAM(VarOut);
-        //     REPEAT
-        //         Line := ExportAchat.Mois +
-        //               ExportAchat."Code Fournisseur" +
-        //               ExportAchat."Type flux" +
-        //               ExportAchat.Activité +
-        //               ExportAchat.Pays +
-        //               ExportAchat.Enseigne +
-        //               ExportAchat."Type d'identifiant" +
-        //               ExportAchat."Identifiant produit" +
-        //               ExportAchat."Identifiant fabricant" +
-        //               ExportAchat.Sens +
-        //               ExportAchat."Quantity Com.Txt" +
-        //               ExportAchat."Quantity Liv. Txt" +
-        //               ExportAchat."Quantity Fact. Txt" +
-        //               ExportAchat."CA HT Com. Txt" +
-        //               ExportAchat."CA HT Liv. Txt" +
-        //               ExportAchat."CA HT Fact. Txt" +
-        //               ExportAchat.Ean +
-        //               ExportAchat."Code Marque" +
-        //               ExportAchat.Fournisseur +
-        //               ExportAchat."Référence fournisseur" +
-        //               ExportAchat.Fabricant +
-        //               ExportAchat."Référence fabricant" +
-        //               ExportAchat."Fournisseur principal" +
-        //               ExportAchat."Référence fournisseur Prin." +
-        //               ExportAchat."Code article B.U" +
-        //               ExportAchat."Groupe marchandise B.U" +
-        //               ExportAchat."Libellé produit" +
-        //               ExportAchat."CA HT Liv. Txt";
+        //TODO //FILE : to check the new code if it's correct 
+        IF ExportAchat.FINDFIRST THEN BEGIN
 
-        //         VarOut.WRITETEXT(Line);
-        //         VarOut.WRITETEXT;
-        //     UNTIL ExportAchat.NEXT = 0;
-        //     FileVente.CLOSE;
-        //     MESSAGE(Text0002);
-        // END;
+            TempBlob.CreateOutStream(VarOut);
+            FileManagement.BLOBExport(TempBlob, Path_Txt, true);
+
+            // FileVente.WRITEMODE := TRUE;
+            // FileVente.TEXTMODE := TRUE;
+            // FileVente.CREATE(Path_Txt);
+            // FileVente.CREATEOUTSTREAM(VarOut);
+            REPEAT
+                Line := ExportAchat.Mois +
+                      ExportAchat."Code Fournisseur" +
+                      ExportAchat."Type flux" +
+                      ExportAchat.Activité +
+                      ExportAchat.Pays +
+                      ExportAchat.Enseigne +
+                      ExportAchat."Type d'identifiant" +
+                      ExportAchat."Identifiant produit" +
+                      ExportAchat."Identifiant fabricant" +
+                      ExportAchat.Sens +
+                      ExportAchat."Quantity Com.Txt" +
+                      ExportAchat."Quantity Liv. Txt" +
+                      ExportAchat."Quantity Fact. Txt" +
+                      ExportAchat."CA HT Com. Txt" +
+                      ExportAchat."CA HT Liv. Txt" +
+                      ExportAchat."CA HT Fact. Txt" +
+                      ExportAchat.Ean +
+                      ExportAchat."Code Marque" +
+                      ExportAchat.Fournisseur +
+                      ExportAchat."Référence fournisseur" +
+                      ExportAchat.Fabricant +
+                      ExportAchat."Référence fabricant" +
+                      ExportAchat."Fournisseur principal" +
+                      ExportAchat."Référence fournisseur Prin." +
+                      ExportAchat."Code article B.U" +
+                      ExportAchat."Groupe marchandise B.U" +
+                      ExportAchat."Libellé produit" +
+                      ExportAchat."CA HT Liv. Txt";
+
+                VarOut.WRITETEXT(Line);
+                VarOut.WRITETEXT;
+            UNTIL ExportAchat.NEXT = 0;
+            //   FileVente.CLOSE;
+            MESSAGE(Text0002);
+        END;
     end;
 
     trigger OnPreReport()

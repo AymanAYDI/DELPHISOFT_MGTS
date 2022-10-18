@@ -1,4 +1,4 @@
-#pragma implicitwith disable
+
 page 50078 "DEL Item Quality List"
 {
     // +---------------------------------------------------------------+

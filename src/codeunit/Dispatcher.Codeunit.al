@@ -1,10 +1,6 @@
 codeunit 50026 "DEL Dispatcher"
 {
 
-    trigger OnRun()
-    begin
-    end;
-
     var
         Element_Cu: Codeunit 50021;
         ERROR_TXT: Label 'ERREUR\Source : %1\Function : %2\Reason : %3';
@@ -343,9 +339,6 @@ codeunit 50026 "DEL Dispatcher"
         IF elementConnection_Re_Loc.COUNT() > 300 THEN
             ERROR(ERROR_TXT, 'Co50026', 'FNC_Element_SommeCout()', 'Array trop petit !');
 
-        //step 1 : pour cette règle de répartition, on veut donner à chaque livraison le meme poids ! de cette manière,
-        //le frais sera distribué de manière égale sur toutes les livraisons : p.e. un frais de 300.- sur trois livraisons = 100.- sur
-        //chaque peut importe le contenu
         arrayIndex := 1;
         IF elementConnection_Re_Loc.FINDFIRST() THEN BEGIN
             REPEAT
@@ -570,13 +563,6 @@ codeunit 50026 "DEL Dispatcher"
         //CIBLE = ACO, VCO, BR ou Purchase Invoice
         Element_Cu.FNC_Set_Element(element_Re_Loc, Target_Element_ID_Co_Par);
 
-        /*
-        IL EXISTE 4 POSSIBILITES DE DISPATCHING :
-          1. FEE     -> ACO
-          2. FEE     -> VCO
-          3. INVOICE / PROVISION -> BR
-          4. INVOICE / PROVISION -> PURCHASE INVOICE
-        */
 
         CASE element_Re_Loc.Type OF
             //1. on dispatch un fee sur une ACO
@@ -601,7 +587,6 @@ codeunit 50026 "DEL Dispatcher"
                             IF fee_Re_Loc.Field = fee_Re_Loc.Field::Douane THEN
                                 currency_Co_Loc := Element_Cu.FNC_Get_Currency(element_Re_Loc.ID);
 
-                            //AJOUTER UNE POSITION AVEC LES PARAMETRES SUIVANTS
                             Position_Cu.FNC_Insert_Position(
                               element_Re_Loc.Deal_ID,
                               Source_Element_ID_Co_Par,
@@ -610,7 +595,6 @@ codeunit 50026 "DEL Dispatcher"
                               currency_Co_Loc,
                               amount_Dec_Loc * -1,
                               element_Re_Loc.ID,
-                              //le Fee est un élément prévu, donc on veut le taux de change prévu dans la table currency exchange
                               Currency_Exchange_Re.FNC_Get_Rate(element_Re_Loc.Deal_ID, currency_Co_Loc, 'EUR'),
                               DealItem_Cu.FNC_Get_Campaign_Code(element_Re_Loc.Deal_ID, ACO_Line_Re_Loc."No.")
                             );
@@ -625,10 +609,9 @@ codeunit 50026 "DEL Dispatcher"
                         IF purchInvLine_Re_Loc.FINDFIRST() THEN
                             REPEAT
 
-                                //somme à ventiler sur 1 article = (% de la valeur de la ligne * somme à ventiler) / quantité
                                 amount_Dec_Loc :=
-                                  (((purchInvLine_Re_Loc."Line Amount" * 1) /
-                                  Element_Amount_Dec_Par) * Amount_To_Dispatch_Dec_Par) / purchInvLine_Re_Loc.Quantity;
+                               (((purchInvLine_Re_Loc."Line Amount" * 1) /
+                               Element_Amount_Dec_Par) * Amount_To_Dispatch_Dec_Par) / purchInvLine_Re_Loc.Quantity;
 
                                 //par défaut on prend la devise du frais
                                 currency_Co_Loc := fee_Re_Loc.Currency;
@@ -654,11 +637,9 @@ codeunit 50026 "DEL Dispatcher"
                             UNTIL (purchInvLine_Re_Loc.NEXT() = 0);
                     END;
                 END;
-            //2. on dispatch un fee sur une VCO
             element_Re_Loc.Type::VCO:
                 BEGIN
 
-                    //on cherche à quel ACO la VCO appartient
                     elementConnection_Re_Loc.RESET();
                     elementConnection_Re_Loc.SETRANGE(Deal_ID, element_Re_Loc.Deal_ID);
                     elementConnection_Re_Loc.SETRANGE(Element_ID, element_Re_Loc.ID);
@@ -679,14 +660,11 @@ codeunit 50026 "DEL Dispatcher"
                                   (((VCO_Line_Re_Loc."Line Amount" * 1) /
                                   Element_Amount_Dec_Par) * Amount_To_Dispatch_Dec_Par) / VCO_Line_Re_Loc.Quantity;
 
-                                //par défaut on prend la devise du frais
                                 currency_Co_Loc := fee_Re_Loc.Currency;
 
-                                //si le montant du fee est calculé sur le champ douane, il faut récupérer la devise de l'VCO
                                 IF fee_Re_Loc.Field = fee_Re_Loc.Field::Douane THEN
                                     currency_Co_Loc := Element_Cu.FNC_Get_Currency(element_Re_Loc.ID);
 
-                                //AJOUTER UNE POSITION
                                 Position_Cu.FNC_Insert_Position(
                                   element_Re_Loc.Deal_ID,
                                   Source_Element_ID_Co_Par,
@@ -695,7 +673,6 @@ codeunit 50026 "DEL Dispatcher"
                                   currency_Co_Loc,
                                   amount_Dec_Loc * -1,
                                   element_Re_Loc.ID,
-                                  //le Fee est un élément prévu, donc on veut le taux de change prévu dans la table currency exchange
                                   Currency_Exchange_Re.FNC_Get_Rate(element_Re_Loc.Deal_ID, currency_Co_Loc, 'EUR'),
                                   VCO_Line_Re_Loc."DEL Campaign Code"
                                 );
@@ -713,19 +690,14 @@ codeunit 50026 "DEL Dispatcher"
                             IF VCO_Line_Re_Loc.FINDFIRST() THEN
                                 REPEAT
 
-                                    //somme à ventiler sur 1 article = (% de la valeur de la ligne * somme à ventiler) / quantité
                                     amount_Dec_Loc :=
-                                      (((VCO_Line_Re_Loc."Line Amount" * 1) /
-                                      Element_Amount_Dec_Par) * Amount_To_Dispatch_Dec_Par) / VCO_Line_Re_Loc.Quantity;
-
-                                    //par défaut on prend la devise du frais
+                                     (((VCO_Line_Re_Loc."Line Amount" * 1) /
+                                     Element_Amount_Dec_Par) * Amount_To_Dispatch_Dec_Par) / VCO_Line_Re_Loc.Quantity;
                                     currency_Co_Loc := fee_Re_Loc.Currency;
 
-                                    //si le montant du fee est calculé sur le champ douane, il faut récupérer la devise de l'VCO
                                     IF fee_Re_Loc.Field = fee_Re_Loc.Field::Douane THEN
                                         currency_Co_Loc := Element_Cu.FNC_Get_Currency(element_Re_Loc.ID);
 
-                                    //AJOUTER UNE POSITION
                                     Position_Cu.FNC_Insert_Position(
                                       element_Re_Loc.Deal_ID,
                                       Source_Element_ID_Co_Par,
@@ -734,7 +706,6 @@ codeunit 50026 "DEL Dispatcher"
                                       currency_Co_Loc,
                                       amount_Dec_Loc * -1,
                                       element_Re_Loc.ID,
-                                      //le Fee est un élément prévu, donc on veut le taux de change prévu dans la table currency exchange
                                       Currency_Exchange_Re.FNC_Get_Rate(element_Re_Loc.Deal_ID, currency_Co_Loc, 'EUR'),
                                       VCO_Line_Re_Loc."DEL Campaign Code"
                                     );
@@ -750,31 +721,24 @@ codeunit 50026 "DEL Dispatcher"
                                 IF salesInvLine_Re_Loc.FINDFIRST() THEN
                                     REPEAT
 
-                                        //somme à ventiler sur 1 article = (% de la valeur de la ligne * somme à ventiler) / quantité
                                         amount_Dec_Loc :=
                                           (((salesInvLine_Re_Loc."Line Amount" * 1) /
                                           Element_Amount_Dec_Par) * Amount_To_Dispatch_Dec_Par) / salesInvLine_Re_Loc.Quantity;
-
-                                        //par défaut on prend la devise du frais
                                         currency_Co_Loc := fee_Re_Loc.Currency;
 
-                                        //si le montant du fee est calculé sur le champ douane, il faut récupérer la devise de l'VCO
                                         IF fee_Re_Loc.Field = fee_Re_Loc.Field::Douane THEN
                                             currency_Co_Loc := Element_Cu.FNC_Get_Currency(element_Re_Loc.ID);
-
-                                        //AJOUTER UNE POSITION
                                         Position_Cu.FNC_Insert_Position(
-                                          element_Re_Loc.Deal_ID,
-                                          Source_Element_ID_Co_Par,
-                                          salesInvLine_Re_Loc."No.",
-                                          salesInvLine_Re_Loc.Quantity,
-                                          currency_Co_Loc,
-                                          amount_Dec_Loc * -1,
-                                          element_Re_Loc.ID,
-                                          //le Fee est un élément prévu, donc on veut le taux de change prévu dans la table currency exchange
-                                          Currency_Exchange_Re.FNC_Get_Rate(element_Re_Loc.Deal_ID, currency_Co_Loc, 'EUR'),
-                                          DealItem_Cu.FNC_Get_Campaign_Code(element_Re_Loc.Deal_ID, salesInvLine_Re_Loc."No.")
-                                        );
+                                                                             element_Re_Loc.Deal_ID,
+                                                                             Source_Element_ID_Co_Par,
+                                                                             salesInvLine_Re_Loc."No.",
+                                                                             salesInvLine_Re_Loc.Quantity,
+                                                                             currency_Co_Loc,
+                                                                             amount_Dec_Loc * -1,
+                                                                             element_Re_Loc.ID,
+                                                                            Currency_Exchange_Re.FNC_Get_Rate(element_Re_Loc.Deal_ID, currency_Co_Loc, 'EUR'),
+                                                                             DealItem_Cu.FNC_Get_Campaign_Code(element_Re_Loc.Deal_ID, salesInvLine_Re_Loc."No.")
+                                                                           );
 
                                     UNTIL (salesInvLine_Re_Loc.NEXT() = 0);
                             END
@@ -899,13 +863,6 @@ codeunit 50026 "DEL Dispatcher"
         //CIBLE = ACO, VCO, BR ou Purchase Invoice
         Element_Cu.FNC_Set_Element(element_Re_Loc, Target_Element_ID_Co_Par);
 
-        /*
-        IL EXISTE 4 POSSIBILITES DE DISPATCHING :
-          1. FEE     -> ACO
-          2. FEE     -> VCO
-          3. INVOICE -> BR
-          4. INVOICE -> PURCHASE INVOICE
-        */
 
         CASE element_Re_Loc.Type OF
             //1. on dispatch un fee sur une ACO
@@ -1251,13 +1208,6 @@ codeunit 50026 "DEL Dispatcher"
         //CIBLE = ACO, VCO, BR ou Purchase Invoice
         Element_Cu.FNC_Set_Element(element_Re_Loc, Target_Element_ID_Co_Par);
 
-        /*
-        IL EXISTE 4 POSSIBILITES DE DISPATCHING :
-          1. FEE     -> ACO
-          2. FEE     -> VCO
-          3. INVOICE -> BR
-          4. INVOICE -> PURCHASE INVOICE
-        */
 
         CASE element_Re_Loc.Type OF
             //1. on dispatch un fee sur une ACO
@@ -1606,14 +1556,6 @@ codeunit 50026 "DEL Dispatcher"
         //CIBLE = ACO, VCO, BR ou Purchase Invoice
         Element_Cu.FNC_Set_Element(element_Re_Loc, Target_Element_ID_Co_Par);
 
-        /*
-        IL EXISTE 4 POSSIBILITES DE DISPATCHING :
-          1. FEE     -> ACO
-          2. FEE     -> VCO
-          3. INVOICE -> BR
-          4. INVOICE -> PURCHASE INVOICE
-        */
-
         CASE element_Re_Loc.Type OF
             //1. on dispatch un fee sur une ACO
             element_Re_Loc.Type::ACO:
@@ -1957,13 +1899,6 @@ codeunit 50026 "DEL Dispatcher"
         //CIBLE = ACO, VCO, BR ou Purchase Invoice
         Element_Cu.FNC_Set_Element(element_Re_Loc, Target_Element_ID_Co_Par);
 
-        /*
-        IL EXISTE 4 POSSIBILITES DE DISPATCHING :
-          1. FEE     -> ACO
-          2. FEE     -> VCO
-          3. INVOICE / PROVISION -> BR
-          4. INVOICE / PROVISION -> PURCHASE INVOICE
-        */
 
         CASE element_Re_Loc.Type OF
             //1. on dispatch un fee sur une ACO
@@ -2261,7 +2196,6 @@ codeunit 50026 "DEL Dispatcher"
     begin
         total_Dec_Ret := 0;
         arrayIndex := 1;
-        //CHG02
         WHILE arrayIndex <= 300 DO BEGIN
             total_Dec_Ret += Value_Ar_Par[arrayIndex];
             arrayIndex += 1;

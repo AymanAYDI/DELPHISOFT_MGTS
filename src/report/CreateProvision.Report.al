@@ -51,7 +51,7 @@ report 50014 "DEL Create Provision"
                             element_Re_Loc.RESET();
                             element_Re_Loc.SETRANGE(Deal_ID, "DEL Element".Deal_ID);
                             element_Re_Loc.SETRANGE(Type, "DEL Element".Type::Provision);
-                            element_Re_Loc.SETRANGE(Period, CALCDATE('<-CM>', date_Da));
+                            element_Re_Loc.SETRANGE(Period, CALCDATE('<-CM>', date_DA));
                             element_Re_Loc.SETRANGE(Fee_ID, "DEL Element".Fee_ID);
                             element_Re_Loc.SETRANGE(Fee_Connection_ID, "DEL Element".Fee_Connection_ID);
                             IF element_Re_Loc.FINDFIRST() THEN
@@ -107,12 +107,12 @@ report 50014 "DEL Create Provision"
 
                         IF currentPeriod_Bo THEN BEGIN
 
-                            IF Element_Cu.FNC_Get_Period(salesInvoice_Co_Loc) <> (FORMAT(date_Da, 0, '<Month>') + FORMAT(date_Da, 0, '<Year4>')) THEN
+                            IF Element_Cu.FNC_Get_Period(salesInvoice_Co_Loc) <> (FORMAT(date_DA, 0, '<Month>') + FORMAT(date_DA, 0, '<Year4>')) THEN
                                 skip := TRUE;
 
                         END ELSE BEGIN
 
-                            maDate := CALCDATE('<-CM>', date_Da);
+                            maDate := CALCDATE('<-CM>', date_DA);
 
                             IF salesInvoiceElement_Re.Period >= maDate THEN
                                 skip := TRUE;
@@ -139,15 +139,15 @@ report 50014 "DEL Create Provision"
         {
             area(content)
             {
-                field(date_Da; date_Da)
+                field(date_Da; date_DA)
                 {
                     Caption = 'Date';
                 }
-                field(DATEDA; Format(date_Da, 0, '<Month Text>'))
+                field(DATEDA; Format(date_DA, 0, '<Month Text>'))
                 {
                     Caption = 'Mois';
                 }
-                field(DATEDAA; DATE2DMY(date_Da, 3))
+                field(DATEDAA; DATE2DMY(date_DA, 3))
                 {
                     Caption = 'Année';
                 }
@@ -163,29 +163,21 @@ report 50014 "DEL Create Provision"
 
     trigger OnInitReport()
     begin
-        date_Da := TODAY;
+        date_DA := TODAY;
 
-        //dernier jour de la période
-        monthLastWorkingDay := Deal_Cu.FNC_GetMonthLastWorkDay(date_Da);
-
-        //premier jour de la période suivante
-        monthFirstWorkingDay := Deal_Cu.FNC_GetMonthFirstWorkDay(CALCDATE('<+1M>', date_Da));
+        monthLastWorkingDay := Deal_Cu.FNC_GetMonthLastWorkDay(date_DA);
+        monthFirstWorkingDay := Deal_Cu.FNC_GetMonthFirstWorkDay(CALCDATE('<+1M>', date_DA));
 
         currentPeriod_Bo := true;
     end;
 
     trigger OnPostReport()
     var
-        flowFields_Re_Loc: Record "DEL FlowFields";
+
         spsp_Re_Loc: Record "DEL Ship. Prov. Sele. Params";
     begin
         FNC_ProgressBar_Close(1);
-
-        //flowFields_Re_Loc.GET('KEY');
-        //flowFields_Re_Loc.Date_Period := date_Da;
-        //flowFields_Re_Loc.MODIFY();
-
-        spsp_Re_Loc.FNC_Define(date_Da, currentPeriod_Bo);
+        spsp_Re_Loc.FNC_Define(date_DA, currentPeriod_Bo);
     end;
 
     trigger OnPreReport()
@@ -218,7 +210,7 @@ report 50014 "DEL Create Provision"
         isColored: Boolean;
         Skip: Boolean;
         lastDealID: Code[20];
-        date_Da: Date;
+        date_DA: Date;
         monthFirstWorkingDay: Date;
         monthLastWorkingDay: Date;
         diaProgress: array[10] of Dialog;
@@ -228,8 +220,6 @@ report 50014 "DEL Create Provision"
         intProgressI: array[10] of Integer;
         intProgressStep: array[10] of Integer;
         intProgressTotal: array[10] of Integer;
-        PeriodYear: Option;
-        PeriodMonth: Option Janvier,"Février",Mars,Avril,Mai,Juin,Juillet,Aout,Septembre,Octobre,Novembre,"Décembre";
         timProgress: array[10] of Time;
 
     procedure FNC_RealAmountForPlannedFee(plannedElement_Re_Par: Record "DEL Element") amount_Dec_Ret: Decimal
@@ -260,18 +250,15 @@ report 50014 "DEL Create Provision"
                 if position_Re_Loc.FindSET() then
                     repeat
 
-                        if dealShipmentConnection_Re_Loc.Get("DEL Deal".ID, "DEL Deal Shipment".ID, position_Re_Loc."Sub Element_ID") then begin
-                            //PLLogistic_Re_Temp."Real Element ID" := realElement_Re_Loc.ID;
-
-                            //si la position est déjà en DS on la garde
+                        if dealShipmentConnection_Re_Loc.Get("DEL Deal".ID, "DEL Deal Shipment".ID, position_Re_Loc."Sub Element_ID") then
                             if position_Re_Loc.Currency = '' then
                                 amount_Dec_Ret += position_Re_Loc."Line Amount"
-                            //si elle est en devise étrangère, on la ramène à la DS
+
                             else begin
                                 rate_Dec_Loc := 1 / currExRate_Re_loc.ExchangeRate(realElement_Re_Loc.Date, position_Re_Loc.Currency);
                                 amount_Dec_Ret += position_Re_Loc."Line Amount" * rate_Dec_Loc;
                             end;
-                        end
+
 
                     until (position_Re_Loc.Next() = 0);
 
@@ -283,8 +270,8 @@ report 50014 "DEL Create Provision"
     begin
 
         intProgress[index_Int_Par] := 0;
-        interval[index_Int_Par] := interval_Int_Par; //en milisecondes
-        intProgressStep[index_Int_Par] := stepProgress_Int_Par; //update si au moins 5% d'avancé (échelle : 10% = 1000)
+        interval[index_Int_Par] := interval_Int_Par;
+        intProgressStep[index_Int_Par] := stepProgress_Int_Par;
         intNextProgressStep[index_Int_Par] := intProgressStep[index_Int_Par];
         intProgressI[index_Int_Par] := 0;
         diaProgress[index_Int_Par].OPEN(

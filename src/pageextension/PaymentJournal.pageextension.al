@@ -56,7 +56,7 @@ pageextension 50026 "DEL PaymentJournal" extends "Payment Journal" //256
 
                 trigger OnAction()
                 var
-                    SRVendorPaymentAdviceDetai: Report "SR Vendor Payment Advice Detai";
+                    SRVendorPaymentAdviceDetai: Report "DEL SR Vendor Pay. Advi. Detai";
                 begin
                     CLEAR(SRVendorPaymentAdviceDetai);
                     SRVendorPaymentAdviceDetai.DefineJourBatch(Rec); //TODO : just to check if DefineJourBatch(Rec) works 

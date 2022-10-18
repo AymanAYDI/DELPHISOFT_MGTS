@@ -33,14 +33,14 @@ codeunit 50036 "DEL Import commande vente"
                         SalesLine.VALIDATE("No.", ItemRef."Item No.");
                 UNTIL (ItemRef.NEXT() = 0) OR (SalesLine."No." <> '');
         END;
-        IF REImportCdeVente.Description <> '' THEN //DEL.SAZ 18.08.2018
+        IF REImportCdeVente.Description <> '' THEN
             SalesLine.Description := REImportCdeVente.Description;
         EVALUATE(SalesLine.Quantity, REImportCdeVente.Quantity);
         SalesLine.VALIDATE(Quantity);
-        IF REImportCdeVente."Unit Price" <> '' THEN BEGIN //DEL.SAZ 18.08.2018
+        IF REImportCdeVente."Unit Price" <> '' THEN BEGIN
             EVALUATE(SalesLine."Unit Price", REImportCdeVente."Unit Price");
             SalesLine.VALIDATE("Unit Price");
-        END;//DEL.SAZ 18.08.2018
+        END;
         IF REImportCdeVente.Amount <> '' THEN BEGIN
             EVALUATE(SalesLine.Amount, REImportCdeVente.Amount);
             SalesLine.VALIDATE(Amount);

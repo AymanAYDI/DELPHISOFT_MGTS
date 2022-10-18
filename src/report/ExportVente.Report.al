@@ -14,7 +14,7 @@ report 50025 "DEL Export Vente"
             begin
 
                 SalesInvoiceLine.RESET;
-                SalesInvoiceLine.SETRANGE(SalesInvoiceLine."Posting Date", DateDebut, DateFin);
+                SalesInvoiceLine.SETRANGE(SalesInvoiceLine."Posting Date", DateBegin, DateEnd);
                 SalesInvoiceLine.SETRANGE(SalesInvoiceLine.Type, SalesInvoiceLine.Type::Item);
                 IF FiltreArticle <> '' THEN
                     SalesInvoiceLine.SETFILTER(SalesInvoiceLine."No.", FiltreArticle);
@@ -45,7 +45,7 @@ report 50025 "DEL Export Vente"
 
 
                 SalesCrMemoLine.RESET;
-                SalesCrMemoLine.SETRANGE(SalesCrMemoLine."Posting Date", DateDebut, DateFin);
+                SalesCrMemoLine.SETRANGE(SalesCrMemoLine."Posting Date", DateBegin, DateEnd);
                 SalesCrMemoLine.SETRANGE(SalesCrMemoLine.Type, SalesCrMemoLine.Type::Item);
 
                 IF FiltreArticle <> '' THEN
@@ -77,7 +77,7 @@ report 50025 "DEL Export Vente"
 
             trigger OnPreDataItem()
             begin
-                IF DateDebut = 0D THEN
+                IF DateBegin = 0D THEN
                     ERROR(Text0001);
             end;
         }
@@ -90,24 +90,24 @@ report 50025 "DEL Export Vente"
         {
             area(content)
             {
-                field(DateDebut; DateDebut)
+                field(DateDebut; DateBegin)
                 {
                     Caption = 'Beging Date';
 
                     trigger OnValidate()
                     begin
-                        IF DateDebut <> 0D THEN BEGIN
-                            Mois := DATE2DMY(DateDebut, 2);
-                            Year := DATE2DMY(DateDebut, 3);
-                            DateDebut := DMY2DATE(1, Mois, Year);
-                            DateFin := CALCDATE('+FM', DateDebut);
+                        IF DateBegin <> 0D THEN BEGIN
+                            Mois := DATE2DMY(DateBegin, 2);
+                            Year := DATE2DMY(DateBegin, 3);
+                            DateBegin := DMY2DATE(1, Mois, Year);
+                            DateEnd := CALCDATE('+FM', DateBegin);
                         END
                         ELSE BEGIN
-                            DateFin := 0D;
+                            DateEnd := 0D;
                         END;
                     end;
                 }
-                field(DateFin; DateFin)
+                field(DateFin; DateEnd)
                 {
                     Caption = 'End Date';
                     Editable = false;
@@ -161,10 +161,13 @@ report 50025 "DEL Export Vente"
     }
 
     trigger OnPostReport()
+    var
+        FileManagement: Codeunit "File Management";
+        TempBlob: Codeunit "Temp Blob";
     begin
         GeneralSetup.GET;
         GeneralSetup.TESTFIELD(GeneralSetup."Sales File");
-        Path_Txt := GeneralSetup."Sales File";
+        //Path_Txt := GeneralSetup."Sales File";
 
         IF Mois < 10 THEN
             DateNow_Te := FORMAT(Year) + '_0' + FORMAT(Mois)
@@ -173,22 +176,25 @@ report 50025 "DEL Export Vente"
         TimeNow_Te := DELCHR(FORMAT(TIME), '=', ':/.');
 
         Path_Txt := GeneralSetup."Sales File";
-        Path_Txt := Path_Txt + 'CONSO_VENTES_MG_S2_CH_NGT_' + DateNow_Te + '_' + TimeNow_Te + '_fv1.CSV';
-        //TODO //FILE 
+        Path_Txt := 'CONSO_VENTES_MG_S2_CH_NGT_' + DateNow_Te + '_' + TimeNow_Te + '_fv1.CSV';
+        //TODO //FILE : to check the new code if it's correct 
+        TempBlob.CreateOutStream(VarOut);
+        FileManagement.BLOBExport(TempBlob, Path_Txt, True);
+
         // FileVente.WRITEMODE := TRUE;
         // FileVente.TEXTMODE := TRUE;
         // FileVente.CREATE(Path_Txt);
         // FileVente.CREATEOUTSTREAM(VarOut);
-        // IF ExportVente.FINDFIRST THEN
-        //     REPEAT
-        //         Line := ExportVente.Mois + ExportVente.Activité + ExportVente.Pays + ExportVente.Enseigne + ExportVente."Type d'identifiant" + ExportVente."Identifiant produit" + ExportVente."Identifiant fabricant" +
-        //               ExportVente.Sens + ExportVente.Quantité + ExportVente."C.A. H.T." + ExportVente.Ean + ExportVente."Code Marque" + ExportVente.Fournisseur + ExportVente."Référence fournisseur" + ExportVente.Fabricant +
-        //               ExportVente."Référence fabricant" + ExportVente."Fournisseur principal" + ExportVente."Référence fournisseur Prin." + ExportVente."Code article B.U" + ExportVente."Groupe marchandise B.U" +
-        //               ExportVente."Libellé produit";
-        //         VarOut.WRITETEXT(Line);
-        //         VarOut.WRITETEXT;
-        //     UNTIL ExportVente.NEXT = 0;
-        // FileVente.CLOSE;
+        IF ExportVente.FINDFIRST THEN
+            REPEAT
+                Line := ExportVente.Mois + ExportVente.Activité + ExportVente.Pays + ExportVente.Enseigne + ExportVente."Type d'identifiant" + ExportVente."Identifiant produit" + ExportVente."Identifiant fabricant" +
+                      ExportVente.Sens + ExportVente.Quantité + ExportVente."C.A. H.T." + ExportVente.Ean + ExportVente."Code Marque" + ExportVente.Fournisseur + ExportVente."Référence fournisseur" + ExportVente.Fabricant +
+                      ExportVente."Référence fabricant" + ExportVente."Fournisseur principal" + ExportVente."Référence fournisseur Prin." + ExportVente."Code article B.U" + ExportVente."Groupe marchandise B.U" +
+                      ExportVente."Libellé produit";
+                VarOut.WRITETEXT(Line);
+                VarOut.WRITETEXT;
+            UNTIL ExportVente.NEXT = 0;
+        //  FileVente.CLOSE;
         MESSAGE('Fichier créer');
     end;
 
@@ -198,34 +204,34 @@ report 50025 "DEL Export Vente"
     end;
 
     var
-        Item_Rec: Record Item;
-        SalesInvoiceLine: Record "Sales Invoice Line";
+        CurrExchRate: Record "Currency Exchange Rate";
         ExportVente: Record "DEL Export vente";
-        SalesInvoiceHeader: Record "Sales Invoice Header";
-        SalesCrMemoLine: Record "Sales Cr.Memo Line";
-        SalesCrMemoHeader: Record "Sales Cr.Memo Header";
-        Vendor_Rec: Record Vendor;
         GeneralSetup: Record "DEL General Setup";
         Item: Record Item;
-        DateDebut: Date;
-        DateFin: Date;
+        Item_Rec: Record Item;
+        SalesCrMemoHeader: Record "Sales Cr.Memo Header";
+        SalesCrMemoLine: Record "Sales Cr.Memo Line";
+        SalesInvoiceHeader: Record "Sales Invoice Header";
+        SalesInvoiceLine: Record "Sales Invoice Line";
+        Vendor_Rec: Record Vendor;
+        ItemList: Page "Item List";
+        VendorList: Page "Vendor List";
+        DateBegin: Date;
+        DateEnd: Date;
+        TauxChange1: Decimal;
+        TauxChange2: Decimal;
+        FileVente: File;
+        i: Integer;
         Mois: Integer;
         Year: Integer;
         Text0001: Label 'Invalid date';
-        FileVente: File;
         VarOut: OutStream;
-        Line: Text[312];
-        FiltreFourn: Text;
+        DateNow_Te: Text;
         FiltreArticle: Text;
-        ItemList: Page "Item List";
-        VendorList: Page "Vendor List";
+        FiltreFourn: Text;
         Path_Txt: Text;
         TimeNow_Te: Text;
-        DateNow_Te: Text;
-        i: Integer;
-        CurrExchRate: Record "Currency Exchange Rate";
-        TauxChange1: Decimal;
-        TauxChange2: Decimal;
+        Line: Text[312];
 
 
     procedure AddInfo(SensLine: Text[1])
@@ -244,33 +250,33 @@ report 50025 "DEL Export Vente"
             IF Mois < 10 THEN
                 ExportVente.Mois := FORMAT(Year) + '0' + FORMAT(Mois)
             ELSE
-                ExportVente.Mois := FORMAT(Year) + FORMAT(Mois);                             //1
-            ExportVente.Activité := 'S2';                                                      //2
-            ExportVente.Pays := 'CH';                                                      //3
-            ExportVente.Enseigne := 'NGT';                                                     //4
-            ExportVente."Type d'identifiant" := '9';                                                       //5
-            ExportVente."Identifiant produit" := CorLengthTxt(SalesInvoiceLine."No.", 30);                   //6
-            ExportVente."Identifiant fabricant" := CorLengthTxt('', 10);                                       //7
-                                                                                                               //ExportVente.Sens:=                                                                                     //8
+                ExportVente.Mois := FORMAT(Year) + FORMAT(Mois);
+            ExportVente.Activité := 'S2';
+            ExportVente.Pays := 'CH';
+            ExportVente.Enseigne := 'NGT';
+            ExportVente."Type d'identifiant" := '9';
+            ExportVente."Identifiant produit" := CorLengthTxt(SalesInvoiceLine."No.", 30);
+            ExportVente."Identifiant fabricant" := CorLengthTxt('', 10);
+
             ExportVente.QuantityDec := ExportVente.QuantityDec + SalesInvoiceLine.Quantity;
             IF (TauxChange1 <> 0) AND (TauxChange2 <> 0) THEN
                 ExportVente."CA HT" := ExportVente."CA HT" + ROUND(((SalesInvoiceLine.Amount / TauxChange1) * TauxChange2) * 100, 1, '=')
             ELSE
                 ExportVente."CA HT" := ExportVente."CA HT" + ROUND(SalesInvoiceLine.Amount * 100, 1, '=');
-            ExportVente.Quantité := CorLengthDec(ExportVente.QuantityDec, 12, '0');              //9
-            ExportVente."C.A. H.T." := CorLengthDec(ExportVente."CA HT", 12, '0');                      //10
-            ExportVente.Ean := CorLengthTxt(Item_Rec."DEL Code EAN 13", 13);                   //11
-            ExportVente."Code Marque" := CorLengthTxt(Item_Rec."DEL Marque", 10);                          //12
-            ExportVente.Fournisseur := CorLengthTxt(Item_Rec."Vendor No.", 10);                    //13
-            ExportVente."Référence fournisseur" := CorLengthTxt(Item_Rec."Vendor Item No.", 30);               //14
-            ExportVente.Fabricant := CorLengthTxt('', 10);                                       //15
-            ExportVente."Référence fabricant" := CorLengthTxt('', 30);                                       //16
+            ExportVente.Quantité := CorLengthDec(ExportVente.QuantityDec, 12, '0');
+            ExportVente."C.A. H.T." := CorLengthDec(ExportVente."CA HT", 12, '0');
+            ExportVente.Ean := CorLengthTxt(Item_Rec."DEL Code EAN 13", 13);
+            ExportVente."Code Marque" := CorLengthTxt(Item_Rec."DEL Marque", 10);
+            ExportVente.Fournisseur := CorLengthTxt(Item_Rec."Vendor No.", 10);
+            ExportVente."Référence fournisseur" := CorLengthTxt(Item_Rec."Vendor Item No.", 30);
+            ExportVente.Fabricant := CorLengthTxt('', 10);
+            ExportVente."Référence fabricant" := CorLengthTxt('', 30);
             ExportVente."Fournisseur principal" := CorLengthTxt(Item_Rec."Vendor No.", 10);
-            ;                   //17
-            ExportVente."Référence fournisseur Prin." := CorLengthTxt(Item_Rec."Vendor Item No.", 30);               //19
-            ExportVente."Code article B.U" := CorLengthTxt(Item_Rec."No.", 10);                           //20
-                                                                                                          //TODO : check product Group  //ExportVente."Groupe marchandise B.U" := CorLengthTxt(Item_Rec."DEL Product Group Code", 30);           //21
-            ExportVente."Libellé produit" := CorLengthTxt(Item_Rec.Description, 50);                     //22
+
+            ExportVente."Référence fournisseur Prin." := CorLengthTxt(Item_Rec."Vendor Item No.", 30);
+            ExportVente."Code article B.U" := CorLengthTxt(Item_Rec."No.", 10);
+            //TODO : check product Group  //ExportVente."Groupe marchandise B.U" := CorLengthTxt(Item_Rec."DEL Product Group Code", 30);           //21
+            ExportVente."Libellé produit" := CorLengthTxt(Item_Rec.Description, 50);
             ExportVente.MODIFY;
         END;
 

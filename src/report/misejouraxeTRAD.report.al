@@ -47,10 +47,10 @@ report 50033 "DEL mise à jour axe TRAD"
         IF NewParentDimSetID = OldParentDimSetID THEN
             EXIT;
 
-        PurchLine.RESET;
+        PurchLine.RESET();
         PurchLine.SETRANGE("Document Type", "Purchase Header"."Document Type");
         PurchLine.SETRANGE("Document No.", "Purchase Header"."No.");
-        PurchLine.LOCKTABLE;
+        PurchLine.LOCKTABLE();
         IF PurchLine.FIND('-') THEN
             REPEAT
                 NewDimSetID := DimMgt.GetDeltaDimSetID(PurchLine."Dimension Set ID", NewParentDimSetID, OldParentDimSetID);

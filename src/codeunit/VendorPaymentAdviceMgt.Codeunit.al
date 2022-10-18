@@ -171,25 +171,25 @@ codeunit 50057 "DEL Vendor Payment Advice Mgt."
     end;
 
 
-    //TODO procedure SavePDF(_JournalTemplateName: Code[10]; _JournalBatchName: Code[10]; _VendorNo: Code[20]; var _ServerAttachmentFilePath: Text)
-    // var
+    procedure SavePDF(_JournalTemplateName: Code[10]; _JournalBatchName: Code[10]; _VendorNo: Code[20]; var _ServerAttachmentFilePath: Text)
+    var
 
-    //     Vendor: Record Vendor;
-    //     GenJournalLine: Record "Gen. Journal Line";
-    //     FileMgt: Codeunit "File Management";
-    // //TODO VendorPaymentAdvice: Report 50035;
-    // begin
-    //     _ServerAttachmentFilePath := COPYSTR(FileMgt.ServerTempFileName('pdf'), 1, 250);
+        Vendor: Record Vendor;
+        GenJournalLine: Record "Gen. Journal Line";
+        FileMgt: Codeunit "File Management";
+        VendorPaymentAdvice: Report "DEL SR Vendor Pay. Advi. Detai";
+    begin
+        //TODO     _ServerAttachmentFilePath := COPYSTR(FileMgt.ServerTempFileName('pdf'), 1, 250);
 
-    //     GenJournalLine."Journal Template Name" := _JournalTemplateName;
-    //     GenJournalLine."Journal Batch Name" := _JournalBatchName;
+        GenJournalLine."Journal Template Name" := _JournalTemplateName;
+        GenJournalLine."Journal Batch Name" := _JournalBatchName;
 
-    //     Vendor.SETRANGE("No.", _VendorNo);
-    //     VendorPaymentAdvice.SETTABLEVIEW(Vendor);
-    //     VendorPaymentAdvice.DefineJourBatch(GenJournalLine);
-    //     VendorPaymentAdvice.SkipMessage(TRUE);
-    //     VendorPaymentAdvice.SAVEASPDF(_ServerAttachmentFilePath);
-    // end;
+        Vendor.SETRANGE("No.", _VendorNo);
+        VendorPaymentAdvice.SETTABLEVIEW(Vendor);
+        VendorPaymentAdvice.DefineJourBatch(GenJournalLine);
+        VendorPaymentAdvice.SkipMessage(TRUE);
+        //TODO       VendorPaymentAdvice.SAVEASPDF(_ServerAttachmentFilePath);
+    end;
 
 
     procedure DefineJourBatch(_GnlJourLine: Record "Gen. Journal Line")

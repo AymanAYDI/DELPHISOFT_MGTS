@@ -388,37 +388,7 @@ codeunit 50033 "DEL Provision"
         arrayIndex: Integer;
         textArray: Text[255];
     begin
-        /*
-        DISPATCH UN ELEMENT (Provision) SUR D'AUTRES ELEMENTS
-        
-        Exemple:
-        On a une provision (Element) de 2000.- à ventiler (dispatcher, répartir) sur 3 livraisons (aussi des Element)
-        On ventile selon la méthode du "prorata value".
-        Valeur livraison 1 : 150
-        Valeur livraison 2 : 350
-        Valeur livraison 3 : 500
-        --
-        Valeur totale : 1000
-        
-        step 1  : on calcul la somme de la valeur de la livraison en fonction du paramètre choisi (valeur, poid, volume, etc..)
-        step 2  : array.sum, = 1000
-        step 3a : on calcul le pourcentage représenté par chaque ligne du tableau
-        step 3b : la somme du frais à dispatcher est multipliée par le pourcentage
-        step 4  : on dispatch sur les positions d'un élément
-        
-        array val.  step 1   step 3a  step 3b    step 4
-        -------------------------------------------------
-        array[1]    150      0.15     300      |-- 150
-        array[2]    350      0.35     700 -----|
-        array[3]    500      0.5      1000     |-- 350
-        array[4]    -        -        -        |
-        array[5]    -        -        -        |-- 200
-        array[6]    -        -        -
-        array[7]    -        -        -
-        array[8]    -        -        -
-        array[9]    -        -        -
-        array[10]   -        -        -
-        */
+
 
         Element_Cu.FNC_Set_Element(element_Re_Loc, Element_ID_Co_Loc);
 
@@ -426,12 +396,6 @@ codeunit 50033 "DEL Provision"
         IF ProvisionAmount_Dec_Loc <> 0 THEN BEGIN
 
             Fee_Cu.FNC_Set(fee_Re_Loc, element_Re_Loc.Fee_ID);
-
-            //CHG04
-            //la variable value_Ar_Loc est un tableau !
-
-            //step 1
-            //On dispatch selon les règles de Ventilation Element
             CASE fee_Re_Loc."Ventilation Element" OF
                 fee_Re_Loc."Ventilation Element"::Value:
                     Dispatcher_Cu.FNC_Element_Value(value_Ar_Loc, element_Re_Loc.ID, FALSE);
@@ -449,8 +413,6 @@ codeunit 50033 "DEL Provision"
                     Dispatcher_Cu.FNC_Element_Quantity(value_Ar_Loc, element_Re_Loc.ID, FALSE);
             END;
 
-            //step 2
-            //TOTAL DES VALEURS DE L'ARRAY
             sum_Dec_Loc := Dispatcher_Cu.FNC_Array_Sum(value_Ar_Loc);
 
             IF sum_Dec_Loc = 0 THEN
@@ -465,26 +427,17 @@ codeunit 50033 "DEL Provision"
               amountToDispatch_Dec_Loc //montant du Fee/Invoice en devise de l'article et pas forcément en EUR
             );
 
-            //FNC_Print_Array(value_Ar_Loc);
-
-            //------- dispatch sur les positions
-            //itération sur Element Connection pour savoir à quel(s) Element(s) s'applique(nt) le Fee
             elementConnection_Re_Loc.RESET();
-            //elementConnection_Re_Loc.setrange(Deal_ID, element_Re_Loc.Deal_ID);
             elementConnection_Re_Loc.SETRANGE(Element_ID, element_Re_Loc.ID);
 
             arrayIndex := 1;
             IF elementConnection_Re_Loc.FINDFIRST THEN
                 REPEAT
-
-                    //Si elementconnection.apply to fait parti de l'affaire elementconnection.dealID
                     applyElement_Re_Loc.RESET();
                     applyElement_Re_Loc.SETRANGE(Deal_ID, elementConnection_Re_Loc.Deal_ID);
                     applyElement_Re_Loc.SETRANGE(ID, elementConnection_Re_Loc."Apply To");
                     IF applyElement_Re_Loc.FINDFIRST THEN BEGIN
 
-                        //step 4
-                        //On dispatch selon les règles de Ventilation Position
                         CASE fee_Re_Loc."Ventilation Position" OF
                             fee_Re_Loc."Ventilation Position"::"Prorata Value":
                                 Dispatcher_Cu.FNC_Position_Prorata_Value(
@@ -492,8 +445,7 @@ codeunit 50033 "DEL Provision"
                                   elementConnection_Re_Loc."Apply To",
                                   value_Ar_Loc[arrayIndex],
                                   Element_Cu.FNC_Get_Amount_FCY(elementConnection_Re_Loc."Apply To")
-                                //montant du Fee/Invoice en devise de l'article et pas forcément en EUR
-                                );
+                               );
                             fee_Re_Loc."Ventilation Position"::"Prorata Volume":
                                 Dispatcher_Cu.FNC_Position_Prorata_Volume(
                                   elementConnection_Re_Loc.Element_ID,
@@ -561,7 +513,6 @@ codeunit 50033 "DEL Provision"
         element_ID_Co_Loc := '';
         provisionDealID_Co_Loc := '';
 
-        //on cherche les provisions dans la table des provisions pour l'utilisateur loggé
         sps_Re_Loc.RESET();           //useserid
         sps_Re_Loc.SETRANGE(USER_ID, USERID);
         sps_Re_Loc.SETFILTER("Provision Amount", '>%1', 0);
@@ -572,9 +523,6 @@ codeunit 50033 "DEL Provision"
             REPEAT
 
                 FNC_ProgressBar_Update(1);
-
-                //CONTROLER SI UNE PROVISION EXISTE DEJA POUR LE MEME FRAIS DANS LA MEME LIVRAISON ET SI OUI LA SUPPRIMER
-                //On cherche si pour la meme livraison et le meme frais, une provision a déjà été générée
                 element_Re_Loc.RESET();
                 element_Re_Loc.SETCURRENTKEY(Deal_ID, Type);
                 element_Re_Loc.SETRANGE(Deal_ID, sps_Re_Loc.Deal_ID);
@@ -590,8 +538,6 @@ codeunit 50033 "DEL Provision"
 
                     UNTIL (element_Re_Loc.NEXT() = 0);
 
-                //AJOUTE L'ELEMENT PROVISION, SES CONNECTIONS ET POSITIONS
-                //LE PARAMETRE FALSE INDIQUE QU'IL NE S'AGIT PAS DE L'ELEMENT D'EXTOURNE
                 element_ID_Co_Loc := Element_Cu.FNC_Add_Provision(sps_Re_Loc, FALSE);
 
                 IF element_ID_Co_Loc <> '' THEN BEGIN
@@ -605,21 +551,14 @@ codeunit 50033 "DEL Provision"
                     //créer les positions pour la provision qu'on vient de créer
                     FNC_Dispatch(element_ID_Co_Loc, sps_Re_Loc."Provision Amount");
 
-
-                    //AJOUTE L'ELEMENT PROVISION EXTOURNE, SES CONNECTIONS ET POSITIONS
-                    //LE PARAMETRE TRUE INDIQUE QU'IL S'AGIT DE L'ELEMENT D'EXTOURNE
                     element_ID_Co_Loc := Element_Cu.FNC_Add_Provision(sps_Re_Loc, TRUE);
 
                     IF element_ID_Co_Loc <> '' THEN BEGIN
 
-                        //ajouter une shipment connection
                         Element_Cu.FNC_Add_Provision_Connection(element_ID_Co_Loc, sps_Re_Loc, ConnectionType_Op_Par::Shipment);
 
                         //ajouter la connection à l'élément
                         Element_Cu.FNC_Add_Provision_Connection(element_ID_Co_Loc, sps_Re_Loc, ConnectionType_Op_Par::Element);
-
-                        //créer les positions pour la provision qu'on vient de créer
-                        //pour l'extourne, le montant est logiquement inversé
                         FNC_Dispatch(element_ID_Co_Loc, sps_Re_Loc."Provision Amount" * -1);
 
                     END ELSE
@@ -631,25 +570,6 @@ codeunit 50033 "DEL Provision"
                         );
 
 
-                    //On supprime la sélection
-                    //sps_Re_Loc.DELETE();
-
-                    /*en principe une fois les positions créées, il n'y a plus rien à mettre à jour..
-                    //si on a changé d'affaire on crée une update request
-                    IF provisionDealID_Co_Loc <> sps_Re_Loc.Deal_ID THEN BEGIN
-
-                      provisionDealID_Co_Loc := sps_Re_Loc.Deal_ID;
-
-                      //On crée une demande de mise à jour
-                      updateRequest_Co_Loc := UpdateRequestManager_Cu.FNC_Add_Request(
-                        sps_Re_Loc.Deal_ID,
-                        urm_Re_Loc.Requested_By_Type::Provision,
-                        '',
-                        CURRENTDATETIME
-                      );
-
-                    END;
-                    */
 
                 END ELSE
                     ERROR(
@@ -663,12 +583,6 @@ codeunit 50033 "DEL Provision"
 
             UNTIL (sps_Re_Loc.NEXT() = 0);
 
-            //On supprime la sélection
-            //sps_Re_Loc.DELETE(TRUE);
-
-
-            //On met à jour les affaires pour lesquelles ont a ajouté des provisions
-            //UpdateRequestManager_Cu.FNC_ProcessRequestsByType('Provision');
 
             FNC_ProgressBar_Close(1);
 
@@ -685,7 +599,6 @@ codeunit 50033 "DEL Provision"
     var
         element_Re_Loc: Record "DEL Element";
     begin
-        //supprime les éléments de type Provision de la base de données
 
         IF DIALOG.CONFIRM('Cette fonction supprime toutes les provisions de toutes les affaires ! Continuer ?', TRUE) THEN BEGIN
             element_Re_Loc.RESET();
@@ -742,15 +655,6 @@ codeunit 50033 "DEL Provision"
 
     procedure FNC_ProgressBar_Init(index_Int_Par: Integer; interval_Int_Par: Integer; stepProgress_Int_Par: Integer; text_Te_Par: Text[50]; total_Int_Par: Integer)
     begin
-        /*
-        L'index permet d'avoir plusieur barres de progression lors d'un meme traitement.
-        
-        valeur par defaut :
-        interval 1000;
-        step progress 1000;
-        
-        -> Signifie qu'on met à jour la barre de controle toutes les 1000ms si le traitement a avancé d'au moins 10%
-        */
         intProgress[index_Int_Par] := 0;
         interval[index_Int_Par] := interval_Int_Par; //en milisecondes
         intProgressStep[index_Int_Par] := stepProgress_Int_Par; //update si au moins 5% d'avancé (échelle : 10% = 1000)
@@ -768,22 +672,15 @@ codeunit 50033 "DEL Provision"
     begin
         intProgressI[index_Int_Par] += 1;
 
-        //toutes les x milisecondes (paramètre interval)
         IF timProgress[index_Int_Par] < TIME - interval[index_Int_Par] THEN BEGIN
 
-            //calcul le pourcentage d'avancement
             intProgress[index_Int_Par] := ROUND(intProgressI[index_Int_Par] / intProgressTotal[index_Int_Par] * 10000, 1);
 
-            //si le pourcentage d'avancement a avancé de x pourcent (paramètre intProgressStep)
             IF intProgress[index_Int_Par] > intNextProgressStep[index_Int_Par] THEN BEGIN
 
-                //définition du prochain niveau de progression
                 intNextProgressStep[index_Int_Par] += intProgressStep[index_Int_Par];
-
-                //mise à jour du temps
                 timProgress[index_Int_Par] := TIME;
 
-                //mise à jour de la barre
                 diaProgress[index_Int_Par].UPDATE();
 
             END;

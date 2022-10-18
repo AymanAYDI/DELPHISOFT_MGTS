@@ -6,7 +6,7 @@ table 50068 "DEL DocMatrix Log"
     {
 
 
-        field(1; Type; Enum "Customer/Vendor")
+        field(1; Type; Enum "DEL type2")
 
         {
 
@@ -215,16 +215,16 @@ table 50068 "DEL DocMatrix Log"
     }
 
     var
-    //TODO DocumentMatrixMgt: Codeunit "50015";
-    //-------------Global variables are not used-------------------------//
-    // DocumentMatrixSetup: Record "DEL DocMatrix Setup";
-    // Err001: Label 'Please enter the Document Matrix Setup first.';
-    // Err002: Label 'You can not desactivate "Save PDF" if EMail or FTP is active, or if "Process Type" is "Automatic".';
-    // Err003: Label 'You can not delete the "E-Mail From" Address, if a E-Mail Address is entered. First you have to delete all the E-Mail Addresses.';
-    // Err004: Label 'You can not activate "Print" if the "Process Type" is set to "Automatic"!';
-    // Text001: Label 'The field "Save PDF" was set to TRUE to fit the Business Logic.';
-    // Text002: Label 'The field "Process Type" might have changed to fit the Business Logic.';
-    // Text003: Label 'Please check if you have to change the field "Usage".';
-    // boNotificationAlreadySent: Boolean;
+        DocumentMatrixMgt: Codeunit 50015;
+        // -------------Global variables are not used-------------------------//
+        DocumentMatrixSetup: Record "DEL DocMatrix Setup";
+        Err001: Label 'Please enter the Document Matrix Setup first.';
+        Err002: Label 'You can not desactivate "Save PDF" if EMail or FTP is active, or if "Process Type" is "Automatic".';
+        Err003: Label 'You can not delete the "E-Mail From" Address, if a E-Mail Address is entered. First you have to delete all the E-Mail Addresses.';
+        Err004: Label 'You can not activate "Print" if the "Process Type" is set to "Automatic"!';
+        Text001: Label 'The field "Save PDF" was set to TRUE to fit the Business Logic.';
+        Text002: Label 'The field "Process Type" might have changed to fit the Business Logic.';
+        Text003: Label 'Please check if you have to change the field "Usage".';
+        boNotificationAlreadySent: Boolean;
 }
 

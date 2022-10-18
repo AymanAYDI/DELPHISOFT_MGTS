@@ -15,7 +15,7 @@ report 50029 "DEL update periode"
                 ELSE
                     "DEL Period of denunciation" := 0D;
 
-                MODIFY;
+                MODIFY();
             end;
         }
     }

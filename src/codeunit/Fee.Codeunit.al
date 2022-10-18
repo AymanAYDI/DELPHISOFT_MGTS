@@ -3,12 +3,12 @@ codeunit 50023 "DEL Fee"
 
     var
         Setup: Record "DEL General Setup";
-        DealShipment_Cu: Codeunit "Deal Shipment";
+        DealShipment_Cu: Codeunit "DEL Deal Shipment";
         Element_Cu: Codeunit "DEL Element";
         ElementConnection_Cu: Codeunit "DEL Element Connection";
         Fee_Cu: Codeunit "DEL Fee";
         Position_Cu: Codeunit "DEL Position";
-        Dispatcher_Cu: Codeunit Dispatcher;
+        Dispatcher_Cu: Codeunit "DEL Dispatcher";
         ERROR_TXT: Label 'ERREUR\Source : %1\Function : %2\Reason : %3';
 
 
@@ -40,9 +40,6 @@ codeunit 50023 "DEL Fee"
         ACO_Re_Loc: Record "Purchase Header";
         VCO_Re_Loc: Record "Sales Header";
     begin
-        /*AJOUTE TOUS LES FEE CONNECTION QUI ONT UN Deal.ID SPECIFIE*/
-
-        // récupère l'Element voulu en fonction de son ID
         Element_Cu.FNC_Set_Element(element_Re_Loc, Element_ID_Co_Par);
 
         fee_Connection_Re_Loc.RESET();
@@ -55,9 +52,6 @@ codeunit 50023 "DEL Fee"
         END;
         fee_Connection_Re_Loc.SETRANGE("No.", element_Re_Loc."Subject No.");
         fee_Connection_Re_Loc.SETRANGE("Deal ID", element_Re_Loc.Deal_ID);
-        //fee_connection_re_loc.setrange(inactive, false);
-
-        /*AJOUTE TOUS LES FEE DE LA TABLE FEE CONNECTION POUR UN DEAL SPECIFIQUE*/
         IF fee_Connection_Re_Loc.FINDFIRST() THEN BEGIN
             REPEAT
                 IF fee_Re_Loc.GET(fee_Connection_Re_Loc."Fee ID") THEN BEGIN
@@ -99,9 +93,6 @@ codeunit 50023 "DEL Fee"
         VCO_Re_Loc: Record "Sales Header";
         isToSkip: Boolean;
     begin
-        /*AJOUTE TOUS LES FEE CONNECTION QUI ONT PAS UN Deal.ID SPECIFIE*/
-
-        // récupère l'Element voulu en fonction de son ID
         Element_Cu.FNC_Set_Element(element_Re_Loc, Element_ID_Co_Par);
 
         fee_Connection_Re_Loc.RESET();
@@ -114,10 +105,6 @@ codeunit 50023 "DEL Fee"
         END;
         fee_Connection_Re_Loc.SETRANGE("No.", element_Re_Loc."Subject No.");
         fee_Connection_Re_Loc.SETFILTER("Deal ID", '%1', '');
-        //fee_connection_re_loc.setrange(inactive, false);
-
-
-        /*AJOUTE TOUS LES FEE DE LA TABLE FEE CONNECTION GENERAUX (Deal.ID vide)*/
         IF fee_Connection_Re_Loc.FINDFIRST() THEN
             REPEAT
                 // ON CHERCHE LES ELEMENTS CONCERNES PAR CE FEE
@@ -163,8 +150,6 @@ codeunit 50023 "DEL Fee"
 
     procedure FNC_Set(var fee_Re_Par: Record 50024; fee_ID_Co_Par: Code[20])
     begin
-        // défini l'instance du premier paramètre sur le record correspondant au Fee.ID passé en 2ème paramètre
-        // j'ai l'ID du Fee et je veux faire pointer ma variable sur le record qui correspond à cet ID
         IF NOT fee_Re_Par.GET(fee_ID_Co_Par) THEN
             ERROR('ERREUR\Source : Co 50023\Fonction : FNC_Set()\Raison : GET() impossible avec Fee.ID >%1<', fee_ID_Co_Par);
     end;
@@ -185,37 +170,7 @@ codeunit 50023 "DEL Fee"
         arrayIndex: Integer;
         textArray: Text[255];
     begin
-        /*DISPATCH UN ELEMENT (Fee ou Invoice) SUR D'AUTRES ELEMENTS*/
 
-        /*
-        Exemple:
-        On a un frais ou une facture (Element) de 2000.- à ventiler (dispatcher, répartir) sur 3 livraisons (aussi des Element)
-        On ventile selon la méthode du "prorata value".
-        Valeur livraison 1 : 150
-        Valeur livraison 2 : 350
-        Valeur livraison 3 : 500
-        --
-        Valeur totale : 1000
-        
-        step 1  : on calcul la somme de la valeur de la livraison en fonction du paramètre choisi (valeur, poid, volume, etc..)
-        step 2  : array.sum, = 150 + 350 + 500 = 1000
-        step 3a : on calcul le pourcentage représenté par chaque ligne du tableau
-        step 3b : la somme du frais à dispatcher est multipliée par le pourcentage
-        step 4  : on dispatch sur les positions d'un élément
-        
-        array val.  step 1   step 3a  step 3b    step 4
-        -------------------------------------------------
-        array[1]    150      0.15     300      |-- 150
-        array[2]    350      0.35     700 -----|
-        array[3]    500      0.5      1000     |-- 350
-        array[4]    -        -        -        |
-        array[5]    -        -        -        |-- 200
-        array[6]    -        -        -
-        array[7]    -        -        -
-        array[8]    -        -        -
-        array[9]    -        -        -
-        array[10]   -        -        -
-        */
 
         isInvoice_Bo_Loc := FALSE;
 
@@ -241,14 +196,6 @@ codeunit 50023 "DEL Fee"
                 END;
             END;
 
-            //CHG04
-            //la variable value_Ar_Loc est un tableau !
-
-            //step 1
-            //On dispatch selon les règles de Ventilation Element
-            //pour un frais (fee ou invoice) on cherche les éléments impliqués sans tenir compte de l'affaire
-            //de l'éléments (paramètre false dans les fonctions de recherche). De cette manière, on pourra
-            //calculer la proportion du montant à répartir sur les éléments.
             CASE fee_Re_Loc."Ventilation Element" OF
                 fee_Re_Loc."Ventilation Element"::Value:
                     Dispatcher_Cu.FNC_Element_Value(value_Ar_Loc, element_Re_Loc.ID, FALSE);
@@ -266,34 +213,24 @@ codeunit 50023 "DEL Fee"
                     Dispatcher_Cu.FNC_Element_Quantity(value_Ar_Loc, element_Re_Loc.ID, FALSE);
             END;
 
-            //step 2
-            //TOTAL DES VALEURS DE L'ARRAY
             sum_Dec_Loc := Dispatcher_Cu.FNC_Array_Sum(value_Ar_Loc);
 
             IF sum_Dec_Loc = 0 THEN BEGIN
-                //MESSAGE('%1', fee_Re_Loc."Ventilation Element");
                 ERROR(ERROR_TXT, 'Co50023', 'FNC_Dispatch()', 'Array total à 0 !');
 
             END;
 
             amountToDispatch_Dec_Loc := Element_Cu.FNC_Get_Amount_FCY(element_Re_Loc.ID);
-
-            //calcule la proportion du montant d'un frais par rapport à la règle de répartition
-            //pour les frais qui sont splittés sur plusieurs livraisons
             IF isInvoice_Bo_Loc THEN BEGIN
                 IF element_Re_Loc."Splitt Index" <> 0 THEN BEGIN
                     amountToDispatch_Dec_Loc := ((value_Ar_Loc[element_Re_Loc."Splitt Index"] * 1) / sum_Dec_Loc) * amountToDispatch_Dec_Loc;
                 END;
             END;
 
-            //si la part d'une invoice vaut 0 on ne fait rien
             IF amountToDispatch_Dec_Loc <> 0 THEN BEGIN
 
-                //on vide le tableau et cette fois on va filtrer sur l'affaire pour répartir le montant uniquement sur la bonne affaire
                 CLEAR(value_Ar_Loc);
 
-                //step 1
-                //On dispatch selon les règles de Ventilation Element
                 CASE fee_Re_Loc."Ventilation Element" OF
                     fee_Re_Loc."Ventilation Element"::Value:
                         Dispatcher_Cu.FNC_Element_Value(value_Ar_Loc, element_Re_Loc.ID, TRUE);
@@ -311,8 +248,6 @@ codeunit 50023 "DEL Fee"
                         Dispatcher_Cu.FNC_Element_Quantity(value_Ar_Loc, element_Re_Loc.ID, TRUE);
                 END;
 
-                //step 2
-                //TOTAL DES VALEURS DE L'ARRAY
                 sum_Dec_Loc := Dispatcher_Cu.FNC_Array_Sum(value_Ar_Loc);
 
                 IF sum_Dec_Loc = 0 THEN
@@ -324,19 +259,12 @@ codeunit 50023 "DEL Fee"
                       element_Re_Loc.Deal_ID
                     );
 
-                //ERROR('%1', amountToDispatch_Dec_Loc);
-
-                //step 3a et 3b
                 Dispatcher_Cu.FNC_Dispatch_Amount(
                   value_Ar_Loc, //array avec les valeurs de chaque élément
                   sum_Dec_Loc,  //somme des valeurs de l'array
                   amountToDispatch_Dec_Loc //montant du Fee/Invoice en devise de l'article et pas forcément en EUR
                 );
 
-                //FNC_Print_Array(value_Ar_Loc);
-
-                //------- dispatch sur les positions
-                //itération sur Element Connection pour savoir à quel(s) Element(s) s'applique(nt) le Fee
                 elementConnection_Re_Loc.RESET();
                 elementConnection_Re_Loc.SETCURRENTKEY(Element_ID, "Split Index");
                 elementConnection_Re_Loc.SETRANGE(Element_ID, element_Re_Loc.ID);
@@ -347,7 +275,6 @@ codeunit 50023 "DEL Fee"
 
                         addPositions_Bo_Loc := FALSE;
 
-                        //Si elementconnection.apply to fait parti de l'affaire elementconnection.dealID
                         applyElement_Re_Loc.RESET();
                         applyElement_Re_Loc.SETRANGE(Deal_ID, elementConnection_Re_Loc.Deal_ID);
                         applyElement_Re_Loc.SETRANGE(ID, elementConnection_Re_Loc."Apply To");
@@ -356,8 +283,6 @@ codeunit 50023 "DEL Fee"
 
                         IF addPositions_Bo_Loc THEN BEGIN
 
-                            //step 4
-                            //On dispatch selon les règles de Ventilation Position
                             CASE fee_Re_Loc."Ventilation Position" OF
                                 fee_Re_Loc."Ventilation Position"::"Prorata Value":
                                     Dispatcher_Cu.FNC_Position_Prorata_Value(
@@ -365,7 +290,6 @@ codeunit 50023 "DEL Fee"
                                       elementConnection_Re_Loc."Apply To",
                                       value_Ar_Loc[arrayIndex],
                                       Element_Cu.FNC_Get_Amount_FCY(elementConnection_Re_Loc."Apply To")
-                                    //montant du Fee/Invoice en devise de l'article et pas forcément en EUR
                                     );
                                 fee_Re_Loc."Ventilation Position"::"Prorata Volume":
                                     Dispatcher_Cu.FNC_Position_Prorata_Volume(
@@ -388,7 +312,6 @@ codeunit 50023 "DEL Fee"
                                       value_Ar_Loc[arrayIndex],
                                       Element_Cu.FNC_Get_Colis(elementConnection_Re_Loc."Apply To")
                                     );
-                                //START CHG05
                                 fee_Re_Loc."Ventilation Position"::Quantity:
                                     Dispatcher_Cu.FNC_Position_Prorata_Quantity(
                                       elementConnection_Re_Loc.Element_ID,
@@ -396,7 +319,6 @@ codeunit 50023 "DEL Fee"
                                       value_Ar_Loc[arrayIndex],
                                       Element_Cu.FNC_Get_Quantity(elementConnection_Re_Loc."Apply To")
                                     );
-                            //STOP CHG05
 
                             END;
 
@@ -447,20 +369,16 @@ codeunit 50023 "DEL Fee"
                 deal_Re_Loc.RESET();
                 IF deal_Re_Loc.GET(element_Re_Loc.Deal_ID) THEN BEGIN
 
-                    //recherche d'un facteur spécifique en fonction de la date de l'affaire
                     IF FNC_Get_Factor(fee_Re_Loc.ID, deal_Re_Loc.Date) <> 0 THEN
                         factor_Dec_Loc := FNC_Get_Factor(fee_Re_Loc.ID, deal_Re_Loc.Date)
 
-                    //si aucun facteur n'existe, on prend le facteur par défaut
                     ELSE
                         factor_Dec_Loc := fee_Re_Loc.Factor;
 
                 END ELSE
                     ERROR('Aucune affaire trouvée pour l''élément %1', element_Re_Loc.ID);
-                //STOP CHG03
             END;
 
-            //boucle sur les Element Connection du Fee (en principe il y en a que 1, vu qu'un Fee s'applique à 1 ACO ou 1 VCO..)
             elementConnection_Re_Loc.SETRANGE(Deal_ID, element_Re_Loc.Deal_ID);
             elementConnection_Re_Loc.SETRANGE(Element_ID, Element_ID_Co_Par);
             IF elementConnection_Re_Loc.FINDFIRST() THEN
@@ -523,20 +441,14 @@ codeunit 50023 "DEL Fee"
                             //  REPEAT
                             //STOP THM
                             amount_Dec_Loc += position_Re_Loc.Amount * purchRcptLine_Re_Loc.Quantity * position_Re_Loc.Rate;
-                    //THM
-                    //   UNTIL(position_Re_Loc.NEXT() = 0);
-                    //STOP THM
                     UNTIL (purchRcptLine_Re_Loc.NEXT() = 0);
 
                 EXIT(amount_Dec_Loc);
 
-                //on cherche le montant pour le réel
             END ELSE BEGIN
 
                 plannedElement_Re_Loc.GET(Element_ID_Co_Par);
 
-                //real
-                //on cherche les éléments réalisés pour un élément prévu
                 realElement_Re_Loc.RESET();
                 realElement_Re_Loc.SETCURRENTKEY(Deal_ID, Type);
                 realElement_Re_Loc.SETRANGE(Deal_ID, plannedElement_Re_Loc.Deal_ID);
@@ -544,11 +456,9 @@ codeunit 50023 "DEL Fee"
                 realElement_Re_Loc.SETRANGE(Fee_ID, plannedElement_Re_Loc.Fee_ID);
                 realElement_Re_Loc.SETRANGE(Fee_Connection_ID, plannedElement_Re_Loc.Fee_Connection_ID);
 
-                //on boucle sur tous les elements de type Invoice
                 IF realElement_Re_Loc.FINDFIRST() THEN
                     REPEAT
 
-                        //si realElement est enregistré pour cette livraison
                         IF dealShipmentConnection_Re_Loc.GET(realElement_Re_Loc.Deal_ID, DealShipmentNo_Co_Par, realElement_Re_Loc.ID) THEN
                             amount_Dec_Loc += Element_Cu.FNC_Get_Amount_From_Positions(realElement_Re_Loc.ID);
 
@@ -577,9 +487,6 @@ codeunit 50023 "DEL Fee"
     var
         feeFactor_Re_Loc: Record "DEL Fee Factor";
     begin
-        //CHG03
-        //Retourne le facteur pour un frais et pour la date d'une affaire
-        //retourne zéro si aucun facteur n'existe
 
         feeFactor_Re_Loc.RESET();
         feeFactor_Re_Loc.SETFILTER(Fee_ID, Fee_ID_Co_Par);

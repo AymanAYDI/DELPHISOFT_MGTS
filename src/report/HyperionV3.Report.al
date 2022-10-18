@@ -250,7 +250,7 @@ report 50023 "DEL Hyperion V3"
             DateNow_Te := DELCHR(FORMAT(TODAY), '=', ':/.');
             TimeNow_Te := DELCHR(FORMAT(TIME), '=', ':/.');
         END;
-        // TODO //FILE 
+        // TODO //FILE : just to check the new code 
 
         TempBlob.CreateOutStream(OStream);
         XMLPORT.Export(50011, OStream);

@@ -1,4 +1,4 @@
-pageextension 50059 pageextension50059 extends "Purchase Order Archives"
+pageextension 50059 "DEL PurchaseOrderArchives" extends "Purchase Order Archives"
 {
     // THM       01.03.16      add "No."
     actions

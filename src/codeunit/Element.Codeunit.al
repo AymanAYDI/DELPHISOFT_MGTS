@@ -62,26 +62,24 @@ codeunit 50021 "DEL Element"
         //CHG07
         deal_Re_Loc.GET(Deal_ID_Co_Par);
 
-        //insère un enregistrement dans la table "Element" 50021
         element_ID_Co_Ret :=
-          FNC_Insert_Element(
-            Deal_ID_Co_Par,
-            element_Re_Loc.Instance::planned,
-            element_Re_Loc.Type::ACO,
-            PurchaseInvoiceHeader_Re_Par."Order No.",
-            '',
-            element_Re_Loc."Subject Type"::Vendor,
-            PurchaseInvoiceHeader_Re_Par."Buy-from Vendor No.",
-            '',
-            '',
-            deal_Re_Loc."ACO Document Date", //CHG07 //cette date est définie lors de la création de l'affaire et n'est jamais mise à jour !
-            0,
-            '', //"Bill-To Customer No." est vide car sur une aco, on paye un fournisseur
-            0D,
-            0  //splitt index
-          );
+         FNC_Insert_Element(
+           Deal_ID_Co_Par,
+           element_Re_Loc.Instance::planned,
+           element_Re_Loc.Type::ACO,
+           PurchaseInvoiceHeader_Re_Par."Order No.",
+           '',
+           element_Re_Loc."Subject Type"::Vendor,
+           PurchaseInvoiceHeader_Re_Par."Buy-from Vendor No.",
+           '',
+           '',
+           deal_Re_Loc."ACO Document Date", //CHG07 //cette date est définie lors de la création de l'affaire et n'est jamais mise à jour !
+           0,
+           '', //"Bill-To Customer No." est vide car sur une aco, on paye un fournisseur
+           0D,
+           0  //splitt index
+         );
 
-        //insère tous les "Element" "Fee" associés à la commande d'achat que l'on vient d'ajouter
         FNC_Add_Element_Fee(element_ID_Co_Ret);
     end;
 
@@ -99,21 +97,9 @@ codeunit 50021 "DEL Element"
         last: Code[20];
         shipmentID_Co_Loc: Code[20];
     begin
-        /*__
-          Ajoute un "Element" de type BR
-          Fonction appelé lors de la création d'un BR (si le BR est déjà existant, alors on utilisera FNC_Check_For_BR
-        
-          Paramètre de type option :
-            -> Add_Variant_Op_Par::New      : add a new specific BR
-            -> Add_Variant_Op_Par::Existing : check for existing BRs and add them if they are not linked to the deal yet
-        __*/
 
         IF Add_Variant_Op_Par = Add_Variant_Op_Par::New THEN BEGIN
 
-            /*_
-              1. On filtre "Deal Shipment Selection" avec le numéro de l'ACO qu'on a sur le BR Header. On garde que les lignes cochées
-              2. On prend la première ligne et on récupère le numéro de livraison, puis on ajoute la connection de ce BR à cette livraison
-            _*/
             dealShipmentSelection_Re_Loc.RESET();
             dealShipmentSelection_Re_Loc.SETRANGE("Document No.", BR_Header_Re_Par."Order No.");
             dealShipmentSelection_Re_Loc.SETRANGE(Checked, TRUE);
@@ -134,7 +120,7 @@ codeunit 50021 "DEL Element"
                     element_ID_Loc := FNC_Insert_Element(
                       Deal_ID_Co_Par,
                       element_Re_Loc.Instance::real,
-                      element_R_Loc.Type::BR,
+                      element_Re_Loc.Type::BR,
                       BR_Header_Re_Par."No.",
                       element_Re_Loc.ID,
                       element_Re_Loc."Subject Type"::Vendor,
@@ -150,25 +136,14 @@ codeunit 50021 "DEL Element"
 
                     DealShipmentConnection_Cu.FNC_Insert(Deal_ID_Co_Par, dealShipmentSelection_Re_Loc."Shipment No.", element_ID_Loc);
 
-                    /*_Crée les éléments de type Dispatched en fonction du BR qui vient d'être créé_*/
                     FNC_Add_Dispatched_Elements(Deal_ID_Co_Par, dealShipmentSelection_Re_Loc."Shipment No.", BR_Header_Re_Par."No.");
-
-                    //si un BR existe, on met à jour Type No. de l'élément et on laisse la connection tel quel
                 END ELSE BEGIN
 
-                    //on récupère l'élément BR et on met Type No. à jour
-                    //pas besoin de faire plus car lors d'un reinit(), le dispatch va se faire sur le new BR
                     Element_Cu.FNC_Set_Element(element_Re_Loc, BRID_Co_Loc);
                     element_Re_Loc.VALIDATE("Type No.", BR_Header_Re_Par."No.");
                     element_Re_Loc.MODIFY();
 
                 END;
-
-                //met à jour la ligne sur la table Deal Shipment
-                //IF dealShipment_Re_Loc.GET(dealShipmentSelection_Re_Loc."Shipment No.") THEN BEGIN
-                //  dealShipment_Re_Loc.VALIDATE("BR No.", BR_Header_Re_Par."No.");
-                //  dealShipment_Re_Loc.MODIFY();
-                //END;
                 DealShipment_Cu.FNC_SetBRNo(dealShipmentSelection_Re_Loc."Shipment No.", BR_Header_Re_Par."No.");
 
                 //grc01 begin
@@ -186,13 +161,6 @@ codeunit 50021 "DEL Element"
 
         END ELSE
             IF Add_Variant_Op_Par = Add_Variant_Op_Par::Existing THEN BEGIN
-
-                /*_On cherche l'ACO liée à l'affaire_*/
-                //element_Re_Loc.RESET();
-                //element_Re_Loc.SETCURRENTKEY(Deal_ID, Type);
-                //element_Re_Loc.SETRANGE(Deal_ID, Deal_ID_Co_Par);
-                //element_Re_Loc.SETRANGE(Type, element_Re_Loc.Type::ACO);
-                //element_Re_Loc.setrange(Instance, element_Re_Loc.Instance::Planned);
 
                 Deal_Cu.FNC_Get_ACO(element_Re_Loc, Deal_ID_Co_Par);
                 IF element_Re_Loc.FINDFIRST() THEN BEGIN
@@ -225,33 +193,25 @@ codeunit 50021 "DEL Element"
                                     element_Re_Loc.SETRANGE("Type No.", BR_Header_Re_Par."No.");
                                     IF NOT element_Re_Loc.FINDFIRST() THEN BEGIN
 
-                                        //rechercher l'ACO à laquelle ce BR correspond
-                                        //element_Re_Loc.RESET();
-                                        //element_Re_Loc.SETCURRENTKEY(Deal_ID, Type, instance);
-                                        //element_Re_Loc.SETRANGE(Deal_ID, Deal_ID_Co_Par);
-                                        //element_Re_Loc.SETRANGE(Type, element_Re_Loc.Type::ACO);
-                                        //element_Re_Loc.setrange(Instance, element_Re_Loc.Instance::planned);
 
                                         Deal_Cu.FNC_Get_ACO(element_Re_Loc, Deal_ID_Co_Par);
                                         element_Re_Loc.SETRANGE("Type No.", BR_Header_Re_Par."Order No.");
-
-                                        /*_Insère un enregistrement dans la table "Element" 50021_*/
                                         element_ID_Loc := FNC_Insert_Element(
-                                         Deal_ID_Co_Par,                          //deal id
-                                         element_Re_Loc.Instance::real,           //instance
-                                         element_Re_Loc.Type::BR,                 //type
-                                         BR_Header_Re_Par."No.",                  //type no
-                                         element_Re_Loc.ID,                       //apply-to
-                                         element_Re_Loc."Subject Type"::Vendor,   //subject type
-                                         BR_Header_Re_Par."Buy-from Vendor No.",  //subject no
-                                         '',                                      //fee id
-                                         '',                                      //fee connection id
-                                         BR_Header_Re_Par."Posting Date",         //date
-                                         0,
-                                         '', //"Bill-To Customer No." est vide car sur une aco, on paye un fournisseur
-                                         0D,
-                                         0 //splitt index
-                                        );
+                                                                     Deal_ID_Co_Par,                          //deal id
+                                                                     element_Re_Loc.Instance::real,           //instance
+                                                                     element_Re_Loc.Type::BR,                 //type
+                                                                     BR_Header_Re_Par."No.",                  //type no
+                                                                     element_Re_Loc.ID,                       //apply-to
+                                                                     element_Re_Loc."Subject Type"::Vendor,   //subject type
+                                                                     BR_Header_Re_Par."Buy-from Vendor No.",  //subject no
+                                                                     '',                                      //fee id
+                                                                     '',                                      //fee connection id
+                                                                     BR_Header_Re_Par."Posting Date",         //date
+                                                                     0,
+                                                                     '', //"Bill-To Customer No." est vide car sur une aco, on paye un fournisseur
+                                                                     0D,
+                                                                     0 //splitt index
+                                                                    );
 
                                         /*_Ajoute une ligne dans table "Deal Shipment"_*/
                                         shipmentID_Co_Loc := DealShipment_Cu.FNC_Insert(
@@ -378,37 +338,29 @@ codeunit 50021 "DEL Element"
 
         IF addVCODispatchedElement_Bo_Loc THEN BEGIN
 
-            //on ajoute une seule VCO par livraison qui contiendra les éléments avec prix de vente des items du BR
-            //on ne lui attribue pas numéro de client ou autre car le br peut contenir des quantités nécessisant
-            //plusieurs VCO..
-
-            //Ajout d'un élément dispatched VCO pour la livraison concernée
             VCOElement_Re_Loc.RESET();
             VCOElement_Re_Loc.SETCURRENTKEY(Deal_ID, Type, Instance);
             VCOElement_Re_Loc.SETRANGE(Deal_ID, DealID_Co_Par);
             VCOElement_Re_Loc.SETRANGE(Type, VCOElement_Re_Loc.Type::VCO);
             VCOElement_Re_Loc.SETRANGE(Instance, VCOElement_Re_Loc.Instance::planned);
             IF VCOElement_Re_Loc.FINDFIRST() THEN BEGIN
-                //REPEAT
-
-                //Ajout d'un élément dispatched VCO pour la livraison concernée
-                /*_Insère un enregistrement dans la table "Element" 50021_*/
                 element_ID_Loc := FNC_Insert_Element(
-                  VCOElement_Re_Loc.Deal_ID,                 //deal id
-                  VCOElement_Re_Loc.Instance::dispatched,    //instance           !!!!!!!!!!!!
-                  VCOElement_Re_Loc.Type::VCO,               //type
-                  '', //VCOElement_Re_Loc."Type No.",        //type no
-                  '',                                        //apply-to
-                  0, //VCOElement_Re_Loc."Subject Type",     //subject type
-                  '', //VCOElement_Re_Loc."Subject No.",     //subject no
-                  '',                                        //fee id
-                  '',                                        //fee connection id
-                  0D, //VCOElement_Re_Loc.Date,              //date
-                  0,                                         //entry No.
-                  '', //VCOElement_Re_Loc."Bill-to Customer No.",  //bill to
-                  period_Da_Loc,                             //period             !!!!!!!!!!!!
-                  0 //splitt index
-                );
+                 VCOElement_Re_Loc.Deal_ID,
+                 VCOElement_Re_Loc.Instance::dispatched,
+                 VCOElement_Re_Loc.Type::VCO,
+                 '',
+
+                 '',
+                 0,
+                 '',
+                 '',
+                 '',
+                 0D,
+                 0,
+                 '',
+                 period_Da_Loc,
+                 0
+               );
 
                 //surtout on lie la VCO partielle (dispatched) à une livraison !!!
                 DealShipmentConnection_Cu.FNC_Insert(DealID_Co_Par, ShipmentID_Co_Par, element_ID_Loc);
@@ -700,12 +652,10 @@ codeunit 50021 "DEL Element"
                         END;
                 END;
 
-                //insère un enregistrement dans la table "Element" 50021
                 element_ID_Co_Ret :=
                 FNC_Insert_Element(
                   DealShipmentSelection_Re_Par.Deal_ID,
                   element_Re_Loc.Instance::real,
-                  //element_Re_Loc.Type::Invoice, ancien grc
                   element_Re_Loc.Type::"Sales Cr. Memo",
                   DealShipmentSelection_Re_Par."Document No.",
                   '',
@@ -714,17 +664,15 @@ codeunit 50021 "DEL Element"
                   feeConnection_Re_Loc."Fee ID",
                   feeConnection_Re_Loc.ID,
                   TODAY,
-                  glEntry_Re_Loc."Entry No.", //peut etre faut ajouter le numéro de la ligne ou de la facture..
+                  glEntry_Re_Loc."Entry No.",
                   billToCustomerNo_Co_Loc,
                   0D,
                   SplittIndex_Int_Par
                 );
 
-                //Lorsque la facture vient d'etre crée, on doit la rechercher
             END ELSE BEGIN
 
                 glEntry_Re_Loc.RESET();
-                //glEntry_Re_Loc.SETRANGE("Bal. Account No.",   DealShipmentSelection_Re_Par."Account No.");
                 glEntry_Re_Loc.SETFILTER(
                   "Document Type", '%1|%2|%3',
                   glEntry_Re_Loc."Document Type"::Invoice,
@@ -752,20 +700,17 @@ codeunit 50021 "DEL Element"
                     DealShipmentSelection_Re_Par."Account Type"::"G/L Account":
                         BEGIN
                             element_Re_Loc."Subject Type" := element_Re_Loc."Subject Type"::"G/L Account";
-                            //glEntry_Re_Loc.SETRANGE("Source Type", glEntry_Re_Loc."Source Type"::" ");
                             glEntry_Re_Loc.SETRANGE("G/L Account No.", DealShipmentSelection_Re_Par."Account No.");
                         END;
                 END;
 
                 IF glEntry_Re_Loc.FINDFIRST() THEN BEGIN
 
-                    //insère un enregistrement dans la table "Element" 50021
                     element_ID_Co_Ret :=
                       FNC_Insert_Element(
                         DealShipmentSelection_Re_Par.Deal_ID,
                         element_Re_Loc.Instance::real,
-                        //element_Re_Loc.Type::Invoice, ancien grc
-                        element_Re_Loc.Type::"Sales Cr. Memo",
+   element_Re_Loc.Type::"Sales Cr. Memo",
                         DealShipmentSelection_Re_Par."Document No.",
                         '',
                         element_Re_Loc."Subject Type",
@@ -799,14 +744,11 @@ codeunit 50021 "DEL Element"
         billToCustomerNo_Co_Loc: Code[20];
         element_ID_Co_Loc: Code[20];
     begin
-        /*__Ajoute un element de type invoice à partir de la feuille compta ou feuille achat__*/
-
         element_ID_Co_Ret := '';
         billToCustomerNo_Co_Loc := '';
 
         IF feeConnection_Re_Loc.GET(DealShipmentSelection_Re_Par."Fee Connection") THEN BEGIN
 
-            //lorsqu'on connait déjà le numéro de la facture (p.e. quand on a validé une facture et qu'on attribue à une affaire après coup)
             IF DealShipmentSelection_Re_Par."Account Entry No." <> 0 THEN BEGIN
 
                 glEntry_Re_Loc.GET(DealShipmentSelection_Re_Par."Account Entry No.");
@@ -829,7 +771,6 @@ codeunit 50021 "DEL Element"
                         END;
                 END;
 
-                //insère un enregistrement dans la table "Element" 50021
                 element_ID_Co_Ret :=
                 FNC_Insert_Element(
                   DealShipmentSelection_Re_Par.Deal_ID,
@@ -848,11 +789,9 @@ codeunit 50021 "DEL Element"
                   SplittIndex_Int_Par
                 );
 
-                //Lorsque la facture vient d'etre crée, on doit la rechercher
             END ELSE BEGIN
 
                 glEntry_Re_Loc.RESET();
-                //glEntry_Re_Loc.SETRANGE("Bal. Account No.",   DealShipmentSelection_Re_Par."Account No.");
                 glEntry_Re_Loc.SETFILTER(
                   "Document Type", '%1|%2|%3',
                   glEntry_Re_Loc."Document Type"::Invoice,
@@ -880,14 +819,12 @@ codeunit 50021 "DEL Element"
                     DealShipmentSelection_Re_Par."Account Type"::"G/L Account":
                         BEGIN
                             element_Re_Loc."Subject Type" := element_Re_Loc."Subject Type"::"G/L Account";
-                            //glEntry_Re_Loc.SETRANGE("Source Type", glEntry_Re_Loc."Source Type"::" ");
                             glEntry_Re_Loc.SETRANGE("G/L Account No.", DealShipmentSelection_Re_Par."Account No.");
                         END;
                 END;
 
                 IF glEntry_Re_Loc.FINDFIRST() THEN BEGIN
 
-                    //insère un enregistrement dans la table "Element" 50021
                     element_ID_Co_Ret :=
                       FNC_Insert_Element(
                         DealShipmentSelection_Re_Par.Deal_ID,
@@ -925,16 +862,10 @@ codeunit 50021 "DEL Element"
         deal_ID_Co_Loc: Code[20];
         element_ID_Co_Loc: Code[20];
     begin
-        /*
-          2. On regarde pour chaque livraison si une facture d'achat a été liée à l'affaire.. l'info est dispo sur la ligne
-          3. Si aucune facture d'achat, alors on regarde si un BR a été lié.. l'info aussi dispo sur la ligne.
-          4. On crée une ligne dans la table "Element Connection" pour dire que cet Invoice doit etre dispatché sur cet élément
-        */
 
         Element_Cu.FNC_Set_Element(element_Re_Loc, Element_ID_Co_Par);
         deal_ID_Co_Loc := element_Re_Loc.Deal_ID;
 
-        //si une facture existe pour cette livraison
         IF DealShipmentSelection_Re_Par."Purchase Invoice No." <> '' THEN BEGIN
 
             element_Re_Loc.RESET();
@@ -945,7 +876,6 @@ codeunit 50021 "DEL Element"
             IF element_Re_Loc.FINDFIRST() THEN BEGIN
 
                 IF ConnectionType_Op_Par = ConnectionType_Op_Par::Element THEN
-                    //on lie la facture sur la première facture achat de la livraison
                     ElementConnection_Cu.FNC_Add(
                 deal_ID_Co_Loc,
                 Element_ID_Co_Par,
@@ -971,7 +901,6 @@ codeunit 50021 "DEL Element"
                     DealShipmentSelection_Re_Par.Deal_ID)
                   );
 
-            //si un BR existe pour cette facture
         END ELSE
             IF DealShipmentSelection_Re_Par."BR No." <> '' THEN BEGIN
 
@@ -1037,44 +966,16 @@ codeunit 50021 "DEL Element"
         element_ID_Co_Loc: Code[20];
         last: Code[20];
     begin
-        /*
-        - Boucle sur les ACO présentes dans la table "ACO Connection" pour Deal_ID_Par
-          - Ajoute l'ACO (soit présente dans purchase header, ou alors basée sur une purchase invoice)
-          - Ajoute les VCO associées à l'ACO (VCO soit présente dans sales header, soir basée sur une sales invoice)
-        */
-
-        /*_Valeur de retour de la fonction_*/
         success := TRUE;
 
         IF update_planned_Bo_Par THEN BEGIN
-
-            /*_Boucle sur les ACO de la table ACO_Connection pour this.Deal_*/
             ACO_Connection_Re_Loc.RESET();
             ACO_Connection_Re_Loc.SETRANGE(Deal_ID, Deal_ID_Par);
             IF ACO_Connection_Re_Loc.FINDFIRST() THEN BEGIN
 
-                /*_L'affaire se base sur une ACO existante_*/
                 IF ACO_Re_Loc.GET(ACO_Re_Loc."Document Type"::Order, ACO_Connection_Re_Loc."ACO No.") THEN BEGIN
 
-                    /*_Ajoute la commande d'achat_*/
                     element_ID_Co_Loc := FNC_Add_ACO(Deal_ID_Par, ACO_Re_Loc);
-
-                    /*_
-                    Ajoute la/les commande(s) de vente associée(s) à la commande d'achat
-                    Sur les lignes des VCOs (Sales Line), on cherche celles qui appartiennent à l'ACO
-
-                    Jusqu'au 01.10.08
-
-                    Le lien ACO-VCO est assuré par le champ "Shortcut Dimension 1 Code" sur les lignes VCO
-
-                    A partir du 01.10.08
-                    Le lien ACO-VCO est assuré par le champ "Special Order Purchase No." sur les lignes VCO
-
-                    Si "Special Order Purchase No." est défini, alors il s'agit d'une ACO recente
-                    Si "Special Order Purchase No." n'est pas défini, alors il s'agit d'une ACO crée avant
-                    la mise ne place de la gestion d'affaire. Il faudra donc aller vérifier si des Elements
-                    prévus et réels ont déjà été attribués à cette affaire.
-                    _*/
 
                     last := '';
                     salesLine_Re_Loc.RESET();
@@ -1082,7 +983,6 @@ codeunit 50021 "DEL Element"
                     salesLine_Re_Loc.SETRANGE("Special Order Purchase No.", ACO_Re_Loc."No.");
                     salesLine_Re_Loc.SETRANGE(Type, salesLine_Re_Loc.Type::Item);
                     salesLine_Re_Loc.SETFILTER(Quantity, '>%1', 0);
-                    /*_Si il y a des ACO récentes_*/
                     IF salesLine_Re_Loc.FINDFIRST() THEN
                         REPEAT
 
@@ -1104,12 +1004,10 @@ codeunit 50021 "DEL Element"
 
                     ELSE BEGIN
 
-                        /*_Filtre sur les anciens types de liens_*/
                         salesLine_Re_Loc.RESET();
                         salesLine_Re_Loc.SETRANGE(salesLine_Re_Loc."Shortcut Dimension 1 Code", ACO_Re_Loc."No.");
                         salesLine_Re_Loc.SETRANGE(salesLine_Re_Loc.Type, salesLine_Re_Loc.Type::Item);
                         salesLine_Re_Loc.SETFILTER(Quantity, '>%1', 0);
-                        /*_Si il y a des vieilles ACO_*/
                         IF salesLine_Re_Loc.FINDFIRST() THEN
                             REPEAT
 
@@ -1130,26 +1028,17 @@ codeunit 50021 "DEL Element"
                             UNTIL (salesLine_Re_Loc.NEXT() = 0)
 
                         ELSE
-
-                            //ERROR(ERROR_TXT, 'Co_50021', 'FNC_Add_Elements()',
-                            //STRSUBSTNO('ACO >%1< inexistant', ACO_Connection_Re_Loc."ACO No."));
-                            //MESSAGE('ACO >%1< inexistante. Update annulée pour la partie planifiée', ACO_Connection_Re_Loc."ACO No.");
                             success := FALSE;
 
                     END;
 
-                    /*_L'affaire se base sur une ACO qui n'existe plus mais qui est sous forme de une ou plusieurs purchase invoice_*/
                 END ELSE BEGIN
 
                     purchaseInvoiceHeader_Re_Loc.RESET();
                     purchaseInvoiceHeader_Re_Loc.SETRANGE("Shortcut Dimension 1 Code", ACO_Connection_Re_Loc."ACO No.");
                     IF purchaseInvoiceHeader_Re_Loc.FINDFIRST() THEN BEGIN
-                        /*_pas de boucle, parce qu'on veut ajouter qu'une seule ACO_*/
-
-                        /*_Ajoute la commande d'achat_*/
                         element_ID_Co_Loc := FNC_Add_ACO_From_Invoice(Deal_ID_Par, purchaseInvoiceHeader_Re_Loc);
 
-                        /*_Boucler sur les sales invoice line et chercher celles qui ont un code achat = à l'aco_*/
                         salesInvoiceLine_Re_Loc.RESET();
                         salesInvoiceLine_Re_Loc.SETCURRENTKEY("Shortcut Dimension 1 Code", Type, "Order No.");
                         salesInvoiceLine_Re_Loc.SETRANGE("Shortcut Dimension 1 Code", ACO_Connection_Re_Loc."ACO No.");
@@ -1200,7 +1089,6 @@ codeunit 50021 "DEL Element"
         element_ID_Co_Loc: Code[20];
         postingDate_Da_Loc: Date;
     begin
-        //ajoute un element de type provision
 
         IF isExtourne_Bo_Par THEN BEGIN
             docNo_Co_Par := sps_Re_Par."Document No. Ext.";
@@ -1210,13 +1098,12 @@ codeunit 50021 "DEL Element"
             postingDate_Da_Loc := sps_Re_Par."Posting Date";
         END;
 
-        //insertion de la provision
         element_ID_Co_Ret :=
           FNC_Insert_Element(
-            sps_Re_Par.Deal_ID,                            //deal id
-            element_Re_Loc.Instance::real,                 //instance type
-            element_Re_Loc.Type::Provision,                //type
-            docNo_Co_Par,                                  //type no
+            sps_Re_Par.Deal_ID,
+            element_Re_Loc.Instance::real,
+            element_Re_Loc.Type::Provision,
+            docNo_Co_Par,
             '',                                            //apply-to
             element_Re_Loc."Subject Type"::" ",            //subject type
             '',                                            //subjet no
@@ -1239,20 +1126,6 @@ codeunit 50021 "DEL Element"
         deal_ID_Co_Loc: Code[20];
         element_ID_Co_Loc: Code[20];
     begin
-        /*
-        //DEV-CHG-PROVISION
-        s'inspirer de FNC_Add_New_Invoice_Connection
-        
-        Selon la valeur du paramètre connectionType :
-        
-          - Crée une liaison entre la provision et l'élément à laquelle elle s'applique
-            par exemple, la provision X s'applique à la facture d'achat Y ou au BR Y
-            -> indispensable !!! sinon on ne pourra pas dispatcher le montant de la provision correctement
-        
-          - Crée une liaison entre la provision et la livraison
-            par exemple, la provision X appartient à la livraison Y
-            -> indispensable !!! sinon on ne peut pas rechercher toutes les provisions pour une livraison !!!
-        */
 
         Element_Cu.FNC_Set_Element(element_Re_Loc, Element_ID_Co_Par);
         deal_ID_Co_Loc := element_Re_Loc.Deal_ID;
@@ -1294,7 +1167,6 @@ codeunit 50021 "DEL Element"
                     sps_Re_Par.Deal_ID)
                   );
 
-            //si un BR existe pour cette facture
         END ELSE
             IF sps_Re_Par."BR No." <> '' THEN BEGIN
 
@@ -1357,38 +1229,30 @@ codeunit 50021 "DEL Element"
         purchInvID_Co_Loc: Code[20];
         shipmentID_Co_Loc: Code[20];
     begin
-        /*__
-          Ajoute un "Element" de type Purchase Credit Memo
-          Fonction appelée lors de la création d'une Purchase Credit Memo
-        __*/
-
         IF Add_Variant_Op_Par = Add_Variant_Op_Par::New THEN BEGIN
 
             IF ShipmentNo_Co_Par <> '' THEN BEGIN
 
                 purchInvID_Co_Loc := DealShipment_Cu.FNC_GetPurchInvoiceElementID(ShipmentNo_Co_Par);
 
-                /*_Insère un enregistrement dans la table "Element" 50021_*/
                 element_ID_Loc := FNC_Insert_Element(
-                  Deal_ID_Co_Par,                                   //deal id
-                  element_Re_Loc.Instance::real,                    //instance
-                  element_Re_Loc.Type::"Purch. Cr. Memo",           //type
-                  creditMemoHeader_Re_Par."No.",                    //type no
-                  purchInvID_Co_Loc,                                //apply-to
-                  element_Re_Loc."Subject Type"::Customer,          //subject type
-                  creditMemoHeader_Re_Par."Sell-to Customer No.",   //subject no
-                  '',                                               //fee id
-                  '',                                               //fee connection id
-                  creditMemoHeader_Re_Par."Posting Date",           //date
-                  0,                                                //entry No.
-                  '', //"Bill-To Customer No." est vide car sur une aco, on paye un fournisseur
-                  0D,
-                  0 //splitt index
-                );
+                 Deal_ID_Co_Par,                                   //deal id
+                 element_Re_Loc.Instance::real,                    //instance
+                 element_Re_Loc.Type::"Purch. Cr. Memo",           //type
+                 creditMemoHeader_Re_Par."No.",                    //type no
+                 purchInvID_Co_Loc,                                //apply-to
+                 element_Re_Loc."Subject Type"::Customer,          //subject type
+                 creditMemoHeader_Re_Par."Sell-to Customer No.",   //subject no
+                 '',                                               //fee id
+                 '',                                               //fee connection id
+                 creditMemoHeader_Re_Par."Posting Date",           //date
+                 0,                                                //entry No.
+                 '', //"Bill-To Customer No." est vide car sur une aco, on paye un fournisseur
+                 0D,
+                 0 //splitt index
+               );
 
                 DealShipmentConnection_Cu.FNC_Insert(Deal_ID_Co_Par, ShipmentNo_Co_Par, element_ID_Loc);
-
-                //dealShipmentSelection_Re_Loc.DELETEALL();
 
             END ELSE
                 ERROR(ERROR_TXT, 'Co_50021', 'FNC_Add_Purch_Cr_Memo()',
@@ -1396,8 +1260,6 @@ codeunit 50021 "DEL Element"
 
         END ELSE
             IF Add_Variant_Op_Par = Add_Variant_Op_Par::Existing THEN BEGIN
-
-                /*_Pas d'implémentation prévue pour le moment_*/
 
             END ELSE
                 ERROR(ERROR_TXT, 'Co_50021', 'FNC_Add_Purch_Cr_Memo()',
@@ -1416,48 +1278,28 @@ codeunit 50021 "DEL Element"
         last: Code[20];
         shipmentID_Co_Loc: Code[20];
     begin
-        /*__
-          Ajoute un "Element" de type Purchase Invoice
-          Fonction appelée lors de la création d'une Purchase Invoice (si la Purchase Invoice est déjà existante,
-          alors on utilisera FNC_Add_Purchase_Invoice avec paramètre Add_Variant_Op_Par::Existing)
-        
-          Paramètre de type option :
-            -> Add_Variant_Op_Par::New      : add a new specific Purchase Invoice
-            -> Add_Variant_Op_Par::Existing : check for existing Purchase Invoices and add them if they are not linked to the deal yet
-        __*/
 
         IF Add_Variant_Op_Par = Add_Variant_Op_Par::New THEN BEGIN
 
-            //rechercher l'ACO de la purchase invoice
-            //element_Re_Loc.RESET();
-            //element_Re_Loc.SETCURRENTKEY(Deal_ID, Type);
-            //element_Re_Loc.SETRANGE(Deal_ID, Deal_ID_Co_Par);
-            //element_Re_Loc.SETRANGE(Type, element_Re_Loc.Type::ACO);
-            //element_Re_Loc.setrange(Instance, element_Re_Loc.Instance::planned);
-
             Deal_Cu.FNC_Get_ACO(element_Re_Loc, Deal_ID_Co_Par);
             element_Re_Loc.SETRANGE("Type No.", PurchaseInvoiceHeader_Re_Par."Order No.");
-            //si on trouve, tant mieux, sinon c'est pas grave car il ne s'agit pas d'une info vitale
             IF element_Re_Loc.FINDFIRST() THEN;
-
-            //insère un enregistrement dans la table "Element" 50021
             element_ID_Loc :=
-              FNC_Insert_Element(
-               Deal_ID_Co_Par,
-               element_Re_Loc.Instance::real,
-               element_Re_Loc.Type::"Purchase Invoice",
-               PurchaseInvoiceHeader_Re_Par."No.",
-               element_Re_Loc.ID,
-               element_Re_Loc."Subject Type"::Vendor,
-               PurchaseInvoiceHeader_Re_Par."Pay-to Vendor No.",
-               '',
-               '',
-               PurchaseInvoiceHeader_Re_Par."Posting Date",
-               0,
-               '', //"Bill-To Customer No." est vide car sur une aco, on paye un fournisseur
-               0D,
-               0 //splitt index
-              );
+                     FNC_Insert_Element(
+                      Deal_ID_Co_Par,
+                      element_Re_Loc.Instance::real,
+                      element_Re_Loc.Type::"Purchase Invoice",
+                      PurchaseInvoiceHeader_Re_Par."No.",
+                      element_Re_Loc.ID,
+                      element_Re_Loc."Subject Type"::Vendor,
+                      PurchaseInvoiceHeader_Re_Par."Pay-to Vendor No.",
+                      '',
+                      '',
+                      PurchaseInvoiceHeader_Re_Par."Posting Date",
+                      0,
+                      '',
+                       0D,
+                      0);
 
             IF ShipmentNo_Co_Par <> '' THEN BEGIN
                 DealShipmentConnection_Cu.FNC_Insert(Deal_ID_Co_Par, ShipmentNo_Co_Par, element_ID_Loc);
@@ -1466,8 +1308,6 @@ codeunit 50021 "DEL Element"
                   PurchaseInvoiceHeader_Re_Par."No."
                 );
 
-                //inutile car effectué à la fin du processus dans le codeunit 91 !
-                //dealShipmentSelection_Re_Loc.DELETEALL();
 
             END ELSE
                 ERROR(ERROR_TXT, 'Co_50021', 'FNC_Add_Purchase_Invoice()',
@@ -1475,13 +1315,6 @@ codeunit 50021 "DEL Element"
 
         END ELSE
             IF Add_Variant_Op_Par = Add_Variant_Op_Par::Existing THEN BEGIN
-
-                /*_On cherche l'ACO liée à l'affaire_*/
-                //element_Re_Loc.RESET();
-                //element_Re_Loc.SETCURRENTKEY(Deal_ID, Type);
-                //element_Re_Loc.SETRANGE(Deal_ID, Deal_ID_Co_Par);
-                //element_Re_Loc.SETRANGE(Type, element_Re_Loc.Type::ACO);
-                //element_Re_Loc.setrange(Instance, element_Re_Loc.Instance::planned);
 
                 Deal_Cu.FNC_Get_ACO(element_Re_Loc, Deal_ID_Co_Par);
                 IF element_Re_Loc.FINDFIRST() THEN BEGIN
@@ -1502,23 +1335,12 @@ codeunit 50021 "DEL Element"
 
                                 IF purchInvHeader_Re_Loc.GET(purchInvLine_Re_Loc."Document No.") THEN BEGIN
 
-                                    /*_Ajoute une ligne dans table "Element"_*/
-
-                                    /*_Avant d'ajouter, on controle si l element est pas déjà lié à l'affaire_*/
                                     element_Re_Loc.RESET();
                                     element_Re_Loc.SETCURRENTKEY(Deal_ID, Type);
                                     element_Re_Loc.SETRANGE(Deal_ID, Deal_ID_Co_Par);
                                     element_Re_Loc.SETRANGE(Type, element_Re_Loc.Type::"Purchase Invoice");
                                     element_Re_Loc.SETRANGE("Type No.", purchInvHeader_Re_Loc."No.");
                                     IF NOT element_Re_Loc.FINDFIRST() THEN BEGIN
-
-                                        //rechercher l'ACO à laquelle cet Purchase Invoice correspond
-                                        //element_Re_Loc.RESET();
-                                        //element_Re_Loc.SETCURRENTKEY(Deal_ID, Type);
-                                        //element_Re_Loc.SETRANGE(Deal_ID, Deal_ID_Co_Par);
-                                        //element_Re_Loc.SETRANGE(Type, element_Re_Loc.Type::ACO);
-                                        //element_Re_Loc.setrange(Instance, element_Re_Loc.Instance::planned);
-
                                         Deal_Cu.FNC_Get_ACO(element_Re_Loc, Deal_ID_Co_Par);
                                         element_Re_Loc.SETRANGE("Type No.", purchInvHeader_Re_Loc."Order No.");
                                         IF element_Re_Loc.FINDFIRST() THEN BEGIN
@@ -1540,15 +1362,9 @@ codeunit 50021 "DEL Element"
                                              0D,
                                              0 //splitt index
                                             );
-
-                                            /*_Recherche la première livraison de l'affaire_*/
                                             shipmentID_Co_Loc := DealShipment_Cu.FNC_GetFirstShipmentNo(Deal_ID_Co_Par);
 
-                                            /*_Ajoute une ligne dans table "Deal Shipment Connection" (lie la Purchase Invoice à la livraison)_*/
                                             DealShipmentConnection_Cu.FNC_Insert(Deal_ID_Co_Par, shipmentID_Co_Loc, element_ID_Loc);
-
-                                            //MD_FIX
-                                            // DealShipment_Cu.FNC_SetPurchaseInvoiceNo(shipmentID_Co_Loc, purchInvHeader_Re_Loc."No.");
                                             DealShipment_Cu.FNC_SetSalesInvoiceNo(shipmentID_Co_Loc, purchInvHeader_Re_Loc."No.");
 
                                         END;
@@ -1582,8 +1398,6 @@ codeunit 50021 "DEL Element"
         option: Option;
         option_Re_Loc: Option New,Existing;
     begin
-        /*_Fonction pour la reprise de données_*/
-
         FNC_Add_BR(deal_ID_Co_Par, BR_Header_Re_Loc, '', option_Re_Loc::Existing);
         FNC_Add_Purchase_Invoice(deal_ID_Co_Par, PurchInvHeader_Re_Loc, '', option_Re_Loc::Existing);
         FNC_Add_Sales_Invoice(deal_ID_Co_Par, SalesInvHeader_Re_Loc, '', option_Re_Loc::Existing);
@@ -1603,10 +1417,6 @@ codeunit 50021 "DEL Element"
         salesInvID_Co_Loc: Code[20];
         shipmentID_Co_Loc: Code[20];
     begin
-        /*__
-          Ajoute un "Element" de type Credit Memo
-          Fonction appelée lors de la création d'une Credit Memo
-        __*/
 
         IF Add_Variant_Op_Par = Add_Variant_Op_Par::New THEN BEGIN
 
@@ -1614,7 +1424,6 @@ codeunit 50021 "DEL Element"
 
                 salesInvID_Co_Loc := DealShipment_Cu.FNC_GetSalesInvoiceElementID(ShipmentNo_Co_Par);
 
-                /*_Insère un enregistrement dans la table "Element" 50021_*/
                 element_ID_Loc := FNC_Insert_Element(
                   Deal_ID_Co_Par,                                   //deal id
                   element_Re_Loc.Instance::real,                    //instance
@@ -1629,7 +1438,7 @@ codeunit 50021 "DEL Element"
                   0,                                                //entry No.
                   creditMemoHeader_Re_Par."Bill-to Customer No.",
                   0D,
-                  0 //splitt index
+                  0
                 );
 
                 DealShipmentConnection_Cu.FNC_Insert(Deal_ID_Co_Par, ShipmentNo_Co_Par, element_ID_Loc);
@@ -1640,8 +1449,6 @@ codeunit 50021 "DEL Element"
 
         END ELSE
             IF Add_Variant_Op_Par = Add_Variant_Op_Par::Existing THEN BEGIN
-
-                /*_Pas d'implémentation prévue pour le moment_*/
 
             END ELSE
                 ERROR(ERROR_TXT, 'Co_50021', 'FNC_Add_Sales_Cr_Memo()',
@@ -1660,15 +1467,6 @@ codeunit 50021 "DEL Element"
         last: Code[20];
         shipmentID_Co_Loc: Code[20];
     begin
-        /*__
-          Ajoute un "Element" de type Sales Invoice
-          Fonction appelée lors de la création d'une Sales Invoice (si la Sales Invoice est déjà existante,
-          alors on utilisera FNC_Add_Sales_Invoice avec paramètre Add_Variant_Op_Par::Existing)
-        
-          Paramètre de type option :
-            -> Add_Variant_Op_Par::New      : add a new specific Purchase Invoice
-            -> Add_Variant_Op_Par::Existing : check for existing Purchase Invoices and add them if they are not linked to the deal yet
-        __*/
 
         IF Add_Variant_Op_Par = Add_Variant_Op_Par::New THEN BEGIN
 
@@ -1679,10 +1477,9 @@ codeunit 50021 "DEL Element"
             element_Re_Loc.SETRANGE(Type, element_Re_Loc.Type::VCO);
             element_Re_Loc.SETRANGE(Instance, element_Re_Loc.Instance::planned);
             element_Re_Loc.SETRANGE("Type No.", SalesInvoiceHeader_Re_Par."Order No.");
-            //si on trouve, tant mieux, sinon c'est pas grave car il ne s'agit pas d'une info vitale
+
             IF element_Re_Loc.FINDFIRST() THEN;
 
-            //insère un enregistrement dans la table "Element" 50021
             element_ID_Loc :=
               FNC_Insert_Element(
                Deal_ID_Co_Par,
@@ -1697,12 +1494,10 @@ codeunit 50021 "DEL Element"
                SalesInvoiceHeader_Re_Par."Posting Date",
                0,
                SalesInvoiceHeader_Re_Par."Bill-to Customer No.",
-               SalesInvoiceHeader_Re_Par."Posting Date", //la période des élé. réels = la posting date de la sales invoice d'une livraison
-               0 //splitt index
+               SalesInvoiceHeader_Re_Par."Posting Date",
+               0
               );
 
-            //START CHG05
-            //link in ShipmentConnection table and set sales invoice no
             IF ShipmentNo_Co_Par <> '' THEN BEGIN
 
                 DealShipmentConnection_Cu.FNC_Insert(Deal_ID_Co_Par, ShipmentNo_Co_Par, element_ID_Loc);
@@ -1716,13 +1511,6 @@ codeunit 50021 "DEL Element"
 
         END ELSE
             IF Add_Variant_Op_Par = Add_Variant_Op_Par::Existing THEN BEGIN
-
-                /*_On cherche l'ACO liée à l'affaire_*/
-                //element_Re_Loc.RESET();
-                //element_Re_Loc.SETCURRENTKEY(Deal_ID, Type);
-                //element_Re_Loc.SETRANGE(Deal_ID, Deal_ID_Co_Par);
-                //element_Re_Loc.SETRANGE(Type, element_Re_Loc.Type::ACO);
-                //element_Re_Loc.setrange(Instance, element_Re_Loc.Instance::planned);
 
                 Deal_Cu.FNC_Get_ACO(element_Re_Loc, Deal_ID_Co_Par);
                 IF element_Re_Loc.FINDFIRST() THEN BEGIN
@@ -1738,13 +1526,8 @@ codeunit 50021 "DEL Element"
                         REPEAT
 
                             IF salesInvLine_Re_Loc."Document No." <> last THEN BEGIN
-                                //MESSAGE(salesInvLine_Re_Loc."Document No.");
-
                                 IF salesInvHeader_Re_Loc.GET(salesInvLine_Re_Loc."Document No.") THEN BEGIN
 
-                                    /*_Ajoute une ligne dans table "Element"_*/
-
-                                    /*_Avant d'ajouter, on controle si le est pas déjà lié à l'affaire_*/
                                     element_Re_Loc.RESET();
                                     element_Re_Loc.SETCURRENTKEY(Deal_ID, Type);
                                     element_Re_Loc.SETRANGE(Deal_ID, Deal_ID_Co_Par);
@@ -1752,7 +1535,6 @@ codeunit 50021 "DEL Element"
                                     element_Re_Loc.SETRANGE("Type No.", salesInvHeader_Re_Loc."No.");
                                     IF NOT element_Re_Loc.FINDFIRST() THEN BEGIN
 
-                                        //rechercher la VCO à laquelle cet Sales Invoice correspond
                                         element_Re_Loc.RESET();
                                         element_Re_Loc.SETCURRENTKEY(Deal_ID, Type, Instance);
                                         element_Re_Loc.SETRANGE(Deal_ID, Deal_ID_Co_Par);
@@ -1761,7 +1543,6 @@ codeunit 50021 "DEL Element"
                                         element_Re_Loc.SETRANGE("Type No.", salesInvHeader_Re_Loc."Order No.");
                                         IF element_Re_Loc.FINDFIRST() THEN BEGIN
 
-                                            /*_Insère un enregistrement dans la table "Element" 50021_*/
                                             element_ID_Loc := FNC_Insert_Element(
                                              Deal_ID_Co_Par,                                   //deal id
                                              element_Re_Loc.Instance::real,                    //instance
@@ -1779,10 +1560,7 @@ codeunit 50021 "DEL Element"
                                              0 //splitt index
                                             );
 
-                                            /*_Recherche la première livraison de l'affaire_*/
                                             shipmentID_Co_Loc := DealShipment_Cu.FNC_GetFirstShipmentNo(Deal_ID_Co_Par);
-
-                                            /*_Ajoute une ligne dans table "Deal Shipment Connection" (lie le Sales Invoice à la livraison)_*/
                                             DealShipmentConnection_Cu.FNC_Insert(Deal_ID_Co_Par, shipmentID_Co_Loc, element_ID_Loc);
 
                                             DealShipment_Cu.FNC_SetSalesInvoiceNo(shipmentID_Co_Loc, salesInvHeader_Re_Loc."No.");
@@ -1816,9 +1594,6 @@ codeunit 50021 "DEL Element"
         element_ID_Co_Loc: Code[20];
         isPlanned_Op_Loc: Option;
     begin
-        // Ajoute un "Element" de type VCO
-
-        //insère un enregistrement dans la table "Element" 50021
         element_ID_Co_Loc :=
           FNC_Insert_Element(
             Deal_ID_Co_Par,
@@ -1837,7 +1612,6 @@ codeunit 50021 "DEL Element"
             0 //splitt index
           );
 
-        //insère tous les "Element" "Fee" associés à la commande d'achat que l'on vient d'ajouter
         FNC_Add_Element_Fee(element_ID_Co_Loc);
     end;
 
@@ -1848,9 +1622,6 @@ codeunit 50021 "DEL Element"
         element_ID_Co_Loc: Code[20];
         isPlanned_Op_Loc: Option;
     begin
-        // Ajoute un "Element" de type VCO
-
-        //insère un enregistrement dans la table "Element" 50021
         element_ID_Co_Loc :=
           FNC_Insert_Element(
             Deal_ID_Co_Par,
@@ -1869,7 +1640,6 @@ codeunit 50021 "DEL Element"
             0 //splitt index
           );
 
-        //insère tous les "Element" "Fee" associés à la commande d'achat que l'on vient d'ajouter
         FNC_Add_Element_Fee(element_ID_Co_Loc);
     end;
 
@@ -1878,16 +1648,11 @@ codeunit 50021 "DEL Element"
     var
         element_Re_Loc: Record "DEL Element";
     begin
-        //supprimer de la table position
         Position_Cu.FNC_Delete(Element_ID_Co_Par);
 
-        //supprimer de la table element connection
         ElementConnection_Cu.FNC_Delete(Element_ID_Co_Par);
 
-        //supprimer de la table deal shipment connection
         DealShipmentConnection_Cu.FNC_Delete(Element_ID_Co_Par);
-
-        //supprimer de la table element
         element_Re_Loc.RESET();
         IF element_Re_Loc.GET(Element_ID_Co_Par) THEN
             element_Re_Loc.DELETE()
@@ -1921,7 +1686,6 @@ codeunit 50021 "DEL Element"
         rate_Dec_Loc: Decimal;
         entryNo_Int_Loc: Integer;
     begin
-        /*__Retourne l'amount en devise du document__*/
 
         FNC_Set_Element(element_Re_Loc, Element_ID_Co_Par);
         deal_ID_Co_Loc := element_Re_Loc.Deal_ID;
@@ -1945,7 +1709,6 @@ codeunit 50021 "DEL Element"
                             amount_Dec_Ret += qty_Dec_Loc * amount_Dec_Loc;
 
                         UNTIL (ACO_Line_Re_Loc.NEXT() = 0)
-                    /*_si on trouve pas sur les lignes achat, on cherche sur les lignes factures achat_*/
                     ELSE BEGIN
                         purchInvLine_Re_Loc.RESET();
                         purchInvLine_Re_Loc.SETCURRENTKEY("Shortcut Dimension 1 Code", Type, "Document No.");
@@ -1964,7 +1727,6 @@ codeunit 50021 "DEL Element"
                 END;
             element_Re_Loc.Type::VCO:
                 BEGIN
-                    //on cherche à quel ACO la VCO appartient
                     elementConnection_Re_Loc.RESET();
                     elementConnection_Re_Loc.SETRANGE(Deal_ID, element_Re_Loc.Deal_ID);
                     elementConnection_Re_Loc.SETRANGE(Element_ID, element_Re_Loc.ID);
@@ -1987,7 +1749,6 @@ codeunit 50021 "DEL Element"
 
                             UNTIL (VCO_Line_Re_Loc.NEXT() = 0)
 
-                        /*_si on trouve pas en cherchant sur special order no, on cherche sur code axe 1_*/
                         ELSE BEGIN
 
                             VCO_Line_Re_Loc.RESET();
@@ -2004,7 +1765,6 @@ codeunit 50021 "DEL Element"
                                     amount_Dec_Ret += qty_Dec_Loc * amount_Dec_Loc;
                                 UNTIL (VCO_Line_Re_Loc.NEXT() = 0)
 
-                            /*_si on trouve pas sur code axe 1, on cherche sur les factures ventes_*/
                             ELSE BEGIN
                                 salesInvLine_Re_Loc.RESET();
                                 salesInvLine_Re_Loc.SETCURRENTKEY("Shortcut Dimension 1 Code", Type, "Order No.");
@@ -2023,7 +1783,6 @@ codeunit 50021 "DEL Element"
                 END;
             element_Re_Loc.Type::Fee:
                 BEGIN
-                    //SI IL Y A UNE Fee Connection, on la prend en compte
                     IF feeConnection_Re_Loc.GET(element_Re_Loc.Fee_Connection_ID) THEN
                         amount_Dec_Ret :=
                           Fee_Cu.FNC_Get_Amount(
@@ -2060,8 +1819,6 @@ codeunit 50021 "DEL Element"
                                     vendorLedgerEntry.CALCFIELDS(Amount);
                                     qty_Dec_Loc := 1;
                                     amount_Dec_Loc := vendorLedgerEntry.Amount;
-                                    //curr_Co_Loc    := 'EUR';
-                                    //rate_Dec_Loc   := currExRate_Re_loc.ExchangeRate(vendorLedgerEntry."Posting Date", curr_Co_Loc);
                                     amount_Dec_Ret += qty_Dec_Loc * amount_Dec_Loc * -1; // * rate_Dec_Loc;
                                 END;
                             END;
@@ -2074,8 +1831,6 @@ codeunit 50021 "DEL Element"
                                     customerLedgerEntry.CALCFIELDS(Amount);
                                     qty_Dec_Loc := 1;
                                     amount_Dec_Loc := customerLedgerEntry.Amount;
-                                    //curr_Co_Loc    := 'EUR';
-                                    //rate_Dec_Loc   := currExRate_Re_loc.ExchangeRate(customerLedgerEntry."Posting Date", curr_Co_Loc);
                                     amount_Dec_Ret += qty_Dec_Loc * amount_Dec_Loc * -1; // * rate_Dec_Loc;
                                 END;
                             END;
@@ -2123,7 +1878,6 @@ codeunit 50021 "DEL Element"
                             amount_Dec_Ret += qty_Dec_Loc * amount_Dec_Loc;
                         UNTIL (purchInvLine_Re_Loc.NEXT() = 0);
                 END;
-            //CHG-DEV-PROVISION
             element_Re_Loc.Type::Provision:
                 BEGIN
                     //on cherche dans la table Shipment Provision Selection
@@ -2141,24 +1895,12 @@ codeunit 50021 "DEL Element"
         element_Re_Loc: Record "DEL Element";
         position_Re_Loc: Record "DEL Position";
     begin
-        //retourne l'amount d'un element en fonction de ses positions dans la table position
         FNC_Set_Element(element_Re_Loc, Element_ID_Co_Par);
 
         amount_Dec_Ret := 0;
 
         element_Re_Loc.CALCFIELDS("Amount(EUR)");
         amount_Dec_Ret := element_Re_Loc."Amount(EUR)";
-
-        //deprecated since working with flowfields
-        /*
-        position_Re_Loc.RESET();
-        position_Re_Loc.SETRANGE(Deal_ID, element_Re_Loc.Deal_ID);
-        position_Re_Loc.SETRANGE(Element_ID, element_Re_Loc.ID);
-        IF position_Re_Loc.FINDFIRST THEN
-          REPEAT
-            amount_Dec_Ret += Position_Cu.FNC_Get_Amount(position_Re_Loc.ID);
-          UNTIL(position_Re_Loc.NEXT() = 0);
-        */
 
     end;
 
@@ -2187,7 +1929,6 @@ codeunit 50021 "DEL Element"
         rate_Dec_Loc: Decimal;
         EntryNo_Int_Loc: Integer;
     begin
-        /*__Retourne l'amount en EUR d'un element__*/
 
         FNC_Set_Element(element_Re_Loc, Element_ID_Co_Par);
         deal_ID_Co_Loc := element_Re_Loc.Deal_ID;
@@ -2212,7 +1953,6 @@ codeunit 50021 "DEL Element"
                             amount_Dec_Ret += qty_Dec_Loc * amount_Dec_Loc * rate_Dec_Loc;
 
                         UNTIL (ACO_Line_Re_Loc.NEXT() = 0)
-                    /*_si on trouve pas sur les lignes achat, on cherche sur les lignes factures achat_*/
                     ELSE BEGIN
                         purchInvLine_Re_Loc.RESET();
                         purchInvLine_Re_Loc.SETRANGE("Shortcut Dimension 1 Code", element_Re_Loc."Type No.");
@@ -2232,7 +1972,6 @@ codeunit 50021 "DEL Element"
                 END;
             element_Re_Loc.Type::VCO:
                 BEGIN
-                    //on cherche à quel ACO la VCO appartient
                     elementConnection_Re_Loc.RESET();
                     elementConnection_Re_Loc.SETRANGE(Deal_ID, element_Re_Loc.Deal_ID);
                     elementConnection_Re_Loc.SETRANGE(Element_ID, element_Re_Loc.ID);
@@ -2257,7 +1996,6 @@ codeunit 50021 "DEL Element"
 
                             UNTIL (VCO_Line_Re_Loc.NEXT() = 0)
 
-                        /*_si on trouve pas en cherchant sur special order no, on cherche sur code axe 1_*/
                         ELSE BEGIN
 
                             VCO_Line_Re_Loc.RESET();
@@ -2275,7 +2013,6 @@ codeunit 50021 "DEL Element"
                                     amount_Dec_Ret += qty_Dec_Loc * amount_Dec_Loc * rate_Dec_Loc;
                                 UNTIL (VCO_Line_Re_Loc.NEXT() = 0)
 
-                            /*_si on trouve pas sur code axe 1, on cherche sur les factures ventes_*/
                             ELSE BEGIN
                                 salesInvLine_Re_Loc.RESET();
                                 salesInvLine_Re_Loc.SETRANGE("Shortcut Dimension 1 Code", ACOElement_Re_Loc."Type No.");
@@ -2295,7 +2032,6 @@ codeunit 50021 "DEL Element"
                 END;
             element_Re_Loc.Type::Fee:
                 BEGIN
-                    //SI IL Y A UNE Fee Connection, on la prend en compte
                     IF feeConnection_Re_Loc.GET(element_Re_Loc.Fee_Connection_ID) THEN
                         amount_Dec_Ret :=
                           Fee_Cu.FNC_Get_Amount(
@@ -2355,21 +2091,11 @@ codeunit 50021 "DEL Element"
                             END;
                         element_Re_Loc."Subject Type"::"G/L Account":
                             BEGIN
-                                //Entry No. est pas forcément défini pour tous les éléments mais si il existe, alors il faut l'utiliser
                                 IF GLEntry_Re_Loc.GET(element_Re_Loc."Entry No.") THEN BEGIN
 
                                     amount_Dec_Ret := GLEntry_Re_Loc.Amount;
 
-                                    //IF GLEntry_Re_Loc."Document Type" = GLEntry_Re_Loc."Document Type"::"Credit Memo" THEN
-                                    //  amount_Dec_Ret := GLEntry_Re_Loc.Amount * -1;
-
                                 END ELSE BEGIN
-
-                                    //ACOElement_Re_Loc.RESET();
-                                    //acoelement_Re_Loc.SETCURRENTKEY(Deal_ID, Type);
-                                    //ACOElement_Re_Loc.SETRANGE(Deal_ID, element_Re_Loc.Deal_ID);
-                                    //ACOElement_Re_Loc.SETRANGE(Type, element_Re_Loc.Type::ACO);
-                                    //ACOElement_Re_Loc.setrange(Instance, element_Re_Loc.Instance::planned);
 
                                     Deal_Cu.FNC_Get_ACO(ACOElement_Re_Loc, element_Re_Loc.Deal_ID);
                                     IF NOT ACOElement_Re_Loc.FINDFIRST() THEN ERROR('aucune ACO');
@@ -2384,9 +2110,6 @@ codeunit 50021 "DEL Element"
                                     GLEntry_Re_Loc.SETRANGE("Global Dimension 1 Code", ACOElement_Re_Loc."Type No.");
 
                                     IF GLEntry_Re_Loc.FINDFIRST() THEN BEGIN
-                                        //les montants G/L entry sont toujours en Devise Société
-                                        ////on gère la conversion en dur et on retourne toujours des EUR
-                                        //amount_Dec_Ret := GLEntry_Re_Loc.Amount * currExRate_Re_loc.ExchangeRate(GLEntry_Re_Loc."Posting Date", 'EUR');
                                         amount_Dec_Ret := GLEntry_Re_Loc.Amount;
                                     END ELSE BEGIN
                                         GLEntry_Re_Loc.RESET();
@@ -2399,13 +2122,9 @@ codeunit 50021 "DEL Element"
                                         GLEntry_Re_Loc.SETRANGE("Global Dimension 1 Code", '');
 
                                         IF GLEntry_Re_Loc.FINDFIRST() THEN BEGIN
-                                            //les montants G/L entry sont toujours en Devise Société
-                                            ////on gère la conversion en dur et on retourne toujours des EUR
                                             amount_Dec_Ret := GLEntry_Re_Loc.Amount * currExRate_Re_loc.ExchangeRate(GLEntry_Re_Loc."Posting Date", 'EUR');
                                         END
                                     END;
-
-                                    //pas encore compris comment déterminer selon les cas si il faut retrourner l'amount en positif ou négatif..
                                     IF GLEntry_Re_Loc.Amount < 0 THEN
                                         amount_Dec_Ret := GLEntry_Re_Loc.Amount * -1
                                     ELSE
@@ -2431,13 +2150,6 @@ codeunit 50021 "DEL Element"
                         UNTIL (purchInvLine_Re_Loc.NEXT() = 0);
                 END;
 
-            /*
-            //CHG-DEV-PROVISION
-            element_Re_Loc.Type::Provision:
-              begin
-                //à implémenter
-              end;
-            */
 
             ELSE
                 ERROR(ERROR_TXT, 'Co_50021', 'FNC_Get_Amount()',
@@ -2463,7 +2175,6 @@ codeunit 50021 "DEL Element"
         vendorLedgerEntry: Record "Vendor Ledger Entry";
         deal_ID_Co_loc: Code[20];
     begin
-        //retourne le nombre de colis standard
         FNC_Set_Element(element_Re_Loc, Element_ID_Co_Par);
         deal_ID_Co_loc := element_Re_Loc.Deal_ID;
 
@@ -2482,7 +2193,6 @@ codeunit 50021 "DEL Element"
                             nbColis_Dec_Ret +=
                               ACO_Line_Re_Loc.Quantity / DealItem_Cu.FNC_Get_PCB(deal_ID_Co_loc, ACO_Line_Re_Loc."No.")
                         UNTIL (ACO_Line_Re_Loc.NEXT() = 0)
-                    /*_si on trouve pas sur les lignes achat, on cherche sur les lignes factures achat_*/
                     ELSE BEGIN
                         purchInvLine_Re_Loc.RESET();
                         purchInvLine_Re_Loc.SETRANGE("Shortcut Dimension 1 Code", element_Re_Loc."Type No.");
@@ -2497,7 +2207,6 @@ codeunit 50021 "DEL Element"
                 END;
             element_Re_Loc.Type::VCO:
                 BEGIN
-                    //on cherche à quel ACO la VCO appartient
                     elementConnection_Re_Loc.RESET();
                     elementConnection_Re_Loc.SETRANGE(Deal_ID, element_Re_Loc.Deal_ID);
                     elementConnection_Re_Loc.SETRANGE(Element_ID, element_Re_Loc.ID);
@@ -2518,7 +2227,6 @@ codeunit 50021 "DEL Element"
 
                             UNTIL (VCO_Line_Re_Loc.NEXT() = 0)
 
-                        /*_si on trouve pas en cherchant sur special order no, on cherche sur code axe 1_*/
                         ELSE BEGIN
                             VCO_Line_Re_Loc.RESET();
                             VCO_Line_Re_Loc.SETRANGE("Document Type", VCO_Line_Re_Loc."Document Type"::Order);
@@ -2532,7 +2240,6 @@ codeunit 50021 "DEL Element"
                                       VCO_Line_Re_Loc.Quantity / DealItem_Cu.FNC_Get_PCB(deal_ID_Co_loc, VCO_Line_Re_Loc."No.")
                                 UNTIL (VCO_Line_Re_Loc.NEXT() = 0)
 
-                            /*_si on trouve pas sur code axe 1, on cherche sur les factures ventes_*/
                             ELSE BEGIN
                                 purchInvLine_Re_Loc.RESET();
                                 purchInvLine_Re_Loc.SETRANGE("Shortcut Dimension 1 Code", ACOElement_Re_Loc."Type No.");
@@ -2601,7 +2308,6 @@ codeunit 50021 "DEL Element"
         vendorLedgerEntry: Record "Vendor Ledger Entry";
         entryNo_Int_Loc: Integer;
     begin
-        //retourne l'amount d'un element selon le montant des documents
         FNC_Set_Element(element_Re_Loc, Element_ID_Co_Par);
 
         currency_Code_Ret := '';
@@ -2645,7 +2351,6 @@ codeunit 50021 "DEL Element"
                 END;
             element_Re_Loc.Type::Fee:
                 BEGIN
-                    //le plus rapide est de regarder sur la première position de l'élément quelle devise a été assignée lors de sa création
                     position_Re_Loc.RESET();
                     position_Re_Loc.SETRANGE(Deal_ID, element_Re_Loc.Deal_ID);
                     position_Re_Loc.SETRANGE(Element_ID, element_Re_Loc.ID);
@@ -2668,7 +2373,6 @@ codeunit 50021 "DEL Element"
                             END;
                         element_Re_Loc."Subject Type"::Customer:
                             BEGIN
-                                //si il existe une posted invoice header, alors on cherche son total
                                 customerLedgerEntry.RESET();
                                 customerLedgerEntry.SETRANGE("Customer No.", element_Re_Loc."Subject No.");
                                 customerLedgerEntry.SETRANGE("Document No.", element_Re_Loc."Type No.");
@@ -2688,9 +2392,6 @@ codeunit 50021 "DEL Element"
                                     IF customerLedgerEntry.FINDFIRST() THEN
                                         currency_Code_Ret := customerLedgerEntry."Currency Code"
                                     ELSE BEGIN
-
-                                        //les montants sur les lignes G/L Entry sont tous en Devise Societé, mais nous on veut de l'euro
-                                        //on converti donc le montant de toutes les G/L Entry dans FNC_Get_Amount
                                         currency_Code_Ret := ''; // '' pour DS soit CHF en fait
 
                                     END;
@@ -2711,11 +2412,9 @@ codeunit 50021 "DEL Element"
                 END;
 
 
-            //CHG-DEV-PROVISION
             element_Re_Loc.Type::Provision:
                 BEGIN
-                    //Les provisions sont toujours en DS
-                    currency_Code_Ret := ''; // '' pour DS soit CHF en fait
+                    currency_Code_Ret := '';
                 END;
 
 
@@ -2754,7 +2453,6 @@ codeunit 50021 "DEL Element"
         rate_Dec_Loc: Decimal;
         EntryNo_Int_Loc: Integer;
     begin
-        /*__Retourne le montant douane en Devise de l'element__*/
 
         FNC_Set_Element(element_Re_Loc, Element_ID_Co_Par);
         deal_ID_Co_Loc := element_Re_Loc.Deal_ID;
@@ -2774,14 +2472,10 @@ codeunit 50021 "DEL Element"
 
                             qty_Dec_Loc := ACO_Line_Re_Loc.Quantity;
                             amount_Dec_Loc := DealItem_Cu.FNC_Get_Unit_Cost(deal_ID_Co_Loc, ACO_Line_Re_Loc."No.");
-                            //curr_Co_Loc    := DealItem_Cu.FNC_Get_Currency_Cost(deal_ID_Co_Loc, ACO_Line_Re_Loc."No.");
-                            //rate_Dec_Loc   := Currency_Exchange_Re.FNC_Get_Rate(deal_ID_Co_Loc, curr_Co_Loc, 'EUR');
                             douane_Dec_Loc := DealItem_Cu.FNC_Get_Droit_Douanne(deal_ID_Co_Loc, ACO_Line_Re_Loc."No.");
-                            //amount_Dec_Ret += qty_Dec_Loc * amount_Dec_Loc * rate_Dec_Loc * douane_Dec_Loc;
                             amount_Dec_Ret += qty_Dec_Loc * amount_Dec_Loc * douane_Dec_Loc;
 
                         UNTIL (ACO_Line_Re_Loc.NEXT() = 0)
-                    /*_si on trouve pas sur les lignes achat, on cherche sur les lignes factures achat_*/
                     ELSE BEGIN
                         purchInvLine_Re_Loc.RESET();
                         purchInvLine_Re_Loc.SETRANGE("Shortcut Dimension 1 Code", element_Re_Loc."Type No.");
@@ -2792,10 +2486,7 @@ codeunit 50021 "DEL Element"
 
                                 qty_Dec_Loc := purchInvLine_Re_Loc.Quantity;
                                 amount_Dec_Loc := DealItem_Cu.FNC_Get_Unit_Cost(deal_ID_Co_Loc, purchInvLine_Re_Loc."No.");
-                                //curr_Co_Loc    := DealItem_Cu.FNC_Get_Currency_Cost(deal_ID_Co_Loc, purchInvLine_Re_Loc."No.");
-                                //rate_Dec_Loc   := Currency_Exchange_Re.FNC_Get_Rate(deal_ID_Co_Loc, curr_Co_Loc, 'EUR');
                                 douane_Dec_Loc := DealItem_Cu.FNC_Get_Droit_Douanne(deal_ID_Co_Loc, purchInvLine_Re_Loc."No.");
-                                //amount_Dec_Ret += qty_Dec_Loc * amount_Dec_Loc * rate_Dec_Loc * douane_Dec_Loc;
                                 amount_Dec_Ret += qty_Dec_Loc * amount_Dec_Loc * douane_Dec_Loc;
 
                             UNTIL (purchInvLine_Re_Loc.NEXT() = 0);
@@ -2803,7 +2494,6 @@ codeunit 50021 "DEL Element"
                 END;
             element_Re_Loc.Type::VCO:
                 BEGIN
-                    //on cherche à quel ACO la VCO appartient
                     elementConnection_Re_Loc.RESET();
                     elementConnection_Re_Loc.SETRANGE(Deal_ID, element_Re_Loc.Deal_ID);
                     elementConnection_Re_Loc.SETRANGE(Element_ID, element_Re_Loc.ID);
@@ -2822,14 +2512,10 @@ codeunit 50021 "DEL Element"
                             REPEAT
                                 qty_Dec_Loc := VCO_Line_Re_Loc.Quantity;
                                 amount_Dec_Loc := DealItem_Cu.FNC_Get_Unit_Price(deal_ID_Co_Loc, VCO_Line_Re_Loc."No.");
-                                //curr_Co_Loc    := DealItem_Cu.FNC_Get_Currency_Price(deal_ID_Co_Loc, VCO_Line_Re_Loc."No.");
-                                //rate_Dec_Loc   := Currency_Exchange_Re.FNC_Get_Rate(deal_ID_Co_Loc, curr_Co_Loc, 'EUR');
                                 douane_Dec_Loc := DealItem_Cu.FNC_Get_Droit_Douanne(deal_ID_Co_Loc, VCO_Line_Re_Loc."No.");
-                                //amount_Dec_Ret += qty_Dec_Loc * amount_Dec_Loc * rate_Dec_Loc * douane_Dec_Loc;
                                 amount_Dec_Ret += qty_Dec_Loc * amount_Dec_Loc * douane_Dec_Loc;
                             UNTIL (VCO_Line_Re_Loc.NEXT() = 0)
 
-                        /*_si on trouve pas en cherchant sur special order no, on cherche sur code axe 1_*/
                         ELSE BEGIN
 
                             VCO_Line_Re_Loc.RESET();
@@ -2842,14 +2528,10 @@ codeunit 50021 "DEL Element"
                                 REPEAT
                                     qty_Dec_Loc := VCO_Line_Re_Loc.Quantity;
                                     amount_Dec_Loc := DealItem_Cu.FNC_Get_Unit_Price(deal_ID_Co_Loc, VCO_Line_Re_Loc."No.");
-                                    //curr_Co_Loc    := DealItem_Cu.FNC_Get_Currency_Price(deal_ID_Co_Loc, VCO_Line_Re_Loc."No.");
-                                    //rate_Dec_Loc   := Currency_Exchange_Re.FNC_Get_Rate(deal_ID_Co_Loc, curr_Co_Loc, 'EUR');
                                     douane_Dec_Loc := DealItem_Cu.FNC_Get_Droit_Douanne(deal_ID_Co_Loc, VCO_Line_Re_Loc."No.");
-                                    //amount_Dec_Ret += qty_Dec_Loc * amount_Dec_Loc * rate_Dec_Loc * douane_Dec_Loc;
                                     amount_Dec_Ret += qty_Dec_Loc * amount_Dec_Loc * douane_Dec_Loc;
                                 UNTIL (VCO_Line_Re_Loc.NEXT() = 0)
 
-                            /*_si on trouve pas sur code axe 1, on cherche sur les factures ventes_*/
                             ELSE BEGIN
                                 salesInvLine_Re_Loc.RESET();
                                 salesInvLine_Re_Loc.SETRANGE("Shortcut Dimension 1 Code", ACOElement_Re_Loc."Type No.");
@@ -2859,10 +2541,7 @@ codeunit 50021 "DEL Element"
                                     REPEAT
                                         qty_Dec_Loc := salesInvLine_Re_Loc.Quantity;
                                         amount_Dec_Loc := DealItem_Cu.FNC_Get_Unit_Price(deal_ID_Co_Loc, salesInvLine_Re_Loc."No.");
-                                        //curr_Co_Loc    := DealItem_Cu.FNC_Get_Currency_Price(deal_ID_Co_Loc, salesInvLine_Re_Loc."No.");
-                                        //rate_Dec_Loc   := Currency_Exchange_Re.FNC_Get_Rate(deal_ID_Co_Loc, curr_Co_Loc, 'EUR');
                                         douane_Dec_Loc := DealItem_Cu.FNC_Get_Droit_Douanne(deal_ID_Co_Loc, salesInvLine_Re_Loc."No.");
-                                        //amount_Dec_Ret += qty_Dec_Loc * amount_Dec_Loc * rate_Dec_Loc * douane_Dec_Loc;
                                         amount_Dec_Ret += qty_Dec_Loc * amount_Dec_Loc * douane_Dec_Loc;
                                     UNTIL (salesInvLine_Re_Loc.NEXT() = 0);
                             END
@@ -2879,10 +2558,7 @@ codeunit 50021 "DEL Element"
                         REPEAT
                             qty_Dec_Loc := purchRcptLine_Re_Loc.Quantity;
                             amount_Dec_Loc := DealItem_Cu.FNC_Get_Unit_Cost(deal_ID_Co_Loc, purchRcptLine_Re_Loc."No.");
-                            //curr_Co_Loc    := DealItem_Cu.FNC_Get_Currency_Cost(deal_ID_Co_Loc, purchRcptLine_Re_Loc."No.");
-                            //rate_Dec_Loc   := Currency_Exchange_Re.FNC_Get_Rate(deal_ID_Co_Loc, curr_Co_Loc, 'EUR');
                             douane_Dec_Loc := DealItem_Cu.FNC_Get_Droit_Douanne(deal_ID_Co_Loc, purchRcptLine_Re_Loc."No.");
-                            //amount_Dec_Ret += qty_Dec_Loc * amount_Dec_Loc * rate_Dec_Loc * douane_Dec_Loc;
                             amount_Dec_Ret += qty_Dec_Loc * amount_Dec_Loc * douane_Dec_Loc;
                         UNTIL (purchRcptLine_Re_Loc.NEXT() = 0);
                 END;
@@ -2896,10 +2572,7 @@ codeunit 50021 "DEL Element"
                         REPEAT
                             qty_Dec_Loc := purchInvLine_Re_Loc.Quantity;
                             amount_Dec_Loc := DealItem_Cu.FNC_Get_Unit_Cost(deal_ID_Co_Loc, purchInvLine_Re_Loc."No.");
-                            //curr_Co_Loc    := DealItem_Cu.FNC_Get_Currency_Cost(deal_ID_Co_Loc, purchInvLine_Re_Loc."No.");
-                            //rate_Dec_Loc   := Currency_Exchange_Re.FNC_Get_Rate(deal_ID_Co_Loc, curr_Co_Loc, 'EUR');
                             douane_Dec_Loc := DealItem_Cu.FNC_Get_Droit_Douanne(deal_ID_Co_Loc, purchInvLine_Re_Loc."No.");
-                            //amount_Dec_Ret += qty_Dec_Loc * amount_Dec_Loc * rate_Dec_Loc * douane_Dec_Loc;
                             amount_Dec_Ret += qty_Dec_Loc * amount_Dec_Loc * douane_Dec_Loc;
                         UNTIL (purchInvLine_Re_Loc.NEXT() = 0);
                 END;
@@ -2908,7 +2581,6 @@ codeunit 50021 "DEL Element"
                   STRSUBSTNO('Impossible pour Element de type >%1<', element_Re_Loc.Type));
         END;
 
-        //MESSAGE(FORMAT(amount_Dec_Ret));
 
     end;
 
@@ -2927,7 +2599,6 @@ codeunit 50021 "DEL Element"
         VCO_Line_Re_Loc: Record "Sales Line";
         vendorLedgerEntry: Record "Vendor Ledger Entry";
     begin
-        //retourne l'amount d'un element selon le montant des documents
         FNC_Set_Element(element_Re_Loc, Element_ID_Co_Par);
 
         currencyRate_Dec_Ret := 0;
@@ -2956,10 +2627,8 @@ codeunit 50021 "DEL Element"
                                       currExRate_Re_loc.ExchangeRate(vendorLedgerEntry."Posting Date", 'EUR');
                                 END;
                             END;
-                        //facture vente
                         element_Re_Loc."Subject Type"::Customer:
                             BEGIN
-                                //si il existe une posted invoice header, alors on cherche son total
                                 customerLedgerEntry.RESET();
                                 customerLedgerEntry.SETRANGE("Customer No.", element_Re_Loc."Subject No.");
                                 customerLedgerEntry.SETRANGE("Document No.", element_Re_Loc."Type No.");
@@ -2969,7 +2638,6 @@ codeunit 50021 "DEL Element"
                                       currExRate_Re_loc.ExchangeRate(customerLedgerEntry."Posting Date", 'EUR');
                                 END;
                             END;
-                        //facture vente
                         element_Re_Loc."Subject Type"::"G/L Account":
                             BEGIN
                                 vendorLedgerEntry.RESET();
@@ -2979,7 +2647,6 @@ codeunit 50021 "DEL Element"
                                       (1 / vendorLedgerEntry."Original Currency Factor") *
                                       currExRate_Re_loc.ExchangeRate(vendorLedgerEntry."Posting Date", 'EUR');
                                 END ELSE BEGIN
-                                    //si il existe une posted invoice header, alors on cherche son total
                                     customerLedgerEntry.RESET();
                                     customerLedgerEntry.SETRANGE("Document No.", element_Re_Loc."Type No.");
                                     IF customerLedgerEntry.FINDFIRST() THEN BEGIN
@@ -2992,12 +2659,10 @@ codeunit 50021 "DEL Element"
                             END;
                     END;
                 END;
-            //écriture
             element_Re_Loc.Type::"Purchase Invoice":
                 ;
 
 
-            //CHG-DEV-PROVISION
             element_Re_Loc.Type::Provision:
                 BEGIN
                     currencyRate_Dec_Ret := currExRate_Re_loc.ExchangeRate(element_Re_Loc.Date, 'EUR');
@@ -3023,7 +2688,6 @@ codeunit 50021 "DEL Element"
         VCO_Line_Re_Loc: Record "Sales Line";
         deal_ID_Co_Loc: Code[20];
     begin
-        //retourne le Gross Weight d'un element
         FNC_Set_Element(element_Re_Loc, Element_ID_Co_Par);
         deal_ID_Co_Loc := element_Re_Loc.Deal_ID;
 
@@ -3042,7 +2706,6 @@ codeunit 50021 "DEL Element"
                             Gross_Weight_Dec_Ret +=
                               ACO_Line_Re_Loc.Quantity * DealItem_Cu.FNC_Get_Gross_Weight(deal_ID_Co_Loc, ACO_Line_Re_Loc."No.")
                         UNTIL (ACO_Line_Re_Loc.NEXT() = 0)
-                    /*_si on trouve pas sur les lignes achat, on cherche sur les lignes factures achat_*/
                     ELSE BEGIN
                         purchInvLine_Re_Loc.RESET();
                         purchInvLine_Re_Loc.SETRANGE("Shortcut Dimension 1 Code", element_Re_Loc."Type No.");
@@ -3269,9 +2932,6 @@ codeunit 50021 "DEL Element"
     var
         element_Re_Loc: Record "DEL Element";
     begin
-        //retourne la période en texte sous forme (M)MYYYY
-        //p.e. '82009' pour aout 2009
-        //p.e. '112010' pour novembre 2010
 
         FNC_Set_Element(element_Re_Loc, Element_ID_Co_Par);
 
@@ -3420,16 +3080,6 @@ codeunit 50021 "DEL Element"
         element_Re_Loc.CALCFIELDS(Amount);
         amount_Dec_Ret := element_Re_Loc.Amount;
 
-        //deprecated since working with flowfields
-        /*
-        position_Re_Loc.RESET();
-        position_Re_Loc.SETRANGE(Deal_ID, element_Re_Loc.Deal_ID);
-        position_Re_Loc.SETRANGE(Element_ID, element_Re_Loc.ID);
-        IF position_Re_Loc.FINDFIRST THEN
-          REPEAT
-            amount_Dec_Ret += Position_Cu.FNC_Get_Raw_Amount(position_Re_Loc.ID);
-          UNTIL(position_Re_Loc.NEXT() = 0);
-        */
 
     end;
 
@@ -3623,8 +3273,6 @@ codeunit 50021 "DEL Element"
                 END;
             element_Re_Loc.Type::VCO:
                 BEGIN
-                    //MESSAGE('VCO');
-                    //on cherche à quel ACO la VCO appartient
                     elementConnection_Re_Loc.RESET();
                     elementConnection_Re_Loc.SETRANGE(Deal_ID, element_Re_Loc.Deal_ID);
                     elementConnection_Re_Loc.SETRANGE(Element_ID, element_Re_Loc.ID);
@@ -3720,28 +3368,7 @@ codeunit 50021 "DEL Element"
     var
         element_Re_Loc: Record "DEL Element";
     begin
-        /*
-        usage :
-        
-          {_Insère un enregistrement dans la table "Element" 50021_}
-          element_ID_Loc := FNC_Insert_Element(
-            Deal_ID_Co_Par,                                   //deal id
-            element_Re_Loc.Instance::dispatched,              //instance
-            element_Re_Loc.Type::"ACO",                       //type
-            creditMemoHeader_Re_Par."No.",                    //type no
-            '',                                               //apply-to (crée un connexion élément à l'insertion de l'élément)
-            element_Re_Loc."Subject Type"::Customer,          //subject type
-            creditMemoHeader_Re_Par."Sell-to Customer No.",   //subject no
-            '',                                               //fee id
-            '',                                               //fee connection id
-            0D,                                               //date
-            0,                                                //entry No.
-            creditMemoHeader_Re_Par."Bill-to Customer No.",   //bill to
-            0D,                                               //period
-            2                                                 //splitt index (utile pour les types "Invoice" uniquement)
-          );
-        
-        */
+
 
         Setup.GET();
 
@@ -3784,8 +3411,6 @@ codeunit 50021 "DEL Element"
 
     procedure FNC_Set_Element(var element_Re_Par: Record "DEL Element"; element_ID_Co_Par: Code[20])
     begin
-        // défini l'instance du premier paramètre sur le record correspondant au Element.ID passé en 2ème paramètre
-        // j'ai l'ID de l'Element et je veux faire pointer ma variable sur le record qui correspond à cet ID
         IF NOT element_Re_Par.GET(element_ID_Co_Par) THEN
             ERROR('ERREUR\Source : Co 50021\Fonction : FNC_Set()\Raison : GET() impossible avec Element.ID >%1<', element_ID_Co_Par);
     end;
