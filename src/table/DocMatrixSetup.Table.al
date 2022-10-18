@@ -68,7 +68,7 @@ table 50069 "DEL DocMatrix Setup"
         GeneralMgt: Codeunit "GeneralMgt";
 
 
-    procedure GetStorageLocation(Type: Enum "Customer/Vendor"): Text[250]
+    procedure GetStorageLocation(Type: Enum "DEL type2"): Text[250]
     begin
         CASE Type OF
             Type::Customer:

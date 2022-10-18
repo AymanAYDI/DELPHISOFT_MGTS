@@ -4,26 +4,6 @@ pageextension 50025 "DEL CashReceiptJournal" extends "Cash Receipt Journal" //25
     layout
     {
 
-        //Unsupported feature: Property Modification (TableRelation) on "Control 300".
-
-
-        //Unsupported feature: Property Modification (TableRelation) on "Control 302".
-
-
-        //Unsupported feature: Property Modification (TableRelation) on "Control 304".
-
-
-        //Unsupported feature: Property Modification (TableRelation) on "Control 306".
-
-
-        //Unsupported feature: Property Modification (TableRelation) on "Control 308".
-
-
-        //Unsupported feature: Property Modification (TableRelation) on "Control 310".
-
-
-        //Unsupported feature: Property Modification (SubPageLink) on "Control 1906888607".
-
         addafter(Control1)
         {
             field("DEL Shipment Selection"; Rec."DEL Shipment Selection")
@@ -64,7 +44,7 @@ pageextension 50025 "DEL CashReceiptJournal" extends "Cash Receipt Journal" //25
                     IF Rec."Document Type" <> Rec."Document Type"::Invoice THEN
                         ERROR('Document Type doit etre Invoice');
 
-                    //DealShipmentSelection_Form_Loc.FNC_OpenedBy("Document No.");
+                    // DealShipmentSelection_Form_Loc.FNC_OpenedBy("Document No.");
                     DealShipmentSelection_Page_Loc.RUNMODAL
                 end;
             }
@@ -100,7 +80,7 @@ pageextension 50025 "DEL CashReceiptJournal" extends "Cash Receipt Journal" //25
                     GenJournalLine_Loc.RESET;
                     GenJournalLine_Loc.SETRANGE(GenJournalLine_Loc."Journal Template Name", Rec."Journal Template Name");
                     GenJournalLine_Loc.SETRANGE(GenJournalLine_Loc."Journal Batch Name", Rec."Journal Batch Name");
-                    REPORT.RUN(REPORT::"Update lines CAMT054", FALSE, FALSE, GenJournalLine_Loc);
+                    REPORT.RUN(REPORT::"DEL Update lines CAMT054", FALSE, FALSE, GenJournalLine_Loc);
                 end;
             }
         }

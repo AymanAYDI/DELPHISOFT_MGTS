@@ -122,9 +122,9 @@ page 50050 "DEL Shipment Provision Select."
 
                     trigger OnAction()
                     var
-                    //TODO //Report   // provision_Report: Report "50014";
+                        provision_Report: Report "DEL Create Provision";
                     begin
-                        //TODO provision_Report.RUNMODAL();
+                        provision_Report.RUNMODAL();
 
 
                         FNC_SetPeriod();
@@ -165,7 +165,7 @@ page 50050 "DEL Shipment Provision Select."
 
                     trigger OnAction()
                     begin
-                        //TODO //Report    REPORT.RUNMODAL(50015);
+                        REPORT.RUNMODAL(Report::"DEL Export Provision");
                     end;
                 }
                 action("Exporter Excel")
@@ -174,7 +174,7 @@ page 50050 "DEL Shipment Provision Select."
 
                     trigger OnAction()
                     begin
-                        //TODO //Report     REPORT.RUNMODAL(50016);
+                        REPORT.RUNMODAL(Report::"DEL Import commande vente");
                     end;
                 }
                 separator(Sep)

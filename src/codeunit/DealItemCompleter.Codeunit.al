@@ -18,7 +18,7 @@ codeunit 50038 "DEL Deal Item Completer"
     procedure CompleteDeal_FNC(DealID_Co_Par: Code[20])
     var
         element_Re_Loc: Record "DEL Element";
-        elementConnection_Re_Loc: Record "DEL Element Connection";
+
     begin
 
 
@@ -85,7 +85,7 @@ codeunit 50038 "DEL Deal Item Completer"
         PurchLine_Re_Loc.SETRANGE("Document No.", DocumentNo_Co_Par);
         PurchLine_Re_Loc.SETRANGE(Type, PurchLine_Re_Loc.Type::Item);
         PurchLine_Re_Loc.SETFILTER(Quantity, '>%1', 0);
-        IF PurchLine_Re_Loc.FINDFIRST() THEN
+        IF PurchLine_Re_Loc.FindSet() THEN
             REPEAT
                 IF NOT DealItem_Re_Loc.GET(DealID_Co_Par, PurchLine_Re_Loc."No.") THEN
                     DealItem_Cu.FNC_Add(DealID_Co_Par, PurchLine_Re_Loc."No.");

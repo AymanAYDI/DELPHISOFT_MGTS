@@ -1,7 +1,7 @@
 report 50028 "DEL Enregistrement contrat"
 {
     DefaultLayout = RDLC;
-    RDLCLayout = './Enregistrementcontrat.rdlc';
+    RDLCLayout = './src/report/RDL/Enregistrementcontrat.rdl';
 
     dataset
     {

@@ -8,16 +8,6 @@ codeunit 50025 "DEL Element Connection"
     var
         elementConnection_Re_Loc: Record "DEL Element Connection";
     begin
-        /*év. faire des trucs avant d'insérer..*/
-        /*
-        MESSAGE('Connection add\nDeal_ID : %1\nElement_ID : %2\nApply To : %3\nInstance : %4',
-          Deal_ID_Co_Par,
-          Element_ID_Co_Par,
-          ApplyTo_Co_Par,
-          Instance_Op_Par,
-        );
-        */
-
         FNC_Insert(Deal_ID_Co_Par, Element_ID_Co_Par, ApplyTo_Co_Par, Instance_Op_Par, SplittIndex_Int_Par)
 
     end;
@@ -37,14 +27,6 @@ codeunit 50025 "DEL Element Connection"
             elementConnection_Re_Loc.VALIDATE(Instance, Instance_Op_Par);
             elementConnection_Re_Loc.VALIDATE("Split Index", SplittIndex_Int_Par);
 
-            /*
-            MESSAGE('Connection add\nDeal_ID : %1\nElement_ID : %2\nApply To : %3\nInstance : %4',
-              elementConnection_Re_Loc.Deal_ID,
-              elementConnection_Re_Loc.Element_ID,
-              elementConnection_Re_Loc."Apply To",
-              elementConnection_Re_Loc.Instance
-            );
-            */
 
             IF NOT elementConnection_Re_Loc.INSERT() THEN
                 ERROR(ERROR_TXT, 'Co50025', 'FNC_Insert()', 'Insertion impossible dans la table Element Connection')

@@ -8,7 +8,6 @@ report 50042 "DEL Import Facture Kiriba"
 
     requestpage
     {
-
         layout
         {
         }

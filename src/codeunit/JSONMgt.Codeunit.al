@@ -5,7 +5,7 @@ codeunit 50041 "DEL JSON Mgt"
     // TODO: Dotnet 
     trigger OnRun()
     begin
-        TEST();
+        // TEST();
     end;
 
     // [TryFunction]
@@ -132,5 +132,6 @@ codeunit 50041 "DEL JSON Mgt"
     //     MESSAGE(JsonText);
     //     MESSAGE(xml);
     // end;
+
 }
 

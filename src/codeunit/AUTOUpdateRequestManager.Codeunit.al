@@ -1,8 +1,5 @@
 codeunit 50034 "AUTO Update Request Manager"
 {
-    // CHG04                            26.09.11   adapted deal update function with "updatePlanned" parameter
-
-
     trigger OnRun()
     var
         UpdateRequestManager_Cu: Codeunit "DEL Update Request Manager";

@@ -6,9 +6,6 @@ codeunit 50027 "DEL Deal Shipment Connection"
     var
         dsc_Re_Loc: Record "DEL Deal Shipment Connection";
     begin
-        /*
-        INSERE UNE SHIPMENT CONNECTION DANS LA TABLE DEAL SHIPMENT CONNECTION
-        */
 
         dsc_Re_Loc.INIT();
 

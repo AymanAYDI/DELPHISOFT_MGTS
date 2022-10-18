@@ -1,4 +1,4 @@
-report 50035 "SR Vendor Payment Advice Detai"
+report 50035 "DEL SR Vendor Pay. Advi. Detai"
 {
 
     DefaultLayout = RDLC;
@@ -93,9 +93,9 @@ report 50035 "SR Vendor Payment Advice Detai"
             column(No_Vendor; "No.")
             {
             }
-            dataitem(DataItem7024; Table81)
+            dataitem("Gen. Journal Line"; "Gen. Journal Line")
             {
-                DataItemTableView = SORTING(Account Type, Account No., Applies-to Doc. Type, Applies-to Doc. No.);
+                DataItemTableView = SORTING("Account Type", "Account No.", "Applies-to Doc. Type", "Applies-to Doc. No.");
                 column(Amount_GenJnlLine; Amount)
                 {
                 }
@@ -473,7 +473,7 @@ report 50035 "SR Vendor Payment Advice Detai"
 
         trigger OnOpenPage()
         var
-            User: Record 2000000120;
+            User: Record User;
         begin
             IF MsgTxt = '' THEN
                 MsgTxt := Text004;
@@ -514,62 +514,62 @@ report 50035 "SR Vendor Payment Advice Detai"
     end;
 
     var
+        CompanyInformation: Record "Company Information";
+        ExchRate: Record "Currency Exchange Rate";
+        TempGenJourLine: Record "Gen. Journal Line";
+        GlSetup: Record "General Ledger Setup";
+        VendBank: Record "Vendor Bank Account";
+        TempRelatedVendLedgEntry: Record "Vendor Ledger Entry" temporary;
+        TempVendLedgEntry: Record "Vendor Ledger Entry" temporary;
+        VendEntry: Record "Vendor Ledger Entry";
+        FormatAdr: Codeunit "Format Address";
+        BooGSkipMessage: Boolean;
+        ShowEsrPayments: Boolean;
+        iCurr: array[20] of Code[10];
+        JourBatch: Code[20];
+        JourBatchName: Code[20];
+        iAmt: array[20] of Decimal;
+        iAmtLCY: array[20] of Decimal;
+        PmtDiscAmt: Decimal;
+        PmtTolerance: Decimal;
+        i: Integer;
+        NoOfPayments: Integer;
+        NoOfVendors: Integer;
+        Pos: Integer;
+        PrintFromNoOfVendorInvoices: Integer;
+        CurrCaptionLbl: Label 'Curr.';
+        InvDateCaptionLbl: Label 'Inv. Date';
+        InvoiceCaptionLbl: Label 'Invoice';
+        OurDocNoCaptionLbl: Label 'Our. Doc. No';
+        PaymentAdviceCaptionLbl: Label 'Payment Advice';
+        PaymentCaptionLbl: Label 'Payment';
+        PmtDiscPmtTolCaptionLbl: Label 'Pmt.Disc./ Pmt.Tol. ';
+        PosCaptionLbl: Label 'Pos.';
         Text000: Label 'CHF';
         Text001: Label 'Payment advice processed for %1 vendors. %2 payments processed from journal %3.';
         Text002: Label 'Bank %1 does not exist for vendor %2.';
         Text003: Label 'More than %1 currencies cannot be processed.';
         Text004: Label 'We have advices our bank to remit the following amount to your account in the next few days.';
-        CompanyInformation: Record 79;
-        GlSetup: Record 98;
-        VendEntry: Record 25;
-        TempVendLedgEntry: Record 25 temporary;
-        TempRelatedVendLedgEntry: Record 25 temporary;
-        VendBank: Record 288;
-        ExchRate: Record 330;
-        TempGenJourLine: Record 81;
-        FormatAdr: Codeunit 365;
-        JourBatch: Code[20];
-        JourBatchName: Code[20];
-        ShowEsrPayments: Boolean;
-        PrintFromNoOfVendorInvoices: Integer;
-        RespPerson: Text[50];
-        MsgTxt: Text[250];
-        CompanyAdr: array[8] of Text[50];
-        VendorAdr: array[8] of Text[50];
-        Pos: Integer;
-        NoOfVendors: Integer;
-        NoOfPayments: Integer;
-        i: Integer;
-        iCurr: array[20] of Code[10];
-        iAmt: array[20] of Decimal;
-        iAmtLCY: array[20] of Decimal;
-        PmtDiscAmt: Decimal;
-        PmtTolerance: Decimal;
-        PaymentCaptionLbl: Label 'Payment';
-        PaymentAdviceCaptionLbl: Label 'Payment Advice';
-        PosCaptionLbl: Label 'Pos.';
-        OurDocNoCaptionLbl: Label 'Our. Doc. No';
-        YrDocNoCaptionLbl: Label 'Yr. Doc. No.';
-        InvoiceCaptionLbl: Label 'Invoice';
-        InvDateCaptionLbl: Label 'Inv. Date';
-        CurrCaptionLbl: Label 'Curr.';
-        PmtDiscPmtTolCaptionLbl: Label 'Pmt.Disc./ Pmt.Tol. ';
-        TransferCaptionLbl: Label 'Transfer';
         TotalpaymentCaptionLbl: Label 'Total payment';
+        TransferCaptionLbl: Label 'Transfer';
         YourssincerelyCaptionLbl: Label 'Yours sincerely';
-        BooGSkipMessage: Boolean;
+        YrDocNoCaptionLbl: Label 'Yr. Doc. No.';
+        CompanyAdr: array[8] of Text[50];
+        RespPerson: Text[50];
+        VendorAdr: array[8] of Text[50];
+        MsgTxt: Text[250];
 
 
-    procedure DefineJourBatch(_GnlJourLine: Record 81)
+    procedure DefineJourBatch(_GnlJourLine: Record "Gen. Journal Line")
     begin
         JourBatch := _GnlJourLine."Journal Batch Name";
         JourBatchName := _GnlJourLine."Journal Template Name";
     end;
 
 
-    procedure SetEsrFilter(var TempGenJourLine: Record 81)
+    procedure SetEsrFilter(var TempGenJourLine: Record "Gen. Journal Line")
     var
-        VendBank: Record 288;
+        VendBank: Record "Vendor Bank Account";
     begin
         IF TempGenJourLine.FIND('-') THEN BEGIN
             REPEAT
@@ -597,9 +597,9 @@ report 50035 "SR Vendor Payment Advice Detai"
         UpdateVendLedgEntryBufferRecursively(TempVendLedgEntry, TempRelatedVendLedgEntry, EntryNo);
     end;
 
-    local procedure UpdateVendLedgEntryBufferRecursively(var VendLedgEntryBuffer: Record "25"; var RelatedVendLedgEntryBuffer: Record "25"; EntryNo: Integer)
+    local procedure UpdateVendLedgEntryBufferRecursively(var VendLedgEntryBuffer: Record "Vendor Ledger Entry"; var RelatedVendLedgEntryBuffer: Record "Vendor Ledger Entry"; EntryNo: Integer)
     var
-        VendLedgEntry: Record 25;
+        VendLedgEntry: Record "Vendor Ledger Entry";
     begin
         VendLedgEntry.SETRANGE("Closed by Entry No.", EntryNo);
         IF VendLedgEntry.FINDSET THEN

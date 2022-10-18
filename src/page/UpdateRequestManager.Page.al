@@ -143,7 +143,7 @@ page 50048 "DEL Update Request Manager"
                     Promoted = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
-                    // TODO RunObject = Report 50003;
+                    RunObject = Report "DEL Update Request Manager";
                 }
             }
         }

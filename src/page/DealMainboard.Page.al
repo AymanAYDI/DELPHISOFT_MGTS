@@ -549,12 +549,12 @@ page 50030 "DEL Deal Mainboard"
 
 
                     CurrPage.PositionDetails.PAGE.SetTempRecord(PositionSummary_Re_Temp);
+                until (plannedElement_Re_Loc.Next() = 0);
 
-   
         end;
-        end;
+    end;
 
- trigger OnInit()
+    trigger OnInit()
     begin
 
         FNC_InitVars();

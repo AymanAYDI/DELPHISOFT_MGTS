@@ -171,7 +171,6 @@ codeunit 50029 "DEL Deal Shipment"
         dealShipmentConnection_Re_Loc: Record "DEL Deal Shipment Connection";
         element_Re_Loc: Record "DEL Element";
     begin
-        /*__Retourne l'ID de l'élément Purchase Invoice associé au shipmentNo si il existe, sinon retourne ''__*/
 
         PurchInvID_Co_Ret := '';
 
@@ -199,8 +198,6 @@ codeunit 50029 "DEL Deal Shipment"
         dealShipmentConnection_Re_Loc: Record "DEL Deal Shipment Connection";
         element_Re_Loc: Record "DEL Element";
     begin
-        /*__Retourne l'ID de l'élément Purchase Invoice associé au shipmentNo si il existe, sinon retourne ''__*/
-
         SalesInvID_Co_Ret := '';
 
         dealShipmentConnection_Re_Loc.RESET();
@@ -227,8 +224,6 @@ codeunit 50029 "DEL Deal Shipment"
         dealShipmentConnection_Re_Loc: Record "DEL Deal Shipment Connection";
         element_Re_Loc: Record "DEL Element";
     begin
-        /*__Retourne l'ID de l'élément BR associé au shipmentNo si il existe, sinon retourne ''__*/
-
         BRID_Co_Ret := '';
 
         dealShipmentConnection_Re_Loc.RESET();
@@ -255,7 +250,6 @@ codeunit 50029 "DEL Deal Shipment"
         dealShipmentConnection_Re_Loc: Record "DEL Deal Shipment Connection";
         element_Re_Loc: Record "DEL Element";
     begin
-        /*__Retourne l'ID de l'élément Sales Cr. Memo associé au shipmentNo si il existe, sinon retourne ''__*/
 
         CrMemoID_Co_Ret := '';
 
@@ -272,9 +266,7 @@ codeunit 50029 "DEL Deal Shipment"
                 END
 
             UNTIL (dealShipmentConnection_Re_Loc.NEXT() = 0);
-        END //ELSE
-            //ERROR('wrong dealShipmentID');
-
+        END
     end;
 
 
@@ -283,7 +275,6 @@ codeunit 50029 "DEL Deal Shipment"
         dealShipmentConnection_Re_Loc: Record "DEL Deal Shipment Connection";
         element_Re_Loc: Record "DEL Element";
     begin
-        /*__Retourne l'ID de l'élément Purch. Cr. Memo associé au shipmentNo si il existe, sinon retourne ''__*/
 
         CrMemoID_Co_Ret := '';
 
@@ -300,9 +291,7 @@ codeunit 50029 "DEL Deal Shipment"
                 END
 
             UNTIL (dealShipmentConnection_Re_Loc.NEXT() = 0);
-        END //ELSE
-            //ERROR('wrong dealShipmentID');
-
+        END
     end;
 
 
@@ -311,15 +300,10 @@ codeunit 50029 "DEL Deal Shipment"
         salesInvoiceHeader_Co_Loc: Record "Sales Invoice Header";
         salesInvoiceNo_Co_Loc: Code[20];
     begin
-        //Retourne la période (premier jour du mois de la date de comptabilisation) de la première facture vente pour une livraison
-
-        //initialisation de la date à retourner
         period_Da_Ret := 0D;
 
-        //le numéro de facture de la première livraison associée à cette livraison
         salesInvoiceNo_Co_Loc := FNC_GetSalesInvoiceNo(DealShipmentID_Co_Par);
 
-        //si présent dans les commandes vente
         IF salesInvoiceHeader_Co_Loc.GET(salesInvoiceNo_Co_Loc) THEN
             period_Da_Ret := CALCDATE('<-CM>', salesInvoiceHeader_Co_Loc."Posting Date")
     end;

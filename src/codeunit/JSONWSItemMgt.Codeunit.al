@@ -118,12 +118,12 @@ codeunit 50050 "DEL JSON WS : Item Mgt"
     //     JsonMgt.JsonObjectToText(JsonAsObject, JsonResponse);
     // end;
 
-    local procedure ApplyItemTemplate(var Item: Record Item)
-    var
-        DimensionsTemplate: Record "Dimensions Template";
-        MgtsSetup: Record "DEL General Setup";
-        ConfigTemplateHeader: Record "Config. Template Header";
-        ConfigTemplateManagement: Codeunit "Config. Template Management";
+    //TODO local procedure ApplyItemTemplate(var Item: Record Item)
+    // var
+    //     DimensionsTemplate: Record "Dimensions Template";
+    //     MgtsSetup: Record "DEL General Setup";
+    //     ConfigTemplateHeader: Record "Config. Template Header";
+    //     ConfigTemplateManagement: Codeunit "Config. Template Management";
 
     //TODO: dotnet n'existe pas
     // procedure CreateUpdateItem(JsonAsObject: DotNet JObject) ErpItemCode: Code[20]

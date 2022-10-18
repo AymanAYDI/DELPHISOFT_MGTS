@@ -72,6 +72,10 @@ report 50011 "DEL Impl. Purch Price Change"
     }
 
     var
+        PurchPrice: Record "Purchase Price";
+        SalesPrice: Record "Sales Price";
+
+
         Text000: Label 'Updating Unit Prices...\\';
         Text005: Label 'The item prices have now been updated in accordance with the suggested price changes.\\Do you want to delete the suggested price changes?';
         Text007: Label 'Item No.               #1##########\';
@@ -79,11 +83,9 @@ report 50011 "DEL Impl. Purch Price Change"
         Text009: Label 'Purchase Code             #3##########\';
         Text010: Label 'Currency Code          #4##########\';
         Text011: Label 'Starting Date          #5######';
-        SalesPrice: Record "Sales Price";
         Window: Dialog;
         DeleteWhstLine: Boolean;
         "+++++++++++50000++++++++": Integer;
-        PurchPrice: Record "Purchase Price";
 
     procedure InitializeRequest(NewDeleteWhstLine: Boolean)
     begin

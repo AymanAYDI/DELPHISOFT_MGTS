@@ -24,8 +24,8 @@ report 50016 "DEL Import commande vente"
                 ELSE
                     MESSAGE(Text002, i);
                 ErrorImportvente.SETRANGE(ErrorImportvente."Document No.", "DEL Import Commande vente"."Document No.");
-                IF ErrorImportvente.FINDSET THEN
-                    ErrorImportvente.DELETEALL;
+                IF ErrorImportvente.FINDSET() THEN
+                    ErrorImportvente.DELETEALL();
                 FOR j := 1 TO i DO
                     CUImportcdevente.InsertError(MsgErreur[j]);
             end;
@@ -49,10 +49,11 @@ report 50016 "DEL Import commande vente"
     }
 
     var
+        ErrorImportvente: Record "DEL Error Import vente";
+
         CUImportcdevente: Codeunit "DEL Import commande vente";
         i: Integer;
         MsgErreur: array[1000] of Text;
-        ErrorImportvente: Record "DEL Error Import vente";
         j: Integer;
         Text001: Label 'Import successfully';
         Text002: Label 'Import with %1 error(s)';

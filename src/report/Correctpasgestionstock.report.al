@@ -1,4 +1,4 @@
-report 50031 "Correction pas gestion stock"
+report 50031 "DEL Correct. pas gestion stock"
 {
     ProcessingOnly = true;
 

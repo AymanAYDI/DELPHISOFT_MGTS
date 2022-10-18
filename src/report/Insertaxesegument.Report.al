@@ -19,20 +19,5 @@ report 50043 "DEL Insert axe segument"
         }
     }
 
-    requestpage
-    {
-
-        layout
-        {
-        }
-
-        actions
-        {
-        }
-    }
-
-    labels
-    {
-    }
 }
 

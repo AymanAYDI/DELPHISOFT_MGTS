@@ -1,6 +1,5 @@
 page 50047 "DEL Purchase Price worksheet"
 {
-    // NGTS/LOCO/GRC 13.03.09 create form
 
     Caption = 'Purchase Price worksheet';
     PageType = List;
@@ -60,8 +59,7 @@ page 50047 "DEL Purchase Price worksheet"
                 action("Export excel")
                 {
                     Caption = 'Export excel';
-                    //TODO //Report
-                    // RunObject = Report 50012;
+                    RunObject = Report "DEL Export to Excel purchase";
                 }
                 action("Import excel")
                 {
@@ -72,8 +70,7 @@ page 50047 "DEL Purchase Price worksheet"
 
                         IF CONFIRM('L''import va supprimer les lignes de la feuille prix d''achat. Voulez-vous continuer ?', TRUE) THEN BEGIN
                             Rec.DELETEALL();
-                            //TODO Report
-                            // ReportImport.RUN;
+                            ReportImport.RUN();
                             CurrPage.UPDATE();
                         END;
                     end;
@@ -92,7 +89,7 @@ page 50047 "DEL Purchase Price worksheet"
 
                     trigger OnAction()
                     begin
-                        REPORT.RUNMODAL(50010, TRUE, TRUE);
+                        REPORT.RUNMODAL(Report::"DEL Sugg Purch Price on Wksh.", TRUE, TRUE);
                     end;
                 }
                 action("I&mplement Price Change")
@@ -102,7 +99,7 @@ page 50047 "DEL Purchase Price worksheet"
 
                     trigger OnAction()
                     begin
-                        REPORT.RUNMODAL(50011, TRUE, TRUE, Rec);
+                        REPORT.RUNMODAL(Report::"DEL Impl. Purch Price Change", TRUE, TRUE, Rec);
                     end;
                 }
             }
@@ -110,7 +107,6 @@ page 50047 "DEL Purchase Price worksheet"
     }
 
     var
-    //TODO // Report    
-    // ReportImport: Report "50013";
+        ReportImport: Report "DEL Import from Excel purch";
 }
 

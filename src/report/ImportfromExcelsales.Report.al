@@ -46,6 +46,23 @@ report 50009 "DEL Import from Excel sales"
     end;
 
     var
+        ExcelBuf: Record "Excel Buffer";
+        Dim: Record Dimension;
+        DimVal: Record "Dimension Value";
+        TempDim: Record Dimension temporary;
+        TempDimVal: Record "Dimension Value" temporary;
+        GLBudgetEntry: Record "G/L Budget Entry";
+        GLBudgetDim: Record "Analysis by Dim. Parameters";
+        GLSetup: Record "General Ledger Setup";
+        GLAcc: Record "G/L Account";
+        TempGLAcc: Record "G/L Account" temporary;
+        GLBudgetName: Record "G/L Budget Name";
+        GLBudgetEntry3: Record "G/L Budget Entry";
+        AnalysisView: Record "Analysis View";
+        SalesPriceWorksheet: Record "Sales Price Worksheet";
+        ExcelBuf2: Record "Excel Buffer";
+
+
         Text000: Label 'You must specify a budget name to import to.';
         Text001: Label 'Do you want to create %1 %2.';
         Text002: Label '%1 %2 is blocked. You cannot import entries.';
@@ -73,20 +90,7 @@ report 50009 "DEL Import from Excel sales"
         Text024: Label 'The combination G/L Account No. - Dimensions - Date must be unique.';
         Text025: Label 'G/L Accounts have not been found in the Excel worksheet.';
         Text026: Label 'Dates have not been recognized in the Excel worksheet.';
-        ExcelBuf: Record "Excel Buffer";
-        Dim: Record Dimension;
-        DimVal: Record "Dimension Value";
-        TempDim: Record Dimension temporary;
-        TempDimVal: Record "Dimension Value" temporary;
-        GLBudgetEntry: Record "G/L Budget Entry";
-        GLBudgetDim: Record "Analysis by Dim. Parameters";
-        GLSetup: Record "General Ledger Setup";
-        GLAcc: Record "G/L Account";
-        TempGLAcc: Record "G/L Account" temporary;
-        GLBudgetName: Record "G/L Budget Name";
-        GLBudgetEntry3: Record "G/L Budget Entry";
-        AnalysisView: Record "Analysis View";
-        FileName: Text[250];
+        FileName: InStream; // i changed filename from text[250] to instream
         SheetName: Text[250];
         ToGLBudgetName: Code[10];
         DimCode: array[8] of Code[20];
@@ -105,13 +109,13 @@ report 50009 "DEL Import from Excel sales"
         ImportOption: Option "Replace entries","Add entries";
         Text027: Label 'Replace entries,Add entries';
         Text028: Label 'A filter has been used on the %1 when the budget was exported. When a filter on a dimension has been used, a column with the same dimension must be present in the worksheet imported. The column in the worksheet must specify the dimension value codes the program should use when importing the budget.';
-        SalesPriceWorksheet: Record "Sales Price Worksheet";
-        ExcelBuf2: Record "Excel Buffer";
 
     local procedure ReadExcelSheet()
     begin
-        //TODO only for onprem dev ! 
+        //TODO only for onprem dev ! #Abir
         //ExcelBuf.OpenBook(FileName, SheetName);
+
+        ExcelBuf.OpenBookStream(FileName, SheetName);
         ExcelBuf.ReadSheet;
     end;
 

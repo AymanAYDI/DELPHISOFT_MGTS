@@ -60,12 +60,12 @@ page 50098 "DEL NGTS DAF-CG Role Center"
             {
                 Caption = 'Provisional Trial Balance';
                 Image = "Report";
-                // RunObject = Report 11500; TODO:
+                RunObject = Report "Provisional Trial Balance";
             }
             action("G/L Total-Balance")
             {
                 Caption = 'G/L Total-Balance';
-                // RunObject = Report 11002; TODO:
+                RunObject = Report "G/L Total-Balance";
             }
             action("&Bank Detail Trial Balance")
             {
@@ -116,13 +116,13 @@ page 50098 "DEL NGTS DAF-CG Role Center"
             {
                 Caption = 'Cust. - Balance to Date';
                 Image = "Report";
-                // RunObject = Report 11540; TODO:
+                RunObject = Report "SR Cust. - Balance to Date";
             }
             action("Vendor - Balance to Date")
             {
                 Caption = 'Vendor - Balance to Date';
                 Image = "Report";
-                // RunObject = Report 11559; TODO:
+                RunObject = Report "SR Vendor - Balance to Date";
             }
             action("Cash Flow Date List")
             {
@@ -154,12 +154,12 @@ page 50098 "DEL NGTS DAF-CG Role Center"
             action("Customer Total-Balance")
             {
                 Caption = 'Customer Total-Balance';
-                // RunObject = Report 11003; TODO:
+                RunObject = Report "Customer Total-Balance";
             }
             action("Vendor Total-Balance")
             {
                 Caption = 'Vendor Total-Balance';
-                // RunObject = Report 11004; TODO:
+                RunObject = Report "Vendor Total-Balance";
             }
             separator(SEP3)
             {
@@ -538,9 +538,8 @@ page 50098 "DEL NGTS DAF-CG Role Center"
             {
                 Caption = 'Sales &Credit Memo';
                 Image = CreditMemo;
-                Promoted = false;
-                //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
-                //PromotedCategory = Process;
+                Promoted = true;
+                PromotedCategory = Process;
                 RunObject = Page "Sales Credit Memo";
                 RunPageMode = Create;
             }
@@ -548,9 +547,8 @@ page 50098 "DEL NGTS DAF-CG Role Center"
             {
                 Caption = 'P&urchase Credit Memo';
                 Image = CreditMemo;
-                Promoted = false;
-                //The property 'PromotedCategory' can only be set if the property 'Promoted' is set to 'true'
-                //PromotedCategory = Process;
+                Promoted = true;
+                PromotedCategory = Process;
                 RunObject = Page "Purchase Credit Memo";
                 RunPageMode = Create;
             }
