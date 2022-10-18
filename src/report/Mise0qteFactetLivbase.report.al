@@ -4,9 +4,7 @@ report 50045 "DEL Miseà0 qteFact et Livbase"
 
     dataset
     {
-
         dataitem("Purchase Header"; "Purchase Header")
-
         {
             RequestFilterFields = "No.";
             trigger OnAfterGetRecord()
@@ -57,6 +55,10 @@ report 50045 "DEL Miseà0 qteFact et Livbase"
         PurchaseLine2: Record "Purchase Line";
         Text0001: Label 'Update Successfully Completed';
         Text0002: Label 'Vous devez choisir un numéro de document';
+
         PurchaseLine3: Record "Purchase Line";
+
+
+
 }
 

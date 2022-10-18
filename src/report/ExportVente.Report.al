@@ -198,15 +198,15 @@ report 50025 "DEL Export Vente"
     end;
 
     var
-        Item_Rec: Record 27;
-        SalesInvoiceLine: Record 113;
-        ExportVente: Record 50010;
-        SalesInvoiceHeader: Record 112;
-        SalesCrMemoLine: Record 115;
-        SalesCrMemoHeader: Record 114;
-        Vendor_Rec: Record 23;
-        GeneralSetup: Record 50000;
-        Item: Record 27;
+        Item_Rec: Record Item;
+        SalesInvoiceLine: Record "Sales Invoice Line";
+        ExportVente: Record "DEL Export vente";
+        SalesInvoiceHeader: Record "Sales Invoice Header";
+        SalesCrMemoLine: Record "Sales Cr.Memo Line";
+        SalesCrMemoHeader: Record "Sales Cr.Memo Header";
+        Vendor_Rec: Record Vendor;
+        GeneralSetup: Record "DEL General Setup";
+        Item: Record Item;
         DateDebut: Date;
         DateFin: Date;
         Mois: Integer;
@@ -217,13 +217,13 @@ report 50025 "DEL Export Vente"
         Line: Text[312];
         FiltreFourn: Text;
         FiltreArticle: Text;
-        ItemList: Page 31;
-        VendorList: Page 27;
+        ItemList: Page "Item List";
+        VendorList: Page "Vendor List";
         Path_Txt: Text;
         TimeNow_Te: Text;
         DateNow_Te: Text;
         i: Integer;
-        CurrExchRate: Record 330;
+        CurrExchRate: Record "Currency Exchange Rate";
         TauxChange1: Decimal;
         TauxChange2: Decimal;
 

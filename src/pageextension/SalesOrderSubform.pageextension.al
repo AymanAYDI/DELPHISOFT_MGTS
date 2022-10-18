@@ -2,7 +2,7 @@ pageextension 50043 "DEL SalesOrderSubform" extends "Sales Order Subform"
 {
     layout
     {
-        // TOOD: the property 'table relation' cannot be customized
+        //TODO: the property 'table relation' cannot be customized
         //Unsupported feature: Property Modification (TableRelation) on "Control 300".
 
 

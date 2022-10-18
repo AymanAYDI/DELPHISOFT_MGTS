@@ -763,7 +763,7 @@ codeunit 50100 "DEL MGTS_EventsMgt"
 
     //     IF NOT (xPurchaseLine."Expected Receipt Date" = PurchaseLine."Expected Receipt Date") THEN
     //         PurchaseLine.UpdateSalesEstimatedDelivery();
-    // end; TODO: check filed 10 : "Expected Receipt Date"
+    // end;           TODO: check filed 10 : "Expected Receipt Date"
 
 
     [EventSubscriber(ObjectType::Table, Database::"Purchase Line", 'OnValidateQuantityOnAfterPlanPriceCalcByField', '', false, false)]
@@ -791,8 +791,6 @@ codeunit 50100 "DEL MGTS_EventsMgt"
         Text50050: Label 'Do you want to export the invoice %2 from document No. %1 with EDI', Comment = 'FRA="Voulez-vous exporter la facture %2 du document n° %1 avec EDI?"';
 
     begin
-
-
         IF SalesHeader.Invoice THEN BEGIN
             IF NOT Cust.GET(SalesHeader."Sell-to Customer No.") THEN
                 Cust.INIT();
@@ -805,6 +803,7 @@ codeunit 50100 "DEL MGTS_EventsMgt"
         END;
 
     end;
+
     //TODO
     // [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnCheckAndUpdateOnBeforeCheckPostRestrictions', '', false, false)]
     // local procedure OnCheckAndUpdateOnBeforeCheckPostRestrictions(var SalesHeader: Record "Sales Header"; PreviewMode: Boolean)
@@ -1353,8 +1352,6 @@ codeunit 50100 "DEL MGTS_EventsMgt"
         END;
     end;
 
-
-
     [EventSubscriber(ObjectType::Page, Page::"Sales Order Subform", 'OnBeforeOpenSpecialPurchOrderForm', '', false, false)]
     local procedure P46_OnBeforeOpenSpecialPurchOrderForm_SalesOrderSubform(SalesOrderLine: Record "Sales Line"; var PageEditable: Boolean; var IsHandled: Boolean)
     begin
@@ -1370,6 +1367,5 @@ codeunit 50100 "DEL MGTS_EventsMgt"
     // begin
     //     ColoredPurchDueDate := ReqLine."DEL Purchase Order Due Date" < TODAY;
     // end;
-
 
 }

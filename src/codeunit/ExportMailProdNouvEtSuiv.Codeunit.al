@@ -14,11 +14,12 @@ codeunit 50010 "Export Mail Prod Nouv Et Suiv"
         */
         WTAB := 9;
         //Nouveau produit
-        FileVendor.CREATE('C:\Export\New_products_follow_up.csv');
 
-        FileVendor.CREATEOUTSTREAM(FoutStream);
+        // FileVendor.CREATE('C:\Export\New_products_follow_up.csv');
+        // FileVendor.CREATEOUTSTREAM(FoutStream);
+        // streamWriter := streamWriter.StreamWriter(FoutStream, encoding.Unicode); // TODO: ancient code
 
-        streamWriter := streamWriter.StreamWriter(FoutStream, encoding.Unicode);
+        tempBlob1.CreateOutStream(OutStr, TextEncoding::UTF8);
 
         PurchaseLine_Nouv.SETCURRENTKEY("Document Type", "Document No.", "Line No.");
         PurchaseLine_Nouv.SETRANGE("DEL First Purch. Order", TRUE);
@@ -27,7 +28,7 @@ codeunit 50010 "Export Mail Prod Nouv Et Suiv"
         IF PurchaseLine_Nouv.FINDSET() THEN BEGIN
             //PurchaseHeader_Nouv
 
-            streamWriter.WriteLine('Buy-from Vendor No.' + FORMAT(WTAB)
+            OutStr.WriteText('Buy-from Vendor No.' + FORMAT(WTAB)
 
                                     + 'Name' + FORMAT(WTAB)
                                     + 'Document No.' + FORMAT(WTAB)
@@ -52,7 +53,7 @@ codeunit 50010 "Export Mail Prod Nouv Et Suiv"
                 PurchaseHeader_Nouv.SETRANGE("No.", PurchaseLine_Nouv."Document No.");
                 IF PurchaseHeader_Nouv.FINDFIRST() THEN;
 
-                streamWriter.WriteLine(PurchaseLine_Nouv."Buy-from Vendor No." + FORMAT(WTAB)
+                OutStr.WriteText(PurchaseLine_Nouv."Buy-from Vendor No." + FORMAT(WTAB)
                                   + BuyfromVendorName + FORMAT(WTAB)
                                   + PurchaseLine_Nouv."Document No." + FORMAT(WTAB)
                                   + PurchaseLine_Nouv."No." + FORMAT(WTAB)
@@ -71,19 +72,20 @@ codeunit 50010 "Export Mail Prod Nouv Et Suiv"
             UNTIL PurchaseLine_Nouv.NEXT() = 0;
         END;
 
-        streamWriter.Close();
-        streamWriter.Dispose();
-        FileVendor.CLOSE();
+        // streamWriter.Close();
+        // streamWriter.Dispose();
+        // FileVendor.CLOSE(); // TODO: ancient code
+
         //Produit suivi
         CLEAR(FileVendor);
-        CLEAR(FoutStream);
-        CLEAR(streamWriter);
+        CLEAR(OutStr);
+        // CLEAR(streamWriter);
 
-        FileVendor.CREATE('C:\Export\Tracked_product_follow_up.csv');
+        // FileVendor.CREATE('C:\Export\Tracked_product_follow_up.csv');
+        // FileVendor.CREATEOUTSTREAM(FoutStream);
+        // streamWriter := streamWriter.StreamWriter(FoutStream, encoding.Unicode); // TODO: ancient code
 
-        FileVendor.CREATEOUTSTREAM(FoutStream);
-
-        streamWriter := streamWriter.StreamWriter(FoutStream, encoding.Unicode);
+        tempBlob2.CreateOutStream(OutStr, TextEncoding::UTF8);
 
         PurchaseLine_Suiv.SETCURRENTKEY("Document Type", "Document No.", "Line No.");
         PurchaseLine_Suiv.SETRANGE("DEL Risk Item", TRUE);
@@ -96,7 +98,7 @@ codeunit 50010 "Export Mail Prod Nouv Et Suiv"
         //END DEL.SAZ 19.09.2018
         IF PurchaseLine_Suiv.FINDSET() THEN BEGIN
 
-            streamWriter.WriteLine('Buy-from Vendor No.' + FORMAT(WTAB)
+            OutStr.WriteText('Buy-from Vendor No.' + FORMAT(WTAB)
                                     + 'Name' + FORMAT(WTAB)
                                     + 'Document No.' + FORMAT(WTAB)
                                     + 'No.' + FORMAT(WTAB)
@@ -123,7 +125,7 @@ codeunit 50010 "Export Mail Prod Nouv Et Suiv"
                 PurchaseHeader_Suiv.SETRANGE("No.", PurchaseLine_Suiv."Document No.");
                 IF PurchaseHeader_Suiv.FINDFIRST() THEN;
 
-                streamWriter.WriteLine(PurchaseLine_Suiv."Buy-from Vendor No." + FORMAT(WTAB)
+                OutStr.WriteText(PurchaseLine_Suiv."Buy-from Vendor No." + FORMAT(WTAB)
                                        + BuyfromVendorName + FORMAT(WTAB)
                                        + PurchaseLine_Suiv."Document No." + FORMAT(WTAB)
                                        + PurchaseLine_Suiv."No." + FORMAT(WTAB)
@@ -140,17 +142,22 @@ codeunit 50010 "Export Mail Prod Nouv Et Suiv"
             UNTIL PurchaseLine_Suiv.NEXT() = 0;
         END;
 
-        streamWriter.Close();
-        streamWriter.Dispose();
-        FileVendor.CLOSE();
+        // streamWriter.Close();
+        // streamWriter.Dispose();
+        // FileVendor.CLOSE(); // TODO:  ancient code
 
         SLEEP(9000);
 
-        IF NOT EXISTS('C:\Export\New_products_follow_up.csv') THEN
-            ERROR('File Not Found : C:\Export\New_products_follow_up.csv');
+        // IF NOT EXISTS('C:\Export\New_products_follow_up.csv') THEN
+        //     ERROR('File Not Found : C:\Export\New_products_follow_up.csv');
+        // IF NOT EXISTS('C:\Export\Tracked_product_follow_up.csv') THEN
+        //     ERROR('File Not Found : C:\Export\Tracked_product_follow_up.csv'); // TODO: ancient code
 
-        IF NOT EXISTS('C:\Export\Tracked_product_follow_up.csv') THEN
-            ERROR('File Not Found : C:\Export\Tracked_product_follow_up.csv');
+        if not tempBlob1.HasValue() then
+            ERROR('File Not Found');
+        if not tempBlob2.HasValue() then
+            ERROR('File Not Found');
+
 
         //variable  SMTP code unit SMTP Mail
 
@@ -158,7 +165,7 @@ codeunit 50010 "Export Mail Prod Nouv Et Suiv"
             //report_MGTS@mgts.com
             //SMTPMailSetup."Sender mail"
             // SMTP.CreateMessage('report_MGTS', 'report_MGTS@mgts.com', '', 'List New_products_follow_up and Tracked_product_follow_up', 'List New_products_follow_up and Tracked_product_follow_up', TRUE); TODO: Check
-            SMTP.Create('', 'List New_products_follow_up and Tracked_product_follow_up', 'List New_products_follow_up and Tracked_product_follow_up', TRUE);
+            EmailMessage.Create('', 'List New_products_follow_up and Tracked_product_follow_up', 'List New_products_follow_up and Tracked_product_follow_up', TRUE);
             IF SMTPMailSetup.Mail1 <> '' THEN
                 SMTP.AddRecipients(SMTPMailSetup.Mail1);
             IF SMTPMailSetup.Mail2 <> '' THEN
@@ -170,19 +177,22 @@ codeunit 50010 "Export Mail Prod Nouv Et Suiv"
             IF SMTPMailSetup.Mail5 <> '' THEN
                 SMTP.AddRecipients(SMTPMailSetup.Mail5);
         END;
-        SMTP.AddAttachment('C:\Export\New_products_follow_up.csv', 'New_products_follow_up.csv');
+        tempBlob1.CreateInStream(InStr);
+        EmailMessage.AddAttachment('New_products_follow_up.csv', '', Instr);
+        Clear(Instr);
         SLEEP(9000);
-        SMTP.AddAttachment('C:\Export\Tracked_product_follow_up.csv', 'Tracked_product_follow_up.csv');
+        tempBlob2.CreateInStream(InStr);
+        EmailMessage.AddAttachment('Tracked_product_follow_up.csv', '', InStr);
         SLEEP(9000);
-        SMTP.Send;
+        EmailSend.Send(EmailMessage);
         SLEEP(9000);
         CLEARALL();
 
-        IF EXISTS('C:\Export\New_products_follow_up.csv') THEN
-            ERASE('C:\Export\New_products_follow_up.csv');
+        // IF EXISTS('C:\Export\New_products_follow_up.csv') THEN
+        //     ERASE('C:\Export\New_products_follow_up.csv');
 
-        IF EXISTS('C:\Export\Tracked_product_follow_up.csv') THEN
-            ERASE('C:\Export\Tracked_product_follow_up.csv');
+        // IF EXISTS('C:\Export\Tracked_product_follow_up.csv') THEN
+        //     ERASE('C:\Export\Tracked_product_follow_up.csv'); // TODO: ancient code
 
     end;
 
@@ -190,11 +200,18 @@ codeunit 50010 "Export Mail Prod Nouv Et Suiv"
         PurchaseLine_Nouv: Record "Purchase Line";
         PurchaseLine_Suiv: Record "Purchase Line";
         FileVendor: File;
-        FoutStream: OutStream;
-        streamWriter: DotNet StreamWriter;
-        encoding: DotNet Encoding;
+
+        tempBlob1: Codeunit "Temp Blob";
+        tempBlob2: Codeunit "Temp Blob";
+        OutStr: OutStream;
+        InStr: InStream;
+        // streamWriter: DotNet StreamWriter; // TODO:  Cloud
+        // encoding: DotNet Encoding; // TODO:  Cloud
         WTAB: Char;
-        SMTP: Codeunit "Email Message";
+        EmailMessage: Codeunit "Email Message";
+        EmailSend: Codeunit Email;
+        userSetup: Record "User Setup";
+
         BuyfromVendorName: Text;
         Vendor_Rec: Record Vendor;
         // SMTPMailSetup: Record "409";
@@ -205,5 +222,7 @@ codeunit 50010 "Export Mail Prod Nouv Et Suiv"
         Listedesmotifs: Record "DEL Liste des motifs";
         Item: Record Item;
         DateRecCalc: Date;
+
+
 }
 
