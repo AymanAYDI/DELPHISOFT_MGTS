@@ -1,4 +1,4 @@
-pageextension 50055 pageextension50055 extends "Sales Invoice List"
+pageextension 50055 "DEL SalesInvoiceList" extends "Sales Invoice List"
 {
     // RBO         19.08.2019          add page Action Post and Print
     layout
@@ -17,7 +17,7 @@ pageextension 50055 pageextension50055 extends "Sales Invoice List"
 
         addafter(Post)
         {
-            action(PostAndPrint)
+            action("DEL PostAndPrint")
             {
                 Caption = 'Post and &Print';
                 Ellipsis = true;
