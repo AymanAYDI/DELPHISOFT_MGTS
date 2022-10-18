@@ -1,4 +1,3 @@
-#pragma implicitwith disable
 page 50077 "DEL Item Quality"
 {
 
@@ -33,7 +32,7 @@ page 50077 "DEL Item Quality"
                     Caption = 'Quality Blocked';
                     Editable = false;
                 }
-                field("Checklist by item"; "Checklist by item")
+                field("Checklist by item"; Rec."DEL Checklist by item")
                 {
                     DrillDown = true;
                     DrillDownPageID = "DEL Control list by category";
@@ -46,25 +45,17 @@ page 50077 "DEL Item Quality"
                 {
                     Editable = false;
                 }
-                field("Item Category Label"; "Item Category Label")
+                field("Item Category Label"; Rec."DEL Item Category Label")
                 {
                 }
-                field("Product Group Code"; Rec."Product Group Code")
+                // field("Product Group Code"; Rec."Product Group Code") // TODO: Field 'Product Group Code' is removed. Reason: Product Groups became first level children of Item Categories
+                // {
+                //     Editable = false;
+                // }
+                field("Product Group Label"; Rec."DEL Product Group Label")
                 {
-                    Editable = false;
                 }
-                field("Product Group Label"; "Product Group Label")
-                {
-                }
-                field("Marque Produit"; "Marque Produit")
-                {
-
-                    trigger OnValidate()
-                    begin
-                        CurrPage.UPDATE();
-                    end;
-                }
-                field("Product Description"; Rec."Product Description")
+                field("Marque Produit"; Rec."DEL Marque Produit")
                 {
 
                     trigger OnValidate()
@@ -72,57 +63,65 @@ page 50077 "DEL Item Quality"
                         CurrPage.UPDATE();
                     end;
                 }
-                field("Risque Securitaire"; "Risque Securitaire")
+                field("Product Description"; Rec."DEL Product Description")
+                {
+
+                    trigger OnValidate()
+                    begin
+                        CurrPage.UPDATE();
+                    end;
+                }
+                field("Risque Securitaire"; Rec."DEL Risque Securitaire")
                 {
                 }
-                field("NGTS Quality Expert"; "NGTS Quality Expert")
+                field("NGTS Quality Expert"; Rec."DEL NGTS Quality Expert")
                 {
                 }
-                field("Regl. Generale"; "Regl. Generale")
+                field("Regl. Generale"; Rec."DEL Regl. Generale")
                 {
                 }
-                field("Regl. Matiere"; "Regl. Matiere")
+                field("Regl. Matiere"; Rec."DEL Regl. Matiere")
                 {
                 }
-                field("Regl. Plan Control"; "Regl. Plan Control")
+                field("Regl. Plan Control"; Rec."DEL Regl. Plan Control")
                 {
                 }
-                field("Marking in the product FR"; "Marking in the product FR")
+                field("Marking in the product FR"; Rec."DEL Marking in the product FR")
                 {
                 }
-                field("Marking in the pack FR"; "Marking in the pack FR")
+                field("Marking in the pack FR"; Rec."DEL Marking in the pack FR")
                 {
                 }
-                field("Marking in the product ENU"; "Marking in the product ENU")
+                field("Marking in the product ENU"; Rec."DEL Marking in the product ENU")
                 {
                 }
-                field("Marking in the pack ENU"; "Marking in the pack ENU")
+                field("Marking in the pack ENU"; Rec."DEL Marking in the pack ENU")
                 {
                 }
-                field("Manuel instruction"; "Manuel instruction")
+                field("Manuel instruction"; Rec."DEL Manuel instruction")
                 {
                 }
-                field(Warning; Warning)
+                field(Warning; Rec."DEL Warning")
                 {
                 }
             }
             group("Regulation identification of the product")
             {
                 Caption = 'Regulation identification of the product';
-                field("Nombre Regl. Generale"; "Nombre Regl. Generale")
+                field("Nombre Regl. Generale"; Rec."DEL Nombre Regl. Generale")
                 {
                     DrillDown = true;
                     DrillDownPageID = "Matrix General regulation List";
                 }
-                field("Nombre Regl. Matiere"; "Nombre Regl. Matiere")
+                field("Nombre Regl. Matiere"; Rec."DEL Nombre Regl. Matiere")
                 {
                     DrillDown = true;
-                    DrillDownPageID = "Matrix Substance regul List";
+                    DrillDownPageID = "DEL Matrix Sub. regul List";
                 }
-                field("Nbre Regl. Plan control"; "Nbre Regl. Plan control")
+                field("Nbre Regl. Plan control"; Rec."DEL Nbre Regl. Plan control")
                 {
                     DrillDown = true;
-                    DrillDownPageID = "Matrix Plan of Control List";
+                    DrillDownPageID = "DEL Matrix Plan of Cont. List";
                 }
             }
             part(Quality_status; "DEL Quality forms")
@@ -132,25 +131,25 @@ page 50077 "DEL Item Quality"
             group("Quality status")
             {
                 Caption = 'Quality status';
-                field("Blocking Quality"; "Blocking Quality")
+                field("Blocking Quality"; Rec."DEL Blocking Quality")
                 {
                 }
-                field("Nom utilisateur"; "Nom utilisateur")
-                {
-                    Editable = false;
-                }
-                field("Date Of Update"; "Date Of Update")
+                field("Nom utilisateur"; Rec."DEL Nom utilisateur")
                 {
                     Editable = false;
                 }
-                field(Dispensation; Dispensation)
-                {
-                }
-                field("Nom utlisateur 2"; "Nom utlisateur 2")
+                field("Date Of Update"; Rec."DEL Date Of Update")
                 {
                     Editable = false;
                 }
-                field("Date Of Update 2"; "Date Of Update 2")
+                field(Dispensation; Rec."DEL Dispensation")
+                {
+                }
+                field("Nom utlisateur 2"; Rec."DEL Nom utlisateur 2")
+                {
+                    Editable = false;
+                }
+                field("Date Of Update 2"; Rec."DEL Date Of Update 2")
                 {
                     Editable = false;
                 }
@@ -168,7 +167,7 @@ page 50077 "DEL Item Quality"
     {
         area(processing)
         {
-            group()
+            group(Action1)
             {
                 action("Régl. Générale")
                 {
@@ -178,7 +177,7 @@ page 50077 "DEL Item Quality"
                     PromotedCategory = Process;
                     PromotedIsBig = true;
                     RunObject = Page "Matrix General regulation List";
-                    RunPageLink = "Item Category Code" = FIELD("Item Category Code"), "Product Group Code" = FIELD("Product Group Code"), Mark = FIELD("Marque Produit"), "Product Description" = FIELD("Product Description");
+                    // RunPageLink = "Item Category Code" = FIELD("Item Category Code"), "Product Group Code" = FIELD("Product Group Code"), Mark = FIELD("Marque Produit"), "Product Description" = FIELD("Product Description"); // TODO: Field 'Product Group Code' is removed. Reason: Product Groups became first level children of Item Categories
                     RunPageView = SORTING("Item Category Code", "Product Group Code", Mark, "Product Description", "No.", Type) ORDER(Ascending) WHERE(Type = FILTER("General product"));
                     Visible = RegGenerale;
                 }
@@ -189,8 +188,8 @@ page 50077 "DEL Item Quality"
                     Promoted = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
-                    RunObject = Page "Matrix Substance regul List";
-                    RunPageLink = "Item Category Code" = FIELD("Item Category Code"), "Product Group Code" = FIELD("Product Group Code"), Mark = FIELD("Marque Produit"), "Product Description" = FIELD("Product Description");
+                    RunObject = Page "DEL Matrix Sub. regul List";
+                    // RunPageLink = "Item Category Code" = FIELD("Item Category Code"), "Product Group Code" = FIELD("Product Group Code"), Mark = FIELD("Marque Produit"), "Product Description" = FIELD("Product Description"); // TODO: Field 'Product Group Code' is removed. Reason: Product Groups became first level children of Item Categories
                     RunPageView = SORTING("Item Category Code", "Product Group Code", Mark, "Product Description", "No.", Type) ORDER(Ascending) WHERE(Type = FILTER(Materials));
                     Visible = RegMat;
                 }
@@ -201,8 +200,8 @@ page 50077 "DEL Item Quality"
                     Promoted = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
-                    RunObject = Page "Matrix Plan of Control List";
-                    RunPageLink = "Item Category Code" = FIELD("Item Category Code"), "Product Group Code" = FIELD("Product Group Code"), Mark = FIELD("Marque Produit"), "Product Description" = FIELD("Product Description");
+                    RunObject = Page "DEL Matrix Plan of Cont. List";
+                    //RunPageLink = "Item Category Code" = FIELD("Item Category Code"), "Product Group Code" = FIELD("Product Group Code"), Mark = FIELD("Marque Produit"), "Product Description" = FIELD("Product Description"); // TODO: Field 'Product Group Code' is removed. Reason: Product Groups became first level children of Item Categories
                     RunPageMode = View;
                     RunPageView = SORTING("Item Category Code", "Product Group Code", Mark, "Product Description", "No.", Type)
                                   ORDER(Ascending)
@@ -225,10 +224,10 @@ page 50077 "DEL Item Quality"
     trigger OnAfterGetRecord()
     begin
 
-        CALCFIELDS("Regl. Generale", "Regl. Matiere", "Regl. Plan Control");
-        RegGenerale := "Regl. Generale";
-        RegMat := "Regl. Matiere";
-        RegPlan := "Regl. Plan Control";
+        Rec.CALCFIELDS("DEL Regl. Generale", "DEL Regl. Matiere", "DEL Regl. Plan Control");
+        RegGenerale := Rec."DEL Regl. Generale";
+        RegMat := Rec."DEL Regl. Matiere";
+        RegPlan := Rec."DEL Regl. Plan Control";
     end;
 
     var
@@ -249,4 +248,5 @@ page 50077 "DEL Item Quality"
         Cat2: Decimal;
         Cat3: Decimal;
 }
+
 

@@ -16,10 +16,10 @@ codeunit 50012 "DEL Minimizing Clicks - MGTS"
         TxtLClientPath: Text;
     begin
         RecLSalesSetup.GET();
-        RecLSalesSetup.TESTFIELD("PDF Registration Customer Path");
+        RecLSalesSetup.TESTFIELD("DEL PDF Registration Customer Path");
         RecLSalesHeader.SETRANGE("No.", RecPSalesHeader."No.");
         IF RecLSalesHeader.FINDFIRST() THEN BEGIN
-            TxtLClientPath := RecLSalesSetup."PDF Registration Customer Path" + '\' + RecLSalesHeader."Bill-to Customer No.";
+            TxtLClientPath := RecLSalesSetup."DEL PDF Registration Customer Path" + '\' + RecLSalesHeader."Bill-to Customer No.";
             TxtLServerFilename := TEMPORARYPATH + RecLSalesHeader."No." + '-' + RecLSalesHeader."Bill-to Customer No." + '.pdf';
             TxtLClientFilename := TxtLClientPath + '\' + RecLSalesHeader."No." + '-' + RecLSalesHeader."Bill-to Customer No." + '.pdf';
             IF EXISTS(TxtLServerFilename) THEN
@@ -50,10 +50,10 @@ codeunit 50012 "DEL Minimizing Clicks - MGTS"
         TxtLClientPath: Text;
     begin
         RecLPurchasesSetup.GET();
-        RecLPurchasesSetup.TESTFIELD("PDF Registration Vendor Path");
+        RecLPurchasesSetup.TESTFIELD("DEL PDF Registr. Vendor Path");
         RecLPurchaseHeader.SETRANGE("No.", RecPPurchaseHeader."No.");
         IF RecLPurchaseHeader.FINDFIRST() THEN BEGIN
-            TxtLClientPath := RecLPurchasesSetup."PDF Registration Vendor Path" + '\' + RecLPurchaseHeader."Buy-from Vendor No.";
+            TxtLClientPath := RecLPurchasesSetup."DEL PDF Registr. Vendor Path" + '\' + RecLPurchaseHeader."Buy-from Vendor No.";
             TxtLServerFilename := TEMPORARYPATH + RecLPurchaseHeader."No." + '-' + RecLPurchaseHeader."Buy-from Vendor No." + '.pdf';
             TxtLClientFilename := TxtLClientPath + '\' + RecLPurchaseHeader."No." + '-' + RecLPurchaseHeader."Buy-from Vendor No." + '.pdf';
             IF EXISTS(TxtLServerFilename) THEN
@@ -176,10 +176,10 @@ codeunit 50012 "DEL Minimizing Clicks - MGTS"
         TxtLClientPath: Text;
     begin
         RecLSalesSetup.GET();
-        RecLSalesSetup.TESTFIELD("PDF Registration PostedSalesIn");
+        RecLSalesSetup.TESTFIELD("DEL PDF Registration PostedSalesIn");
         RecLSalesInvoiceHeader.SETRANGE("No.", RecPSalesInvoiceHeader."No.");
         IF RecLSalesInvoiceHeader.FINDFIRST() THEN BEGIN
-            TxtLClientPath := RecLSalesSetup."PDF Registration PostedSalesIn" + '\' + RecLSalesInvoiceHeader."Bill-to Customer No.";
+            TxtLClientPath := RecLSalesSetup."DEL PDF Registration PostedSalesIn" + '\' + RecLSalesInvoiceHeader."Bill-to Customer No.";
             TxtLServerFilename := TEMPORARYPATH + RecLSalesInvoiceHeader."No." + '-' + RecLSalesInvoiceHeader."Bill-to Customer No." + '.pdf';
             TxtLClientFilename := TxtLClientPath + '\' + RecLSalesInvoiceHeader."No." + '-' + RecLSalesInvoiceHeader."Bill-to Customer No." + '.pdf';
             IF EXISTS(TxtLServerFilename) THEN
@@ -252,10 +252,10 @@ codeunit 50012 "DEL Minimizing Clicks - MGTS"
         RecLSalesCrMemoHeader: Record "Sales Cr.Memo Header";
     begin
         RecLSalesSetup.GET();
-        RecLSalesSetup.TESTFIELD("PDF Registration Sales C.Memo");
+        RecLSalesSetup.TESTFIELD("DEL PDF Registration Sales C.Memo");
         RecLSalesCrMemoHeader.SETRANGE("No.", RecPSalesCrMemoHeader."No.");
         IF RecLSalesCrMemoHeader.FINDFIRST() THEN BEGIN
-            TxtLClientPath := RecLSalesSetup."PDF Registration Sales C.Memo" + '\' + RecLSalesCrMemoHeader."Bill-to Customer No.";
+            TxtLClientPath := RecLSalesSetup."DEL PDF Registration Sales C.Memo" + '\' + RecLSalesCrMemoHeader."Bill-to Customer No.";
             TxtLServerFilename := TEMPORARYPATH + RecLSalesCrMemoHeader."No." + '-' + RecLSalesCrMemoHeader."Bill-to Customer No." + '.pdf';
             TxtLClientFilename := TxtLClientPath + '\' + RecLSalesCrMemoHeader."No." + '-' + RecLSalesCrMemoHeader."Bill-to Customer No." + '.pdf';
             IF EXISTS(TxtLServerFilename) THEN

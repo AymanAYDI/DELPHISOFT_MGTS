@@ -223,10 +223,11 @@ tableextension 50020 "DEL Item" extends Item //27
         }
         field(50090; "DEL Images"; Integer)
         {
-            //TODO CalcFormula = Count("DEL Texte Regulation" WHERE("Attached to Line No."=FIELD("No.")));
+            FieldClass = FlowField;
+            CalcFormula = Count("DEL Texte Regulation" WHERE("Attached to Line No." = FIELD("No.")));
 
             Editable = false;
-            FieldClass = FlowField;
+
         }
         field(50091; "DEL Qtés en com panier WEB"; Decimal)
         {
@@ -238,11 +239,12 @@ tableextension 50020 "DEL Item" extends Item //27
         }
         field(50092; "DEL Qty. optimale"; Decimal)
         {
-            // TODO CalcFormula = Sum("Purchase Price"."Qty. optimale" WHERE ("Item No."=FIELD("No."),
-            //                                 "Starting Date"=FIELD("Date Filter Start date"),
-            //                                 "Ending Date"=FIELD("Date Filter End date")));
-            Editable = false;
             FieldClass = FlowField;
+            CalcFormula = Sum("Purchase Price"."DEL Qty. optimale" WHERE("Item No." = FIELD("No."),
+                                            "Starting Date" = FIELD("DEL Date Filter Startdate"),
+                                            "Ending Date" = FIELD("DEL Date Filter Enddate")));
+            Editable = false;
+
             TableRelation = "Purchase Price"."Vendor No." WHERE("Item No." = FIELD("No."));
         }
         field(50094; "DEL Date Filter Startdate"; Date)
@@ -255,12 +257,13 @@ tableextension 50020 "DEL Item" extends Item //27
         }
         field(50096; "DEL Segment Code"; Code[20])
         {
-            //TODO  CalcFormula = Lookup("DEL Product Group"."Code Segment" 
-            // WHERE ("Item Category Code"=FIELD("Item Category Code"),
-            //         Code=FIELD("Product Group Code")));
+            FieldClass = FlowField;
+            //    CalcFormula = Lookup("DEL Product Group"."Code Segment" 
+            //     WHERE ("Item Category Code"=FIELD("DEL Item Category Code"),
+            //             Code=FIELD("Product Group Code"))); TODO: product grp
             Caption = 'Segment Code';
             Editable = false;
-            FieldClass = FlowField;
+
         }
         field(50100; "DEL Show item as new until"; Date)
         {

@@ -1,19 +1,5 @@
-#pragma implicitwith disable
 page 50078 "DEL Item Quality List"
 {
-    // +---------------------------------------------------------------+
-    // | Logico SA                                                     |
-    // | Status:                                                       |
-    // | Customer/Project:                                             |
-    // +---------------------------------------------------------------+
-    // Requirement UserID   Date       Where   Description
-    // -----------------------------------------------------------------
-    // T-00716      THM     27.08.15           Create Object
-    // T-00747      THM     17.11.15
-    // T-00755      THM     04.01.16           Comment Code
-    // T-00757      THM     07.01.16           add and modify Field
-    // T-00758      THM     12.01.16           Change PageActions
-    //              THM     29.04.16           add fields
 
     Caption = 'Item Quality List';
     CardPageID = "DEL Item Quality";
@@ -51,85 +37,85 @@ page 50078 "DEL Item Quality List"
                     Caption = 'Quality Blocked';
                     Editable = false;
                 }
-                field("Item Category Code"; "DEL Item Category Code")
+                field("Item Category Code"; Rec."Item Category Code")
                 {
                 }
-                field("Item Category Label"; "DEL Item Category Label")
+                field("Item Category Label"; Rec."DEL Item Category Label")
                 {
                 }
-                field("Product Group Code"; "Product Group Code")
+                // field("Product Group Code"; Rec."Product Group Code") // TODO: Field 'Product Group Code' is removed. Reason: Product Groups became first level children of Item Categories
+                // {
+                // }
+                field("Product Group Label"; Rec."DEL Product Group Label")
                 {
                 }
-                field("Product Group Label"; "Product Group Label")
+                field("Risque Securitaire"; Rec."DEL Risque Securitaire")
                 {
                 }
-                field("Risque Securitaire"; "Risque Securitaire")
+                field("Marque Produit"; Rec."DEL Marque Produit")
                 {
                 }
-                field("Marque Produit"; "Marque Produit")
+                field("Product Description"; Rec."DEL Product Description")
                 {
                 }
-                field("Product Description"; "Product Description")
+                field("NGTS Quality Expert"; Rec."DEL NGTS Quality Expert")
                 {
                 }
-                field("NGTS Quality Expert"; "NGTS Quality Expert")
+                field("Regl. Generale"; Rec."DEL Regl. Generale")
                 {
                 }
-                field("Regl. Generale"; "Regl. Generale")
+                field("Regl. Matiere"; Rec."DEL Regl. Matiere")
                 {
                 }
-                field("Regl. Matiere"; "Regl. Matiere")
+                field("Regl. Plan Control"; Rec."DEL Regl. Plan Control")
                 {
                 }
-                field("Regl. Plan Control"; "Regl. Plan Control")
+                field("Marking in the product FR"; Rec."DEL Marking in the product FR")
                 {
                 }
-                field("Marking in the product FR"; "Marking in the product FR")
+                field("Marking in the pack FR"; Rec."DEL Marking in the pack FR")
                 {
                 }
-                field("Marking in the pack FR"; "Marking in the pack FR")
+                field("Marking in the product ENU"; Rec."DEL Marking in the product ENU")
                 {
                 }
-                field("Marking in the product ENU"; "Marking in the product ENU")
+                field("Marking in the pack ENU"; Rec."DEL Marking in the pack ENU")
                 {
                 }
-                field("Marking in the pack ENU"; "Marking in the pack ENU")
+                field("Manuel instruction"; Rec."DEL Manuel instruction")
                 {
                 }
-                field("Manuel instruction"; "Manuel instruction")
+                field(Warning; Rec."DEL Warning")
                 {
                 }
-                field(Warning; Warning)
+                field("Nombre Regl. Generale"; Rec."DEL Nombre Regl. Generale")
                 {
                 }
-                field("Nombre Regl. Generale"; "Nombre Regl. Generale")
+                field("Nombre Regl. Matiere"; Rec."DEL Nombre Regl. Matiere")
                 {
                 }
-                field("Nombre Regl. Matiere"; "Nombre Regl. Matiere")
+                field("Blocking Quality"; Rec."DEL Blocking Quality")
                 {
                 }
-                field("Blocking Quality"; "Blocking Quality")
+                field("Nom utilisateur"; Rec."DEL Nom utilisateur")
                 {
                 }
-                field("Nom utilisateur"; "Nom utilisateur")
+                field("Date Of Update"; Rec."DEL Date Of Update")
                 {
                 }
-                field("Date Of Update"; "Date Of Update")
+                field(Dispensation; Rec."DEL Dispensation")
                 {
                 }
-                field(Dispensation; Dispensation)
+                field("Nom utlisateur 2"; Rec."DEL Nom utlisateur 2")
                 {
                 }
-                field("Nom utlisateur 2"; "Nom utlisateur 2")
+                field("Date Of Update 2"; Rec."DEL Date Of Update 2")
                 {
                 }
-                field("Date Of Update 2"; "Date Of Update 2")
-                {
-                }
-                field("Checklist by item"; "Checklist by item")
+                field("Checklist by item"; Rec."DEL Checklist by item")
                 {
                     DrillDown = true;
-                    DrillDownPageID = "Control list by category 2";
+                    DrillDownPageID = "DEL Control list by category 2";
                 }
             }
         }
@@ -149,7 +135,7 @@ page 50078 "DEL Item Quality List"
                     PromotedCategory = Process;
                     PromotedIsBig = true;
                     RunObject = Page "Matrix General regulation List";
-                    RunPageLink = "Item Category Code" = FIELD("Item Category Code"), "Product Group Code" = FIELD("Product Group Code"), Mark = FIELD("Marque Produit"), "Product Description" = FIELD("Product Description");
+                    // RunPageLink = "Item Category Code" = FIELD("Item Category Code"), "Product Group Code" = FIELD("Product Group Code"), Mark = FIELD("Marque Produit"), "Product Description" = FIELD("Product Description"); // TODO: Field 'Product Group Code' is removed. Reason: Product Groups became first level children of Item Categories
                     RunPageView = SORTING("Item Category Code", "Product Group Code", Mark, "Product Description", "No.", Type) ORDER(Ascending) WHERE(Type = FILTER("General product"));
                     Visible = RegGenerale;
                 }
@@ -160,8 +146,8 @@ page 50078 "DEL Item Quality List"
                     Promoted = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
-                    RunObject = Page "Matrix Substance regul List";
-                    RunPageLink = "Item Category Code" = FIELD("Item Category Code"), "Product Group Code" = FIELD("Product Group Code"), Mark = FIELD("Marque Produit"), "Product Description" = FIELD("Product Description");
+                    RunObject = Page "DEL Matrix Sub. regul List";
+                    // RunPageLink = "Item Category Code" = FIELD("Item Category Code"), "Product Group Code" = FIELD("Product Group Code"), Mark = FIELD("Marque Produit"), "Product Description" = FIELD("Product Description"); // TODO: Field 'Product Group Code' is removed. Reason: Product Groups became first level children of Item Categories
                     RunPageView = SORTING("Item Category Code", "Product Group Code", Mark, "Product Description", "No.", Type) ORDER(Ascending) WHERE(Type = FILTER(Materials));
                     Visible = RegMat;
                 }
@@ -172,8 +158,8 @@ page 50078 "DEL Item Quality List"
                     Promoted = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
-                    RunObject = Page "Matrix Plan of Control List";
-                    RunPageLink = "Item Category Code" = FIELD("Item Category Code"), "Product Group Code" = FIELD("Product Group Code"), Mark = FIELD("Marque Produit"), "Product Description" = FIELD("Product Description");
+                    RunObject = Page "DEL Matrix Plan of Cont. List";
+                    // RunPageLink = "Item Category Code" = FIELD("Item Category Code"), "Product Group Code" = FIELD("Product Group Code"), Mark = FIELD("Marque Produit"), "Product Description" = FIELD("Product Description"); // TODO: Field 'Product Group Code' is removed. Reason: Product Groups became first level children of Item Categories
                     RunPageMode = View;
                     RunPageView = SORTING("Item Category Code", "Product Group Code", Mark, "Product Description", "No.", Type)
                                   ORDER(Ascending)
@@ -195,16 +181,16 @@ page 50078 "DEL Item Quality List"
 
     trigger OnAfterGetRecord()
     begin
-        CALCFIELDS("Regl. Generale", "Regl. Matiere", "Regl. Plan Control");
-        RegGenerale := "Regl. Generale";
-        RegMat := "Regl. Matiere";
-        RegPlan := "Regl. Plan Control";
+        Rec.CALCFIELDS("DEL Regl. Generale", "DEL Regl. Matiere", "DEL Regl. Plan Control");
+        RegGenerale := Rec."DEL Regl. Generale";
+        RegMat := Rec."DEL Regl. Matiere";
+        RegPlan := Rec."DEL Regl. Plan Control";
     end;
 
     trigger OnOpenPage()
     begin
-        SETFILTER("Regl. Type Filter", '1|2|3');
-        SETFILTER("Regl. No. Filter", '<>%1', '');
+        Rec.SETFILTER("DEL Regl. Type Filter", '1|2|3');
+        Rec.SETFILTER("DEL Regl. No. Filter", '<>%1', '');
     end;
 
     var

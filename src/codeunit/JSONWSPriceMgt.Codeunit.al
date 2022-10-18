@@ -1,4 +1,4 @@
-codeunit 50056 "JSON WS : Price Mgt"
+codeunit 50056 "DEL JSON WS : Price Mgt"
 {
     // MGTS10.034      07.12.2021 : Create object
 
@@ -44,77 +44,77 @@ codeunit 50056 "JSON WS : Price Mgt"
         "Function": Text;
 
     [EventSubscriber(ObjectType::Table, 7002, 'OnBeforeInsertEvent', '', false, false)]
-    local procedure OnBeforInsertSalesPrice(var Rec: Record "7002"; RunTrigger: Boolean)
+    local procedure OnBeforInsertSalesPrice(var Rec: Record "Sales Price"; RunTrigger: Boolean)
     begin
-        IF Rec."Entry No." = 0 THEN
-            Rec."Entry No." := GetNextEntryNoSalesPrice();
+        IF Rec."DEL Entry No." = 0 THEN
+            Rec."DEL Entry No." := GetNextEntryNoSalesPrice();
     end;
 
     local procedure GetNextEntryNoSalesPrice(): Integer
     var
-        SalesPrice: Record "7002";
+        SalesPrice: Record "Sales Price";
     begin
-        SalesPrice.SETCURRENTKEY("Entry No.");
-        SalesPrice.SETFILTER("Entry No.", '<>%1', 0);
+        SalesPrice.SETCURRENTKEY("DEL Entry No.");
+        SalesPrice.SETFILTER("DEL Entry No.", '<>%1', 0);
         IF SalesPrice.FINDLAST THEN
-            EXIT(SalesPrice."Entry No." + 1);
+            EXIT(SalesPrice."DEL Entry No." + 1);
         EXIT(1);
     end;
 
     [EventSubscriber(ObjectType::Table, 7012, 'OnBeforeInsertEvent', '', false, false)]
-    local procedure OnBeforInsertPurchasePrice(var Rec: Record "7012"; RunTrigger: Boolean)
+    local procedure OnBeforInsertPurchasePrice(var Rec: Record "Purchase Price"; RunTrigger: Boolean)
     begin
-        IF Rec."Entry No." = 0 THEN
-            Rec."Entry No." := GetNextEntryNoPurchasePrice();
+        IF Rec."DEL Entry No." = 0 THEN
+            Rec."DEL Entry No." := GetNextEntryNoPurchasePrice();
     end;
 
     local procedure GetNextEntryNoPurchasePrice(): Integer
     var
-        PurchasePrice: Record "7012";
+        PurchasePrice: Record "Purchase Price";
     begin
-        PurchasePrice.SETCURRENTKEY("Entry No.");
-        PurchasePrice.SETFILTER("Entry No.", '<>%1', 0);
+        PurchasePrice.SETCURRENTKEY("DEL Entry No.");
+        PurchasePrice.SETFILTER("DEL Entry No.", '<>%1', 0);
         IF PurchasePrice.FINDLAST THEN
-            EXIT(PurchasePrice."Entry No." + 1);
+            EXIT(PurchasePrice."DEL Entry No." + 1);
         EXIT(1);
     end;
 
     [EventSubscriber(ObjectType::Table, 5717, 'OnBeforeInsertEvent', '', false, false)]
-    local procedure OnBeforInsertItemCrossReference(var Rec: Record "5717"; RunTrigger: Boolean)
+    local procedure OnBeforInsertItemCrossReference(var Rec: Record "Item Reference"; RunTrigger: Boolean)
     begin
-        IF Rec."Entry No." = 0 THEN
-            Rec."Entry No." := GetNextEntryNoItemCrossReference();
+        IF Rec."DEL Entry No." = 0 THEN
+            Rec."DEL Entry No." := GetNextEntryNoItemCrossReference();
     end;
 
     local procedure GetNextEntryNoItemCrossReference(): Integer
     var
-        ItemCrossReference: Record "5717";
+        ItemCrossReference: Record "Item Reference";
     begin
-        ItemCrossReference.SETCURRENTKEY("Entry No.");
-        ItemCrossReference.SETFILTER("Entry No.", '<>%1', 0);
+        ItemCrossReference.SETCURRENTKEY("DEL Entry No.");
+        ItemCrossReference.SETFILTER("DEL Entry No.", '<>%1', 0);
         IF ItemCrossReference.FINDLAST THEN
-            EXIT(ItemCrossReference."Entry No." + 1);
+            EXIT(ItemCrossReference."DEL Entry No." + 1);
         EXIT(1);
     end;
 
-    local procedure GetRecordSalesPrice(EntryNo: BigInteger; var SalesPrice: Record "7002"): Boolean
+    local procedure GetRecordSalesPrice(EntryNo: BigInteger; var SalesPrice: Record "Sales Price"): Boolean
     begin
-        SalesPrice.SETCURRENTKEY("Entry No.");
-        SalesPrice.SETRANGE("Entry No.", EntryNo);
+        SalesPrice.SETCURRENTKEY("DEL Entry No.");
+        SalesPrice.SETRANGE("DEL Entry No.", EntryNo);
         EXIT(SalesPrice.FINDFIRST);
     end;
 
-    local procedure GetRecordPurchasePrice(EntryNo: BigInteger; var PurchasePrice: Record "7012"): Boolean
+    local procedure GetRecordPurchasePrice(EntryNo: BigInteger; var PurchasePrice: Record "Purchase Price"): Boolean
     begin
-        PurchasePrice.SETCURRENTKEY("Entry No.");
-        PurchasePrice.SETRANGE("Entry No.", EntryNo);
+        PurchasePrice.SETCURRENTKEY("DEL Entry No.");
+        PurchasePrice.SETRANGE("DEL Entry No.", EntryNo);
         EXIT(PurchasePrice.FINDFIRST);
     end;
 
-    local procedure GetRecordItemCrossReference(EntryNo: BigInteger; var ItemCrossReference: Record "5717"): Boolean
+    local procedure GetRecordItemCrossReference(EntryNo: BigInteger; var ItemCrossReference: Record "Item Reference"): Boolean
     begin
-        ItemCrossReference.SETCURRENTKEY("Entry No.");
-        ItemCrossReference.SETRANGE("Entry No.", EntryNo);
+        ItemCrossReference.SETCURRENTKEY("DEL Entry No.");
+        ItemCrossReference.SETRANGE("DEL Entry No.", EntryNo);
         EXIT(ItemCrossReference.FINDFIRST);
     end;
 
@@ -123,14 +123,14 @@ codeunit 50056 "JSON WS : Price Mgt"
     end;
 
 
-    procedure GetSalesPriceInfo(SalesPrice: Record "7002") JsonResponse: Text
+    procedure GetSalesPriceInfo(SalesPrice: Record "Sales Price") JsonResponse: Text
     var
-        JsonMgt: Codeunit "50041";
+        JsonMgt: Codeunit "DEL JSON Mgt";
         ResponseJsonAsObject: DotNet JObject;
     begin
         WITH SalesPrice DO BEGIN
             ResponseJsonAsObject := ResponseJsonAsObject.JObject();
-            JsonMgt.AddValueToJsonObject(ResponseJsonAsObject, 'SalesPriceID', FORMAT("Entry No."));
+            JsonMgt.AddValueToJsonObject(ResponseJsonAsObject, 'SalesPriceID', FORMAT("DEL Entry No."));
             JsonMgt.AddValueToJsonObject(ResponseJsonAsObject, 'ProductErpCode', "Item No.");
             JsonMgt.AddValueToJsonObject(ResponseJsonAsObject, 'SalesCode', "Sales Code");
             JsonMgt.AddValueToJsonObject(ResponseJsonAsObject, 'SalesPriceStart', FORMAT("Starting Date"));
@@ -147,11 +147,11 @@ codeunit 50056 "JSON WS : Price Mgt"
 
     procedure GetSalesPrices(JsonAsObject: DotNet JObject) JsonResponse: Text
     var
-        RecordModificationTracking: Record "50083";
+        RecordModificationTracking: Record "DEL Record Modifs. Tracking";
         I: Integer;
-        SalesPrice: Record "7002";
+        SalesPrice: Record "Sales Price";
         FromDate: DateTime;
-        JsonMgt: Codeunit "50041";
+        JsonMgt: Codeunit "DEL JSON Mgt";
     begin
         IF NOT EVALUATE(FromDate, JsonMgt.GetValueFromJsonObject(JsonAsObject, 'FromDate', 20)) THEN
             CLEAR(FromDate);
@@ -192,10 +192,10 @@ codeunit 50056 "JSON WS : Price Mgt"
 
     local procedure AddItemSalesPrice(JsonAsObject: DotNet JObject) PriceCreationResponse: Text
     var
-        JsonMgt: Codeunit "50041";
-        SalesPrice: Record "7002";
+        JsonMgt: Codeunit "DEL JSON Mgt";
+        SalesPrice: Record "Sales Price";
         ItemNo: Code[20];
-        Item: Record "27";
+        Item: Record Item;
     begin
         SalesPrice.INIT;
         SalesPrice.VALIDATE("Item No.", JsonMgt.GetValueFromJsonObject(JsonAsObject, 'ProductErpCode', 20));
@@ -217,8 +217,8 @@ codeunit 50056 "JSON WS : Price Mgt"
 
     local procedure UpdateItemSalesPrice(JsonAsObject: DotNet JObject) PriceCreationResponse: Text
     var
-        JsonMgt: Codeunit "50041";
-        SalesPrice: Record "7002";
+        JsonMgt: Codeunit "DEL JSON Mgt";
+        SalesPrice: Record Item;
         ItemNo: Code[20];
         EntryNo: BigInteger;
     begin
@@ -237,8 +237,8 @@ codeunit 50056 "JSON WS : Price Mgt"
 
     local procedure DeleteItemSalesPrice(JsonAsObject: DotNet JObject) PriceCreationResponse: Text
     var
-        JsonMgt: Codeunit "50041";
-        SalesPrice: Record "7002";
+        JsonMgt: Codeunit "DEL JSON Mgt";
+        SalesPrice: Record "Sales Price";
         ItemNo: Code[20];
         EntryNo: BigInteger;
     begin
@@ -303,10 +303,10 @@ codeunit 50056 "JSON WS : Price Mgt"
     end;
 
 
-    procedure SuccesSalesPriceCreationResponse(SalesPrice: Record "7002"; StatusMessage: Text) JsonResponse: Text
+    procedure SuccesSalesPriceCreationResponse(SalesPrice: Record "Sales Price"; StatusMessage: Text) JsonResponse: Text
     var
         JsonAsObject: DotNet JObject;
-        JsonMgt: Codeunit "50041";
+        JsonMgt: Codeunit "DEL JSON Mgt";
     begin
         JsonAsObject := JsonAsObject.JObject();
         JsonMgt.AddValueToJsonObject(JsonAsObject, 'StatusCode', '1');
@@ -318,10 +318,10 @@ codeunit 50056 "JSON WS : Price Mgt"
     end;
 
 
-    procedure ErrorSalesPriceCreationResponse(SalesPrice: Record "7002") JsonResponse: Text
+    procedure ErrorSalesPriceCreationResponse(SalesPrice: Record "Sales Price") JsonResponse: Text
     var
         JsonAsObject: DotNet JObject;
-        JsonMgt: Codeunit "50041";
+        JsonMgt: Codeunit "DEL JSON Mgt";
     begin
         JsonAsObject := JsonAsObject.JObject();
         JsonMgt.AddValueToJsonObject(JsonAsObject, 'StatusCode', '-1');
@@ -337,9 +337,9 @@ codeunit 50056 "JSON WS : Price Mgt"
     end;
 
 
-    procedure GetPurchasePriceInfo(PurchasePrice: Record "7012") JsonResponse: Text
+    procedure GetPurchasePriceInfo(PurchasePrice: Record "Purchase Price") JsonResponse: Text
     var
-        JsonMgt: Codeunit "50041";
+        JsonMgt: Codeunit "DEL JSON Mgt";
         ResponseJsonAsObject: DotNet JObject;
     begin
         WITH PurchasePrice DO BEGIN
@@ -363,11 +363,11 @@ codeunit 50056 "JSON WS : Price Mgt"
 
     procedure GetPurchasePrices(JsonAsObject: DotNet JObject) JsonResponse: Text
     var
-        RecordModificationTracking: Record "50083";
+        RecordModificationTracking: Record "DEL Record Modifs. Tracking";
         I: Integer;
-        PurchasePrice: Record "7012";
+        PurchasePrice: Record "Purchase Price";
         FromDate: DateTime;
-        JsonMgt: Codeunit "50041";
+        JsonMgt: Codeunit "DEL JSON Mgt";
     begin
         IF NOT EVALUATE(FromDate, JsonMgt.GetValueFromJsonObject(JsonAsObject, 'FromDate', 20)) THEN
             CLEAR(FromDate);
@@ -407,10 +407,10 @@ codeunit 50056 "JSON WS : Price Mgt"
 
     local procedure AddItemPurchasePrice(JsonAsObject: DotNet JObject) PriceCreationResponse: Text
     var
-        JsonMgt: Codeunit "50041";
-        PurchasePrice: Record "7012";
-        Item: Record "27";
-        Vendor: Record "23";
+        JsonMgt: Codeunit "DEL JSON Mgt";
+        PurchasePrice: Record "Purchase Price";
+        Item: Record Item;
+        Vendor: Record Vendor;
     begin
         PurchasePrice.INIT;
         PurchasePrice."Item No." := JsonMgt.GetValueFromJsonObject(JsonAsObject, 'ProductErpCode', 20);
@@ -435,8 +435,8 @@ codeunit 50056 "JSON WS : Price Mgt"
 
     local procedure UpdateItemPurchasePrice(JsonAsObject: DotNet JObject) PriceCreationResponse: Text
     var
-        JsonMgt: Codeunit "50041";
-        PurchasePrice: Record "7012";
+        JsonMgt: Codeunit "DEL JSON Mgt";
+        PurchasePrice: Record "Purchase Price";
         ItemNo: Code[20];
         VendorNo: Code[20];
         EntryNo: BigInteger;
@@ -456,8 +456,8 @@ codeunit 50056 "JSON WS : Price Mgt"
 
     local procedure DeleteItemPurchasePrice(JsonAsObject: DotNet JObject) PriceCreationResponse: Text
     var
-        JsonMgt: Codeunit "50041";
-        PurchasePrice: Record "7012";
+        JsonMgt: Codeunit "DEL JSON Mgt";
+        PurchasePrice: Record "Purchase Price";
         ItemNo: Code[20];
         VendorNo: Code[20];
         EntryNo: BigInteger;
@@ -523,10 +523,10 @@ codeunit 50056 "JSON WS : Price Mgt"
     end;
 
 
-    procedure SuccesPurchasePriceCreationResponse(PurchasePrice: Record "7012"; StatusMessage: Text) JsonResponse: Text
+    procedure SuccesPurchasePriceCreationResponse(PurchasePrice: Record "Purchase Price"; StatusMessage: Text) JsonResponse: Text
     var
         JsonAsObject: DotNet JObject;
-        JsonMgt: Codeunit "50041";
+        JsonMgt: Codeunit "DEL JSON Mgt";
     begin
         JsonAsObject := JsonAsObject.JObject();
         JsonMgt.AddValueToJsonObject(JsonAsObject, 'StatusCode', '1');
@@ -538,10 +538,10 @@ codeunit 50056 "JSON WS : Price Mgt"
     end;
 
 
-    procedure ErrorPurchasePriceCreationResponse(PurchasePrice: Record "7012") JsonResponse: Text
+    procedure ErrorPurchasePriceCreationResponse(PurchasePrice: Record "Purchase Price") JsonResponse: Text
     var
         JsonAsObject: DotNet JObject;
-        JsonMgt: Codeunit "50041";
+        JsonMgt: Codeunit "DEL JSON Mgt";
     begin
         JsonAsObject := JsonAsObject.JObject();
         JsonMgt.AddValueToJsonObject(JsonAsObject, 'StatusCode', '-1');
@@ -557,9 +557,9 @@ codeunit 50056 "JSON WS : Price Mgt"
     end;
 
 
-    procedure GetItemCrossReferenceInfo(ItemCrossReference: Record "5717") JsonResponse: Text
+    procedure GetItemCrossReferenceInfo(ItemCrossReference: Record "Item Reference") JsonResponse: Text
     var
-        JsonMgt: Codeunit "50041";
+        JsonMgt: Codeunit "DEL JSON Mgt";
         ResponseJsonAsObject: DotNet JObject;
     begin
         WITH ItemCrossReference DO BEGIN
@@ -577,10 +577,10 @@ codeunit 50056 "JSON WS : Price Mgt"
 
     procedure GetItemCrossReferences(JsonAsObject: DotNet JObject) JsonResponse: Text
     var
-        JsonMgt: Codeunit "50041";
-        RecordModificationTracking: Record "50083";
+        JsonMgt: Codeunit "DEL JSON Mgt";
+        RecordModificationTracking: Record "DEL Record Modifs. Tracking";
         I: Integer;
-        ItemCrossReference: Record "5717";
+        ItemCrossReference: Record "Item Reference";
         FromDate: DateTime;
     begin
         IF NOT EVALUATE(FromDate, JsonMgt.GetValueFromJsonObject(JsonAsObject, 'FromDate', 20)) THEN
@@ -620,9 +620,9 @@ codeunit 50056 "JSON WS : Price Mgt"
 
     local procedure AddItemCrossReference(JsonAsObject: DotNet JObject) PriceCreationResponse: Text
     var
-        JsonMgt: Codeunit "50041";
-        ItemCrossReference: Record "5717";
-        Item: Record "27";
+        JsonMgt: Codeunit "DEL JSON Mgt";
+        ItemCrossReference: Record "Item Reference";
+        Item: Record Item;
         ItemNo: Code[20];
     begin
         ItemCrossReference.INIT;
@@ -646,9 +646,9 @@ codeunit 50056 "JSON WS : Price Mgt"
 
     local procedure UpdateItemCrossReference(JsonAsObject: DotNet JObject) PriceCreationResponse: Text
     var
-        JsonMgt: Codeunit "50041";
-        ItemCrossReference: Record "5717";
-        Item: Record "27";
+        JsonMgt: Codeunit "DEL JSON Mgt";
+        ItemCrossReference: Record "Item Reference";
+        Item: Record Item;
         ItemNo: Code[20];
         EntryNo: BigInteger;
     begin
@@ -666,8 +666,8 @@ codeunit 50056 "JSON WS : Price Mgt"
 
     local procedure DeleteItemCrossReference(JsonAsObject: DotNet JObject) PriceCreationResponse: Text
     var
-        JsonMgt: Codeunit "50041";
-        ItemCrossReference: Record "5717";
+        JsonMgt: Codeunit "DEL JSON Mgt";
+        ItemCrossReference: Record "Item Reference";
         EntryNo: BigInteger;
     begin
         EVALUATE(EntryNo, JsonMgt.GetValueFromJsonObject(JsonAsObject, 'CrossReferenceID', 20));
@@ -731,10 +731,10 @@ codeunit 50056 "JSON WS : Price Mgt"
     end;
 
 
-    procedure SuccesItemCrossReferenceCreationResponse(ItemCrossReference: Record "5717"; StatusMessage: Text) JsonResponse: Text
+    procedure SuccesItemCrossReferenceCreationResponse(ItemCrossReference: Record "Item Reference"; StatusMessage: Text) JsonResponse: Text
     var
         JsonAsObject: DotNet JObject;
-        JsonMgt: Codeunit "50041";
+        JsonMgt: Codeunit "DEL JSON Mgt";
     begin
         JsonAsObject := JsonAsObject.JObject();
         JsonMgt.AddValueToJsonObject(JsonAsObject, 'StatusCode', '1');
@@ -746,10 +746,10 @@ codeunit 50056 "JSON WS : Price Mgt"
     end;
 
 
-    procedure ErrorItemCrossReferenceCreationResponse(ItemCrossReference: Record "5717") JsonResponse: Text
+    procedure ErrorItemCrossReferenceCreationResponse(ItemCrossReference: Record "Item Reference") JsonResponse: Text
     var
         JsonAsObject: DotNet JObject;
-        JsonMgt: Codeunit "50041";
+        JsonMgt: Codeunit "DEL JSON Mgt";
     begin
         JsonAsObject := JsonAsObject.JObject();
         JsonMgt.AddValueToJsonObject(JsonAsObject, 'StatusCode', '-1');

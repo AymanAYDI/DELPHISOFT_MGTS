@@ -18,9 +18,9 @@ codeunit 50032 "DEL Update Request Manager"
         intNextProgressStep: array[10] of Integer;
         timProgress: array[10] of Time;
         interval: array[10] of Integer;
-        intProgress: Integer;
-        intProgressI: Integer;
-        diaProgress: Dialog;
+        intProgress: Array[10] of Integer;
+        intProgressI: Array[10] of Integer;
+        diaProgress: Array[10] of Dialog;
 
 
     procedure FNC_Process_Requests(updateRequest_Re_Par: Record "DEL Update Request Manager"; deleteWhenUpdated: Boolean; UpdatePlanned_Bo_Par: Boolean; processSilently_Bo_Par: Boolean)
@@ -239,7 +239,7 @@ codeunit 50032 "DEL Update Request Manager"
     end;
 
 
-    procedure FNC_ProgressBar_Update(index_Int_Par: Integer; interval_Int_Par: Integer; stepProgress_Int_Par: Integer; text_Te_Par: Text[50]; total_Int_Par: Integer)
+    procedure FNC_ProgressBar_Update(index_Int_Par: Integer)
     begin
         intProgressI[index_Int_Par] += 1;
 

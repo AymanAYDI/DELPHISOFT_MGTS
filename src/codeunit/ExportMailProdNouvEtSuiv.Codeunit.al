@@ -167,15 +167,15 @@ codeunit 50010 "Export Mail Prod Nouv Et Suiv"
             // SMTP.CreateMessage('report_MGTS', 'report_MGTS@mgts.com', '', 'List New_products_follow_up and Tracked_product_follow_up', 'List New_products_follow_up and Tracked_product_follow_up', TRUE); TODO: Check
             EmailMessage.Create('', 'List New_products_follow_up and Tracked_product_follow_up', 'List New_products_follow_up and Tracked_product_follow_up', TRUE);
             IF SMTPMailSetup.Mail1 <> '' THEN
-                SMTP.AddRecipients(SMTPMailSetup.Mail1);
+                EmailMessage.AddRecipient(SMTPMailSetup.Mail1);
             IF SMTPMailSetup.Mail2 <> '' THEN
-                SMTP.AddRecipients(SMTPMailSetup.Mail2);
+                EmailMessage.AddRecipient(SMTPMailSetup.Mail2);
             IF SMTPMailSetup.Mail3 <> '' THEN
-                SMTP.AddRecipients(SMTPMailSetup.Mail3);
+                EmailMessage.AddRecipient(SMTPMailSetup.Mail3);
             IF SMTPMailSetup.Mail4 <> '' THEN
-                SMTP.AddRecipients(SMTPMailSetup.Mail4);
+                EmailMessage.AddRecipient(SMTPMailSetup.Mail4);
             IF SMTPMailSetup.Mail5 <> '' THEN
-                SMTP.AddRecipients(SMTPMailSetup.Mail5);
+                EmailMessage.AddRecipient(SMTPMailSetup.Mail5);
         END;
         tempBlob1.CreateInStream(InStr);
         EmailMessage.AddAttachment('New_products_follow_up.csv', '', Instr);

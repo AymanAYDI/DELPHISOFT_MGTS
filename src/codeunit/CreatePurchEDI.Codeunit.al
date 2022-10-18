@@ -42,7 +42,7 @@ codeunit 50019 "DEL Create Purch. EDI"
 
         //Extract Sales Line To Requisition Line
         CLEAR(GetSalesOrder);
-        // GetSalesOrder.SetSalesDocNo(DocNo); TODO:
+        // GetSalesOrder.SetSalesDocNo(DocNo); //TODO: procedure dans une report specifique
         GetSalesOrder.SetReqWkshLine(RequisitionLine, 1);
         GetSalesOrder.USEREQUESTPAGE(FALSE);
         GetSalesOrder.RUNMODAL();
@@ -51,7 +51,7 @@ codeunit 50019 "DEL Create Purch. EDI"
         CLEAR(PerformAction);
         PerformAction.SetReqWkshLine(RequisitionLine);
         PerformAction.SetHideDialog(TRUE);
-        // PerformAction.SetEdiParam(TRUE); TODO:
+        // PerformAction.SetEdiParam(TRUE); //TODO: procedure dans une report specifique
         PerformAction.USEREQUESTPAGE(FALSE);
         PerformAction.RUNMODAL();
     end;

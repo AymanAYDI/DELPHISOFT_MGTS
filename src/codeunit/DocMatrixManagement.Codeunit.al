@@ -5,7 +5,7 @@ codeunit 50015 "DEL DocMatrix Management"
     end;
 
     var
-        lcuProgressBar: Codeunit LogiProgressBar;
+        lcuProgressBar: Codeunit "DEL LogiProgressBar";
         Type: Option Customer,Vendor;
         ProcessType: Option Manual,Automatic;
         SalesUsage: Option "Order Confirmation","Work Order","Pick Instruction";
@@ -291,14 +291,22 @@ codeunit 50015 "DEL DocMatrix Management"
     var
         RecLReportSelections: Record "Report Selections";
         lErr001: Label 'Not able to save PDF %1. \\ERROR: %2';
+        tempBlob: Codeunit "temp Blob";
+        FileManagement: Codeunit "File Management";
+        Out: OutStream;
+        RecRef: RecordRef;
     begin
+        TempBlob.CreateOutStream(Out, TEXTENCODING::UTF8);
         RecLReportSelections.RESET;
         RecLReportSelections.SETRANGE(Usage, pUsage);
         IF RecLReportSelections.FINDSET THEN
             IF RecLReportSelections.FINDFIRST THEN BEGIN
                 REPEAT
-                    REPORT.SAVEASPDF(RecLReportSelections."Report ID", ptxServerFile, pRecordVariant);
+                    // REPORT.SAVEASPDF(RecLReportSelections."Report ID", ptxServerFile, pRecordVariant); // TODO: ancient code
+                    REPORT.SAVEAS(RecLReportSelections."Report ID", '', REPORTFORMAT::Pdf, Out, RecRef);
+                    FileManagement.BLOBExport(TempBlob, ptxServerFile, TRUE);
                     ManageFilesAfterProcess(ptxClientFile, ptxServerFile);
+                    Clear(Out);
                 UNTIL RecLReportSelections.NEXT = 0;
             END;
     end;
@@ -311,7 +319,7 @@ codeunit 50015 "DEL DocMatrix Management"
             EXIT(STRSUBSTNO(lErr001, ptxClientFile, GETLASTERRORTEXT));
     end;
 
-    [TryFunction]
+    //[TryFunction]
     // TODO/ dotnet local procedure TrySilentPrint(pUsage: Integer; ptxClientPath: Text)
     // var
     //     [RunOnClient]
@@ -492,15 +500,16 @@ codeunit 50015 "DEL DocMatrix Management"
 
     local procedure SendSMTPmail(ptxFromAddressName: Text; ptxFromAddressString: Text; ptxToAddressString: Text; ptxSubject: Text; txAttachementFullPathFileName: Text; larrMailBody: array[10] of Text)
     var
-        lcuSMTP: Codeunit 400;
+        lcuSMTP: Codeunit "Email Message";
+        Email: Codeunit Email;
         lcuFileManagement: Codeunit "File Management";
         i: Integer;
     begin
-        lcuSMTP.CreateMessage(ptxFromAddressName, ptxFromAddressString, ptxToAddressString, ptxSubject, '', TRUE);
+        lcuSMTP.Create(ptxToAddressString, ptxSubject, '', TRUE);
         FOR i := 1 TO ARRAYLEN(larrMailBody) DO
-            lcuSMTP.AppendBody('<p>' + larrMailBody[i] + '</p>');
-        lcuSMTP.AddAttachment(txAttachementFullPathFileName, lcuFileManagement.GetFileName(txAttachementFullPathFileName));
-        lcuSMTP.Send;
+            lcuSMTP.AppendToBody('<p>' + larrMailBody[i] + '</p>');
+        // lcuSMTP.AddAttachment(txAttachementFullPathFileName, lcuFileManagement.GetFileName(txAttachementFullPathFileName)); TODO:
+        Email.Send(lcuSMTP);
     end;
 
     local procedure ProcessFTP(pAction: Option Print,Save,Mail,FTP1,FTP2; pNo: Code[20]; pDocNo: Code[20]; precDocMatrixSelection: Record "DEL DocMatrix Selection"; ptxClientFile: Text): Boolean
@@ -622,6 +631,8 @@ codeunit 50015 "DEL DocMatrix Management"
     local procedure CreateStatementPDFforCustomer(precDocMatrixReqPageChanged: Record "DEL Document Matrix"; pUsage: Integer; pCustNo: Code[20]; pFieldCustNo: Integer; pReportID: Integer; pDate: Date; var pLastStatementNo: Integer; var pvarCustomer: Variant): Text
     var
         lrecDocMatrixReqPageChanged: Record "DEL Document Matrix";
+        TempBlob: Codeunit "Temp Blob";
+        FileManagement: Codeunit "File Management";
         lRecRef: RecordRef;
         lFieldRef: FieldRef;
         ltxClientFile: Text;
@@ -655,14 +666,14 @@ codeunit 50015 "DEL DocMatrix Management"
 
         // create the PDF file and OutStream for the report
         CreatePathAndFileName(pUsage, pCustNo, GetReportName(pReportID), ltxClientFile, ltxServerFile, ltxClientPath, TRUE, lPurchCodeDummy);
-        Content.CREATE(ltxClientFile);
-        Content.CREATEOUTSTREAM(OStream);
-
+        // Content.CREATE(ltxClientFile);
+        // Content.CREATEOUTSTREAM(OStream); // TODO: ancient code
+        TempBlob.CreateOutStream(OStream, TEXTENCODING::UTF8);
         // finaly start the Report with the Request Page Parameter
         REPORT.SAVEAS(pReportID, XmlParameters, REPORTFORMAT::Pdf, OStream, pvarCustomer);
-
+        Clear(OStream);
         // close file and RecRef vars
-        Content.CLOSE;
+        // Content.CLOSE;
         lRecRef.CLOSE;
 
         // get the "Last Statement No." from the customer for R116 for the Log entry
@@ -1357,8 +1368,10 @@ codeunit 50015 "DEL DocMatrix Management"
         //  CduLFileManagement.CreateClientDirectory(txClientPath);
         //IF EXISTS(txClientFile)THEN
         //  ERASE(txClientFile);
-        CduLFileManagement.DownloadToFile(ptxServerFile, ptxClientFile);
-        CduLFileManagement.DeleteServerFile(ptxServerFile);
+
+
+        // CduLFileManagement.DownloadToFile(ptxServerFile, ptxClientFile); TODO:
+        // CduLFileManagement.DeleteServerFile(ptxServerFile);  TODO:
     end;
 
     local procedure __MGTS_Functions__()
@@ -1455,7 +1468,7 @@ codeunit 50015 "DEL DocMatrix Management"
                                 ELSE
                                     IF (GLAccount_Re_Loc.GET(salesLine_Re_Loc."No.")) THEN
                                         // si coché, exclure du contrôle de liaison
-                                        IF NOT (GLAccount_Re_Loc."Shipment Binding Control") THEN
+                                        IF NOT (GLAccount_Re_Loc."DEL Shipment Binding Control") THEN
                                             ERROR('Il faut choisir exactement 1 livraison liée !')
                             UNTIL (salesLine_Re_Loc.NEXT() = 0);
                         END;
@@ -1475,7 +1488,7 @@ codeunit 50015 "DEL DocMatrix Management"
                                     ELSE
                                         IF (GLAccount_Re_Loc.GET(salesLine_Re_Loc."No.")) THEN
                                             // si coché, exclure du contrôle de liaison
-                                            IF NOT (GLAccount_Re_Loc."Shipment Binding Control") THEN
+                                            IF NOT (GLAccount_Re_Loc."DEL Shipment Binding Control") THEN
                                                 ERROR('Il faut choisir exactement 1 livraison liée !')
                                 UNTIL (salesLine_Re_Loc.NEXT() = 0);
 
