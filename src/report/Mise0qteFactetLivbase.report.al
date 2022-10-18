@@ -59,5 +59,6 @@ report 50045 "DEL Miseà0 qteFact et Livbase"
         PurchaseLine3: Record "Purchase Line";
 
 
+
 }
 

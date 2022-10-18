@@ -134,24 +134,23 @@ page 50140 "DEL JSON Requests logs" //TODO
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 PromotedOnly = true;
-                //TODO //REPORT 
-                // trigger OnAction()
-                // var
-                //     FilterMessage: Report 50054;
-                // begin
-                //     FilterMessage.RUNMODAL;
-                //     FilterMessage.GetResult(TextToFilter);
-                //     TextToFilter := STRSUBSTNO(Text001, TextToFilter);
+                trigger OnAction()
+                var
+                    FilterMessage: Report "DEL Search Criteria";
+                begin
+                    FilterMessage.RUNMODAL;
+                    FilterMessage.GetResult(TextToFilter);
+                    TextToFilter := STRSUBSTNO(Text001, TextToFilter);
 
-                //     Rec.SETCURRENTKEY(Filtered, Date);
-                //     Rec.SETRANGE(Filtered, TRUE);
-                //     IF Rec.ISEMPTY THEN BEGIN
-                //         Rec.SETRANGE(Filtered);
-                //         TextToFilter := '';
-                //     END;
+                    Rec.SETCURRENTKEY(Filtered, Date);
+                    Rec.SETRANGE(Filtered, TRUE);
+                    IF Rec.ISEMPTY THEN BEGIN
+                        Rec.SETRANGE(Filtered);
+                        TextToFilter := '';
+                    END;
 
-                //     CurrPage.UPDATE;
-                // end;
+                    CurrPage.UPDATE;
+                end;
             }
             action("Init")
             {

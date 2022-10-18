@@ -24,15 +24,15 @@ codeunit 50054 "DEL Job Queue Entry Not."
         THEN
             EXIT(FALSE);
 
-        RecLJobQueueEntry.TESTFIELD(RecLJobQueueEntry."DEL Notification Recipient Email");
+        RecLJobQueueEntry.TESTFIELD(RecLJobQueueEntry."DEL Notif. Recipient Email");
 
         IF RecLJobQueueEntry."DEL Notify By Email On Hold" THEN
             IF (RecLJobQueueEntry.Status = RecLJobQueueEntry.Status::"On Hold") THEN
-                SendNotification(RecLJobQueueEntry."DEL Mail Template On Hold", RecLJobQueueEntry.ID, RecLJobQueueEntry."DEL Notification Recipient Email");
+                SendNotification(RecLJobQueueEntry."DEL Mail Template On Hold", RecLJobQueueEntry.ID, RecLJobQueueEntry."DEL Notif. Recipient Email");
 
         IF RecLJobQueueEntry."DEL Notify By Email On Error" THEN
             IF (RecLJobQueueEntry.Status = RecLJobQueueEntry.Status::Error) THEN
-                SendNotification(RecLJobQueueEntry."DEL Mail Template On Error", RecLJobQueueEntry.ID, RecLJobQueueEntry."DEL Notification Recipient Email");
+                SendNotification(RecLJobQueueEntry."DEL Mail Template On Error", RecLJobQueueEntry.ID, RecLJobQueueEntry."DEL Notif. Recipient Email");
 
         IF RecLJobQueueEntry."DEL Notify By Email Inactive" THEN
             IF (RecLJobQueueEntry.Status = RecLJobQueueEntry.Status::"In Process") OR
@@ -41,7 +41,7 @@ codeunit 50054 "DEL Job Queue Entry Not."
               (RecLJobQueueEntry.Status = RecLJobQueueEntry.Status::"On Hold with Inactivity Timeout")
               THEN
                 IF ((CURRENTDATETIME - RecLJobQueueEntry."Earliest Start Date/Time") > 7200000) THEN
-                    SendNotification(RecLJobQueueEntry."DEL Mail Template Inactive", RecLJobQueueEntry.ID, RecLJobQueueEntry."DEL Notification Recipient Email");
+                    SendNotification(RecLJobQueueEntry."DEL Mail Template Inactive", RecLJobQueueEntry.ID, RecLJobQueueEntry."DEL Notif. Recipient Email");
     end;
 
     local procedure SendNotification(MailTemplate: Text[250]; JobQueueID: Guid; RecipientEmail: Text[250])

@@ -170,7 +170,6 @@ codeunit 50053 "DEL D365FM PDF Email Send"
 
                     IF CduGSMTPMail.TrySend THEN BEGIN
                     END;
-                    //<<D365FM14.00.00.11
                 END;
         END;
 
@@ -178,7 +177,7 @@ codeunit 50053 "DEL D365FM PDF Email Send"
     end;
 
 
-    procedure LoadMailBody(var RecPBLOBRef: Record "99008535"; var TxtPEmailBody: Text; var RecPRef: RecordRef)
+    procedure LoadMailBody(var RecPBLOBRef: Record TempBlob; var TxtPEmailBody: Text; var RecPRef: RecordRef)
     var
         TxtLRepeatLine: Text[1024];
         BooLStop: Boolean;
@@ -281,17 +280,6 @@ codeunit 50053 "DEL D365FM PDF Email Send"
                 END;
             END;
         END;
-        /*
-        IF (STRLEN(Body) > 0) THEN BEGIN
-            BooWrongEnd := TRUE;
-          FOR z := 0 TO 5 DO BEGIN
-              IF Body[STRLEN(Body) - z] = '>' THEN
-                BooWrongEnd := FALSE;
-            END;
-            IF BooWrongEnd THEN
-              Body := Body + '>';
-          END;
-        */
         TxtPEmailBody += (CONVERTSTR(Body, '|', '%'));
 
     end;
@@ -309,7 +297,7 @@ codeunit 50053 "DEL D365FM PDF Email Send"
         TxtLMySelectedOptionString: Text[1024];
         DecLValue1: Decimal;
         DecLValue2: Decimal;
-        RecLActiveSession: Record "2000000110";
+        RecLActiveSession: Record "Active Session";
         RecLCompanyInfo: Record "Company Information";
         ServiceInvoiceHeader: Record "Service Invoice Header";
         IssuedReminderHeader: Record "Issued Reminder Header";
@@ -343,12 +331,10 @@ codeunit 50053 "DEL D365FM PDF Email Send"
                     DocNo := IssuedReminderHeader."No.";
                     PostingDate := IssuedReminderHeader."Posting Date";
                 END;
-            //>>D365FM14.00.00.11
             472:
                 BEGIN
                     RecPRef.SETTABLE(JobQueueEntry);
                     JobQueueEntry.FINDSET;
-                    //<<D365FM14.00.00.11
                 END;
         END;
 
@@ -358,10 +344,6 @@ codeunit 50053 "DEL D365FM PDF Email Send"
                 10000:
                     Body := STRSUBSTNO(Body, TxtPSpecialText);
                 200000001:
-                    // Body := STRSUBSTNO(Body, GETURL(CLIENTTYPE::Windows, COMPANYNAME, OBJECTTYPE::Page, IntPPageNo, RefPRecordRef, TRUE));
-                    //200000002:
-                    // Body := STRSUBSTNO(Body, GETURL(CLIENTTYPE::Web, COMPANYNAME, OBJECTTYPE::Page, IntPPageNo, RefPRecordRef, TRUE));
-                    //200000003:
                     BEGIN
                         RecLActiveSession.SETRANGE("Server Instance ID", SERVICEINSTANCEID());
                         RecLActiveSession.SETRANGE("Session ID", SESSIONID());
@@ -409,7 +391,6 @@ codeunit 50053 "DEL D365FM PDF Email Send"
                     BEGIN
                         Body := STRSUBSTNO(Body, FORMAT(JobQueueEntry."Error Message"));
                     END;
-            //<<D365FM14.00.00.11
             END;
         END
     end;
@@ -437,7 +418,7 @@ codeunit 50053 "DEL D365FM PDF Email Send"
 
     local procedure GetWindowsLanguageID(CodPLanguageCode: Code[10]): Integer
     var
-        RecLLanguage: Record "8";
+        RecLLanguage: Record Language;
     begin
         IF (CodPLanguageCode <> '') THEN BEGIN
             RecLLanguage.GET(CodPLanguageCode);
@@ -448,12 +429,12 @@ codeunit 50053 "DEL D365FM PDF Email Send"
 
     local procedure SaveReportAsPDF(var RecPRef: RecordRef): Text
     var
-        FileManagement: Codeunit "419";
+        FileManagement: Codeunit "File Management";
         ServerSaveAsPdfFailedErr: Label 'Impossible d''ouvrir le document car il est vide ou ne peut pas être créé.';
-        ServiceInvoiceHeader: Record "5992";
-        IssuedReminderHeader: Record "297";
-        ServiceHeader: Record "5900";
-        ReportSelection: Record "77";
+        ServiceInvoiceHeader: Record "Service Invoice Header";
+        IssuedReminderHeader: Record "Issued Reminder Header";
+        ServiceHeader: Record "Service Header";
+        ReportSelection: Record "Report Selections";
     begin
     end;
 
@@ -472,7 +453,7 @@ codeunit 50053 "DEL D365FM PDF Email Send"
     end;
 
 
-    procedure GetTemplateWithLanguage(var RecPRef: RecordRef; OptPDocumentType: Option " ","Service Invoice","Service Credit Memo","Issued Reminder","Service Header"; CodPLanguage: Code[10]; var RecPBLOBRef: Record "99008535"; var TxtPObject: Text; var TxtPSender: Text; var TxtPCCI: Text; "Code": Code[20]; Level: Integer; var LanguageTemplateMail: Record "50082"): Boolean
+    procedure GetTemplateWithLanguage(var RecPRef: RecordRef; OptPDocumentType: Option " ","Service Invoice","Service Credit Memo","Issued Reminder","Service Header"; CodPLanguage: Code[10]; var RecPBLOBRef: Record "99008535"; var TxtPObject: Text; var TxtPSender: Text; var TxtPCCI: Text; "Code": Code[20]; Level: Integer; var LanguageTemplateMail: Record "DEL D365FM Mail Template"): Boolean
     begin
         CASE RecPRef.NUMBER OF
             5992:
@@ -555,7 +536,6 @@ codeunit 50053 "DEL D365FM PDF Email Send"
 
                     EXIT(TRUE);
                 END;
-            //>>D365FM14.00.00.11
             472:
                 BEGIN
                     LanguageTemplateMail.SETRANGE("Parameter String", TemplateMailString);
@@ -570,7 +550,6 @@ codeunit 50053 "DEL D365FM PDF Email Send"
 
                     EXIT(TRUE);
                 END;
-        //<<D365FM14.00.00.11
         END;
     end;
 
@@ -599,7 +578,7 @@ codeunit 50053 "DEL D365FM PDF Email Send"
         lTempBlob: Record "99008535";
         OutputFile: File;
         ServerAttachmentFilePath: Text;
-        FileManagement: Codeunit "419";
+        FileManagement: Codeunit "File Management";
         lAttachmentOutStream: OutStream;
         lAttachmentInstream: InStream;
     begin

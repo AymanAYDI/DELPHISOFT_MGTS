@@ -23,7 +23,7 @@ page 50051 "DEL Outils de Corrections"
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
-                //TODO //Report //  RunObject = Report 50017;
+                RunObject = Report "DEL Delete Elements";
             }
             action("Re-assigner une NC Vente à une affaire/shipment")
             {
@@ -32,7 +32,7 @@ page 50051 "DEL Outils de Corrections"
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
-                RunObject = Page 50082;
+                RunObject = Page "DEL M Deal Cr. Memo Linking";
             }
             action("Re-assigner les lignes d'une Facture de vente à un ""code achat""")
             {
@@ -41,7 +41,7 @@ page 50051 "DEL Outils de Corrections"
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
-                RunObject = Page 50015;
+                RunObject = Page "DEL Corr. Facture enregistée";
             }
             action("Re-assigner une NC achat à une affaire/shipment")
             {
@@ -50,7 +50,7 @@ page 50051 "DEL Outils de Corrections"
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
-                RunObject = Page 50083;
+                RunObject = Page "DEL M Deal Pur. Cr. Memo Link";
             }
             action("Re-assigner une facture de frais achat à une affaire/shipment/code de frais")
             {
@@ -59,7 +59,7 @@ page 50051 "DEL Outils de Corrections"
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
-                RunObject = Page 50080;
+                RunObject = Page "DEL Manual Deal Invoice Link.";
             }
             action("Re-assigner les lignes d'une Facture de achat à un ""code achat""")
             {
@@ -68,7 +68,7 @@ page 50051 "DEL Outils de Corrections"
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
-                RunObject = Page 50060;
+                RunObject = Page "DEL Correctif Purchase Invoice";
             }
             action("Update Deal status")
             {
@@ -77,7 +77,7 @@ page 50051 "DEL Outils de Corrections"
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
-                //TODO //    RunObject = Report 50022;
+                RunObject = Report "DEL Mise à jour statut";
             }
             action("Update facture vente/Affaire")
             {
@@ -85,7 +85,7 @@ page 50051 "DEL Outils de Corrections"
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
-                //TODO //  RunObject = Report 50018;
+                RunObject = Report "DEL update fact vente/affaires";
             }
             action("Add Item To Deal")
             {
@@ -95,7 +95,7 @@ page 50051 "DEL Outils de Corrections"
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 PromotedOnly = true;
-                //TODO //   RunObject = Report 50030;
+                RunObject = Report "DEL Add Item to Deal";
             }
             action("Mise à 0 qte Fact et Liv base")
             {
@@ -103,7 +103,7 @@ page 50051 "DEL Outils de Corrections"
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
-                //TODO // RunObject = Report 50045;
+                RunObject = Report "DEL Miseà0 qteFact et Livbase";
             }
         }
     }

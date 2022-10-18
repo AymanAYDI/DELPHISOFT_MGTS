@@ -36,9 +36,13 @@ report 50012 "DEL Export to Excel purchase"
             begin
                 Window.CLOSE;
 
-                //TODO: NOT USED ON CLOUD
+                //TODO: NOT USED ON CLOUD : à corriger
                 // TempExcelBuffer.CreateBook(Text000, Text000);
                 // TempExcelBuffer.GiveUserControl;
+                TempExcelBuffer.CreateNewBook(Text000);
+                TempExcelBuffer.WriteSheet('Text000', CompanyName(), UserId());
+                TempExcelBuffer.CloseBook();
+
             end;
 
             trigger OnPreDataItem()
@@ -47,10 +51,10 @@ report 50012 "DEL Export to Excel purchase"
                   Text001 +
                   '@1@@@@@@@@@@@@@@@@@@@@@\');
                 Window.UPDATE(1, 0);
-                //TODO: TotalRecNo := "Purchase Price Worksheet".COUNT;
+                TotalRecNo := "DEL Purchase Price Worksheet".COUNT;
                 RecNo := 0;
 
-                TempExcelBuffer.DELETEALL;
+                TempExcelBuffer.DELETEALL();
                 CLEAR(TempExcelBuffer);
                 EnterCell(1, 1, Text000, TRUE, TRUE, FALSE);
                 EnterCell(3, 1, Text002, TRUE, TRUE, FALSE);

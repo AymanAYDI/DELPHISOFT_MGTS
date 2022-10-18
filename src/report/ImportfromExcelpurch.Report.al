@@ -87,7 +87,7 @@ report 50013 "DEL Import from Excel purch"
         GLBudgetName: Record "G/L Budget Name";
         GLBudgetEntry3: Record "G/L Budget Entry";
         AnalysisView: Record "Analysis View";
-        FileName: Text[250];
+        FileName: InStream;   //Text[250];
         SheetName: Text[250];
         ToGLBudgetName: Code[10];
         DimCode: array[8] of Code[20];
@@ -112,6 +112,8 @@ report 50013 "DEL Import from Excel purch"
     local procedure ReadExcelSheet()
     begin
         //TODO:CLOUD ExcelBuf.OpenBook(FileName, SheetName);
+        ExcelBuf.OpenBookStream(FileName, SheetName);
+
         ExcelBuf.ReadSheet;
     end;
 
