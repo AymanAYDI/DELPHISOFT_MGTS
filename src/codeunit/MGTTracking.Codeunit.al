@@ -17,15 +17,20 @@ codeunit 50003 "DEL MGT Tracking"
     end;
 
     var
-        // MyFile: Record File; TODO:
+        MyFile: Record File;
         NgtsSetup: Record "DEL General Setup";
         TrackingGeneral: Record "DEL Tracking non traité";
         MyStream: InStream;
         TestFile: File;
-        // fso: DotNet File; TODO:
+        fso: DotNet File;
         outStreamtest: OutStream;
         charXml: Text;
         Pos: Integer;
+
+
+        TempBlob: Codeunit "Temp Blob";
+
+        OutStr: OutStream;
 
 
     procedure importXMLFiles1()
@@ -39,10 +44,13 @@ codeunit 50003 "DEL MGT Tracking"
             REPEAT
                 Pos := STRPOS(MyFile.Name, charXml);
                 IF Pos <> 0 THEN BEGIN
-                    TestFile.OPEN(NgtsSetup."Folder Expeditors" + MyFile.Name);
-                    TestFile.CREATEINSTREAM(MyStream);
-                    XMLPORT.IMPORT(XMLPORT::"Import tracking", MyStream);
-                    TestFile.CLOSE;
+                    // TestFile.OPEN(NgtsSetup."Folder Expeditors" + MyFile.Name);
+                    // TestFile.CREATEINSTREAM(MyStream);
+                    // XMLPORT.IMPORT(XMLPORT::"Import tracking", MyStream);
+                    // TestFile.CLOSE; // TODO: ancient code
+
+                    UploadIntoStream('', NgtsSetup."Folder Expeditors", '', MyFile.Name, MyStream); // TODO:  check new code
+
                     TrackingGeneral.SETRANGE(Nom_Fichier, '');
                     IF TrackingGeneral.FINDFIRST() THEN
                         REPEAT
@@ -57,6 +65,8 @@ codeunit 50003 "DEL MGT Tracking"
 
 
     procedure importXMLFiles2()
+    var
+        InStr: InStream;
     begin
         IF NgtsSetup.GET() THEN;
 
@@ -65,10 +75,13 @@ codeunit 50003 "DEL MGT Tracking"
         IF MyFile.FINDFIRST() THEN
             REPEAT
 
-                TestFile.OPEN(NgtsSetup."Folder Maersk" + MyFile.Name);
-                TestFile.CREATEINSTREAM(MyStream);
-                XMLPORT.IMPORT(XMLPORT::"Import tracking", MyStream);
-                TestFile.CLOSE;
+                // TestFile.OPEN(NgtsSetup."Folder Maersk" + MyFile.Name);
+                // TestFile.CREATEINSTREAM(MyStream);
+                // XMLPORT.IMPORT(XMLPORT::"Import tracking", MyStream);
+                // TestFile.CLOSE; // TODO: ancient code
+
+                UploadIntoStream('', NgtsSetup."Folder Maersk", '', MyFile.Name, MyStream); // TODO:  check new code
+
                 TrackingGeneral.SETRANGE(Nom_Fichier, '');
                 IF TrackingGeneral.FINDFIRST() THEN
                     REPEAT
@@ -111,12 +124,17 @@ codeunit 50003 "DEL MGT Tracking"
 
 
     procedure export()
+    var
+        tempfilename: text;
     begin
 
-        TestFile.CREATE('C:\Transitaire\trans 1\Entry\Export.xml');
-        TestFile.CREATEOUTSTREAM(outStreamtest);
-        XMLPORT.EXPORT(XMLPORT::"Import tracking", outStreamtest);
-        TestFile.CLOSE;
+        // TestFile.CREATE('C:\Transitaire\trans 1\Entry\Export.xml');
+        // TestFile.CREATEOUTSTREAM(outStreamtest);
+        // XMLPORT.EXPORT(XMLPORT::"Import tracking", outStreamtest);
+        // TestFile.CLOSE;
+        tempfilename := 'Export.xml';
+        DownloadFromStream(MyStream, 'Export', '', 'All Files (*.*)|*.*', tempfilename);
+
         MESSAGE('Export Xml completed!');
     end;
 }

@@ -80,8 +80,9 @@ report 50003 "DEL Update Request Manager"
     }
 
     var
-        UpdateRequestManager_CU: Codeunit "DEL Update Request Manager";
         UpdateRequest_Re: Record "DEL Update Request Manager";
+
+        UpdateRequestManager_CU: Codeunit "DEL Update Request Manager";
         UpdatePlanned_Bo_Par: Boolean;
         i: Integer;
         UpdateRequest: Codeunit "DEL Update Request";

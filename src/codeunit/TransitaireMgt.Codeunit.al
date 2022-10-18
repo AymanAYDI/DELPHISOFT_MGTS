@@ -5,7 +5,7 @@ codeunit 50002 "DEL TransitaireMgt"
 
     trigger OnRun()
     var
-        XmlExpPort: XMLport "50000";
+        // XmlExpPort: XMLport "50000"; // TODO:
         PurchHeader: Record "Purchase Header";
     begin
     end;
@@ -13,7 +13,7 @@ codeunit 50002 "DEL TransitaireMgt"
     var
         Testfile: File;
         TestStream: InStream;
-        XMLPor: XMLport "50000";
+        // XMLPor: XMLport "50000"; // TODO:
         TestStream1: OutStream;
         GLSetup: Record "General Ledger Setup";
         CompanyInfo: Record "Company Information";
@@ -66,7 +66,7 @@ codeunit 50002 "DEL TransitaireMgt"
             OutboxTransaction.INIT();
             OutboxTransaction."Transaction No." := TransactionNo;
             OutboxTransaction."IC Partner Code" := Vendor."IC Partner Code";
-            OutboxTransaction."Source Type" := OutboxTransaction."Source Type"::"Forwarding Document";
+            // OutboxTransaction."Source Type" := OutboxTransaction."Source Type"::"Forwarding Document"; // TODO: "Source Type" n'est contenu pas option "Forwarding Document"
             CASE PurchHeader."Document Type" OF
                 PurchHeader."Document Type"::Order:
                     OutboxTransaction."Document Type" := OutboxTransaction."Document Type"::Order;
@@ -147,23 +147,24 @@ codeunit 50002 "DEL TransitaireMgt"
         GLSetupFound := TRUE;
     end;
 
-    procedure CopyDocDimToDocDim(var TempDocDim: Record "Gen. Jnl. Dim. Filter" temporary; "Table ID": Integer; DocType: Integer; DocNo: Code[20]; LineNo: Integer)
-    var
-        DocDim: Record 357;
-    begin
-        TempDocDim.RESET();
-        TempDocDim.DELETEALL();
-        DocDim.RESET();
-        DocDim.SETRANGE(DocDim."Table ID", "Table ID");
-        DocDim.SETRANGE("Document Type", DocType);
-        DocDim.SETRANGE("Document No.", DocNo);
-        DocDim.SETRANGE("Line No.", LineNo);
-        IF DocDim.FINDFIRST() THEN
-            REPEAT
-                TempDocDim := DocDim;
-                TempDocDim.INSERT();
-            UNTIL DocDim.NEXT() = 0;
-    end;
+    // procedure CopyDocDimToDocDim(var TempDocDim: Record 357 temporary; "Table ID": Integer; DocType: Integer; DocNo: Code[20]; LineNo: Integer)
+    // var
+    //     // DocDim: Record 357;
+    //     DocDim: Codeunit 408;
+    // begin
+    //     TempDocDim.RESET();
+    //     TempDocDim.DELETEALL();
+    //     DocDim.RESET();
+    //     DocDim.SETRANGE(DocDim."Table ID", "Table ID");
+    //     DocDim.SETRANGE("Document Type", DocType);
+    //     DocDim.SETRANGE("Document No.", DocNo);
+    //     DocDim.SETRANGE("Line No.", LineNo);
+    //     IF DocDim.FINDFIRST() THEN
+    //         REPEAT
+    //             TempDocDim := DocDim;
+    //             TempDocDim.INSERT();
+    //         UNTIL DocDim.NEXT() = 0;
+    // end; // TODO:
 
 
     procedure SendToTransitairePartner(ICOutboxTrans: Record "IC Outbox Transaction")
@@ -182,9 +183,9 @@ codeunit 50002 "DEL TransitaireMgt"
         i: Integer;
         ToName: Text[100];
         CcName: Text[100];
-        XMLPortOutbox: XMLport 50000;
+        // XMLPortOutbox: XMLport 50000; TODO:
         ICPurchHeaderArchiv: Record "Handled IC Outbox Purch. Hdr";
-        XMLPortOutboxNew: XMLport 50002;
+    // XMLPortOutboxNew: XMLport 50002; TODO:
     begin
         //Erstellt XML file.
         PurchHeader.SETRANGE("Document Type", PurchHeader."Document Type"::Order);
@@ -192,7 +193,7 @@ codeunit 50002 "DEL TransitaireMgt"
         IF PurchHeader.FINDFIRST() THEN BEGIN
 
             // Test ob Transitaire gültig ist.
-            Transitaire.GET(PurchHeader."Forwarding Agent Code");
+            Transitaire.GET(PurchHeader."DEL Forwarding Agent Code");
             NGTSSetup.GET();
 
             // Test ob bereits ein XML File erstellt wurde.
@@ -216,15 +217,15 @@ codeunit 50002 "DEL TransitaireMgt"
             tempBlob.CreateOutStream(Ostr);
 
             IF Transitaire."HSCODE Enable" = FALSE THEN BEGIN   //ngts1  begin
-                XMLPortOutbox.SETDESTINATION(Ostr);
-                XMLPortOutbox.SETTABLEVIEW(PurchHeader);
-                XMLPortOutbox.EXPORT;
+                // XMLPortOutbox.SETDESTINATION(Ostr);
+                // XMLPortOutbox.SETTABLEVIEW(PurchHeader); // TODO: relate to local Xml port
+                // XMLPortOutbox.EXPORT;
             END;
 
             IF Transitaire."HSCODE Enable" = TRUE THEN BEGIN
-                XMLPortOutboxNew.SETDESTINATION(Ostr);
-                XMLPortOutboxNew.SETTABLEVIEW(PurchHeader);
-                XMLPortOutboxNew.EXPORT;
+                // XMLPortOutboxNew.SETDESTINATION(Ostr);
+                // XMLPortOutboxNew.SETTABLEVIEW(PurchHeader); // TODO: relate to local Xml port
+                // XMLPortOutboxNew.EXPORT;
             END;                                               //ngts1  end
 
 

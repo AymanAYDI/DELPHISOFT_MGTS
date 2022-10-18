@@ -270,8 +270,9 @@ report 50002 "DEL Cust - Sum. Aging Simp. XX"
     end;
 
     var
-        Text001: Label 'As of %1';
         DtldCustLedgEntry: Record "Detailed Cust. Ledg. Entry";
+
+        Text001: Label 'As of %1';
         StartDate: Date;
         CustFilter: Text[250];
         PeriodStartDate: array[7] of Date;

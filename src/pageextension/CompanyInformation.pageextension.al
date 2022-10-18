@@ -72,9 +72,9 @@ pageextension 50001 "DEL CompanyInformation" extends "Company Information" //1
 
                 trigger OnAction()
                 var
-                    lpgDocumentMatrix: Page "50130";
+                    lpgDocumentMatrix: Page "DEL Document Matrix";
                 begin
-                    lpgDocumentMatrix.RUN;
+                    lpgDocumentMatrix.RUN();
                 end;
             }
         }

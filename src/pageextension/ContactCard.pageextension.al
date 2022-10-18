@@ -21,7 +21,7 @@ pageextension 50048 "DEL ContactCard" extends "Contact Card"
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
-                RunObject = Page 50067;
+                RunObject = Page "DEL Contact Notation Card";
                 RunPageLink = "No." = FIELD("No.");
             }
         }
