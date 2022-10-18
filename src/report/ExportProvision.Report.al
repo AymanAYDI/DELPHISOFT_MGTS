@@ -200,11 +200,13 @@ report 50015 "DEL Export Provision"
     end;
 
     var
+        TempSPS_Re: Record "DEL Shipment Provision Select." temporary;
+
+        Provision_Cu: Codeunit "DEL Provision";
+
         LastFieldNo: Integer;
         FooterPrinted: Boolean;
         Export2Excel_Bo: Boolean;
-        Provision_Cu: Codeunit "DEL Provision";
-        TempSPS_Re: Record "DEL Shipment Provision Select." temporary;
         FeeDescriptionArray: array[20] of Text[100];
         FeeTotalArray: array[20] of Text[100];
         i: Integer;
@@ -277,19 +279,14 @@ report 50015 "DEL Export Provision"
 
         IF timProgress[index_Int_Par] < TIME - interval[index_Int_Par] THEN BEGIN
 
-            //calcul le pourcentage d'avancement
             intProgress[index_Int_Par] := ROUND(intProgressI[index_Int_Par] / intProgressTotal[index_Int_Par] * 10000, 1);
 
-            //si le pourcentage d'avancement a avancé de x pourcent (paramètre intProgressStep)
             IF intProgress[index_Int_Par] > intNextProgressStep[index_Int_Par] THEN BEGIN
 
-                //définition du prochain niveau de progression
                 intNextProgressStep[index_Int_Par] += intProgressStep[index_Int_Par];
 
-                //mise à jour du temps
                 timProgress[index_Int_Par] := TIME;
 
-                //mise à jour de la barre
                 diaProgress[index_Int_Par].UPDATE;
 
             END;

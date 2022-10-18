@@ -39,9 +39,13 @@ report 50008 "DEL Export to Excel sales"
             begin
                 Window.CLOSE;
 
-                //TODO: only for onprem dev ! 
+                //TODO: only for onprem dev ! à corriger #Abiir
                 // TempExcelBuffer.CreateBook(Text000, Text000);
                 // TempExcelBuffer.GiveUserControl;
+                TempExcelBuffer.CreateNewBook(Text000);
+                TempExcelBuffer.WriteSheet('Text000', CompanyName(), UserId());
+                TempExcelBuffer.CloseBook();
+
             end;
 
             trigger OnPreDataItem()

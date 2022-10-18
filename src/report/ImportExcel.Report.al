@@ -32,34 +32,32 @@ report 50006 "DEL Import Excel"
     {
 
         layout
-        {
-        }
-
+        { }
         actions
-        {
-        }
+        { }
 
-        trigger OnQueryClosePage(CloseAction: Action): Boolean
-        var
-            Buffer: Text;
-        begin
-            IF CloseAction = ACTION::OK THEN BEGIN
-                //TODO: onprem method 
-                FileName := FileManagement.UploadFile('Import Excel', ExcelExtension);
+        // trigger OnQueryClosePage(CloseAction: Action): Boolean
+        // var
+        //     Buffer: Text;
+        //     OutStr: OutStream;
+        // begin
+        //     IF CloseAction = ACTION::OK THEN BEGIN
+        //         //TODO: onprem method 
 
-                IF FileName.ReadText(Buffer) THEN
-                    EXIT(false);
-                //TODO: onprem method 
-                sheetName := ExcelBuffer.SelectSheetsName(FileName);
-                IF sheetName = '' THEN
-                    EXIT(false);
-            END;
-        end;
+        //         // FileName := FileManagement.UploadFile('Import Excel', ExcelExtension);
+
+        //         // IF FileName.ReadText() THEN
+        //         //     EXIT(false);
+        //         // //TODO: onprem method 
+        //         // sheetName := ExcelBuffer.SelectSheetsName(FileName);
+        //         IF sheetName = '' THEN
+        //             EXIT(false);
+        //     END;
+        // end;
     }
 
     labels
-    {
-    }
+    { }
 
     var
         ExcelBuffer: Record "Excel Buffer";

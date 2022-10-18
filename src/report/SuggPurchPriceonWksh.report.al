@@ -6,7 +6,7 @@ report 50010 "DEL Sugg Purch Price on Wksh."
 
     dataset
     {
-        dataitem(DataItem3889; "Purchase Price")
+        dataitem("Purchase Price"; "Purchase Price")
         {
             DataItemTableView = SORTING("Item No.");
             RequestFilterFields = "Item No.", "Currency Code", "Starting Date";
@@ -32,7 +32,8 @@ report 50010 "DEL Sugg Purch Price on Wksh."
                 PurchPriceWksh."New Unit Price" := "Direct Unit Cost";
                 PurchPriceWksh."Minimum Quantity" := "Minimum Quantity";
 
-                //TODO PurchPriceWksh."Qty. optimale" := "Purchase Price"."Qty. optimale";
+                //TODO 
+                PurchPriceWksh."Qty. optimale" := "Purchase Price"."DEL Qty. optimale";
 
                 IF NOT ReplaceUnitOfMeasure THEN
                     PurchPriceWksh."Unit of Measure Code" := "Unit of Measure Code"
@@ -222,7 +223,8 @@ report 50010 "DEL Sugg Purch Price on Wksh."
     end;
 
     var
-        Text001: Label 'Processing items  #1##########';
+        Vendor: Record Vendor;
+
         SalesPrice2: Record "Sales Price";
         SalesPriceWksh2: Record "Sales Price Worksheet";
         SalesPriceWksh: Record "Sales Price Worksheet";
@@ -237,6 +239,11 @@ report 50010 "DEL Sugg Purch Price on Wksh."
         CurrExchRate: Record "Currency Exchange Rate";
         RoundingMethod: Record "Rounding Method";
         Item: Record Item;
+        PurchPrice2: Record "Purchase Price";
+        PurchPriceWksh2: Record "DEL Purchase Price Worksheet";
+        PurchPriceWksh: Record "DEL Purchase Price Worksheet";
+        ToVend: Record Vendor;
+
         UOMMgt: Codeunit "Unit of Measure Management";
         Window: Dialog;
         PriceAlreadyExists: Boolean;
@@ -253,15 +260,12 @@ report 50010 "DEL Sugg Purch Price on Wksh."
         ReplaceStartingDate: Boolean;
         ReplaceEndingDate: Boolean;
         Text002: Label 'Purchase Code must be specified when copying from %1 to All Vendors.';
+        Text001: Label 'Processing items  #1##########';
+
         "+++++++++500000": Integer;
-        PurchPrice2: Record "Purchase Price";
-        PurchPriceWksh2: Record "DEL Purchase Price Worksheet";
-        PurchPriceWksh: Record "DEL Purchase Price Worksheet";
-        ToVend: Record Vendor;
         ToPurchCode: Code[20];
         ReplacePurchCode: Boolean;
         ToPurchType: Option Vendor;
-        Vendor: Record Vendor;
 
     procedure InitializeRequest(NewToPurchType: Option Vendor; NewToPurchCode: Code[20]; NewToStartDate: Date; NewToEndDate: Date; NewToCurrCode: Code[10]; NewToUOMCode: Code[10]; NewCreateNewPrices: Boolean)
     begin
