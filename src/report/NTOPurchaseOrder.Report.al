@@ -464,30 +464,40 @@ report 50004 "DEL NTO - Purchase Order"
                                     OldDimText := DimText;
                                     IF DimText = '' THEN
                                         DimText := STRSUBSTNO(
-                                          '%1 %2', DocDim2."Dimension Code", DocDim2."Dimension Code")
+                                          '%1 %2', DocDim1."Dimension Code", DocDim1."Dimension Code")
                                     ELSE
                                         DimText :=
                                           STRSUBSTNO(
                                             '%1, %2 %3', DimText,
-                                            DocDim2."Dimension Code", DocDim2."Dimension Code");
+                                            DocDim1."Dimension Code", DocDim1."Dimension Code");
                                     IF STRLEN(DimText) > MAXSTRLEN(OldDimText) THEN BEGIN
                                         DimText := OldDimText;
                                         Continue := TRUE;
                                         EXIT;
                                     END;
-                                UNTIL (DocDim2.NEXT = 0);
+                                UNTIL (DocDim1.NEXT = 0);
                             end;
 
                             trigger OnPreDataItem()
+                            var
+                                PurchLine: Record "Purchase Line";
                             begin
                                 IF NOT ShowInternalInfo THEN
                                     CurrReport.BREAK;
 
-                                //TODO DocDim2.SETRANGE("Table ID", DATABASE::"Purchase Line");
+
+                                //TODO : à vérifier .. #Abir
+                                // DocDim1.SETRANGE("Dimension Set ID", DATABASE::"Purchase Line");
                                 // DocDim2.SETRANGE("Document Type", "Purchase Line"."Document Type");
                                 // DocDim2.SETRANGE("Document No.", "Purchase Line"."Document No.");
                                 // DocDim2.SETRANGE("Line No.", "Purchase Line"."Line No.");
+                                // PurchLine."Dimension Set ID" :=
+                                //  DimMgt.GetDimensionSetID(DocDim1);
+                                DimMgt.ShowDimensionSet(PurchLine."Dimension Set ID", StrSubstNo('%1 %2 %3', PurchLine."Document Type",
+                                PurchLine."Document No.", PurchLine."Line No."));
                             end;
+
+
                         }
 
                         trigger OnAfterGetRecord()
@@ -740,8 +750,11 @@ report 50004 "DEL NTO - Purchase Order"
             }
 
             trigger OnAfterGetRecord()
+            var
+                PurchHeader: Record "Purchase Header";
             begin
-                //TODO CurrReport.LANGUAGE := Language.GetLanguageCode("Language Code");
+                //TODO 
+                CurrReport.LANGUAGE := Language.GetLanguageID("Language Code");
 
                 CompanyInfo.GET;
                 PrepareHeader;
@@ -753,10 +766,14 @@ report 50004 "DEL NTO - Purchase Order"
                 END ELSE
                     FormatAddr.Company(CompanyAddr, CompanyInfo);
 
-                //TODO/ DOCDIM ne contient pas ces champs
+                //TODO: à vérifier #Abir 
                 // DocDim1.SETRANGE("Table ID", DATABASE::"Purchase Header");
                 // DocDim1.SETRANGE("Document Type", "Purchase Header"."Document Type");
                 // DocDim1.SETRANGE("Document No.", "Purchase Header"."No.");
+                DimMgt.ShowDimensionSet(PurchHeader."Dimension Set ID", StrSubstNo('%1 %2 %3', PurchHeader."Document Type",
+                PurchHeader."No."));
+
+
 
                 IF "Purchaser Code" = '' THEN BEGIN
                     SalesPurchPerson.INIT;
@@ -850,8 +867,13 @@ report 50004 "DEL NTO - Purchase Order"
         SalesPurchPerson: Record "Salesperson/Purchaser";
         VATAmountLine: Record "VAT Amount Line" temporary;
         PurchLine: Record "Purchase Line" temporary;
-        DocDim1: Record "Gen. Jnl. Dim. Filter";
-        DocDim2: Record "Gen. Jnl. Dim. Filter";
+        // DocDim1: Record 357; //Document Dimension
+        // DocDim2: Record 357;
+        //   TODO : dimensions have been removed ! ! 
+        DocDim1: Record "Dimension Set Entry"; //480 
+        DocDim2: Record "General Ledger Setup";
+        DimMgt: Codeunit DimensionManagement; //408
+
         RespCenter: Record "Responsibility Center";
         Language: Record Language;
         PurchCountPrinted: Codeunit "Purch.Header-Printed";
@@ -971,7 +993,6 @@ report 50004 "DEL NTO - Purchase Order"
                 FooterTxt[1] := PmtMethod.Description;
             END;
 
-            // Shipping Conditions
             IF ShipMethod.GET("Shipment Method Code") THEN BEGIN
                 FooterLabel[2] := ML_ShipCond;
                 FooterTxt[2] := ShipMethod.Description;
@@ -983,24 +1004,20 @@ report 50004 "DEL NTO - Purchase Order"
                     FooterTxt[3] := transitaire_Re_Loc.Description;
                 END;
             END;
-            // Location Code
             IF "Location Code" <> '' THEN BEGIN
                 FooterLabel[4] := ML_Location_code;
                 FooterTxt[4] := "Location Code";
             END;
-            // Ship per
             IF FORMAT("Purchase Header"."DEL Ship Per") <> '' THEN BEGIN
                 FooterLabel[5] := ML_Method;
                 FooterTxt[5] := FORMAT("Purchase Header"."DEL Ship Per");
             END;
 
-            // Shipment Date
             IF FORMAT("Purchase Header"."Requested Receipt Date") <> '' THEN BEGIN
                 FooterLabel[6] := ML_Date_Receipt;
                 FooterTxt[6] := FORMAT("Purchase Header"."Requested Receipt Date");
             END;
 
-            // Invoice and Order Address
             IF "Buy-from Vendor No." <> "Pay-to Vendor No." THEN BEGIN
                 FooterLabel[7] := ML_InvAdr;
                 FooterTxt[7] := "Pay-to Name" + ', ' + "Pay-to City";
@@ -1008,7 +1025,6 @@ report 50004 "DEL NTO - Purchase Order"
                 FooterTxt[8] := "Buy-from Vendor Name" + ', ' + "Buy-from City";
             END;
 
-            // Shipping Date if <> Document Date
 
             IF NOT ("Purchase Header"."Expected Receipt Date" IN ["Purchase Header"."Document Date", 0D]) THEN BEGIN
                 FooterLabel[9] := ML_ShipDate;

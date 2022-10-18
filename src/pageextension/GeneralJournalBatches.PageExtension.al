@@ -1,10 +1,9 @@
-pageextension 50000 "DEL GeneralJournalBatches" extends "General Journal Batches"
+pageextension 50000 "DEL GeneralJournalBatches" extends "General Journal Batches" //251
 {
 
     trigger OnOpenPage()
     begin
 
-        //MGTS10.00.001; 001; mhh; single
         IF NOT ProvBatchChoice THEN
             GenJnlManagement.OpenJnlBatch(Rec);
 
@@ -28,7 +27,6 @@ pageextension 50000 "DEL GeneralJournalBatches" extends "General Journal Batches
     procedure SetProvBatchChoice(NewProvBatchChoice: Boolean)
     begin
 
-        //MGTS10.00.001; 001; mhh; entire function
         ProvBatchChoice := NewProvBatchChoice;
     end;
 }

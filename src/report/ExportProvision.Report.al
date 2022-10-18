@@ -196,7 +196,7 @@ report 50015 "DEL Export Provision"
     trigger OnPostReport()
     begin
         IF Export2Excel_Bo THEN
-            REPORT.RUNMODAL(Report::"Import commande vente");
+            REPORT.RUNMODAL(Report::"DEL Import commande vente");
     end;
 
     var
