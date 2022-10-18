@@ -1,4 +1,4 @@
-xmlport 50012 "export ecriture article"
+xmlport 50012 "DEL export ecriture article"
 {
     FieldSeparator = ';';
     Format = VariableText;

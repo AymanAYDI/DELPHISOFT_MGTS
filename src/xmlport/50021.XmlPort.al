@@ -1,4 +1,4 @@
-xmlport 50021 "50021"
+xmlport DEL 50021 "50021"
 {
     Format = VariableText;
 

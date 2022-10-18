@@ -1,4 +1,4 @@
-xmlport 50016 "Update Supplier Base ID"
+xmlport 50016 "DEL Update Supplier Base ID"
 {
     // Mgts10.00 | 01.11.2019 | Vendor Tools
 

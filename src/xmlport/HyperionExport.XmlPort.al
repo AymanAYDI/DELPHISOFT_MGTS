@@ -1,4 +1,4 @@
-xmlport 50014 "Hyperion Export"
+xmlport 50014 "DEL Hyperion Export"
 {
     // 
     // ------------------------------------------------------------------------------------------
@@ -26,9 +26,9 @@ xmlport 50014 "Hyperion Export"
             tableelement(Table2000000026; Table2000000026)
             {
                 XmlName = 'Header';
-                SourceTableView = SORTING (Field1)
+                SourceTableView = SORTING(Field1)
                                   ORDER(Ascending)
-                                  WHERE (Field1 = CONST (1));
+                                  WHERE(Field1 = CONST(1));
                 textelement(YearCpt)
                 {
                 }
@@ -118,7 +118,7 @@ xmlport 50014 "Hyperion Export"
             tableelement(Table50049; Table50049)
             {
                 XmlName = 'ExportHyperionDatas';
-                SourceTableView = SORTING (Field9, Field1, Field2, Field7)
+                SourceTableView = SORTING(Field9, Field1, Field2, Field7)
                                   ORDER(Ascending);
                 textelement(YearValue)
                 {

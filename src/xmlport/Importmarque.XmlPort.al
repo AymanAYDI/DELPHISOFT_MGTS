@@ -1,4 +1,4 @@
-xmlport 50004 "Import marque"
+xmlport 50004 "DEL Import marque"
 {
     FieldSeparator = ';';
     Format = VariableText;

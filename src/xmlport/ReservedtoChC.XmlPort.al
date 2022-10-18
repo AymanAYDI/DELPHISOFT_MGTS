@@ -1,4 +1,4 @@
-xmlport 50010 "Reserved to ChC"
+xmlport 50010 "DEL Reserved to ChC"
 {
     DefaultFieldsValidation = false;
     FieldDelimiter = '<None>';

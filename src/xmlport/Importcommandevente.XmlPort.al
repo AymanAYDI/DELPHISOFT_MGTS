@@ -1,4 +1,4 @@
-xmlport 50006 "Import commande vente"
+xmlport 50006 "DEL Import commande vente"
 {
     // T-00778     THM     16.03.16          add "Sale blocked"
 
