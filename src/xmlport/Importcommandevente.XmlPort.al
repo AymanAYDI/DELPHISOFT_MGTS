@@ -1,9 +1,8 @@
 xmlport 50006 "DEL Import commande vente"
 {
-    // T-00778     THM     16.03.16          add "Sale blocked"
 
     Direction = Import;
-    Encoding = UTF16;
+    // Encoding = UTF16;  //TODO: The property 'Encoding' can only be set if the property 'Format' is set to 'Xml'
     FieldSeparator = ';';
     Format = VariableText;
     TableSeparator = ';';
@@ -13,28 +12,28 @@ xmlport 50006 "DEL Import commande vente"
     {
         textelement(Importlignevente)
         {
-            tableelement(Table50002; Table50002)
+            tableelement("DEL Import Commande vente"; "DEL Import Commande vente")
             {
                 XmlName = 'importCmdeVente';
-                fieldelement(Post; "Import Commande vente".Position)
+                fieldelement(Post; "DEL Import Commande vente".Position)
                 {
                 }
-                fieldelement(Article; "Import Commande vente"."No.")
+                fieldelement(Article; "DEL Import Commande vente"."No.")
                 {
                 }
-                fieldelement(ArtExt; "Import Commande vente"."Cross-Reference No.")
+                fieldelement(ArtExt; "DEL Import Commande vente"."Cross-Reference No.")
                 {
                 }
-                fieldelement(Des; "Import Commande vente".Description)
+                fieldelement(Des; "DEL Import Commande vente".Description)
                 {
                 }
-                fieldelement(Quantity; "Import Commande vente".Quantity)
+                fieldelement(Quantity; "DEL Import Commande vente".Quantity)
                 {
                 }
-                fieldelement(PrixUnit; "Import Commande vente"."Unit Price")
+                fieldelement(PrixUnit; "DEL Import Commande vente"."Unit Price")
                 {
                 }
-                fieldelement(Montant; "Import Commande vente".Amount)
+                fieldelement(Montant; "DEL Import Commande vente".Amount)
                 {
                 }
 
@@ -44,8 +43,8 @@ xmlport 50006 "DEL Import commande vente"
                     IF I = 1 THEN
                         currXMLport.SKIP;
                     LineNo += 10000;
-                    "Import Commande vente"."Document No." := DocCmd;
-                    "Import Commande vente"."Line No." := LineNo;
+                    "DEL Import Commande vente"."Document No." := DocCmd;
+                    "DEL Import Commande vente"."Line No." := LineNo;
                 end;
             }
         }
@@ -72,9 +71,8 @@ xmlport 50006 "DEL Import commande vente"
         DocCmd: Text;
         I: Integer;
         LineNo: Integer;
-        ImportCommandevente: Record "50002";
+        ImportCommandevente: Record "DEL Import Commande vente";
 
-    [Scope('Internal')]
     procedure SetDocNo(DocNo: Code[20])
     begin
         DocCmd := DocNo;

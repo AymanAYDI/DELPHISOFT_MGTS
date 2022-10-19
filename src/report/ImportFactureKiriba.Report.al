@@ -23,7 +23,7 @@ report 50042 "DEL Import Facture Kiriba"
 
     trigger OnPostReport()
     begin
-        //DEL.SAZ 20.09.2018
+
         GenJournalLine2.SETRANGE("Journal Template Name", 'RÈGLEMENTS');
         GenJournalLine2.SETRANGE("Journal Batch Name", 'IMP-KIRIBA');
         IF GenJournalLine2.FINDFIRST THEN BEGIN
@@ -57,10 +57,10 @@ report 50042 "DEL Import Facture Kiriba"
         SalesReceivablesSetup.GET();
 
 
-        SFTP.DowlodSFTPFiles(SalesReceivablesSetup."Host Serveur SFTP Kiriba", SalesReceivablesSetup."Port Serveur SFTP Kiriba", SalesReceivablesSetup."Kiriba SFTP Server Login",
-        SalesReceivablesSetup."Kiriba SFTP Server Password", SalesReceivablesSetup."Kiriba SFTP Server Address", SalesReceivablesSetup."Kiriba Local File Path", TRUE);
+        SFTP.DowlodSFTPFiles(SalesReceivablesSetup."DEL Host Serveur SFTP Kiriba", SalesReceivablesSetup."DEL Port Serveur SFTP Kiriba", SalesReceivablesSetup."DEL Kiriba SFTP Server Login",
+        SalesReceivablesSetup."DEL Kiriba SFTP Server Password", SalesReceivablesSetup."DEL Kiriba SFTP Server Address", SalesReceivablesSetup."DEL Kiriba Local File Path", TRUE);
 
-        FileRec.SETRANGE(Path, SalesReceivablesSetup."Kiriba Local File Path");
+        FileRec.SETRANGE(Path, SalesReceivablesSetup."DEL Kiriba Local File Path");
         FileRec.SETRANGE(FileRec."Is a file", TRUE);
         GenJournalLine2.SETRANGE("Journal Template Name", 'RÈGLEMENTS');
         GenJournalLine2.SETRANGE("Journal Batch Name", 'IMP-KIRIBA');
@@ -88,7 +88,7 @@ report 50042 "DEL Import Facture Kiriba"
                     COMMIT;
 
                     InsertFactureAvoirjournal(NewTrmt);
-                    FILE.COPY(sNewPath, SalesReceivablesSetup."Kiriba Archive File Path" + FileRec.Name + FORMAT(TODAY(), 0, '<Year4><Month,2><Day,2>'));
+                    FILE.COPY(sNewPath, SalesReceivablesSetup."DEL Kiriba Archive File Path" + FileRec.Name + FORMAT(TODAY(), 0, '<Year4><Month,2><Day,2>'));
                     //SLEEP(500);
                     DeleteFile(sNewPath);
                 END;

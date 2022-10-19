@@ -7,7 +7,7 @@ xmlport 50000 "DEL IC Transitaire"
     {
         textelement(transitaire)
         {
-            tableelement(38; 38)
+            tableelement("Purchase Header"; "Purchase Header")
             {
                 XmlName = 'entete';
                 textelement(adresseiptransitaire)
@@ -16,7 +16,7 @@ xmlport 50000 "DEL IC Transitaire"
 
                     trigger OnBeforePassVariable()
                     begin
-                        Transitaires.SETRANGE("Forwarding Agent Code", "Purchase Header"."Forwarding Agent Code");
+                        Transitaires.SETRANGE("Forwarding Agent Code", "Purchase Header"."DEL Forwarding Agent Code");
                         IF Transitaires.FIND('-') THEN BEGIN
                             AdresseIPTransitaire := Transitaires."URL Address";
                             CodeTransitaire := Transitaires."Forwarding Agent Code";
@@ -87,7 +87,7 @@ xmlport 50000 "DEL IC Transitaire"
                 fieldelement(PortArriveeMagasin; "Purchase Header"."Port d'arrivée")
                 {
                 }
-                fieldelement(ShipPer; "Purchase Header"."Ship Per")
+                fieldelement(ShipPer; "Purchase Header"."DEL Ship Per")
                 {
                 }
                 fieldelement(PortDepart; "Purchase Header"."Port de départ")
@@ -98,14 +98,14 @@ xmlport 50000 "DEL IC Transitaire"
                 }
                 textelement(lignes)
                 {
-                    tableelement(39; 39)
+                    tableelement("Purchase Line"; "Purchase Line")
                     {
-                        LinkFields = Field3 = FIELD(Field3);
+                        LinkFields = "Document No." = FIELD("No.");
                         LinkTable = "Purchase Header";
                         XmlName = 'position';
-                        SourceTableView = SORTING(Field1, Field3, Field6)
+                        SourceTableView = SORTING("Document Type", "Document No.", "No.")
                                           ORDER(Ascending)
-                                          WHERE(Field5 = CONST(2));
+                                          WHERE(Type = CONST(2));
                         fieldelement(CodeArticleNav; "Purchase Line"."No.")
                         {
                         }
@@ -115,7 +115,7 @@ xmlport 50000 "DEL IC Transitaire"
                         fieldelement(ReferenceFournisseur; "Purchase Line"."Vendor Item No.")
                         {
                         }
-                        fieldelement(Codeartclient; "Purchase Line"."External reference NGTS")
+                        fieldelement(Codeartclient; "Purchase Line"."DEL External reference NGTS")
                         {
                         }
                         textelement(HSCODE)
@@ -124,9 +124,8 @@ xmlport 50000 "DEL IC Transitaire"
                             trigger OnBeforePassVariable()
                             begin
                                 Item.SETRANGE("No.", "Purchase Line"."No.");
-                                IF Item.FIND('-') THEN BEGIN
-                                    HSCODE := Item."Code nomenclature douaniere";
-                                END;
+                                IF Item.FIND('-') THEN
+                                    HSCODE := Item."DEL Code nomenc. douaniere";
                             end;
                         }
                         textelement(Marque)
@@ -135,14 +134,9 @@ xmlport 50000 "DEL IC Transitaire"
                             trigger OnBeforePassVariable()
                             begin
                                 Item.SETRANGE("No.", "Purchase Line"."No.");
-                                IF Item.FIND('-') THEN BEGIN
-                                    //START THM01
-                                    IF Manufacturer.GET(Item.Marque) THEN BEGIN
+                                IF Item.FIND('-') THEN
+                                    IF Manufacturer.GET(Item."DEL Marque") THEN
                                         Marque := Manufacturer.Name;
-                                        //Marque := Item.Marque; OLD
-                                    END;
-                                    //STOP THM01
-                                END;
                             end;
                         }
                         textelement(Quantite)
@@ -157,9 +151,8 @@ xmlport 50000 "DEL IC Transitaire"
                             begin
                                 longueur := STRLEN(FORMAT("Purchase Line".Quantity));
 
-                                IF (longueur < 4) THEN BEGIN
-                                    Quantite := FORMAT("Purchase Line".Quantity)
-                                END;
+                                IF (longueur < 4) THEN
+                                    Quantite := FORMAT("Purchase Line".Quantity);
 
 
                                 IF (longueur < 8) AND (longueur > 3) THEN BEGIN
@@ -179,13 +172,13 @@ xmlport 50000 "DEL IC Transitaire"
                         fieldelement(CodeUnite; "Purchase Line"."Unit of Measure Code")
                         {
                         }
-                        fieldelement(DateEmbarquement; "Purchase Header"."Requested Delivery Date")
+                        fieldelement(DateEmbarquement; "Purchase Header"."DEL Requested Delivery Date")
                         {
                         }
                         fieldelement(DateReceptionPrevue; "Purchase Header"."Expected Receipt Date")
                         {
                         }
-                        fieldelement(VolumeTotal; "Purchase Line"."Total volume")
+                        fieldelement(VolumeTotal; "Purchase Line"."DEL Total volume")
                         {
                         }
                     }
@@ -208,20 +201,16 @@ xmlport 50000 "DEL IC Transitaire"
 
     trigger OnPreXmlPort()
     var
-        longueur: Integer;
-        quantite1: Text[30];
-        quantite2: Text[30];
     begin
-        // Holt allgemeine Daten zu Flux 5
-        NGTSSetup.GET;
+        NGTSSetup.GET();
 
         NomEmetteur := NGTSSetup."Nom emetteur";
     end;
 
     var
-        NGTSSetup: Record "50000";
-        Transitaires: Record "50009";
-        Item: Record "27";
-        Manufacturer: Record "5720";
+        NGTSSetup: Record "DEL General Setup";
+        Transitaires: Record "DEL Forwarding agent 2";
+        Item: Record Item;
+        Manufacturer: Record Manufacturer;
 }
 

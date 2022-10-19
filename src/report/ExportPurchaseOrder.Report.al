@@ -93,25 +93,25 @@ report 50053 "DEL Export Purchase Order"
                 PurchaseLine.RESET;
                 PurchaseLine.SETRANGE("Document Type", "Document Type");
                 PurchaseLine.SETRANGE("Document No.", "No.");
-                PurchaseLine.SETRANGE("Customer/Vendor", PurchaseLine.Type::Item);
+                //TODO  // PurchaseLine.SETRANGE("Customer/Vendor", PurchaseLine.Type::Item);
                 IF PurchaseLine.FINDSET THEN
                     REPEAT
 
                         Item.GET(PurchaseLine."No.");
+                        // TODO 
+                        //     ANVEDICrossReference.RESET;
+                        //    TODO // ANVEDICrossReference.SETRANGE("External No.", "Purchase Header"."DEL GLN");
+                        //     IF NOT ANVEDICrossReference.FINDFIRST THEN
+                        //         ANVEDICrossReference.INIT;
 
-                        ANVEDICrossReference.RESET;
-                        ANVEDICrossReference.SETRANGE("External No.", "Purchase Header"."DEL GLN");
-                        IF NOT ANVEDICrossReference.FINDFIRST THEN
-                            ANVEDICrossReference.INIT;
-
-                        ShiptoAddress.INIT;
-                        IF NOT (ANVEDICrossReference."Internal No." = '') THEN BEGIN
-                            ShiptoAddress.RESET;
-                            ShiptoAddress.SETRANGE("Customer No.", ANVEDICrossReference."Table Relation Par 1");
-                            ShiptoAddress.SETRANGE(Code, ANVEDICrossReference."Internal No.");
-                            IF NOT ShiptoAddress.FINDFIRST THEN
-                                ShiptoAddress.INIT;
-                        END;
+                        //     ShiptoAddress.INIT;
+                        //     IF NOT (ANVEDICrossReference."Internal No." = '') THEN BEGIN
+                        //         ShiptoAddress.RESET;
+                        //         ShiptoAddress.SETRANGE("Customer No.", ANVEDICrossReference."Table Relation Par 1");
+                        //         ShiptoAddress.SETRANGE(Code, ANVEDICrossReference."Internal No.");
+                        //         IF NOT ShiptoAddress.FINDFIRST THEN
+                        //             ShiptoAddress.INIT;
+                        //     END;
 
                         RowNo += 1;
                         ColNo := 1;
@@ -148,7 +148,7 @@ report 50053 "DEL Export Purchase Order"
                         InsertExcelCell(ColNo, RowNo, PurchaseLine."Unit of Measure Code", '@', FALSE, FALSE, FALSE);
 
                         ColNo += 1;
-                        InsertExcelCell(ColNo, RowNo, ANVEDICrossReference."Internal No.", '@', FALSE, FALSE, FALSE);
+                        //   TODO      // InsertExcelCell(ColNo, RowNo, ANVEDICrossReference."Internal No.", '@', FALSE, FALSE, FALSE);
 
                         ColNo += 1;
                         InsertExcelCell(ColNo, RowNo, ShiptoAddress.Name, '@', FALSE, FALSE, FALSE);
@@ -225,7 +225,7 @@ report 50053 "DEL Export Purchase Order"
         PurchaseLine: Record "Purchase Line";
         Item: Record Item;
         ShiptoAddress: Record "Ship-to Address";
-        ANVEDICrossReference: Record 5327362; // TODO: Record not exist
+        //   TODO  // ANVEDICrossReference: Record 5327362; // TODO: Record not exist
         Text021: Label 'Réference cde';
 
     local procedure InsertExcelCell(InsertColNo: Integer; InsertRowNo: Integer; InsertValue: Text; InsertFormat: Text; InsertBold: Boolean; InsertItalic: Boolean; InsertUnderline: Boolean)

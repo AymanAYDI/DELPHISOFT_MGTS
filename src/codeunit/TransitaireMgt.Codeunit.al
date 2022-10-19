@@ -1,6 +1,5 @@
 codeunit 50002 "DEL TransitaireMgt"
 {
-    // EDI       22.05.13/LOCO/ChC- Codeunit copied
 
 
     trigger OnRun()
@@ -35,7 +34,6 @@ codeunit 50002 "DEL TransitaireMgt"
         ICPartner: Record "IC Partner";
         Release: Codeunit "Release Purchase Document";
     begin
-        // Führt Tests durch. CU 427 ist das Beispiel.
         IF PurchHeader."DEL Forwarding Agent Code" <> '' THEN
             CreateOutboxForwardingDocTrans(PurchHeader, FALSE, Post)
         ELSE
@@ -54,7 +52,6 @@ codeunit 50002 "DEL TransitaireMgt"
         TransactionNo: Integer;
         LinesCreated: Boolean;
     begin
-        // Erstellt einen Eintrag in der Tabelle 414 "IC Outbox Transaction"
         GLSetup.LOCKTABLE();
         GetGLSetup();
         TransactionNo := GLSetup."Last IC Transaction No." + 1;
@@ -66,7 +63,6 @@ codeunit 50002 "DEL TransitaireMgt"
             OutboxTransaction.INIT();
             OutboxTransaction."Transaction No." := TransactionNo;
             OutboxTransaction."IC Partner Code" := Vendor."IC Partner Code";
-            // OutboxTransaction."Source Type" := OutboxTransaction."Source Type"::"Forwarding Document"; // TODO: "Source Type" n'est contenu pas option "Forwarding Document"
             CASE PurchHeader."Document Type" OF
                 PurchHeader."Document Type"::Order:
                     OutboxTransaction."Document Type" := OutboxTransaction."Document Type"::Order;
@@ -185,28 +181,21 @@ codeunit 50002 "DEL TransitaireMgt"
         CcName: Text[100];
         XMLPortOutbox: XMLport "DEL IC Transitaire";
         ICPurchHeaderArchiv: Record "Handled IC Outbox Purch. Hdr";
-        XMLPortOutboxNew: XMLport "IC Transitaire with hscode";
+        XMLPortOutboxNew: XMLport "DEL IC Transitaire with hscode";
     begin
-        //Erstellt XML file.
         PurchHeader.SETRANGE("Document Type", PurchHeader."Document Type"::Order);
         PurchHeader.SETRANGE("No.", ICOutboxTrans."Document No.");
         IF PurchHeader.FINDFIRST() THEN BEGIN
 
-            // Test ob Transitaire gültig ist.
             Transitaire.GET(PurchHeader."DEL Forwarding Agent Code");
             NGTSSetup.GET();
-
-            // Test ob bereits ein XML File erstellt wurde.
-            // THM
             ICPurchHeaderArchiv.SETRANGE(ICPurchHeaderArchiv."Document Type", ICPurchHeaderArchiv."Document Type"::Order);
             ICPurchHeaderArchiv.SETRANGE(ICPurchHeaderArchiv."Buy-from Vendor No.", PurchHeader."Buy-from Vendor No.");
-            //end THM
             ICPurchHeaderArchiv.SETRANGE("No.", PurchHeader."No.");
 
             IF ICPurchHeaderArchiv.FINDFIRST() THEN
                 IF NOT DIALOG.CONFIRM(Text50000) THEN
                     ERROR(Text50001);
-            // XML File erstellen.
             FileName :=
                       STRSUBSTNO('%1\%2_%3-%4.xml', Transitaire."Folder for file",
                       NGTSSetup."Nom emetteur", NGTSSetup."Nom achat commande transitaire",
@@ -216,7 +205,7 @@ codeunit 50002 "DEL TransitaireMgt"
             // OFile.CREATEOUTSTREAM(Ostr);
             tempBlob.CreateOutStream(Ostr);
 
-            IF Transitaire."HSCODE Enable" = FALSE THEN BEGIN   //ngts1  begin
+            IF Transitaire."HSCODE Enable" = FALSE THEN BEGIN
                 XMLPortOutbox.SETDESTINATION(Ostr);
                 XMLPortOutbox.SETTABLEVIEW(PurchHeader);
                 XMLPortOutbox.EXPORT;
@@ -226,7 +215,7 @@ codeunit 50002 "DEL TransitaireMgt"
                 XMLPortOutboxNew.SETDESTINATION(Ostr);
                 XMLPortOutboxNew.SETTABLEVIEW(PurchHeader);
                 XMLPortOutboxNew.EXPORT;
-            END;                                               //ngts1  end
+            END;
 
 
             // OFile.CLOSE;
