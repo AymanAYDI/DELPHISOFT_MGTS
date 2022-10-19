@@ -1,6 +1,5 @@
-xmlport 50005 "Export BL"
+xmlport 50005 "DEL Export BL"
 {
-    // Mgts10.00.05.00      04.01.2022 : Replace "Vol cbm" GetVolCBM
 
     Direction = Export;
 
@@ -8,19 +7,19 @@ xmlport 50005 "Export BL"
     {
         textelement(DesAdv)
         {
-            tableelement(Table18; Table18)
+            tableelement(Customer; Customer)
             {
-                RequestFilterFields = Field1;
+                RequestFilterFields = "No.";
                 XmlName = 'ENV';
                 fieldelement(EANAdressedName; Customer.Name)
                 {
                 }
             }
-            tableelement(Table110; Table110)
+            tableelement("Sales Shipment Header"; "Sales Shipment Header")
             {
-                LinkFields = Field2 = FIELD (Field1);
+                LinkFields = "Sell-to Customer No." = FIELD("No.");
                 LinkTable = Customer;
-                RequestFilterFields = Field3;
+                RequestFilterFields = "No.";
                 XmlName = 'HEAD';
                 textelement(Tag)
                 {
@@ -49,9 +48,9 @@ xmlport 50005 "Export BL"
                 fieldelement(SalesPers; "Sales Shipment Header"."Salesperson Code")
                 {
                 }
-                tableelement(Table111; Table111)
+                tableelement("Sales Shipment Line"; "Sales Shipment Line")
                 {
-                    LinkFields = Field3 = FIELD (Field3);
+                    LinkFields = "Document No." = FIELD("No.");
                     LinkTable = "Sales Shipment Header";
                     XmlName = 'Line';
                     fieldelement(ItemID; "Sales Shipment Line"."No.")
@@ -83,10 +82,7 @@ xmlport 50005 "Export BL"
                     begin
                         VolumeMST := '';
                         IF Item_Rec.GET("Sales Shipment Line"."No.") THEN
-                            //>>Mgts10.00.05.00
-                            //VolumeMST := FORMAT("Sales Shipment Line".Quantity*Item_Rec."Vol cbm");
                             VolumeMST := FORMAT("Sales Shipment Line".Quantity * Item_Rec.GetVolCBM(TRUE));
-                        //<<Mgts10.00.05.00
                     end;
                 }
             }
@@ -98,19 +94,9 @@ xmlport 50005 "Export BL"
         }
     }
 
-    requestpage
-    {
 
-        layout
-        {
-        }
-
-        actions
-        {
-        }
-    }
 
     var
-        Item_Rec: Record "27";
+        Item_Rec: Record Item;
 }
 

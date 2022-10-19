@@ -1,4 +1,4 @@
-xmlport 50010 "Reserved to ChC"
+xmlport 50010 "DEL Reserved to ChC"
 {
     DefaultFieldsValidation = false;
     FieldDelimiter = '<None>';
@@ -9,20 +9,20 @@ xmlport 50010 "Reserved to ChC"
     {
         textelement(Root)
         {
-            tableelement(Table15; Table15)
+            tableelement("G/L Account"; "G/L Account")
             {
                 AutoUpdate = true;
                 XmlName = 'ContactHeader';
                 fieldelement(No; "G/L Account"."No.")
                 {
                 }
-                fieldelement(Length; "G/L Account"."Reporting Dimension 1 Code")
+                fieldelement(Length; "G/L Account"."DEL Reporting Dimension 1 Code")
                 {
                 }
-                fieldelement(Width; "G/L Account"."Reporting Dimension 2 Code")
+                fieldelement(Width; "G/L Account"."DEL Reporting Dimension 2 Code")
                 {
                 }
-                fieldelement(Depth; "G/L Account"."Shipment Binding Control")
+                fieldelement(Depth; "G/L Account"."DEL Shipment Binding Control")
                 {
                 }
             }
@@ -43,7 +43,7 @@ xmlport 50010 "Reserved to ChC"
 
     trigger OnPostXmlPort()
     begin
-        //ImportItems();
+
         MESSAGE(CurrentFileName);
     end;
 
@@ -62,13 +62,12 @@ xmlport 50010 "Reserved to ChC"
         TempDate: Date;
         TempDec: Decimal;
 
-    [Scope('Internal')]
+
     procedure CreateArray()
     var
         IOPos: Integer;
         i: Integer;
     begin
-        //IOFileLine := CONVERTSTR(IOFileLine, ';', ',');
         CLEAR(LineFields);
         IOPos := 1;
         FOR i := 1 TO STRLEN(IOFileLine) DO
@@ -79,15 +78,14 @@ xmlport 50010 "Reserved to ChC"
 
         CurrentNbOfRecords += 1;
 
-        //MESSAGE('%1', IOPos);
     end;
 
-    [Scope('Internal')]
+
     procedure ImportItems()
     var
-        Item: Record "27";
-        ItemTranslation: Record "30";
-        DefaultDimension: Record "352";
+        Item: Record Item;
+        ItemTranslation: Record "Item Translation";
+        DefaultDimension: Record "Default Dimension";
     begin
         MESSAGE(CurrentFileName);
 
@@ -98,15 +96,16 @@ xmlport 50010 "Reserved to ChC"
         MESSAGE('Debug 2');
 
         WHILE IOFile.READ(IOFileLine) > 0 DO BEGIN
+        
             CreateArray();
 
             WITH Item DO
                 IF GET(FORMAT(LineFields[1])) THEN BEGIN
                     MESSAGE('Debug 3, %1', "No.");
-                    EVALUATE("Length.old", LineFields[2]);
-                    EVALUATE("Width.old", LineFields[3]);
-                    EVALUATE("Depth.old", LineFields[4]);
-                    MODIFY;
+                    EVALUATE("DEL Length.old", LineFields[2]);
+                    EVALUATE("DEL Width.old", LineFields[3]);
+                    EVALUATE("DEL Depth.old", LineFields[4]);
+                    MODIFY();
                 END;
         END;
 

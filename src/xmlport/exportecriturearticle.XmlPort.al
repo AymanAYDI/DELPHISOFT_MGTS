@@ -1,4 +1,4 @@
-xmlport 50012 "export ecriture article"
+xmlport 50012 "DEL export ecriture article"
 {
     FieldSeparator = ';';
     Format = VariableText;
@@ -7,7 +7,7 @@ xmlport 50012 "export ecriture article"
     {
         textelement(root)
         {
-            tableelement(Table17; Table17)
+            tableelement("G/L Entry"; "G/L Entry")
             {
                 XmlName = 'EcriCompta';
                 fieldelement(compte; "G/L Entry"."G/L Account No.")

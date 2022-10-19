@@ -47,8 +47,8 @@ pageextension 50034 "DEL ItemList" extends "Item List"
                 Promoted = true;
                 PromotedCategory = New;
                 PromotedIsBig = true;
-                RunObject = Page 50121;
-                RunPageLink = "No." = FIELD("No.");
+                //TODO   // RunObject = Page "Artikelkarte Katalog St. NGTS";
+                // RunPageLink = "No." = FIELD("No.");
             }
         }
         addafter("Identifiers")
@@ -60,7 +60,7 @@ pageextension 50034 "DEL ItemList" extends "Item List"
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
-                RunObject = Page 50077;
+                RunObject = Page "DEL Item Quality";
                 RunPageLink = "No." = FIELD("No.");
             }
         }
