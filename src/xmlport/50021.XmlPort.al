@@ -1,4 +1,4 @@
-xmlport DEL 50021 "50021"
+xmlport 50021 "DEL 50021"
 {
     Format = VariableText;
 
@@ -6,7 +6,7 @@ xmlport DEL 50021 "50021"
     {
         textelement(Root)
         {
-            tableelement(Table2000000005; Table2000000005)
+            tableelement(Permission; Permission)
             {
                 XmlName = 'Permission';
                 fieldelement(RoleID; Permission."Role ID")

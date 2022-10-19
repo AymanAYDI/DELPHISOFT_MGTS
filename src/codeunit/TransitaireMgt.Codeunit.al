@@ -5,7 +5,7 @@ codeunit 50002 "DEL TransitaireMgt"
 
     trigger OnRun()
     var
-        // XmlExpPort: XMLport "50000"; // TODO:
+        XmlExpPort: XMLport "DEL IC Transitaire";
         PurchHeader: Record "Purchase Header";
     begin
     end;
@@ -13,7 +13,7 @@ codeunit 50002 "DEL TransitaireMgt"
     var
         Testfile: File;
         TestStream: InStream;
-        // XMLPor: XMLport "50000"; // TODO:
+        XMLPor: XMLport "DEL IC Transitaire";
         TestStream1: OutStream;
         GLSetup: Record "General Ledger Setup";
         CompanyInfo: Record "Company Information";
@@ -183,9 +183,9 @@ codeunit 50002 "DEL TransitaireMgt"
         i: Integer;
         ToName: Text[100];
         CcName: Text[100];
-        // XMLPortOutbox: XMLport 50000; TODO:
+        XMLPortOutbox: XMLport "DEL IC Transitaire";
         ICPurchHeaderArchiv: Record "Handled IC Outbox Purch. Hdr";
-    // XMLPortOutboxNew: XMLport 50002; TODO:
+        XMLPortOutboxNew: XMLport "IC Transitaire with hscode";
     begin
         //Erstellt XML file.
         PurchHeader.SETRANGE("Document Type", PurchHeader."Document Type"::Order);
@@ -217,15 +217,15 @@ codeunit 50002 "DEL TransitaireMgt"
             tempBlob.CreateOutStream(Ostr);
 
             IF Transitaire."HSCODE Enable" = FALSE THEN BEGIN   //ngts1  begin
-                // XMLPortOutbox.SETDESTINATION(Ostr);
-                // XMLPortOutbox.SETTABLEVIEW(PurchHeader); // TODO: relate to local Xml port
-                // XMLPortOutbox.EXPORT;
+                XMLPortOutbox.SETDESTINATION(Ostr);
+                XMLPortOutbox.SETTABLEVIEW(PurchHeader);
+                XMLPortOutbox.EXPORT;
             END;
 
             IF Transitaire."HSCODE Enable" = TRUE THEN BEGIN
-                // XMLPortOutboxNew.SETDESTINATION(Ostr);
-                // XMLPortOutboxNew.SETTABLEVIEW(PurchHeader); // TODO: relate to local Xml port
-                // XMLPortOutboxNew.EXPORT;
+                XMLPortOutboxNew.SETDESTINATION(Ostr);
+                XMLPortOutboxNew.SETTABLEVIEW(PurchHeader);
+                XMLPortOutboxNew.EXPORT;
             END;                                               //ngts1  end
 
 

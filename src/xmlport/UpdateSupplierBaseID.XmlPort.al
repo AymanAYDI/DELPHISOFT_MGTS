@@ -1,7 +1,5 @@
 xmlport 50016 "DEL Update Supplier Base ID"
 {
-    // Mgts10.00 | 01.11.2019 | Vendor Tools
-
     FieldDelimiter = 'None';
     FieldSeparator = ';';
     Format = VariableText;
@@ -10,12 +8,12 @@ xmlport 50016 "DEL Update Supplier Base ID"
     {
         textelement(root)
         {
-            tableelement(supplier; Table23)
+            tableelement(supplier; Vendor)
             {
                 AutoReplace = true;
                 XmlName = 'Supplier';
                 UseTemporary = true;
-                fieldelement(SupplierBaseID; Supplier."Supplier Base ID")
+                fieldelement(SupplierBaseID; Supplier."DEL Supplier Base ID")
                 {
                 }
                 fieldelement(SupplierErpCode; Supplier."No.")
@@ -23,10 +21,10 @@ xmlport 50016 "DEL Update Supplier Base ID"
 
                     trigger OnAfterAssignField()
                     var
-                        Vendor: Record "23";
+                        Vendor: Record Vendor;
                     begin
                         IF Vendor.GET(Supplier."No.") THEN BEGIN
-                            Vendor."Supplier Base ID" := Supplier."Supplier Base ID";
+                            Vendor."DEL Supplier Base ID" := Supplier."DEL Supplier Base ID";
                             Vendor.MODIFY;
                         END;
                     end;

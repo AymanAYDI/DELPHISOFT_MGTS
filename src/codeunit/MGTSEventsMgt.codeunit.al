@@ -1368,4 +1368,21 @@ codeunit 50100 "DEL MGTS_EventsMgt"
     //     ColoredPurchDueDate := ReqLine."DEL Purchase Order Due Date" < TODAY;
     // end;
 
+
+    // Report 493 "Carry Out Action Msg. - Req."
+    [EventSubscriber(ObjectType::Report, Report::"Carry Out Action Msg. - Req.", 'OnUseOneJnlOnBeforeSetReqWkshMakeOrdersParameters', '', false, false)]
+    local procedure R493_OnUseOneJnlOnBeforeSetReqWkshMakeOrdersParameters_CarryOutActionMsgReq(var ReqLine: Record "Requisition Line"; var ReqWkshMakeOrders: Codeunit "Req. Wksh.-Make Order"; PurchOrderHeader: Record "Purchase Header"; EndOrderDate: Date; PrintOrders: Boolean; var SuppressCommit: Boolean; var IsHandled: Boolean)
+    var
+        DELMGTS_FctMgt: Codeunit "DEL MGTS_FctMgt";
+    begin
+        IF SuppressCommit THEN BEGIN
+            DELMGTS_FctMgt.SetEDIParam(TRUE, TRUE);
+            PurchOrderHeader."Order Date" := TODAY;
+
+        END;
+        ReqWkshMakeOrders.Set(PurchOrderHeader, EndOrderDate, PrintOrders);
+        ReqWkshMakeOrders.SetSuppressCommit(SuppressCommit);
+        ReqWkshMakeOrders.CarryOutBatchAction(ReqLine);
+    end;
+
 }

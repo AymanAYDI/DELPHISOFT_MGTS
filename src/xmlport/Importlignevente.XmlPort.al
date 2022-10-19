@@ -3,7 +3,7 @@ xmlport 50013 "DEL Import ligne vente"
     // T-00778     THM     16.03.16          add "Sale blocked"
 
     Direction = Import;
-    Encoding = UTF16;
+    // Encoding = UTF16; TODO: Format= VariableText
     FieldSeparator = ';';
     Format = VariableText;
     TableSeparator = ';';
@@ -13,7 +13,7 @@ xmlport 50013 "DEL Import ligne vente"
     {
         textelement(Importlignevente)
         {
-            tableelement(Table37; Table37)
+            tableelement("Sales Line"; "Sales Line")
             {
                 XmlName = 'SalesLine';
                 textelement(Post)
@@ -27,14 +27,14 @@ xmlport 50013 "DEL Import ligne vente"
 
                     trigger OnAfterAssignVariable()
                     begin
-                        IF Article = '' THEN BEGIN
+                        IF Article = '' THEN
                             IF ArtExt <> '' THEN BEGIN
-                                ItemCrossRef.SETRANGE("Cross-Reference No.", ArtExt);
+                                ItemCrossRef.SETRANGE("Reference No.", ArtExt);
                                 IF ItemCrossRef.FINDFIRST THEN
                                     //START T-00778
                                     REPEAT
-                                        ItemCrossRef.CALCFIELDS(ItemCrossRef."Sale blocked");
-                                        IF ItemCrossRef."Sale blocked" = FALSE THEN
+                                        ItemCrossRef.CALCFIELDS(ItemCrossRef."DEL Sale blocked");
+                                        IF ItemCrossRef."DEL Sale blocked" = FALSE THEN
                                             //STOP T-00778
 
                                             Article := ItemCrossRef."Item No.";
@@ -43,7 +43,6 @@ xmlport 50013 "DEL Import ligne vente"
                                     UNTIL (ItemCrossRef.NEXT = 0) OR (Article <> '');
                                 //STOP T-00778
                             END;
-                        END;
 
                         //START T-00778
                         IF Article <> '' THEN BEGIN
@@ -133,11 +132,11 @@ xmlport 50013 "DEL Import ligne vente"
 
     var
         Num: Integer;
-        SalesHeader: Record "36";
-        SaleHeaderP: Page "42";
+        SalesHeader: Record "Sales Header";
+        SaleHeaderP: Page "Sales Order";
         DocCmd: Text;
-        SalesLine: Record "37";
-        ItemCrossRef: Record "5717";
+        SalesLine: Record "Sales Line";
+        ItemCrossRef: Record "Item Reference";
         I: Integer;
 }
 
