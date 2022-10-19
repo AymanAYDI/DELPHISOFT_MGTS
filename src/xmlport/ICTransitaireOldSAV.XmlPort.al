@@ -6,7 +6,7 @@ xmlport 50003 "DEL IC Transitaire Old SAV"
     {
         textelement(transitaire)
         {
-            tableelement(Table38; Table38)
+            tableelement("Purchase Header"; "Purchase Header")
             {
                 XmlName = 'entete';
                 textelement(adresseiptransitaire)
@@ -15,8 +15,7 @@ xmlport 50003 "DEL IC Transitaire Old SAV"
 
                     trigger OnBeforePassVariable()
                     begin
-                        // Holt Verbindungsdaten
-                        Transitaires.SETRANGE("Forwarding Agent Code", "Purchase Header"."Forwarding Agent Code");
+                        Transitaires.SETRANGE("Forwarding Agent Code", "Purchase Header"."DEL Forwarding Agent Code");
                         IF Transitaires.FIND('-') THEN BEGIN
                             AdresseIPTransitaire := Transitaires."URL Address";
                             CodeTransitaire := Transitaires."Forwarding Agent Code";
@@ -84,7 +83,7 @@ xmlport 50003 "DEL IC Transitaire Old SAV"
                 fieldelement(PortArriveeMagasin; "Purchase Header"."Location Code")
                 {
                 }
-                fieldelement(ShipPer; "Purchase Header"."Ship Per")
+                fieldelement(ShipPer; "Purchase Header"."DEL Ship Per")
                 {
                 }
                 fieldelement(PortDepart; "Purchase Header"."Port de départ")
@@ -95,14 +94,14 @@ xmlport 50003 "DEL IC Transitaire Old SAV"
                 }
                 textelement(lignes)
                 {
-                    tableelement(Table39; Table39)
+                    tableelement("Purchase Line"; "Purchase Line")
                     {
-                        LinkFields = Field3 = FIELD(Field3);
+                        LinkFields = "Document No." = FIELD("No.");
                         LinkTable = "Purchase Header";
                         XmlName = 'position';
-                        SourceTableView = SORTING(Field1, Field3, Field6)
+                        SourceTableView = SORTING("Document Type", "Document No.", "No.")
                                           ORDER(Ascending)
-                                          WHERE(Field5 = CONST(2));
+                                          WHERE(Type = CONST(2));
                         fieldelement(CodeArticleNav; "Purchase Line"."No.")
                         {
                         }
@@ -124,9 +123,8 @@ xmlport 50003 "DEL IC Transitaire Old SAV"
                             begin
                                 longueur := STRLEN(FORMAT("Purchase Line".Quantity));
 
-                                IF (longueur < 4) THEN BEGIN
-                                    Quantite := FORMAT("Purchase Line".Quantity)
-                                END;
+                                IF (longueur < 4) THEN
+                                    Quantite := FORMAT("Purchase Line".Quantity);
 
 
                                 IF (longueur < 8) AND (longueur > 3) THEN BEGIN
@@ -172,18 +170,14 @@ xmlport 50003 "DEL IC Transitaire Old SAV"
 
     trigger OnPreXmlPort()
     var
-        longueur: Integer;
-        quantite1: Text[30];
-        quantite2: Text[30];
     begin
-        // Holt allgemeine Daten zu Flux 5
-        NGTSSetup.GET;
+        NGTSSetup.GET();
 
         NomEmetteur := NGTSSetup."Nom emetteur";
     end;
 
     var
-        NGTSSetup: Record "50000";
-        Transitaires: Record "50009";
+        NGTSSetup: Record "DEL General Setup";
+        Transitaires: Record "DEL Forwarding agent 2";
 }
 

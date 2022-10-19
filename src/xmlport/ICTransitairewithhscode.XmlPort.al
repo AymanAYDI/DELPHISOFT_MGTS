@@ -1,15 +1,12 @@
 xmlport 50002 "DEL IC Transitaire with hscode"
 {
-    // ngts/loco/grc      05.01.11 create xml same as xml 50000 + field Hscode
-    // GAP2018-002 : MES 18/06/2018 : Requested Delivery Date
-
     Encoding = UTF8;
 
     schema
     {
         textelement(transitaire)
         {
-            tableelement(Table38; Table38)
+            tableelement("Purchase Header"; "Purchase Header")
             {
                 XmlName = 'entete';
                 textelement(adresseiptransitaire)
@@ -18,8 +15,7 @@ xmlport 50002 "DEL IC Transitaire with hscode"
 
                     trigger OnBeforePassVariable()
                     begin
-                        // Holt Verbindungsdaten
-                        Transitaires.SETRANGE("Forwarding Agent Code", "Purchase Header"."Forwarding Agent Code");
+                        Transitaires.SETRANGE("Forwarding Agent Code", "Purchase Header"."DEL Forwarding Agent Code");
                         IF Transitaires.FIND('-') THEN BEGIN
                             AdresseIPTransitaire := Transitaires."URL Address";
                             CodeTransitaire := Transitaires."Forwarding Agent Code";
@@ -87,7 +83,7 @@ xmlport 50002 "DEL IC Transitaire with hscode"
                 fieldelement(PortArriveeMagasin; "Purchase Header"."Port d'arrivée")
                 {
                 }
-                fieldelement(ShipPer; "Purchase Header"."Ship Per")
+                fieldelement(ShipPer; "Purchase Header"."DEL Ship Per")
                 {
                 }
                 fieldelement(PortDepart; "Purchase Header"."Port de départ")
@@ -98,14 +94,14 @@ xmlport 50002 "DEL IC Transitaire with hscode"
                 }
                 textelement(lignes)
                 {
-                    tableelement(Table39; Table39)
+                    tableelement("Purchase Line"; "Purchase Line")
                     {
-                        LinkFields = Field3 = FIELD(Field3);
+                        LinkFields = "Document No." = FIELD("No.");
                         LinkTable = "Purchase Header";
                         XmlName = 'position';
-                        SourceTableView = SORTING(Field1, Field3, Field6)
+                        SourceTableView = SORTING("Document Type", "Document No.", "No.")
                                           ORDER(Ascending)
-                                          WHERE(Field5 = CONST(2));
+                                          WHERE(Type = CONST(2));
                         fieldelement(CodeArticleNav; "Purchase Line"."No.")
                         {
                         }
@@ -122,7 +118,7 @@ xmlport 50002 "DEL IC Transitaire with hscode"
                             begin
                                 Item.SETRANGE("No.", "Purchase Line"."No.");
                                 IF Item.FIND('-') THEN BEGIN
-                                    HSCODE := Item."Code nomenclature douaniere";
+                                    HSCODE := Item."DEL Code nomenc. douaniere";
                                 END;
                             end;
                         }
@@ -160,7 +156,7 @@ xmlport 50002 "DEL IC Transitaire with hscode"
                         fieldelement(CodeUnite; "Purchase Line"."Unit of Measure Code")
                         {
                         }
-                        fieldelement(DateEmbarquement; "Purchase Header"."Requested Delivery Date")
+                        fieldelement(DateEmbarquement; "Purchase Header"."DEL Requested Delivery Date")
                         {
                         }
                         fieldelement(DateReceptionPrevue; "Purchase Line"."Expected Receipt Date")
@@ -190,15 +186,14 @@ xmlport 50002 "DEL IC Transitaire with hscode"
         quantite1: Text[30];
         quantite2: Text[30];
     begin
-        // Holt allgemeine Daten zu Flux 5
         NGTSSetup.GET;
 
         NomEmetteur := NGTSSetup."Nom emetteur";
     end;
 
     var
-        NGTSSetup: Record "50000";
-        Transitaires: Record "50009";
-        Item: Record "27";
+        NGTSSetup: Record "DEL General Setup";
+        Transitaires: Record "DEL Forwarding agent 2";
+        Item: Record Item;
 }
 

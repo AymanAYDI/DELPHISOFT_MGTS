@@ -1,8 +1,5 @@
 xmlport 50001 "DEL Import tracking"
 {
-    // 
-    // 
-    // Ngts/loco/grc   12.04.2009   create object
 
     Direction = Both;
     Encoding = UTF8;
@@ -11,7 +8,7 @@ xmlport 50001 "DEL Import tracking"
     {
         textelement(transitaire)
         {
-            tableelement("trackingnontraité"; Table50012)
+            tableelement("trackingnontraité"; "DEL Tracking non traité")
             {
                 LinkTableForceInsert = true;
                 MinOccurs = Zero;
@@ -184,9 +181,10 @@ xmlport 50001 "DEL Import tracking"
     end;
 
     var
-        "TrackingNonTraitéRec": Record "50012";
+        "TrackingNonTraitéRec": Record "DEL Tracking non traité";
+        "TrackinggénéraRec": Record "DEL Tracking général";
+
         DernierNum: Integer;
-        "TrackinggénéraRec": Record "50013";
         DernierNum1: Integer;
         DernierNum2: Integer;
 }
