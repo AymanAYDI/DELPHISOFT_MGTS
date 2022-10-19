@@ -1,4 +1,4 @@
-xmlport 50015 "Deals API Xml"
+xmlport 50015 "DEL Deals API Xml"
 {
     // Mgts10.00.01.00 | 11.01.2020 | Order API Management
     // 
@@ -111,7 +111,7 @@ xmlport 50015 "Deals API Xml"
                     }
                     tableelement(Table50075; Table50075)
                     {
-                        LinkFields = Field1 = FIELD (Field1);
+                        LinkFields = Field1 = FIELD(Field1);
                         LinkTable = "Order API Record Tracking";
                         NamespacePrefix = 'Json';
                         XmlName = 'lineDetails';

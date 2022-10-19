@@ -1,4 +1,4 @@
-xmlport 50011 "Export Hyperion File"
+xmlport 50011 "DEL Export Hyperion File"
 {
     // +-------------------------------------------------------------------------------------------------+
     // | Logico SA                                                                                       |

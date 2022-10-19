@@ -1,9 +1,5 @@
-xmlport 50000 "IC Transitaire"
+xmlport 50000 "DEL IC Transitaire"
 {
-    // EDI       22.05.13/LOCO/ChC- XMLPort copied
-    // THM       08.07.14         add Codeartclient
-    // THM01     04.02.16         modifier Code marque par nom marque
-    // GAP2018-002 : MES 18/06/2018 : Requested Delivery Date
 
     Encoding = UTF8;
 
@@ -11,7 +7,7 @@ xmlport 50000 "IC Transitaire"
     {
         textelement(transitaire)
         {
-            tableelement(Table38; Table38)
+            tableelement(38; 38)
             {
                 XmlName = 'entete';
                 textelement(adresseiptransitaire)
@@ -20,7 +16,6 @@ xmlport 50000 "IC Transitaire"
 
                     trigger OnBeforePassVariable()
                     begin
-                        // Holt Verbindungsdaten
                         Transitaires.SETRANGE("Forwarding Agent Code", "Purchase Header"."Forwarding Agent Code");
                         IF Transitaires.FIND('-') THEN BEGIN
                             AdresseIPTransitaire := Transitaires."URL Address";
@@ -103,14 +98,14 @@ xmlport 50000 "IC Transitaire"
                 }
                 textelement(lignes)
                 {
-                    tableelement(Table39; Table39)
+                    tableelement(39; 39)
                     {
-                        LinkFields = Field3 = FIELD (Field3);
+                        LinkFields = Field3 = FIELD(Field3);
                         LinkTable = "Purchase Header";
                         XmlName = 'position';
-                        SourceTableView = SORTING (Field1, Field3, Field6)
+                        SourceTableView = SORTING(Field1, Field3, Field6)
                                           ORDER(Ascending)
-                                          WHERE (Field5 = CONST (2));
+                                          WHERE(Field5 = CONST(2));
                         fieldelement(CodeArticleNav; "Purchase Line"."No.")
                         {
                         }

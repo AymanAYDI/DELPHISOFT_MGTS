@@ -1,4 +1,4 @@
-xmlport 50013 "Import ligne vente"
+xmlport 50013 "DEL Import ligne vente"
 {
     // T-00778     THM     16.03.16          add "Sale blocked"
 
@@ -33,13 +33,13 @@ xmlport 50013 "Import ligne vente"
                                 IF ItemCrossRef.FINDFIRST THEN
                                     //START T-00778
                                     REPEAT
-                                 ItemCrossRef.CALCFIELDS(ItemCrossRef."Sale blocked");
-                                 IF ItemCrossRef."Sale blocked" = FALSE THEN
-                                     //STOP T-00778
+                                        ItemCrossRef.CALCFIELDS(ItemCrossRef."Sale blocked");
+                                        IF ItemCrossRef."Sale blocked" = FALSE THEN
+                                            //STOP T-00778
 
-                                     Article := ItemCrossRef."Item No.";
+                                            Article := ItemCrossRef."Item No.";
 
-                                 //START T-00778
+                                    //START T-00778
                                     UNTIL (ItemCrossRef.NEXT = 0) OR (Article <> '');
                                 //STOP T-00778
                             END;

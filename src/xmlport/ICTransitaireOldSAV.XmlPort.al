@@ -1,4 +1,4 @@
-xmlport 50003 "IC Transitaire Old SAV"
+xmlport 50003 "DEL IC Transitaire Old SAV"
 {
     Encoding = UTF8;
 
@@ -97,12 +97,12 @@ xmlport 50003 "IC Transitaire Old SAV"
                 {
                     tableelement(Table39; Table39)
                     {
-                        LinkFields = Field3 = FIELD (Field3);
+                        LinkFields = Field3 = FIELD(Field3);
                         LinkTable = "Purchase Header";
                         XmlName = 'position';
-                        SourceTableView = SORTING (Field1, Field3, Field6)
+                        SourceTableView = SORTING(Field1, Field3, Field6)
                                           ORDER(Ascending)
-                                          WHERE (Field5 = CONST (2));
+                                          WHERE(Field5 = CONST(2));
                         fieldelement(CodeArticleNav; "Purchase Line"."No.")
                         {
                         }

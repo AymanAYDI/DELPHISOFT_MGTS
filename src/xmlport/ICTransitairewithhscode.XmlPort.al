@@ -1,4 +1,4 @@
-xmlport 50002 "IC Transitaire with hscode"
+xmlport 50002 "DEL IC Transitaire with hscode"
 {
     // ngts/loco/grc      05.01.11 create xml same as xml 50000 + field Hscode
     // GAP2018-002 : MES 18/06/2018 : Requested Delivery Date
@@ -100,12 +100,12 @@ xmlport 50002 "IC Transitaire with hscode"
                 {
                     tableelement(Table39; Table39)
                     {
-                        LinkFields = Field3 = FIELD (Field3);
+                        LinkFields = Field3 = FIELD(Field3);
                         LinkTable = "Purchase Header";
                         XmlName = 'position';
-                        SourceTableView = SORTING (Field1, Field3, Field6)
+                        SourceTableView = SORTING(Field1, Field3, Field6)
                                           ORDER(Ascending)
-                                          WHERE (Field5 = CONST (2));
+                                          WHERE(Field5 = CONST(2));
                         fieldelement(CodeArticleNav; "Purchase Line"."No.")
                         {
                         }
