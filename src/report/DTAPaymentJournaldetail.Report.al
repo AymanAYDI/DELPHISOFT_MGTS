@@ -309,50 +309,51 @@ report 50001 "DEL DTA Payment Journal detail"
                         xTxt := Text004Err;
 
                 IF xTxt = '' THEN
-                    CASE VendorBankAccount."Payment Form" OF
-                        VendorBankAccount."Payment Form"::ESR, VendorBankAccount."Payment Form"::"ESR+":
-                            BEGIN
-                                xAcc := VendorBankAccount."ESR Account No.";
-                                xTxt := VendorLedgerEntry."Reference No.";
-                            END;
-                        VendorBankAccount."Payment Form"::"Post Payment Domestic":
-                            // TODO: IBANDELCHR has scope onprem    BEGIN
-                            //         IF VendorBankAccount.IBAN <> '' THEN
-                            //             xAcc := DTAMgt.IBANDELCHR(VendorBankAccount.IBAN)
-                            //         ELSE
-                            //             xAcc := VendorBankAccount."Giro Account No.";
-                            //     END;
-                            // VendorBankAccount."Payment Form"::"Bank Payment Domestic":
-                            //TODO: IBANDELCHR has scope onprem      IF VendorBankAccount.IBAN <> '' THEN
-                            //         xAcc := DTAMgt.IBANDELCHR(VendorBankAccount.IBAN)
-                            //     ELSE BEGIN
-                            //         xTxt := VendorBankAccount."Clearing No.";
-                            //         xAcc := VendorBankAccount."Bank Account No.";
-                            //     END;
-                            // VendorBankAccount."Payment Form"::"Post Payment Abroad":
-                            // TODO BEGIN
-                            //     IF VendorBankAccount.IBAN <> '' THEN
-                            //         xAcc := DTAMgt.IBANDELCHR(VendorBankAccount.IBAN)
-                            //     ELSE
-                            //         xAcc := VendorBankAccount."Bank Account No.";
-                            // END;
-                            //VendorBankAccount."Payment Form"::"Bank Payment Abroad":
-                            //TODO     IF VendorBankAccount.IBAN <> '' THEN
-                            //         xAcc := DTAMgt.IBANDELCHR(VendorBankAccount.IBAN)
-                            //     ELSE BEGIN
-                            //         xTxt := VendorBankAccount."Bank Identifier Code";
-                            //         xAcc := VendorBankAccount."Bank Account No.";
-                            //     END;
-                            // VendorBankAccount."Payment Form"::"SWIFT Payment Abroad":
-                            IF VendorBankAccount.IBAN <> '' THEN
-                                xAcc := DTAMgt.IBANDELCHR(VendorBankAccount.IBAN)
-                            ELSE BEGIN
-                                xTxt := VendorBankAccount."SWIFT Code";
-                                xAcc := VendorBankAccount."Bank Account No.";
-                            END;
-                    END;
+                    //    TODO
+                    // CASE VendorBankAccount."Payment Form" OF
+                    //     VendorBankAccount."Payment Form"::ESR, VendorBankAccount."Payment Form"::"ESR+":
+                    //         BEGIN
+                    //             xAcc := VendorBankAccount."ESR Account No.";
+                    //             xTxt := VendorLedgerEntry."Reference No.";
+                    //         END;
+                    //     VendorBankAccount."Payment Form"::"Post Payment Domestic":
+                    //         // TODO: IBANDELCHR has scope onprem    BEGIN
+                    //         //         IF VendorBankAccount.IBAN <> '' THEN
+                    //         //             xAcc := DTAMgt.IBANDELCHR(VendorBankAccount.IBAN)
+                    //         //         ELSE
+                    //         //             xAcc := VendorBankAccount."Giro Account No.";
+                    //         //     END;
+                    //         // VendorBankAccount."Payment Form"::"Bank Payment Domestic":
+                    //         //TODO: IBANDELCHR has scope onprem      IF VendorBankAccount.IBAN <> '' THEN
+                    //         //         xAcc := DTAMgt.IBANDELCHR(VendorBankAccount.IBAN)
+                    //         //     ELSE BEGIN
+                    //         //         xTxt := VendorBankAccount."Clearing No.";
+                    //         //         xAcc := VendorBankAccount."Bank Account No.";
+                    //         //     END;
+                    //         // VendorBankAccount."Payment Form"::"Post Payment Abroad":
+                    //         // TODO BEGIN
+                    //         //     IF VendorBankAccount.IBAN <> '' THEN
+                    //         //         xAcc := DTAMgt.IBANDELCHR(VendorBankAccount.IBAN)
+                    //         //     ELSE
+                    //         //         xAcc := VendorBankAccount."Bank Account No.";
+                    //         // END;
+                    //         //VendorBankAccount."Payment Form"::"Bank Payment Abroad":
+                    //         //TODO     IF VendorBankAccount.IBAN <> '' THEN
+                    //         //         xAcc := DTAMgt.IBANDELCHR(VendorBankAccount.IBAN)
+                    //         //     ELSE BEGIN
+                    //         //         xTxt := VendorBankAccount."Bank Identifier Code";
+                    //         //         xAcc := VendorBankAccount."Bank Account No.";
+                    //         //     END;
+                    //         // VendorBankAccount."Payment Form"::"SWIFT Payment Abroad":
+                    //         IF VendorBankAccount.IBAN <> '' THEN
+                    //             xAcc := DTAMgt.IBANDELCHR(VendorBankAccount.IBAN)
+                    //         ELSE BEGIN
+                    //             xTxt := VendorBankAccount."SWIFT Code";
+                    //             xAcc := VendorBankAccount."Bank Account No.";
+                    //         END;
+                    // END;
 
-                n := n + 1;
+                    n := n + 1;
                 IF "Amount (LCY)" > LargestAmt THEN
                     LargestAmt := "Amount (LCY)";
 
