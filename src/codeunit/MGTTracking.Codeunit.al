@@ -22,14 +22,14 @@ codeunit 50003 "DEL MGT Tracking"
         TrackingGeneral: Record "DEL Tracking non traité";
         MyStream: InStream;
         TestFile: File;
-        fso: DotNet File;
+        // fso: DotNet File;
         outStreamtest: OutStream;
         charXml: Text;
         Pos: Integer;
 
 
         TempBlob: Codeunit "Temp Blob";
-
+        FileManagement: Codeunit "File Management";
         OutStr: OutStream;
 
 
@@ -49,7 +49,11 @@ codeunit 50003 "DEL MGT Tracking"
                     // XMLPORT.IMPORT(XMLPORT::"Import tracking", MyStream);
                     // TestFile.CLOSE; // TODO: ancient code
 
-                    UploadIntoStream('', NgtsSetup."Folder Expeditors", '', MyFile.Name, MyStream); // TODO:  check new code
+                    //UploadIntoStream('', NgtsSetup."Folder Expeditors", '', MyFile.Name, MyStream); // TODO:  check new code
+
+                    TempBlob.CreateInStream(MyStream, TEXTENCODING::UTF8);
+                    XMLPORT.Import(XMLPORT::"DEL Import tracking", MyStream);
+                    FileManagement.BLOBImport(TempBlob, 'exemple.xml');
 
                     TrackingGeneral.SETRANGE(Nom_Fichier, '');
                     IF TrackingGeneral.FINDFIRST() THEN
@@ -80,7 +84,9 @@ codeunit 50003 "DEL MGT Tracking"
                 // XMLPORT.IMPORT(XMLPORT::"Import tracking", MyStream);
                 // TestFile.CLOSE; // TODO: ancient code
 
-                UploadIntoStream('', NgtsSetup."Folder Maersk", '', MyFile.Name, MyStream); // TODO:  check new code
+                TempBlob.CreateInStream(MyStream, TEXTENCODING::UTF8);
+                XMLPORT.Import(XMLPORT::"DEL Import tracking", MyStream);
+                FileManagement.BLOBImport(TempBlob, 'exemple.xml');
 
                 TrackingGeneral.SETRANGE(Nom_Fichier, '');
                 IF TrackingGeneral.FINDFIRST() THEN
@@ -102,8 +108,10 @@ codeunit 50003 "DEL MGT Tracking"
         MyFile.SETRANGE("Is a file", TRUE);
         IF MyFile.FINDFIRST() THEN
             REPEAT
-                fso.Copy(NgtsSetup."Folder Expeditors" + MyFile.Name, NgtsSetup."Folder Expeditors Archive" + MyFile.Name);
-                fso.Delete(NgtsSetup."Folder Expeditors" + MyFile.Name);
+            // fso.Copy(NgtsSetup."Folder Expeditors" + MyFile.Name, NgtsSetup."Folder Expeditors Archive" + MyFile.Name);
+            // fso.Delete(NgtsSetup."Folder Expeditors" + MyFile.Name); // TODO: 
+
+
             UNTIL MyFile.NEXT() = 0;
     end;
 
@@ -117,24 +125,28 @@ codeunit 50003 "DEL MGT Tracking"
         MyFile.SETRANGE("Is a file", TRUE);
         IF MyFile.FINDFIRST() THEN
             REPEAT
-                fso.Copy(NgtsSetup."Folder Maersk" + MyFile.Name, NgtsSetup."Folder Maersk Archive" + MyFile.Name);
-                fso.Delete(NgtsSetup."Folder Maersk" + MyFile.Name);
+            // fso.Copy(NgtsSetup."Folder Maersk" + MyFile.Name, NgtsSetup."Folder Maersk Archive" + MyFile.Name);
+            // fso.Delete(NgtsSetup."Folder Maersk" + MyFile.Name); // TODO: 
             UNTIL MyFile.NEXT() = 0;
     end;
 
 
     procedure export()
     var
+        tempBlob: Codeunit "Temp Blob";
+        FileManagement: Codeunit "File Management";
         tempfilename: text;
     begin
 
         // TestFile.CREATE('C:\Transitaire\trans 1\Entry\Export.xml');
         // TestFile.CREATEOUTSTREAM(outStreamtest);
         // XMLPORT.EXPORT(XMLPORT::"Import tracking", outStreamtest);
-        // TestFile.CLOSE;
-        tempfilename := 'Export.xml';
-        DownloadFromStream(MyStream, 'Export', '', 'All Files (*.*)|*.*', tempfilename);
+        // TestFile.CLOSE; // TODO: ancient code
 
+        tempfilename := 'Export.xml';
+        TempBlob.CreateOutStream(outStreamtest, TEXTENCODING::UTF8);
+        XMLPORT.EXPORT(XMLPORT::"DEL Import tracking", outStreamtest);
+        FileManagement.BLOBExport(TempBlob, tempfilename, TRUE);
         MESSAGE('Export Xml completed!');
     end;
 }
