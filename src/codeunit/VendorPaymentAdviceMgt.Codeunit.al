@@ -17,12 +17,12 @@ codeunit 50057 "DEL Vendor Payment Advice Mgt."
         Vendor: Record Vendor;
         CompanyInfo: Record "Company Information";
         GeneralSetup: Record "DEL General Setup";
-        SendFromName: List of [Text];
+        SendFromName: Text[100];
         SendFromAddress: Text;
         SendToAddress: Text;
         SubjectMail: Text;
         MailBody: Text;
-        ServerFile: List of [Text];
+        ServerFile: Text;
         RecordNumber: Integer;
         Counter: Integer;
         ProgressionDialog: Dialog;
@@ -82,13 +82,7 @@ codeunit 50057 "DEL Vendor Payment Advice Mgt."
             //TODO IF EXISTS(ServerFile) THEN
             //     SendMail(SendFromName, SendFromAddress, SubjectMail, SendToAddress, MailBody,
             //     ServerFile, STRSUBSTNO(FileNameLbl, Vendor."No."));
-
-            //  (_SenderName: List of [Text]; _SenderAddress: Text; CCRecipients: List of [Text];
-            //        _Recipients: Text; _Subject: List of [Text]; _Body: Text;
-            //         _AttachementFullPathFileName: Text; _FileName: Text; ContentType: text[250])
-
             UNTIL TempVendor.NEXT() = 0;
-
             IF GUIALLOWED THEN
                 ProgressionDialog.CLOSE();
             MESSAGE(Text002);
@@ -107,16 +101,13 @@ codeunit 50057 "DEL Vendor Payment Advice Mgt."
     //     SMTPMail.AddAttachment(_AttachementFullPathFileName, _FileName);
     //     SMTPMail.Send;
     // end;
-    //TODO: corriger local procedure SendSMTPmail(_SenderName: List of [Text]; _SenderAddress: Text;
-    // _Recipients: Text; _Subject: Text; _Body: Text; _AttachementFullPathFileName: List of [Text]; _FileName: Text)
-    local procedure SendMail(_SenderName: List of [Text]; _SenderAddress: Text; CCRecipients: List of [Text];
-       _Recipients: Text; _Subject: List of [Text]; _Body: Text;
-        _AttachementFullPathFileName: Text; _FileName: Text; ContentType: text[250])
+    local procedure SendMail(_Recipients: Text; _Subject: Text; _Body: Text;
+        _AttachementFullPathFileName: Text[250]; _FileName: Text[250]; ContentType: text[250])
     var
         Email: codeunit "Email";
         MailMessage: Codeunit "Email Message";
     begin
-        MailMessage.Create(_SenderName, _SenderAddress, _Recipients, true, _Subject, CCRecipients);
+        MailMessage.Create(_Recipients, _Subject, '', true);
 
         MailMessage.AppendToBody(_Body);
         MailMessage.AddAttachment(_AttachementFullPathFileName, _FileName, ContentType);
@@ -152,8 +143,6 @@ codeunit 50057 "DEL Vendor Payment Advice Mgt."
         END;
 
         MySubject := DocMatrixEmailCodes.Subject;
-
-
         TextBody := GetBody(DocMatrixEmailCodes);
     end;
     //TODO
@@ -164,7 +153,6 @@ codeunit 50057 "DEL Vendor Payment Advice Mgt."
         TypeHelper: Codeunit "Type Helper";
         TempBlob: Codeunit "Temp Blob";
         InStream: InStream;
-
         CR: Text;
     begin
         DocMatrixEmailCodes.CALCFIELDS(Body);
@@ -172,22 +160,18 @@ codeunit 50057 "DEL Vendor Payment Advice Mgt."
             EXIT('');
         CR := '<p>';
         //   TempBlob.Blob := DocMatrixEmailCodes.Body; => code source
-        //    EXIT(TempBlob.ReadAsText(CR, TEXTENCODING::UTF8));
+        //    EXIT(TempBlob.ReadAsText(CR, TEXTENCODING::UTF8));   => code source
         TempBlob.FromRecord(DocMatrixEmailCodes, DocMatrixEmailCodes.FieldNo(Body));
         TempBlob.CreateInStream(InStream, TEXTENCODING::UTF8);
-
         exit(TypeHelper.ReadAsTextWithSeparator(InStream, CR));
-
     end;
 
 
     procedure SavePDF(_JournalTemplateName: Code[10]; _JournalBatchName: Code[10]; _VendorNo: Code[20]; var _ServerAttachmentFilePath: Text)
     var
-
         Vendor: Record Vendor;
         GenJournalLine: Record "Gen. Journal Line";
         VendorPaymentAdvice: Report "DEL SR Vendor Pay. Advi. Detai";
-
         FileMgt: Codeunit "File Management";
         //---------
         TempBlob_lRec: Codeunit "Temp Blob";
@@ -196,17 +180,15 @@ codeunit 50057 "DEL Vendor Payment Advice Mgt."
         CustRec: Record Customer;
 
     begin
-        _ServerAttachmentFilePath := COPYSTR(FileMgt.ServerTempFileName('pdf'), 1, 250);
+        //TODO   // _ServerAttachmentFilePath := COPYSTR(FileMgt.ServerTempFileName('pdf'), 1, 250);
 
         GenJournalLine."Journal Template Name" := _JournalTemplateName;
         GenJournalLine."Journal Batch Name" := _JournalBatchName;
-
         Vendor.SETRANGE("No.", _VendorNo);
         VendorPaymentAdvice.SETTABLEVIEW(Vendor);
         VendorPaymentAdvice.DefineJourBatch(GenJournalLine);
         VendorPaymentAdvice.SkipMessage(TRUE);
-        //TODO VendorPaymentAdvice.SAVEASPDF(_ServerAttachmentFilePath);
-
+        //TODO VendorPaymentAdvice.SAVEASPDF(_ServerAttachmentFilePath);  => code source
         /////--------- à corriger
         TempBlob_lRec.CreateOutStream(BlobOutStream, TEXTENCODING::UTF8);
         CustRec.SetRange(Blocked, Blocked::All);

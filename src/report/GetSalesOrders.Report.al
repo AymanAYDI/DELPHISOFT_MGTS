@@ -252,7 +252,6 @@ report 50078 "DEL Get Sales Orders"
         GetDim := NewRetrieveDimensionsFrom;
     end;
 
-
     procedure SetSalesDocNo(pSalesDocNoFilter: Code[20])
     begin
         SalesDocNoFilter := pSalesDocNoFilter;

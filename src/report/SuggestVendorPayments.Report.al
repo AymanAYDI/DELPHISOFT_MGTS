@@ -1,16 +1,15 @@
-report 393 "Suggest Vendor Payments"
+report 50072 "DEL Suggest Vendor Payments" //393
 {
-    // //DEL_QR1.00.00.01 : 02/11/2020 : Add C\AL in : MakeGenJnlLines
 
     Caption = 'Suggest Vendor Payments';
     ProcessingOnly = true;
 
     dataset
     {
-        dataitem(DataItem3182; Table23)
+        dataitem(Vendor; Vendor)
         {
-            DataItemTableView = SORTING (No.)
-                                WHERE (Blocked = FILTER (= ' '));
+            DataItemTableView = SORTING("No.")
+                                WHERE(Blocked = FILTER(= ' '));
             RequestFilterFields = "No.", "Payment Method Code";
 
             trigger OnAfterGetRecord()
@@ -248,7 +247,7 @@ report 393 "Suggest Vendor Payments"
 
                             trigger OnAssistEdit()
                             var
-                                DimSelectionBuf: Record "368";
+                                DimSelectionBuf: Record "Dimension Selection Buffer";
                             begin
                                 DimSelectionBuf.SetDimSelectionMultiple(3, REPORT::"Suggest Vendor Payments", SummarizePerDimText);
                             end;
@@ -300,13 +299,14 @@ report 393 "Suggest Vendor Payments"
                             Caption = 'Starting Document No.';
                             ToolTip = 'Specifies the next available number in the number series for the journal batch that is linked to the payment journal. When you run the batch job, this is the document number that appears on the first payment journal line. You can also fill in this field manually.';
 
-                            trigger OnValidate()
-                            var
-                                TextManagement: Codeunit "41";
-                            begin
-                                IF NextDocNo <> '' THEN
-                                    TextManagement.EvaluateIncStr(NextDocNo, StartingDocumentNoErr);
-                            end;
+                            //TODO: codeunit 41 (textmanagement) should be changed to (Filter Tokens)& EvaluateIncStr does not exist
+                            //             trigger OnValidate()
+                            //             var
+                            //                 TextManagement: Codeunit "Filter Tokens";
+                            //             begin
+                            //                 IF NextDocNo <> '' THEN
+                            //  TextManagement.EvaluateIncStr(NextDocNo, StartingDocumentNoErr);
+                            //             end;
                         }
                         field(NewDocNoPerLine; DocNoPerLine)
                         {
@@ -451,24 +451,24 @@ report 393 "Suggest Vendor Payments"
         Text020: Label 'You have only created suggested vendor payment lines for the %1 %2.\ However, there are other open vendor ledger entries in currencies other than %2.\\', Comment = 'You have only created suggested vendor payment lines for the Currency Code EUR.\ However, there are other open vendor ledger entries in currencies other than EUR.';
         Text021: Label 'You have only created suggested vendor payment lines for the %1 %2.\ There are no other open vendor ledger entries in other currencies.\\', Comment = 'You have only created suggested vendor payment lines for the Currency Code EUR\ There are no other open vendor ledger entries in other currencies.\\';
         Text022: Label 'You have created suggested vendor payment lines for all currencies.\\';
-        Vend2: Record "23";
-        GenJnlTemplate: Record "80";
-        GenJnlBatch: Record "232";
-        GenJnlLine: Record "81";
-        DimSetEntry: Record "480";
-        GenJnlLine2: Record "81";
-        VendLedgEntry: Record "25";
-        GLAcc: Record "15";
-        BankAcc: Record "270";
-        PayableVendLedgEntry: Record "317" temporary;
-        CompanyInformation: Record "79";
-        TempPaymentBuffer: Record "372" temporary;
-        OldTempPaymentBuffer: Record "372" temporary;
-        SelectedDim: Record "369";
-        VendorLedgEntryTemp: Record "25" temporary;
-        NoSeriesMgt: Codeunit "396";
-        DimMgt: Codeunit "408";
-        DimBufMgt: Codeunit "411";
+        Vend2: Record Vendor;
+        GenJnlTemplate: Record "Gen. Journal Template";
+        GenJnlBatch: Record "Gen. Journal Batch";
+        GenJnlLine: Record "Gen. Journal Line";
+        DimSetEntry: Record "Dimension Set Entry";
+        GenJnlLine2: Record "Gen. Journal Line";
+        VendLedgEntry: Record "Vendor Ledger Entry";
+        GLAcc: Record "G/L Account";
+        BankAcc: Record "Bank Account";
+        PayableVendLedgEntry: Record "Payable Vendor Ledger Entry" temporary;
+        CompanyInformation: Record "Company Information";
+        TempPaymentBuffer: Record "Payment Buffer" temporary;
+        OldTempPaymentBuffer: Record "Payment Buffer" temporary;
+        SelectedDim: Record "Selected Dimension";
+        VendorLedgEntryTemp: Record "Vendor Ledger Entry" temporary;
+        NoSeriesMgt: Codeunit NoSeriesManagement;
+        DimMgt: Codeunit DimensionManagement;
+        DimBufMgt: Codeunit "Dimension Buffer Management";
         Window: Dialog;
         Window2: Dialog;
         UsePaymentDisc: Boolean;
@@ -506,8 +506,7 @@ report 393 "Suggest Vendor Payments"
         MessageToRecipientMsg: Label 'Payment of %1 %2 ', Comment = '%1 document type, %2 Document No.';
         StartingDocumentNoErr: Label 'Starting Document No.';
 
-    [Scope('Internal')]
-    procedure SetGenJnlLine(NewGenJnlLine: Record "81")
+    procedure SetGenJnlLine(NewGenJnlLine: Record "Gen. Journal Line")
     begin
         GenJnlLine := NewGenJnlLine;
     end;
@@ -523,7 +522,6 @@ report 393 "Suggest Vendor Payments"
         END;
     end;
 
-    [Scope('Internal')]
     procedure InitializeRequest(LastPmtDate: Date; FindPmtDisc: Boolean; NewAvailableAmount: Decimal; NewSkipExportedPayments: Boolean; NewPostingDate: Date; NewStartDocNo: Code[20]; NewSummarizePerVend: Boolean; BalAccType: Option "G/L Account",Customer,Vendor,"Bank Account"; BalAccNo: Code[20]; BankPmtType: Option " ","Computer Check","Manual Check")
     begin
         LastDueDateToPayReq := LastPmtDate;
@@ -574,7 +572,7 @@ report 393 "Suggest Vendor Payments"
 
     local procedure SaveAmount()
     var
-        PaymentToleranceMgt: Codeunit "426";
+        PaymentToleranceMgt: Codeunit "Payment Tolerance Management";
     begin
         WITH GenJnlLine DO BEGIN
             INIT;
@@ -653,10 +651,10 @@ report 393 "Suggest Vendor Payments"
 
     local procedure MakeGenJnlLines()
     var
-        GenJnlLine1: Record "81";
-        DimBuf: Record "360";
-        Vendor: Record "23";
-        VendorLedgerEntry: Record "25";
+        GenJnlLine1: Record "Gen. Journal Line";
+        DimBuf: Record "Dimension Buffer";
+        Vendor: Record Vendor;
+        VendorLedgerEntry: Record "Vendor Ledger Entry";
         RemainingAmtAvailable: Decimal;
     begin
         TempPaymentBuffer.RESET;
@@ -808,15 +806,12 @@ report 393 "Suggest Vendor Payments"
                     "Applies-to Ext. Doc. No." := TempPaymentBuffer."Applies-to Ext. Doc. No.";
 
                     IF VendorLedgerEntry.GET(TempPaymentBuffer."Vendor Ledg. Entry No.") THEN
-                    //>>DEL_QR
                     //STD : "Reference No." := VendorLedgerEntry."Reference No.";
                     BEGIN
                         "Reference No." := VendorLedgerEntry."Reference No.";
                         IF (VendorLedgerEntry."Recipient Bank Account" <> '') THEN
                             "Recipient Bank Account" := VendorLedgerEntry."Recipient Bank Account";
                     END;
-                    //<<DEL_QR
-
                     UpdateDimensions(GenJnlLine);
                     INSERT;
                     GenJnlLineInserted := TRUE;
@@ -824,12 +819,12 @@ report 393 "Suggest Vendor Payments"
             UNTIL TempPaymentBuffer.NEXT = 0;
     end;
 
-    local procedure UpdateDimensions(var GenJnlLine: Record "81")
+    local procedure UpdateDimensions(var GenJnlLine: Record "Gen. Journal Line")
     var
-        DimBuf: Record "360";
-        TempDimSetEntry: Record "480" temporary;
-        TempDimSetEntry2: Record "480" temporary;
-        DimVal: Record "349";
+        DimBuf: Record "Dimension Buffer";
+        TempDimSetEntry: Record "Dimension Set Entry" temporary;
+        TempDimSetEntry2: Record "Dimension Set Entry" temporary;
+        DimVal: Record "Dimension Value";
         NewDimensionID: Integer;
         DimSetIDArr: array[10] of Integer;
     begin
@@ -873,9 +868,9 @@ report 393 "Suggest Vendor Payments"
         END;
     end;
 
-    local procedure SetBankAccCurrencyFilter(BalAccType: Option "G/L Account",Customer,Vendor,"Bank Account"; BalAccNo: Code[20]; var TmpPayableVendLedgEntry: Record "317")
+    local procedure SetBankAccCurrencyFilter(BalAccType: Option "G/L Account",Customer,Vendor,"Bank Account"; BalAccNo: Code[20]; var TmpPayableVendLedgEntry: Record "Payable Vendor Ledger Entry")
     var
-        BankAcc: Record "270";
+        BankAcc: Record "Bank Account";
     begin
         IF BalAccType = BalAccType::"Bank Account" THEN
             IF BalAccNo <> '' THEN BEGIN
@@ -895,10 +890,10 @@ report 393 "Suggest Vendor Payments"
         END;
     end;
 
-    local procedure CheckCurrencies(BalAccType: Option "G/L Account",Customer,Vendor,"Bank Account"; BalAccNo: Code[20]; var TmpPayableVendLedgEntry: Record "317")
+    local procedure CheckCurrencies(BalAccType: Option "G/L Account",Customer,Vendor,"Bank Account"; BalAccNo: Code[20]; var TmpPayableVendLedgEntry: Record "Payable Vendor Ledger Entry")
     var
-        BankAcc: Record "270";
-        TmpPayableVendLedgEntry2: Record "317" temporary;
+        BankAcc: Record "Bank Account";
+        TmpPayableVendLedgEntry2: Record "Payable Vendor Ledger Entry" temporary;
     begin
         IF BalAccType = BalAccType::"Bank Account" THEN
             IF BalAccNo <> '' THEN BEGIN
@@ -928,8 +923,8 @@ report 393 "Suggest Vendor Payments"
 
     local procedure ClearNegative()
     var
-        TempCurrency: Record "4" temporary;
-        PayableVendLedgEntry2: Record "317" temporary;
+        TempCurrency: Record Currency temporary;
+        PayableVendLedgEntry2: Record "Payable Vendor Ledger Entry" temporary;
         CurrencyBalance: Decimal;
     begin
         CLEAR(PayableVendLedgEntry);
@@ -955,21 +950,21 @@ report 393 "Suggest Vendor Payments"
         PayableVendLedgEntry.RESET;
     end;
 
-    local procedure DimCodeIsInDimBuf(DimCode: Code[20]; DimBuf: Record "360"): Boolean
+    local procedure DimCodeIsInDimBuf(DimCode: Code[20]; DimBuf: Record "Dimension Buffer"): Boolean //360
     begin
         DimBuf.RESET;
         DimBuf.SETRANGE("Dimension Code", DimCode);
         EXIT(NOT DimBuf.ISEMPTY);
     end;
 
-    local procedure RemovePaymentsAboveLimit(var PayableVendLedgEntry: Record "317"; RemainingAmtAvailable: Decimal)
+    local procedure RemovePaymentsAboveLimit(var PayableVendLedgEntry: Record "Payable Vendor Ledger Entry"; RemainingAmtAvailable: Decimal)
     begin
         PayableVendLedgEntry.SETFILTER("Amount (LCY)", '>%1', RemainingAmtAvailable);
         PayableVendLedgEntry.DELETEALL;
         PayableVendLedgEntry.SETRANGE("Amount (LCY)");
     end;
 
-    local procedure InsertDimBuf(var DimBuf: Record "360"; TableID: Integer; EntryNo: Integer; DimCode: Code[20]; DimValue: Code[20])
+    local procedure InsertDimBuf(var DimBuf: Record "Dimension Buffer"; TableID: Integer; EntryNo: Integer; DimCode: Code[20]; DimValue: Code[20])
     begin
         DimBuf.INIT;
         DimBuf."Table ID" := TableID;
@@ -981,7 +976,7 @@ report 393 "Suggest Vendor Payments"
 
     local procedure GetMessageToRecipient(SummarizePerVend: Boolean): Text[140]
     var
-        VendorLedgerEntry: Record "25";
+        VendorLedgerEntry: Record "Vendor Ledger Entry";
     begin
         IF SummarizePerVend THEN
             EXIT(CompanyInformation.Name);
@@ -997,7 +992,7 @@ report 393 "Suggest Vendor Payments"
             TempPaymentBuffer."Applies-to Ext. Doc. No."));
     end;
 
-    local procedure SetPostingDate(var GenJnlLine: Record "81"; DueDate: Date; PostingDate: Date): Boolean
+    local procedure SetPostingDate(var GenJnlLine: Record "Gen. Journal Line"; DueDate: Date; PostingDate: Date): Boolean
     begin
         IF NOT UseDueDateAsPostingDate THEN BEGIN
             GenJnlLine.VALIDATE("Posting Date", PostingDate);
@@ -1011,7 +1006,7 @@ report 393 "Suggest Vendor Payments"
 
     local procedure GetApplDueDate(VendLedgEntryNo: Integer): Date
     var
-        AppliedVendLedgEntry: Record "25";
+        AppliedVendLedgEntry: Record "Vendor Ledger Entry";
     begin
         IF AppliedVendLedgEntry.GET(VendLedgEntryNo) THEN
             EXIT(AppliedVendLedgEntry."Due Date");
@@ -1019,7 +1014,7 @@ report 393 "Suggest Vendor Payments"
         EXIT(PostingDate);
     end;
 
-    local procedure AdjustAgainstSelectedDim(var TempDimSetEntry: Record "480" temporary; var TempDimSetEntry2: Record "480" temporary): Boolean
+    local procedure AdjustAgainstSelectedDim(var TempDimSetEntry: Record "Dimension Set Entry" temporary; var TempDimSetEntry2: Record "Dimension Set Entry" temporary): Boolean //480
     begin
         IF SelectedDim.FINDSET THEN BEGIN
             REPEAT
@@ -1034,9 +1029,9 @@ report 393 "Suggest Vendor Payments"
         EXIT(FALSE);
     end;
 
-    local procedure SetTempPaymentBufferDims(var DimBuf: Record "360")
+    local procedure SetTempPaymentBufferDims(var DimBuf: Record "Dimension Buffer")
     var
-        GLSetup: Record "98";
+        GLSetup: Record "General Ledger Setup";
         EntryNo: Integer;
     begin
         IF SummarizePerDim THEN BEGIN
@@ -1077,9 +1072,9 @@ report 393 "Suggest Vendor Payments"
         END;
     end;
 
-    local procedure IsEntryAlreadyApplied(GenJnlLine3: Record "81"; VendLedgEntry2: Record "25"): Boolean
+    local procedure IsEntryAlreadyApplied(GenJnlLine3: Record "Gen. Journal Line"; VendLedgEntry2: Record "Vendor Ledger Entry"): Boolean
     var
-        GenJnlLine4: Record "81";
+        GenJnlLine4: Record "Gen. Journal Line";
     begin
         GenJnlLine4.SETRANGE("Journal Template Name", GenJnlLine3."Journal Template Name");
         GenJnlLine4.SETRANGE("Journal Batch Name", GenJnlLine3."Journal Batch Name");

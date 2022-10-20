@@ -1,8 +1,5 @@
 codeunit 50056 "DEL JSON WS : Price Mgt"
 {
-    // MGTS10.034      07.12.2021 : Create object
-
-
     trigger OnRun()
     begin
         CASE "Function" OF

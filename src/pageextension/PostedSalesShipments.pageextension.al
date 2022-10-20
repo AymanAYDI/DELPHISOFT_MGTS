@@ -29,7 +29,7 @@ pageextension 50011 "DEL PostedSalesShipments" extends "Posted Sales Shipments" 
                 var
                     SalesShptHeader: Record "Sales Shipment Header";
                 begin
-                    //TODOCLEAR(ExportBL2);
+                    CLEAR(ExportBL2);
                     CurrPage.SETSELECTIONFILTER(SalesShptHeader);
                     IF DATE2DMY(TODAY, 2) < 10 THEN
                         MM := '0' + FORMAT(DATE2DMY(TODAY, 2))
@@ -41,16 +41,16 @@ pageextension 50011 "DEL PostedSalesShipments" extends "Posted Sales Shipments" 
                         DD := FORMAT(DATE2DMY(TODAY, 1));
 
                     NMfichier := 'DESADV_' + FORMAT(DATE2DMY(TODAY, 3)) + MM + DD + DELCHR(FORMAT(TIME), '=', ':') + '.xml';
-                    //TODO ExportBL2.FILENAME(NMfichier);
-                    // ExportBL2.SETTABLEVIEW(SalesShptHeader);
-                    // ExportBL2.RUN;
+                    ExportBL2.FILENAME(NMfichier);
+                    ExportBL2.SETTABLEVIEW(SalesShptHeader);
+                    ExportBL2.RUN;
                 end;
             }
         }
     }
 
     var
-        //TODO ExportBL2: XMLport 50014;
+        ExportBL2: XMLport "DEL Hyperion Export";
         NMfichier: Text;
         MM: Text;
         DD: Text;
