@@ -1,8 +1,5 @@
-report 208 "Sales - Shipment"
+report 50071 "DEL Sales - Shipment"
 {
-    // DEL.SAZ     11.03.19
-    // 
-    // Mgts10.00.05.00      04.01.2022 : Replace "Vol cbm" GetVolCBM
     DefaultLayout = RDLC;
     RDLCLayout = './SalesShipment.rdlc';
 
@@ -11,21 +8,21 @@ report 208 "Sales - Shipment"
 
     dataset
     {
-        dataitem(DataItem3595; Table110)
+        dataitem("Sales Shipment Header"; "Sales Shipment Header")
         {
-            DataItemTableView = SORTING (No.);
+            DataItemTableView = SORTING("No.");
             RequestFilterFields = "No.", "Sell-to Customer No.", "No. Printed";
             RequestFilterHeading = 'Posted Sales Shipment';
             column(No_SalesShptHeader; "No.")
             {
             }
-            dataitem(CopyLoop; Table2000000026)
+            dataitem(CopyLoop; Integer)
             {
-                DataItemTableView = SORTING (Number);
-                dataitem(PageLoop; Table2000000026)
+                DataItemTableView = SORTING(Number);
+                dataitem(PageLoop; Integer)
                 {
-                    DataItemTableView = SORTING (Number)
-                                        WHERE (Number = CONST (1));
+                    DataItemTableView = SORTING(Number)
+                                        WHERE(Number = CONST(1));
                     column(CompanyInfo2Picture; CompanyInfo2.Picture)
                     {
                     }
@@ -242,11 +239,11 @@ report 208 "Sales - Shipment"
                     column(ExternalDocumentNo; "Sales Shipment Header"."External Document No.")
                     {
                     }
-                    dataitem(DimensionLoop1; Table2000000026)
+                    dataitem(DimensionLoop1; Integer)
                     {
                         DataItemLinkReference = "Sales Shipment Header";
-                        DataItemTableView = SORTING (Number)
-                                            WHERE (Number = FILTER (1 ..));
+                        DataItemTableView = SORTING(Number)
+                                            WHERE(Number = FILTER(1 ..));
                         column(DimText; DimText)
                         {
                         }
@@ -288,11 +285,11 @@ report 208 "Sales - Shipment"
                                 CurrReport.BREAK;
                         end;
                     }
-                    dataitem(DataItem2502; Table111)
+                    dataitem("Sales Shipment Line"; "Sales Shipment Line")
                     {
-                        DataItemLink = Document No.=FIELD(No.);
+                        DataItemLink = "Document No." = FIELD("No.");
                         DataItemLinkReference = "Sales Shipment Header";
-                        DataItemTableView = SORTING (Document No., Line No.);
+                        DataItemTableView = SORTING("Document No.", "Line No.");
                         column(Description_SalesShptLine; Description)
                         {
                         }
@@ -356,7 +353,7 @@ report 208 "Sales - Shipment"
                         column(NetWeight; "Net Weight")
                         {
                         }
-                        column(Volcbmcartontransport; Item_Rec."Vol cbm carton transport")
+                        column(Volcbmcartontransport; Item_Rec."DEL Vol cbm carton transport")
                         {
                         }
                         column(Volcbm; Item_Rec.GetVolCBM(TRUE))
@@ -365,10 +362,10 @@ report 208 "Sales - Shipment"
                         column(CrossReference; "Cross-Reference No.")
                         {
                         }
-                        dataitem(DimensionLoop2; Table2000000026)
+                        dataitem(DimensionLoop2; Integer)
                         {
-                            DataItemTableView = SORTING (Number)
-                                                WHERE (Number = FILTER (1 ..));
+                            DataItemTableView = SORTING(Number)
+                                                WHERE(Number = FILTER(1 ..));
                             column(DimText1; DimText)
                             {
                             }
@@ -410,9 +407,9 @@ report 208 "Sales - Shipment"
                                     CurrReport.BREAK;
                             end;
                         }
-                        dataitem(DisplayAsmInfo; Table2000000026)
+                        dataitem(DisplayAsmInfo; Integer)
                         {
-                            DataItemTableView = SORTING (Number);
+                            DataItemTableView = SORTING(Number);
                             column(PostedAsmLineItemNo; BlanksForIndent + PostedAsmLine."No.")
                             {
                             }
@@ -425,12 +422,11 @@ report 208 "Sales - Shipment"
                             }
                             column(PostedAsmLineUOMCode; GetUnitOfMeasureDescr(PostedAsmLine."Unit of Measure Code"))
                             {
-                                DecimalPlaces = 0 : 5;
                             }
 
                             trigger OnAfterGetRecord()
                             var
-                                ItemTranslation: Record "30";
+                                ItemTranslation: Record 30;
                             begin
                                 IF Number = 1 THEN
                                     PostedAsmLine.FINDSET
@@ -500,15 +496,15 @@ report 208 "Sales - Shipment"
                             NewPageLine := FALSE;
                         end;
                     }
-                    dataitem(Total; Table2000000026)
+                    dataitem(Total; Integer)
                     {
-                        DataItemTableView = SORTING (Number)
-                                            WHERE (Number = CONST (1));
+                        DataItemTableView = SORTING(Number)
+                                            WHERE(Number = CONST(1));
                     }
-                    dataitem(Total2; Table2000000026)
+                    dataitem(Total2; Integer)
                     {
-                        DataItemTableView = SORTING (Number)
-                                            WHERE (Number = CONST (1));
+                        DataItemTableView = SORTING(Number)
+                                            WHERE(Number = CONST(1));
 
                         trigger OnPreDataItem()
                         begin
@@ -516,9 +512,9 @@ report 208 "Sales - Shipment"
                                 CurrReport.BREAK;
                         end;
                     }
-                    dataitem(ItemTrackingLine; Table2000000026)
+                    dataitem(ItemTrackingLine; Integer)
                     {
-                        DataItemTableView = SORTING (Number);
+                        DataItemTableView = SORTING(Number);
                         column(TrackingSpecBufferNo; TrackingSpecBuffer."Item No.")
                         {
                         }
@@ -555,10 +551,10 @@ report 208 "Sales - Shipment"
                         column(NoCaption; NoCaptionLbl)
                         {
                         }
-                        dataitem(TotalItemTracking; Table2000000026)
+                        dataitem(TotalItemTracking; Integer)
                         {
-                            DataItemTableView = SORTING (Number)
-                                                WHERE (Number = CONST (1));
+                            DataItemTableView = SORTING(Number)
+                                                WHERE(Number = CONST(1));
                             column(Quantity1; TotalQty)
                             {
                             }
@@ -750,24 +746,24 @@ report 208 "Sales - Shipment"
 
     var
         Text002: Label 'Sales - Shipment %1', Comment = '%1 = Document No.';
-        SalesPurchPerson: Record "13";
-        CompanyInfo: Record "79";
-        CompanyInfo1: Record "79";
-        CompanyInfo2: Record "79";
-        CompanyInfo3: Record "79";
-        SalesSetup: Record "311";
-        DimSetEntry1: Record "480";
-        DimSetEntry2: Record "480";
-        Language: Record "8";
-        TrackingSpecBuffer: Record "336" temporary;
-        PostedAsmHeader: Record "910";
-        PostedAsmLine: Record "911";
-        RespCenter: Record "5714";
-        ItemTrackingAppendix: Report "6521";
-        FormatAddr: Codeunit "365";
-        FormatDocument: Codeunit "368";
-        SegManagement: Codeunit "5051";
-        ItemTrackingDocMgt: Codeunit "6503";
+        SalesPurchPerson: Record 13;
+        CompanyInfo: Record 79;
+        CompanyInfo1: Record 79;
+        CompanyInfo2: Record 79;
+        CompanyInfo3: Record 79;
+        SalesSetup: Record 311;
+        DimSetEntry1: Record 480;
+        DimSetEntry2: Record 480;
+        Language: Record 8;
+        TrackingSpecBuffer: Record 336 temporary;
+        PostedAsmHeader: Record 910;
+        PostedAsmLine: Record 911;
+        RespCenter: Record 5714;
+        ItemTrackingAppendix: Report 6521;
+        FormatAddr: Codeunit 365;
+        FormatDocument: Codeunit 368;
+        SegManagement: Codeunit 5051;
+        ItemTrackingDocMgt: Codeunit 6503;
         CustAddr: array[8] of Text[50];
         ShipToAddr: array[8] of Text[50];
         CompanyAddr: array[8] of Text[50];
@@ -840,17 +836,17 @@ report 208 "Sales - Shipment"
         NewPageGroupNo: Integer;
         NewPageLine: Boolean;
         BilAdr: array[5] of Text;
-        ShiptoAddress_Rec: Record "222";
+        ShiptoAddress_Rec: Record 222;
         BilAdr2: array[5] of Text;
-        Item_Rec: Record "27";
+        Item_Rec: Record 27;
 
-    [Scope('Internal')]
+
     procedure InitLogInteraction()
     begin
         LogInteraction := SegManagement.FindInteractTmplCode(5) <> '';
     end;
 
-    [Scope('Internal')]
+
     procedure InitializeRequest(NewNoOfCopies: Integer; NewShowInternalInfo: Boolean; NewLogInteraction: Boolean; NewShowCorrectionLines: Boolean; NewShowLotSN: Boolean; DisplayAsmInfo: Boolean)
     begin
         NoOfCopies := NewNoOfCopies;
@@ -861,14 +857,14 @@ report 208 "Sales - Shipment"
         DisplayAssemblyInformation := DisplayAsmInfo;
     end;
 
-    local procedure FormatAddressFields(SalesShipmentHeader: Record "110")
+    local procedure FormatAddressFields(SalesShipmentHeader: Record 110)
     begin
         FormatAddr.GetCompanyAddr(SalesShipmentHeader."Responsibility Center", RespCenter, CompanyInfo, CompanyAddr);
         FormatAddr.SalesShptShipTo(ShipToAddr, SalesShipmentHeader);
         ShowCustAddr := FormatAddr.SalesShptBillTo(CustAddr, ShipToAddr, SalesShipmentHeader);
     end;
 
-    local procedure FormatDocumentFields(SalesShipmentHeader: Record "110")
+    local procedure FormatDocumentFields(SalesShipmentHeader: Record 110)
     begin
         WITH SalesShipmentHeader DO BEGIN
             FormatDocument.SetSalesPerson(SalesPurchPerson, "Salesperson Code", SalesPersonText);
@@ -878,20 +874,20 @@ report 208 "Sales - Shipment"
 
     local procedure GetUnitOfMeasureDescr(UOMCode: Code[10]): Text[10]
     var
-        UnitOfMeasure: Record "204";
+        UnitOfMeasure: Record 204;
     begin
         IF NOT UnitOfMeasure.GET(UOMCode) THEN
             EXIT(UOMCode);
         EXIT(UnitOfMeasure.Description);
     end;
 
-    [Scope('Internal')]
+
     procedure BlanksForIndent(): Text[10]
     begin
         EXIT(PADSTR('', 2, ' '));
     end;
 
-    [Scope('Internal')]
+
     procedure PrepareHeader()
     begin
         CLEAR(HeaderLabel);
@@ -920,11 +916,11 @@ report 208 "Sales - Shipment"
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure PrepareFooter()
     var
-        PmtMethod: Record "3";
-        ShipMethod: Record "10";
+        PmtMethod: Record 3;
+        ShipMethod: Record 10;
     begin
         CLEAR(FooterLabel);
         CLEAR(FooterTxt);

@@ -17,7 +17,7 @@ codeunit 50057 "DEL Vendor Payment Advice Mgt."
         Vendor: Record Vendor;
         CompanyInfo: Record "Company Information";
         GeneralSetup: Record "DEL General Setup";
-        SendFromName: Text;
+        SendFromName: Text[100];
         SendFromAddress: Text;
         SendToAddress: Text;
         SubjectMail: Text;
@@ -180,7 +180,7 @@ codeunit 50057 "DEL Vendor Payment Advice Mgt."
         CustRec: Record Customer;
 
     begin
-        //TODO _ServerAttachmentFilePath := COPYSTR(FileMgt.ServerTempFileName('pdf'), 1, 250);  => code source
+        //TODO   // _ServerAttachmentFilePath := COPYSTR(FileMgt.ServerTempFileName('pdf'), 1, 250);
 
         GenJournalLine."Journal Template Name" := _JournalTemplateName;
         GenJournalLine."Journal Batch Name" := _JournalBatchName;

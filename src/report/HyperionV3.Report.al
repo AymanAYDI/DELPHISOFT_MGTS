@@ -250,19 +250,10 @@ report 50023 "DEL Hyperion V3"
             DateNow_Te := DELCHR(FORMAT(TODAY), '=', ':/.');
             TimeNow_Te := DELCHR(FORMAT(TIME), '=', ':/.');
         END;
-        // TODO //FILE : just to check the new code 
-
         TempBlob.CreateOutStream(OStream);
         XMLPORT.Export(50011, OStream);
         FileManagement.BLOBExport(TempBlob, 'HFM_' + GeneralSetup_Re."Hyperion Company Code" + '_' + StartDate_Loc_Te + '_' + EndDate_Loc_Te + '_' + DateNow_Te + '_' + TimeNow_Te + '.csv', true);
         Dialog_Di.CLOSE();
-
-        /*    CustXmlFile_Fi.CREATE(GeneralSetup_Re."Hyperion File" + '\HFM_' + GeneralSetup_Re."Hyperion Company Code" + '_' + StartDate_Loc_Te + '_' + EndDate_Loc_Te + '_' + DateNow_Te + '_' + TimeNow_Te + '.csv');
-           CustXmlFile_Fi.CREATEOUTSTREAM(XmlStream_Os);
-           XMLPORT.EXPORT(50011, XmlStream_Os);
-           CustXmlFile_Fi.CLOSE; */
-
-
     end;
 
     trigger OnPreReport()
