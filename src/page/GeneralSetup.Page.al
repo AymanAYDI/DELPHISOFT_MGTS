@@ -191,6 +191,30 @@ page 50000 "DEL General Setup"
                     Caption = 'Default Email Template';
                 }
             }
+            group("Email Recipient")
+            {
+                Caption = 'Email Recipient';
+                field(Mail1; Rec.Mail1)
+                {
+                    Caption = 'Email Recipient 1';
+                }
+                field(Mail2; Rec.Mail2)
+                {
+                    Caption = 'Email Recipient 2';
+                }
+                field(Mail3; Rec.Mail3)
+                {
+                    Caption = 'Email Recipient 3';
+                }
+                field(Mail4; Rec.Mail4)
+                {
+                    Caption = 'Email Recipient 4';
+                }
+                field(Mail5; Rec.Mail5)
+                {
+                    Caption = 'Email Recipient 5';
+                }
+            }
         }
     }
 

@@ -1,17 +1,15 @@
-report 699 "Calculate Plan - Req. Wksh."
+report 50079 "Calculate Plan - Req. Wksh."
 {
-    // -- THM   04.06.13   Migration 2013   added "Date prochaine commande"    ReqFilterFields
-
     Caption = 'Calculate Plan - Req. Wksh.';
     ProcessingOnly = true;
 
     dataset
     {
-        dataitem(DataItem8129; Table27)
+        dataitem(Item; Item)
         {
-            DataItemTableView = SORTING (Low-Level Code)
-                                WHERE (Type = CONST (Inventory));
-            RequestFilterFields = "No.", "Search Description", "Location Filter", "Date prochaine commande";
+            DataItemTableView = SORTING("Low-Level Code")
+                                WHERE(Type = CONST(Inventory));
+            RequestFilterFields = "No.", "Search Description", "Location Filter", "DEL Date prochaine commande";
 
             trigger OnAfterGetRecord()
             begin
@@ -20,12 +18,12 @@ report 699 "Calculate Plan - Req. Wksh."
                 Counter := Counter + 1;
 
                 IF SkipPlanningForItemOnReqWksh(Item) THEN
-                    CurrReport.SKIP;
+                    CurrReport.SKIP();
 
                 PlanningAssignment.SETRANGE("Item No.", "No.");
 
-                ReqLine.LOCKTABLE;
-                ActionMessageEntry.LOCKTABLE;
+                ReqLine.LOCKTABLE();
+                ActionMessageEntry.LOCKTABLE();
 
                 PurchReqLine.SETRANGE("No.", "No.");
                 PurchReqLine.MODIFYALL("Accept Action Message", FALSE);
@@ -36,7 +34,7 @@ report 699 "Calculate Plan - Req. Wksh."
                 IF ReqLineExtern.FIND('-') THEN
                     REPEAT
                         ReqLineExtern.DELETE(TRUE);
-                    UNTIL ReqLineExtern.NEXT = 0;
+                    UNTIL ReqLineExtern.NEXT() = 0;
 
                 InvtProfileOffsetting.SetParm(UseForecast, ExcludeForecastBefore, CurrWorksheetType);
                 InvtProfileOffsetting.CalculatePlanFromWorksheet(
@@ -53,11 +51,11 @@ report 699 "Calculate Plan - Req. Wksh."
                     REPEAT
                         IF PlanningAssignment."Latest Date" <= ToDate THEN BEGIN
                             PlanningAssignment.Inactive := TRUE;
-                            PlanningAssignment.MODIFY;
+                            PlanningAssignment.MODIFY();
                         END;
-                    UNTIL PlanningAssignment.NEXT = 0;
+                    UNTIL PlanningAssignment.NEXT() = 0;
 
-                COMMIT;
+                COMMIT();
             end;
 
             trigger OnPreDataItem()
@@ -129,7 +127,7 @@ report 699 "Calculate Plan - Req. Wksh."
 
         trigger OnOpenPage()
         begin
-            MfgSetup.GET;
+            MfgSetup.GET();
             UseForecast := MfgSetup."Current Production Forecast";
         end;
     }
@@ -140,7 +138,7 @@ report 699 "Calculate Plan - Req. Wksh."
 
     trigger OnPreReport()
     var
-        ProductionForecastEntry: Record "99000852";
+        ProductionForecastEntry: Record "Production Forecast Entry";
     begin
         Counter := 0;
         IF FromDate = 0D THEN
@@ -177,14 +175,14 @@ report 699 "Calculate Plan - Req. Wksh."
         Text005: Label 'You must not use a variant filter when calculating MPS from a forecast.';
         Text006: Label 'Calculating the plan...\\';
         Text007: Label 'Item No.  #1##################';
-        ReqLine: Record "246";
-        ActionMessageEntry: Record "99000849";
-        ReqLineExtern: Record "246";
-        PurchReqLine: Record "246";
-        SKU: Record "5700";
-        PlanningAssignment: Record "99000850";
-        MfgSetup: Record "99000765";
-        InvtProfileOffsetting: Codeunit "99000854";
+        ReqLine: Record "Requisition Line";
+        ActionMessageEntry: Record "Action Message Entry";
+        ReqLineExtern: Record "Requisition Line";
+        PurchReqLine: Record "Requisition Line";
+        SKU: Record "Stockkeeping Unit";
+        PlanningAssignment: Record "Planning Assignment";
+        MfgSetup: Record "Manufacturing Setup";
+        InvtProfileOffsetting: Codeunit "Inventory Profile Offsetting";
         Window: Dialog;
         CurrWorksheetType: Option Requisition,Planning;
         PeriodLength: Integer;
@@ -199,21 +197,19 @@ report 699 "Calculate Plan - Req. Wksh."
         ExcludeForecastBefore: Date;
         RespectPlanningParm: Boolean;
 
-    [Scope('Internal')]
     procedure SetTemplAndWorksheet(TemplateName: Code[10]; WorksheetName: Code[10])
     begin
         CurrTemplateName := TemplateName;
         CurrWorksheetName := WorksheetName;
     end;
 
-    [Scope('Internal')]
     procedure InitializeRequest(StartDate: Date; EndDate: Date)
     begin
         FromDate := StartDate;
         ToDate := EndDate;
     end;
 
-    local procedure SkipPlanningForItemOnReqWksh(Item: Record "27"): Boolean
+    local procedure SkipPlanningForItemOnReqWksh(Item: Record Item): Boolean
     begin
         WITH Item DO
             IF (CurrWorksheetType = CurrWorksheetType::Requisition) AND
@@ -232,7 +228,7 @@ report 699 "Calculate Plan - Req. Wksh."
                        ("Reordering Policy" <> "Reordering Policy"::" ")
                     THEN
                         EXIT(FALSE);
-                UNTIL NEXT = 0;
+                UNTIL NEXT() = 0;
         END;
 
         EXIT(TRUE);

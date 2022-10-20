@@ -2,38 +2,6 @@ tableextension 50040 "DEL SalesPrice" extends "Sales Price"
 {
     fields
     {
-
-
-        //Unsupported feature: Code Modification on ""Item No."(Field 1).OnValidate". TODO: yes
-
-        //trigger "(Field 1)()
-        //Parameters and return type have not been exported.
-        //>>>> ORIGINAL CODE:
-        //begin
-        /*
-        IF "Item No." <> xRec."Item No." THEN BEGIN
-          Item.GET("Item No.");
-          "Unit of Measure Code" := Item."Sales Unit of Measure";
-          "Variant Code" := '';
-        END;
-
-        IF "Sales Type" = "Sales Type"::"Customer Price Group" THEN
-        #8..10
-            EXIT;
-
-        UpdateValuesFromItem;
-        */
-        //end;
-        //>>>> MODIFIED CODE:
-        //begin
-        /*
-        #1..4
-          //THM010218 START
-          "Vendor No.":=Item."Vendor No.";
-          //THM010218 END
-        #5..13
-        */
-        //end;P
         field(50000; "DEL Vendor No."; Code[20])
         {
             Caption = 'Vendor No.';

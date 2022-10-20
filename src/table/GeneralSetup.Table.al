@@ -246,6 +246,26 @@ table 50000 "DEL General Setup"
 
             //TODO  TableRelation = "DocMatrix Email Codes".Code;
         }
+        field(50015; Mail1; Text[250])
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(50016; Mail2; Text[250])
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(50017; Mail3; Text[250])
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(50018; Mail4; Text[250])
+        {
+            DataClassification = ToBeClassified;
+        }
+        field(50019; Mail5; Text[250])
+        {
+            DataClassification = ToBeClassified;
+        }
     }
 
     keys

@@ -1,4 +1,4 @@
-report 1322 "Standard Purchase - Order"
+report 50080 "DEL Standard Purchase - Order"
 {
     RDLCLayout = './StandardPurchaseOrder.rdlc';
     WordLayout = './StandardPurchaseOrder.docx';
@@ -10,10 +10,10 @@ report 1322 "Standard Purchase - Order"
 
     dataset
     {
-        dataitem(DataItem1; Table38)
+        dataitem("Purchase Header"; "Purchase Header")
         {
-            DataItemTableView = SORTING (Document Type, No.)
-                                WHERE (Document Type=CONST(Order));
+            DataItemTableView = SORTING("Document Type", "No.")
+                                WHERE("Document Type" = CONST(Order));
             RequestFilterFields = "No.", "Buy-from Vendor No.", "No. Printed";
             RequestFilterHeading = 'Standard Purchase - Order';
             column(PHExpectedReceiptDat; FORMAT("Expected Receipt Date"))
@@ -25,10 +25,10 @@ report 1322 "Standard Purchase - Order"
             column(PHPromisedReceiptDat; FORMAT("Promised Receipt Date"))
             {
             }
-            column(PHRequestedDeliveryDate; FORMAT("Requested Delivery Date"))
+            column(PHRequestedDeliveryDate; FORMAT("DEL Requested Delivery Date"))
             {
             }
-            column(PHShipPer; "Purchase Header"."Ship Per")
+            column(PHShipPer; "Purchase Header"."DEL Ship Per")
             {
             }
             column(PHPortdedepart; "Purchase Header"."Port de départ")
@@ -40,7 +40,7 @@ report 1322 "Standard Purchase - Order"
             column(PHCodeevenement; FORMAT("Purchase Header"."Code événement"))
             {
             }
-            column(PHForwardingAgentCod; "Purchase Header"."Forwarding Agent Code")
+            column(PHForwardingAgentCod; "Purchase Header"."DEL Forwarding Agent Code")
             {
             }
             column(PHNa; "Purchase Header"."Pay-to Name")
@@ -127,34 +127,34 @@ report 1322 "Standard Purchase - Order"
             column(CompanyLogoPosition; CompanyLogoPosition)
             {
             }
-            column(CompanyRegistrationNumber; CompanyInfo.GetRegistrationNumber)
+            column(CompanyRegistrationNumber; CompanyInfo.GetRegistrationNumber())
             {
             }
-            column(CompanyRegistrationNumber_Lbl; CompanyInfo.GetRegistrationNumberLbl)
+            column(CompanyRegistrationNumber_Lbl; CompanyInfo.GetRegistrationNumberLbl())
             {
             }
-            column(CompanyVATRegNo; CompanyInfo.GetVATRegistrationNumber)
+            column(CompanyVATRegNo; CompanyInfo.GetVATRegistrationNumber())
             {
             }
-            column(CompanyVATRegNo_Lbl; CompanyInfo.GetVATRegistrationNumberLbl)
+            column(CompanyVATRegNo_Lbl; CompanyInfo.GetVATRegistrationNumberLbl())
             {
             }
-            column(CompanyVATRegistrationNo; CompanyInfo.GetVATRegistrationNumber)
+            column(CompanyVATRegistrationNo; CompanyInfo.GetVATRegistrationNumber())
             {
             }
-            column(CompanyVATRegistrationNo_Lbl; CompanyInfo.GetVATRegistrationNumberLbl)
+            column(CompanyVATRegistrationNo_Lbl; CompanyInfo.GetVATRegistrationNumberLbl())
             {
             }
-            column(CompanyLegalOffice; CompanyInfo.GetLegalOffice)
+            column(CompanyLegalOffice; CompanyInfo.GetLegalOffice())
             {
             }
-            column(CompanyLegalOffice_Lbl; CompanyInfo.GetLegalOfficeLbl)
+            column(CompanyLegalOffice_Lbl; CompanyInfo.GetLegalOfficeLbl())
             {
             }
-            column(CompanyCustomGiro; CompanyInfo.GetCustomGiro)
+            column(CompanyCustomGiro; CompanyInfo.GetCustomGiro())
             {
             }
-            column(CompanyCustomGiro_Lbl; CompanyInfo.GetCustomGiroLbl)
+            column(CompanyCustomGiro_Lbl; CompanyInfo.GetCustomGiroLbl())
             {
             }
             column(DocType_PurchHeader; "Document Type")
@@ -217,7 +217,7 @@ report 1322 "Standard Purchase - Order"
             column(AllowInvoiceDisc_Lbl; AllowInvoiceDiscCaptionLbl)
             {
             }
-            column(CurrRepPageNo; STRSUBSTNO(PageLbl, FORMAT(CurrReport.PAGENO)))
+            column(CurrRepPageNo; STRSUBSTNO(PageLbl, FORMAT(CurrReport.PAGENO())))
             {
             }
             column(DocumentDate; FORMAT("Document Date"))
@@ -433,95 +433,95 @@ report 1322 "Standard Purchase - Order"
             column(OrderDate_Lbl; OrderDateLbl)
             {
             }
-            dataitem(DataItem4; Table39)
+            dataitem("Purchase Line"; "Purchase Line")
             {
-                DataItemLink = Document Type=FIELD(Document Type),
-                               Document No.=FIELD(No.);
-                DataItemTableView = SORTING(Document Type,Document No.,Line No.);
-                column(PHSSOrder;"Purchase Line"."Special Order Sales No.")
+                DataItemLink = "Document Type" = FIELD("Document Type"),
+                               "Document No." = FIELD("No.");
+                DataItemTableView = SORTING("Document Type", "Document No.", "Line No.");
+                column(PHSSOrder; "Purchase Line"."Special Order Sales No.")
                 {
                 }
-                column(LineNo_PurchLine;"Line No.")
+                column(LineNo_PurchLine; "Line No.")
                 {
                 }
-                column(AllowInvDisctxt;AllowInvDisctxt)
+                column(AllowInvDisctxt; AllowInvDisctxt)
                 {
                 }
-                column(Type_PurchLine;FORMAT(Type,0,2))
+                column(Type_PurchLine; FORMAT(Type, 0, 2))
                 {
                 }
-                column(No_PurchLine;"No.")
+                column(No_PurchLine; "No.")
                 {
                 }
-                column(Desc_PurchLine;Description)
+                column(Desc_PurchLine; Description)
                 {
                 }
-                column(Qty_PurchLine;Quantity)
+                column(Qty_PurchLine; Quantity)
                 {
                 }
-                column(UOM_PurchLine;"Unit of Measure")
+                column(UOM_PurchLine; "Unit of Measure")
                 {
                 }
-                column(DirUnitCost_PurchLine;"Direct Unit Cost")
+                column(DirUnitCost_PurchLine; "Direct Unit Cost")
                 {
                     AutoFormatExpression = "Purchase Header"."Currency Code";
                     AutoFormatType = 2;
                 }
-                column(LineDisc_PurchLine;"Line Discount %")
+                column(LineDisc_PurchLine; "Line Discount %")
                 {
                 }
-                column(LineAmt_PurchLine;"Line Amount")
+                column(LineAmt_PurchLine; "Line Amount")
                 {
                     AutoFormatExpression = "Purchase Header"."Currency Code";
                     AutoFormatType = 1;
                 }
-                column(AllowInvDisc_PurchLine;"Allow Invoice Disc.")
+                column(AllowInvDisc_PurchLine; "Allow Invoice Disc.")
                 {
                 }
-                column(VATIdentifier_PurchLine;"VAT Identifier")
+                column(VATIdentifier_PurchLine; "VAT Identifier")
                 {
                 }
-                column(InvDiscAmt_PurchLine;-"Inv. Discount Amount")
+                column(InvDiscAmt_PurchLine; -"Inv. Discount Amount")
                 {
                     AutoFormatExpression = "Currency Code";
                     AutoFormatType = 1;
                 }
-                column(TotalInclVAT;"Line Amount" - "Inv. Discount Amount")
+                column(TotalInclVAT; "Line Amount" - "Inv. Discount Amount")
                 {
                     AutoFormatExpression = "Purchase Header"."Currency Code";
                     AutoFormatType = 1;
                 }
-                column(DirectUniCost_Lbl;DirectUniCostCaptionLbl)
+                column(DirectUniCost_Lbl; DirectUniCostCaptionLbl)
                 {
                 }
-                column(PurchLineLineDisc_Lbl;PurchLineLineDiscCaptionLbl)
+                column(PurchLineLineDisc_Lbl; PurchLineLineDiscCaptionLbl)
                 {
                 }
-                column(VATDiscountAmount_Lbl;VATDiscountAmountCaptionLbl)
+                column(VATDiscountAmount_Lbl; VATDiscountAmountCaptionLbl)
                 {
                 }
-                column(No_PurchLine_Lbl;FIELDCAPTION("No."))
+                column(No_PurchLine_Lbl; FIELDCAPTION("No."))
                 {
                 }
-                column(Desc_PurchLine_Lbl;FIELDCAPTION(Description))
+                column(Desc_PurchLine_Lbl; FIELDCAPTION(Description))
                 {
                 }
-                column(Qty_PurchLine_Lbl;FIELDCAPTION(Quantity))
+                column(Qty_PurchLine_Lbl; FIELDCAPTION(Quantity))
                 {
                 }
-                column(UOM_PurchLine_Lbl;ItemUnitOfMeasureCaptionLbl)
+                column(UOM_PurchLine_Lbl; ItemUnitOfMeasureCaptionLbl)
                 {
                 }
-                column(VATIdentifier_PurchLine_Lbl;FIELDCAPTION("VAT Identifier"))
+                column(VATIdentifier_PurchLine_Lbl; FIELDCAPTION("VAT Identifier"))
                 {
                 }
-                column(AmountIncludingVAT;"Amount Including VAT")
+                column(AmountIncludingVAT; "Amount Including VAT")
                 {
                 }
-                column(TotalPriceCaption_Lbl;TotalPriceCaptionLbl)
+                column(TotalPriceCaption_Lbl; TotalPriceCaptionLbl)
                 {
                 }
-                column(InvDiscCaption_Lbl;InvDiscCaptionLbl)
+                column(InvDiscCaption_Lbl; InvDiscCaptionLbl)
                 {
                 }
 
@@ -533,124 +533,124 @@ report 1322 "Standard Purchase - Order"
                     TotalAmount += Amount;
                 end;
             }
-            dataitem(Totals;Table2000000026)
+            dataitem(Totals; Integer)
             {
                 DataItemTableView = SORTING(Number)
-                                    WHERE(Number=CONST(1));
-                column(VATAmountText;TempVATAmountLine.VATAmountText)
+                                    WHERE(Number = CONST(1));
+                column(VATAmountText; TempVATAmountLine.VATAmountText())
                 {
                 }
-                column(TotalVATAmount;VATAmount)
-                {
-                    AutoFormatExpression = "Purchase Header"."Currency Code";
-                    AutoFormatType = 1;
-                }
-                column(TotalVATDiscountAmount;-VATDiscountAmount)
+                column(TotalVATAmount; VATAmount)
                 {
                     AutoFormatExpression = "Purchase Header"."Currency Code";
                     AutoFormatType = 1;
                 }
-                column(TotalVATBaseAmount;VATBaseAmount)
+                column(TotalVATDiscountAmount; -VATDiscountAmount)
                 {
                     AutoFormatExpression = "Purchase Header"."Currency Code";
                     AutoFormatType = 1;
                 }
-                column(TotalAmountInclVAT;TotalAmountInclVAT)
+                column(TotalVATBaseAmount; VATBaseAmount)
                 {
                     AutoFormatExpression = "Purchase Header"."Currency Code";
                     AutoFormatType = 1;
                 }
-                column(TotalInclVATText;TotalInclVATText)
-                {
-                }
-                column(TotalExclVATText;TotalExclVATText)
-                {
-                }
-                column(TotalSubTotal;TotalSubTotal)
+                column(TotalAmountInclVAT; TotalAmountInclVAT)
                 {
                     AutoFormatExpression = "Purchase Header"."Currency Code";
                     AutoFormatType = 1;
                 }
-                column(TotalInvoiceDiscountAmount;TotalInvoiceDiscountAmount)
+                column(TotalInclVATText; TotalInclVATText)
+                {
+                }
+                column(TotalExclVATText; TotalExclVATText)
+                {
+                }
+                column(TotalSubTotal; TotalSubTotal)
                 {
                     AutoFormatExpression = "Purchase Header"."Currency Code";
                     AutoFormatType = 1;
                 }
-                column(TotalAmount;TotalAmount)
+                column(TotalInvoiceDiscountAmount; TotalInvoiceDiscountAmount)
                 {
                     AutoFormatExpression = "Purchase Header"."Currency Code";
                     AutoFormatType = 1;
                 }
-                column(TotalText;TotalText)
+                column(TotalAmount; TotalAmount)
+                {
+                    AutoFormatExpression = "Purchase Header"."Currency Code";
+                    AutoFormatType = 1;
+                }
+                column(TotalText; TotalText)
                 {
                 }
 
                 trigger OnAfterGetRecord()
                 var
-                    TempPrepmtPurchLine: Record "39" temporary;
+                    TempPrepmtPurchLine: Record "Purchase Line" temporary;
                 begin
                     CLEAR(TempPurchLine);
                     CLEAR(PurchPost);
-                    TempPurchLine.DELETEALL;
-                    TempVATAmountLine.DELETEALL;
-                    PurchPost.GetPurchLines("Purchase Header",TempPurchLine,0);
-                    TempPurchLine.CalcVATAmountLines(0,"Purchase Header",TempPurchLine,TempVATAmountLine);
-                    TempPurchLine.UpdateVATOnLines(0,"Purchase Header",TempPurchLine,TempVATAmountLine);
-                    VATAmount := TempVATAmountLine.GetTotalVATAmount;
-                    VATBaseAmount := TempVATAmountLine.GetTotalVATBase;
+                    TempPurchLine.DELETEALL();
+                    TempVATAmountLine.DELETEALL();
+                    PurchPost.GetPurchLines("Purchase Header", TempPurchLine, 0);
+                    TempPurchLine.CalcVATAmountLines(0, "Purchase Header", TempPurchLine, TempVATAmountLine);
+                    TempPurchLine.UpdateVATOnLines(0, "Purchase Header", TempPurchLine, TempVATAmountLine);
+                    VATAmount := TempVATAmountLine.GetTotalVATAmount();
+                    VATBaseAmount := TempVATAmountLine.GetTotalVATBase();
                     VATDiscountAmount :=
-                      TempVATAmountLine.GetTotalVATDiscount("Purchase Header"."Currency Code","Purchase Header"."Prices Including VAT");
-                    TotalAmountInclVAT := TempVATAmountLine.GetTotalAmountInclVAT;
+                      TempVATAmountLine.GetTotalVATDiscount("Purchase Header"."Currency Code", "Purchase Header"."Prices Including VAT");
+                    TotalAmountInclVAT := TempVATAmountLine.GetTotalAmountInclVAT();
 
-                    TempPrepaymentInvLineBuffer.DELETEALL;
-                    PurchasePostPrepayments.GetPurchLines("Purchase Header",0,TempPrepmtPurchLine);
+                    TempPrepaymentInvLineBuffer.DELETEALL();
+                    PurchasePostPrepayments.GetPurchLines("Purchase Header", 0, TempPrepmtPurchLine);
                     IF NOT TempPrepmtPurchLine.ISEMPTY THEN BEGIN
-                      PurchasePostPrepayments.GetPurchLinesToDeduct("Purchase Header",TempPurchLine);
-                      IF NOT TempPurchLine.ISEMPTY THEN
-                        PurchasePostPrepayments.CalcVATAmountLines("Purchase Header",TempPurchLine,TempPrePmtVATAmountLineDeduct,1);
+                        PurchasePostPrepayments.GetPurchLinesToDeduct("Purchase Header", TempPurchLine);
+                        IF NOT TempPurchLine.ISEMPTY THEN
+                            PurchasePostPrepayments.CalcVATAmountLines("Purchase Header", TempPurchLine, TempPrePmtVATAmountLineDeduct, 1);
                     END;
-                    PurchasePostPrepayments.CalcVATAmountLines("Purchase Header",TempPrepmtPurchLine,TempPrepmtVATAmountLine,0);
+                    PurchasePostPrepayments.CalcVATAmountLines("Purchase Header", TempPrepmtPurchLine, TempPrepmtVATAmountLine, 0);
                     TempPrepmtVATAmountLine.DeductVATAmountLine(TempPrePmtVATAmountLineDeduct);
-                    PurchasePostPrepayments.UpdateVATOnLines("Purchase Header",TempPrepmtPurchLine,TempPrepmtVATAmountLine,0);
-                    PurchasePostPrepayments.BuildInvLineBuffer2("Purchase Header",TempPrepmtPurchLine,0,TempPrepaymentInvLineBuffer);
-                    PrepmtVATAmount := TempPrepmtVATAmountLine.GetTotalVATAmount;
-                    PrepmtVATBaseAmount := TempPrepmtVATAmountLine.GetTotalVATBase;
-                    PrepmtTotalAmountInclVAT := TempPrepmtVATAmountLine.GetTotalAmountInclVAT;
+                    PurchasePostPrepayments.UpdateVATOnLines("Purchase Header", TempPrepmtPurchLine, TempPrepmtVATAmountLine, 0);
+                    PurchasePostPrepayments.BuildInvLineBuffer("Purchase Header", TempPrepmtPurchLine, 0, TempPrepaymentInvLineBuffer);
+                    PrepmtVATAmount := TempPrepmtVATAmountLine.GetTotalVATAmount();
+                    PrepmtVATBaseAmount := TempPrepmtVATAmountLine.GetTotalVATBase();
+                    PrepmtTotalAmountInclVAT := TempPrepmtVATAmountLine.GetTotalAmountInclVAT();
                 end;
             }
-            dataitem(VATCounter;Table2000000026)
+            dataitem(VATCounter; Integer)
             {
                 DataItemTableView = SORTING(Number);
-                column(VATAmtLineVATBase;TempVATAmountLine."VAT Base")
+                column(VATAmtLineVATBase; TempVATAmountLine."VAT Base")
                 {
                     AutoFormatExpression = "Purchase Header"."Currency Code";
                     AutoFormatType = 1;
                 }
-                column(VATAmtLineVATAmt;TempVATAmountLine."VAT Amount")
+                column(VATAmtLineVATAmt; TempVATAmountLine."VAT Amount")
                 {
                     AutoFormatExpression = "Purchase Header"."Currency Code";
                     AutoFormatType = 1;
                 }
-                column(VATAmtLineLineAmt;TempVATAmountLine."Line Amount")
+                column(VATAmtLineLineAmt; TempVATAmountLine."Line Amount")
                 {
                     AutoFormatExpression = "Purchase Header"."Currency Code";
                     AutoFormatType = 1;
                 }
-                column(VATAmtLineInvDiscBaseAmt;TempVATAmountLine."Inv. Disc. Base Amount")
+                column(VATAmtLineInvDiscBaseAmt; TempVATAmountLine."Inv. Disc. Base Amount")
                 {
                     AutoFormatExpression = "Purchase Header"."Currency Code";
                     AutoFormatType = 1;
                 }
-                column(VATAmtLineInvDiscAmt;TempVATAmountLine."Invoice Discount Amount")
+                column(VATAmtLineInvDiscAmt; TempVATAmountLine."Invoice Discount Amount")
                 {
                     AutoFormatExpression = "Purchase Header"."Currency Code";
                     AutoFormatType = 1;
                 }
-                column(VATAmtLineVAT;TempVATAmountLine."VAT %")
+                column(VATAmtLineVAT; TempVATAmountLine."VAT %")
                 {
-                    DecimalPlaces = 0:5;
+                    DecimalPlaces = 0 : 5;
                 }
-                column(VATAmtLineVATIdentifier;TempVATAmountLine."VAT Identifier")
+                column(VATAmtLineVATIdentifier; TempVATAmountLine."VAT Identifier")
                 {
                 }
 
@@ -662,27 +662,27 @@ report 1322 "Standard Purchase - Order"
                 trigger OnPreDataItem()
                 begin
                     IF VATAmount = 0 THEN
-                      CurrReport.BREAK;
-                    SETRANGE(Number,1,TempVATAmountLine.COUNT);
+                        CurrReport.BREAK();
+                    SETRANGE(Number, 1, TempVATAmountLine.COUNT);
                     CurrReport.CREATETOTALS(
-                      TempVATAmountLine."Line Amount",TempVATAmountLine."Inv. Disc. Base Amount",
-                      TempVATAmountLine."Invoice Discount Amount",TempVATAmountLine."VAT Base",TempVATAmountLine."VAT Amount");
+                      TempVATAmountLine."Line Amount", TempVATAmountLine."Inv. Disc. Base Amount",
+                      TempVATAmountLine."Invoice Discount Amount", TempVATAmountLine."VAT Base", TempVATAmountLine."VAT Amount");
                 end;
             }
-            dataitem(VATCounterLCY;Table2000000026)
+            dataitem(VATCounterLCY; Integer)
             {
                 DataItemTableView = SORTING(Number);
-                column(VALExchRate;VALExchRate)
+                column(VALExchRate; VALExchRate)
                 {
                 }
-                column(VALSpecLCYHeader;VALSpecLCYHeader)
+                column(VALSpecLCYHeader; VALSpecLCYHeader)
                 {
                 }
-                column(VALVATAmountLCY;VALVATAmountLCY)
+                column(VALVATAmountLCY; VALVATAmountLCY)
                 {
                     AutoFormatType = 1;
                 }
-                column(VALVATBaseLCY;VALVATBaseLCY)
+                column(VALVATBaseLCY; VALVATBaseLCY)
                 {
                     AutoFormatType = 1;
                 }
@@ -692,126 +692,126 @@ report 1322 "Standard Purchase - Order"
                     TempVATAmountLine.GetLine(Number);
                     VALVATBaseLCY :=
                       TempVATAmountLine.GetBaseLCY(
-                        "Purchase Header"."Posting Date","Purchase Header"."Currency Code","Purchase Header"."Currency Factor");
+                        "Purchase Header"."Posting Date", "Purchase Header"."Currency Code", "Purchase Header"."Currency Factor");
                     VALVATAmountLCY :=
                       TempVATAmountLine.GetAmountLCY(
-                        "Purchase Header"."Posting Date","Purchase Header"."Currency Code","Purchase Header"."Currency Factor");
+                        "Purchase Header"."Posting Date", "Purchase Header"."Currency Code", "Purchase Header"."Currency Factor");
                 end;
 
                 trigger OnPreDataItem()
                 begin
                     IF (NOT GLSetup."Print VAT specification in LCY") OR
                        ("Purchase Header"."Currency Code" = '') OR
-                       (TempVATAmountLine.GetTotalVATAmount = 0)
+                       (TempVATAmountLine.GetTotalVATAmount() = 0)
                     THEN
-                      CurrReport.BREAK;
+                        CurrReport.BREAK();
 
-                    SETRANGE(Number,1,TempVATAmountLine.COUNT);
+                    SETRANGE(Number, 1, TempVATAmountLine.COUNT);
 
                     IF GLSetup."LCY Code" = '' THEN
-                      VALSpecLCYHeader := VATAmountSpecificationLbl + LocalCurrentyLbl
+                        VALSpecLCYHeader := VATAmountSpecificationLbl + LocalCurrentyLbl
                     ELSE
-                      VALSpecLCYHeader := VATAmountSpecificationLbl + FORMAT(GLSetup."LCY Code");
+                        VALSpecLCYHeader := VATAmountSpecificationLbl + FORMAT(GLSetup."LCY Code");
 
-                    CurrExchRate.FindCurrency("Purchase Header"."Posting Date","Purchase Header"."Currency Code",1);
-                    VALExchRate := STRSUBSTNO(ExchangeRateLbl,CurrExchRate."Relational Exch. Rate Amount",CurrExchRate."Exchange Rate Amount");
+                    CurrExchRate.FindCurrency("Purchase Header"."Posting Date", "Purchase Header"."Currency Code", 1);
+                    VALExchRate := STRSUBSTNO(ExchangeRateLbl, CurrExchRate."Relational Exch. Rate Amount", CurrExchRate."Exchange Rate Amount");
                 end;
             }
-            dataitem(PrepmtLoop;Table2000000026)
+            dataitem(PrepmtLoop; Integer)
             {
                 DataItemTableView = SORTING(Number)
-                                    WHERE(Number=FILTER(1..));
-                column(PrepmtLineAmount;PrepmtLineAmount)
+                                    WHERE(Number = FILTER(1 ..));
+                column(PrepmtLineAmount; PrepmtLineAmount)
                 {
                     AutoFormatExpression = "Purchase Header"."Currency Code";
                     AutoFormatType = 1;
                 }
-                column(PrepmtInvBufGLAccNo;TempPrepaymentInvLineBuffer."G/L Account No.")
+                column(PrepmtInvBufGLAccNo; TempPrepaymentInvLineBuffer."G/L Account No.")
                 {
                 }
-                column(PrepmtInvBufDesc;TempPrepaymentInvLineBuffer.Description)
+                column(PrepmtInvBufDesc; TempPrepaymentInvLineBuffer.Description)
                 {
                 }
-                column(TotalInclVATText2;TotalInclVATText)
+                column(TotalInclVATText2; TotalInclVATText)
                 {
                 }
-                column(TotalExclVATText2;TotalExclVATText)
+                column(TotalExclVATText2; TotalExclVATText)
                 {
                 }
-                column(PrepmtInvBufAmt;TempPrepaymentInvLineBuffer.Amount)
-                {
-                    AutoFormatExpression = "Purchase Header"."Currency Code";
-                    AutoFormatType = 1;
-                }
-                column(PrepmtVATAmountText;TempPrepmtVATAmountLine.VATAmountText)
-                {
-                }
-                column(PrepmtVATAmount;PrepmtVATAmount)
+                column(PrepmtInvBufAmt; TempPrepaymentInvLineBuffer.Amount)
                 {
                     AutoFormatExpression = "Purchase Header"."Currency Code";
                     AutoFormatType = 1;
                 }
-                column(PrepmtTotalAmountInclVAT;PrepmtTotalAmountInclVAT)
+                column(PrepmtVATAmountText; TempPrepmtVATAmountLine.VATAmountText())
+                {
+                }
+                column(PrepmtVATAmount; PrepmtVATAmount)
                 {
                     AutoFormatExpression = "Purchase Header"."Currency Code";
                     AutoFormatType = 1;
                 }
-                column(PrepmtVATBaseAmount;PrepmtVATBaseAmount)
+                column(PrepmtTotalAmountInclVAT; PrepmtTotalAmountInclVAT)
                 {
                     AutoFormatExpression = "Purchase Header"."Currency Code";
                     AutoFormatType = 1;
                 }
-                column(PrepmtInvBuDescCaption;PrepmtInvBuDescCaptionLbl)
+                column(PrepmtVATBaseAmount; PrepmtVATBaseAmount)
+                {
+                    AutoFormatExpression = "Purchase Header"."Currency Code";
+                    AutoFormatType = 1;
+                }
+                column(PrepmtInvBuDescCaption; PrepmtInvBuDescCaptionLbl)
                 {
                 }
-                column(PrepmtInvBufGLAccNoCaption;PrepmtInvBufGLAccNoCaptionLbl)
+                column(PrepmtInvBufGLAccNoCaption; PrepmtInvBufGLAccNoCaptionLbl)
                 {
                 }
-                column(PrepaymentSpecCaption;PrepaymentSpecCaptionLbl)
+                column(PrepaymentSpecCaption; PrepaymentSpecCaptionLbl)
                 {
                 }
 
                 trigger OnAfterGetRecord()
                 begin
                     IF Number = 1 THEN BEGIN
-                      IF NOT TempPrepaymentInvLineBuffer.FIND('-') THEN
-                        CurrReport.BREAK;
+                        IF NOT TempPrepaymentInvLineBuffer.FIND('-') THEN
+                            CurrReport.BREAK();
                     END ELSE
-                      IF TempPrepaymentInvLineBuffer.NEXT = 0 THEN
-                        CurrReport.BREAK;
+                        IF TempPrepaymentInvLineBuffer.NEXT() = 0 THEN
+                            CurrReport.BREAK();
 
                     IF "Purchase Header"."Prices Including VAT" THEN
-                      PrepmtLineAmount := TempPrepaymentInvLineBuffer."Amount Incl. VAT"
+                        PrepmtLineAmount := TempPrepaymentInvLineBuffer."Amount Incl. VAT"
                     ELSE
-                      PrepmtLineAmount := TempPrepaymentInvLineBuffer.Amount;
+                        PrepmtLineAmount := TempPrepaymentInvLineBuffer.Amount;
                 end;
             }
-            dataitem(PrepmtVATCounter;Table2000000026)
+            dataitem(PrepmtVATCounter; Integer)
             {
                 DataItemTableView = SORTING(Number);
-                column(PrepmtVATAmtLineVATAmt;TempPrepmtVATAmountLine."VAT Amount")
+                column(PrepmtVATAmtLineVATAmt; TempPrepmtVATAmountLine."VAT Amount")
                 {
                     AutoFormatExpression = "Purchase Header"."Currency Code";
                     AutoFormatType = 1;
                 }
-                column(PrepmtVATAmtLineVATBase;TempPrepmtVATAmountLine."VAT Base")
+                column(PrepmtVATAmtLineVATBase; TempPrepmtVATAmountLine."VAT Base")
                 {
                     AutoFormatExpression = "Purchase Header"."Currency Code";
                     AutoFormatType = 1;
                 }
-                column(PrepmtVATAmtLineLineAmt;TempPrepmtVATAmountLine."Line Amount")
+                column(PrepmtVATAmtLineLineAmt; TempPrepmtVATAmountLine."Line Amount")
                 {
                     AutoFormatExpression = "Purchase Header"."Currency Code";
                     AutoFormatType = 1;
                 }
-                column(PrepmtVATAmtLineVAT;TempPrepmtVATAmountLine."VAT %")
+                column(PrepmtVATAmtLineVAT; TempPrepmtVATAmountLine."VAT %")
                 {
-                    DecimalPlaces = 0:5;
+                    DecimalPlaces = 0 : 5;
                 }
-                column(PrepmtVATAmtLineVATId;TempPrepmtVATAmountLine."VAT Identifier")
+                column(PrepmtVATAmtLineVATId; TempPrepmtVATAmountLine."VAT Identifier")
                 {
                 }
-                column(PrepymtVATAmtSpecCaption;PrepymtVATAmtSpecCaptionLbl)
+                column(PrepymtVATAmtSpecCaption; PrepymtVATAmtSpecCaptionLbl)
                 {
                 }
 
@@ -822,20 +822,20 @@ report 1322 "Standard Purchase - Order"
 
                 trigger OnPreDataItem()
                 begin
-                    SETRANGE(Number,1,TempPrepmtVATAmountLine.COUNT);
+                    SETRANGE(Number, 1, TempPrepmtVATAmountLine.COUNT);
                 end;
             }
-            dataitem(LetterText;Table2000000026)
+            dataitem(LetterText; Integer)
             {
                 DataItemTableView = SORTING(Number)
-                                    WHERE(Number=CONST(1));
-                column(GreetingText;GreetingLbl)
+                                    WHERE(Number = CONST(1));
+                column(GreetingText; GreetingLbl)
                 {
                 }
-                column(BodyText;BodyLbl)
+                column(BodyText; BodyLbl)
                 {
                 }
-                column(ClosingText;ClosingLbl)
+                column(ClosingText; ClosingLbl)
                 {
                 }
             }
@@ -849,13 +849,13 @@ report 1322 "Standard Purchase - Order"
                 FormatDocumentFields("Purchase Header");
 
                 IF NOT CurrReport.PREVIEW THEN BEGIN
-                  IF ArchiveDocument THEN
-                    ArchiveManagement.StorePurchDocument("Purchase Header",LogInteraction);
+                    IF ArchiveDocument THEN
+                        ArchiveManagement.StorePurchDocument("Purchase Header", LogInteraction);
 
-                  IF LogInteraction THEN
-                    SegManagement.LogDocument(
-                      13,"No.",0,0,DATABASE::Vendor,"Buy-from Vendor No.",
-                      "Purchaser Code",'',"Posting Description",'');
+                    IF LogInteraction THEN
+                        SegManagement.LogDocument(
+                          13, "No.", 0, 0, DATABASE::Vendor, "Buy-from Vendor No.",
+                          "Purchaser Code", '', "Posting Description", '');
                 END;
             end;
         }
@@ -872,13 +872,13 @@ report 1322 "Standard Purchase - Order"
                 group(Options)
                 {
                     Caption = 'Options';
-                    field(ArchiveDocument;ArchiveDocument)
+                    field(ArchiveDocument; ArchiveDocument)
                     {
                         ApplicationArea = Suite;
                         Caption = 'Archive Document';
                         ToolTip = 'Specifies whether to archive the order.';
                     }
-                    field(LogInteraction;LogInteraction)
+                    field(LogInteraction; LogInteraction)
                     {
                         ApplicationArea = Suite;
                         Caption = 'Log Interaction';
@@ -900,7 +900,7 @@ report 1322 "Standard Purchase - Order"
 
         trigger OnOpenPage()
         begin
-            ArchiveDocument := PurchSetup."Arch. Orders and Ret. Orders";
+            // ArchiveDocument := PurchSetup."Arch. Orders and Ret. Orders"; TODO: filed Id 5005230
             LogInteractionEnable := LogInteraction;
         end;
     }
@@ -911,23 +911,44 @@ report 1322 "Standard Purchase - Order"
 
     trigger OnInitReport()
     begin
-        GLSetup.GET;
-        CompanyInfo.GET;
-        PurchSetup.GET;
+        GLSetup.GET();
+        CompanyInfo.GET();
+        PurchSetup.GET();
         CompanyInfo.CALCFIELDS(Picture);
     end;
 
     trigger OnPreReport()
     begin
         IF NOT CurrReport.USEREQUESTPAGE THEN
-          InitLogInteraction;
+            InitLogInteraction();
     end;
 
     var
-        PageLbl: Label 'Page %1', Comment='%1 = Page No.';
+        GLSetup: Record "General Ledger Setup";
+        CompanyInfo: Record "Company Information";
+        ShipmentMethod: Record "Shipment Method";
+        PaymentTerms: Record "Payment Terms";
+        PrepmtPaymentTerms: Record "Payment Terms";
+        SalespersonPurchaser: Record "Salesperson/Purchaser";
+        TempVATAmountLine: Record "VAT Amount Line" temporary;
+        TempPrepmtVATAmountLine: Record "VAT Amount Line" temporary;
+        TempPurchLine: Record "Purchase Line" temporary;
+        TempPrepaymentInvLineBuffer: Record "Prepayment Inv. Line Buffer" temporary;
+        TempPrePmtVATAmountLineDeduct: Record "VAT Amount Line" temporary;
+        RespCenter: Record "Responsibility Center";
+        Language: Record Language;
+        CurrExchRate: Record "Currency Exchange Rate";
+        PurchSetup: Record "Purchases & Payables Setup";
+        FormatAddr: Codeunit "Format Address";
+        FormatDocument: Codeunit "Format Document";
+        PurchPost: Codeunit "Purch.-Post";
+        SegManagement: Codeunit SegManagement;
+        PurchasePostPrepayments: Codeunit "Purchase-Post Prepayments";
+        ArchiveManagement: Codeunit ArchiveManagement;
+        PageLbl: Label 'Page %1', Comment = '%1 = Page No.';
         VATAmountSpecificationLbl: Label 'VAT Amount Specification in ';
         LocalCurrentyLbl: Label 'Local Currency';
-        ExchangeRateLbl: Label 'Exchange rate: %1/%2', Comment='%1 = CurrExchRate."Relational Exch. Rate Amount", %2 = CurrExchRate."Exchange Rate Amount"';
+        ExchangeRateLbl: Label 'Exchange rate: %1/%2', Comment = '%1 = CurrExchRate."Relational Exch. Rate Amount", %2 = CurrExchRate."Exchange Rate Amount"';
         CompanyInfoPhoneNoCaptionLbl: Label 'Phone No.';
         CompanyInfoGiroNoCaptionLbl: Label 'Giro No.';
         CompanyInfoBankNameCaptionLbl: Label 'Bank';
@@ -963,31 +984,10 @@ report 1322 "Standard Purchase - Order"
         HomePageCaptionLbl: Label 'Home Page';
         EmailIDCaptionLbl: Label 'Email';
         AllowInvoiceDiscCaptionLbl: Label 'Allow Invoice Discount';
-        GLSetup: Record "98";
-        CompanyInfo: Record "79";
-        ShipmentMethod: Record "10";
-        PaymentTerms: Record "3";
-        PrepmtPaymentTerms: Record "3";
-        SalespersonPurchaser: Record "13";
-        TempVATAmountLine: Record "290" temporary;
-        TempPrepmtVATAmountLine: Record "290" temporary;
-        TempPurchLine: Record "39" temporary;
-        TempPrepaymentInvLineBuffer: Record "461" temporary;
-        TempPrePmtVATAmountLineDeduct: Record "290" temporary;
-        RespCenter: Record "5714";
-        Language: Record "8";
-        CurrExchRate: Record "330";
-        PurchSetup: Record "312";
-        FormatAddr: Codeunit "365";
-        FormatDocument: Codeunit "368";
-        PurchPost: Codeunit "90";
-        SegManagement: Codeunit "5051";
-        PurchasePostPrepayments: Codeunit "444";
-        ArchiveManagement: Codeunit "5063";
-        VendAddr: array [8] of Text[50];
-        ShipToAddr: array [8] of Text[50];
-        CompanyAddr: array [8] of Text[50];
-        BuyFromAddr: array [8] of Text[50];
+        VendAddr: array[8] of Text[50];
+        ShipToAddr: array[8] of Text[50];
+        CompanyAddr: array[8] of Text[50];
+        BuyFromAddr: array[8] of Text[50];
         PurchaserText: Text[30];
         VATNoText: Text[80];
         ReferenceText: Text[80];
@@ -1042,32 +1042,32 @@ report 1322 "Standard Purchase - Order"
         OrderDateLbl: Label 'Order Date';
         ArchiveDocument: Boolean;
 
-    [Scope('Internal')]
+
     procedure InitializeRequest(LogInteractionParam: Boolean)
     begin
         LogInteraction := LogInteractionParam;
     end;
 
-    local procedure FormatAddressFields(var PurchaseHeader: Record "38")
+    local procedure FormatAddressFields(var PurchaseHeader: Record "Purchase Header")
     begin
-        FormatAddr.GetCompanyAddr(PurchaseHeader."Responsibility Center",RespCenter,CompanyInfo,CompanyAddr);
-        FormatAddr.PurchHeaderBuyFrom(BuyFromAddr,PurchaseHeader);
+        FormatAddr.GetCompanyAddr(PurchaseHeader."Responsibility Center", RespCenter, CompanyInfo, CompanyAddr);
+        FormatAddr.PurchHeaderBuyFrom(BuyFromAddr, PurchaseHeader);
         IF PurchaseHeader."Buy-from Vendor No." <> PurchaseHeader."Pay-to Vendor No." THEN
-          FormatAddr.PurchHeaderPayTo(VendAddr,PurchaseHeader);
-        FormatAddr.PurchHeaderShipTo(ShipToAddr,PurchaseHeader);
+            FormatAddr.PurchHeaderPayTo(VendAddr, PurchaseHeader);
+        FormatAddr.PurchHeaderShipTo(ShipToAddr, PurchaseHeader);
     end;
 
-    local procedure FormatDocumentFields(PurchaseHeader: Record "38")
+    local procedure FormatDocumentFields(PurchaseHeader: Record "Purchase Header")
     begin
         WITH PurchaseHeader DO BEGIN
-          FormatDocument.SetTotalLabels("Currency Code",TotalText,TotalInclVATText,TotalExclVATText);
-          FormatDocument.SetPurchaser(SalespersonPurchaser,"Purchaser Code",PurchaserText);
-          FormatDocument.SetPaymentTerms(PaymentTerms,"Payment Terms Code","Language Code");
-          FormatDocument.SetPaymentTerms(PrepmtPaymentTerms,"Prepmt. Payment Terms Code","Language Code");
-          FormatDocument.SetShipmentMethod(ShipmentMethod,"Shipment Method Code","Language Code");
+            FormatDocument.SetTotalLabels("Currency Code", TotalText, TotalInclVATText, TotalExclVATText);
+            FormatDocument.SetPurchaser(SalespersonPurchaser, "Purchaser Code", PurchaserText);
+            FormatDocument.SetPaymentTerms(PaymentTerms, "Payment Terms Code", "Language Code");
+            FormatDocument.SetPaymentTerms(PrepmtPaymentTerms, "Prepmt. Payment Terms Code", "Language Code");
+            FormatDocument.SetShipmentMethod(ShipmentMethod, "Shipment Method Code", "Language Code");
 
-          ReferenceText := FormatDocument.SetText("Your Reference" <> '',FIELDCAPTION("Your Reference"));
-          VATNoText := FormatDocument.SetText("VAT Registration No." <> '',FIELDCAPTION("VAT Registration No."));
+            ReferenceText := FormatDocument.SetText("Your Reference" <> '', FIELDCAPTION("Your Reference"));
+            VATNoText := FormatDocument.SetText("VAT Registration No." <> '', FIELDCAPTION("VAT Registration No."));
         END;
     end;
 

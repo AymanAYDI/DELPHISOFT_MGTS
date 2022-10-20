@@ -1,19 +1,5 @@
-report 493 "Carry Out Action Msg. - Req."
+report 50077 "Carry Out Action Msg. - Req."
 {
-    // +---------------------------------------------------------------------------------------+
-    // | Logico SA                                                                             |
-    // | Date: 11.12.13                                                                        |
-    // | Costumer: NGTS                                                                        |
-    // +---------------------------------------------------------------------------------------+
-    // 
-    // Requirement     UserID   Date       Where                   Description
-    // -----------------------------------------------------------------------------------------
-    // THS1            THS      11.12.13   InitializeRequest       Here Nothing happenned...not anymore lol
-    // 
-    // MGTSEDI10.00.00.23 | 21.05.2021 | EDI Management : Add Function SetEdiParam
-    //                                                    Modify C/AL code function UseOneJnl
-    // 
-    // MGTSEDI10.00.00.24  | 12.10.2021 | EDI Management : C/AL code function UseOneJnl
 
     Caption = 'Carry Out Action Msg. - Req.';
     ProcessingOnly = true;
@@ -48,11 +34,11 @@ report 493 "Carry Out Action Msg. - Req."
 
         trigger OnOpenPage()
         begin
-            PurchOrderHeader."Order Date" := WORKDATE;
-            PurchOrderHeader."Posting Date" := WORKDATE;
-            PurchOrderHeader."Expected Receipt Date" := WORKDATE;
+            PurchOrderHeader."Order Date" := WORKDATE();
+            PurchOrderHeader."Posting Date" := WORKDATE();
+            PurchOrderHeader."Expected Receipt Date" := WORKDATE();
             IF ReqWkshTmpl.Recurring THEN
-                EndOrderDate := WORKDATE
+                EndOrderDate := WORKDATE()
             ELSE
                 EndOrderDate := 0D;
         end;
@@ -71,38 +57,39 @@ report 493 "Carry Out Action Msg. - Req."
         Text000: Label 'cannot be filtered when you create orders';
         Text001: Label 'There is nothing to create.';
         Text003: Label 'You are now in worksheet %1.';
-        ReqWkshTmpl: Record "244";
-        ReqWkshName: Record "245";
-        ReqLine: Record "246";
-        PurchOrderHeader: Record "38";
-        ReqWkshMakeOrders: Codeunit "333";
+        ReqWkshTmpl: Record "Req. Wksh. Template";
+        ReqWkshName: Record "Requisition Wksh. Name";
+        ReqLine: Record "Requisition Line";
+        PurchOrderHeader: Record "Purchase Header";
+        ReqWkshMakeOrders: Codeunit "Req. Wksh.-Make Order";
         EndOrderDate: Date;
         PrintOrders: Boolean;
         TempJnlBatchName: Code[10];
         HideDialog: Boolean;
         CreateFromEDI: Boolean;
 
-    [Scope('Internal')]
-    procedure SetReqWkshLine(var NewReqLine: Record "246")
+
+    procedure SetReqWkshLine(var NewReqLine: Record "Requisition Line")
     begin
         ReqLine.COPY(NewReqLine);
         ReqWkshTmpl.GET(NewReqLine."Worksheet Template Name");
     end;
 
-    [Scope('Internal')]
-    procedure GetReqWkshLine(var NewReqLine: Record "246")
+
+    procedure GetReqWkshLine(var NewReqLine: Record "Requisition Line")
     begin
         NewReqLine.COPY(ReqLine);
     end;
 
-    [Scope('Internal')]
-    procedure SetReqWkshName(var NewReqWkshName: Record "245")
+    procedure SetReqWkshName(var NewReqWkshName: Record "Requisition Wksh. Name")
     begin
         ReqWkshName.COPY(NewReqWkshName);
         ReqWkshTmpl.GET(NewReqWkshName."Worksheet Template Name");
     end;
 
-    local procedure UseOneJnl(var ReqLine: Record "246")
+    local procedure UseOneJnl(var ReqLine: Record "Requisition Line")
+    var
+        DELMGTS_FctMgt: Codeunit "DEL MGTS_FctMgt";
     begin
         WITH ReqLine DO BEGIN
             ReqWkshTmpl.GET("Worksheet Template Name");
@@ -111,7 +98,7 @@ report 493 "Carry Out Action Msg. - Req."
             TempJnlBatchName := "Journal Batch Name";
             //>>MGTSEDI10.00.00.23
             IF CreateFromEDI THEN BEGIN
-                ReqWkshMakeOrders.SetEDIParam(TRUE, TRUE);
+                DELMGTS_FctMgt.SetEDIParam(TRUE, TRUE);
 
                 //>>MGTSEDI10.00.00.24
                 PurchOrderHeader."Order Date" := TODAY;
@@ -132,7 +119,7 @@ report 493 "Carry Out Action Msg. - Req."
                           "Journal Batch Name");
 
             IF NOT FIND('=><') OR (TempJnlBatchName <> "Journal Batch Name") THEN BEGIN
-                RESET;
+                RESET();
                 FILTERGROUP := 2;
                 SETRANGE("Worksheet Template Name", "Worksheet Template Name");
                 SETRANGE("Journal Batch Name", "Journal Batch Name");
@@ -142,7 +129,7 @@ report 493 "Carry Out Action Msg. - Req."
         END;
     end;
 
-    [Scope('Internal')]
+
     procedure InitializeRequest(ExpirationDate: Date; OrderDate: Date; PostingDate: Date; ExpectedReceiptDate: Date; YourRef: Text[50])
     begin
         EndOrderDate := ExpirationDate;
@@ -152,13 +139,13 @@ report 493 "Carry Out Action Msg. - Req."
         PurchOrderHeader."Your Reference" := YourRef;
     end;
 
-    [Scope('Internal')]
+
     procedure SetHideDialog(NewHideDialog: Boolean)
     begin
         HideDialog := NewHideDialog;
     end;
 
-    [Scope('Internal')]
+
     procedure SetEdiParam(pCreateFromEDI: Boolean)
     begin
         CreateFromEDI := pCreateFromEDI;

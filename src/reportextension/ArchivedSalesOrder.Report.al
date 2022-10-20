@@ -1,4 +1,4 @@
-report 216 "Archived Sales Order"
+report 50081 "DEL Archived Sales Order"
 {
     DefaultLayout = RDLC;
     RDLCLayout = './ArchivedSalesOrder.rdlc';
@@ -6,10 +6,10 @@ report 216 "Archived Sales Order"
 
     dataset
     {
-        dataitem(DataItem3260; Table5107)
+        dataitem("Sales Header Archive"; "Sales Header Archive")
         {
-            DataItemTableView = SORTING (Document Type, No., Doc. No. Occurrence, Version No.)
-                                WHERE (Document Type=CONST(Order));
+            DataItemTableView = SORTING("Document Type", "No.", "Doc. No. Occurrence", "Version No.")
+                                WHERE("Document Type" = CONST(Order));
             RequestFilterFields = "No.", "Sell-to Customer No.", "No. Printed", "Version No.";
             RequestFilterHeading = 'Archived Sales Order';
             column(Sales_Header_Archive_Document_Type; "Document Type")
@@ -24,13 +24,13 @@ report 216 "Archived Sales Order"
             column(Sales_Header_Archive_Version_No_; "Version No.")
             {
             }
-            dataitem(CopyLoop; Table2000000026)
+            dataitem(CopyLoop; Integer)
             {
-                DataItemTableView = SORTING (Number);
-                dataitem(PageLoop; Table2000000026)
+                DataItemTableView = SORTING(Number);
+                dataitem(PageLoop; Integer)
                 {
-                    DataItemTableView = SORTING (Number)
-                                        WHERE (Number = CONST (1));
+                    DataItemTableView = SORTING(Number)
+                                        WHERE(Number = CONST(1));
                     column(CompanyInfo2_Picture; CompanyInfo2.Picture)
                     {
                     }
@@ -43,7 +43,7 @@ report 216 "Archived Sales Order"
                     column(STRSUBSTNO_Text004_CopyText_; STRSUBSTNO(Text004, CopyText))
                     {
                     }
-                    column(STRSUBSTNO_Text005_FORMAT_CurrReport_PAGENO__; STRSUBSTNO(Text005, FORMAT(CurrReport.PAGENO)))
+                    column(STRSUBSTNO_Text005_FORMAT_CurrReport_PAGENO__; STRSUBSTNO(Text005, FORMAT(CurrReport.PAGENO())))
                     {
                     }
                     column(CustAddr_1_; CustAddr[1])
@@ -187,11 +187,11 @@ report 216 "Archived Sales Order"
                     column(Sales_Header_Archive___Prices_Including_VAT_Caption; "Sales Header Archive".FIELDCAPTION("Prices Including VAT"))
                     {
                     }
-                    dataitem(DimensionLoop1; Table2000000026)
+                    dataitem(DimensionLoop1; Integer)
                     {
                         DataItemLinkReference = "Sales Header Archive";
-                        DataItemTableView = SORTING (Number)
-                                            WHERE (Number = FILTER (1 ..));
+                        DataItemTableView = SORTING(Number)
+                                            WHERE(Number = FILTER(1 ..));
                         column(DimText; DimText)
                         {
                         }
@@ -239,262 +239,262 @@ report 216 "Archived Sales Order"
                                 CurrReport.BREAK;
                         end;
                     }
-                    dataitem(DataItem6985; Table5108)
+                    dataitem("Sales Line Archive"; "Sales Line Archive")
                     {
-                        DataItemLink = Document Type=FIELD(Document Type),
-                                       Document No.=FIELD(No.);
+                        DataItemLink = "Document Type" = FIELD("Document Type"),
+                                       "Document No." = FIELD("No.");
                         DataItemLinkReference = "Sales Header Archive";
-                        DataItemTableView = SORTING(Document Type,Document No.,Line No.);
+                        DataItemTableView = SORTING("Document Type", "Document No.", "Line No.");
 
                         trigger OnPreDataItem()
                         begin
                             CurrReport.BREAK;
                         end;
                     }
-                    dataitem(RoundLoop;Table2000000026)
+                    dataitem(RoundLoop; Integer)
                     {
                         DataItemTableView = SORTING(Number);
-                        column(SalesLineArch__Line_Amount_;TempSalesLineArchive."Line Amount")
+                        column(SalesLineArch__Line_Amount_; TempSalesLineArchive."Line Amount")
                         {
                             AutoFormatExpression = "Sales Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(Sales_Line_Archive__Description;"Sales Line Archive".Description)
+                        column(Sales_Line_Archive__Description; "Sales Line Archive".Description)
                         {
                         }
-                        column(RoundLoopBody3Visibility;TempSalesLineArchive.Type = 0)
+                        column(RoundLoopBody3Visibility; TempSalesLineArchive.Type = 0)
                         {
                         }
-                        column(Sales_Line_Archive___No__;"Sales Line Archive"."No.")
+                        column(Sales_Line_Archive___No__; "Sales Line Archive"."No.")
                         {
                         }
-                        column(Sales_Line_Archive__Description_Control63;"Sales Line Archive".Description)
+                        column(Sales_Line_Archive__Description_Control63; "Sales Line Archive".Description)
                         {
                         }
-                        column(Sales_Line_Archive__Quantity;"Sales Line Archive".Quantity)
+                        column(Sales_Line_Archive__Quantity; "Sales Line Archive".Quantity)
                         {
                         }
-                        column(Sales_Line_Archive___Unit_of_Measure_;"Sales Line Archive"."Unit of Measure")
+                        column(Sales_Line_Archive___Unit_of_Measure_; "Sales Line Archive"."Unit of Measure")
                         {
                         }
-                        column(Sales_Line_Archive___Unit_Price_;"Sales Line Archive"."Unit Price")
+                        column(Sales_Line_Archive___Unit_Price_; "Sales Line Archive"."Unit Price")
                         {
                             AutoFormatExpression = "Sales Header Archive"."Currency Code";
                             AutoFormatType = 2;
                         }
-                        column(Sales_Line_Archive___Line_Discount___;"Sales Line Archive"."Line Discount %")
+                        column(Sales_Line_Archive___Line_Discount___; "Sales Line Archive"."Line Discount %")
                         {
                         }
-                        column(Sales_Line_Archive___Line_Amount_;"Sales Line Archive"."Line Amount")
-                        {
-                            AutoFormatExpression = "Sales Header Archive"."Currency Code";
-                            AutoFormatType = 1;
-                        }
-                        column(Sales_Line_Archive___Allow_Invoice_Disc__;"Sales Line Archive"."Allow Invoice Disc.")
-                        {
-                        }
-                        column(Sales_Line_Archive___VAT_Identifier_;"Sales Line Archive"."VAT Identifier")
-                        {
-                        }
-                        column(SalesLineType;FORMAT("Sales Line Archive".Type))
-                        {
-                        }
-                        column(AllowInvoiceDis_YesNo;FORMAT("Sales Line Archive"."Allow Invoice Disc."))
-                        {
-                        }
-                        column(SalesLineNo;FORMAT("Sales Line Archive"."Line No."))
-                        {
-                        }
-                        column(RoundLoopBody4Visibility;TempSalesLineArchive.Type > 0)
-                        {
-                        }
-                        column(SalesLineArch__Line_Amount__Control84;TempSalesLineArchive."Line Amount")
+                        column(Sales_Line_Archive___Line_Amount_; "Sales Line Archive"."Line Amount")
                         {
                             AutoFormatExpression = "Sales Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(SalesLineArch__Inv__Discount_Amount_;TempSalesLineArchive."Inv. Disc. Amount to Invoice")
+                        column(Sales_Line_Archive___Allow_Invoice_Disc__; "Sales Line Archive"."Allow Invoice Disc.")
+                        {
+                        }
+                        column(Sales_Line_Archive___VAT_Identifier_; "Sales Line Archive"."VAT Identifier")
+                        {
+                        }
+                        column(SalesLineType; FORMAT("Sales Line Archive".Type))
+                        {
+                        }
+                        column(AllowInvoiceDis_YesNo; FORMAT("Sales Line Archive"."Allow Invoice Disc."))
+                        {
+                        }
+                        column(SalesLineNo; FORMAT("Sales Line Archive"."Line No."))
+                        {
+                        }
+                        column(RoundLoopBody4Visibility; TempSalesLineArchive.Type > 0)
+                        {
+                        }
+                        column(SalesLineArch__Line_Amount__Control84; TempSalesLineArchive."Line Amount")
                         {
                             AutoFormatExpression = "Sales Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(SalesLineArch__Line_Amount__Control70;TempSalesLineArchive."Line Amount")
+                        column(SalesLineArch__Inv__Discount_Amount_; TempSalesLineArchive."Inv. Disc. Amount to Invoice")
                         {
                             AutoFormatExpression = "Sales Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(TotalText;TotalText)
-                        {
-                        }
-                        column(SalesLineArch__Line_Amount__SalesLineArch__Inv__Discount_Amount_;TempSalesLineArchive."Line Amount" - TempSalesLineArchive."Inv. Disc. Amount to Invoice")
+                        column(SalesLineArch__Line_Amount__Control70; TempSalesLineArchive."Line Amount")
                         {
                             AutoFormatExpression = "Sales Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(TotalExclVATText;TotalExclVATText)
+                        column(TotalText; TotalText)
                         {
                         }
-                        column(VATAmountLine_VATAmountText;VATAmountLine.VATAmountText)
-                        {
-                        }
-                        column(TotalInclVATText;TotalInclVATText)
-                        {
-                        }
-                        column(SalesLineArch__Line_Amount__SalesLineArch__Inv__Discount_Amount__Control88;TempSalesLineArchive."Line Amount" - TempSalesLineArchive."Inv. Disc. Amount to Invoice")
+                        column(SalesLineArch__Line_Amount__SalesLineArch__Inv__Discount_Amount_; TempSalesLineArchive."Line Amount" - TempSalesLineArchive."Inv. Disc. Amount to Invoice")
                         {
                             AutoFormatExpression = "Sales Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmount;VATAmount)
+                        column(TotalExclVATText; TotalExclVATText)
+                        {
+                        }
+                        column(VATAmountLine_VATAmountText; VATAmountLine.VATAmountText)
+                        {
+                        }
+                        column(TotalInclVATText; TotalInclVATText)
+                        {
+                        }
+                        column(SalesLineArch__Line_Amount__SalesLineArch__Inv__Discount_Amount__Control88; TempSalesLineArchive."Line Amount" - TempSalesLineArchive."Inv. Disc. Amount to Invoice")
                         {
                             AutoFormatExpression = "Sales Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(SalesLineArch__Line_Amount__SalesLineArch__Inv__Discount_Amount____VATAmount;TempSalesLineArchive."Line Amount" - TempSalesLineArchive."Inv. Disc. Amount to Invoice" + VATAmount)
+                        column(VATAmount; VATAmount)
                         {
                             AutoFormatExpression = "Sales Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATDiscountAmount;-VATDiscountAmount)
+                        column(SalesLineArch__Line_Amount__SalesLineArch__Inv__Discount_Amount____VATAmount; TempSalesLineArchive."Line Amount" - TempSalesLineArchive."Inv. Disc. Amount to Invoice" + VATAmount)
                         {
                             AutoFormatExpression = "Sales Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(TotalExclVATText_Control131;TotalExclVATText)
-                        {
-                        }
-                        column(VATBaseAmount;VATBaseAmount)
+                        column(VATDiscountAmount; -VATDiscountAmount)
                         {
                             AutoFormatExpression = "Sales Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine_VATAmountText_Control133;VATAmountLine.VATAmountText)
+                        column(TotalExclVATText_Control131; TotalExclVATText)
                         {
                         }
-                        column(VATAmount_Control134;VATAmount)
-                        {
-                            AutoFormatExpression = "Sales Header Archive"."Currency Code";
-                            AutoFormatType = 1;
-                        }
-                        column(TotalInclVATText_Control135;TotalInclVATText)
-                        {
-                        }
-                        column(TotalAmountInclVAT;TotalAmountInclVAT)
+                        column(VATBaseAmount; VATBaseAmount)
                         {
                             AutoFormatExpression = "Sales Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(RoundLoop_Number;Number)
+                        column(VATAmountLine_VATAmountText_Control133; VATAmountLine.VATAmountText)
                         {
                         }
-                        column(Sales_Line_Archive___No__Caption;"Sales Line Archive".FIELDCAPTION("No."))
+                        column(VATAmount_Control134; VATAmount)
+                        {
+                            AutoFormatExpression = "Sales Header Archive"."Currency Code";
+                            AutoFormatType = 1;
+                        }
+                        column(TotalInclVATText_Control135; TotalInclVATText)
                         {
                         }
-                        column(Sales_Line_Archive__Description_Control63Caption;"Sales Line Archive".FIELDCAPTION(Description))
+                        column(TotalAmountInclVAT; TotalAmountInclVAT)
+                        {
+                            AutoFormatExpression = "Sales Header Archive"."Currency Code";
+                            AutoFormatType = 1;
+                        }
+                        column(RoundLoop_Number; Number)
                         {
                         }
-                        column(Sales_Line_Archive__QuantityCaption;"Sales Line Archive".FIELDCAPTION(Quantity))
+                        column(Sales_Line_Archive___No__Caption; "Sales Line Archive".FIELDCAPTION("No."))
                         {
                         }
-                        column(Sales_Line_Archive___Unit_of_Measure_Caption;"Sales Line Archive".FIELDCAPTION("Unit of Measure"))
+                        column(Sales_Line_Archive__Description_Control63Caption; "Sales Line Archive".FIELDCAPTION(Description))
                         {
                         }
-                        column(Unit_PriceCaption;Unit_PriceCaptionLbl)
+                        column(Sales_Line_Archive__QuantityCaption; "Sales Line Archive".FIELDCAPTION(Quantity))
                         {
                         }
-                        column(Sales_Line_Archive___Line_Discount___Caption;Sales_Line_Archive___Line_Discount___CaptionLbl)
+                        column(Sales_Line_Archive___Unit_of_Measure_Caption; "Sales Line Archive".FIELDCAPTION("Unit of Measure"))
                         {
                         }
-                        column(AmountCaption;AmountCaptionLbl)
+                        column(Unit_PriceCaption; Unit_PriceCaptionLbl)
                         {
                         }
-                        column(Sales_Line_Archive___VAT_Identifier_Caption;"Sales Line Archive".FIELDCAPTION("VAT Identifier"))
+                        column(Sales_Line_Archive___Line_Discount___Caption; Sales_Line_Archive___Line_Discount___CaptionLbl)
                         {
                         }
-                        column(Sales_Line_Archive___Allow_Invoice_Disc__Caption;"Sales Line Archive".FIELDCAPTION("Allow Invoice Disc."))
+                        column(AmountCaption; AmountCaptionLbl)
                         {
                         }
-                        column(ContinuedCaption;ContinuedCaptionLbl)
+                        column(Sales_Line_Archive___VAT_Identifier_Caption; "Sales Line Archive".FIELDCAPTION("VAT Identifier"))
                         {
                         }
-                        column(ContinuedCaption_Control83;ContinuedCaption_Control83Lbl)
+                        column(Sales_Line_Archive___Allow_Invoice_Disc__Caption; "Sales Line Archive".FIELDCAPTION("Allow Invoice Disc."))
                         {
                         }
-                        column(SalesLineArch__Inv__Discount_Amount_Caption;SalesLineArch__Inv__Discount_Amount_CaptionLbl)
+                        column(ContinuedCaption; ContinuedCaptionLbl)
                         {
                         }
-                        column(SubtotalCaption;SubtotalCaptionLbl)
+                        column(ContinuedCaption_Control83; ContinuedCaption_Control83Lbl)
                         {
                         }
-                        column(VATDiscountAmountCaption;VATDiscountAmountCaptionLbl)
+                        column(SalesLineArch__Inv__Discount_Amount_Caption; SalesLineArch__Inv__Discount_Amount_CaptionLbl)
                         {
                         }
-                        dataitem(DimensionLoop2;Table2000000026)
+                        column(SubtotalCaption; SubtotalCaptionLbl)
+                        {
+                        }
+                        column(VATDiscountAmountCaption; VATDiscountAmountCaptionLbl)
+                        {
+                        }
+                        dataitem(DimensionLoop2; Integer)
                         {
                             DataItemTableView = SORTING(Number)
-                                                WHERE(Number=FILTER(1..));
-                            column(DimText_Control82;DimText)
+                                                WHERE(Number = FILTER(1 ..));
+                            column(DimText_Control82; DimText)
                             {
                             }
-                            column(DimensionLoop2_Number;Number)
+                            column(DimensionLoop2_Number; Number)
                             {
                             }
-                            column(Line_DimensionsCaption;Line_DimensionsCaptionLbl)
+                            column(Line_DimensionsCaption; Line_DimensionsCaptionLbl)
                             {
                             }
 
                             trigger OnAfterGetRecord()
                             begin
                                 IF Number = 1 THEN BEGIN
-                                  IF NOT DimSetEntry2.FINDSET THEN
-                                    CurrReport.BREAK;
+                                    IF NOT DimSetEntry2.FINDSET THEN
+                                        CurrReport.BREAK;
                                 END ELSE
-                                  IF NOT Continue THEN
-                                    CurrReport.BREAK;
+                                    IF NOT Continue THEN
+                                        CurrReport.BREAK;
 
                                 CLEAR(DimText);
                                 Continue := FALSE;
                                 REPEAT
-                                  OldDimText := DimText;
-                                  IF DimText = '' THEN
-                                    DimText := STRSUBSTNO('%1 %2',DimSetEntry2."Dimension Code",DimSetEntry2."Dimension Value Code")
-                                  ELSE
-                                    DimText :=
-                                      STRSUBSTNO(
-                                        '%1, %2 %3',DimText,
-                                        DimSetEntry2."Dimension Code",DimSetEntry2."Dimension Value Code");
-                                  IF STRLEN(DimText) > MAXSTRLEN(OldDimText) THEN BEGIN
-                                    DimText := OldDimText;
-                                    Continue := TRUE;
-                                    EXIT;
-                                  END;
+                                    OldDimText := DimText;
+                                    IF DimText = '' THEN
+                                        DimText := STRSUBSTNO('%1 %2', DimSetEntry2."Dimension Code", DimSetEntry2."Dimension Value Code")
+                                    ELSE
+                                        DimText :=
+                                          STRSUBSTNO(
+                                            '%1, %2 %3', DimText,
+                                            DimSetEntry2."Dimension Code", DimSetEntry2."Dimension Value Code");
+                                    IF STRLEN(DimText) > MAXSTRLEN(OldDimText) THEN BEGIN
+                                        DimText := OldDimText;
+                                        Continue := TRUE;
+                                        EXIT;
+                                    END;
                                 UNTIL DimSetEntry2.NEXT = 0;
                             end;
 
                             trigger OnPreDataItem()
                             begin
                                 IF NOT ShowInternalInfo THEN
-                                  CurrReport.BREAK;
+                                    CurrReport.BREAK;
 
-                                DimSetEntry2.SETRANGE("Dimension Set ID","Sales Line Archive"."Dimension Set ID");
+                                DimSetEntry2.SETRANGE("Dimension Set ID", "Sales Line Archive"."Dimension Set ID");
                             end;
                         }
 
                         trigger OnAfterGetRecord()
                         begin
                             IF Number = 1 THEN
-                              TempSalesLineArchive.FIND('-')
+                                TempSalesLineArchive.FIND('-')
                             ELSE
-                              TempSalesLineArchive.NEXT;
+                                TempSalesLineArchive.NEXT;
                             "Sales Line Archive" := TempSalesLineArchive;
 
                             IF NOT "Sales Header Archive"."Prices Including VAT" AND
                                (TempSalesLineArchive."VAT Calculation Type" = TempSalesLineArchive."VAT Calculation Type"::"Full VAT")
                             THEN
-                              TempSalesLineArchive."Line Amount" := 0;
+                                TempSalesLineArchive."Line Amount" := 0;
 
                             IF (TempSalesLineArchive.Type = TempSalesLineArchive.Type::"G/L Account") AND (NOT ShowInternalInfo) THEN
-                              "Sales Line Archive"."No." := '';
+                                "Sales Line Archive"."No." := '';
                         end;
 
                         trigger OnPostDataItem()
@@ -509,159 +509,159 @@ report 216 "Archived Sales Order"
                                   (TempSalesLineArchive."No." = '') AND (TempSalesLineArchive.Quantity = 0) AND
                                   (TempSalesLineArchive.Amount = 0)
                             DO
-                              MoreLines := TempSalesLineArchive.NEXT(-1) <> 0;
+                                MoreLines := TempSalesLineArchive.NEXT(-1) <> 0;
                             IF NOT MoreLines THEN
-                              CurrReport.BREAK;
-                            TempSalesLineArchive.SETRANGE("Line No.",0,TempSalesLineArchive."Line No.");
-                            SETRANGE(Number,1,TempSalesLineArchive.COUNT);
-                            CurrReport.CREATETOTALS(TempSalesLineArchive."Line Amount",TempSalesLineArchive."Inv. Discount Amount",
+                                CurrReport.BREAK;
+                            TempSalesLineArchive.SETRANGE("Line No.", 0, TempSalesLineArchive."Line No.");
+                            SETRANGE(Number, 1, TempSalesLineArchive.COUNT);
+                            CurrReport.CREATETOTALS(TempSalesLineArchive."Line Amount", TempSalesLineArchive."Inv. Discount Amount",
                               TempSalesLineArchive."Inv. Disc. Amount to Invoice");
                         end;
                     }
-                    dataitem(VATCounter;Table2000000026)
+                    dataitem(VATCounter; Integer)
                     {
                         DataItemTableView = SORTING(Number);
-                        column(VATAmountLine__VAT_Base_;VATAmountLine."VAT Base")
+                        column(VATAmountLine__VAT_Base_; VATAmountLine."VAT Base")
                         {
                             AutoFormatExpression = "Sales Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__VAT_Amount_;VATAmountLine."VAT Amount")
+                        column(VATAmountLine__VAT_Amount_; VATAmountLine."VAT Amount")
                         {
                             AutoFormatExpression = "Sales Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__Line_Amount_;VATAmountLine."Line Amount")
+                        column(VATAmountLine__Line_Amount_; VATAmountLine."Line Amount")
                         {
                             AutoFormatExpression = "Sales Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__Inv__Disc__Base_Amount_;VATAmountLine."Inv. Disc. Base Amount")
+                        column(VATAmountLine__Inv__Disc__Base_Amount_; VATAmountLine."Inv. Disc. Base Amount")
                         {
                             AutoFormatExpression = "Sales Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__Invoice_Discount_Amount_;VATAmountLine."Invoice Discount Amount")
+                        column(VATAmountLine__Invoice_Discount_Amount_; VATAmountLine."Invoice Discount Amount")
                         {
                             AutoFormatExpression = "Sales Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__VAT___;VATAmountLine."VAT %")
+                        column(VATAmountLine__VAT___; VATAmountLine."VAT %")
                         {
-                            DecimalPlaces = 0:5;
+                            DecimalPlaces = 0 : 5;
                         }
-                        column(VATAmountLine__VAT_Base__Control106;VATAmountLine."VAT Base")
-                        {
-                            AutoFormatExpression = "Sales Header Archive"."Currency Code";
-                            AutoFormatType = 1;
-                        }
-                        column(VATAmountLine__VAT_Amount__Control107;VATAmountLine."VAT Amount")
+                        column(VATAmountLine__VAT_Base__Control106; VATAmountLine."VAT Base")
                         {
                             AutoFormatExpression = "Sales Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__VAT_Identifier_;VATAmountLine."VAT Identifier")
-                        {
-                        }
-                        column(VATAmountLine__Line_Amount__Control72;VATAmountLine."Line Amount")
+                        column(VATAmountLine__VAT_Amount__Control107; VATAmountLine."VAT Amount")
                         {
                             AutoFormatExpression = "Sales Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__Inv__Disc__Base_Amount__Control73;VATAmountLine."Inv. Disc. Base Amount")
+                        column(VATAmountLine__VAT_Identifier_; VATAmountLine."VAT Identifier")
+                        {
+                        }
+                        column(VATAmountLine__Line_Amount__Control72; VATAmountLine."Line Amount")
                         {
                             AutoFormatExpression = "Sales Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__Invoice_Discount_Amount__Control74;VATAmountLine."Invoice Discount Amount")
+                        column(VATAmountLine__Inv__Disc__Base_Amount__Control73; VATAmountLine."Inv. Disc. Base Amount")
                         {
                             AutoFormatExpression = "Sales Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__VAT_Base__Control110;VATAmountLine."VAT Base")
+                        column(VATAmountLine__Invoice_Discount_Amount__Control74; VATAmountLine."Invoice Discount Amount")
                         {
                             AutoFormatExpression = "Sales Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__VAT_Amount__Control111;VATAmountLine."VAT Amount")
+                        column(VATAmountLine__VAT_Base__Control110; VATAmountLine."VAT Base")
                         {
                             AutoFormatExpression = "Sales Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__Line_Amount__Control100;VATAmountLine."Line Amount")
+                        column(VATAmountLine__VAT_Amount__Control111; VATAmountLine."VAT Amount")
                         {
                             AutoFormatExpression = "Sales Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__Inv__Disc__Base_Amount__Control104;VATAmountLine."Inv. Disc. Base Amount")
+                        column(VATAmountLine__Line_Amount__Control100; VATAmountLine."Line Amount")
                         {
                             AutoFormatExpression = "Sales Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__Invoice_Discount_Amount__Control108;VATAmountLine."Invoice Discount Amount")
+                        column(VATAmountLine__Inv__Disc__Base_Amount__Control104; VATAmountLine."Inv. Disc. Base Amount")
                         {
                             AutoFormatExpression = "Sales Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__VAT_Base__Control114;VATAmountLine."VAT Base")
+                        column(VATAmountLine__Invoice_Discount_Amount__Control108; VATAmountLine."Invoice Discount Amount")
                         {
                             AutoFormatExpression = "Sales Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__VAT_Amount__Control115;VATAmountLine."VAT Amount")
+                        column(VATAmountLine__VAT_Base__Control114; VATAmountLine."VAT Base")
                         {
                             AutoFormatExpression = "Sales Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__Line_Amount__Control112;VATAmountLine."Line Amount")
+                        column(VATAmountLine__VAT_Amount__Control115; VATAmountLine."VAT Amount")
                         {
                             AutoFormatExpression = "Sales Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__Inv__Disc__Base_Amount__Control116;VATAmountLine."Inv. Disc. Base Amount")
+                        column(VATAmountLine__Line_Amount__Control112; VATAmountLine."Line Amount")
                         {
                             AutoFormatExpression = "Sales Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__Invoice_Discount_Amount__Control130;VATAmountLine."Invoice Discount Amount")
+                        column(VATAmountLine__Inv__Disc__Base_Amount__Control116; VATAmountLine."Inv. Disc. Base Amount")
                         {
                             AutoFormatExpression = "Sales Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATCounter_Number;Number)
+                        column(VATAmountLine__Invoice_Discount_Amount__Control130; VATAmountLine."Invoice Discount Amount")
+                        {
+                            AutoFormatExpression = "Sales Header Archive"."Currency Code";
+                            AutoFormatType = 1;
+                        }
+                        column(VATCounter_Number; Number)
                         {
                         }
-                        column(VATAmountLine__VAT___Caption;VATAmountLine__VAT___CaptionLbl)
+                        column(VATAmountLine__VAT___Caption; VATAmountLine__VAT___CaptionLbl)
                         {
                         }
-                        column(VATAmountLine__VAT_Base__Control106Caption;VATAmountLine__VAT_Base__Control106CaptionLbl)
+                        column(VATAmountLine__VAT_Base__Control106Caption; VATAmountLine__VAT_Base__Control106CaptionLbl)
                         {
                         }
-                        column(VATAmountLine__VAT_Amount__Control107Caption;VATAmountLine__VAT_Amount__Control107CaptionLbl)
+                        column(VATAmountLine__VAT_Amount__Control107Caption; VATAmountLine__VAT_Amount__Control107CaptionLbl)
                         {
                         }
-                        column(VAT_Amount_SpecificationCaption;VAT_Amount_SpecificationCaptionLbl)
+                        column(VAT_Amount_SpecificationCaption; VAT_Amount_SpecificationCaptionLbl)
                         {
                         }
-                        column(VATAmountLine__Inv__Disc__Base_Amount__Control73Caption;VATAmountLine__Inv__Disc__Base_Amount__Control73CaptionLbl)
+                        column(VATAmountLine__Inv__Disc__Base_Amount__Control73Caption; VATAmountLine__Inv__Disc__Base_Amount__Control73CaptionLbl)
                         {
                         }
-                        column(VATAmountLine__Line_Amount__Control72Caption;VATAmountLine__Line_Amount__Control72CaptionLbl)
+                        column(VATAmountLine__Line_Amount__Control72Caption; VATAmountLine__Line_Amount__Control72CaptionLbl)
                         {
                         }
-                        column(VATAmountLine__Invoice_Discount_Amount__Control74Caption;VATAmountLine__Invoice_Discount_Amount__Control74CaptionLbl)
+                        column(VATAmountLine__Invoice_Discount_Amount__Control74Caption; VATAmountLine__Invoice_Discount_Amount__Control74CaptionLbl)
                         {
                         }
-                        column(VATAmountLine__VAT_Identifier_Caption;VATAmountLine__VAT_Identifier_CaptionLbl)
+                        column(VATAmountLine__VAT_Identifier_Caption; VATAmountLine__VAT_Identifier_CaptionLbl)
                         {
                         }
-                        column(VATAmountLine__VAT_Base_Caption;VATAmountLine__VAT_Base_CaptionLbl)
+                        column(VATAmountLine__VAT_Base_Caption; VATAmountLine__VAT_Base_CaptionLbl)
                         {
                         }
-                        column(VATAmountLine__VAT_Base__Control110Caption;VATAmountLine__VAT_Base__Control110CaptionLbl)
+                        column(VATAmountLine__VAT_Base__Control110Caption; VATAmountLine__VAT_Base__Control110CaptionLbl)
                         {
                         }
-                        column(VATAmountLine__VAT_Base__Control114Caption;VATAmountLine__VAT_Base__Control114CaptionLbl)
+                        column(VATAmountLine__VAT_Base__Control114Caption; VATAmountLine__VAT_Base__Control114CaptionLbl)
                         {
                         }
 
@@ -673,83 +673,83 @@ report 216 "Archived Sales Order"
                         trigger OnPreDataItem()
                         begin
                             IF VATAmount = 0 THEN
-                              CurrReport.BREAK;
-                            SETRANGE(Number,1,VATAmountLine.COUNT);
+                                CurrReport.BREAK;
+                            SETRANGE(Number, 1, VATAmountLine.COUNT);
                             CurrReport.CREATETOTALS(
-                              VATAmountLine."Line Amount",VATAmountLine."Inv. Disc. Base Amount",
-                              VATAmountLine."Invoice Discount Amount",VATAmountLine."VAT Base",VATAmountLine."VAT Amount");
+                              VATAmountLine."Line Amount", VATAmountLine."Inv. Disc. Base Amount",
+                              VATAmountLine."Invoice Discount Amount", VATAmountLine."VAT Base", VATAmountLine."VAT Amount");
                         end;
                     }
-                    dataitem(VATCounterLCY;Table2000000026)
+                    dataitem(VATCounterLCY; Integer)
                     {
                         DataItemTableView = SORTING(Number);
-                        column(VALExchRate;VALExchRate)
+                        column(VALExchRate; VALExchRate)
                         {
                         }
-                        column(VALSpecLCYHeader;VALSpecLCYHeader)
+                        column(VALSpecLCYHeader; VALSpecLCYHeader)
                         {
                         }
-                        column(VALVATBaseLCY;VALVATBaseLCY)
-                        {
-                            AutoFormatType = 1;
-                        }
-                        column(VALVATAmountLCY;VALVATAmountLCY)
+                        column(VALVATBaseLCY; VALVATBaseLCY)
                         {
                             AutoFormatType = 1;
                         }
-                        column(VALVATAmountLCY_Control149;VALVATAmountLCY)
+                        column(VALVATAmountLCY; VALVATAmountLCY)
                         {
                             AutoFormatType = 1;
                         }
-                        column(VALVATBaseLCY_Control150;VALVATBaseLCY)
+                        column(VALVATAmountLCY_Control149; VALVATAmountLCY)
                         {
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__VAT____Control151;VATAmountLine."VAT %")
-                        {
-                            DecimalPlaces = 0:5;
-                        }
-                        column(VATAmountLine__VAT_Identifier__Control152;VATAmountLine."VAT Identifier")
-                        {
-                        }
-                        column(VALVATAmountLCY_Control156;VALVATAmountLCY)
+                        column(VALVATBaseLCY_Control150; VALVATBaseLCY)
                         {
                             AutoFormatType = 1;
                         }
-                        column(VALVATBaseLCY_Control157;VALVATBaseLCY)
+                        column(VATAmountLine__VAT____Control151; VATAmountLine."VAT %")
+                        {
+                            DecimalPlaces = 0 : 5;
+                        }
+                        column(VATAmountLine__VAT_Identifier__Control152; VATAmountLine."VAT Identifier")
+                        {
+                        }
+                        column(VALVATAmountLCY_Control156; VALVATAmountLCY)
                         {
                             AutoFormatType = 1;
                         }
-                        column(VALVATAmountLCY_Control159;VALVATAmountLCY)
+                        column(VALVATBaseLCY_Control157; VALVATBaseLCY)
                         {
                             AutoFormatType = 1;
                         }
-                        column(VALVATBaseLCY_Control160;VALVATBaseLCY)
+                        column(VALVATAmountLCY_Control159; VALVATAmountLCY)
                         {
                             AutoFormatType = 1;
                         }
-                        column(VATCounterLCY_Number;Number)
+                        column(VALVATBaseLCY_Control160; VALVATBaseLCY)
+                        {
+                            AutoFormatType = 1;
+                        }
+                        column(VATCounterLCY_Number; Number)
                         {
                         }
-                        column(VALVATAmountLCY_Control149Caption;VALVATAmountLCY_Control149CaptionLbl)
+                        column(VALVATAmountLCY_Control149Caption; VALVATAmountLCY_Control149CaptionLbl)
                         {
                         }
-                        column(VALVATBaseLCY_Control150Caption;VALVATBaseLCY_Control150CaptionLbl)
+                        column(VALVATBaseLCY_Control150Caption; VALVATBaseLCY_Control150CaptionLbl)
                         {
                         }
-                        column(VATAmountLine__VAT____Control151Caption;VATAmountLine__VAT____Control151CaptionLbl)
+                        column(VATAmountLine__VAT____Control151Caption; VATAmountLine__VAT____Control151CaptionLbl)
                         {
                         }
-                        column(VATAmountLine__VAT_Identifier__Control152Caption;VATAmountLine__VAT_Identifier__Control152CaptionLbl)
+                        column(VATAmountLine__VAT_Identifier__Control152Caption; VATAmountLine__VAT_Identifier__Control152CaptionLbl)
                         {
                         }
-                        column(VALVATBaseLCYCaption;VALVATBaseLCYCaptionLbl)
+                        column(VALVATBaseLCYCaption; VALVATBaseLCYCaptionLbl)
                         {
                         }
-                        column(VALVATBaseLCY_Control157Caption;VALVATBaseLCY_Control157CaptionLbl)
+                        column(VALVATBaseLCY_Control157Caption; VALVATBaseLCY_Control157CaptionLbl)
                         {
                         }
-                        column(VALVATBaseLCY_Control160Caption;VALVATBaseLCY_Control160CaptionLbl)
+                        column(VALVATBaseLCY_Control160Caption; VALVATBaseLCY_Control160CaptionLbl)
                         {
                         }
 
@@ -758,11 +758,11 @@ report 216 "Archived Sales Order"
                             VATAmountLine.GetLine(Number);
                             VALVATBaseLCY :=
                               VATAmountLine.GetBaseLCY(
-                                "Sales Header Archive"."Posting Date","Sales Header Archive"."Currency Code",
+                                "Sales Header Archive"."Posting Date", "Sales Header Archive"."Currency Code",
                                 "Sales Header Archive"."Currency Factor");
                             VALVATAmountLCY :=
                               VATAmountLine.GetAmountLCY(
-                                "Sales Header Archive"."Posting Date","Sales Header Archive"."Currency Code",
+                                "Sales Header Archive"."Posting Date", "Sales Header Archive"."Currency Code",
                                 "Sales Header Archive"."Currency Factor");
                         end;
 
@@ -772,105 +772,105 @@ report 216 "Archived Sales Order"
                                ("Sales Header Archive"."Currency Code" = '') OR
                                (VATAmountLine.GetTotalVATAmount = 0)
                             THEN
-                              CurrReport.BREAK;
+                                CurrReport.BREAK;
 
-                            SETRANGE(Number,1,VATAmountLine.COUNT);
-                            CurrReport.CREATETOTALS(VALVATBaseLCY,VALVATAmountLCY);
+                            SETRANGE(Number, 1, VATAmountLine.COUNT);
+                            CurrReport.CREATETOTALS(VALVATBaseLCY, VALVATAmountLCY);
 
                             IF GLSetup."LCY Code" = '' THEN
-                              VALSpecLCYHeader := Text007 + Text008
+                                VALSpecLCYHeader := Text007 + Text008
                             ELSE
-                              VALSpecLCYHeader := Text007 + FORMAT(GLSetup."LCY Code");
+                                VALSpecLCYHeader := Text007 + FORMAT(GLSetup."LCY Code");
 
-                            CurrExchRate.FindCurrency("Sales Header Archive"."Posting Date","Sales Header Archive"."Currency Code",1);
-                            VALExchRate := STRSUBSTNO(Text009,CurrExchRate."Relational Exch. Rate Amount",CurrExchRate."Exchange Rate Amount");
+                            CurrExchRate.FindCurrency("Sales Header Archive"."Posting Date", "Sales Header Archive"."Currency Code", 1);
+                            VALExchRate := STRSUBSTNO(Text009, CurrExchRate."Relational Exch. Rate Amount", CurrExchRate."Exchange Rate Amount");
                         end;
                     }
-                    dataitem(Total;Table2000000026)
+                    dataitem(Total; Integer)
                     {
                         DataItemTableView = SORTING(Number)
-                                            WHERE(Number=CONST(1));
-                        column(PaymentTerms_Description;PaymentTerms.Description)
+                                            WHERE(Number = CONST(1));
+                        column(PaymentTerms_Description; PaymentTerms.Description)
                         {
                         }
-                        column(ShipmentMethod_Description;ShipmentMethod.Description)
+                        column(ShipmentMethod_Description; ShipmentMethod.Description)
                         {
                         }
-                        column(Total_Number;Number)
+                        column(Total_Number; Number)
                         {
                         }
-                        column(PaymentTerms_DescriptionCaption;PaymentTerms_DescriptionCaptionLbl)
+                        column(PaymentTerms_DescriptionCaption; PaymentTerms_DescriptionCaptionLbl)
                         {
                         }
-                        column(ShipmentMethod_DescriptionCaption;ShipmentMethod_DescriptionCaptionLbl)
+                        column(ShipmentMethod_DescriptionCaption; ShipmentMethod_DescriptionCaptionLbl)
                         {
                         }
                     }
-                    dataitem(Total2;Table2000000026)
+                    dataitem(Total2; Integer)
                     {
                         DataItemTableView = SORTING(Number)
-                                            WHERE(Number=CONST(1));
-                        column(Sales_Header_Archive___Sell_to_Customer_No__;"Sales Header Archive"."Sell-to Customer No.")
+                                            WHERE(Number = CONST(1));
+                        column(Sales_Header_Archive___Sell_to_Customer_No__; "Sales Header Archive"."Sell-to Customer No.")
                         {
                         }
-                        column(ShipToAddr_8_;ShipToAddr[8])
+                        column(ShipToAddr_8_; ShipToAddr[8])
                         {
                         }
-                        column(ShipToAddr_7_;ShipToAddr[7])
+                        column(ShipToAddr_7_; ShipToAddr[7])
                         {
                         }
-                        column(ShipToAddr_6_;ShipToAddr[6])
+                        column(ShipToAddr_6_; ShipToAddr[6])
                         {
                         }
-                        column(ShipToAddr_5_;ShipToAddr[5])
+                        column(ShipToAddr_5_; ShipToAddr[5])
                         {
                         }
-                        column(ShipToAddr_4_;ShipToAddr[4])
+                        column(ShipToAddr_4_; ShipToAddr[4])
                         {
                         }
-                        column(ShipToAddr_3_;ShipToAddr[3])
+                        column(ShipToAddr_3_; ShipToAddr[3])
                         {
                         }
-                        column(ShipToAddr_2_;ShipToAddr[2])
+                        column(ShipToAddr_2_; ShipToAddr[2])
                         {
                         }
-                        column(ShipToAddr_1_;ShipToAddr[1])
+                        column(ShipToAddr_1_; ShipToAddr[1])
                         {
                         }
-                        column(Total2_Number;Number)
+                        column(Total2_Number; Number)
                         {
                         }
-                        column(Ship_to_AddressCaption;Ship_to_AddressCaptionLbl)
+                        column(Ship_to_AddressCaption; Ship_to_AddressCaptionLbl)
                         {
                         }
-                        column(Sales_Header_Archive___Sell_to_Customer_No__Caption;"Sales Header Archive".FIELDCAPTION("Sell-to Customer No."))
+                        column(Sales_Header_Archive___Sell_to_Customer_No__Caption; "Sales Header Archive".FIELDCAPTION("Sell-to Customer No."))
                         {
                         }
 
                         trigger OnPreDataItem()
                         begin
                             IF NOT ShowShippingAddr THEN
-                              CurrReport.BREAK;
+                                CurrReport.BREAK;
                         end;
                     }
                 }
 
                 trigger OnAfterGetRecord()
                 var
-                    TempSalesHeader: Record "36" temporary;
-                    TempSalesLine: Record "37" temporary;
+                    TempSalesHeader: Record "Sales Header" temporary;
+                    TempSalesLine: Record "Sales Line" temporary;
                 begin
-                    InitTempLines(TempSalesHeader,TempSalesLine);
+                    InitTempLines(TempSalesHeader, TempSalesLine);
 
                     VATAmount := VATAmountLine.GetTotalVATAmount;
                     VATBaseAmount := VATAmountLine.GetTotalVATBase;
                     VATDiscountAmount :=
-                      VATAmountLine.GetTotalVATDiscount(TempSalesHeader."Currency Code",TempSalesHeader."Prices Including VAT");
+                      VATAmountLine.GetTotalVATDiscount(TempSalesHeader."Currency Code", TempSalesHeader."Prices Including VAT");
                     TotalAmountInclVAT := VATAmountLine.GetTotalAmountInclVAT;
 
                     IF Number > 1 THEN BEGIN
-                      CopyText := FormatDocument.GetCOPYText;
-                      OutputNo += 1;
+                        CopyText := FormatDocument.GetCOPYText;
+                        OutputNo += 1;
                     END;
                     CurrReport.PAGENO := 1;
                 end;
@@ -878,14 +878,14 @@ report 216 "Archived Sales Order"
                 trigger OnPostDataItem()
                 begin
                     IF NOT CurrReport.PREVIEW THEN
-                      CODEUNIT.RUN(CODEUNIT::"SalesCount-PrintedArch","Sales Header Archive");
+                        CODEUNIT.RUN(CODEUNIT::"SalesCount-PrintedArch", "Sales Header Archive");
                 end;
 
                 trigger OnPreDataItem()
                 begin
                     NoOfLoops := ABS(NoOfCopies) + 1;
                     CopyText := '';
-                    SETRANGE(Number,1,NoOfLoops);
+                    SETRANGE(Number, 1, NoOfLoops);
                     OutputNo := 1;
                 end;
             }
@@ -897,7 +897,7 @@ report 216 "Archived Sales Order"
                 FormatAddressFields("Sales Header Archive");
                 FormatDocumentFields("Sales Header Archive");
 
-                DimSetEntry1.SETRANGE("Dimension Set ID","Dimension Set ID");
+                DimSetEntry1.SETRANGE("Dimension Set ID", "Dimension Set ID");
 
                 CALCFIELDS("No. of Archived Versions");
             end;
@@ -915,11 +915,11 @@ report 216 "Archived Sales Order"
                 group(Options)
                 {
                     Caption = 'Options';
-                    field(NoOfCopies;NoOfCopies)
+                    field(NoOfCopies; NoOfCopies)
                     {
                         Caption = 'No. of Copies';
                     }
-                    field(ShowInternalInfo;ShowInternalInfo)
+                    field(ShowInternalInfo; ShowInternalInfo)
                     {
                         Caption = 'Show Internal Information';
                     }
@@ -943,47 +943,47 @@ report 216 "Archived Sales Order"
         SalesSetup.GET;
 
         CASE SalesSetup."Logo Position on Documents" OF
-          SalesSetup."Logo Position on Documents"::"No Logo":
-            ;
-          SalesSetup."Logo Position on Documents"::Left:
-            CompanyInfo.CALCFIELDS(Picture);
-          SalesSetup."Logo Position on Documents"::Center:
-            BEGIN
-              CompanyInfo1.GET;
-              CompanyInfo1.CALCFIELDS(Picture);
-            END;
-          SalesSetup."Logo Position on Documents"::Right:
-            BEGIN
-              CompanyInfo2.GET;
-              CompanyInfo2.CALCFIELDS(Picture);
-            END;
+            SalesSetup."Logo Position on Documents"::"No Logo":
+                ;
+            SalesSetup."Logo Position on Documents"::Left:
+                CompanyInfo.CALCFIELDS(Picture);
+            SalesSetup."Logo Position on Documents"::Center:
+                BEGIN
+                    CompanyInfo1.GET;
+                    CompanyInfo1.CALCFIELDS(Picture);
+                END;
+            SalesSetup."Logo Position on Documents"::Right:
+                BEGIN
+                    CompanyInfo2.GET;
+                    CompanyInfo2.CALCFIELDS(Picture);
+                END;
         END;
     end;
 
     var
-        Text004: Label 'Sales Order Archived %1', Comment='%1 = Document No.';
+        Text004: Label 'Sales Order Archived %1', Comment = '%1 = Document No.';
         Text005: Label 'Page %1';
-        GLSetup: Record "98";
-        ShipmentMethod: Record "10";
-        PaymentTerms: Record "3";
-        PrepmtPaymentTerms: Record "3";
-        SalesPurchPerson: Record "13";
-        CompanyInfo: Record "79";
-        CompanyInfo1: Record "79";
-        CompanyInfo2: Record "79";
-        SalesSetup: Record "311";
-        VATAmountLine: Record "290" temporary;
-        TempSalesLineArchive: Record "5108" temporary;
-        DimSetEntry1: Record "480";
-        DimSetEntry2: Record "480";
-        RespCenter: Record "5714";
-        Language: Record "8";
-        CurrExchRate: Record "330";
-        FormatAddr: Codeunit "365";
-        FormatDocument: Codeunit "368";
-        CustAddr: array [8] of Text[50];
-        ShipToAddr: array [8] of Text[50];
-        CompanyAddr: array [8] of Text[50];
+        GLSetup: Record "General Ledger Setup";
+        ShipmentMethod: Record "Shipment Method";
+        PaymentTerms: Record "Payment Terms";
+        PrepmtPaymentTerms: Record "Payment Terms";
+        SalesPurchPerson: Record "Salesperson/Purchaser";
+        CompanyInfo: Record "Company Information";
+        CompanyInfo1: Record "Company Information";
+        CompanyInfo2: Record "Company Information";
+        SalesSetup: Record "Sales & Receivables Setup";
+        VATAmountLine: Record "VAT Amount Line" temporary;
+        TempSalesLineArchive: Record "Sales Line Archive" temporary;
+        DimSetEntry1: Record "Dimension Set Entry";
+        DimSetEntry2: Record "Dimension Set Entry";
+        RespCenter: Record "Responsibility Center";
+        Language: Record Language;
+        CurrExchRate: Record "Currency Exchange Rate";
+        FormatAddr: Codeunit "Format Address";
+        FormatDocument: Codeunit "Format Document";
+        CustAddr: array[8] of Text[50];
+        ShipToAddr: array[8] of Text[50];
+        CompanyAddr: array[8] of Text[50];
         SalesPersonText: Text[30];
         VATNoText: Text[80];
         ReferenceText: Text[80];
@@ -1052,35 +1052,35 @@ report 216 "Archived Sales Order"
         ShipmentMethod_DescriptionCaptionLbl: Label 'Shipment Method';
         Ship_to_AddressCaptionLbl: Label 'Ship-to Address';
 
-    local procedure FormatAddressFields(var SalesHeaderArchive: Record "5107")
+    local procedure FormatAddressFields(var SalesHeaderArchive: Record "Sales Header Archive")
     begin
-        FormatAddr.GetCompanyAddr(SalesHeaderArchive."Responsibility Center",RespCenter,CompanyInfo,CompanyAddr);
-        FormatAddr.SalesHeaderArchBillTo(CustAddr,SalesHeaderArchive);
-        ShowShippingAddr := FormatAddr.SalesHeaderArchShipTo(ShipToAddr,CustAddr,SalesHeaderArchive);
+        FormatAddr.GetCompanyAddr(SalesHeaderArchive."Responsibility Center", RespCenter, CompanyInfo, CompanyAddr);
+        FormatAddr.SalesHeaderArchBillTo(CustAddr, SalesHeaderArchive);
+        ShowShippingAddr := FormatAddr.SalesHeaderArchShipTo(ShipToAddr, CustAddr, SalesHeaderArchive);
     end;
 
-    local procedure FormatDocumentFields(SalesHeaderArchive: Record "5107")
+    local procedure FormatDocumentFields(SalesHeaderArchive: Record "Sales Header Archive")
     begin
         WITH SalesHeaderArchive DO BEGIN
-          FormatDocument.SetTotalLabels("Currency Code",TotalText,TotalInclVATText,TotalExclVATText);
-          FormatDocument.SetSalesPerson(SalesPurchPerson,"Salesperson Code",SalesPersonText);
-          FormatDocument.SetPaymentTerms(PaymentTerms,"Payment Terms Code","Language Code");
-          FormatDocument.SetPaymentTerms(PrepmtPaymentTerms,"Prepmt. Payment Terms Code","Language Code");
-          FormatDocument.SetShipmentMethod(ShipmentMethod,"Shipment Method Code","Language Code");
+            FormatDocument.SetTotalLabels("Currency Code", TotalText, TotalInclVATText, TotalExclVATText);
+            FormatDocument.SetSalesPerson(SalesPurchPerson, "Salesperson Code", SalesPersonText);
+            FormatDocument.SetPaymentTerms(PaymentTerms, "Payment Terms Code", "Language Code");
+            FormatDocument.SetPaymentTerms(PrepmtPaymentTerms, "Prepmt. Payment Terms Code", "Language Code");
+            FormatDocument.SetShipmentMethod(ShipmentMethod, "Shipment Method Code", "Language Code");
 
-          ReferenceText := FormatDocument.SetText("Your Reference" <> '',FIELDCAPTION("Your Reference"));
-          VATNoText := FormatDocument.SetText("VAT Registration No." <> '',FIELDCAPTION("VAT Registration No."));
+            ReferenceText := FormatDocument.SetText("Your Reference" <> '', FIELDCAPTION("Your Reference"));
+            VATNoText := FormatDocument.SetText("VAT Registration No." <> '', FIELDCAPTION("VAT Registration No."));
         END;
     end;
 
-    local procedure InitTempLines(var TempSalesHeader: Record "36" temporary;var TempSalesLine: Record "37" temporary)
+    local procedure InitTempLines(var TempSalesHeader: Record "Sales Header" temporary; var TempSalesLine: Record "Sales Line" temporary)
     begin
-        TempSalesLineArchive.CopyTempLines("Sales Header Archive",TempSalesLine);
+        TempSalesLineArchive.CopyTempLines("Sales Header Archive", TempSalesLine);
 
         VATAmountLine.DELETEALL;
         TempSalesHeader.TRANSFERFIELDS("Sales Header Archive");
         TempSalesLine."Prepayment Line" := TRUE;  // used as flag in CalcVATAmountLines -> not invoice rounding
-        TempSalesLine.CalcVATAmountLines(0,TempSalesHeader,TempSalesLine,VATAmountLine);
+        TempSalesLine.CalcVATAmountLines(0, TempSalesHeader, TempSalesLine, VATAmountLine);
     end;
 }
 

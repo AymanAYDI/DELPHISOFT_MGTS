@@ -3,10 +3,6 @@ tableextension 50049 "DEL SalesReceivablesSetup" extends "Sales & Receivables Se
     fields
     {
 
-        //Unsupported feature: Property Modification (InitValue) on ""Line Amt. Round LCY"(Field 11501)".
-
-
-        //Unsupported feature: Property Modification (MinValue) on ""Line Amt. Round LCY"(Field 11501)".
 
         field(50000; "DEL PDF Registration Customer Path"; Text[250])
         {

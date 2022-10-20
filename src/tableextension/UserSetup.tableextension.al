@@ -9,7 +9,7 @@ tableextension 50045 "DEL UserSetup" extends "User Setup"
         field(4006496; "DEL Katalog ID"; Code[20])
         {
             Caption = 'Catalogue ID';
-            // TableRelation = Katalogkopf; TODO; table "Katalogkopf" not migrated yet
+            // TableRelation = Katalogkopf; TODO: table "Katalogkopf" not migrated yet
         }
         field(4006497; "DEL Agenda"; Code[30])
         {
