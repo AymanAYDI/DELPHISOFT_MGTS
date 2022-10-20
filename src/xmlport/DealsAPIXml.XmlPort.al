@@ -1,11 +1,5 @@
 xmlport 50015 "DEL Deals API Xml"
 {
-    // Mgts10.00.01.00 | 11.01.2020 | Order API Management
-    // 
-    // Mgts10.00.01.02 | 06.02.2020 | Order API Management : Add fields
-    // 
-    // Mgts10.00.03.03 | 09.10.2020 | Order API Management : Add field :  status
-
     Direction = Export;
     Encoding = UTF8;
     Namespaces = Json = 'http://james.newtonking.com/projects/json';

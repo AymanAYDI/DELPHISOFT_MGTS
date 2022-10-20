@@ -1,4 +1,4 @@
-report 408 "Purchase - Receipt"
+report 50081 "DEL Purchase - Receipt" //408
 {
     DefaultLayout = RDLC;
     RDLCLayout = './PurchaseReceipt.rdlc';
@@ -6,9 +6,9 @@ report 408 "Purchase - Receipt"
 
     dataset
     {
-        dataitem(DataItem2822; Table120)
+        dataitem("Purch. Rcpt. Header"; "Purch. Rcpt. Header")
         {
-            DataItemTableView = SORTING (No.);
+            DataItemTableView = SORTING("No.");
             RequestFilterFields = "No.", "Buy-from Vendor No.", "No. Printed";
             RequestFilterHeading = 'Posted Purchase Receipt';
             column(No_PurchRcptHeader; "No.")
@@ -35,13 +35,13 @@ report 408 "Purchase - Receipt"
             column(EmailCaption; EmailCaptionLbl)
             {
             }
-            dataitem(CopyLoop; Table2000000026)
+            dataitem(CopyLoop; Integer)
             {
-                DataItemTableView = SORTING (Number);
-                dataitem(PageLoop; Table2000000026)
+                DataItemTableView = SORTING(Number);
+                dataitem(PageLoop; Integer)
                 {
-                    DataItemTableView = SORTING (Number)
-                                        WHERE (Number = CONST (1));
+                    DataItemTableView = SORTING(Number)
+                                        WHERE(Number = CONST(1));
                     column(CurrentReportPageNo; STRSUBSTNO(Text003, ''))
                     {
                     }
@@ -258,11 +258,11 @@ report 408 "Purchase - Receipt"
                     column(PayToVendNo_PurchRcptHeader; "Purch. Rcpt. Header"."Pay-to Vendor No.")
                     {
                     }
-                    dataitem(DimensionLoop1; Table2000000026)
+                    dataitem(DimensionLoop1; Integer)
                     {
                         DataItemLinkReference = "Purch. Rcpt. Header";
-                        DataItemTableView = SORTING (Number)
-                                            WHERE (Number = FILTER (1 ..));
+                        DataItemTableView = SORTING(Number)
+                                            WHERE(Number = FILTER(1 ..));
                         column(DimText; DimText)
                         {
                         }
@@ -304,11 +304,11 @@ report 408 "Purchase - Receipt"
                                 CurrReport.BREAK;
                         end;
                     }
-                    dataitem(DataItem3042; Table121)
+                    dataitem("Purch. Rcpt. Line"; "Purch. Rcpt. Line")
                     {
-                        DataItemLink = Document No.=FIELD(No.);
+                        DataItemLink = "Document No." = FIELD("No.");
                         DataItemLinkReference = "Purch. Rcpt. Header";
-                        DataItemTableView = SORTING (Document No., Line No.);
+                        DataItemTableView = SORTING("Document No.", "Line No.");
                         column(ShowInternalInfo; ShowInternalInfo)
                         {
                         }
@@ -343,10 +343,10 @@ report 408 "Purchase - Receipt"
                         column(No_PurchRcptLineCaption; FIELDCAPTION("No."))
                         {
                         }
-                        dataitem(DimensionLoop2; Table2000000026)
+                        dataitem(DimensionLoop2; Integer)
                         {
-                            DataItemTableView = SORTING (Number)
-                                                WHERE (Number = FILTER (1 ..));
+                            DataItemTableView = SORTING(Number)
+                                                WHERE(Number = FILTER(1 ..));
                             column(Number_IntegerLine; DimensionLoop2.Number)
                             {
                             }
@@ -410,10 +410,10 @@ report 408 "Purchase - Receipt"
                             SETRANGE("Line No.", 0, "Line No.");
                         end;
                     }
-                    dataitem(Total; Table2000000026)
+                    dataitem(Total; Integer)
                     {
-                        DataItemTableView = SORTING (Number)
-                                            WHERE (Number = CONST (1));
+                        DataItemTableView = SORTING(Number)
+                                            WHERE(Number = CONST(1));
                         column(BuyfromVenNo_PurchRcptHeader; "Purch. Rcpt. Header"."Buy-from Vendor No.")
                         {
                         }
@@ -427,10 +427,10 @@ report 408 "Purchase - Receipt"
                                 CurrReport.BREAK;
                         end;
                     }
-                    dataitem(Total2; Table2000000026)
+                    dataitem(Total2; Integer)
                     {
-                        DataItemTableView = SORTING (Number)
-                                            WHERE (Number = CONST (1));
+                        DataItemTableView = SORTING(Number)
+                                            WHERE(Number = CONST(1));
                         column(PaytoVenNo_PurchRcptHeader; Caption_client)
                         {
                         }
@@ -496,8 +496,6 @@ report 408 "Purchase - Receipt"
             begin
                 CurrReport.LANGUAGE := Language.GetLanguageID("Language Code");
 
-                // NGTS1 -
-
                 LCO_Element.SETRANGE("Type No.", "Purch. Rcpt. Header"."Order No.");
                 LCO_Element.SETRANGE(Type, LCO_Element.Type::ACO);
 
@@ -511,7 +509,6 @@ report 408 "Purchase - Receipt"
                     LCO_Shipment := LCO_DealShipment.ID
                 END;
 
-                // NGTS1 +
 
                 PrepareHeader;
                 PrepareFooter;
@@ -604,18 +601,24 @@ report 408 "Purchase - Receipt"
     }
 
     var
+        CompanyInfo: Record "Company Information";
+        SalesPurchPerson: Record "Salesperson/Purchaser";
+        DimSetEntry1: Record "Dimension Set Entry";
+        DimSetEntry2: Record "Dimension Set Entry";
+        Language: Record Language;
+        RespCenter: Record "Responsibility Center";
+        LCO_Element: Record "DEL Element";
+        LCO_DealShipment: Record "DEL Deal Shipment";
+
+
+        RcptCountPrinted: Codeunit "Purch.Rcpt.-Printed";
+        SegManagement: Codeunit SegManagement;
+        FormatAddr: Codeunit "Format Address";
+
         Text000: Label 'Purchaser';
         Text001: Label 'COPY';
         Text002: Label 'Purchase - Receipt %1';
         Text003: Label 'Page %1';
-        CompanyInfo: Record "79";
-        SalesPurchPerson: Record "13";
-        DimSetEntry1: Record "480";
-        DimSetEntry2: Record "480";
-        Language: Record "8";
-        RespCenter: Record "5714";
-        RcptCountPrinted: Codeunit "318";
-        SegManagement: Codeunit "5051";
         VendAddr: array[8] of Text[50];
         ShipToAddr: array[8] of Text[50];
         CompanyAddr: array[8] of Text[50];
@@ -625,7 +628,6 @@ report 408 "Purchase - Receipt"
         NoOfCopies: Integer;
         NoOfLoops: Integer;
         CopyText: Text[30];
-        FormatAddr: Codeunit "365";
         DimText: Text[120];
         OldDimText: Text[75];
         ShowInternalInfo: Boolean;
@@ -670,14 +672,11 @@ report 408 "Purchase - Receipt"
         NumberInt1: Integer;
         ML_POrder: Label 'N° ACO';
         ML_AFFNo: Label 'N° Affaire / Shipment';
-        LCO_Element: Record "50021";
         LCO_Deal_ID: Code[10];
         LCO_P_Order_No: Code[10];
-        LCO_DealShipment: Record "50030";
         LCO_Shipment: Code[20];
         Caption_client: Label 'Customer No.';
 
-    [Scope('Internal')]
     procedure PrepareHeader()
     begin
         CLEAR(HeaderLabel);
@@ -696,29 +695,22 @@ report 408 "Purchase - Receipt"
                 HeaderTxt[4] := "Your Reference";
             END;
 
-            // NGTS1 -
             HeaderLabel[5] := ML_POrder;
             HeaderTxt[5] := "Purch. Rcpt. Header"."Order No.";
 
             HeaderLabel[6] := ML_AFFNo;
             HeaderTxt[6] := LCO_Deal_ID + ' / ' + LCO_Shipment;
-            // NGTS1 +
 
 
             COMPRESSARRAY(HeaderLabel);
             COMPRESSARRAY(HeaderTxt);
-
-            // acc. to filter rounding line
-            // Vendor.GET("Pay-to Vendor No.");
-            // VendPostGrp.GET("Vendor Posting Group");
         END;
     end;
 
-    [Scope('Internal')]
     procedure PrepareFooter()
     var
-        PmtMethod: Record "3";
-        ShipMethod: Record "10";
+        PmtMethod: Record "Payment Terms";
+        ShipMethod: Record "Shipment Method";
     begin
         CLEAR(FooterLabel);
         CLEAR(FooterTxt);
@@ -775,7 +767,6 @@ report 408 "Purchase - Receipt"
         END;
     end;
 
-    [Scope('Internal')]
     procedure InitializeRequest(NewNoOfCopies: Integer; NewShowInternalInfo: Boolean; NewLogInteraction: Boolean; NewShowCorrectionLines: Boolean)
     begin
         NoOfCopies := NewNoOfCopies;

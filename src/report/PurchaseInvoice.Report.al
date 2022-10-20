@@ -1,6 +1,5 @@
-report 406 "Purchase - Invoice"
+report 50074 "DEL Purchase - Invoice" //406
 {
-    // DEL.SAZ      17.07.18    Ne pas imprimé ligne avec quantité 0
     DefaultLayout = RDLC;
     RDLCLayout = './PurchaseInvoice.rdlc';
 
@@ -9,22 +8,22 @@ report 406 "Purchase - Invoice"
 
     dataset
     {
-        dataitem(DataItem3733; Table122)
+        dataitem("Purch. Inv. Header"; "Purch. Inv. Header")
         {
-            DataItemTableView = SORTING (No.);
+            DataItemTableView = SORTING("No.");
             RequestFilterFields = "No.", "Buy-from Vendor No.", "No. Printed";
             RequestFilterHeading = 'Posted Purchase Invoice';
             column(No_PurchInvHeader; "No.")
             {
             }
-            dataitem(CopyLoop; Table2000000026)
+            dataitem(CopyLoop; Integer)
             {
-                DataItemTableView = SORTING (Number);
-                dataitem(PageLoop; Table2000000026)
+                DataItemTableView = SORTING(Number);
+                dataitem(PageLoop; Integer)
                 {
-                    DataItemTableView = SORTING (Number)
-                                        WHERE (Number = CONST (1));
-                    column(DocumentCaption; DocumentCaption)
+                    DataItemTableView = SORTING(Number)
+                                        WHERE(Number = CONST(1));
+                    column(DocumentCaption; DocumentCaption())
                     {
                     }
                     column(CopyText; CopyText)
@@ -315,11 +314,11 @@ report 406 "Purchase - Invoice"
                     column(VendorNoCaption; VendorNoCaptionLbl)
                     {
                     }
-                    dataitem(DimensionLoop1; Table2000000026)
+                    dataitem(DimensionLoop1; Integer)
                     {
                         DataItemLinkReference = "Purch. Inv. Header";
-                        DataItemTableView = SORTING (Number)
-                                            WHERE (Number = FILTER (1 ..));
+                        DataItemTableView = SORTING(Number)
+                                            WHERE(Number = FILTER(1 ..));
                         column(DimTxt; DimText)
                         {
                         }
@@ -330,11 +329,11 @@ report 406 "Purchase - Invoice"
                         trigger OnAfterGetRecord()
                         begin
                             IF Number = 1 THEN BEGIN
-                                IF NOT DimSetEntry1.FINDFIRST THEN
-                                    CurrReport.BREAK;
+                                IF NOT DimSetEntry1.FINDFIRST() THEN
+                                    CurrReport.BREAK();
                             END ELSE
                                 IF NOT Continue THEN
-                                    CurrReport.BREAK;
+                                    CurrReport.BREAK();
 
                             CLEAR(DimText);
                             Continue := FALSE;
@@ -353,23 +352,23 @@ report 406 "Purchase - Invoice"
                                     Continue := TRUE;
                                     EXIT;
                                 END;
-                            UNTIL (DimSetEntry1.NEXT = 0);
+                            UNTIL (DimSetEntry1.NEXT() = 0);
                         end;
 
                         trigger OnPreDataItem()
                         begin
                             IF NOT ShowInternalInfo THEN
-                                CurrReport.BREAK;
+                                CurrReport.BREAK();
                         end;
                     }
-                    dataitem(DataItem5707; Table123)
+                    dataitem("Purch. Inv. Line"; "Purch. Inv. Line")
                     {
-                        DataItemLink = Document No.=FIELD(No.);
+                        DataItemLink = "Document No." = FIELD("No.");
                         DataItemLinkReference = "Purch. Inv. Header";
-                        DataItemTableView = SORTING (Document No., Line No.);
+                        DataItemTableView = SORTING("Document No.", "Line No.");
                         column(LineAmt_PurchInvLine; "Line Amount")
                         {
-                            AutoFormatExpression = "Purch. Inv. Line".GetCurrencyCode;
+                            AutoFormatExpression = "Purch. Inv. Line".GetCurrencyCode();
                             AutoFormatType = 1;
                         }
                         column(Desc_PurchInvLine; Description)
@@ -387,7 +386,7 @@ report 406 "Purchase - Invoice"
                         }
                         column(DirectUnitCost_PurchInvLine; "Direct Unit Cost")
                         {
-                            AutoFormatExpression = "Purch. Inv. Line".GetCurrencyCode;
+                            AutoFormatExpression = "Purch. Inv. Line".GetCurrencyCode();
                             AutoFormatType = 2;
                         }
                         column(LineDis_PurchInvLine; "Line Discount %")
@@ -414,7 +413,7 @@ report 406 "Purchase - Invoice"
                         }
                         column(InvDisAmt; -"Inv. Discount Amount")
                         {
-                            AutoFormatExpression = "Purch. Inv. Line".GetCurrencyCode;
+                            AutoFormatExpression = "Purch. Inv. Line".GetCurrencyCode();
                             AutoFormatType = 1;
                         }
                         column(TotalTxt_PurchInvLine; TotalText)
@@ -422,7 +421,7 @@ report 406 "Purchase - Invoice"
                         }
                         column(Amt_PurchInvLine; Amount)
                         {
-                            AutoFormatExpression = "Purch. Inv. Line".GetCurrencyCode;
+                            AutoFormatExpression = "Purch. Inv. Line".GetCurrencyCode();
                             AutoFormatType = 1;
                         }
                         column(TotalInclVATTxt_PurchInvLine; TotalInclVATText)
@@ -430,15 +429,15 @@ report 406 "Purchase - Invoice"
                         }
                         column(AmtIncludingVAT_PurchInvLine; "Amount Including VAT")
                         {
-                            AutoFormatExpression = "Purch. Inv. Line".GetCurrencyCode;
+                            AutoFormatExpression = "Purch. Inv. Line".GetCurrencyCode();
                             AutoFormatType = 1;
                         }
                         column(AmtIncludingVATAmt; "Amount Including VAT" - Amount)
                         {
-                            AutoFormatExpression = "Purch. Inv. Line".GetCurrencyCode;
+                            AutoFormatExpression = "Purch. Inv. Line".GetCurrencyCode();
                             AutoFormatType = 1;
                         }
-                        column(VATAmtLineVATAmtTxt; VATAmountLine.VATAmountText)
+                        column(VATAmtLineVATAmtTxt; VATAmountLine.VATAmountText())
                         {
                         }
                         column(TotalExclVATTxt_PurchInvLine; TotalExclVATText)
@@ -521,10 +520,10 @@ report 406 "Purchase - Invoice"
                         column(VATPercentageCaption_PurchInvLine; FIELDCAPTION("VAT %"))
                         {
                         }
-                        dataitem(DimensionLoop2; Table2000000026)
+                        dataitem(DimensionLoop2; Integer)
                         {
-                            DataItemTableView = SORTING (Number)
-                                                WHERE (Number = FILTER (1 ..));
+                            DataItemTableView = SORTING(Number)
+                                                WHERE(Number = FILTER(1 ..));
                             column(DimTxt_DimensionLoop2; DimText)
                             {
                             }
@@ -535,11 +534,11 @@ report 406 "Purchase - Invoice"
                             trigger OnAfterGetRecord()
                             begin
                                 IF Number = 1 THEN BEGIN
-                                    IF NOT DimSetEntry2.FINDFIRST THEN
-                                        CurrReport.BREAK;
+                                    IF NOT DimSetEntry2.FINDFIRST() THEN
+                                        CurrReport.BREAK();
                                 END ELSE
                                     IF NOT Continue THEN
-                                        CurrReport.BREAK;
+                                        CurrReport.BREAK();
 
                                 CLEAR(DimText);
                                 Continue := FALSE;
@@ -558,13 +557,13 @@ report 406 "Purchase - Invoice"
                                         Continue := TRUE;
                                         EXIT;
                                     END;
-                                UNTIL (DimSetEntry2.NEXT = 0);
+                                UNTIL (DimSetEntry2.NEXT() = 0);
                             end;
 
                             trigger OnPreDataItem()
                             begin
                                 IF NOT ShowInternalInfo THEN
-                                    CurrReport.BREAK;
+                                    CurrReport.BREAK();
 
                                 DimSetEntry2.SETRANGE("Dimension Set ID", "Purch. Inv. Line"."Dimension Set ID");
                             end;
@@ -574,11 +573,9 @@ report 406 "Purchase - Invoice"
                         begin
                             IF (Type = Type::"G/L Account") AND (NOT ShowInternalInfo) THEN
                                 "No." := '';
-                            //DEL.SAZ 17.07.18
                             IF (Type <> Type::" ") AND (Quantity = 0) THEN
-                                CurrReport.SKIP;
-                            //END DEL.SAZ
-                            VATAmountLine.INIT;
+                                CurrReport.SKIP();
+                            VATAmountLine.INIT();
                             VATAmountLine."VAT Identifier" := "Purch. Inv. Line"."VAT Identifier";
                             VATAmountLine."VAT Calculation Type" := "VAT Calculation Type";
                             VATAmountLine."Tax Group Code" := "Tax Group Code";
@@ -590,7 +587,7 @@ report 406 "Purchase - Invoice"
                             IF "Allow Invoice Disc." THEN
                                 VATAmountLine."Inv. Disc. Base Amount" := "Line Amount";
                             VATAmountLine."Invoice Discount Amount" := "Inv. Discount Amount";
-                            VATAmountLine.InsertLine;
+                            VATAmountLine.InsertLine();
 
                             AllowVATDisctxt := FORMAT("Purch. Inv. Line"."Allow Invoice Disc.");
                             PurchInLineTypeNo := "Purch. Inv. Line".Type;
@@ -605,15 +602,15 @@ report 406 "Purchase - Invoice"
 
                         trigger OnPreDataItem()
                         var
-                            PurchInvLine: Record "123";
+                            PurchInvLine: Record "Purch. Inv. Line";
                             VATIdentifier: Code[10];
                         begin
-                            VATAmountLine.DELETEALL;
+                            VATAmountLine.DELETEALL();
                             MoreLines := FIND('+');
                             WHILE MoreLines AND (Description = '') AND ("No." = '') AND (Quantity = 0) AND (Amount = 0) DO
                                 MoreLines := NEXT(-1) <> 0;
                             IF NOT MoreLines THEN
-                                CurrReport.BREAK;
+                                CurrReport.BREAK();
                             SETRANGE("Line No.", 0, "Line No.");
                             CurrReport.CREATETOTALS("Line Amount", "Inv. Discount Amount", Amount, "Amount Including VAT");
 
@@ -626,13 +623,13 @@ report 406 "Purchase - Invoice"
                                 REPEAT
                                     IF (PurchInvLine."VAT Identifier" <> VATIdentifier) AND (PurchInvLine.Quantity <> 0) THEN
                                         VATAmountText := Text012;
-                                UNTIL PurchInvLine.NEXT = 0;
+                                UNTIL PurchInvLine.NEXT() = 0;
                             END;
                         end;
                     }
-                    dataitem(VATCounter; Table2000000026)
+                    dataitem(VATCounter; Integer)
                     {
-                        DataItemTableView = SORTING (Number);
+                        DataItemTableView = SORTING(Number);
                         column(VATAmtLineVATBase; VATAmountLine."VAT Base")
                         {
                             AutoFormatExpression = "Purch. Inv. Header"."Currency Code";
@@ -679,9 +676,9 @@ report 406 "Purchase - Invoice"
                               VATAmountLine."Invoice Discount Amount", VATAmountLine."VAT Base", VATAmountLine."VAT Amount");
                         end;
                     }
-                    dataitem(VATCounterLCY; Table2000000026)
+                    dataitem(VATCounterLCY; Integer)
                     {
-                        DataItemTableView = SORTING (Number);
+                        DataItemTableView = SORTING(Number);
                         column(VALExchRate; VALExchRate)
                         {
                         }
@@ -722,7 +719,7 @@ report 406 "Purchase - Invoice"
                             IF (NOT GLSetup."Print VAT specification in LCY") OR
                                ("Purch. Inv. Header"."Currency Code" = '')
                             THEN
-                                CurrReport.BREAK;
+                                CurrReport.BREAK();
 
                             SETRANGE(Number, 1, VATAmountLine.COUNT);
                             CurrReport.CREATETOTALS(VALVATBaseLCY, VALVATAmountLCY);
@@ -737,15 +734,15 @@ report 406 "Purchase - Invoice"
                             VALExchRate := STRSUBSTNO(Text009, CalculatedExchRate, CurrExchRate."Exchange Rate Amount");
                         end;
                     }
-                    dataitem(Total; Table2000000026)
+                    dataitem(Total; Integer)
                     {
-                        DataItemTableView = SORTING (Number)
-                                            WHERE (Number = CONST (1));
+                        DataItemTableView = SORTING(Number)
+                                            WHERE(Number = CONST(1));
                     }
-                    dataitem(Total2; Table2000000026)
+                    dataitem(Total2; Integer)
                     {
-                        DataItemTableView = SORTING (Number)
-                                            WHERE (Number = CONST (1));
+                        DataItemTableView = SORTING(Number)
+                                            WHERE(Number = CONST(1));
                         column(BuyfromVendNo_PurchInvHeader; "Purch. Inv. Header"."Buy-from Vendor No.")
                         {
                         }
@@ -756,13 +753,13 @@ report 406 "Purchase - Invoice"
                         trigger OnPreDataItem()
                         begin
                             IF "Purch. Inv. Header"."Buy-from Vendor No." = "Purch. Inv. Header"."Pay-to Vendor No." THEN
-                                CurrReport.BREAK;
+                                CurrReport.BREAK();
                         end;
                     }
-                    dataitem(Total3; Table2000000026)
+                    dataitem(Total3; Integer)
                     {
-                        DataItemTableView = SORTING (Number)
-                                            WHERE (Number = CONST (1));
+                        DataItemTableView = SORTING(Number)
+                                            WHERE(Number = CONST(1));
                         column(ShipToAddr1; ShipToAddr[1])
                         {
                         }
@@ -794,7 +791,7 @@ report 406 "Purchase - Invoice"
                         trigger OnPreDataItem()
                         begin
                             IF ShipToAddr[1] = '' THEN
-                                CurrReport.BREAK;
+                                CurrReport.BREAK();
                         end;
                     }
                 }
@@ -803,7 +800,7 @@ report 406 "Purchase - Invoice"
                 begin
                     IF Number > 1 THEN BEGIN
                         OutputNo := OutputNo + 1;
-                        CopyText := FormatDocument.GetCOPYText;
+                        CopyText := FormatDocument.GetCOPYText();
                     END;
                     CurrReport.PAGENO := 1;
 
@@ -840,8 +837,8 @@ report 406 "Purchase - Invoice"
 
                 DimSetEntry1.SETRANGE("Dimension Set ID", "Dimension Set ID");
 
-                PrepareHeader;
-                PrepareFooter;
+                PrepareHeader();
+                PrepareFooter();
 
                 IF LogInteraction THEN
                     IF NOT CurrReport.PREVIEW THEN
@@ -907,26 +904,25 @@ report 406 "Purchase - Invoice"
 
     trigger OnInitReport()
     begin
-        GLSetup.GET;
-        CompanyInfo.GET;
+        GLSetup.GET();
+        CompanyInfo.GET();
     end;
 
     var
-        Text004: Label 'Purchase - Invoice %1', Comment = '%1 = Document No.';
-        GLSetup: Record "98";
-        CompanyInfo: Record "79";
-        ShipmentMethod: Record "10";
-        PaymentTerms: Record "3";
-        SalesPurchPerson: Record "13";
-        VATAmountLine: Record "290" temporary;
-        DimSetEntry1: Record "480";
-        DimSetEntry2: Record "480";
-        RespCenter: Record "5714";
-        Language: Record "8";
-        CurrExchRate: Record "330";
-        FormatAddr: Codeunit "365";
-        FormatDocument: Codeunit "368";
-        SegManagement: Codeunit "5051";
+        GLSetup: Record "General Ledger Setup";
+        CompanyInfo: Record "Company Information";
+        ShipmentMethod: Record "Shipment Method";
+        PaymentTerms: Record "Payment Terms";
+        SalesPurchPerson: Record "Salesperson/Purchaser";
+        VATAmountLine: Record "VAT Amount Line" temporary;
+        DimSetEntry1: Record "Dimension Set Entry"; //480
+        DimSetEntry2: Record "Dimension Set Entry";
+        RespCenter: Record "Responsibility Center";
+        Language: Record Language;
+        CurrExchRate: Record "Currency Exchange Rate";
+        FormatAddr: Codeunit "Format Address";
+        FormatDocument: Codeunit "Format Document";
+        SegManagement: Codeunit SegManagement;
         VendAddr: array[8] of Text[50];
         ShipToAddr: array[8] of Text[50];
         CompanyAddr: array[8] of Text[50];
@@ -953,6 +949,8 @@ report 406 "Purchase - Invoice"
         Text007: Label 'VAT Amount Specification in ';
         Text008: Label 'Local Currency';
         Text009: Label 'Exchange rate: %1/%2';
+        Text004: Label 'Purchase - Invoice %1', Comment = '%1 = Document No.';
+
         CalculatedExchRate: Decimal;
         Text010: Label 'Purchase - Prepayment Invoice %1';
         OutputNo: Integer;
@@ -1032,7 +1030,6 @@ report 406 "Purchase - Invoice"
         EXIT(Text11500);
     end;
 
-    [Scope('Internal')]
     procedure PrepareHeader()
     begin
         CLEAR(HeaderLabel);
@@ -1063,18 +1060,13 @@ report 406 "Purchase - Invoice"
 
             COMPRESSARRAY(HeaderLabel);
             COMPRESSARRAY(HeaderTxt);
-
-            // acc. to filter rounding line
-            // Vendor.GET("Pay-to Vendor No.");
-            // VendPostGrp.GET("Vendor Posting Group");
         END;
     end;
 
-    [Scope('Internal')]
     procedure PrepareFooter()
     var
-        PmtMethod: Record "3";
-        ShipMethod: Record "10";
+        PmtMethod: Record "Payment Terms";
+        ShipMethod: Record "Shipment Method";
     begin
         CLEAR(FooterLabel);
         CLEAR(FooterTxt);
@@ -1118,7 +1110,6 @@ report 406 "Purchase - Invoice"
         END;
     end;
 
-    [Scope('Internal')]
     procedure InitializeRequest(NewNoOfCopies: Integer; NewShowInternalInfo: Boolean; NewLogInteraction: Boolean)
     begin
         NoOfCopies := NewNoOfCopies;
@@ -1126,14 +1117,14 @@ report 406 "Purchase - Invoice"
         LogInteraction := NewLogInteraction;
     end;
 
-    local procedure FormatAddressFields(var PurchInvHeader: Record "122")
+    local procedure FormatAddressFields(var PurchInvHeader: Record "Purch. Inv. Header")
     begin
         FormatAddr.GetCompanyAddr(PurchInvHeader."Responsibility Center", RespCenter, CompanyInfo, CompanyAddr);
         FormatAddr.PurchInvPayTo(VendAddr, PurchInvHeader);
         FormatAddr.PurchInvShipTo(ShipToAddr, PurchInvHeader);
     end;
 
-    local procedure FormatDocumentFields(PurchInvHeader: Record "122")
+    local procedure FormatDocumentFields(PurchInvHeader: Record "Purch. Inv. Header")
     begin
         WITH PurchInvHeader DO BEGIN
             FormatDocument.SetTotalLabels("Currency Code", TotalText, TotalInclVATText, TotalExclVATText);

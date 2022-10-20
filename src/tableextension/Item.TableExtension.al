@@ -224,7 +224,7 @@ tableextension 50020 "DEL Item" extends Item //27
         field(50090; "DEL Images"; Integer)
         {
             FieldClass = FlowField;
-            CalcFormula = Count("DEL Texte Regulation" WHERE("Attached to Line No." = FIELD("No.")));
+            //TODO CalcFormula = Count("DEL Texte Regulation" WHERE("Attached to Line No." = FIELD("No.")));
 
             Editable = false;
 
