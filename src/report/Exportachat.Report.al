@@ -240,32 +240,18 @@ report 50026 "DEL Export achat"
     var
         FileManagement: Codeunit "File Management";
         TempBlob: Codeunit "Temp Blob";
-    begin
-        GeneralSetup.GET;
-        GeneralSetup.TESTFIELD(GeneralSetup."Purchase File");
-        Path_Txt := GeneralSetup."Purchase File";
 
+    begin
         IF Mois < 10 THEN
             DateNow_Te := FORMAT(Year) + '_0' + FORMAT(Mois)
         ELSE
             DateNow_Te := FORMAT(Year) + '_' + FORMAT(Mois);
         TimeNow_Te := DELCHR(FORMAT(TIME), '=', ':/.');
-
-        Path_Txt := GeneralSetup."Sales File";
-        Path_Txt := Path_Txt + 'CONSO_ACHATS_MG_S2_CH_NGT_' + DateNow_Te + '_' + TimeNow_Te + '_fv1.CSV';
-
+        FileName := 'CONSO_ACHATS_MG_S2_CH_NGT_' + DateNow_Te + '_' + TimeNow_Te + '_fv1.CSV';
         ExportAchat.RESET;
         ExportAchat.SETFILTER(ExportAchat."Item No.", '<>%1', '');
-        //TODO //FILE : to check the new code if it's correct 
         IF ExportAchat.FINDFIRST THEN BEGIN
-
             TempBlob.CreateOutStream(VarOut);
-            FileManagement.BLOBExport(TempBlob, Path_Txt, true);
-
-            // FileVente.WRITEMODE := TRUE;
-            // FileVente.TEXTMODE := TRUE;
-            // FileVente.CREATE(Path_Txt);
-            // FileVente.CREATEOUTSTREAM(VarOut);
             REPEAT
                 Line := ExportAchat.Mois +
                       ExportAchat."Code Fournisseur" +
@@ -299,8 +285,8 @@ report 50026 "DEL Export achat"
                 VarOut.WRITETEXT(Line);
                 VarOut.WRITETEXT;
             UNTIL ExportAchat.NEXT = 0;
-            //   FileVente.CLOSE;
             MESSAGE(Text0002);
+            FileManagement.BLOBExport(TempBlob, FileName, true);
         END;
     end;
 
@@ -339,7 +325,7 @@ report 50026 "DEL Export achat"
         DateNow_Te: Text;
         FiltreArticle: Text;
         FiltreFourn: Text;
-        Path_Txt: Text;
+        FileName: Text;
         TimeNow_Te: Text;
         Line: Text[383];
 

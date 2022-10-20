@@ -32,16 +32,6 @@ xmlport 50012 "DEL export ecriture article"
         }
     }
 
-    requestpage
-    {
 
-        layout
-        {
-        }
-
-        actions
-        {
-        }
-    }
 }
 

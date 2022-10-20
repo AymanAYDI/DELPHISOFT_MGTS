@@ -88,28 +88,28 @@ xmlport 50010 "DEL Reserved to ChC"
         DefaultDimension: Record "Default Dimension";
     begin
         MESSAGE(CurrentFileName);
+        // TODO //FILE 
+        // IF NOT IOFile.OPEN(CurrentFileName) THEN
+        //     EXIT;
+        // IOFile.TEXTMODE(TRUE);
 
-        IF NOT IOFile.OPEN(CurrentFileName) THEN
-            EXIT;
-        IOFile.TEXTMODE(TRUE);
+        // MESSAGE('Debug 2');
 
-        MESSAGE('Debug 2');
+        // WHILE IOFile.READ(IOFileLine) > 0 DO BEGIN
 
-        WHILE IOFile.READ(IOFileLine) > 0 DO BEGIN
-        
-            CreateArray();
+        //     CreateArray();
 
-            WITH Item DO
-                IF GET(FORMAT(LineFields[1])) THEN BEGIN
-                    MESSAGE('Debug 3, %1', "No.");
-                    EVALUATE("DEL Length.old", LineFields[2]);
-                    EVALUATE("DEL Width.old", LineFields[3]);
-                    EVALUATE("DEL Depth.old", LineFields[4]);
-                    MODIFY();
-                END;
-        END;
+        //     WITH Item DO
+        //         IF GET(FORMAT(LineFields[1])) THEN BEGIN
+        //             MESSAGE('Debug 3, %1', "No.");
+        //             EVALUATE("Length.old", LineFields[2]);
+        //             EVALUATE("Width.old", LineFields[3]);
+        //             EVALUATE("DEL Depth.old", LineFields[4]);
+        //             MODIFY();
+        //         END;
+        // END;
 
-        IOFile.CLOSE;
+        // IOFile.CLOSE;
     end;
 }
 

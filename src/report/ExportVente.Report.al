@@ -165,37 +165,24 @@ report 50025 "DEL Export Vente"
         FileManagement: Codeunit "File Management";
         TempBlob: Codeunit "Temp Blob";
     begin
-        GeneralSetup.GET;
-        GeneralSetup.TESTFIELD(GeneralSetup."Sales File");
-        //Path_Txt := GeneralSetup."Sales File";
-
         IF Mois < 10 THEN
             DateNow_Te := FORMAT(Year) + '_0' + FORMAT(Mois)
         ELSE
             DateNow_Te := FORMAT(Year) + '_' + FORMAT(Mois);
         TimeNow_Te := DELCHR(FORMAT(TIME), '=', ':/.');
-
-        Path_Txt := GeneralSetup."Sales File";
-        Path_Txt := 'CONSO_VENTES_MG_S2_CH_NGT_' + DateNow_Te + '_' + TimeNow_Te + '_fv1.CSV';
-        //TODO //FILE : to check the new code if it's correct 
-        TempBlob.CreateOutStream(VarOut);
-        FileManagement.BLOBExport(TempBlob, Path_Txt, True);
-
-        // FileVente.WRITEMODE := TRUE;
-        // FileVente.TEXTMODE := TRUE;
-        // FileVente.CREATE(Path_Txt);
-        // FileVente.CREATEOUTSTREAM(VarOut);
+        FileName := 'CONSO_VENTES_MG_S2_CH_NGT_' + DateNow_Te + '_' + TimeNow_Te + '_fv1.CSV';
         IF ExportVente.FINDFIRST THEN
-            REPEAT
-                Line := ExportVente.Mois + ExportVente.Activité + ExportVente.Pays + ExportVente.Enseigne + ExportVente."Type d'identifiant" + ExportVente."Identifiant produit" + ExportVente."Identifiant fabricant" +
-                      ExportVente.Sens + ExportVente.Quantité + ExportVente."C.A. H.T." + ExportVente.Ean + ExportVente."Code Marque" + ExportVente.Fournisseur + ExportVente."Référence fournisseur" + ExportVente.Fabricant +
-                      ExportVente."Référence fabricant" + ExportVente."Fournisseur principal" + ExportVente."Référence fournisseur Prin." + ExportVente."Code article B.U" + ExportVente."Groupe marchandise B.U" +
-                      ExportVente."Libellé produit";
-                VarOut.WRITETEXT(Line);
-                VarOut.WRITETEXT;
-            UNTIL ExportVente.NEXT = 0;
-        //  FileVente.CLOSE;
+            TempBlob.CreateOutStream(VarOut);
+        REPEAT
+            Line := ExportVente.Mois + ExportVente.Activité + ExportVente.Pays + ExportVente.Enseigne + ExportVente."Type d'identifiant" + ExportVente."Identifiant produit" + ExportVente."Identifiant fabricant" +
+                  ExportVente.Sens + ExportVente.Quantité + ExportVente."C.A. H.T." + ExportVente.Ean + ExportVente."Code Marque" + ExportVente.Fournisseur + ExportVente."Référence fournisseur" + ExportVente.Fabricant +
+                  ExportVente."Référence fabricant" + ExportVente."Fournisseur principal" + ExportVente."Référence fournisseur Prin." + ExportVente."Code article B.U" + ExportVente."Groupe marchandise B.U" +
+                  ExportVente."Libellé produit";
+            VarOut.WRITETEXT(Line);
+            VarOut.WRITETEXT;
+        UNTIL ExportVente.NEXT = 0;
         MESSAGE('Fichier créer');
+        FileManagement.BLOBExport(TempBlob, FileName, True);
     end;
 
     trigger OnPreReport()
@@ -229,7 +216,7 @@ report 50025 "DEL Export Vente"
         DateNow_Te: Text;
         FiltreArticle: Text;
         FiltreFourn: Text;
-        Path_Txt: Text;
+        FileName: Text;
         TimeNow_Te: Text;
         Line: Text[312];
 
