@@ -2,9 +2,10 @@ pageextension 50017 "DEL IncomingDocuments" extends "Incoming Documents" //190
 {
     actions
     {
-        //TODO modify(CreateDocument)
+        //TODO: QR-bill for swiss country
+        //  modify(CreateDocument)
         // {
-        //     Visible = NOT "Swiss QRBill";
+        //     Visible = NOT REC."Swiss QRBill";
         // }
         // modify(CreateGenJnlLine)
         // {

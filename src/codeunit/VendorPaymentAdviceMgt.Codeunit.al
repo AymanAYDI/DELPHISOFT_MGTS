@@ -149,7 +149,7 @@ codeunit 50057 "DEL Vendor Payment Advice Mgt."
     //----------- j'ai essayé de modifier la procedure GetBOdy : à valider !!----//
     local procedure GetBody(var DocMatrixEmailCodes: Record "DEL DocMatrix Email Codes"): Text
     var
-        //TempBlob: Record "99008535" temporary;
+        //TempBlob: Record "99008535" temporary; //ancien
         TypeHelper: Codeunit "Type Helper";
         TempBlob: Codeunit "Temp Blob";
         InStream: InStream;

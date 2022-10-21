@@ -5,9 +5,10 @@ codeunit 50089 "DEL PurchaseFunction Mgt"
     procedure UpdatePurchaseOrderPrices(PurchaseHeader: Record "Purchase Header")
     var
         PurchaseLine: Record "Purchase Line";
+        PriceCalcMgt: Codeunit "Purch. Price Calc. Mgt.";
+
         NothingToHandleErr: Label 'There is nothing to handle.';
         UpdatedPriceMess: Label 'Update completed.';
-        PriceCalcMgt: Codeunit "Purch. Price Calc. Mgt.";
         Win: Dialog;
         UpdatePricesInProgress: Label 'Updating prices...';
         CofirmMessage: Label 'Are you sure you want to update the order prices?';

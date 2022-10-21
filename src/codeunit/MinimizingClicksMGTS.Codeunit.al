@@ -256,26 +256,26 @@ codeunit 50012 "DEL Minimizing Clicks - MGTS"
         RecLSalesSetup.GET();
         RecLSalesSetup.TESTFIELD("DEL PDF Registration Sales C.Memo");
         RecLSalesCrMemoHeader.SETRANGE("No.", RecPSalesCrMemoHeader."No.");
-        IF RecLSalesCrMemoHeader.FINDFIRST() THEN BEGIN
-            TxtLClientPath := RecLSalesSetup."DEL PDF Registration Sales C.Memo" + '\' + RecLSalesCrMemoHeader."Bill-to Customer No.";
-            //TODO TxtLServerFilename := TEMPORARYPATH + RecLSalesCrMemoHeader."No." + '-' + RecLSalesCrMemoHeader."Bill-to Customer No." + '.pdf';
-            TxtLClientFilename := TxtLClientPath + '\' + RecLSalesCrMemoHeader."No." + '-' + RecLSalesCrMemoHeader."Bill-to Customer No." + '.pdf';
-            IF EXISTS(TxtLServerFilename) THEN
-                ERASE(TxtLServerFilename);
-            RecLReportSelections.RESET();
-            RecLReportSelections.SETRANGE(Usage, RecLReportSelections.Usage::"S.Cr.Memo");
-            IF RecLReportSelections.FINDSET() THEN
-                REPEAT
-                    REPORT.SAVEASPDF(RecLReportSelections."Report ID", TxtLServerFilename, RecLSalesCrMemoHeader);
-                    IF NOT CduLFileManagement.ClientDirectoryExists(TxtLClientPath) THEN
-                        CduLFileManagement.CreateClientDirectory(TxtLClientPath);
-                    IF EXISTS(TxtLClientFilename) THEN
-                        ERASE(TxtLClientFilename);
-                    CduLFileManagement.DownloadToFile(TxtLServerFilename, TxtLClientFilename);
-                    CduLFileManagement.DeleteServerFile(TxtLServerFilename);
-                UNTIL RecLReportSelections.NEXT() = 0;
-        END;
-        EXIT(TxtLClientFilename);
+        //TODO IF RecLSalesCrMemoHeader.FINDFIRST() THEN BEGIN
+        //     TxtLClientPath := RecLSalesSetup."DEL PDF Registration Sales C.Memo" + '\' + RecLSalesCrMemoHeader."Bill-to Customer No.";
+        //     //TODO TxtLServerFilename := TEMPORARYPATH + RecLSalesCrMemoHeader."No." + '-' + RecLSalesCrMemoHeader."Bill-to Customer No." + '.pdf';
+        //     TxtLClientFilename := TxtLClientPath + '\' + RecLSalesCrMemoHeader."No." + '-' + RecLSalesCrMemoHeader."Bill-to Customer No." + '.pdf';
+        //     IF EXISTS(TxtLServerFilename) THEN
+        //         ERASE(TxtLServerFilename);
+        //     RecLReportSelections.RESET();
+        //     RecLReportSelections.SETRANGE(Usage, RecLReportSelections.Usage::"S.Cr.Memo");
+        //     IF RecLReportSelections.FINDSET() THEN
+        //         REPEAT
+        //             REPORT.SAVEASPDF(RecLReportSelections."Report ID", TxtLServerFilename, RecLSalesCrMemoHeader);
+        //             IF NOT CduLFileManagement.ClientDirectoryExists(TxtLClientPath) THEN
+        //                 CduLFileManagement.CreateClientDirectory(TxtLClientPath);
+        //             IF EXISTS(TxtLClientFilename) THEN
+        //                 ERASE(TxtLClientFilename);
+        //             CduLFileManagement.DownloadToFile(TxtLServerFilename, TxtLClientFilename);
+        //             CduLFileManagement.DeleteServerFile(TxtLServerFilename);
+        //         UNTIL RecLReportSelections.NEXT() = 0;
+        // END;
+        // EXIT(TxtLClientFilename);
     end;
 
     procedure FctSendMailSalesCrMemoHeader(RecPSalesCrMemoHeader: Record "Sales Cr.Memo Header")
@@ -307,12 +307,12 @@ codeunit 50012 "DEL Minimizing Clicks - MGTS"
                 REPEAT
                     IF RecLReportSelections."Use for Email Body" THEN BEGIN
                         TxtLSubjectMail := RecLSalesCrMemoHeader."No.";
-                        RecLReportSelections.GetEmailBody(TxtMailBody, RecLReportSelections.Usage::"S.Cr.Memo", RecLSalesCrMemoHeader, RecLSalesCrMemoHeader."Sell-to Customer No.", TxtLRecipientName);
+                        //TODO RecLReportSelections.GetEmailBody(TxtMailBody, RecLReportSelections.Usage::"S.Cr.Memo", RecLSalesCrMemoHeader, RecLSalesCrMemoHeader."Sell-to Customer No.", TxtLRecipientName);
                     END
                 UNTIL (RecLReportSelections.NEXT() = 0) OR (RecLReportSelections."Use for Email Body");
             END;
-            DocumentMailing.EmailFile(FctSalesCrMemoHeaderPDFSave(RecLSalesCrMemoHeader), '', TxtMailBody, RecLSalesCrMemoHeader."No.",
-                  TxtLSenderAddress, '', TRUE, RecLReportSelections.Usage::"S.Cr.Memo");
+            //TODO DocumentMailing.EmailFile(FctSalesCrMemoHeaderPDFSave(RecLSalesCrMemoHeader), '', TxtMailBody, RecLSalesCrMemoHeader."No.",
+            //  TxtLSenderAddress, '', TRUE, RecLReportSelections.Usage::"S.Cr.Memo");
         END;
     end;
 
@@ -333,7 +333,7 @@ codeunit 50012 "DEL Minimizing Clicks - MGTS"
             RecLCompanyInfo.TESTFIELD("DEL FTP Server");
             RecLCompanyInfo.TESTFIELD("DEL FTP UserName");
             RecLCompanyInfo.TESTFIELD("DEL FTP Password");
-            FctFTPUploadFile(RecLCompanyInfo."DEL FTP Server", RecLCompanyInfo."DEL FTP UserName", RecLCompanyInfo."DEL FTP Password", TxtLPathClient, TxtLFileName);
+            //TODOFctFTPUploadFile(RecLCompanyInfo."DEL FTP Server", RecLCompanyInfo."DEL FTP UserName", RecLCompanyInfo."DEL FTP Password", TxtLPathClient, TxtLFileName);
         END;
         IF RecLCustomer."DEL FTP Save 2" THEN BEGIN
             TxtLPathClient := FctSalesCrMemoHeaderPDFSave(RecPSalesCrMemoHeader);
@@ -342,7 +342,7 @@ codeunit 50012 "DEL Minimizing Clicks - MGTS"
             RecLCompanyInfo.TESTFIELD("DEL FTP2 Server");
             RecLCompanyInfo.TESTFIELD("DEL FTP2 UserName");
             RecLCompanyInfo.TESTFIELD("DEL FTP2 Password");
-            FctFTPUploadFile(RecLCompanyInfo."DEL FTP2 Server", RecLCompanyInfo."DEL FTP2 UserName", RecLCompanyInfo."DEL FTP2 Password", TxtLPathClient, TxtLFileName);
+            //TODOFctFTPUploadFile(RecLCompanyInfo."DEL FTP2 Server", RecLCompanyInfo."DEL FTP2 UserName", RecLCompanyInfo."DEL FTP2 Password", TxtLPathClient, TxtLFileName);
         END;
         IF (NOT RecLCustomer."DEL FTP Save") AND (NOT RecLCustomer."DEL FTP Save 2") THEN
             FctSendMailSalesCrMemoHeader(RecPSalesCrMemoHeader);

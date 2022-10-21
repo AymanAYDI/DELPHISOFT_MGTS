@@ -1,10 +1,6 @@
 codeunit 50028 "DEL Alert and fee copy Mgt"
 {
 
-
-
-
-
     var
         LogisticTmp_Re: Record "DEL Logistic" temporary;
 

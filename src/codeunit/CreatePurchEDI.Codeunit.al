@@ -21,12 +21,12 @@ codeunit 50019 "DEL Create Purch. EDI"
         DocNo := pDocNo;
     end;
 
-    procedure CreateAndValidateReqWorksheet(DocNo: Code[20])
+    procedure CreateAndValidateReqWorksheet(DocNo1: Code[20])
     var
         RequisitionLine: Record "Requisition Line";
         GeneralSetup: Record "DEL General Setup";
-        GetSalesOrder: Report "Get Sales Orders";
-        PerformAction: Report "Carry Out Action Msg. - Req.";
+        GetSalesOrder: Report "DEL Get Sales Orders";
+        PerformAction: Report "DEL Carry Out Act Msg.- Req.";
     begin
         GeneralSetup.GET();
         GeneralSetup.TESTFIELD("Worksheet Template Name");
@@ -40,24 +40,22 @@ codeunit 50019 "DEL Create Purch. EDI"
         RequisitionLine."Worksheet Template Name" := GeneralSetup."Worksheet Template Name";
         RequisitionLine."Journal Batch Name" := GeneralSetup."Journal Batch Name";
 
-        //Extract Sales Line To Requisition Line
         CLEAR(GetSalesOrder);
-        // GetSalesOrder.SetSalesDocNo(DocNo); //TODO: procedure dans une report specifique
+        GetSalesOrder.SetSalesDocNo(DocNo1);
         GetSalesOrder.SetReqWkshLine(RequisitionLine, 1);
         GetSalesOrder.USEREQUESTPAGE(FALSE);
         GetSalesOrder.RUNMODAL();
 
-        //Validate Requisition Line
         CLEAR(PerformAction);
         PerformAction.SetReqWkshLine(RequisitionLine);
         PerformAction.SetHideDialog(TRUE);
-        // PerformAction.SetEdiParam(TRUE); //TODO: procedure dans une report specifique
+        PerformAction.SetEdiParam(TRUE);
         PerformAction.USEREQUESTPAGE(FALSE);
         PerformAction.RUNMODAL();
     end;
 
 
-    procedure CreateDeal(DocNo: Code[20])
+    procedure CreateDeal(DocNo2: Code[20])
     var
         PurchaseLine: Record "Purchase Line";
         Deal_Cu: Codeunit "DEL Deal";
@@ -66,7 +64,7 @@ codeunit 50019 "DEL Create Purch. EDI"
 
     begin
         LastDocNo := '';
-        PurchaseLine.SETRANGE("Special Order Sales No.", DocNo);
+        PurchaseLine.SETRANGE("Special Order Sales No.", DocNo2);
         IF PurchaseLine.FINDSET() THEN
             REPEAT
                 IF PurchaseLine."Document No." <> LastDocNo THEN BEGIN
@@ -74,8 +72,8 @@ codeunit 50019 "DEL Create Purch. EDI"
                     CLEAR(LastDocNo);
                     LastDocNo := PurchaseLine."Document No.";
 
-                    affaireNo_Co_Loc := Deal_Cu.FNC_New_Deal(PurchaseLine."Document No."); //MESSAGE('DEAL CREATION OK');
-                    Deal_Cu.FNC_Init_Deal(affaireNo_Co_Loc, TRUE, FALSE); //MESSAGE('DEAL INIT OK');
+                    affaireNo_Co_Loc := Deal_Cu.FNC_New_Deal(PurchaseLine."Document No.");
+                    Deal_Cu.FNC_Init_Deal(affaireNo_Co_Loc, TRUE, FALSE);
                 END;
             UNTIL PurchaseLine.NEXT() = 0;
     end;

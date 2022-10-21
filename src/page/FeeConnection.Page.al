@@ -95,7 +95,7 @@ page 50025 "DEL Fee Connection"
     end;
 
     var
-        Type_Op: Option Vendor,Customer;
+        Type_Op: Enum "DEL Type Fee Connection";
         No_Co: Code[20];
         [InDataSet]
         FormAmountEnable: Boolean;
@@ -103,7 +103,7 @@ page 50025 "DEL Fee Connection"
         FormFactorEnable: Boolean;
 
 
-    procedure FNC_Set_Type(Type_Op_Par: Option Vendor,Customer; No_Co_Par: Code[20])
+    procedure FNC_Set_Type(Type_Op_Par: Enum "DEL Type Fee Connection"; No_Co_Par: Code[20])
     begin
         Type_Op := Type_Op_Par;
         No_Co := No_Co_Par

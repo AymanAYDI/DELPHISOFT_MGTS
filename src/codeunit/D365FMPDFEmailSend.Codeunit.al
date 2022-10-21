@@ -439,7 +439,10 @@ codeunit 50053 "DEL D365FM PDF Email Send"
     end;
 
 
-    procedure InitValue(var NewTxtPObject: Text; var NewTxtPSender: Text; var NewTxtPCustEmail: Text; NewOptPDocType: Option " ","Service Invoice","Service Credit Memo","Issued Reminder"; NewCodGLanguage: Code[20]; NewPRemTermsCod: Code[20]; NewPRemLevelInt: Integer; NewEntryNo: Integer; NewParam: Text)
+    procedure InitValue(var NewTxtPObject: Text; var NewTxtPSender: Text; var NewTxtPCustEmail: Text[250];
+     NewOptPDocType: Option " ",
+    "Service Invoice","Service Credit Memo","Issued Reminder"; NewCodGLanguage: Code[20];
+     NewPRemTermsCod: Code[20]; NewPRemLevelInt: Integer; NewEntryNo: Integer; NewParam: Text)
     begin
         TxtGObject := NewTxtPObject;
         TxtGSender := NewTxtPSender;

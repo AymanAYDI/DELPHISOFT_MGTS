@@ -7,13 +7,6 @@ pageextension 50035 "DEL GeneralJournal" extends "General Journal" //39
             field("DEL Shipment Selection"; Rec."DEL Shipment Selection")
             {
 
-                trigger OnDrillDown()
-                begin
-
-                    //CurrPage.UPDATE() ;
-                    //FNC_ShipmentLookup();
-                    //CurrPage.UPDATE();
-                end;
             }
         }
         addafter("Direct Debit Mandate ID")

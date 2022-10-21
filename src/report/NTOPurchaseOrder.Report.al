@@ -494,7 +494,7 @@ report 50004 "DEL NTO - Purchase Order"
                                 // PurchLine."Dimension Set ID" :=
                                 //  DimMgt.GetDimensionSetID(DocDim1);
                                 DimMgt.ShowDimensionSet(PurchLine."Dimension Set ID", StrSubstNo('%1 %2 %3', PurchLine."Document Type",
-                                PurchLine."Document No.", PurchLine."Line No."));
+                               PurchLine."Document No.", PurchLine."Line No."));
                             end;
 
 
@@ -872,7 +872,7 @@ report 50004 "DEL NTO - Purchase Order"
         //   TODO : dimensions have been removed ! ! 
         DocDim1: Record "Dimension Set Entry"; //480 
         DocDim2: Record "General Ledger Setup";
-        DimMgt: Codeunit DimensionManagement; //408
+        DimMgt: Codeunit 20; //408
 
         RespCenter: Record "Responsibility Center";
         Language: Record Language;

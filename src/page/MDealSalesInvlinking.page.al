@@ -1,4 +1,3 @@
-#pragma implicitwith disable
 page 50052 "DEL M Deal Sales Inv. linking"
 {
 
@@ -67,35 +66,26 @@ page 50052 "DEL M Deal Sales Inv. linking"
                         ELSE BEGIN
 
                             //changer la référence sur l'ACO dans l'entete de la note de crédit (champ code achat) et sur les lignes
-                            //Deal_Cu.FNC_Get_ACO(ACOElement_Re_Loc, "Shipment Selection");
                             ChangeCodeAchat_FNC();
 
                             //Créer un élément facture vente pour la nouvelle affaire
                             salesInvoiceHeader_Re_Loc.GET(Rec."Sales Invoice No.");
 
-                            //TODO //CODEUNIT    Element_Cu.FNC_Add_Sales_Invoice(
-                            // Rec."Deal ID",
-                            //   salesInvoiceHeader_Re_Loc,
-                            //   Rec."Shipment Selection",
-                            //   add_Variant_Op_Loc::New);
-
-                            //TODO //CODEUNIT   Position_CU.FNC_Add_SalesInvoice_Position(Rec."Deal ID", FALSE);
-
-                            //mettre l'affaire à jour
-                            //TODO //CODEUNIT   requestID_Co_Loc := UpdateRequestManager_Cu.FNC_Add_Request(
-                            // Rec."Deal ID",
-                            //   urm_Re_Loc.Requested_By_Type::Invoice,
-                            //   Rec."Sales Invoice No.",
-                            //   CURRENTDATETIME
-                            // );
-
-
-
+                            Element_Cu.FNC_Add_Sales_Invoice(
+                           Rec."Deal ID",
+                             salesInvoiceHeader_Re_Loc,
+                             Rec."Shipment Selection",
+                             add_Variant_Op_Loc::New);
+                            Position_CU.FNC_Add_SalesInvoice_Position(Rec."Deal ID", FALSE);
+                            requestID_Co_Loc := UpdateRequestManager_Cu.FNC_Add_Request(
+                           Rec."Deal ID",
+                             urm_Re_Loc.Requested_By_Type::Invoice,
+                             Rec."Sales Invoice No.",
+                             CURRENTDATETIME
+                           );
                             urm_Re_Loc.GET(requestID_Co_Loc);
-                            //TODO //CODEUNIT   UpdateRequestManager_Cu.FNC_Process_Requests(urm_Re_Loc, FALSE, FALSE, TRUE);
-
+                            UpdateRequestManager_Cu.FNC_Process_Requests(urm_Re_Loc, FALSE, FALSE, TRUE);
                             Rec.DELETE();
-
                         END;
                     end;
                 }
@@ -112,38 +102,32 @@ page 50052 "DEL M Deal Sales Inv. linking"
     end;
 
     var
-        //TODO //CODEUNIT
-        // Element_Cu: Codeunit 50021;
-        // Deal_Cu: Codeunit 50020;
-        // UpdateRequestManager_Cu: Codeunit 50032;
-        // DealShipment_Cu: Codeunit 50029;
-        // ShipmentConnection_Cu: Codeunit 50027;
-        // Position_CU: Codeunit 50022;
+        Element_Cu: Codeunit "DEL Element";
+        Deal_Cu: Codeunit "DEL Deal";
+        UpdateRequestManager_Cu: Codeunit "DEL Update Request Manager";
+        DealShipment_Cu: Codeunit "DEL Deal Shipment";
+        ShipmentConnection_Cu: Codeunit "DEL Deal Shipment Connection";
+        Position_CU: Codeunit "DEL Position";
         Text19022230: Label 'M A N U A L   L I N K I N G';
 
 
     procedure ChangeCodeAchat_FNC()
     var
-        PostedLine_Re_Loc: Record 480;   //  changement du table 350 --> 480
+
+        //TODO PostedLine_Re_Loc: Record "Posted Document Dimension";
+        PostedLine_Re_Loc: Record "Dimension Set Entry";   //  changement du table 359 --> 480  //Posted Document Dimension
         ACOConnection_Rec_Loc: Record "DEL ACO Connection";
-        DealShipment_Rec_Loc: Record "DEL Deal Shipment";
         SalesInvoiceHeader_Re_Loc: Record "Sales Invoice Header";
         SalesInvoiceLine_Re_Loc: Record "Sales Invoice Line";
         NewCodeAchatNo_Co_Par: Code[20];
     begin
-
         ACOConnection_Rec_Loc.SETRANGE(Deal_ID, Rec."Deal ID");
         IF ACOConnection_Rec_Loc.FINDFIRST() THEN
             NewCodeAchatNo_Co_Par := ACOConnection_Rec_Loc."ACO No.";
-
-
-
-
         IF SalesInvoiceHeader_Re_Loc.GET(Rec."Sales Invoice No.") THEN BEGIN
             SalesInvoiceHeader_Re_Loc."Shortcut Dimension 1 Code" := NewCodeAchatNo_Co_Par;
             SalesInvoiceHeader_Re_Loc.MODIFY();
         END;
-
         SalesInvoiceLine_Re_Loc.RESET();
         SalesInvoiceLine_Re_Loc.SETRANGE("Document No.", Rec."Sales Invoice No.");
         IF SalesInvoiceLine_Re_Loc.FINDFIRST() THEN
@@ -156,6 +140,12 @@ page 50052 "DEL M Deal Sales Inv. linking"
         // PostedLine_Re_Loc.SETFILTER("Table ID", '%1|%2', 112, 113);
         // PostedLine_Re_Loc.SETRANGE("Document No.", Rec."Sales Invoice No.");
         // PostedLine_Re_Loc.SETRANGE("Dimension Code", 'ACHAT');
+        //TODO: à tester dans le cronus
+        PostedLine_Re_Loc.SETFILTER("Dimension Set ID", '%1|%2', 112, 113);
+        PostedLine_Re_Loc.SetRange("Dimension Code", 'ACHAT');
+
+
+
         IF PostedLine_Re_Loc.FINDFIRST() THEN
             REPEAT
                 PostedLine_Re_Loc."Dimension Value Code" := NewCodeAchatNo_Co_Par;
@@ -164,5 +154,4 @@ page 50052 "DEL M Deal Sales Inv. linking"
     end;
 }
 
-#pragma implicitwith restore
 

@@ -1,14 +1,10 @@
 codeunit 50003 "DEL MGT Tracking"
 {
-    //  Nts/loco/grc   23.04.2010 create object
-    //  JUH            14.09.16    Filter .xml
 
 
     trigger OnRun()
     begin
 
-
-        //export();
 
         importXMLFiles1();
         importXMLFiles2();
@@ -20,23 +16,23 @@ codeunit 50003 "DEL MGT Tracking"
         MyFile: Record File;
         NgtsSetup: Record "DEL General Setup";
         TrackingGeneral: Record "DEL Tracking non traité";
+        TempBlob: Codeunit "Temp Blob";
+        FileManagement: Codeunit "File Management";
+
         MyStream: InStream;
         TestFile: File;
-        // fso: DotNet File;
+        //TODO fso: DotNet File;
         outStreamtest: OutStream;
         charXml: Text;
         Pos: Integer;
 
 
-        TempBlob: Codeunit "Temp Blob";
-        FileManagement: Codeunit "File Management";
         OutStr: OutStream;
 
 
     procedure importXMLFiles1()
     begin
         IF NgtsSetup.GET() THEN;
-        // JUH 14.09.16 START
         charXml := '.xml';
         MyFile.SETRANGE(Path, NgtsSetup."Folder Expeditors");
         MyFile.SETRANGE("Is a file", TRUE);
@@ -48,13 +44,10 @@ codeunit 50003 "DEL MGT Tracking"
                     // TestFile.CREATEINSTREAM(MyStream);
                     // XMLPORT.IMPORT(XMLPORT::"Import tracking", MyStream);
                     // TestFile.CLOSE; // TODO: ancient code
-
                     //UploadIntoStream('', NgtsSetup."Folder Expeditors", '', MyFile.Name, MyStream); // TODO:  check new code
-
                     TempBlob.CreateInStream(MyStream, TEXTENCODING::UTF8);
                     XMLPORT.Import(XMLPORT::"DEL Import tracking", MyStream);
                     FileManagement.BLOBImport(TempBlob, 'exemple.xml');
-
                     TrackingGeneral.SETRANGE(Nom_Fichier, '');
                     IF TrackingGeneral.FINDFIRST() THEN
                         REPEAT
@@ -63,14 +56,12 @@ codeunit 50003 "DEL MGT Tracking"
                         UNTIL TrackingGeneral.NEXT() = 0;
                 END;
             UNTIL MyFile.NEXT() = 0;
-        // JUH 14.09.16 END
         MESSAGE('Import Xml completed 1!');
     end;
 
 
     procedure importXMLFiles2()
     var
-        InStr: InStream;
     begin
         IF NgtsSetup.GET() THEN;
 

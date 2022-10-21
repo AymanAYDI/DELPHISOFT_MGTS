@@ -1,4 +1,4 @@
-codeunit 50015 "DEL DocMatrix Management"
+codeunit 50015 "DEL DocMatrix Management" //TODO
 {
     trigger OnRun()
     begin
@@ -123,8 +123,8 @@ codeunit 50015 "DEL DocMatrix Management"
             lcuProgressBar.FNC_ProgressBar_Update(1);
 
             // delete file if "Save PDF" is not active
-            IF lboDeleteFileAtTheEnd AND (ltxClientFile <> '') THEN
-                FileManagement.DeleteClientFile(ltxClientFile);
+            //TODO IF lboDeleteFileAtTheEnd AND (ltxClientFile <> '') THEN
+            //     FileManagement.DeleteClientFile(ltxClientFile);
 
         END ELSE BEGIN
             lcuDocMatrixSingleInstance.SetDocumentMatrixProcessActive(FALSE);
@@ -166,10 +166,6 @@ codeunit 50015 "DEL DocMatrix Management"
         lType := GetTypeWithUsage(pUsage);
         lProcessType := lProcessType::Automatic;
         CLEAR(lintLogID);
-
-        // Job Queue: Testing a date with values, avoid using WORKDATE for testing, because server via Job Queue has WORKDATE = TODAY
-        //lDate := 311219D; -> OK
-        //lDate := 200120D; -> OK
         IF lrecDocMatrixSetup.GET THEN BEGIN
             IF lrecDocMatrixSetup."Test Active" AND (lrecDocMatrixSetup."Statement Test Date" <> 0D) THEN
                 lDate := lrecDocMatrixSetup."Statement Test Date";
@@ -186,7 +182,6 @@ codeunit 50015 "DEL DocMatrix Management"
 
                 // init
                 CLEAR(lboActionForStatement);
-
                 // create the "Document Matrix Selection" record, in order to pass it to other functions like "SendMail"
                 // though here in the automatic process the user does not make a choice, so it is always the same as the main DocMatrix record
                 CreateDocMatrixSelection(lrecDocumentMatrix."No.", lProcessType, pUsage, lrecDocMatrixSelection, FALSE);
@@ -210,11 +205,9 @@ codeunit 50015 "DEL DocMatrix Management"
                             IF CheckDocumentMatrixSelection(lAction::Mail, lrecDocMatrixSelection) THEN
                                 lboActionForStatement := ProcessMail(pUsage, lProcessType, lAction::Mail, lNo, FORMAT(lLastStatementNo), lrecDocMatrixSelection, ltxClientFile, lvarCustomer);
 
-                            // FTP1
                             IF CheckDocumentMatrixSelection(lAction::FTP1, lrecDocMatrixSelection) THEN
                                 lboActionForStatement := ProcessFTP(lAction::FTP1, lNo, FORMAT(lLastStatementNo), lrecDocMatrixSelection, ltxClientFile);
 
-                            // FTP2
                             IF CheckDocumentMatrixSelection(lAction::FTP2, lrecDocMatrixSelection) THEN
                                 lboActionForStatement := ProcessFTP(lAction::FTP2, lNo, FORMAT(lLastStatementNo), lrecDocMatrixSelection, ltxClientFile);
 
@@ -228,16 +221,15 @@ codeunit 50015 "DEL DocMatrix Management"
                             LogAction(lAction::JobQueueEntry, '', lrecDocMatrixSelection, FALSE, 'No Statement Records found for ' + FORMAT(lDate));
 
 
-                    END; // GET lrecCustomer
+                    END;
 
-                END ELSE BEGIN // BLOB HASVALUE
+                END ELSE BEGIN
                     LogAction(lAction::JobQueueEntry, '', lrecDocMatrixSelection, TRUE, 'No Request Page found');
-                    //ERROR(lErr001);
                 END;
 
             UNTIL lrecDocumentMatrix.NEXT = 0;
 
-        END; // lrecDocumentMatrix
+        END;
     end;
 
     local procedure CheckDocumentMatrixSelection(pAction: Option Print,Save,Mail,FTP1,FTP2; precDocMatrixSelection: Record "DEL DocMatrix Selection"): Boolean
@@ -315,8 +307,8 @@ codeunit 50015 "DEL DocMatrix Management"
     var
         lErr001: Label 'Not able to print %1. \\ERROR: %2';
     begin
-        IF NOT TrySilentPrint(pUsage, ptxClientFile) THEN
-            EXIT(STRSUBSTNO(lErr001, ptxClientFile, GETLASTERRORTEXT));
+        //TODO IF NOT TrySilentPrint(pUsage, ptxClientFile) THEN
+        //     EXIT(STRSUBSTNO(lErr001, ptxClientFile, GETLASTERRORTEXT));
     end;
 
     //[TryFunction]
@@ -382,7 +374,6 @@ codeunit 50015 "DEL DocMatrix Management"
         //20200915/DEL/PD/CR100.begin
         //txSendToAddress := GetReciverMailAddressStringFromDocMxSel(precDocMatrixSelection);
         txSendToAddress := GetReciverMailAddressStringFromDocMxSel(precDocMatrixSelection, pDocNo);
-        //20200915/DEL/PD/CR100.end
 
         // get the Email Address "From" from Document Matrix
         txSendFromAddress := GetSenderMailAddressStringFromDocMxSel(precDocMatrixSelection);
@@ -395,14 +386,6 @@ codeunit 50015 "DEL DocMatrix Management"
 
         // insert values if place holders are defined in the Mail Subject
         ReplacePlaceHoldersWithValues(ltxSubjectMail, pRecordVariant, pUsage);
-
-        /*--- test "Send From Address" is always "report_MGTS@mgts.com" with old code version
-        // Test "Send From Address" with old code version begin
-            lcuDocMatrixSingleInstance.SetSendFromAddress(txSendFromAddress);
-            lcuDocumentMailing.EmailFile(ptxAttachementFullPathFileName,'',TxtMailBody,'Test 1001',txSendToAddress,'',TRUE,pUsage); //ToDo: Document No
-            lcuDocMatrixSingleInstance.SetSendFromAddress('');
-        // Test "Send From Address" with old code version end
-        ---*/
 
         // send the mail
         SendSMTPmail(txSendFromName, txSendFromAddress, txSendToAddress, ltxSubjectMail, ptxAttachementFullPathFileName, larrMailBody);
@@ -422,7 +405,6 @@ codeunit 50015 "DEL DocMatrix Management"
         FillMailPlaceHolderArray(larrMailPlaceHolderValues, pRecordVariant, pUsage);
 
         // now replace the percentage place holders with the values
-        //ptxSubjectMail := STRSUBSTNO(ptxSubjectMail,ptxSendFromName,'PlaceHolder2','PlaceHolder3');
         FOR i := 1 TO ARRAYLEN(larrMailPlaceHolderValues) DO BEGIN
             lPos := STRPOS(ptxSubjectMail, '%' + FORMAT(i));
             IF lPos <> 0 THEN
@@ -444,19 +426,15 @@ codeunit 50015 "DEL DocMatrix Management"
         IF lrecCompanyInformation.GET THEN;
         parrMailPlaceHolderValues[1] := lrecCompanyInformation.Name;
 
-        //pUsage: ,S.Order,S.Invoice,S.Cr.Memo,,,P.Order,P.Invoice,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,C.Statement
         CASE pUsage OF
             //Sales Order
             1:
                 BEGIN
                     RecRef.GETTABLE(pRecordVariant);
-                    //'Sell-to Customer No.'
                     FieldRef := RecRef.FIELD(lrecSalesHeader.FIELDNO("Sell-to Customer No."));
                     parrMailPlaceHolderValues[2] := FieldRef.VALUE;
-                    //'External Document No.';
                     FieldRef := RecRef.FIELD(lrecSalesHeader.FIELDNO("External Document No."));
                     parrMailPlaceHolderValues[3] := FieldRef.VALUE;
-                    //'Your Reference'
                     FieldRef := RecRef.FIELD(lrecSalesHeader.FIELDNO("Your Reference"));
                     parrMailPlaceHolderValues[4] := FieldRef.VALUE;
                 END;
@@ -487,15 +465,6 @@ codeunit 50015 "DEL DocMatrix Management"
                 END;
         END;
 
-        /*---
-        // get the "Purchaser Code" from "Purchase Header" (T38)
-        RecRef.GETTABLE(pRecordVariant);
-        IF RecRef.NUMBER = 38 THEN BEGIN
-          FieldRef := RecRef.FIELD(1);
-          //pPurchCode := FieldRef.VALUE;
-        END;
-        ---*/
-
     end;
 
     local procedure SendSMTPmail(ptxFromAddressName: Text; ptxFromAddressString: Text; ptxToAddressString: Text; ptxSubject: Text; txAttachementFullPathFileName: Text; larrMailBody: array[10] of Text)
@@ -508,7 +477,6 @@ codeunit 50015 "DEL DocMatrix Management"
         lcuSMTP.Create(ptxToAddressString, ptxSubject, '', TRUE);
         FOR i := 1 TO ARRAYLEN(larrMailBody) DO
             lcuSMTP.AppendToBody('<p>' + larrMailBody[i] + '</p>');
-        // lcuSMTP.AddAttachment(txAttachementFullPathFileName, lcuFileManagement.GetFileName(txAttachementFullPathFileName)); TODO:
         Email.Send(lcuSMTP);
     end;
 
@@ -577,56 +545,56 @@ codeunit 50015 "DEL DocMatrix Management"
         lErr001: Label 'Not able to make FTP connection. ERROR: %2';
         lStatusDescription: Text;
     begin
-        IF NOT TryUploadFileToFTP(ptxFTPServer, ptxFTPUser, ptxFTPPassword, ptxFullPathFileName, lStatusDescription) THEN BEGIN
-            pTransferSucessful := FALSE;
-            EXIT(COPYSTR(STRSUBSTNO(lErr001, ptxFullPathFileName, GETLASTERRORTEXT), 1, 250))
-        END ELSE BEGIN
-            pTransferSucessful := TRUE;
-            EXIT(lStatusDescription);
-        END;
+        //TODO IF NOT TryUploadFileToFTP(ptxFTPServer, ptxFTPUser, ptxFTPPassword, ptxFullPathFileName, lStatusDescription) THEN BEGIN
+        //     pTransferSucessful := FALSE;
+        //     EXIT(COPYSTR(STRSUBSTNO(lErr001, ptxFullPathFileName, GETLASTERRORTEXT), 1, 250))
+        // END ELSE BEGIN
+        //     pTransferSucessful := TRUE;
+        //     EXIT(lStatusDescription);
+        // END;
     end;
 
-    [TryFunction]
-    local procedure TryUploadFileToFTP(ptxFTPServer: Text; ptxFTPUser: Text; ptxFTPPassword: Text; ptxFullPathFileName: Text; var pStatusDescription: Text)
-    var
-        FTPWebRequest: DotNet FtpWebRequest;
-        FTPWebResponse: DotNet FtpWebResponse;
-        NetworkCredential: DotNet NetworkCredential;
-        WebRequestMethods: DotNet WebRequestMethods_File;
-        UTF8Encoding: DotNet UTF8Encoding;
-        ResponseStream: InStream;
-        FileStream: DotNet FileStream;
-        Stream: DotNet Stream;
-        FileDotNet: DotNet File;
-        TempBlob: Record "99008535" temporary;
-        FileName: Text;
-        OutStream: OutStream;
-        [RunOnClient]
-        SearchOption: DotNet SearchOption;
-        i: Integer;
-        RelativeServerPath: Text;
-        [RunOnClient]
+    // [TryFunction]
+    //TODO local procedure TryUploadFileToFTP(ptxFTPServer: Text; ptxFTPUser: Text; ptxFTPPassword: Text; ptxFullPathFileName: Text; var pStatusDescription: Text)
+    // var
+    //     FTPWebRequest: DotNet FtpWebRequest;
+    //     FTPWebResponse: DotNet FtpWebResponse;
+    //     NetworkCredential: DotNet NetworkCredential;
+    //     WebRequestMethods: DotNet WebRequestMethods_File;
+    //     UTF8Encoding: DotNet UTF8Encoding;
+    //     ResponseStream: InStream;
+    //     FileStream: DotNet FileStream;
+    //     Stream: DotNet Stream;
+    //     FileDotNet: DotNet File;
+    //     TempBlob: Record "99008535" temporary;
+    //     FileName: Text;
+    //     OutStream: OutStream;
+    //     [RunOnClient]
+    //     SearchOption: DotNet SearchOption;
+    //     i: Integer;
+    //     RelativeServerPath: Text;
+    //     [RunOnClient]
 
-        ClientFilePath: DotNet String;
-        PathHelper: DotNet Path;
-    begin
-        FTPWebRequest := FTPWebRequest.Create(ptxFTPServer + '/' + PathHelper.GetFileName(ptxFullPathFileName));
-        FTPWebRequest.Credentials := NetworkCredential.NetworkCredential(ptxFTPUser, ptxFTPPassword);
-        FTPWebRequest.UseBinary := TRUE;
-        FTPWebRequest.UsePassive := TRUE;
-        FTPWebRequest.KeepAlive := TRUE;
-        FTPWebRequest.Method := 'STOR';
+    //     ClientFilePath: DotNet String;
+    //     PathHelper: DotNet Path;
+    // begin
+    //     FTPWebRequest := FTPWebRequest.Create(ptxFTPServer + '/' + PathHelper.GetFileName(ptxFullPathFileName));
+    //     FTPWebRequest.Credentials := NetworkCredential.NetworkCredential(ptxFTPUser, ptxFTPPassword);
+    //     FTPWebRequest.UseBinary := TRUE;
+    //     FTPWebRequest.UsePassive := TRUE;
+    //     FTPWebRequest.KeepAlive := TRUE;
+    //     FTPWebRequest.Method := 'STOR';
 
-        FileStream := FileDotNet.OpenRead(ptxFullPathFileName);
-        Stream := FTPWebRequest.GetRequestStream();
-        FileStream.CopyTo(Stream);
-        Stream.Close;
+    //     FileStream := FileDotNet.OpenRead(ptxFullPathFileName);
+    //     Stream := FTPWebRequest.GetRequestStream();
+    //     FileStream.CopyTo(Stream);
+    //     Stream.Close;
 
-        FTPWebResponse := FTPWebRequest.GetResponse();
-        FTPWebResponse.Close();
+    //     FTPWebResponse := FTPWebRequest.GetResponse();
+    //     FTPWebResponse.Close();
 
-        pStatusDescription := FTPWebResponse.StatusDescription;
-    end;
+    //     pStatusDescription := FTPWebResponse.StatusDescription;
+    // end;
 
     local procedure CreateStatementPDFforCustomer(precDocMatrixReqPageChanged: Record "DEL Document Matrix"; pUsage: Integer; pCustNo: Code[20]; pFieldCustNo: Integer; pReportID: Integer; pDate: Date; var pLastStatementNo: Integer; var pvarCustomer: Variant): Text
     var
@@ -878,16 +846,6 @@ codeunit 50015 "DEL DocMatrix Management"
         lNo: Code[20];
         lDocType: Integer;
     begin
-        // "pUsage" same as Table 77 "Report Selections" field 1 "Usage" (Option)
-        // 0 = S.Quote (not used)
-        // 1 = S.Order
-        // 2 = S.Invoice
-        // 3 = S.Cr.Memo
-        // 4 = S.Test (not used)
-        // 5 = P.Quote (not used)
-        // 6 = P.Order
-        // 7 = P.Invoice
-        // 85 = C.Statement
 
         CASE pUsage OF
             1:
@@ -946,17 +904,6 @@ codeunit 50015 "DEL DocMatrix Management"
 
     local procedure GetTableNoByUsage(pUsage: Integer): Integer
     begin
-        // "pUsage" same as Table 77 "Report Selections" field 1 "Usage" (Option)
-        // 0 = S.Quote (not used)
-        // 1 = S.Order
-        // 2 = S.Invoice
-        // 3 = S.Cr.Memo
-        // 4 = S.Test (not used)
-        // 5 = P.Quote (not used)
-        // 6 = P.Order
-        // 7 = P.Invoice
-        // 85 = C.Statement
-
         CASE pUsage OF
             1:
                 EXIT(DATABASE::"Sales Header");
@@ -1026,17 +973,6 @@ codeunit 50015 "DEL DocMatrix Management"
     var
         lType: Option Customer,Vendor;
     begin
-        // "pUsage" same as Table 77 "Report Selections" field 1 "Usage" (Option)
-        // 0 = S.Quote (not used)
-        // 1 = S.Order
-        // 2 = S.Invoice
-        // 3 = S.Cr.Memo
-        // 4 = S.Test (not used)
-        // 5 = P.Quote (not used)
-        // 6 = P.Order
-        // 7 = P.Invoice
-        // 85 = C.Statement
-
         // get the type of contact
         CASE pUsage OF
             1, 2, 3, 85:
@@ -1074,8 +1010,6 @@ codeunit 50015 "DEL DocMatrix Management"
             (precDocMatrixSelection."E-Mail To 2" <> '') OR
             (precDocMatrixSelection."E-Mail To 3" <> ''))
         THEN BEGIN
-            //20200915/DEL/PD/CR100.begin
-            //ltxMailAddressString := precDocMatrixSelection."E-Mail To 1" + ';' + precDocMatrixSelection."E-Mail To 2" + ';' + precDocMatrixSelection."E-Mail To 3";
             IF precDocMatrixSelection."E-Mail from Sales Order" THEN
                 ltxMailAddressString := precDocMatrixSelection."E-Mail To 1" + ';'
                                       + precDocMatrixSelection."E-Mail To 2" + ';'
@@ -1083,7 +1017,6 @@ codeunit 50015 "DEL DocMatrix Management"
                                       + GetEmailFromSalesOrder(pDocNo)
             ELSE
                 ltxMailAddressString := precDocMatrixSelection."E-Mail To 1" + ';' + precDocMatrixSelection."E-Mail To 2" + ';' + precDocMatrixSelection."E-Mail To 3";
-            //20200915/DEL/PD/CR100.end
         END;
 
         EXIT(CheckMailAddressString(ltxMailAddressString));
@@ -1140,14 +1073,6 @@ codeunit 50015 "DEL DocMatrix Management"
             // extract the Body text from the BLOB
             lrecDocMatrixEmailCodes.CALCFIELDS(Body);
             IF lrecDocMatrixEmailCodes.Body.HASVALUE THEN BEGIN
-
-                // like this the text is not respecting NewLines entered by user
-                //CLEAR(MyBigText);
-                //lrecDocMatrixEmailCodes.Body.CREATEINSTREAM(BLOBInStream);
-                //MyBigText.READ(BLOBInStream);
-                //MyBigText.GETSUBTEXT(MyText, 1, 1024);
-
-                // like this the text is read line by line
                 i := 1;
                 lrecDocMatrixEmailCodes.Body.CREATEINSTREAM(BLOBInStream);
                 WHILE NOT BLOBInStream.EOS AND (i <= 10) DO BEGIN
@@ -1175,43 +1100,8 @@ codeunit 50015 "DEL DocMatrix Management"
         EmailCount: Integer;
         NewMailAddressString: Text[1024];
     begin
-        // the user has three fields ("E-Mail To 1", "E-Mail To 2" and "E-Mail To 3") where he can enter E-Mail Adress values
-        // the problem is, that the user can decide to only fill one or two of the existing three fields
-        // in this case a E-Mail Address string sent to SMTP would look as follow
-        // - "name@domain.com;;"                   -> SMPT error: An invalid character was found in the mail header ','.
-        // - "name@domain.com;"                    -> SMPT error: An invalid character was found in the mail header ','.
-        // - ";name@domain.com"                    -> No error: for some reason this can be handled by SMTP
-        // - ";;name@domain.com"                   -> SMPT error: An invalid character was found in the mail header ','.
-        // - ";name@domain.com;"                   -> SMPT error: An invalid character was found in the mail header ','.
-        // - "name1@domain.com;;name2@domain.com"  -> SMPT error: An invalid character was found in the mail header ','.
-        // 1st case: user only fills the first or the two first E-Mail Address fields
-        // 2nd case: user only fills the last or the two last E-Mail Address fields
-        // 3rd case: user leavs "E-Mail-2" field empty
-
-        //20200915/DEL/PD/CR100.begin
-        // - "name1@domain.com;;;name2@domain.com"  -> SMPT error: An invalid character was found in the mail header ','.
-        // 4th case: with CR100 there can be an additional Email Address
-        //20200915/DEL/PD/CR100.end
-
-        // 1st and 2nd case
         ptxMailAddressString := DELCHR(ptxMailAddressString, '<>', ';;');
 
-        //20200915/DEL/PD/CR100.begin
-        /*---
-        // 3rd case
-        IF COPYSTR(ptxMailAddressString, STRPOS(ptxMailAddressString, ';') + 1, 1) = ';' THEN
-          EXIT(DELSTR(ptxMailAddressString, STRPOS(ptxMailAddressString, ';'), 1))
-        ELSE
-          EXIT(ptxMailAddressString);
-        ---*/
-        // 3rd and 4th case
-        //20210215/DEL/PD/Support.begin
-        /*---
-        WHILE COPYSTR(ptxMailAddressString, STRPOS(ptxMailAddressString, ';') + 1, 1) = ';' DO
-          ptxMailAddressString := DELSTR(ptxMailAddressString, STRPOS(ptxMailAddressString, ';'), 1);
-        EXIT(ptxMailAddressString);
-        ---*/
-        // new implementation, now create NewMailString and copy Email-Addres one by one (4 possible)
         NewMailAddressString := '';
         FOR EmailCount := 1 TO 4 DO BEGIN
             i := STRPOS(ptxMailAddressString, ';');
@@ -1228,8 +1118,6 @@ codeunit 50015 "DEL DocMatrix Management"
         END;
         NewMailAddressString := DELCHR(NewMailAddressString, '>', ';');
         EXIT(NewMailAddressString);
-        //20210215/DEL/PD/Support.end
-        //20200915/DEL/PD/CR100.end
 
     end;
 
@@ -1265,11 +1153,10 @@ codeunit 50015 "DEL DocMatrix Management"
         ptxClientPath := CheckAndCreateServerPath(pUsage, pNo);
         txOnlyFileName := CreateFileName(pNo, pDocNo, '.pdf', pCreateTimeStamp, pPurchCode);
         ptxClientFile := ptxClientPath + txOnlyFileName;
-        ptxServerFile := TEMPORARYPATH + txOnlyFileName;
+        //TODOptxServerFile := TEMPORARYPATH + txOnlyFileName;
 
-        // delete existing file on server
-        IF EXISTS(ptxServerFile) THEN
-            ERASE(ptxServerFile);
+        //TODO IF EXISTS(ptxServerFile) THEN
+        //     ERASE(ptxServerFile);
     end;
 
     local procedure CheckAndCreateServerPath(pUsage: Integer; pNo: Code[20]): Text
@@ -1279,16 +1166,6 @@ codeunit 50015 "DEL DocMatrix Management"
         i: Integer;
         lType: Option Customer,Vendor;
     begin
-        // "pUsage" same as Table 77 "Report Selections" field 1 "Usage" (Option)
-        // 0 = S.Quote (not used)
-        // 1 = S.Order
-        // 2 = S.Invoice
-        // 3 = S.Cr.Memo
-        // 4 = S.Test (not used)
-        // 5 = P.Quote (not used)
-        // 6 = P.Order
-        // 7 = P.Invoice
-        // 85 = C.Statement
 
         // get the general path for the Document Type from setup
         IF lrecDocMatrixSetup.GET THEN;
@@ -1305,18 +1182,16 @@ codeunit 50015 "DEL DocMatrix Management"
                 END;
         END;
 
-        // make sure that the string ends with a Backslash
         IF COPYSTR(ltxtStorageLocation, STRLEN(ltxtStorageLocation), 1) <> '\' THEN
             ltxtStorageLocation := ltxtStorageLocation + '\';
 
-        // check if the foders exist, if not create 1st the Document Type and 2nd the Customer/Vendor folder
         FOR i := 1 TO 2 DO BEGIN
             IF i = 1 THEN
                 ltxtStorageLocation := ltxtStorageLocation + GetReportName(GetReportIDWithUsage(pUsage))
             ELSE
                 ltxtStorageLocation := ltxtStorageLocation + '\' + GetCustVendName(lType, pNo);
-            IF NOT FileManagement.ClientFileExists(ltxtStorageLocation) THEN
-                FileManagement.CreateClientDirectory(ltxtStorageLocation);
+            //TODO IF NOT FileManagement.ClientFileExists(ltxtStorageLocation) THEN
+            //     FileManagement.CreateClientDirectory(ltxtStorageLocation);
         END;
 
         EXIT(ltxtStorageLocation + '\');
@@ -1328,13 +1203,7 @@ codeunit 50015 "DEL DocMatrix Management"
         ltxReplaceWithText: array[2] of Text;
         i: Integer;
     begin
-        // the changeing of Customer No. in the request page parameter string was replaced by the RecRef code in the function "ProcessDocumentMatrixAutomatic"
-        // because even though the string was changed correctly, it had no effect on the report in the Repeat loop. Always the first customer was in the report.
-        //   ltxTextToFind[3] := '<DataItem name="Customer">VERSION(1) SORTING(Field1)</DataItem>';
-        //   ltxReplaceWithText[3] := '<DataItem name="Customer">VERSION(1) SORTING(Field1) WHERE(Field1=1(' + lrecCustomer."No." + '))</DataItem>';
-        //   lrecDocumentMatrix.ChangeRequestPageParameters(pReportID, ltxTextToFind[3], ltxReplaceWithText[3], lReplaceType::CustomerNo);
 
-        //init
         CLEAR(ltxTextToFind);
         CLEAR(ltxReplaceWithText);
 
@@ -1344,7 +1213,7 @@ codeunit 50015 "DEL DocMatrix Management"
         ltxTextToFind[2] := '<Field name="EndDate">';
         ltxReplaceWithText[2] := '<Field name="EndDate">' + FormatDateSepWithDashYYYYMMDD(pDate);
         FOR i := 1 TO 2 DO BEGIN
-            precDocumentMatrix.ChangeRequestPageParameters(precDocumentMatrix, ltxTextToFind[i], ltxReplaceWithText[i]);
+            //TODO precDocumentMatrix.ChangeRequestPageParameters(precDocumentMatrix, ltxTextToFind[i], ltxReplaceWithText[i]);
         END;
         COMMIT;
     end;
@@ -1364,10 +1233,6 @@ codeunit 50015 "DEL DocMatrix Management"
     var
         CduLFileManagement: Codeunit "File Management";
     begin
-        //IF NOT CduLFileManagement.ClientDirectoryExists(txClientPath) THEN
-        //  CduLFileManagement.CreateClientDirectory(txClientPath);
-        //IF EXISTS(txClientFile)THEN
-        //  ERASE(txClientFile);
 
 
         // CduLFileManagement.DownloadToFile(ptxServerFile, ptxClientFile); TODO:

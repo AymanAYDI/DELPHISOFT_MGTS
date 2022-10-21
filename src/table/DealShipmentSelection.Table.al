@@ -106,7 +106,7 @@ table 50031 "DEL Deal Shipment Selection"
         {
             Caption = 'Line No.';
         }
-        field(140; USER_ID; Code[50])
+        field(140; USER_ID; code[50])
         {
             Caption = 'USER_ID';
 
