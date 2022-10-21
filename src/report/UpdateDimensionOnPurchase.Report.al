@@ -78,9 +78,9 @@ report 50047 "Update Dimension On Purchase"
     }
 
     var
-        TempDimSetEntry: Record "Dimension Set Entry" temporary;
-        DimensionSetEntry: Record "Dimension Set Entry";
         DefaultDimension: Record "Default Dimension";
+        DimensionSetEntry: Record "Dimension Set Entry";
+        TempDimSetEntry: Record "Dimension Set Entry" temporary;
         DimensionValue: Record "Dimension Value";
         Window: Dialog;
 }

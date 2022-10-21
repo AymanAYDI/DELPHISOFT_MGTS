@@ -181,19 +181,15 @@ xmlport 50002 "DEL IC Transitaire with hscode"
     }
 
     trigger OnPreXmlPort()
-    var
-        longueur: Integer;
-        quantite1: Text[30];
-        quantite2: Text[30];
     begin
-        NGTSSetup.GET;
+        NGTSSetup.GET();
 
         NomEmetteur := NGTSSetup."Nom emetteur";
     end;
 
     var
-        NGTSSetup: Record "DEL General Setup";
         Transitaires: Record "DEL Forwarding agent 2";
+        NGTSSetup: Record "DEL General Setup";
         Item: Record Item;
 }
 

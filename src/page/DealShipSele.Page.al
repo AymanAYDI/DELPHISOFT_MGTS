@@ -65,9 +65,6 @@ page 50040 "DEL Deal Ship. Sele."
         FNC_InitData();
     end;
 
-    var
-        Deal_Cu: Codeunit "DEL Deal";
-
 
     procedure FNC_InitData()
     var

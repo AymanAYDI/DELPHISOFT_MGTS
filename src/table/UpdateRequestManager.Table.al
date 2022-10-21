@@ -18,7 +18,6 @@ table 50039 "DEL Update Request Manager"
         }
         field(15; Requested_By_User; Code[50])
         {
-            Description = 'Mgts10.00.06.01';
 
             Caption = 'Requested_By_User';
         }

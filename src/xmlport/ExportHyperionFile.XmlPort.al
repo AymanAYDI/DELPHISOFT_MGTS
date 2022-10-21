@@ -72,12 +72,7 @@ xmlport 50011 "DEL Export Hyperion File"
     end;
 
     var
-        ExportHyperionDatas_Re: Record "DEL Export Hyperion Datas";
-        GeneralSetup_Re: Record "DEL General Setup";
-        FileMgt_Cu: Codeunit "File Management";
-        StartDate_Loc_Te: Text;
         EndDate_Loc_Te: Text;
-        TimeNow_Te: Text;
-        DateNow_Te: Text;
+        StartDate_Loc_Te: Text;
 }
 

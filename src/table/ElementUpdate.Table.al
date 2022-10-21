@@ -120,13 +120,11 @@ table 50041 "DEL Element Update"
     end;
 
     var
-        NoSeriesMgt: Codeunit NoSeriesManagement;
         Setup: Record "DEL General Setup";
+        NoSeriesMgt: Codeunit NoSeriesManagement;
 
 
     procedure FNC_Date2DateTime()
-    var
-        myDT: DateTime;
     begin
         /*TODO
        RESET();
@@ -146,8 +144,6 @@ table 50041 "DEL Element Update"
 
 
     procedure FNC_DateTime2Date()
-    var
-        myD: Date;
     begin
         /*TODO
         //transforme les DateTime en Date

@@ -4,8 +4,8 @@ codeunit 50011 "DEL MGTS Set/Get Functions"
 
     var
 
-        SpecOrderPosting: Boolean;
         tempSpecialSHBuffer: Record "Sales Header";
+        SpecOrderPosting: Boolean;
 
     procedure SetSpecOrderPosting(NewSpecOrderPost: Boolean)
 
@@ -20,7 +20,7 @@ codeunit 50011 "DEL MGTS Set/Get Functions"
 
 
 
-    procedure GetSpecialOrderBuffer(VAR pTempSH: Record "Sales Header" TEMPORARY) 
+    procedure GetSpecialOrderBuffer(VAR pTempSH: Record "Sales Header" TEMPORARY)
 
 
     begin

@@ -44,6 +44,5 @@ report 50040 "DEL THM reception"
 
     var
         PurchRcptLine: Record "Purch. Rcpt. Line";
-        ReceptionOK: Boolean;
 }
 

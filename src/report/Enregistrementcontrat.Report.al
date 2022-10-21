@@ -160,7 +160,6 @@ report 50028 "DEL Enregistrement contrat"
 
     var
         Vendeur_Rec: Record "Salesperson/Purchaser";
-        CaptionCE: Label 'Charte ethique';
         CaptionEnseigne: Label 'Signboard';
         CaptionGeneral: Label 'General';
         CaptionMarque: Label 'Mark';

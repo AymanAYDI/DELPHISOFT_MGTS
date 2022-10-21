@@ -169,8 +169,8 @@ page 50085 "DEL Regulation Matrix"
     end;
 
     var
+        PlanControl: Boolean;
         RegGenerale: Boolean;
         RegMat: Boolean;
-        PlanControl: Boolean;
 }
 

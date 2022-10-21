@@ -33,101 +33,34 @@ report 50013 "DEL Import from Excel purch"
     var
         Page2: Page "Sales Price Worksheet";
     begin
-        ExcelBuf.DELETEALL;
+        ExcelBuf.DELETEALL();
         Page2.RUN();
     end;
 
     trigger OnPreReport()
     begin
-        ExcelBuf.LOCKTABLE;
-        "DEL Purchase Price Worksheet".LOCKTABLE;
+        ExcelBuf.LOCKTABLE();
+        "DEL Purchase Price Worksheet".LOCKTABLE();
 
-        ReadExcelSheet;
+        ReadExcelSheet();
         InsertPrice();
     end;
 
     var
-        Text000: Label 'You must specify a budget name to import to.';
-        Text001: Label 'Do you want to create %1 %2.';
-        Text002: Label '%1 %2 is blocked. You cannot import entries.';
-        Text003: Label 'Are you sure you want to %1 for %2 %3.';
-        Text004: Label '%1 table has been successfully updated with %2 entries.';
-        Text005: Label 'Imported from Excel ';
-        Text006: Label 'Import Excel File';
-        Text007: Label 'Analyzing Data...\\';
-        Text008: Label 'You cannot specify more than 8 dimensions in your Excel worksheet.';
-        Text009: Label 'G/L ACCOUNT NO';
-        Text010: Label 'G/L Account No.';
-        Text011: Label 'The text G/L Account No. can only be specified once in the Excel worksheet.';
-        Text012: Label 'The dimensions specified by worksheet must be placed in the lines before the table.';
-        Text013: Label 'Dimension ';
-        Text014: Label 'Date';
-        Text015: Label 'Dimension 1';
-        Text016: Label 'Dimension 2';
-        Text017: Label 'Dimension 3';
-        Text018: Label 'Dimension 4';
-        Text019: Label 'Dimension 5';
-        Text020: Label 'Dimension 6';
-        Text021: Label 'Dimension 7';
-        Text022: Label 'Dimension 8';
-        Text023: Label 'You cannot import the same information twice.\';
-        Text024: Label 'The combination G/L Account No. - Dimensions - Date must be unique.';
-        Text025: Label 'G/L Accounts have not been found in the Excel worksheet.';
-        Text026: Label 'Dates have not been recognized in the Excel worksheet.';
-        ExcelBuf: Record "Excel Buffer";
-        Dim: Record Dimension;
-        DimVal: Record "Dimension Value";
-        TempDim: Record Dimension temporary;
-        TempDimVal: Record "Dimension Value" temporary;
-        GLBudgetEntry: Record "G/L Budget Entry";
-        GLBudgetDim: Record "Analysis by Dim. Parameters";
-        GLSetup: Record "General Ledger Setup";
-        GLAcc: Record "G/L Account";
-        TempGLAcc: Record "G/L Account" temporary;
-        GLBudgetName: Record "G/L Budget Name";
-        GLBudgetEntry3: Record "G/L Budget Entry";
-        AnalysisView: Record "Analysis View";
-        FileName: InStream;   //Text[250];
-        SheetName: Text[250];
-        ToGLBudgetName: Code[10];
-        DimCode: array[8] of Code[20];
-        EntryNo: Integer;
-        LastEntryNoBeforeImport: Integer;
-        GlobalDim1Code: Code[20];
-        GlobalDim2Code: Code[20];
-        TotalRecNo: Integer;
-        RecNo: Integer;
-        Window: Dialog;
-        Description: Text[50];
-        BudgetDim1Code: Code[20];
-        BudgetDim2Code: Code[20];
-        BudgetDim3Code: Code[20];
-        BudgetDim4Code: Code[20];
-        ImportOption: Option "Replace entries","Add entries";
-        Text027: Label 'Replace entries,Add entries';
-        Text028: Label 'A filter has been used on the %1 when the budget was exported. When a filter on a dimension has been used, a column with the same dimension must be present in the worksheet imported. The column in the worksheet must specify the dimension value codes the program should use when importing the budget.';
         PurchPriceWorksheet: Record "DEL Purchase Price Worksheet";
-        ExcelBuf2: Record "Excel Buffer";
+        ExcelBuf: Record "Excel Buffer";
+        FileName: InStream;
+    //Text[250];        SheetName: Text[250];
 
     local procedure ReadExcelSheet()
     begin
         //TODO:CLOUD ExcelBuf.OpenBook(FileName, SheetName);
-        ExcelBuf.OpenBookStream(FileName, SheetName);
+        // ExcelBuf.OpenBookStream(FileName, SheetName);
 
-        ExcelBuf.ReadSheet;
+        ExcelBuf.ReadSheet();
     end;
 
     local procedure AnalyzeData()
-    var
-        TempExcelBuf: Record "Excel Buffer" temporary;
-        BudgetBuf: Record "Budget Buffer";
-        TempBudgetBuf: Record "Budget Buffer" temporary;
-        HeaderRowNo: Integer;
-        CountDim: Integer;
-        TestDate: Date;
-        OldRowNo: Integer;
-        DimRowNo: Integer;
-        DimCode3: Code[20];
     begin
     end;
 
@@ -136,10 +69,6 @@ report 50013 "DEL Import from Excel purch"
     end;
 
     local procedure FormatData(TextToFormat: Text[250]): Text[250]
-    var
-        FormatInteger: Integer;
-        FormatDecimal: Decimal;
-        FormatDate: Date;
     begin
     end;
 
@@ -153,20 +82,14 @@ report 50013 "DEL Import from Excel purch"
 
     procedure InsertPrice()
     var
-        FormatInteger: Integer;
-        FormatDecimal: Decimal;
         FormatDate: Date;
-        Formatbool: Boolean;
-        XligneOld: Integer;
-        last: Integer;
-        i: Integer;
         FormatDate2: Date;
+        FormatDecimal: Decimal;
         FormatDecimal2: Decimal;
         FormatDecimal3: Decimal;
-        Formatbool2: Boolean;
-        Formatbool3: Boolean;
-        FormatCode: Code[20];
         FormatDecimal4: Decimal;
+        i: Integer;
+        last: Integer;
     begin
         ExcelBuf.SETFILTER("Row No.", '>%1', 3);
 
@@ -236,7 +159,7 @@ report 50013 "DEL Import from Excel purch"
                             EVALUATE(FormatDecimal3, ExcelBuf."Cell Value as Text");
                             PurchPriceWorksheet."New Unit Price" := FormatDecimal3;
                         END;
-                    UNTIL ExcelBuf.NEXT = 0;
+                    UNTIL ExcelBuf.NEXT() = 0;
                 END;
                 PurchPriceWorksheet.INSERT();
 

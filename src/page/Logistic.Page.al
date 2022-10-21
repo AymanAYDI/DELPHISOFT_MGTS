@@ -344,21 +344,13 @@ page 50044 "DEL Logistic"
     end;
 
     var
-        TrackingGeneral: Record "DEL Tracking général";
         TrackingDetail: Record "DEL Tracking détail";
-        AlertMgt_Cu: Codeunit "DEL Alert and fee copy Mgt";
+        TrackingDetail2: Record "DEL Tracking détail";
+        TrackingGeneral: Record "DEL Tracking général";
 
 
         TrackingGeneral2: Record "DEL Tracking général";
-        TrackingDetail2: Record "DEL Tracking détail";
-        Text19032713: Label 'P R O F O R M A  I N V O I C E';
-        Text19071703: Label 'B A N K';
-        Text19008693: Label 'F O R W A R D E R';
-        Text19024964: Label 'C U S T O M S  C L E A R A N C E';
-        Text19042502: Label 'D E G R O U P A G E';
-        Text19048656: Label 'S H I P M E N T';
-        Text19018051: Label 'Q U A L I T Y';
-        Text19058220: Label 'T R A N S P O R T';
+        AlertMgt_Cu: Codeunit "DEL Alert and fee copy Mgt";
 
     local procedure BLN176OnAfterValidate()
     begin

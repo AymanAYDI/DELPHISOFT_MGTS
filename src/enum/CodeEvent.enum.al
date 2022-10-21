@@ -1,4 +1,4 @@
-enum 50019 "DEL Code Event"
+enum 50019 "DEL Code Event" //n'existe pas 
 {
     Extensible = false;
 

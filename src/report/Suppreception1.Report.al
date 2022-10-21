@@ -27,7 +27,5 @@ report 50044 "DEL Supp reception1"
     var
 
         PurchRcptLine: Record "Purch. Rcpt. Line";
-
-        ReceptionOK: Boolean;
 }
 

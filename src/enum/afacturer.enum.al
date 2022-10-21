@@ -1,4 +1,4 @@
-enum 50014 "DEL afacturer"
+enum 50014 "DEL afacturer"  //n'existe pas ds le std 
 {
     Extensible = true;
 

@@ -107,13 +107,12 @@ report 50000 "DEL CreateSalesOrderFromWeb"
     var
         SH: Record "Sales Header";
         SL: Record "Sales Line";
-        Art: Record Item;
         ActualContact: Code[20];
-        NextLineNo: Integer;
-        TXT_001: Label 'Task running #1###';
+        TempDate: Date;
         d: Dialog;
         i: Integer;
-        TempDate: Date;
+        NextLineNo: Integer;
+        TXT_001: Label 'Task running #1###';
 
 
     procedure UpdateDate()

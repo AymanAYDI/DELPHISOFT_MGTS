@@ -53,9 +53,9 @@ report 50016 "DEL Import commande vente"
 
         CUImportcdevente: Codeunit "DEL Import commande vente";
         i: Integer;
-        MsgErreur: array[1000] of Text;
         j: Integer;
         Text001: Label 'Import successfully';
         Text002: Label 'Import with %1 error(s)';
+        MsgErreur: array[1000] of Text;
 }
 

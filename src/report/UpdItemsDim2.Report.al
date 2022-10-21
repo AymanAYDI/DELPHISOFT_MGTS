@@ -63,7 +63,6 @@ report 50065 "DEL Upd Items Dim 2"
     procedure ModifCategory(var CategCode: Code[20])
     var
         DefaultDimension_Rec: Record "Default Dimension";
-        ItemCategory_Rec: Record "Item Category";
     begin
         //MIG2017
         // T-00746 START

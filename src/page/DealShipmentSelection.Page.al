@@ -127,9 +127,8 @@ page 50038 "DEL Deal Shipment Selection"
     end;
 
     var
-        openerType_Op: Option Invoice,"Purchase Header","Sales Header";
-        OpenerNo_Co: Code[20];
         GenJnlLine_Re: Record "Gen. Journal Line";
+        openerType_Op: Option Invoice,"Purchase Header","Sales Header";
         FeeDescription_Te: Text[50];
 
 
@@ -171,8 +170,8 @@ page 50038 "DEL Deal Shipment Selection"
 
     procedure FindFeeConnection_FNC(var FeeConnectionID_Co_Par: Code[20]; var FeeDescription_Te_Par: Text[50]; var ErrorMsg_Te_Par: Text[250]): Boolean
     var
-        fee_Re_Loc: Record "DEL Fee";
         element_Re_Loc: Record "DEL Element";
+        fee_Re_Loc: Record "DEL Fee";
         findFeeConnectionError_Loc: Label 'No planned fee for this shipment is in relation with account no. %1.';
     begin
         element_Re_Loc.RESET();

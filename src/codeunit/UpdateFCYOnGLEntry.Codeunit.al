@@ -5,7 +5,6 @@ codeunit 50035 "DEL Update FCY On G/L Entry"
     trigger OnRun()
     var
         baLedgerEntry_Re_Loc: Record "Bank Account Ledger Entry";
-        currExRate_Re_loc: Record "Currency Exchange Rate";
         custLedgerEntry_Re_Loc: Record "Cust. Ledger Entry";
         GLAccount_Re_Loc: Record "G/L Account";
         GLEntry2_Re_Loc: Record "G/L Entry";

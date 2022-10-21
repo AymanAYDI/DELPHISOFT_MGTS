@@ -177,7 +177,7 @@ xmlport 50003 "DEL IC Transitaire Old SAV"
     end;
 
     var
-        NGTSSetup: Record "DEL General Setup";
         Transitaires: Record "DEL Forwarding agent 2";
+        NGTSSetup: Record "DEL General Setup";
 }
 

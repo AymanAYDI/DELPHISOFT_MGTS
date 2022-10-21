@@ -17,10 +17,6 @@ pageextension 50042 "DEL SalesReceivablesSetup" extends "Sales & Receivables Set
             {
 
                 trigger OnLookup(var Text: Text): Boolean
-                var
-                    FileManagement: Codeunit "File Management";
-                    Cst001: Label 'PDF Registration Customer Path';
-                    Cst002: Label 'MGTS PDF';
                 begin
                     // Rec."DEL PDF Registration Customer Path" := FileManagement.BrowseForFolderDialog(Cst001, Cst002, TRUE); //TODO: 'Codeunit "File Management"' does not contain a definition for 'BrowseForFolderDialog'
                 end;
@@ -29,10 +25,6 @@ pageextension 50042 "DEL SalesReceivablesSetup" extends "Sales & Receivables Set
             {
 
                 trigger OnLookup(var Text: Text): Boolean
-                var
-                    RecLFileManagement: Codeunit "File Management";
-                    Cst001: Label 'Sales C. Memo PDF Registration Customer Path';
-                    Cst002: Label 'MGTS PDF';
                 begin
                     // Rec."DEL PDF Registration Sales C.Memo" := RecLFileManagement.BrowseForFolderDialog(Cst001, Cst002, TRUE); //TODO: 'Codeunit "File Management"' does not contain a definition for 'BrowseForFolderDialog'
                 end;
@@ -41,10 +33,6 @@ pageextension 50042 "DEL SalesReceivablesSetup" extends "Sales & Receivables Set
             {
 
                 trigger OnLookup(var Text: Text): Boolean
-                var
-                    RecLFileManagement: Codeunit "File Management";
-                    Cst001: Label 'Posted Sales Inv. PDF Registration Customer Path';
-                    Cst002: Label 'MGTS PDF';
                 begin
                     // Rec."DEL PDF Registration Sales C.Memo" := RecLFileManagement.BrowseForFolderDialog(Cst001, Cst002, TRUE); //TODO: 'Codeunit "File Management"' does not contain a definition for 'BrowseForFolderDialog'
                 end;

@@ -136,7 +136,6 @@ page 50012 "DEL Tracked product follow up"
         Listedesmotifs: Record "DEL Liste des motifs";
         Item: Record Item;
         PurchaseHeader_Rec: Record "Purchase Header";
-        PurchHeader: Record "Purchase Header";
         Vendor_Rec: Record Vendor;
         PurchCode: Code[10];
         DateRecCalc: Date;

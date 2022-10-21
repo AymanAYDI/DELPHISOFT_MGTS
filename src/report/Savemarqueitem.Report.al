@@ -11,7 +11,7 @@ report 50034 "DEL Save marque item"
             trigger OnAfterGetRecord()
             begin
                 "DEL OLD marque" := "DEL Marque";
-                MODIFY;
+                MODIFY();
             end;
         }
     }

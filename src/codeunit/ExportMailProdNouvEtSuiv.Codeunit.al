@@ -161,7 +161,7 @@ codeunit 50010 "Export Mail Prod Nouv Et Suiv"
 
         //variable  SMTP code unit SMTP Mail
 
-        if GeneralSetup.GET then begin
+        if GeneralSetup.GET() then begin
             //report_MGTS@mgts.com
             //SMTPMailSetup."Sender mail"
             // SMTP.CreateMessage('report_MGTS', 'report_MGTS@mgts.com', '', 'List New_products_follow_up and Tracked_product_follow_up', 'List New_products_follow_up and Tracked_product_follow_up', TRUE); TODO: Check
@@ -198,27 +198,27 @@ codeunit 50010 "Export Mail Prod Nouv Et Suiv"
     end;
 
     var
+        // SMTPMailSetup: Record "409";
+        GeneralSetup: Record "DEL General Setup";
+        Listedesmotifs: Record "DEL Liste des motifs";
+        Item: Record Item;
+        PurchaseHeader_Nouv: Record "Purchase Header";
+        PurchaseHeader_Suiv: Record "Purchase Header";
         PurchaseLine_Nouv: Record "Purchase Line";
         PurchaseLine_Suiv: Record "Purchase Line";
         Vendor_Rec: Record Vendor;
-        // SMTPMailSetup: Record "409";
-        GeneralSetup: Record "DEL General Setup";
-        PurchaseHeader_Nouv: Record "Purchase Header";
-        PurchaseHeader_Suiv: Record "Purchase Header";
-        Listedesmotifs: Record "DEL Liste des motifs";
-        Item: Record Item;
+        EmailSend: Codeunit Email;
+        EmailMessage: Codeunit "Email Message";
         tempBlob1: Codeunit "Temp Blob";
         tempBlob2: Codeunit "Temp Blob";
-        EmailMessage: Codeunit "Email Message";
-        EmailSend: Codeunit Email;
-        OutStr: OutStream;
-        InStr: InStream;
-        FileVendor: File;
         // streamWriter: DotNet StreamWriter; // TODO:  Cloud
         // encoding: DotNet Encoding; // TODO:  Cloud
         WTAB: Char;
+        DateRecCalc: Date;
+        FileVendor: File;
+        InStr: InStream;
+        OutStr: OutStream;
         BuyfromVendorName: Text;
         motif: Text[100];
-        DateRecCalc: Date;
 }
 

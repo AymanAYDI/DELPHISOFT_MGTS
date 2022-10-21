@@ -637,7 +637,6 @@ tableextension 50020 "DEL Item" extends Item //27
     procedure ModifCategory(var CategCode: Code[20])
     var
         DefaultDimension_Rec: Record "Default Dimension";
-        ItemCategory_Rec: Record "Item Category";
     begin
 
         IF DefaultDimension_Rec.GET(27, "No.", 'Categorie') THEN BEGIN
@@ -671,17 +670,5 @@ tableextension 50020 "DEL Item" extends Item //27
         EXIT("DEL Vol cbm")
 
     end;
-
-    var
-        ItemCategory: Record "Item Category";
-        "--- AL.KVK ---": Integer;
-
-        // //TODO RecMatriseGroupArtGroup: Record "DEL Matrise Group Art./Group Std";
-        PageMatriseGroupArtGroup: Page "DEL Matrice Grp art./Group std";
-        Text0027: Label 'Segment code missing product code %1';
-        AL0001: Label 'Picture Document %1 cannot be found in the related table.';
-        AL0002: Label 'You are not authorized to certify items.';
-        AL0003: Label 'Certification failure, please check the log.';
-        AL0004: Label 'Certification Log contains warnings.';
 }
 

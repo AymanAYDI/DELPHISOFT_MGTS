@@ -8,11 +8,10 @@ codeunit 50006 "DEL Tracking traitement"
     end;
 
     var
-        "TrackingNonTraité": Record "DEL Tracking non traité";
         Logistic: Record "DEL Logistic";
         TrackingDetail: Record "DEL Tracking détail";
         TrackingGeneral: Record "DEL Tracking général";
-        Logistic2: Record "DEL Logistic";
+        "TrackingNonTraité": Record "DEL Tracking non traité";
         CodeACo: Text[3];
 
 

@@ -34,7 +34,7 @@ report 50012 "DEL Export to Excel purchase"
 
             trigger OnPostDataItem()
             begin
-                Window.CLOSE;
+                Window.CLOSE();
 
                 //TODO: NOT USED ON CLOUD : à corriger
                 // TempExcelBuffer.CreateBook(Text000, Text000);
@@ -93,10 +93,10 @@ report 50012 "DEL Export to Excel purchase"
     var
         TempExcelBuffer: Record "Excel Buffer" temporary;
         Window: Dialog;
-        Row: Integer;
-        Text000: Label 'Purchase Price list';
-        TotalRecNo: Integer;
         RecNo: Integer;
+        Row: Integer;
+        TotalRecNo: Integer;
+        Text000: Label 'Purchase Price list';
         Text001: Label 'Analyzing Data...';
         Text002: Label 'Date début';
         Text003: Label 'Date fin';
@@ -108,14 +108,11 @@ report 50012 "DEL Export to Excel purchase"
         Text009: Label 'Quantité minimum';
         Text010: Label 'Quantitée optimal';
         Text011: Label 'Coût unitaire actuel';
-        "Taux de change": Decimal;
-        MontantFrs: Decimal;
-        TotalMontantFRS: Decimal;
         Text012: Label 'Nouveau Coût unitaire';
 
     local procedure EnterCell(RowNo: Integer; ColumnNo: Integer; CellValue: Text[250]; Bold: Boolean; Italic: Boolean; UnderLine: Boolean)
     begin
-        TempExcelBuffer.INIT;
+        TempExcelBuffer.INIT();
         TempExcelBuffer.VALIDATE("Row No.", RowNo);
         TempExcelBuffer.VALIDATE("Column No.", ColumnNo);
         TempExcelBuffer."Cell Value as Text" := CellValue;
@@ -123,7 +120,7 @@ report 50012 "DEL Export to Excel purchase"
         TempExcelBuffer.Bold := Bold;
         TempExcelBuffer.Italic := Italic;
         TempExcelBuffer.Underline := UnderLine;
-        TempExcelBuffer.INSERT;
+        TempExcelBuffer.INSERT();
     end;
 }
 

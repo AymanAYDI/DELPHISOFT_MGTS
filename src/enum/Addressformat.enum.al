@@ -1,4 +1,4 @@
-enum 50050 "DEL Address format"
+enum 50050 "DEL Address format"  // still an option in the std exp status
 {
     Extensible = false;
 

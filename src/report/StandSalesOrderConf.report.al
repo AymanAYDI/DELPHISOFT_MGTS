@@ -86,37 +86,37 @@ report 50068 "DEL Stand. Sales - Order Conf."
             column(CompanyLogoPosition; CompanyLogoPosition)
             {
             }
-            column(CompanyRegistrationNumber; CompanyInfo.GetRegistrationNumber)
+            column(CompanyRegistrationNumber; CompanyInfo.GetRegistrationNumber())
             {
             }
-            column(CompanyRegistrationNumber_Lbl; CompanyInfo.GetRegistrationNumberLbl)
+            column(CompanyRegistrationNumber_Lbl; CompanyInfo.GetRegistrationNumberLbl())
             {
             }
-            column(CompanyVATRegNo; CompanyInfo.GetVATRegistrationNumber)
+            column(CompanyVATRegNo; CompanyInfo.GetVATRegistrationNumber())
             {
             }
-            column(CompanyVATRegNo_Lbl; CompanyInfo.GetVATRegistrationNumberLbl)
+            column(CompanyVATRegNo_Lbl; CompanyInfo.GetVATRegistrationNumberLbl())
             {
             }
-            column(CompanyVATRegistrationNo; CompanyInfo.GetVATRegistrationNumber)
+            column(CompanyVATRegistrationNo; CompanyInfo.GetVATRegistrationNumber())
             {
             }
-            column(CompanyVATRegistrationNo_Lbl; CompanyInfo.GetVATRegistrationNumberLbl)
+            column(CompanyVATRegistrationNo_Lbl; CompanyInfo.GetVATRegistrationNumberLbl())
             {
             }
-            column(CompanyLegalOffice; CompanyInfo.GetLegalOffice)
+            column(CompanyLegalOffice; CompanyInfo.GetLegalOffice())
             {
             }
-            column(CompanyLegalOffice_Lbl; CompanyInfo.GetLegalOfficeLbl)
+            column(CompanyLegalOffice_Lbl; CompanyInfo.GetLegalOfficeLbl())
             {
             }
-            column(CompanyCustomGiro; CompanyInfo.GetCustomGiro)
+            column(CompanyCustomGiro; CompanyInfo.GetCustomGiro())
             {
             }
-            column(CompanyCustomGiro_Lbl; CompanyInfo.GetCustomGiroLbl)
+            column(CompanyCustomGiro_Lbl; CompanyInfo.GetCustomGiroLbl())
             {
             }
-            column(CompanyLegalStatement; GetLegalStatement)
+            column(CompanyLegalStatement; GetLegalStatement())
             {
             }
             column(CustomerAddress1; CustAddr[1])
@@ -245,7 +245,7 @@ report 50068 "DEL Stand. Sales - Order Conf."
             column(PaymentMethodDescription_Lbl; PaymentMethodDescLbl)
             {
             }
-            column(DocumentCopyText; StrSubstNo(DocumentCaption, CopyText))
+            column(DocumentCopyText; StrSubstNo(DocumentCaption(), CopyText))
             {
             }
             column(BilltoCustumerNo; "Bill-to Customer No.")
@@ -362,28 +362,28 @@ report 50068 "DEL Stand. Sales - Order Conf."
             column(SelltoCustomerNo_Lbl; FieldCaption("Sell-to Customer No."))
             {
             }
-            column(VATRegistrationNo; GetCustomerVATRegistrationNumber)
+            column(VATRegistrationNo; GetCustomerVATRegistrationNumber())
             {
             }
-            column(VATRegistrationNo_Lbl; GetCustomerVATRegistrationNumberLbl)
+            column(VATRegistrationNo_Lbl; GetCustomerVATRegistrationNumberLbl())
             {
             }
-            column(GlobalLocationNumber; GetCustomerGlobalLocationNumber)
+            column(GlobalLocationNumber; GetCustomerGlobalLocationNumber())
             {
             }
-            column(GlobalLocationNumber_Lbl; GetCustomerGlobalLocationNumberLbl)
+            column(GlobalLocationNumber_Lbl; GetCustomerGlobalLocationNumberLbl())
             {
             }
-            column(SellToFaxNo; GetSellToCustomerFaxNo)
+            column(SellToFaxNo; GetSellToCustomerFaxNo())
             {
             }
             column(SellToPhoneNo; "Sell-to Phone No.")
             {
             }
-            column(LegalEntityType; Cust.GetLegalEntityType)
+            column(LegalEntityType; Cust.GetLegalEntityType())
             {
             }
-            column(LegalEntityType_Lbl; Cust.GetLegalEntityTypeLbl)
+            column(LegalEntityType_Lbl; Cust.GetLegalEntityTypeLbl())
             {
             }
             column(Copy_Lbl; CopyLbl)
@@ -835,7 +835,7 @@ report 50068 "DEL Stand. Sales - Order Conf."
 
                 trigger OnPreDataItem()
                 begin
-                    CreateReportTotalLines;
+                    CreateReportTotalLines();
                 end;
             }
             dataitem(LetterText; "Integer")
@@ -891,7 +891,7 @@ report 50068 "DEL Stand. Sales - Order Conf."
                 column(TotalPaymentDiscountOnVAT; TotalPaymentDiscOnVAT)
                 {
                 }
-                column(TotalVATAmountText; VATAmountLine.VATAmountText)
+                column(TotalVATAmountText; VATAmountLine.VATAmountText())
                 {
                 }
                 column(TotalExcludingVATText; TotalExclVATText)
@@ -921,8 +921,8 @@ report 50068 "DEL Stand. Sales - Order Conf."
 
             trigger OnAfterGetRecord()
             var
-                CurrencyExchangeRate: Record "Currency Exchange Rate";
                 Currency: Record Currency;
+                CurrencyExchangeRate: Record "Currency Exchange Rate";
                 GeneralLedgerSetup: Record "General Ledger Setup";
                 ArchiveManagement: Codeunit ArchiveManagement;
                 SalesPost: Codeunit "Sales-Post";
@@ -937,7 +937,7 @@ report 50068 "DEL Stand. Sales - Order Conf."
                 Line.UpdateVATOnLines(0, Header, Line, VATAmountLine);
                 OnHeaderOnAfterGetRecordOnAfterUpdateVATOnLines(Header, Line, VATAmountLine);
 
-                if not IsReportInPreviewMode then
+                if not IsReportInPreviewMode() then
                     CODEUNIT.Run(CODEUNIT::"Sales-Printed", Header);
 
                 CurrReport.Language := Language.GetLanguageIdOrDefault("Language Code");
@@ -973,7 +973,7 @@ report 50068 "DEL Stand. Sales - Order Conf."
                 if SellToContact.Get("Sell-to Contact No.") then;
                 if BillToContact.Get("Bill-to Contact No.") then;
 
-                if not IsReportInPreviewMode and
+                if not IsReportInPreviewMode() and
                    (CurrReport.UseRequestPage and ArchiveDocument or
                     not CurrReport.UseRequestPage and SalesSetup."Archive Orders")
                 then
@@ -1043,7 +1043,7 @@ report 50068 "DEL Stand. Sales - Order Conf."
 
         trigger OnOpenPage()
         begin
-            InitLogInteraction;
+            InitLogInteraction();
             LogInteractionEnable := LogInteraction;
         end;
     }
@@ -1058,12 +1058,12 @@ report 50068 "DEL Stand. Sales - Order Conf."
         CompanyInfo.SetAutoCalcFields(Picture);
         CompanyInfo.Get();
         SalesSetup.Get();
-        CompanyInfo.VerifyAndSetPaymentInfo;
+        CompanyInfo.VerifyAndSetPaymentInfo();
     end;
 
     trigger OnPostReport()
     begin
-        if LogInteraction and not IsReportInPreviewMode then
+        if LogInteraction and not IsReportInPreviewMode() then
             if Header.FindSet() then
                 repeat
                     Header.CalcFields("No. of Archived Versions");
@@ -1087,125 +1087,124 @@ report 50068 "DEL Stand. Sales - Order Conf."
             Error(NoFilterSetErr);
 
         if not CurrReport.UseRequestPage then
-            InitLogInteraction;
+            InitLogInteraction();
 
         CompanyLogoPosition := SalesSetup."Logo Position on Documents";
     end;
 
     var
-        SalesConfirmationLbl: Label 'Order Confirmation';
-        SalespersonLbl: Label 'Sales person';
+        AsmHeader: Record "Assembly Header";
+        CompanyBankAccount: Record "Bank Account";
+        CompanyInfo: Record "Company Information";
+        DummyCompanyInfo: Record "Company Information";
+        BillToContact: Record Contact;
+        SellToContact: Record Contact;
+        Cust: Record Customer;
+        GLSetup: Record "General Ledger Setup";
+        PaymentMethod: Record "Payment Method";
+        PaymentTerms: Record "Payment Terms";
+        RespCenter: Record "Responsibility Center";
+        SalesSetup: Record "Sales & Receivables Setup";
+        SalespersonPurchaser: Record "Salesperson/Purchaser";
+        ShipmentMethod: Record "Shipment Method";
+        VATClause: Record "VAT Clause";
+        AutoFormat: Codeunit "Auto Format";
+        FormatAddr: Codeunit "Format Address";
+        FormatDocument: Codeunit "Format Document";
+        Language: Codeunit Language;
+        SegManagement: Codeunit SegManagement;
+        ArchiveDocument: Boolean;
+        AsmInfoExistsForLine: Boolean;
+        DisplayAssemblyInformation: Boolean;
+        FirstLineHasBeenOutput: Boolean;
+        LogInteraction: Boolean;
+        [InDataSet]
+        LogInteractionEnable: Boolean;
+        MoreLines: Boolean;
+        ShowShippingAddr: Boolean;
+        ShowWorkDescription: Boolean;
+        CalculatedExchRate: Decimal;
+        PrevLineAmount: Decimal;
+        TotalAmount: Decimal;
+        TotalAmountInclVAT: Decimal;
+        TotalAmountVAT: Decimal;
+        TotalInvDiscAmount: Decimal;
+        TotalPaymentDiscOnVAT: Decimal;
+        TotalSubTotal: Decimal;
+        TotalVATAmountLCY: Decimal;
+        TotalVATBaseLCY: Decimal;
+        TransHeaderAmount: Decimal;
+        VATAmountLCY: Decimal;
+        VATBaseLCY: Decimal;
+        WorkDescriptionInstream: InStream;
+        CompanyLogoPosition: Integer;
+        BillToContactEmailLbl: Label 'Bill-to Contact E-Mail';
+        BillToContactMobilePhoneNoLbl: Label 'Bill-to Contact Mobile Phone No.';
+        BillToContactPhoneNoLbl: Label 'Bill-to Contact Phone No.';
+        BodyLbl: Label 'Thank you for your business. Your order confirmation is attached to this message.';
+        ClosingLbl: Label 'Sincerely';
         CompanyInfoBankAccNoLbl: Label 'Account No.';
         CompanyInfoBankNameLbl: Label 'Bank';
         CompanyInfoGiroNoLbl: Label 'Giro No.';
         CompanyInfoPhoneNoLbl: Label 'Phone No.';
         CopyLbl: Label 'Copy';
         EMailLbl: Label 'Email';
+        ExchangeRateTxt: Label 'Exchange rate: %1/%2', Comment = '%1 and %2 are both amounts.';
+        GreetingLbl: Label 'Hello';
         HomePageLbl: Label 'Home Page';
         InvDiscBaseAmtLbl: Label 'Invoice Discount Base Amount';
         InvDiscountAmtLbl: Label 'Invoice Discount';
         InvNoLbl: Label 'Order No.';
         LineAmtAfterInvDiscLbl: Label 'Payment Discount on VAT';
         LocalCurrencyLbl: Label 'Local Currency';
+        NoFilterSetErr: Label 'You must specify one or more filters to avoid accidently printing all documents.';
         PageLbl: Label 'Page';
-        PaymentTermsDescLbl: Label 'Payment Terms';
         PaymentMethodDescLbl: Label 'Payment Method';
+        PaymentTermsDescLbl: Label 'Payment Terms';
+        PmtDiscTxt: Label 'If we receive the payment before %1, you are eligible for a %2% payment discount.', Comment = '%1 Discount Due Date %2 = value of Payment Discount % ';
         PostedShipmentDateLbl: Label 'Shipment Date';
+        SalesConfirmationLbl: Label 'Order Confirmation';
         SalesInvLineDiscLbl: Label 'Discount %';
+        SalespersonLbl: Label 'Sales person';
+        SellToContactEmailLbl: Label 'Sell-to Contact E-Mail';
+        SellToContactMobilePhoneNoLbl: Label 'Sell-to Contact Mobile Phone No.';
+        SellToContactPhoneNoLbl: Label 'Sell-to Contact Phone No.';
         ShipmentLbl: Label 'Shipment';
         ShiptoAddrLbl: Label 'Ship-to Address';
         ShptMethodDescLbl: Label 'Shipment Method';
         SubtotalLbl: Label 'Subtotal';
         TotalLbl: Label 'Total';
-        VATAmtSpecificationLbl: Label 'VAT Amount Specification';
-        VATAmtLbl: Label 'VAT Amount';
         VATAmountLCYLbl: Label 'VAT Amount (LCY)';
+        VATAmtLbl: Label 'VAT Amount';
+        VATAmtSpecificationLbl: Label 'VAT Amount Specification';
         VATBaseLbl: Label 'VAT Base';
         VATBaseLCYLbl: Label 'VAT Base (LCY)';
         VATClausesLbl: Label 'VAT Clause';
         VATIdentifierLbl: Label 'VAT Identifier';
         VATPercentageLbl: Label 'VAT %';
-        GLSetup: Record "General Ledger Setup";
-        ShipmentMethod: Record "Shipment Method";
-        PaymentTerms: Record "Payment Terms";
-        PaymentMethod: Record "Payment Method";
-        SalespersonPurchaser: Record "Salesperson/Purchaser";
-        CompanyBankAccount: Record "Bank Account";
-        CompanyInfo: Record "Company Information";
-        DummyCompanyInfo: Record "Company Information";
-        SalesSetup: Record "Sales & Receivables Setup";
-        Cust: Record Customer;
-        RespCenter: Record "Responsibility Center";
-        VATClause: Record "VAT Clause";
-        AsmHeader: Record "Assembly Header";
-        SellToContact: Record Contact;
-        BillToContact: Record Contact;
-        Language: Codeunit Language;
-        FormatAddr: Codeunit "Format Address";
-        FormatDocument: Codeunit "Format Document";
-        SegManagement: Codeunit SegManagement;
-        AutoFormat: Codeunit "Auto Format";
-        WorkDescriptionInstream: InStream;
-        CustAddr: array[8] of Text[100];
-        ShipToAddr: array[8] of Text[100];
-        CompanyAddr: array[8] of Text[100];
-        SalesPersonText: Text[30];
-        TotalText: Text[50];
-        TxtEstDelDate: Text;
-        NbrProdModif: Text;
-        Caption_Location: Text;
-        TotalExclVATText: Text[50];
-        TotalInclVATText: Text[50];
-        LineDiscountPctText: Text;
-        FormattedVATPct: Text;
-        FormattedUnitPrice: Text;
-        FormattedQuantity: Text;
-        FormattedLineAmount: Text;
-        MoreLines: Boolean;
-        CopyText: Text[30];
-        ShowShippingAddr: Boolean;
-        ArchiveDocument: Boolean;
-        LogInteraction: Boolean;
-        TotalSubTotal: Decimal;
-        TotalAmount: Decimal;
-        TotalAmountInclVAT: Decimal;
-        TotalAmountVAT: Decimal;
-        TotalInvDiscAmount: Decimal;
-        TotalPaymentDiscOnVAT: Decimal;
-        TransHeaderAmount: Decimal;
-        [InDataSet]
-        LogInteractionEnable: Boolean;
-        DisplayAssemblyInformation: Boolean;
-        AsmInfoExistsForLine: Boolean;
-        CompanyLogoPosition: Integer;
-        FirstLineHasBeenOutput: Boolean;
-        CalculatedExchRate: Decimal;
-        ExchangeRateText: Text;
-        ExchangeRateTxt: Label 'Exchange rate: %1/%2', Comment = '%1 and %2 are both amounts.';
-        VATBaseLCY: Decimal;
-        VATAmountLCY: Decimal;
-        TotalVATBaseLCY: Decimal;
-        TotalVATAmountLCY: Decimal;
-        PrevLineAmount: Decimal;
-        NoFilterSetErr: Label 'You must specify one or more filters to avoid accidently printing all documents.';
-        GreetingLbl: Label 'Hello';
-        ClosingLbl: Label 'Sincerely';
-        PmtDiscTxt: Label 'If we receive the payment before %1, you are eligible for a %2% payment discount.', Comment = '%1 Discount Due Date %2 = value of Payment Discount % ';
-        BodyLbl: Label 'Thank you for your business. Your order confirmation is attached to this message.';
-        SellToContactPhoneNoLbl: Label 'Sell-to Contact Phone No.';
-        SellToContactMobilePhoneNoLbl: Label 'Sell-to Contact Mobile Phone No.';
-        SellToContactEmailLbl: Label 'Sell-to Contact E-Mail';
-        BillToContactPhoneNoLbl: Label 'Bill-to Contact Phone No.';
-        BillToContactMobilePhoneNoLbl: Label 'Bill-to Contact Mobile Phone No.';
-        BillToContactEmailLbl: Label 'Bill-to Contact E-Mail';
-        PmtDiscText: Text;
-        ShowWorkDescription: Boolean;
         Caption_Adress: Text;
-        Ref_Caption: text;
+        Caption_Location: Text;
+        ExchangeRateText: Text;
+        FormattedLineAmount: Text;
+        FormattedQuantity: Text;
+        FormattedUnitPrice: Text;
+        FormattedVATPct: Text;
+        LineDiscountPctText: Text;
+        NbrProdModif: Text;
+        PmtDiscText: Text;
         TxtContact: Text;
+        TxtEstDelDate: Text;
         WorkDescriptionLine: Text;
         CurrCode: Text[10];
         CurrSymbol: Text[10];
+        CopyText: Text[30];
+        SalesPersonText: Text[30];
+        TotalExclVATText: Text[50];
+        TotalInclVATText: Text[50];
+        TotalText: Text[50];
+        CompanyAddr: array[8] of Text[100];
+        CustAddr: array[8] of Text[100];
+        ShipToAddr: array[8] of Text[100];
 
     local procedure InitLogInteraction()
     begin
@@ -1229,7 +1228,7 @@ report 50068 "DEL Stand. Sales - Order Conf."
     var
         MailManagement: Codeunit "Mail Management";
     begin
-        exit(CurrReport.Preview or MailManagement.IsHandlingGetEmailBody);
+        exit(CurrReport.Preview or MailManagement.IsHandlingGetEmailBody());
     end;
 
     local procedure FormatDocumentFields(SalesHeader: Record "Sales Header")
@@ -1261,7 +1260,7 @@ report 50068 "DEL Stand. Sales - Order Conf."
                 ReportTotalsLine.Add(TotalExclVATText, TotalAmount, true, false, false);
         end;
         if TotalAmountVAT <> 0 then
-            ReportTotalsLine.Add(VATAmountLine.VATAmountText, TotalAmountVAT, false, true, false);
+            ReportTotalsLine.Add(VATAmountLine.VATAmountText(), TotalAmountVAT, false, true, false);
     end;
 
     [IntegrationEvent(false, false)]

@@ -133,12 +133,11 @@ page 50033 "DEL Subform Planned"
 
     trigger OnAfterGetRecord()
     var
-        currency_Exchange_Re_Loc: Record "DEL Currency Exchange";
         position_Re_Loc: Record "DEL Position";
     begin
         FeeDescription_Te := '';
         IF Rec.Fee_ID <> '' THEN
-            FeeDescription_Te := Fee_Cu.FNC_Get_Description(Fee_ID);
+            FeeDescription_Te := Fee_Cu.FNC_Get_Description(Rec.Fee_ID);
 
 
         Currency_Code := '';
@@ -167,13 +166,10 @@ page 50033 "DEL Subform Planned"
 
     var
         Fee_Cu: Codeunit "DEL Fee";
-        FeeDescription_Te: Text[50];
-        Element_Cu: Codeunit "DEL Element";
-        Amount_Dec: Decimal;
-        Raw_Amount_Dec: Decimal;
-        Currency_Code: Code[10];
-        Currency_Rate_Dec: Decimal;
         [InDataSet]
         SeeButtonEnable: Boolean;
+        Currency_Code: Code[10];
+        Currency_Rate_Dec: Decimal;
+        FeeDescription_Te: Text[50];
 }
 

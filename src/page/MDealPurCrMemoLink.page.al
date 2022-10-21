@@ -55,8 +55,8 @@ page 50083 "DEL M Deal Pur. Cr. Memo Link"
                         ACOElement_Re_Loc: Record "DEL Element";
                         urm_Re_Loc: Record "DEL Update Request Manager";
                         PurchCrMemoHeader_Re_Loc: Record "Purch. Cr. Memo Hdr.";
-                        add_Variant_Op_Loc: Option New,Existing;
                         requestID_Co_Loc: Code[20];
+                        add_Variant_Op_Loc: Option New,Existing;
 
 
                     begin
@@ -106,24 +106,22 @@ page 50083 "DEL M Deal Pur. Cr. Memo Link"
 
     var
 
-        Element_Cu: Codeunit "DEL Element";
         Deal_Cu: Codeunit "DEL Deal";
-        UpdateRequestManager_Cu: Codeunit "DEL Update Request Manager";
-        DealShipment_Cu: Codeunit "DEL Deal Shipment";
-        ShipmentConnection_Cu: Codeunit "DEL Deal Shipment Connection";
+        Element_Cu: Codeunit "DEL Element";
         Position_CU: Codeunit "DEL Position";
+        UpdateRequestManager_Cu: Codeunit "DEL Update Request Manager";
         Text19022230: Label 'M A N U A L   L I N K I N G';
 
 
     procedure ChangeCodeAchat_FNC()
     var
 
-        PurchCreditMemoHeader_Re_Loc: Record "Purch. Cr. Memo Hdr.";
-        PurchCreditMemoLine_Re_Loc: Record "Purch. Cr. Memo Line";
+        ACOConnection_Rec_Loc: Record "DEL ACO Connection";
         //---j'ai changé le record 359 par le record 480 => à vérifier---//
         // PostedLine_Re_Loc: Record 359;
         PostedLine_Re_Loc: Record "Dimension Set Entry";
-        ACOConnection_Rec_Loc: Record "DEL ACO Connection";
+        PurchCreditMemoHeader_Re_Loc: Record "Purch. Cr. Memo Hdr.";
+        PurchCreditMemoLine_Re_Loc: Record "Purch. Cr. Memo Line";
         NewCodeAchatNo_Co_Par: Code[20];
 
     begin

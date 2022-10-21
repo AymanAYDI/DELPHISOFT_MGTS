@@ -7,13 +7,8 @@ codeunit 50012 "DEL Minimizing Clicks - MGTS"
 
     procedure FctSalesOrderConfirmationPDFSave(RecPSalesHeader: Record "Sales Header")
     var
-        RecLSalesHeader: Record "Sales Header";
         RecLSalesSetup: Record "Sales & Receivables Setup";
-        RecLReportSelections: Record "Report Selections";
-        CduLFileManagement: Codeunit "File Management";
-        TxtLServerFilename: Text;
-        TxtLClientFilename: Text;
-        TxtLClientPath: Text;
+        RecLSalesHeader: Record "Sales Header";
     begin
         RecLSalesSetup.GET();
         RecLSalesSetup.TESTFIELD("DEL PDF Registration Customer Path");
@@ -43,9 +38,6 @@ codeunit 50012 "DEL Minimizing Clicks - MGTS"
     var
         RecLPurchaseHeader: Record "Purchase Header";
         RecLPurchasesSetup: Record "Purchases & Payables Setup";
-        RecLReportSelections: Record "Report Selections";
-        CduLFileManagement: Codeunit "File Management";
-        TxtLServerFilename: Text;
         TxtLClientFilename: Text;
         TxtLClientPath: Text;
     begin
@@ -123,25 +115,14 @@ codeunit 50012 "DEL Minimizing Clicks - MGTS"
 
     procedure FctSendMailSalesInvoice(RecPSalesInvoiceHeader: Record "Sales Invoice Header")
     var
-        CduLMail: Codeunit Mail;
+        RecLCompanyInformation: Record "Company Information";
+        RecLCustomer: Record Customer;
+        RecLReportSelection: Record "Report Selections";
+        RecLSalesInvoiceHeader: Record "Sales Invoice Header";
+        TxtLSenderAddress: Text;
         //TODO CduSMTPMail: Codeunit 400;
         TxtLSenderName: Text;
-        TxtLSenderAddress: Text;
-        RecLCompanyInformation: Record "Company Information";
         TxtLSubjectMail: Text;
-        TxtMailBody: Text;
-        RecLSalesInvoiceHeader: Record "Sales Invoice Header";
-        RecLReportSelection: Record "Report Selections";
-        TxtLServerFileName: Text;
-        TxtLClientFileName: Text;
-        TxtLRecipientName: Text;
-        RecLCustomer: Record Customer;
-        CodLEmailTemplate: Code[20];
-        TxtLNomTiersDocument: Text;
-        TxtLCodeTierDocument: Text;
-        CodLNDocument: Code[20];
-        Cst001: Label 'We must add a e email template';
-        DocumentMailing: Codeunit "Document-Mailing";
     begin
         RecLCompanyInformation.GET();
         TxtLSenderName := RecLCompanyInformation.Name;
@@ -168,11 +149,8 @@ codeunit 50012 "DEL Minimizing Clicks - MGTS"
 
     procedure FctSalesInvoicePDFSave(RecPSalesInvoiceHeader: Record "Sales Invoice Header"): Text
     var
-        RecLSalesInvoiceHeader: Record "Sales Invoice Header";
         RecLSalesSetup: Record "Sales & Receivables Setup";
-        TxtLServerFilename: Text;
-        RecLReportSelections: Record "Report Selections";
-        CduLFileManagement: Codeunit "File Management";
+        RecLSalesInvoiceHeader: Record "Sales Invoice Header";
         TxtLClientFilename: Text;
         TxtLClientPath: Text;
     begin
@@ -214,11 +192,11 @@ codeunit 50012 "DEL Minimizing Clicks - MGTS"
 
     procedure FctPrintSalesInvoiceMGTS(RecPSalesInvoiceHeader: Record "Sales Invoice Header")
     var
-        RecLCustomer: Record Customer;
         RecLCompanyInfo: Record "Company Information";
+        RecLCustomer: Record Customer;
         CduLFileManagement: Codeunit "File Management";
-        TxtLPathClient: Text;
         TxtLFileName: Text;
+        TxtLPathClient: Text;
     begin
         RecLCustomer.GET(RecPSalesInvoiceHeader."Sell-to Customer No.");
         IF RecLCustomer."DEL FTP Save" THEN BEGIN
@@ -245,53 +223,51 @@ codeunit 50012 "DEL Minimizing Clicks - MGTS"
 
     procedure FctSalesCrMemoHeaderPDFSave(RecPSalesCrMemoHeader: Record "Sales Cr.Memo Header"): Text
     var
+        RecLReportSelections: Record "Report Selections";
         RecLSalesSetup: Record "Sales & Receivables Setup";
-        TxtLServerFilename: Text;
+        RecLSalesCrMemoHeader: Record "Sales Cr.Memo Header";
         CduLFileManagement: Codeunit "File Management";
         TxtLClientFilename: Text;
         TxtLClientPath: Text;
-        RecLReportSelections: Record "Report Selections";
-        RecLSalesCrMemoHeader: Record "Sales Cr.Memo Header";
+        TxtLServerFilename: Text;
     begin
         RecLSalesSetup.GET();
         RecLSalesSetup.TESTFIELD("DEL PDF Registration Sales C.Memo");
         RecLSalesCrMemoHeader.SETRANGE("No.", RecPSalesCrMemoHeader."No.");
-        IF RecLSalesCrMemoHeader.FINDFIRST() THEN BEGIN
-            TxtLClientPath := RecLSalesSetup."DEL PDF Registration Sales C.Memo" + '\' + RecLSalesCrMemoHeader."Bill-to Customer No.";
-            //TODO TxtLServerFilename := TEMPORARYPATH + RecLSalesCrMemoHeader."No." + '-' + RecLSalesCrMemoHeader."Bill-to Customer No." + '.pdf';
-            TxtLClientFilename := TxtLClientPath + '\' + RecLSalesCrMemoHeader."No." + '-' + RecLSalesCrMemoHeader."Bill-to Customer No." + '.pdf';
-            IF EXISTS(TxtLServerFilename) THEN
-                ERASE(TxtLServerFilename);
-            RecLReportSelections.RESET();
-            RecLReportSelections.SETRANGE(Usage, RecLReportSelections.Usage::"S.Cr.Memo");
-            IF RecLReportSelections.FINDSET() THEN
-                REPEAT
-                    REPORT.SAVEASPDF(RecLReportSelections."Report ID", TxtLServerFilename, RecLSalesCrMemoHeader);
-                    IF NOT CduLFileManagement.ClientDirectoryExists(TxtLClientPath) THEN
-                        CduLFileManagement.CreateClientDirectory(TxtLClientPath);
-                    IF EXISTS(TxtLClientFilename) THEN
-                        ERASE(TxtLClientFilename);
-                    CduLFileManagement.DownloadToFile(TxtLServerFilename, TxtLClientFilename);
-                    CduLFileManagement.DeleteServerFile(TxtLServerFilename);
-                UNTIL RecLReportSelections.NEXT() = 0;
-        END;
-        EXIT(TxtLClientFilename);
+        //TODO IF RecLSalesCrMemoHeader.FINDFIRST() THEN BEGIN
+        //     TxtLClientPath := RecLSalesSetup."DEL PDF Registration Sales C.Memo" + '\' + RecLSalesCrMemoHeader."Bill-to Customer No.";
+        //     //TODO TxtLServerFilename := TEMPORARYPATH + RecLSalesCrMemoHeader."No." + '-' + RecLSalesCrMemoHeader."Bill-to Customer No." + '.pdf';
+        //     TxtLClientFilename := TxtLClientPath + '\' + RecLSalesCrMemoHeader."No." + '-' + RecLSalesCrMemoHeader."Bill-to Customer No." + '.pdf';
+        //     IF EXISTS(TxtLServerFilename) THEN
+        //         ERASE(TxtLServerFilename);
+        //     RecLReportSelections.RESET();
+        //     RecLReportSelections.SETRANGE(Usage, RecLReportSelections.Usage::"S.Cr.Memo");
+        //     IF RecLReportSelections.FINDSET() THEN
+        //         REPEAT
+        //             REPORT.SAVEASPDF(RecLReportSelections."Report ID", TxtLServerFilename, RecLSalesCrMemoHeader);
+        //             IF NOT CduLFileManagement.ClientDirectoryExists(TxtLClientPath) THEN
+        //                 CduLFileManagement.CreateClientDirectory(TxtLClientPath);
+        //             IF EXISTS(TxtLClientFilename) THEN
+        //                 ERASE(TxtLClientFilename);
+        //             CduLFileManagement.DownloadToFile(TxtLServerFilename, TxtLClientFilename);
+        //             CduLFileManagement.DeleteServerFile(TxtLServerFilename);
+        //         UNTIL RecLReportSelections.NEXT() = 0;
+        // END;
+        // EXIT(TxtLClientFilename);
     end;
 
     procedure FctSendMailSalesCrMemoHeader(RecPSalesCrMemoHeader: Record "Sales Cr.Memo Header")
     var
+        RecLCompanyInformation: Record "Company Information";
+        RecLCustomer: Record Customer;
         RecLReportSelections: Record "Report Selections";
         RecLSalesCrMemoHeader: Record "Sales Cr.Memo Header";
-        RecLCompanyInformation: Record "Company Information";
-        TxtLSenderName: Text;
+        DocumentMailing: Codeunit "Document-Mailing";
+        TxtLRecipientName: Text;
         TxtLSenderAddress: Text;
+        TxtLSenderName: Text;
         TxtLSubjectMail: Text;
         TxtMailBody: Text;
-        TxtLServerFileName: Text;
-        TxtLClientFileName: Text;
-        TxtLRecipientName: Text;
-        RecLCustomer: Record Customer;
-        DocumentMailing: Codeunit "Document-Mailing";
     begin
         RecLCompanyInformation.GET();
         TxtLSenderName := RecLCompanyInformation.Name;
@@ -307,22 +283,22 @@ codeunit 50012 "DEL Minimizing Clicks - MGTS"
                 REPEAT
                     IF RecLReportSelections."Use for Email Body" THEN BEGIN
                         TxtLSubjectMail := RecLSalesCrMemoHeader."No.";
-                        RecLReportSelections.GetEmailBody(TxtMailBody, RecLReportSelections.Usage::"S.Cr.Memo", RecLSalesCrMemoHeader, RecLSalesCrMemoHeader."Sell-to Customer No.", TxtLRecipientName);
+                        //TODO RecLReportSelections.GetEmailBody(TxtMailBody, RecLReportSelections.Usage::"S.Cr.Memo", RecLSalesCrMemoHeader, RecLSalesCrMemoHeader."Sell-to Customer No.", TxtLRecipientName);
                     END
                 UNTIL (RecLReportSelections.NEXT() = 0) OR (RecLReportSelections."Use for Email Body");
             END;
-            DocumentMailing.EmailFile(FctSalesCrMemoHeaderPDFSave(RecLSalesCrMemoHeader), '', TxtMailBody, RecLSalesCrMemoHeader."No.",
-                  TxtLSenderAddress, '', TRUE, RecLReportSelections.Usage::"S.Cr.Memo");
+            //TODO DocumentMailing.EmailFile(FctSalesCrMemoHeaderPDFSave(RecLSalesCrMemoHeader), '', TxtMailBody, RecLSalesCrMemoHeader."No.",
+            //  TxtLSenderAddress, '', TRUE, RecLReportSelections.Usage::"S.Cr.Memo");
         END;
     end;
 
     procedure FctPrintCrMemoMGTS(RecPSalesCrMemoHeader: Record "Sales Cr.Memo Header")
     var
-        RecLCustomer: Record Customer;
         RecLCompanyInfo: Record "Company Information";
+        RecLCustomer: Record Customer;
         CduLFileManagement: Codeunit "File Management";
-        TxtLPathClient: Text;
         TxtLFileName: Text;
+        TxtLPathClient: Text;
     begin
 
         RecLCustomer.GET(RecPSalesCrMemoHeader."Sell-to Customer No.");
@@ -333,7 +309,7 @@ codeunit 50012 "DEL Minimizing Clicks - MGTS"
             RecLCompanyInfo.TESTFIELD("DEL FTP Server");
             RecLCompanyInfo.TESTFIELD("DEL FTP UserName");
             RecLCompanyInfo.TESTFIELD("DEL FTP Password");
-            FctFTPUploadFile(RecLCompanyInfo."DEL FTP Server", RecLCompanyInfo."DEL FTP UserName", RecLCompanyInfo."DEL FTP Password", TxtLPathClient, TxtLFileName);
+            //TODOFctFTPUploadFile(RecLCompanyInfo."DEL FTP Server", RecLCompanyInfo."DEL FTP UserName", RecLCompanyInfo."DEL FTP Password", TxtLPathClient, TxtLFileName);
         END;
         IF RecLCustomer."DEL FTP Save 2" THEN BEGIN
             TxtLPathClient := FctSalesCrMemoHeaderPDFSave(RecPSalesCrMemoHeader);
@@ -342,7 +318,7 @@ codeunit 50012 "DEL Minimizing Clicks - MGTS"
             RecLCompanyInfo.TESTFIELD("DEL FTP2 Server");
             RecLCompanyInfo.TESTFIELD("DEL FTP2 UserName");
             RecLCompanyInfo.TESTFIELD("DEL FTP2 Password");
-            FctFTPUploadFile(RecLCompanyInfo."DEL FTP2 Server", RecLCompanyInfo."DEL FTP2 UserName", RecLCompanyInfo."DEL FTP2 Password", TxtLPathClient, TxtLFileName);
+            //TODOFctFTPUploadFile(RecLCompanyInfo."DEL FTP2 Server", RecLCompanyInfo."DEL FTP2 UserName", RecLCompanyInfo."DEL FTP2 Password", TxtLPathClient, TxtLFileName);
         END;
         IF (NOT RecLCustomer."DEL FTP Save") AND (NOT RecLCustomer."DEL FTP Save 2") THEN
             FctSendMailSalesCrMemoHeader(RecPSalesCrMemoHeader);

@@ -45,7 +45,7 @@ pageextension 50025 "DEL CashReceiptJournal" extends "Cash Receipt Journal" //25
                         ERROR('Document Type doit etre Invoice');
 
                     // DealShipmentSelection_Form_Loc.FNC_OpenedBy("Document No.");
-                    DealShipmentSelection_Page_Loc.RUNMODAL
+                    DealShipmentSelection_Page_Loc.RUNMODAL()
                 end;
             }
         }
@@ -62,8 +62,8 @@ pageextension 50025 "DEL CashReceiptJournal" extends "Cash Receipt Journal" //25
 
                 trigger OnAction()
                 begin
-                    CurrPage.UPDATE;
-                    Rec.ImportBankStatement;
+                    CurrPage.UPDATE();
+                    Rec.ImportBankStatement();
                 end;
             }
             action("DEL UpdateLineCamt")
@@ -77,7 +77,7 @@ pageextension 50025 "DEL CashReceiptJournal" extends "Cash Receipt Journal" //25
                 var
                     GenJournalLine_Loc: Record "Gen. Journal Line";
                 begin
-                    GenJournalLine_Loc.RESET;
+                    GenJournalLine_Loc.RESET();
                     GenJournalLine_Loc.SETRANGE(GenJournalLine_Loc."Journal Template Name", Rec."Journal Template Name");
                     GenJournalLine_Loc.SETRANGE(GenJournalLine_Loc."Journal Batch Name", Rec."Journal Batch Name");
                     REPORT.RUN(REPORT::"DEL Update lines CAMT054", FALSE, FALSE, GenJournalLine_Loc);
@@ -153,7 +153,7 @@ pageextension 50025 "DEL CashReceiptJournal" extends "Cash Receipt Journal" //25
         dealShipmentSelection_Page_Loc.SETTABLEVIEW(dealShipmentSelection_Re_Loc);
         dealShipmentSelection_Page_Loc.SETRECORD(dealShipmentSelection_Re_Loc);
 
-        dealShipmentSelection_Page_Loc.RUN
+        dealShipmentSelection_Page_Loc.RUN()
 
     end;
 }

@@ -53,20 +53,16 @@ xmlport 50010 "DEL Reserved to ChC"
     end;
 
     var
-        CurrentFileName: Text[240];
         CurrentNbOfRecords: Integer;
-        CurrentError: Text[30];
-        IOFile: File;
-        IOFileLine: Text[1024];
         LineFields: array[100] of Text[50];
-        TempDate: Date;
-        TempDec: Decimal;
+        CurrentFileName: Text[240];
+        IOFileLine: Text[1024];
 
 
     procedure CreateArray()
     var
-        IOPos: Integer;
         i: Integer;
+        IOPos: Integer;
     begin
         CLEAR(LineFields);
         IOPos := 1;
@@ -82,10 +78,6 @@ xmlport 50010 "DEL Reserved to ChC"
 
 
     procedure ImportItems()
-    var
-        Item: Record Item;
-        ItemTranslation: Record "Item Translation";
-        DefaultDimension: Record "Default Dimension";
     begin
         MESSAGE(CurrentFileName);
         // TODO //FILE 

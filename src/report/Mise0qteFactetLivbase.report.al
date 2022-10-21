@@ -56,8 +56,6 @@ report 50045 "DEL Miseà0 qteFact et Livbase"
         Text0001: Label 'Update Successfully Completed';
         Text0002: Label 'Vous devez choisir un numéro de document';
 
-        PurchaseLine3: Record "Purchase Line";
-
 
 
 }

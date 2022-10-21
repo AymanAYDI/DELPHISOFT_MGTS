@@ -25,7 +25,7 @@ xmlport 50016 "DEL Update Supplier Base ID"
                     begin
                         IF Vendor.GET(Supplier."No.") THEN BEGIN
                             Vendor."DEL Supplier Base ID" := Supplier."DEL Supplier Base ID";
-                            Vendor.MODIFY;
+                            Vendor.MODIFY();
                         END;
                     end;
                 }
@@ -33,13 +33,13 @@ xmlport 50016 "DEL Update Supplier Base ID"
                 trigger OnAfterGetRecord()
                 begin
                     IF (UPPERCASE(Supplier."No.") = 'NULL') OR (Supplier."No." = '') THEN
-                        currXMLport.SKIP;
+                        currXMLport.SKIP();
                 end;
 
                 trigger OnBeforeInsertRecord()
                 begin
                     IF (UPPERCASE(Supplier."No.") = 'NULL') OR (Supplier."No." = '') THEN
-                        currXMLport.SKIP;
+                        currXMLport.SKIP();
                 end;
             }
         }
@@ -59,7 +59,7 @@ xmlport 50016 "DEL Update Supplier Base ID"
 
     trigger OnPostXmlPort()
     begin
-        Win.CLOSE;
+        Win.CLOSE();
         MESSAGE('Finished !')
     end;
 

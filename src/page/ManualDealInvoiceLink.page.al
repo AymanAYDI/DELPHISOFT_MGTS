@@ -63,19 +63,16 @@ page 50080 "DEL Manual Deal Invoice Link."
                     trigger OnAction()
                     var
                         dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
-                        dealShipment_Re_Loc: Record "DEL Deal Shipment";
-                        feeConnection_Re_Loc: Record "DEL Fee Connection";
-                        Add_Variant_Op_Loc: Option New,Existing;
-                        nextEntry: Code[20];
-                        myTab: array[100] of Code[20];
                         dss_Re_Loc: Record "DEL Deal Shipment Selection";
+                        element_Re_Loc: Record "DEL Element";
                         element_ID_Co_Loc: Code[20];
+                        myTab: array[100] of Code[20];
+                        myUpdateRequests: array[100] of Code[20];
+                        nextEntry: Code[20];
+                        elementConnectionSplitIndex: Integer;
                         i: Integer;
                         splittIndex: Integer;
-                        elementConnectionSplitIndex: Integer;
                         ConnectionType_Op_Par: Option Element,Shipment;
-                        myUpdateRequests: array[100] of Code[20];
-                        element_Re_Loc: Record "DEL Element";
                     begin
                         IF Rec."Shipment Selection" = 0 THEN
                             ERROR('Veuillez sélectionner au moins 1 livraison !');
@@ -173,9 +170,7 @@ page 50080 "DEL Manual Deal Invoice Link."
 
     var
         Element_Cu: Codeunit "DEL Element";
-        Deal_Cu: Codeunit "DEL Deal";
         UpdateRequestManager_Cu: Codeunit "DEL Update Request Manager";
-        Text19022230: Label 'M A N U A L   L I N K I N G';
 
 
     procedure FNC_ShipmentLookup()

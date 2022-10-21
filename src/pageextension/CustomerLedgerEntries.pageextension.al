@@ -17,16 +17,16 @@ pageextension 50022 "DEL CustomerLedgerEntries" extends "Customer Ledger Entries
 
                 trigger OnAction()
                 var
-                    lrecSalesInvoiceHeader: Record "Sales Invoice Header";
-                    lrecSalesCrMemoHeader: Record "Sales Cr.Memo Header";
                     lrecDocMatrixSelection: Record "DEL DocMatrix Selection";
+                    lrecSalesCrMemoHeader: Record "Sales Cr.Memo Header";
+                    lrecSalesInvoiceHeader: Record "Sales Invoice Header";
                     lcuDocumentMatrixMgt: Codeunit "DEL DocMatrix Management";
+                    lNo: Code[20];
                     ProcessType: enum "DEL Process Type";
                     lUsage: enum "DEL Usage DocMatrix Selection";
-                    lNo: Code[20];
-                    lRecordVariant: Variant;
-                    lFieldSellToNo: Integer;
                     lFieldDocNo: Integer;
+                    lFieldSellToNo: Integer;
+                    lRecordVariant: Variant;
                 begin
                     //DEL/PD/20190226/LOP003.begin
                     lNo := '';

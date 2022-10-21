@@ -12,7 +12,8 @@ codeunit 50055 "DEL Record Modification Track"
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"GlobalTriggerManagement", 'OnAfterGetDatabaseTableTriggerSetup', '', false, false)]
 
-    local procedure GetDatabaseTableTriggerSetup(TableId: Integer; var OnDatabaseInsert: Boolean; var OnDatabaseModify: Boolean; var OnDatabaseDelete: Boolean; var OnDatabaseRename: Boolean)
+    local procedure GetDatabaseTableTriggerSetup(TableId: Integer; var OnDatabaseInsert: Boolean;
+     var OnDatabaseModify: Boolean; var OnDatabaseDelete: Boolean; var OnDatabaseRename: Boolean)
     begin
         IF COMPANYNAME = '' THEN
             EXIT;
@@ -83,9 +84,9 @@ codeunit 50055 "DEL Record Modification Track"
     local procedure InsertUpdateSynchronizedRecord(RecRef: RecordRef; LastModified: DateTime; CurrentSynchroniseState: Option Insert,Modify,Delete,Rename)
     var
         RecordModificationTracking: Record "DEL Record Modifs. Tracking";
+        PurchasePrice: Record "Purchase Price";
 
         SalesPrice: Record "Sales Price";
-        PurchasePrice: Record "Purchase Price";
     begin
         IF IsSynchronizedRecord(RecRef.NUMBER) THEN BEGIN
 

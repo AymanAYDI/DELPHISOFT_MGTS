@@ -75,13 +75,13 @@ pageextension 50006 "DEL PostedSalesInvoice" extends "Posted Sales Invoice" //13
 
                 trigger OnAction()
                 var
-                    lrecSalesInvoiceHeader: Record "Sales Invoice Header";
                     lrecDocMatrixSelection: Record "DEL DocMatrix Selection";
+                    lrecSalesInvoiceHeader: Record "Sales Invoice Header";
                     SalesInvoiceHeader2: Record "Sales Invoice Header";
                     lcuDocumentMatrixMgt: Codeunit "DEL DocMatrix Management";
-                    lUsage: Enum "DEL Usage DocMatrix Selection";
 
                     ProcessType: Enum "DEL Process Type";
+                    lUsage: Enum "DEL Usage DocMatrix Selection";
 
                 begin
                     IF Rec."DEL Sent To Customer" THEN

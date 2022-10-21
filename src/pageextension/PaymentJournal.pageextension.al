@@ -96,7 +96,7 @@ pageextension 50026 "DEL PaymentJournal" extends "Payment Journal" //256
                     GenJnlLine: Record "Gen. Journal Line";
                 begin
 
-                    GenJnlLine.RESET;
+                    GenJnlLine.RESET();
                     GenJnlLine.SETRANGE(GenJnlLine."Journal Template Name", Rec."Journal Template Name");
                     GenJnlLine.SETRANGE(GenJnlLine."Journal Batch Name", Rec."Journal Batch Name");
                     REPORT.RUN(Report::"DEL Update feuille paiement", TRUE, TRUE, GenJnlLine);
@@ -184,7 +184,7 @@ pageextension 50026 "DEL PaymentJournal" extends "Payment Journal" //256
         dealShipmentSelection_Form_Loc.SETTABLEVIEW(dealShipmentSelection_Re_Loc);
         dealShipmentSelection_Form_Loc.SETRECORD(dealShipmentSelection_Re_Loc);
 
-        dealShipmentSelection_Form_Loc.RUN
+        dealShipmentSelection_Form_Loc.RUN()
 
     end;
 }

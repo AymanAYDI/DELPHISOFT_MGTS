@@ -1,4 +1,4 @@
-report 50081 "DEL Purchase - Receipt" //408
+report 50082 "DEL Purchase - Receipt" //408
 {
     DefaultLayout = RDLC;
     RDLCLayout = './PurchaseReceipt.rdlc';
@@ -273,11 +273,11 @@ report 50081 "DEL Purchase - Receipt" //408
                         trigger OnAfterGetRecord()
                         begin
                             IF Number = 1 THEN BEGIN
-                                IF NOT DimSetEntry1.FINDSET THEN
-                                    CurrReport.BREAK;
+                                IF NOT DimSetEntry1.FINDSET() THEN
+                                    CurrReport.BREAK();
                             END ELSE
                                 IF NOT Continue THEN
-                                    CurrReport.BREAK;
+                                    CurrReport.BREAK();
 
                             CLEAR(DimText);
                             Continue := FALSE;
@@ -295,13 +295,13 @@ report 50081 "DEL Purchase - Receipt" //408
                                     Continue := TRUE;
                                     EXIT;
                                 END;
-                            UNTIL DimSetEntry1.NEXT = 0;
+                            UNTIL DimSetEntry1.NEXT() = 0;
                         end;
 
                         trigger OnPreDataItem()
                         begin
                             IF NOT ShowInternalInfo THEN
-                                CurrReport.BREAK;
+                                CurrReport.BREAK();
                         end;
                     }
                     dataitem("Purch. Rcpt. Line"; "Purch. Rcpt. Line")
@@ -337,7 +337,7 @@ report 50081 "DEL Purchase - Receipt" //408
                         {
                             IncludeCaption = false;
                         }
-                        column(PageNo2; CurrReport.PAGENO)
+                        column(PageNo2; CurrReport.PAGENO())
                         {
                         }
                         column(No_PurchRcptLineCaption; FIELDCAPTION("No."))
@@ -360,11 +360,11 @@ report 50081 "DEL Purchase - Receipt" //408
                             trigger OnAfterGetRecord()
                             begin
                                 IF Number = 1 THEN BEGIN
-                                    IF NOT DimSetEntry2.FINDSET THEN
-                                        CurrReport.BREAK;
+                                    IF NOT DimSetEntry2.FINDSET() THEN
+                                        CurrReport.BREAK();
                                 END ELSE
                                     IF NOT Continue THEN
-                                        CurrReport.BREAK;
+                                        CurrReport.BREAK();
 
                                 CLEAR(DimText);
                                 Continue := FALSE;
@@ -382,20 +382,20 @@ report 50081 "DEL Purchase - Receipt" //408
                                         Continue := TRUE;
                                         EXIT;
                                     END;
-                                UNTIL DimSetEntry2.NEXT = 0;
+                                UNTIL DimSetEntry2.NEXT() = 0;
                             end;
 
                             trigger OnPreDataItem()
                             begin
                                 IF NOT ShowInternalInfo THEN
-                                    CurrReport.BREAK;
+                                    CurrReport.BREAK();
                             end;
                         }
 
                         trigger OnAfterGetRecord()
                         begin
                             IF (NOT ShowCorrectionLines) AND Correction THEN
-                                CurrReport.SKIP;
+                                CurrReport.SKIP();
 
                             DimSetEntry2.SETRANGE("Dimension Set ID", "Dimension Set ID");
                         end;
@@ -406,7 +406,7 @@ report 50081 "DEL Purchase - Receipt" //408
                             WHILE MoreLines AND (Description = '') AND ("No." = '') AND (Quantity = 0) DO
                                 MoreLines := NEXT(-1) <> 0;
                             IF NOT MoreLines THEN
-                                CurrReport.BREAK;
+                                CurrReport.BREAK();
                             SETRANGE("Line No.", 0, "Line No.");
                         end;
                     }
@@ -424,7 +424,7 @@ report 50081 "DEL Purchase - Receipt" //408
                         trigger OnPreDataItem()
                         begin
                             IF "Purch. Rcpt. Header"."Buy-from Vendor No." = "Purch. Rcpt. Header"."Pay-to Vendor No." THEN
-                                CurrReport.BREAK;
+                                CurrReport.BREAK();
                         end;
                     }
                     dataitem(Total2; Integer)
@@ -510,10 +510,10 @@ report 50081 "DEL Purchase - Receipt" //408
                 END;
 
 
-                PrepareHeader;
-                PrepareFooter;
+                PrepareHeader();
+                PrepareFooter();
 
-                CompanyInfo.GET;
+                CompanyInfo.GET();
 
 
                 IF RespCenter.GET("Responsibility Center") THEN BEGIN
@@ -526,7 +526,7 @@ report 50081 "DEL Purchase - Receipt" //408
                 DimSetEntry1.SETRANGE("Dimension Set ID", "Dimension Set ID");
 
                 IF "Purchaser Code" = '' THEN BEGIN
-                    SalesPurchPerson.INIT;
+                    SalesPurchPerson.INIT();
                     PurchaserText := '';
                 END ELSE BEGIN
                     SalesPurchPerson.GET("Purchaser Code");
@@ -602,109 +602,103 @@ report 50081 "DEL Purchase - Receipt" //408
 
     var
         CompanyInfo: Record "Company Information";
-        SalesPurchPerson: Record "Salesperson/Purchaser";
+        LCO_DealShipment: Record "DEL Deal Shipment";
+        LCO_Element: Record "DEL Element";
         DimSetEntry1: Record "Dimension Set Entry";
         DimSetEntry2: Record "Dimension Set Entry";
         Language: Record Language;
         RespCenter: Record "Responsibility Center";
-        LCO_Element: Record "DEL Element";
-        LCO_DealShipment: Record "DEL Deal Shipment";
+        SalesPurchPerson: Record "Salesperson/Purchaser";
+        FormatAddr: Codeunit "Format Address";
 
 
         RcptCountPrinted: Codeunit "Purch.Rcpt.-Printed";
         SegManagement: Codeunit SegManagement;
-        FormatAddr: Codeunit "Format Address";
-
-        Text000: Label 'Purchaser';
-        Text001: Label 'COPY';
-        Text002: Label 'Purchase - Receipt %1';
-        Text003: Label 'Page %1';
-        VendAddr: array[8] of Text[50];
-        ShipToAddr: array[8] of Text[50];
-        CompanyAddr: array[8] of Text[50];
-        PurchaserText: Text[30];
-        ReferenceText: Text[80];
-        MoreLines: Boolean;
-        NoOfCopies: Integer;
-        NoOfLoops: Integer;
-        CopyText: Text[30];
-        DimText: Text[120];
-        OldDimText: Text[75];
-        ShowInternalInfo: Boolean;
         Continue: Boolean;
         LogInteraction: Boolean;
-        ShowCorrectionLines: Boolean;
-        OutputNo: Integer;
         [InDataSet]
         LogInteractionEnable: Boolean;
-        PhoneNoCaptionLbl: Label 'Phone No.';
-        FaxNoCaptionLbl: Label 'Fax No.';
-        HomePageCaptionLbl: Label 'Home Page';
-        VATRegNoCaptionLbl: Label 'VAT Reg. No.';
-        GiroNoCaptionLbl: Label 'Giro No.';
-        BankNameCaptionLbl: Label 'Bank';
-        AccNoCaptionLbl: Label 'Account No.';
-        ShipmentNoCaptionLbl: Label 'Shipment No.';
-        HeaderDimCaptionLbl: Label 'Header Dimensions';
-        LineDimCaptionLbl: Label 'Line Dimensions';
-        PaytoAddrCaptionLbl: Label 'Pay-to Address';
-        DocDateCaptionLbl: Label 'Date';
-        PageCaptionLbl: Label 'Page';
-        DescCaptionLbl: Label 'Description';
-        QtyCaptionLbl: Label 'Quantity';
-        UOMCaptionLbl: Label 'Unit Of Measure';
-        PaytoVenNoCaptionLbl: Label 'Vendor No.';
-        EmailCaptionLbl: Label 'E-Mail';
-        HeaderLabel: array[20] of Text[30];
-        HeaderTxt: array[20] of Text[120];
-        FooterLabel: array[20] of Text[30];
-        FooterTxt: array[20] of Text[120];
-        Text11500: Label 'Receipt %1';
-        ML_PurchPerson: Label 'Purchaser';
-        ML_Reference: Label 'Reference';
-        ML_PmtTerms: Label 'Payment Terms';
-        ML_ShipCond: Label 'Shipping Conditions';
-        ML_ShipAdr: Label 'Shipping Address';
-        ML_InvAdr: Label 'Invoice Address';
-        ML_OrderAdr: Label 'Order Address';
-        ML_ShipDate: Label 'Shipping Date';
-        NumberInt: Integer;
-        NumberInt1: Integer;
-        ML_POrder: Label 'N° ACO';
-        ML_AFFNo: Label 'N° Affaire / Shipment';
+        MoreLines: Boolean;
+        ShowCorrectionLines: Boolean;
+        ShowInternalInfo: Boolean;
         LCO_Deal_ID: Code[10];
         LCO_P_Order_No: Code[10];
         LCO_Shipment: Code[20];
+        NoOfCopies: Integer;
+        NoOfLoops: Integer;
+        OutputNo: Integer;
+        AccNoCaptionLbl: Label 'Account No.';
+        BankNameCaptionLbl: Label 'Bank';
         Caption_client: Label 'Customer No.';
+        DescCaptionLbl: Label 'Description';
+        DocDateCaptionLbl: Label 'Date';
+        EmailCaptionLbl: Label 'E-Mail';
+        FaxNoCaptionLbl: Label 'Fax No.';
+        GiroNoCaptionLbl: Label 'Giro No.';
+        HeaderDimCaptionLbl: Label 'Header Dimensions';
+        HomePageCaptionLbl: Label 'Home Page';
+        LineDimCaptionLbl: Label 'Line Dimensions';
+        ML_AFFNo: Label 'N° Affaire / Shipment';
+        ML_InvAdr: Label 'Invoice Address';
+        ML_OrderAdr: Label 'Order Address';
+        ML_PmtTerms: Label 'Payment Terms';
+        ML_POrder: Label 'N° ACO';
+        ML_PurchPerson: Label 'Purchaser';
+        ML_Reference: Label 'Reference';
+        ML_ShipAdr: Label 'Shipping Address';
+        ML_ShipCond: Label 'Shipping Conditions';
+        ML_ShipDate: Label 'Shipping Date';
+        PageCaptionLbl: Label 'Page';
+        PaytoAddrCaptionLbl: Label 'Pay-to Address';
+        PhoneNoCaptionLbl: Label 'Phone No.';
+        QtyCaptionLbl: Label 'Quantity';
+        ShipmentNoCaptionLbl: Label 'Shipment No.';
+
+        Text000: Label 'Purchaser';
+        Text001: Label 'COPY';
+        Text003: Label 'Page %1';
+        Text11500: Label 'Receipt %1';
+        UOMCaptionLbl: Label 'Unit Of Measure';
+        VATRegNoCaptionLbl: Label 'VAT Reg. No.';
+        CopyText: Text[30];
+        FooterLabel: array[20] of Text[30];
+        HeaderLabel: array[20] of Text[30];
+        PurchaserText: Text[30];
+        CompanyAddr: array[8] of Text[50];
+        ShipToAddr: array[8] of Text[50];
+        VendAddr: array[8] of Text[50];
+        OldDimText: Text[75];
+        ReferenceText: Text[80];
+        DimText: Text[120];
+        FooterTxt: array[20] of Text[120];
+        HeaderTxt: array[20] of Text[120];
 
     procedure PrepareHeader()
     begin
         CLEAR(HeaderLabel);
         CLEAR(HeaderTxt);
 
-        WITH "Purch. Rcpt. Header" DO BEGIN
-            FormatAddr.PurchRcptShipTo(VendAddr, "Purch. Rcpt. Header");
+        FormatAddr.PurchRcptShipTo(VendAddr, "Purch. Rcpt. Header");
 
-            IF SalesPurchPerson.GET("Purchaser Code") THEN BEGIN
-                HeaderLabel[3] := ML_PurchPerson;
-                HeaderTxt[3] := SalesPurchPerson.Name;
-            END;
-
-            IF "Your Reference" <> '' THEN BEGIN
-                HeaderLabel[4] := ML_Reference;
-                HeaderTxt[4] := "Your Reference";
-            END;
-
-            HeaderLabel[5] := ML_POrder;
-            HeaderTxt[5] := "Purch. Rcpt. Header"."Order No.";
-
-            HeaderLabel[6] := ML_AFFNo;
-            HeaderTxt[6] := LCO_Deal_ID + ' / ' + LCO_Shipment;
-
-
-            COMPRESSARRAY(HeaderLabel);
-            COMPRESSARRAY(HeaderTxt);
+        IF SalesPurchPerson.GET("Purch. Rcpt. Header"."Purchaser Code") THEN BEGIN
+            HeaderLabel[3] := ML_PurchPerson;
+            HeaderTxt[3] := SalesPurchPerson.Name;
         END;
+
+        IF "Purch. Rcpt. Header"."Your Reference" <> '' THEN BEGIN
+            HeaderLabel[4] := ML_Reference;
+            HeaderTxt[4] := "Purch. Rcpt. Header"."Your Reference";
+        END;
+
+        HeaderLabel[5] := ML_POrder;
+        HeaderTxt[5] := "Purch. Rcpt. Header"."Order No.";
+
+        HeaderLabel[6] := ML_AFFNo;
+        HeaderTxt[6] := LCO_Deal_ID + ' / ' + LCO_Shipment;
+
+
+        COMPRESSARRAY(HeaderLabel);
+        COMPRESSARRAY(HeaderTxt);
     end;
 
     procedure PrepareFooter()
@@ -715,56 +709,54 @@ report 50081 "DEL Purchase - Receipt" //408
         CLEAR(FooterLabel);
         CLEAR(FooterTxt);
 
-        WITH "Purch. Rcpt. Header" DO BEGIN
-            IF PmtMethod.GET("Payment Terms Code") THEN BEGIN
-                FooterLabel[1] := ML_PmtTerms;
-                PmtMethod.TranslateDescription(PmtMethod, "Language Code");
-                FooterTxt[1] := PmtMethod.Description;
-            END;
-
-            // Shipping Conditions
-            IF ShipMethod.GET("Shipment Method Code") THEN BEGIN
-                FooterLabel[2] := ML_ShipCond;
-                ShipMethod.TranslateDescription(ShipMethod, "Language Code");
-                FooterTxt[2] := ShipMethod.Description;
-            END;
-
-            // Shipping Address
-            IF "Ship-to Code" <> '' THEN BEGIN
-                FooterLabel[3] := ML_ShipAdr;
-                FooterTxt[3] := "Ship-to Name" + ' ' + "Ship-to City";
-            END;
-
-            // Invoice and Order Address
-            IF "Buy-from Vendor No." <> "Pay-to Vendor No." THEN BEGIN
-                FooterLabel[4] := ML_InvAdr;
-                FooterTxt[4] := "Pay-to Name" + ', ' + "Pay-to City";
-                FooterLabel[5] := ML_OrderAdr;
-                FooterTxt[5] := "Buy-from Vendor Name" + ', ' + "Buy-from City";
-            END;
-
-            // Shipping Date if <> Document Date
-            IF NOT ("Expected Receipt Date" IN ["Document Date", 0D]) THEN BEGIN
-                FooterLabel[6] := ML_ShipDate;
-                FooterTxt[6] := FORMAT("Expected Receipt Date", 0, 4);
-            END;
-
-            FooterLabel[6] := ML_ShipDate;
-            FooterTxt[6] := FORMAT("Expected Receipt Date", 0, 4);
-
-            // Remove the useless value of FooterLabel[8] and FooterTxt[8]
-            // which make the wrong format of the section, set a ' ' value to shipping date if
-            // it's null to make sure the format is correct in RTC.
-            IF FORMAT("Expected Receipt Date", 0, 4) = '' THEN BEGIN
-                FooterTxt[6] := ' ';
-            END;
-
-            FooterLabel[8] := '';
-            FooterTxt[8] := '';
-
-            COMPRESSARRAY(FooterLabel);
-            COMPRESSARRAY(FooterTxt);
+        IF PmtMethod.GET("Purch. Rcpt. Header"."Payment Terms Code") THEN BEGIN
+            FooterLabel[1] := ML_PmtTerms;
+            PmtMethod.TranslateDescription(PmtMethod, "Purch. Rcpt. Header"."Language Code");
+            FooterTxt[1] := PmtMethod.Description;
         END;
+
+        // Shipping Conditions
+        IF ShipMethod.GET("Purch. Rcpt. Header"."Shipment Method Code") THEN BEGIN
+            FooterLabel[2] := ML_ShipCond;
+            ShipMethod.TranslateDescription(ShipMethod, "Purch. Rcpt. Header"."Language Code");
+            FooterTxt[2] := ShipMethod.Description;
+        END;
+
+        // Shipping Address
+        IF "Purch. Rcpt. Header"."Ship-to Code" <> '' THEN BEGIN
+            FooterLabel[3] := ML_ShipAdr;
+            FooterTxt[3] := "Purch. Rcpt. Header"."Ship-to Name" + ' ' + "Purch. Rcpt. Header"."Ship-to City";
+        END;
+
+        // Invoice and Order Address
+        IF "Purch. Rcpt. Header"."Buy-from Vendor No." <> "Purch. Rcpt. Header"."Pay-to Vendor No." THEN BEGIN
+            FooterLabel[4] := ML_InvAdr;
+            FooterTxt[4] := "Purch. Rcpt. Header"."Pay-to Name" + ', ' + "Purch. Rcpt. Header"."Pay-to City";
+            FooterLabel[5] := ML_OrderAdr;
+            FooterTxt[5] := "Purch. Rcpt. Header"."Buy-from Vendor Name" + ', ' + "Purch. Rcpt. Header"."Buy-from City";
+        END;
+
+        // Shipping Date if <> Document Date
+        IF NOT ("Purch. Rcpt. Header"."Expected Receipt Date" IN ["Purch. Rcpt. Header"."Document Date", 0D]) THEN BEGIN
+            FooterLabel[6] := ML_ShipDate;
+            FooterTxt[6] := FORMAT("Purch. Rcpt. Header"."Expected Receipt Date", 0, 4);
+        END;
+
+        FooterLabel[6] := ML_ShipDate;
+        FooterTxt[6] := FORMAT("Purch. Rcpt. Header"."Expected Receipt Date", 0, 4);
+
+        // Remove the useless value of FooterLabel[8] and FooterTxt[8]
+        // which make the wrong format of the section, set a ' ' value to shipping date if
+        // it's null to make sure the format is correct in RTC.
+        IF FORMAT("Purch. Rcpt. Header"."Expected Receipt Date", 0, 4) = '' THEN BEGIN
+            FooterTxt[6] := ' ';
+        END;
+
+        FooterLabel[8] := '';
+        FooterTxt[8] := '';
+
+        COMPRESSARRAY(FooterLabel);
+        COMPRESSARRAY(FooterTxt);
     end;
 
     procedure InitializeRequest(NewNoOfCopies: Integer; NewShowInternalInfo: Boolean; NewLogInteraction: Boolean; NewShowCorrectionLines: Boolean)

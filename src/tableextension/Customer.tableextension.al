@@ -692,13 +692,5 @@ tableextension 50013 "DEL Customer" extends Customer
         }
     }
 
-
-
-
-
-    var
-        CustPriceGroup: Record "Customer Price Group";
-        Text50000: Label '%1|%2';
-
 }
 

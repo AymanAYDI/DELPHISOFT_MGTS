@@ -1,4 +1,4 @@
-enum 50038 "DEL ActivationStatus"
+enum 50038 "DEL ActivationStatus"   // still an option in the std exp status in 13
 {
     Extensible = false;
 

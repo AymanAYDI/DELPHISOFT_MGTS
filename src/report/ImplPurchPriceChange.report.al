@@ -22,7 +22,7 @@ report 50011 "DEL Impl. Purch Price Change"
                 Window.UPDATE(4, "Currency Code");
                 Window.UPDATE(5, "Starting Date");
 
-                PurchPrice.INIT;
+                PurchPrice.INIT();
                 PurchPrice.VALIDATE("Item No.", "Item No.");
                 PurchPrice.VALIDATE("Vendor No.", "Vendor No.");
                 PurchPrice.VALIDATE("Starting Date", "Starting Date");
@@ -73,19 +73,16 @@ report 50011 "DEL Impl. Purch Price Change"
 
     var
         PurchPrice: Record "Purchase Price";
-        SalesPrice: Record "Sales Price";
+        DeleteWhstLine: Boolean;
+        Window: Dialog;
 
 
         Text000: Label 'Updating Unit Prices...\\';
-        Text005: Label 'The item prices have now been updated in accordance with the suggested price changes.\\Do you want to delete the suggested price changes?';
         Text007: Label 'Item No.               #1##########\';
         Text008: Label 'Purchase Type             #2##########\';
         Text009: Label 'Purchase Code             #3##########\';
         Text010: Label 'Currency Code          #4##########\';
         Text011: Label 'Starting Date          #5######';
-        Window: Dialog;
-        DeleteWhstLine: Boolean;
-        "+++++++++++50000++++++++": Integer;
 
     procedure InitializeRequest(NewDeleteWhstLine: Boolean)
     begin

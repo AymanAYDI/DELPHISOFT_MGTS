@@ -17,7 +17,7 @@ report 50060 "DEL Update bank Vendor"
                 trigger OnAfterGetRecord()
                 begin
                     "Vendor Ledger Entry"."Recipient Bank Account" := "DEL bank fournisseur"."Bank Code";
-                    "Vendor Ledger Entry".MODIFY;
+                    "Vendor Ledger Entry".MODIFY();
                 end;
             }
         }

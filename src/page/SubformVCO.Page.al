@@ -67,9 +67,9 @@ page 50032 "DEL Subform VCO"
 
     var
         SalesHeaderArchive: Record "Sales Header Archive";
-        CustomerName_Te: Text[50];
-        ExternalDocNo_Co: Code[35];
         CampaignNo_Co: Code[20];
+        ExternalDocNo_Co: Code[35];
+        CustomerName_Te: Text[50];
 
 }
 

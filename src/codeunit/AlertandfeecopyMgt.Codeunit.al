@@ -1,19 +1,15 @@
 codeunit 50028 "DEL Alert and fee copy Mgt"
 {
 
-
-
-
-
     var
         LogisticTmp_Re: Record "DEL Logistic" temporary;
 
 
     procedure FNC_GlobalCheck(Deal_ID: Code[20])
     var
-        Logistic_Re_Loc: Record "DEL Logistic";
-        DealShip_Re_Loc: Record "DEL Deal Shipment";
         DealShip2_Re_Loc: Record "DEL Deal Shipment";
+        DealShip_Re_Loc: Record "DEL Deal Shipment";
+        Logistic_Re_Loc: Record "DEL Logistic";
     begin
 
 

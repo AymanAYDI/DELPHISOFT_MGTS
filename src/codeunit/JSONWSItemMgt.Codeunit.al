@@ -1,4 +1,4 @@
-codeunit 50050 "DEL JSON WS : Item Mgt"
+codeunit 50050 "DEL JSON WS : Item Mgt" //TODO DOTNET
 {
 
 

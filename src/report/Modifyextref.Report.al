@@ -61,8 +61,7 @@ report 50063 "DEL Modify ext ref"
     }
 
     var
-        Item_Rec: Record Item;
-        SalesHeader_Rec: Record "Sales Header";
         ItemCrossReference: Record "Item Reference";
+        SalesHeader_Rec: Record "Sales Header";
 }
 

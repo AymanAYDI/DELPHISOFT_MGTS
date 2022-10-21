@@ -1,14 +1,10 @@
 codeunit 50003 "DEL MGT Tracking"
 {
-    //  Nts/loco/grc   23.04.2010 create object
-    //  JUH            14.09.16    Filter .xml
 
 
     trigger OnRun()
     begin
 
-
-        //export();
 
         importXMLFiles1();
         importXMLFiles2();
@@ -17,20 +13,18 @@ codeunit 50003 "DEL MGT Tracking"
     end;
 
     var
-        MyFile: Record File;
         NgtsSetup: Record "DEL General Setup";
         TrackingGeneral: Record "DEL Tracking non traité";
-        MyStream: InStream;
-        TestFile: File;
-        // fso: DotNet File;
-        outStreamtest: OutStream;
-        charXml: Text;
-        Pos: Integer;
+        MyFile: Record File;
+        FileManagement: Codeunit "File Management";
 
 
         TempBlob: Codeunit "Temp Blob";
-        FileManagement: Codeunit "File Management";
-        OutStr: OutStream;
+        MyStream: InStream;
+        Pos: Integer;
+        // fso: DotNet File;
+        outStreamtest: OutStream;
+        charXml: Text;
 
 
     procedure importXMLFiles1()
@@ -40,7 +34,6 @@ codeunit 50003 "DEL MGT Tracking"
         FileName: Text;
     begin
         IF NgtsSetup.GET() THEN;
-        // JUH 14.09.16 START
         charXml := '.xml';
         MyFile.SETRANGE(Path, NgtsSetup."Folder Expeditors");
         MyFile.SETRANGE("Is a file", TRUE);
@@ -52,7 +45,6 @@ codeunit 50003 "DEL MGT Tracking"
                     // TestFile.CREATEINSTREAM(MyStream);
                     // XMLPORT.IMPORT(XMLPORT::"Import tracking", MyStream);
                     // TestFile.CLOSE; // TODO: ancient code
-
                     //UploadIntoStream('', NgtsSetup."Folder Expeditors", '', MyFile.Name, MyStream); // TODO:  check new code
 
                     // NgtsSetup."Folder Expeditors".CreateInStream(MyStream, TEXTENCODING::UTF8);
@@ -72,14 +64,11 @@ codeunit 50003 "DEL MGT Tracking"
                         UNTIL TrackingGeneral.NEXT() = 0;
                 END;
             UNTIL MyFile.NEXT() = 0;
-        // JUH 14.09.16 END
         MESSAGE('Import Xml completed 1!');
     end;
 
 
     procedure importXMLFiles2()
-    var
-        InStr: InStream;
     begin
         IF NgtsSetup.GET() THEN;
 

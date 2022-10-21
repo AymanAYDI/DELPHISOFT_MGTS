@@ -80,8 +80,8 @@ page 50043 "DEL Position Detail"
 
     var
         [InDataSet]
-        "Type No.Visible": Boolean;
-        [InDataSet]
         Fee_IDVisible: Boolean;
+        [InDataSet]
+        "Type No.Visible": Boolean;
 }
 

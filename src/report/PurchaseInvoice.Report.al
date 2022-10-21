@@ -909,119 +909,116 @@ report 50074 "DEL Purchase - Invoice" //406
     end;
 
     var
-        GLSetup: Record "General Ledger Setup";
         CompanyInfo: Record "Company Information";
-        ShipmentMethod: Record "Shipment Method";
-        PaymentTerms: Record "Payment Terms";
-        SalesPurchPerson: Record "Salesperson/Purchaser";
-        VATAmountLine: Record "VAT Amount Line" temporary;
+        CurrExchRate: Record "Currency Exchange Rate";
         DimSetEntry1: Record "Dimension Set Entry"; //480
         DimSetEntry2: Record "Dimension Set Entry";
-        RespCenter: Record "Responsibility Center";
+        GLSetup: Record "General Ledger Setup";
         Language: Record Language;
-        CurrExchRate: Record "Currency Exchange Rate";
+        PaymentTerms: Record "Payment Terms";
+        RespCenter: Record "Responsibility Center";
+        SalesPurchPerson: Record "Salesperson/Purchaser";
+        ShipmentMethod: Record "Shipment Method";
+        VATAmountLine: Record "VAT Amount Line" temporary;
         FormatAddr: Codeunit "Format Address";
         FormatDocument: Codeunit "Format Document";
         SegManagement: Codeunit SegManagement;
-        VendAddr: array[8] of Text[50];
-        ShipToAddr: array[8] of Text[50];
-        CompanyAddr: array[8] of Text[50];
-        PurchaserText: Text[30];
-        VATNoText: Text[80];
-        ReferenceText: Text[80];
-        OrderNoText: Text[80];
-        TotalText: Text[50];
-        TotalInclVATText: Text[50];
-        TotalExclVATText: Text[50];
-        MoreLines: Boolean;
-        NoOfCopies: Integer;
-        NoOfLoops: Integer;
-        CopyText: Text[30];
-        DimText: Text[120];
-        OldDimText: Text[75];
-        ShowInternalInfo: Boolean;
         Continue: Boolean;
         LogInteraction: Boolean;
-        VALVATBaseLCY: Decimal;
-        VALVATAmountLCY: Decimal;
-        VALSpecLCYHeader: Text[80];
-        VALExchRate: Text[50];
-        Text007: Label 'VAT Amount Specification in ';
-        Text008: Label 'Local Currency';
-        Text009: Label 'Exchange rate: %1/%2';
-        Text004: Label 'Purchase - Invoice %1', Comment = '%1 = Document No.';
-
-        CalculatedExchRate: Decimal;
-        Text010: Label 'Purchase - Prepayment Invoice %1';
-        OutputNo: Integer;
-        PricesInclVATtxt: Text[30];
-        AllowVATDisctxt: Text[30];
-        VATAmountText: Text[30];
-        Text011: Label '%1% VAT';
-        Text012: Label 'VAT Amount';
-        PurchInLineTypeNo: Integer;
-        RegNoText: Text[20];
         [InDataSet]
         LogInteractionEnable: Boolean;
-        TotalSubTotal: Decimal;
+        MoreLines: Boolean;
+        ShowInternalInfo: Boolean;
+
+        CalculatedExchRate: Decimal;
         TotalAmount: Decimal;
         TotalAmountInclVAT: Decimal;
         TotalAmountVAT: Decimal;
         TotalInvoiceDiscountAmount: Decimal;
         TotalPaymentDiscountOnVAT: Decimal;
+        TotalSubTotal: Decimal;
+        VALVATAmountLCY: Decimal;
+        VALVATBaseLCY: Decimal;
+        NoOfCopies: Integer;
+        NoOfLoops: Integer;
+        OutputNo: Integer;
+        PurchInLineTypeNo: Integer;
+        AllowInvoiveDiscountCaptionLbl: Label 'Allow Invoice Discount';
+        AmountCaptionLbl: Label 'Amount';
+        CompanyInfoBankAccountNoCaptionLbl: Label 'Account No.';
+        CompanyInfoBankNameCaptionLbl: Label 'Bank';
+        CompanyInfoEMailCaptionLbl: Label 'Email';
+        CompanyInfoGiroNoCaptionLbl: Label 'Giro No.';
+        CompanyInfoHomePageCaptionLbl: Label 'Home Page';
         CompanyInfoPhoneNoCaptionLbl: Label 'Phone No.';
         CompanyInfoVATRegistrationNoCaptionLbl: Label 'VAT Registration No.';
-        CompanyInfoGiroNoCaptionLbl: Label 'Giro No.';
-        CompanyInfoBankNameCaptionLbl: Label 'Bank';
-        CompanyInfoBankAccountNoCaptionLbl: Label 'Account No.';
-        PurchInvHeaderDueDateCaptionLbl: Label 'Due Date';
-        InvoiceNoCaptionLbl: Label 'Invoice No.';
-        PurchInvHeaderPostingDateCaptionLbl: Label 'Posting Date';
-        PageCaptionLbl: Label 'Page';
-        DocumentDateCaptionLbl: Label 'Date';
-        PaymentTermsDescriptionCaptionLbl: Label 'Payment Terms';
-        ShipmentMethodDescriptionCaptionLbl: Label 'Shipment Method';
-        CompanyInfoHomePageCaptionLbl: Label 'Home Page';
-        CompanyInfoEMailCaptionLbl: Label 'Email';
-        HeaderDimensionsCaptionLbl: Label 'Header Dimensions';
-        DirectUnitCostCaptionLbl: Label 'Direct Unit Cost';
-        PurchInvLineLineDiscountCaptionLbl: Label 'Discount %';
-        AmountCaptionLbl: Label 'Amount';
         ContinuedCaptionLbl: Label 'Continued';
+        DirectUnitCostCaptionLbl: Label 'Direct Unit Cost';
+        DocumentDateCaptionLbl: Label 'Date';
+        HeaderDimensionsCaptionLbl: Label 'Header Dimensions';
         InvDiscountAmountCaptionLbl: Label 'Invoice Discount Amount';
-        SubtotalCaptionLbl: Label 'Subtotal';
-        PaymentDiscountOnVATCaptionLbl: Label 'Payment Discount on VAT';
-        AllowInvoiveDiscountCaptionLbl: Label 'Allow Invoice Discount';
-        PurchInvLineDescriptionCaptionLbl: Label 'Description';
+        InvoiceNoCaptionLbl: Label 'Invoice No.';
         LineDimensionsCaptionLbl: Label 'Line Dimensions';
-        VATAmountLineVATCaptionLbl: Label 'VAT %';
-        VATAmountLineVATBaseCaptionLbl: Label 'VAT Base';
-        VATAmountLineVATAmountCaptionLbl: Label 'VAT Amount';
-        VATAmountSpecificationCaptionLbl: Label 'VAT Amount Specification';
-        VATAmountLineInvoiceDiscountAmountCaptionLbl: Label 'Invoice Discount Amount';
-        VATAmountLineInvDiscBaseAmountCaptionLbl: Label 'Invoice Discount Base Amount';
-        VATAmountLineLineAmountCaptionLbl: Label 'Line Amount';
-        VATAmountLineVATIdentifierCaptionLbl: Label 'VAT Identifier';
-        VATBaseCaptionLbl: Label 'Total';
-        ShiptoAddressCaptionLbl: Label 'Ship-to Address';
-        HeaderLabel: array[20] of Text[30];
-        HeaderTxt: array[20] of Text[120];
-        FooterLabel: array[20] of Text[30];
-        FooterTxt: array[20] of Text[120];
-        Text11500: Label 'Invoice';
-        Text11501: Label 'Prepayment Invoice';
+        ML_InvAdr: Label 'Invoice Address';
+        ML_InvoiceNo: Label 'Ext Invoice No.';
+        ML_OrderAdr: Label 'Order Address';
         ML_OrderNo: Label 'Order No.';
+        ML_PmtTerms: Label 'Payment Terms';
         ML_PurchPerson: Label 'Purchaser';
         ML_Reference: Label 'Reference';
-        ML_InvoiceNo: Label 'Ext Invoice No.';
-        ML_PmtTerms: Label 'Payment Terms';
-        ML_ShipCond: Label 'Shipping Conditions';
         ML_ShipAdr: Label 'Shipping Address';
-        ML_InvAdr: Label 'Invoice Address';
-        ML_OrderAdr: Label 'Order Address';
+        ML_ShipCond: Label 'Shipping Conditions';
         ML_ShipDate: Label 'Shipping Date';
+        PageCaptionLbl: Label 'Page';
+        PaymentDiscountOnVATCaptionLbl: Label 'Payment Discount on VAT';
+        PaymentTermsDescriptionCaptionLbl: Label 'Payment Terms';
+        PurchInvHeaderDueDateCaptionLbl: Label 'Due Date';
+        PurchInvHeaderPostingDateCaptionLbl: Label 'Posting Date';
+        PurchInvLineDescriptionCaptionLbl: Label 'Description';
+        PurchInvLineLineDiscountCaptionLbl: Label 'Discount %';
+        ShipmentMethodDescriptionCaptionLbl: Label 'Shipment Method';
+        ShiptoAddressCaptionLbl: Label 'Ship-to Address';
+        SubtotalCaptionLbl: Label 'Subtotal';
+        Text007: Label 'VAT Amount Specification in ';
+        Text008: Label 'Local Currency';
+        Text009: Label 'Exchange rate: %1/%2';
+        Text011: Label '%1% VAT';
+        Text012: Label 'VAT Amount';
+        Text11500: Label 'Invoice';
+        Text11501: Label 'Prepayment Invoice';
+        VATAmountLineInvDiscBaseAmountCaptionLbl: Label 'Invoice Discount Base Amount';
+        VATAmountLineInvoiceDiscountAmountCaptionLbl: Label 'Invoice Discount Amount';
+        VATAmountLineLineAmountCaptionLbl: Label 'Line Amount';
+        VATAmountLineVATAmountCaptionLbl: Label 'VAT Amount';
+        VATAmountLineVATBaseCaptionLbl: Label 'VAT Base';
+        VATAmountLineVATCaptionLbl: Label 'VAT %';
+        VATAmountLineVATIdentifierCaptionLbl: Label 'VAT Identifier';
+        VATAmountSpecificationCaptionLbl: Label 'VAT Amount Specification';
+        VATBaseCaptionLbl: Label 'Total';
         VendorNoCaptionLbl: Label 'Vendor No.';
-        ML_Continued: Label 'Continued';
+        RegNoText: Text[20];
+        AllowVATDisctxt: Text[30];
+        CopyText: Text[30];
+        FooterLabel: array[20] of Text[30];
+        HeaderLabel: array[20] of Text[30];
+        PricesInclVATtxt: Text[30];
+        PurchaserText: Text[30];
+        VATAmountText: Text[30];
+        CompanyAddr: array[8] of Text[50];
+        ShipToAddr: array[8] of Text[50];
+        TotalExclVATText: Text[50];
+        TotalInclVATText: Text[50];
+        TotalText: Text[50];
+        VALExchRate: Text[50];
+        VendAddr: array[8] of Text[50];
+        OldDimText: Text[75];
+        OrderNoText: Text[80];
+        ReferenceText: Text[80];
+        VALSpecLCYHeader: Text[80];
+        VATNoText: Text[80];
+        DimText: Text[120];
+        FooterTxt: array[20] of Text[120];
+        HeaderTxt: array[20] of Text[120];
 
     local procedure DocumentCaption(): Text[250]
     begin
@@ -1035,32 +1032,30 @@ report 50074 "DEL Purchase - Invoice" //406
         CLEAR(HeaderLabel);
         CLEAR(HeaderTxt);
 
-        WITH "Purch. Inv. Header" DO BEGIN
-            FormatAddr.PurchInvPayTo(VendAddr, "Purch. Inv. Header");
+        FormatAddr.PurchInvPayTo(VendAddr, "Purch. Inv. Header");
 
-            IF "Order No." <> '' THEN BEGIN
-                HeaderLabel[1] := ML_OrderNo;
-                HeaderTxt[1] := "Order No.";
-            END;
-
-            IF "Vendor Invoice No." <> '' THEN BEGIN
-                HeaderLabel[2] := ML_InvoiceNo;
-                HeaderTxt[2] := "Vendor Invoice No.";
-            END;
-
-            IF SalesPurchPerson.GET("Purchaser Code") THEN BEGIN
-                HeaderLabel[3] := ML_PurchPerson;
-                HeaderTxt[3] := SalesPurchPerson.Name;
-            END;
-
-            IF "Your Reference" <> '' THEN BEGIN
-                HeaderLabel[4] := ML_Reference;
-                HeaderTxt[4] := "Your Reference";
-            END;
-
-            COMPRESSARRAY(HeaderLabel);
-            COMPRESSARRAY(HeaderTxt);
+        IF "Purch. Inv. Header"."Order No." <> '' THEN BEGIN
+            HeaderLabel[1] := ML_OrderNo;
+            HeaderTxt[1] := "Purch. Inv. Header"."Order No.";
         END;
+
+        IF "Purch. Inv. Header"."Vendor Invoice No." <> '' THEN BEGIN
+            HeaderLabel[2] := ML_InvoiceNo;
+            HeaderTxt[2] := "Purch. Inv. Header"."Vendor Invoice No.";
+        END;
+
+        IF SalesPurchPerson.GET("Purch. Inv. Header"."Purchaser Code") THEN BEGIN
+            HeaderLabel[3] := ML_PurchPerson;
+            HeaderTxt[3] := SalesPurchPerson.Name;
+        END;
+
+        IF "Purch. Inv. Header"."Your Reference" <> '' THEN BEGIN
+            HeaderLabel[4] := ML_Reference;
+            HeaderTxt[4] := "Purch. Inv. Header"."Your Reference";
+        END;
+
+        COMPRESSARRAY(HeaderLabel);
+        COMPRESSARRAY(HeaderTxt);
     end;
 
     procedure PrepareFooter()
@@ -1071,43 +1066,41 @@ report 50074 "DEL Purchase - Invoice" //406
         CLEAR(FooterLabel);
         CLEAR(FooterTxt);
 
-        WITH "Purch. Inv. Header" DO BEGIN
-            IF PmtMethod.GET("Payment Terms Code") THEN BEGIN
-                FooterLabel[1] := ML_PmtTerms;
-                PmtMethod.TranslateDescription(PmtMethod, "Language Code");
-                FooterTxt[1] := PmtMethod.Description;
-            END;
-
-            // Shipping Conditions
-            IF ShipMethod.GET("Shipment Method Code") THEN BEGIN
-                FooterLabel[2] := ML_ShipCond;
-                ShipMethod.TranslateDescription(ShipMethod, "Language Code");
-                FooterTxt[2] := ShipMethod.Description;
-            END;
-
-            // Shipping Address
-            IF "Ship-to Code" <> '' THEN BEGIN
-                FooterLabel[3] := ML_ShipAdr;
-                FooterTxt[3] := "Ship-to Name" + ' ' + "Ship-to City";
-            END;
-
-            // Invoice and Order Address
-            IF "Buy-from Vendor No." <> "Pay-to Vendor No." THEN BEGIN
-                FooterLabel[4] := ML_InvAdr;
-                FooterTxt[4] := "Pay-to Name" + ', ' + "Pay-to City";
-                FooterLabel[5] := ML_OrderAdr;
-                FooterTxt[5] := "Buy-from Vendor Name" + ', ' + "Buy-from City";
-            END;
-
-            // Shipping Date if <> Document Date
-            IF NOT ("Expected Receipt Date" IN ["Document Date", 0D]) THEN BEGIN
-                FooterLabel[6] := ML_ShipDate;
-                FooterTxt[6] := FORMAT("Expected Receipt Date", 0, 4);
-            END;
-
-            COMPRESSARRAY(FooterLabel);
-            COMPRESSARRAY(FooterTxt);
+        IF PmtMethod.GET("Purch. Inv. Header"."Payment Terms Code") THEN BEGIN
+            FooterLabel[1] := ML_PmtTerms;
+            PmtMethod.TranslateDescription(PmtMethod, "Purch. Inv. Header"."Language Code");
+            FooterTxt[1] := PmtMethod.Description;
         END;
+
+        // Shipping Conditions
+        IF ShipMethod.GET("Purch. Inv. Header"."Shipment Method Code") THEN BEGIN
+            FooterLabel[2] := ML_ShipCond;
+            ShipMethod.TranslateDescription(ShipMethod, "Purch. Inv. Header"."Language Code");
+            FooterTxt[2] := ShipMethod.Description;
+        END;
+
+        // Shipping Address
+        IF "Purch. Inv. Header"."Ship-to Code" <> '' THEN BEGIN
+            FooterLabel[3] := ML_ShipAdr;
+            FooterTxt[3] := "Purch. Inv. Header"."Ship-to Name" + ' ' + "Purch. Inv. Header"."Ship-to City";
+        END;
+
+        // Invoice and Order Address
+        IF "Purch. Inv. Header"."Buy-from Vendor No." <> "Purch. Inv. Header"."Pay-to Vendor No." THEN BEGIN
+            FooterLabel[4] := ML_InvAdr;
+            FooterTxt[4] := "Purch. Inv. Header"."Pay-to Name" + ', ' + "Purch. Inv. Header"."Pay-to City";
+            FooterLabel[5] := ML_OrderAdr;
+            FooterTxt[5] := "Purch. Inv. Header"."Buy-from Vendor Name" + ', ' + "Purch. Inv. Header"."Buy-from City";
+        END;
+
+        // Shipping Date if <> Document Date
+        IF NOT ("Purch. Inv. Header"."Expected Receipt Date" IN ["Purch. Inv. Header"."Document Date", 0D]) THEN BEGIN
+            FooterLabel[6] := ML_ShipDate;
+            FooterTxt[6] := FORMAT("Purch. Inv. Header"."Expected Receipt Date", 0, 4);
+        END;
+
+        COMPRESSARRAY(FooterLabel);
+        COMPRESSARRAY(FooterTxt);
     end;
 
     procedure InitializeRequest(NewNoOfCopies: Integer; NewShowInternalInfo: Boolean; NewLogInteraction: Boolean)
@@ -1126,16 +1119,14 @@ report 50074 "DEL Purchase - Invoice" //406
 
     local procedure FormatDocumentFields(PurchInvHeader: Record "Purch. Inv. Header")
     begin
-        WITH PurchInvHeader DO BEGIN
-            FormatDocument.SetTotalLabels("Currency Code", TotalText, TotalInclVATText, TotalExclVATText);
-            FormatDocument.SetPurchaser(SalesPurchPerson, "Purchaser Code", PurchaserText);
-            FormatDocument.SetPaymentTerms(PaymentTerms, "Payment Terms Code", "Language Code");
-            FormatDocument.SetShipmentMethod(ShipmentMethod, "Shipment Method Code", "Language Code");
+        FormatDocument.SetTotalLabels(PurchInvHeader."Currency Code", TotalText, TotalInclVATText, TotalExclVATText);
+        FormatDocument.SetPurchaser(SalesPurchPerson, PurchInvHeader."Purchaser Code", PurchaserText);
+        FormatDocument.SetPaymentTerms(PaymentTerms, PurchInvHeader."Payment Terms Code", PurchInvHeader."Language Code");
+        FormatDocument.SetShipmentMethod(ShipmentMethod, PurchInvHeader."Shipment Method Code", PurchInvHeader."Language Code");
 
-            OrderNoText := FormatDocument.SetText("Order No." <> '', FIELDCAPTION("Order No."));
-            ReferenceText := FormatDocument.SetText("Your Reference" <> '', FIELDCAPTION("Your Reference"));
-            VATNoText := FormatDocument.SetText("VAT Registration No." <> '', FIELDCAPTION("VAT Registration No."));
-        END;
+        OrderNoText := FormatDocument.SetText(PurchInvHeader."Order No." <> '', PurchInvHeader.FIELDCAPTION("Order No."));
+        ReferenceText := FormatDocument.SetText(PurchInvHeader."Your Reference" <> '', PurchInvHeader.FIELDCAPTION("Your Reference"));
+        VATNoText := FormatDocument.SetText(PurchInvHeader."VAT Registration No." <> '', PurchInvHeader.FIELDCAPTION("VAT Registration No."));
     end;
 }
 

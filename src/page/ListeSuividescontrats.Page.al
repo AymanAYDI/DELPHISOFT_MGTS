@@ -160,7 +160,7 @@ page 50074 "DEL Liste Suivi des contrats"
                         CustLedgerEntry2.SETFILTER(CustLedgerEntry2."Sales (LCY)", '<>0');
                         CustLedgerEntry2.SETFILTER(CustLedgerEntry2."Posting Date", DateFilter1);
 
-                        PAGE.RUN(25, CustLedgerEntry2);
+                        PAGE.RUN(Page::"Customer Ledger Entries", CustLedgerEntry2);
                     end;
                 }
                 field("Amount YTD-1"; Rec."DEL Amount YTD-1")
@@ -174,7 +174,7 @@ page 50074 "DEL Liste Suivi des contrats"
                         CustLedgerEntry2.SETRANGE(CustLedgerEntry2."Customer No.", Rec."No.");
                         CustLedgerEntry2.SETFILTER(CustLedgerEntry2."Sales (LCY)", '<>0');
                         CustLedgerEntry2.SETFILTER(CustLedgerEntry2."Posting Date", DateFilter2);
-                        PAGE.RUN(25, CustLedgerEntry2);
+                        PAGE.RUN(Page::"Customer Ledger Entries", CustLedgerEntry2);
                     end;
                 }
                 field("Amount YTD-2"; Rec."DEL Amount YTD-2")
@@ -188,7 +188,7 @@ page 50074 "DEL Liste Suivi des contrats"
                         CustLedgerEntry2.SETRANGE(CustLedgerEntry2."Customer No.", Rec."No.");
                         CustLedgerEntry2.SETFILTER(CustLedgerEntry2."Sales (LCY)", '<>0');
                         CustLedgerEntry2.SETFILTER(CustLedgerEntry2."Posting Date", DateFilter3);
-                        PAGE.RUN(25, CustLedgerEntry2);
+                        PAGE.RUN(Page::"Customer Ledger Entries", CustLedgerEntry2);
                     end;
                 }
                 field("Parent Company"; Rec."DEL Parent Company")
@@ -503,18 +503,18 @@ page 50074 "DEL Liste Suivi des contrats"
     end;
 
     var
-        Customer: Record Customer;
         CustLedgerEntry: Record "Cust. Ledger Entry";
+        CustLedgerEntry2: Record "Cust. Ledger Entry";
+        Customer: Record Customer;
+        DocumentLine: Record "DEL Document Line";
+        DocumentContrat: Page "DEL Document Sheet Contrats";
         CustSalesLCY: array[4] of Decimal;
-        CustDateFilter: array[4] of Text[30];
         i: Integer;
+        Text001: Label 'Sales (LCY)';
         DateFilter1: Text;
         DateFilter2: Text;
         DateFilter3: Text;
-        Text001: Label 'Sales (LCY)';
-        CustLedgerEntry2: Record "Cust. Ledger Entry";
-        DocumentLine: Record "DEL Document Line";
-        DocumentContrat: Page "DEL Document Sheet Contrats";
+        CustDateFilter: array[4] of Text[30];
 }
 
 

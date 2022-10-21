@@ -138,11 +138,8 @@ table 50021 "DEL Element"
     end;
 
     var
-        element1: Record "DEL Element";
-        element2: Record "DEL Element";
         Setup: Record "DEL General Setup";
         NoSeriesMgt: Codeunit NoSeriesManagement;
-        BillNumer: Code[20];
 
 
     procedure FNC_Date2DateTime()

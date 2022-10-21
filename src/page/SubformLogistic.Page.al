@@ -90,12 +90,11 @@ page 50037 "DEL Subform Logistic"
     end;
 
     var
-        AlertMgt: Codeunit "DEL Alert and fee copy Mgt";
-        Deal_ID_Co: Code[20];
 
 
 
         DealShipment_Cu: Codeunit "DEL Deal Shipment";
+        Deal_ID_Co: Code[20];
 
 
     procedure FNC_Set_Deal_ID(Deal_ID_Co_Par: Code[20])

@@ -115,7 +115,7 @@ page 50143 "DEL EDI Export Documents"
                     MGTSEDIManagement: Codeunit "DEL MGTS EDI Management";
                 begin
                     MGTSEDIManagement.ResendDocument(Rec);
-                    CurrPage.UPDATE;
+                    CurrPage.UPDATE();
                 end;
             }
         }

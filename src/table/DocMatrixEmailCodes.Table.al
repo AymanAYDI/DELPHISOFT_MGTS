@@ -59,8 +59,8 @@ table 50070 "DEL DocMatrix Email Codes"
 
     procedure SetBodyText(Value: Text)
     var
-        DataStream: OutStream;
         BodyText: BigText;
+        DataStream: OutStream;
     begin
         // write text to the BLOB field
         CLEAR(Body);

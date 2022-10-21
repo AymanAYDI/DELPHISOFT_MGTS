@@ -17,7 +17,7 @@ page 50137 "DEL DocMatrix Selection Card"
                     var
                         lcuDocMatrixMgt: Codeunit "DEL DocMatrix Management";
                     begin
-                        lcuDocMatrixMgt.UpdateDocMatrixSelection(REC."No.", "Process Type", 1, Rec, REC.Post = REC.Post::" ");
+                        lcuDocMatrixMgt.UpdateDocMatrixSelection(REC."No.", Rec."Process Type", 1, Rec, REC.Post = REC.Post::" ");
                         CurrPage.UPDATE(TRUE);
                     end;
                 }

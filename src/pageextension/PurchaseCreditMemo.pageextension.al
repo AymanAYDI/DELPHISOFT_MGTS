@@ -36,13 +36,10 @@ pageextension 50050 "DEL PurchaseCreditMemo" extends "Purchase Credit Memo"
 
                 trigger OnAction()
                 var
-                    dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
-                    element_Re_Loc: Record "DEL Element";
                     deal_Re_Loc: Record "DEL Deal";
                     dealShipment_Re_Loc: Record "DEL Deal Shipment";
-                    dealShipmentConnection_Re_Loc: Record "DEL Deal Shipment Connection";
+                    dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
                     dealShipmentSelection_Page_Loc: Page "DEL Deal Shipment Selection";
-                    deal_ID_Co_Loc: Code[20];
                 begin
 
                     //on cherche si des lignes ont déjà été générée pour cette facture

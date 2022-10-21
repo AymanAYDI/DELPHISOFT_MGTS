@@ -394,7 +394,7 @@ tableextension 50023 "DEL Vendor" extends Vendor
         }
         field(60019; "DEL Lead Time Not Allowed"; Boolean)
         {
-            AccessByPermission = TableData 120 = R;
+            AccessByPermission = TableData "Purch. Rcpt. Header" = R;
             Caption = 'Lead Time Not Allowed';
         }
     }
@@ -405,13 +405,12 @@ tableextension 50023 "DEL Vendor" extends Vendor
         }
     }
     var
-        GeneralSetup: Record 50000;
 
 
-        Note_Rec: Record 50019;
-        TextVar: Text;
+        Note_Rec: Record "DEL Note";
         Text50001: Label 'must be greater than';
         Text50002: Label 'must be less than';
+        TextVar: Text;
 
 
 }

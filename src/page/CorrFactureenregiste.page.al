@@ -275,8 +275,6 @@ page 50015 "DEL Corr. Facture enregistée"
     }
 
     var
-        SalesInvHeader: Record "Sales Invoice Header";
-        Text19027897: Label 'N''oubliez pas de recalculer l''affaire une fois les valeurs modifiées';
         ChangeExchangeRate: Page "Change Exchange Rate";
 }
 

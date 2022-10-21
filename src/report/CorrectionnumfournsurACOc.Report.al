@@ -7,8 +7,8 @@ report 50062 "Correction num fourn sur ACO c"
     {
         dataitem("DEL ACO Connection"; "DEL ACO Connection")
         {
-            DataItemTableView = SORTING (Deal_ID, "ACO No.")
-                                WHERE (Status = FILTER ('In order'|'In progress'));
+            DataItemTableView = SORTING(Deal_ID, "ACO No.")
+                                WHERE(Status = FILTER('In order' | 'In progress'));
             RequestFilterFields = Deal_ID;
 
             trigger OnAfterGetRecord()
@@ -52,7 +52,6 @@ report 50062 "Correction num fourn sur ACO c"
 
     var
         PurchaseHeader: Record "Purchase Header";
-        Deal: Record "DEL Deal";
         PurchaseHeaderArchive: Record "Purchase Header Archive";
 }
 

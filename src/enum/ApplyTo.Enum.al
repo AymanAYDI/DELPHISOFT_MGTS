@@ -1,4 +1,4 @@
-enum 50025 "DEL Apply To"
+enum 50025 "DEL Apply To"  //n'existe pas dans le Std 
 {
     Extensible = true;
 
