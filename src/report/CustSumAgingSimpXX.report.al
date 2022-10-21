@@ -271,27 +271,27 @@ report 50002 "DEL Cust - Sum. Aging Simp. XX"
 
     var
         DtldCustLedgEntry: Record "Detailed Cust. Ledg. Entry";
+        PrintCust: Boolean;
+        Devise_Code: Code[10];
+        PeriodStartDate: array[7] of Date;
+        StartDate: Date;
+        CustBalanceDueLCY: array[6] of Decimal;
+        i: Integer;
+        CurrReport_PAGENOCaptionLbl: Label 'Page';
+        CustBalanceDueLCY_2__Control28CaptionLbl: Label '61-90 days';
+        CustBalanceDueLCY_3__Control27CaptionLbl: Label '31-60 days';
+        CustBalanceDueLCY_4__Control26CaptionLbl: Label '0-30 days';
+        CustBalanceDueLCY_5__Control25CaptionLbl: Label 'Not Due';
+        CustBalanceDueLCY_5__Control31CaptionLbl: Label 'Continued';
+        CustBalanceDueLCY_5_CaptionLbl: Label 'Continued';
+        Customer___Summary_Aging_Simp_CaptionLbl: Label 'Customer - Summary Aging Simp.';
+        Plus_de_120_joursCaptionLbl: Label 'Plus de 120 jours';
 
         Text001: Label 'As of %1';
-        StartDate: Date;
-        CustFilter: Text[250];
-        PeriodStartDate: array[7] of Date;
-        CustBalanceDueLCY: array[6] of Decimal;
-        PrintCust: Boolean;
-        i: Integer;
-        Devise_Code: Code[10];
         Text002: Label 'All amounts are in Euro %1';
-        Customer___Summary_Aging_Simp_CaptionLbl: Label 'Customer - Summary Aging Simp.';
-        CurrReport_PAGENOCaptionLbl: Label 'Page';
-        CustBalanceDueLCY_5__Control25CaptionLbl: Label 'Not Due';
-        CustBalanceDueLCY_4__Control26CaptionLbl: Label '0-30 days';
-        CustBalanceDueLCY_3__Control27CaptionLbl: Label '31-60 days';
-        CustBalanceDueLCY_2__Control28CaptionLbl: Label '61-90 days';
-        Plus_de_120_joursCaptionLbl: Label 'Plus de 120 jours';
+        TotalCaption_Control36Lbl: Label 'Total';
         TotalCaptionLbl: Label 'Total';
         V91_120_joursCaptionLbl: Label '91-120 jours';
-        CustBalanceDueLCY_5_CaptionLbl: Label 'Continued';
-        CustBalanceDueLCY_5__Control31CaptionLbl: Label 'Continued';
-        TotalCaption_Control36Lbl: Label 'Total';
+        CustFilter: Text[250];
 }
 

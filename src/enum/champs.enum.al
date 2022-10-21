@@ -1,4 +1,4 @@
-enum 50013 "DEL champs"
+enum 50013 "DEL champs"  //n'existe pas dans le STD 
 {
     Extensible = true;
 

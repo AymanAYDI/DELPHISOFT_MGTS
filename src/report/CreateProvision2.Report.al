@@ -61,7 +61,7 @@ report 50027 "DEL Create Provision2"
                             element_Re_Loc.SETRANGE(Period, CALCDATE('<-CM>', date_Da));
                             element_Re_Loc.SETRANGE(Fee_ID, "DEL Element".Fee_ID);
                             element_Re_Loc.SETRANGE(Fee_Connection_ID, "DEL Element".Fee_Connection_ID);
-                            IF element_Re_Loc.FINDFIRST THEN
+                            IF element_Re_Loc.FINDFIRST() THEN
                                 REPEAT
 
                                     IF dsc_Re_Loc.GET(element_Re_Loc.Deal_ID, "DEL Deal Shipment".ID, element_Re_Loc.ID) THEN BEGIN
@@ -180,7 +180,6 @@ report 50027 "DEL Create Provision2"
 
     trigger OnPostReport()
     var
-        flowFields_Re_Loc: Record "DEL FlowFields";
         spsp_Re_Loc: Record "DEL Ship. Prov. Sele. Params";
     begin
         FNC_ProgressBar_Close(1);
@@ -227,9 +226,6 @@ report 50027 "DEL Create Provision2"
         intProgressI: array[10] of Integer;
         intProgressStep: array[10] of Integer;
         intProgressTotal: array[10] of Integer;
-        "v------PROGRESS BAR------v": Integer;
-        PeriodYear: Option;
-        PeriodMonth: Option Janvier,"Février",Mars,Avril,Mai,Juin,Juillet,Aout,Septembre,Octobre,Novembre,"Décembre";
         timProgress: array[10] of Time;
 
 
@@ -247,13 +243,13 @@ report 50027 "DEL Create Provision2"
         realElement_Re_Loc.SETRANGE(Type, realElement_Re_Loc.Type::Invoice); //CHG-DEV-PROVISION filter sur invoice|provision
         realElement_Re_Loc.SETRANGE(Fee_ID, plannedElement_Re_Par.Fee_ID);
         realElement_Re_Loc.SETRANGE(Fee_Connection_ID, plannedElement_Re_Par.Fee_Connection_ID);
-        IF realElement_Re_Loc.FINDFIRST THEN
+        IF realElement_Re_Loc.FINDFIRST() THEN
             REPEAT
 
                 position_Re_Loc.RESET();
                 position_Re_Loc.SETRANGE(Deal_ID, "DEL Deal".ID);
                 position_Re_Loc.SETRANGE(Element_ID, realElement_Re_Loc.ID);
-                IF position_Re_Loc.FINDFIRST THEN
+                IF position_Re_Loc.FINDFIRST() THEN
                     REPEAT
 
                         IF dealShipmentConnection_Re_Loc.GET("DEL Deal".ID, "DEL Deal Shipment".ID, position_Re_Loc."Sub Element_ID") THEN BEGIN
@@ -299,7 +295,7 @@ report 50027 "DEL Create Provision2"
                 intNextProgressStep[index_Int_Par] += intProgressStep[index_Int_Par];
                 timProgress[index_Int_Par] := TIME;
 
-                diaProgress[index_Int_Par].UPDATE;
+                diaProgress[index_Int_Par].UPDATE();
 
             END;
 
@@ -309,7 +305,7 @@ report 50027 "DEL Create Provision2"
 
     procedure FNC_ProgressBar_Close(index_Int_Par: Integer)
     begin
-        diaProgress[index_Int_Par].CLOSE;
+        diaProgress[index_Int_Par].CLOSE();
     end;
 }
 

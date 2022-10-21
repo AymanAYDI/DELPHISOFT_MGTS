@@ -359,11 +359,11 @@ codeunit 50100 "DEL MGTS_EventsMgt"
     local procedure T38_OnRecreatePurchLinesOnBeforeConfirm_PurchaseHeader(var PurchaseHeader: Record "Purchase Header"; xPurchaseHeader: Record "Purchase Header"; ChangedFieldName: Text[100]; HideValidationDialog: Boolean; var Confirmed: Boolean; var IsHandled: Boolean)
     var
         SpecPurchLine: Record "Purchase Line";
-        MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
         ConfirmManagement: Codeunit "Confirm Management";
-        ConfirmText: Text;
-        ResetItemChargeAssignMsg: Label 'If you change %1, the existing purchase lines will be deleted and new purchase lines based on the new information in the header will be created.\The amount of the item charge assignment will be reset to 0.\\Do you want to continue?', Comment = '%1: FieldCaption';
+        MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
         RecreatePurchLinesMsg: Label 'If you change %1, the existing purchase lines will be deleted and new purchase lines based on the new information in the header will be created.\\Do you want to continue?', Comment = '%1: FieldCaption';
+        ResetItemChargeAssignMsg: Label 'If you change %1, the existing purchase lines will be deleted and new purchase lines based on the new information in the header will be created.\The amount of the item charge assignment will be reset to 0.\\Do you want to continue?', Comment = '%1: FieldCaption';
+        ConfirmText: Text;
 
     begin
         IsHandled := true;
@@ -465,10 +465,8 @@ codeunit 50100 "DEL MGTS_EventsMgt"
     [EventSubscriber(ObjectType::Table, Database::"Purchase Line", 'OnAfterInsertEvent', '', false, false)]
     local procedure T39_OnAfterInsertEvent_PurchaseLine(var Rec: Record "Purchase Line"; RunTrigger: Boolean)
     VAR
-        element_Re_Loc: Record "DEL Element";
-        urm_Re_Loc: Record "DEL Update Request Manager";
         ACOConnection_Re_Loc: Record "DEL ACO Connection";
-        DealItem_Cu: Codeunit "DEL Deal Item";
+        urm_Re_Loc: Record "DEL Update Request Manager";
         UpdateRequestManager_Cu: Codeunit "DEL Update Request Manager";
         requestID_Co_Loc: Code[20];
     begin
@@ -479,7 +477,7 @@ codeunit 50100 "DEL MGTS_EventsMgt"
         ACOConnection_Re_Loc.RESET();
         ACOConnection_Re_Loc.SETCURRENTKEY("ACO No.");
         ACOConnection_Re_Loc.SETRANGE("ACO No.", Rec."Document No.");
-        IF ACOConnection_Re_Loc.FINDFIRST THEN BEGIN
+        IF ACOConnection_Re_Loc.FINDFIRST() THEN BEGIN
 
             requestID_Co_Loc := UpdateRequestManager_Cu.FNC_Add_Request(
               ACOConnection_Re_Loc.Deal_ID,
@@ -503,10 +501,10 @@ codeunit 50100 "DEL MGTS_EventsMgt"
     local procedure T39_OnBeforeUpdateSpecialSalesOrderLineFromOnDelete_PurchaseLine(var PurchaseLine: Record "Purchase Line"; var SalesOrderLine: Record "Sales Line"; var IsHandled: Boolean)
     begin
         IF PurchaseLine."Special Order Sales Line No." <> 0 THEN BEGIN
-            PurchaseLine.LOCKTABLE;
-            SalesOrderLine.LOCKTABLE;
+            PurchaseLine.LOCKTABLE();
+            SalesOrderLine.LOCKTABLE();
             IF PurchaseLine."Document Type" = SalesOrderLine."Document Type"::Order THEN BEGIN
-                SalesOrderLine.RESET;
+                SalesOrderLine.RESET();
                 SalesOrderLine.SETRANGE("Document Type", PurchaseLine."Document Type"::Order);
                 SalesOrderLine.SETRANGE("Special Order Purchase No.", PurchaseLine."Document No.");
                 SalesOrderLine.SETRANGE("No.", PurchaseLine."No.");
@@ -514,8 +512,8 @@ codeunit 50100 "DEL MGTS_EventsMgt"
                     REPEAT
                         SalesOrderLine."Special Order Purchase No." := '';
                         SalesOrderLine."Special Order Purch. Line No." := 0;
-                        SalesOrderLine.MODIFY;
-                    UNTIL SalesOrderLine.NEXT = 0;
+                        SalesOrderLine.MODIFY();
+                    UNTIL SalesOrderLine.NEXT() = 0;
             END;
         END;
         IsHandled := true;
@@ -583,8 +581,8 @@ codeunit 50100 "DEL MGTS_EventsMgt"
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Req. Wksh.-Make Order", 'OnCodeOnBeforeFinalizeOrderHeader', '', false, false)]
     local procedure OnCodeOnBeforeFinalizeOrderHeader(PurchOrderHeader: Record "Purchase Header"; var ReqLine: Record "Requisition Line"; var IsHandled: Boolean)
     var
-        ReqwkshMorder: Codeunit "Req. Wksh.-Make Order";
         ReleasePurchaseDocument: Codeunit "Release Purchase Document";
+        ReqwkshMorder: Codeunit "Req. Wksh.-Make Order";
     begin
         IsHandled := true;
         if PurchOrderHeader."Buy-from Vendor No." <> '' then begin
@@ -645,8 +643,8 @@ codeunit 50100 "DEL MGTS_EventsMgt"
     //check line 535
     local procedure COD333_OnInsertPurchOrderLineOnBeforeTransferReqLine_ReqWeshMOrder(var PurchOrderHeader: Record "Purchase Header"; PurchOrderLine: Record "Purchase Line")
     var
-        PurchasingCode: Record Purchasing;
         ItemReference: record "Item Reference";
+        PurchasingCode: Record Purchasing;
     begin
         IF PurchasingCode.GET(PurchOrderLine."Purchasing Code") THEN
             IF PurchasingCode."Special Order" THEN BEGIN
@@ -680,7 +678,6 @@ codeunit 50100 "DEL MGTS_EventsMgt"
     local procedure T39_OnDeleteOnBeforePurchLineDeleteAll_PurchaseLine(var PurchaseLine: Record "Purchase Line")
     var
         ACOConnection_Re_Loc: Record "DEL ACO Connection";
-        element_Re_Loc: Record "DEL Element";
         urm_Re_Loc: Record "DEL Update Request Manager";
         UpdateRequestManager_Cu: Codeunit "DEL Update Request Manager";
         requestID_Co_Loc: Code[20];
@@ -708,8 +705,8 @@ codeunit 50100 "DEL MGTS_EventsMgt"
     local procedure T39_OnBeforeJobTaskIsSet_PurchaseLine(PurchLine: Record "Purchase Line"; var IsJobLine: Boolean)
     var
         Item_Rec: Record Item;
-        SalesHeader_Rec: Record "Sales Header";
         ItemCrossReference: Record "Item Reference";
+        SalesHeader_Rec: Record "Sales Header";
     begin
         PurchLine.Get();
         IF Item_Rec.GET(Item_Rec."No.") THEN
@@ -719,12 +716,12 @@ codeunit 50100 "DEL MGTS_EventsMgt"
         SalesHeader_Rec.SETRANGE("No.", PurchLine."Special Order Sales No.");
         SalesHeader_Rec.SETRANGE("Document Type", "Document Type"::Order);
 
-        IF SalesHeader_Rec.FINDFIRST THEN BEGIN
-            ItemCrossReference.RESET;
+        IF SalesHeader_Rec.FINDFIRST() THEN BEGIN
+            ItemCrossReference.RESET();
             ItemCrossReference.SETRANGE(ItemCrossReference."Reference Type", ItemCrossReference."Reference Type"::Customer);
             ItemCrossReference.SETRANGE(ItemCrossReference."Reference Type No.", SalesHeader_Rec."Sell-to Customer No.");
             ItemCrossReference.SETRANGE(ItemCrossReference."Item No.", PurchLine."No.");
-            IF ItemCrossReference.FINDFIRST THEN
+            IF ItemCrossReference.FINDFIRST() THEN
                 PurchLine."DEL External reference NGTS" := ItemCrossReference."Reference No."
             ELSE
                 PurchLine."DEL External reference NGTS" := '';
@@ -769,8 +766,8 @@ codeunit 50100 "DEL MGTS_EventsMgt"
     [EventSubscriber(ObjectType::Table, Database::"Purchase Line", 'OnValidateQuantityOnAfterPlanPriceCalcByField', '', false, false)]
     local procedure T39_OnValidateQuantityOnAfterPlanPriceCalcByField_PurchaseLine(var PurchaseLine: Record "Purchase Line"; xPurchaseLine: Record "Purchase Line")
     var
-        Item_Rec: Record Item;
         Item: Record Item; // TODO: check
+        Item_Rec: Record Item;
     begin
         IF Item_Rec.GET(PurchaseLine."No.") THEN
             PurchaseLine.VALIDATE(PurchaseLine."DEL Total volume", (Item."DEL Vol cbm carton transport" * PurchaseLine.Quantity / Item."DEL PCB"));
@@ -870,8 +867,8 @@ codeunit 50100 "DEL MGTS_EventsMgt"
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post (Yes/No)", 'OnConfirmPostOnBeforeSetSelection', '', false, false)]
     local procedure COD81_OnConfirmPostOnBeforeSetSelection(var SalesHeader: Record "Sales Header")
     var
-        Deal_Cu: Codeunit "DEL Deal";
         dealShipmentSelection_Re: Record "DEL Deal Shipment Selection";
+        Deal_Cu: Codeunit "DEL Deal";
     begin
         IF (SalesHeader."Document Type" = SalesHeader."Document Type"::Order) THEN
             Deal_Cu.FNC_Reinit_Deal(dealShipmentSelection_Re.Deal_ID, FALSE, FALSE);
@@ -892,14 +889,11 @@ codeunit 50100 "DEL MGTS_EventsMgt"
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post + Print", 'OnAfterConfirmPost', '', false, false)]
     local procedure COD82_OnAfterConfirmPost(var SalesHeader: Record "Sales Header")
     var
-        element_Re_Loc: Record "DEL Element";
         dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
-        updateRequestID_Co_Loc: Code[20];
+        Deal_Cu: Codeunit "DEL Deal";
         updateRequestManager_Cu: Codeunit "DEL Update Request Manager";
         shipmentSelected_Bo_Loc: Boolean;
-        salesLine_Re_Loc: Record "Sales Line";
-        GLAccount_Re_Loc: Record "G/L Account";
-        Deal_Cu: Codeunit "DEL Deal";
+        updateRequestID_Co_Loc: Code[20];
 
     begin
         IF shipmentSelected_Bo_Loc THEN BEGIN
@@ -950,12 +944,11 @@ codeunit 50100 "DEL MGTS_EventsMgt"
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post (Yes/No)", 'OnAfterPost', '', false, false)]
     local procedure COD91_OnAfterPost(var PurchaseHeader: Record "Purchase Header")
     var
-        element_Re_Loc: Record "DEL Element";
         dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
-        updateRequestID_Co_Loc: Code[20];
+        Deal_Cu: Codeunit "DEL Deal";
         updateRequestManager_Cu: Codeunit "DEL Update Request Manager";
         shipmentSelected_Bo_Loc: Boolean;
-        Deal_Cu: Codeunit "DEL Deal";
+        updateRequestID_Co_Loc: Code[20];
 
     begin
 
@@ -973,9 +966,9 @@ codeunit 50100 "DEL MGTS_EventsMgt"
     local procedure COD91_OnBeforeConfirmPostProcedure(var PurchaseHeader: Record "Purchase Header"; var DefaultOption: Integer; var Result: Boolean; var IsHandled: Boolean)
     var
         ACOConnection_Re_Loc: Record "DEL ACO Connection";
+        ConfirmManagement: Codeunit "Confirm Management";
         Deal_Cu: Codeunit "DEL Deal";
         MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
-        ConfirmManagement: Codeunit "Confirm Management";
         PostConfirmQst: Label 'Do you want to post the %1?', Comment = '%1 = Document Type';
 
     begin
@@ -985,36 +978,30 @@ codeunit 50100 "DEL MGTS_EventsMgt"
         if DefaultOption <= 0 then
             DefaultOption := 1;
 
-        with PurchaseHeader do begin
-            case "Document Type" of
-                "Document Type"::Order:
-                    if not MGTSFactMgt.SelectPostOrderOption(PurchaseHeader, DefaultOption) then
-                        exit; // when false 
-                "Document Type"::"Return Order":
-                    if not MGTSFactMgt.SelectPostReturnOrderOption(PurchaseHeader, DefaultOption) then
-                        exit; // when false 
-                else
-                    if not ConfirmManagement.GetResponseOrDefault(
-                         StrSubstNo(PostConfirmQst, Format("Document Type")), true)
-                    then
-                        exit;// when false 
-            end;
-            IF PurchaseHeader."Document Type" = PurchaseHeader."Document Type"::Order THEN BEGIN
-                ACOConnection_Re_Loc.RESET();
-                ACOConnection_Re_Loc.SETCURRENTKEY("ACO No.");
-                ACOConnection_Re_Loc.SETRANGE("ACO No.", PurchaseHeader."No.");
-                IF ACOConnection_Re_Loc.FIND('-') THEN
-                    Deal_Cu.FNC_Reinit_Deal(ACOConnection_Re_Loc.Deal_ID, FALSE, FALSE);
-            END;
-
+        case PurchaseHeader."Document Type" of
+            PurchaseHeader."Document Type"::Order:
+                if not MGTSFactMgt.SelectPostOrderOption(PurchaseHeader, DefaultOption) then
+                    exit; // when false 
+            PurchaseHeader."Document Type"::"Return Order":
+                if not MGTSFactMgt.SelectPostReturnOrderOption(PurchaseHeader, DefaultOption) then
+                    exit; // when false 
+            else
+                if not ConfirmManagement.GetResponseOrDefault(
+                     StrSubstNo(PostConfirmQst, Format(PurchaseHeader."Document Type")), true)
+                then
+                    exit;// when false 
         end;
+        IF PurchaseHeader."Document Type" = PurchaseHeader."Document Type"::Order THEN BEGIN
+            ACOConnection_Re_Loc.RESET();
+            ACOConnection_Re_Loc.SETCURRENTKEY("ACO No.");
+            ACOConnection_Re_Loc.SETRANGE("ACO No.", PurchaseHeader."No.");
+            IF ACOConnection_Re_Loc.FIND('-') THEN
+                Deal_Cu.FNC_Reinit_Deal(ACOConnection_Re_Loc.Deal_ID, FALSE, FALSE);
+        END;
     end;
     //TODO: les variables "tempSpecialSHBuffer" et "SpecOrderPost"sont globales.-----------------------///
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post (Yes/No)", 'OnBeforeRunPurchPost', '', false, false)]
     local procedure COD91_OnBeforeRunPurchPost(var PurchaseHeader: Record "Purchase Header")
-    var
-        MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
-        PostPurchCU: Codeunit "Purch.-Post";
 
     begin
         //TODO IF SpecOrderPost THEN BEGIN
@@ -1042,12 +1029,11 @@ codeunit 50100 "DEL MGTS_EventsMgt"
 
     local procedure COD92_OnAfterPost(var PurchaseHeader: Record "Purchase Header")
     var
-        element_Re_Loc: Record "DEL Element";
         dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
-        updateRequestID_Co_Loc: Code[20];
+        Deal_Cu: Codeunit "DEL Deal";
         updateRequestManager_Cu: Codeunit "DEL Update Request Manager";
         shipmentSelected_Bo_Loc: Boolean;
-        Deal_Cu: Codeunit "DEL Deal";
+        updateRequestID_Co_Loc: Code[20];
     begin
         IF shipmentSelected_Bo_Loc THEN BEGIN
             Deal_Cu.FNC_Reinit_Deal(dealShipmentSelection_Re_Loc.Deal_ID, FALSE, FALSE);
@@ -1064,35 +1050,33 @@ codeunit 50100 "DEL MGTS_EventsMgt"
     local procedure COD92_OnBeforeConfirmPostProcedure(var PurchHeader: Record "Purchase Header"; var DefaultOption: Integer; var Result: Boolean; var IsHandled: Boolean)
     var
         ACOConnection_Re_Loc: Record "DEL ACO Connection";
+        ConfirmManagement: Codeunit "Confirm Management";
         Deal_Cu: Codeunit "DEL Deal";
         MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
-        ConfirmManagement: Codeunit "Confirm Management";
         PostAndPrintQst: Label 'Do you want to post and print the %1?', Comment = '%1 = Document Type';
 
     begin
         IsHandled := true;
-        with PurchHeader do begin
-            case "Document Type" of
-                "Document Type"::Order:
-                    if not MGTSFactMgt.SelectPostOrderOption(PurchHeader, DefaultOption) then
-                        exit; // when false 
-                "Document Type"::"Return Order":
-                    if not MGTSFactMgt.SelectPostReturnOrderOption(PurchHeader, DefaultOption) then
-                        exit; // when false 
-                else
-                    if not ConfirmManagement.GetResponseOrDefault(
-                         StrSubstNo(PostAndPrintQst, "Document Type"), true)
-                    then
-                        exit; // when false 
+        case PurchHeader."Document Type" of
+            PurchHeader."Document Type"::Order:
+                if not MGTSFactMgt.SelectPostOrderOption(PurchHeader, DefaultOption) then
+                    exit; // when false 
+            PurchHeader."Document Type"::"Return Order":
+                if not MGTSFactMgt.SelectPostReturnOrderOption(PurchHeader, DefaultOption) then
+                    exit; // when false 
+            else
+                if not ConfirmManagement.GetResponseOrDefault(
+                     StrSubstNo(PostAndPrintQst, PurchHeader."Document Type"), true)
+                then
+                    exit; // when false 
 
-                    IF PurchHeader."Document Type" = PurchHeader."Document Type"::Order THEN BEGIN
-                        ACOConnection_Re_Loc.RESET();
-                        ACOConnection_Re_Loc.SETCURRENTKEY("ACO No.");
-                        ACOConnection_Re_Loc.SETRANGE("ACO No.", PurchHeader."No.");
-                        IF ACOConnection_Re_Loc.FIND('-') THEN
-                            Deal_Cu.FNC_Reinit_Deal(ACOConnection_Re_Loc.Deal_ID, FALSE, FALSE);
-                    END;
-            end;
+                IF PurchHeader."Document Type" = PurchHeader."Document Type"::Order THEN BEGIN
+                    ACOConnection_Re_Loc.RESET();
+                    ACOConnection_Re_Loc.SETCURRENTKEY("ACO No.");
+                    ACOConnection_Re_Loc.SETRANGE("ACO No.", PurchHeader."No.");
+                    IF ACOConnection_Re_Loc.FIND('-') THEN
+                        Deal_Cu.FNC_Reinit_Deal(ACOConnection_Re_Loc.Deal_ID, FALSE, FALSE);
+                END;
         end;
     end;
 
@@ -1127,8 +1111,6 @@ codeunit 50100 "DEL MGTS_EventsMgt"
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post", 'OnBeforePostPurchaseDoc', '', false, false)]
 
     local procedure COD90_OnBeforePostPurchaseDoc(var PurchaseHeader: Record "Purchase Header"; PreviewMode: Boolean; CommitIsSupressed: Boolean; var HideProgressWindow: Boolean; var ItemJnlPostLine: Codeunit "Item Jnl.-Post Line"; var IsHandled: Boolean)
-    var
-        MGTSgetset: Codeunit "DEL MGTS Set/Get Functions";
     begin
 
         //TODO IF SpecOrderPosting THEN BEGIN
@@ -1164,38 +1146,38 @@ codeunit 50100 "DEL MGTS_EventsMgt"
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"CustVendBank-Update", 'OnAfterUpdateCustomer', '', false, false)]
     local procedure COD5055_OnAfterUpdateCustomer(var Customer: Record Customer; Contact: Record Contact; var ContBusRel: Record "Contact Business Relation")
     var
-        NoteAuditSocial: Record "DEL Note Audit Social";
-        DocumentLine: Record "DEL Document Line";
-        NoteAuditSocial_Re: Record "DEL Note Audit Social";
-        DocumentLine_Re: Record "DEL Document Line";
-        RlshpMgtCommentLine: Record "Rlshp. Mgt. Comment Line";
         CommentLine: Record "Comment Line";
-        Var_RecRef: RecordRef;
+        DocumentLine: Record "DEL Document Line";
+        DocumentLine_Re: Record "DEL Document Line";
+        NoteAuditSocial: Record "DEL Note Audit Social";
+        NoteAuditSocial_Re: Record "DEL Note Audit Social";
         Var_recLink: Record "Record Link";
         Var_recLink2: Record "Record Link";
-        Num_seq: Integer;
+        RlshpMgtCommentLine: Record "Rlshp. Mgt. Comment Line";
         Vend: Record Vendor;
+        Var_RecRef: RecordRef;
+        Num_seq: Integer;
     begin
-        NoteAuditSocial.RESET;
+        NoteAuditSocial.RESET();
         NoteAuditSocial.SETRANGE(NoteAuditSocial.Type, NoteAuditSocial.Type::Contact);
         NoteAuditSocial.SETRANGE(NoteAuditSocial."Vendor/Contact No.", Contact."No.");
-        IF NoteAuditSocial.FINDFIRST THEN BEGIN
+        IF NoteAuditSocial.FINDFIRST() THEN BEGIN
             REPEAT
-                NoteAuditSocial_Re.INIT;
+                NoteAuditSocial_Re.INIT();
                 NoteAuditSocial_Re."No." := NoteAuditSocial."No.";
                 NoteAuditSocial_Re."Vendor/Contact No." := Vend."No.";
                 NoteAuditSocial_Re.Type := NoteAuditSocial_Re.Type::Vendor;
                 NoteAuditSocial_Re.Note := NoteAuditSocial.Note;
-                NoteAuditSocial_Re.INSERT;
-            UNTIL NoteAuditSocial.NEXT = 0;
+                NoteAuditSocial_Re.INSERT();
+            UNTIL NoteAuditSocial.NEXT() = 0;
         END;
 
-        DocumentLine.RESET;
+        DocumentLine.RESET();
         DocumentLine.SETRANGE(DocumentLine."Table Name", DocumentLine."Table Name"::Contact);
         DocumentLine.SETRANGE(DocumentLine."No.", Contact."No.");
-        IF DocumentLine.FINDFIRST THEN
+        IF DocumentLine.FINDFIRST() THEN
             REPEAT
-                DocumentLine_Re.INIT;
+                DocumentLine_Re.INIT();
                 DocumentLine_Re."Table Name" := DocumentLine_Re."Table Name"::Vendor;
                 DocumentLine_Re."No." := Vend."No.";
                 DocumentLine_Re."Comment Entry No." := DocumentLine."Comment Entry No.";
@@ -1207,36 +1189,36 @@ codeunit 50100 "DEL MGTS_EventsMgt"
                 DocumentLine_Re."User ID" := DocumentLine."User ID";
                 DocumentLine_Re."Notation Type" := DocumentLine."Notation Type";
                 DocumentLine_Re.Document := DocumentLine.Document;
-                DocumentLine_Re.INSERT;
-            UNTIL DocumentLine.NEXT = 0;
+                DocumentLine_Re.INSERT();
+            UNTIL DocumentLine.NEXT() = 0;
 
-        RlshpMgtCommentLine.RESET;
+        RlshpMgtCommentLine.RESET();
         RlshpMgtCommentLine.SETRANGE(RlshpMgtCommentLine."Table Name", RlshpMgtCommentLine."Table Name"::Contact);
         RlshpMgtCommentLine.SETRANGE(RlshpMgtCommentLine."No.", Contact."No.");
-        IF RlshpMgtCommentLine.FINDFIRST THEN
+        IF RlshpMgtCommentLine.FINDFIRST() THEN
             REPEAT
-                CommentLine.INIT;
+                CommentLine.INIT();
                 CommentLine."Table Name" := CommentLine."Table Name"::Vendor;
                 CommentLine."No." := Vend."No.";
                 CommentLine."Line No." := RlshpMgtCommentLine."Line No.";
                 CommentLine.Date := RlshpMgtCommentLine.Date;
                 CommentLine.Comment := RlshpMgtCommentLine.Comment;
-                CommentLine.INSERT;
-            UNTIL RlshpMgtCommentLine.NEXT = 0;
+                CommentLine.INSERT();
+            UNTIL RlshpMgtCommentLine.NEXT() = 0;
 
-        IF Var_recLink.FINDLAST THEN
+        IF Var_recLink.FINDLAST() THEN
             Num_seq := Var_recLink."Link ID" + 1
         ELSE
             Num_seq := 1;
 
         Var_RecRef.GETTABLE(Contact);
-        Var_recLink.RESET;
+        Var_recLink.RESET();
         Var_recLink.SETRANGE(Var_recLink."Record ID", Var_RecRef.RECORDID);
 
-        IF Var_recLink.FINDFIRST THEN BEGIN
+        IF Var_recLink.FINDFIRST() THEN BEGIN
             Var_RecRef.GETTABLE(Vend);
             REPEAT
-                Var_recLink2.INIT;
+                Var_recLink2.INIT();
                 Var_recLink2."Link ID" := Num_seq;
                 Var_recLink2."Record ID" := Var_RecRef.RECORDID;
                 Var_recLink2.URL1 := Var_recLink.URL1;
@@ -1248,16 +1230,14 @@ codeunit 50100 "DEL MGTS_EventsMgt"
                 Var_recLink2.Company := Var_recLink.Company;
                 Var_recLink2.Notify := Var_recLink.Notify;
                 Var_recLink2."To User ID" := Var_recLink."To User ID";
-                Var_recLink2.INSERT;
+                Var_recLink2.INSERT();
                 Num_seq := Num_seq + 1;
-            UNTIL Var_recLink.NEXT = 0;
+            UNTIL Var_recLink.NEXT() = 0;
         END;
     end;
     //  Codeunit 7000
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales Price Calc. Mgt.", 'OnBeforeSalesLinePriceExists', '', false, false)]
     local procedure COD7000_OnBeforeSalesLinePriceExists(var SalesLine: Record "Sales Line"; var SalesHeader: Record "Sales Header"; var TempSalesPrice: Record "Sales Price" temporary; Currency: Record Currency; CurrencyFactor: Decimal; StartingDate: Date; Qty: Decimal; QtyPerUOM: Decimal; ShowAll: Boolean; var InHandled: Boolean)
-    var
-        SalesPriceCalcMgt: Codeunit "Sales Price Calc. Mgt.";
     begin
         // SalesPriceCalcMgt.FindSalesPrice(
         //     TempSalesPrice,SalesLine."Bill-to Customer No.",SalesHeader."Bill-to Contact No.",
@@ -1308,12 +1288,11 @@ codeunit 50100 "DEL MGTS_EventsMgt"
     [EventSubscriber(ObjectType::Codeunit, Codeunit::ICInboxOutboxMgt, 'OnBeforeSendPurchDoc', '', false, false)]
     procedure OnBeforeSendPurchDoc(var PurchHeader: Record "Purchase Header"; var Post: Boolean; var IsHandled: Boolean)
     var
+        ICOutboxTransaction_Rec: Record "IC Outbox Transaction";
         ICPartner: Record "IC Partner";
         PurchaseLine_Rec: Record "Purchase Line";
-        ICOutboxTransaction_Rec: Record "IC Outbox Transaction";
-        ICOutboxExport: Codeunit "IC Outbox Export";
-        ICInboxOutboxMgt: Codeunit ICInboxOutboxMgt;
         MGTSFctMgt: Codeunit "DEL MGTS_FctMgt";
+        ICInboxOutboxMgt: Codeunit ICInboxOutboxMgt;
         Qte: Decimal;
         Text002: Label 'You cannot send IC document because %1 %2 has %3 %4.';
     begin
@@ -1330,10 +1309,10 @@ codeunit 50100 "DEL MGTS_EventsMgt"
         PurchaseLine_Rec.SETRANGE(PurchaseLine_Rec."Document Type", PurchHeader."Document Type");
         PurchaseLine_Rec.SETRANGE("Document No.", PurchHeader."No.");
         PurchaseLine_Rec.SETFILTER(Type, '>0');
-        IF PurchaseLine_Rec.FINDSET THEN BEGIN
+        IF PurchaseLine_Rec.FINDSET() THEN BEGIN
             REPEAT
                 Qte := Qte + PurchaseLine_Rec.Quantity;
-            UNTIL PurchaseLine_Rec.NEXT = 0;
+            UNTIL PurchaseLine_Rec.NEXT() = 0;
         END;
 
         MGTSFctMgt.CheckICPurchaseDocumentAlreadySent(PurchHeader);
@@ -1345,9 +1324,9 @@ codeunit 50100 "DEL MGTS_EventsMgt"
         CLEAR(ICOutboxTransaction_Rec);
         ICOutboxTransaction_Rec.SETRANGE("Document Type", ICOutboxTransaction_Rec."Document Type"::Order);
         ICOutboxTransaction_Rec.SETRANGE("Document No.", PurchHeader."No.");
-        IF ICOutboxTransaction_Rec.FINDFIRST THEN BEGIN
+        IF ICOutboxTransaction_Rec.FINDFIRST() THEN BEGIN
             ICOutboxTransaction_Rec.VALIDATE("Line Action", ICOutboxTransaction_Rec."Line Action"::"Send to IC Partner");
-            ICOutboxTransaction_Rec.MODIFY;
+            ICOutboxTransaction_Rec.MODIFY();
             MGTSFctMgt.SendTrans(ICOutboxTransaction_Rec);
         END;
     end;

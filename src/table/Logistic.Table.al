@@ -296,23 +296,22 @@ table 50034 "DEL Logistic"
     }
 
     var
-        PurchRcpt_Re: Record "Purch. Rcpt. Header";
-        Vendor_Re: Record Vendor;
-        PurchHead_Re: Record "Purchase Header";
-        PurchRcptLine_Re: Record "Purch. Rcpt. Line";
-        Item_Re: Record Item;
-        PurchArchHead_Re: Record "Purchase Header Archive";
-        PurchLine_Re: Record "Purchase Line";
-        Element_Re: Record "DEL Element";
         Aco_Connect: Record "DEL ACO Connection";
+        Element_Re: Record "DEL Element";
+        Item_Re: Record Item;
+        PurchRcpt_Re: Record "Purch. Rcpt. Header";
+        PurchRcptLine_Re: Record "Purch. Rcpt. Line";
+        PurchHead_Re: Record "Purchase Header";
+        PurchLine_Re: Record "Purchase Line";
+        Vendor_Re: Record Vendor;
 
 
     procedure FNC_GetInfo(Logistic_Re_Par: Record "DEL Logistic")
     var
-        PackNumber_De_Loc: Decimal;
-        Cubic_De_Loc: Decimal;
-        Weight_De_Loc: Decimal;
         AcoNo_Co_Loc: Code[20];
+        Cubic_De_Loc: Decimal;
+        PackNumber_De_Loc: Decimal;
+        Weight_De_Loc: Decimal;
     begin
         Element_Re.SETRANGE(Deal_ID, Logistic_Re_Par.Deal_ID);
         Element_Re.SETRANGE(Element_Re.Type, Element_Re.Type::ACO);
@@ -355,7 +354,7 @@ table 50034 "DEL Logistic"
                     ELSE
                         Weight_De_Loc := Weight_De_Loc + PurchLine_Re.Quantity;
                 END;
-            UNTIL PurchLine_Re.NEXT = 0;
+            UNTIL PurchLine_Re.NEXT() = 0;
 
 
         IF Logistic_Re_Par."Shipment mode" = Logistic_Re_Par."Shipment mode"::"Sea Vessel" THEN BEGIN
@@ -405,8 +404,8 @@ table 50034 "DEL Logistic"
 
     procedure FNC_PackEstim(Logistic_Re_Par: Record "DEL Logistic")
     var
-        PackNumber_De_Loc: Decimal;
         Cubic_De_Loc: Decimal;
+        PackNumber_De_Loc: Decimal;
         Weight_De_Loc: Decimal;
     begin
         IF PurchRcpt_Re.GET(Logistic_Re_Par."BR No.") THEN BEGIN

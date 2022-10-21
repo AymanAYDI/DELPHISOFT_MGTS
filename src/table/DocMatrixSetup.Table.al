@@ -64,9 +64,6 @@ table 50069 "DEL DocMatrix Setup"
     {
     }
 
-    var
-        GeneralMgt: Codeunit "GeneralMgt";
-
 
     procedure GetStorageLocation(Type: Enum "DEL type2"): Text[250]
     begin

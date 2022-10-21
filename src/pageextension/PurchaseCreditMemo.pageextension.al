@@ -36,9 +36,9 @@ pageextension 50050 "DEL PurchaseCreditMemo" extends "Purchase Credit Memo"
 
                 trigger OnAction()
                 var
-                    dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
                     deal_Re_Loc: Record "DEL Deal";
                     dealShipment_Re_Loc: Record "DEL Deal Shipment";
+                    dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
                     dealShipmentSelection_Page_Loc: Page "DEL Deal Shipment Selection";
                 begin
 

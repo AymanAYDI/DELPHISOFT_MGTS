@@ -47,10 +47,8 @@ codeunit 50101 "DEL MGTS_FctMgt"
     procedure OnAfterInsertPostedHeaders(var SalesHeader: Record "Sales Header"; var SalesShipmentHeader: Record "Sales Shipment Header"; var SalesInvoiceHeader: Record "Sales Invoice Header"; var SalesCrMemoHdr: Record "Sales Cr.Memo Header"; var ReceiptHeader: Record "Return Receipt Header")
     var
         dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
-        element_Re_Loc: Record "DEL Element";
         SalesCrMemoHeader: Record "Sales Cr.Memo Header";
         Element_Cu: Codeunit "DEL Element";
-        Deal_Cu: Codeunit "DEL Deal";
 
         add_Variant_Op_Loc: option New,Existing;
 
@@ -103,13 +101,10 @@ codeunit 50101 "DEL MGTS_FctMgt"
     procedure ReverseProvisionEntries(SalesHeader: Record "Sales Header")
     var
         GLEntryProvision: Record "G/L Entry";
-        BalGLEntry: Record "G/L Entry";
-        TempGLEntry: Record "G/L Entry";
+        GlobalGLEntry: Record "G/L Entry";
         GLEntryVATEntry: Record "G/L Entry - VAT Entry Link";
         GlobalVATEntry: Record "VAT Entry";
-        GlobalGLEntry: Record "G/L Entry";
         VATEntryProvision: Record "VAT Entry";
-        GLSetup: Record "General Ledger Setup";
         NextGLEntryNo: Integer;
         NextTransactionNo: Integer;
         NextVATEntryNo: Integer;
@@ -268,33 +263,20 @@ codeunit 50101 "DEL MGTS_FctMgt"
 
     procedure OnCodeOnAfterGenJnlPostBatchRunfct(var GenJnlLine: Record "Gen. Journal Line")
     var
-        "---- MIG----": Integer;
-        deal_ID_Co_Loc: Code[20];
         dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
-        element_Re_Loc: Record "DEL Element";
-        BR_Re_Loc: Record "Purch. Rcpt. Header";
-        genJournalLine_Re_Temp: Record "Gen. Journal Line" TEMPORARY;
-        dealShipment_Re_Loc: Record "DEL Deal Shipment";
-        feeConnection_Re_Loc: Record "DEL Fee Connection";
-        Add_Variant_Op_Loc: Option New,Existing;
-        nextEntry: Code[20];
-        myTab: ARRAY[300] OF Code[20];
         dss_Re_Loc: Record "DEL Deal Shipment Selection";
+        genJournalLine_Re_Temp: Record "Gen. Journal Line" TEMPORARY;
+        Deal_Cu: Codeunit "DEL Deal";
+        Element_Cu: Codeunit "DEL Element";
+        UpdateRequestManager_Cu: Codeunit "DEL Update Request Manager";
         element_ID_Co_Loc: Code[20];
+        myTab: ARRAY[300] OF Code[20];
+        myUpdateRequests: ARRAY[300] OF Code[20];
+        nextEntry: Code[20];
+        elementConnectionSplitIndex: Integer;
         i: Integer;
         splittIndex: Integer;
-        elementConnectionSplitIndex: Integer;
         ConnectionType_Op_Par: Option Element,Shipment;
-        fee_Re_Loc: Record "DEL Fee";
-        myUpdateRequests: ARRAY[300] OF Code[20];
-        provisionDealID_Co_Loc: Code[20];
-        updateRequest_Co_Loc: Code[20];
-        sps_Re_Loc: Record "DEL Shipment Provision Select.";
-        urm_Re_Loc: Record "DEL Update Request Manager";
-        Provision_Cu: Codeunit "DEL Provision";
-        Deal_Cu: Codeunit "DEL Deal";
-        UpdateRequestManager_Cu: Codeunit "DEL Update Request Manager";
-        Element_Cu: Codeunit "DEL Element";
 
     begin
         genJournalLine_Re_Temp.RESET();
@@ -403,14 +385,14 @@ codeunit 50101 "DEL MGTS_FctMgt"
     //----------------- CDU81
     procedure OnBeforeConfirmSalesPostFct_SalesHeader(var SalesHeader: Record "Sales Header"; var HideDialog: Boolean; var IsHandled: Boolean; var DefaultOption: Integer; var PostAndSend: Boolean)
     var
-        dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
-        shipmentSelected_Bo_Loc: Boolean;
 
         dealShipmentSelection_Re: Record "DEL Deal Shipment Selection";
-        updateRequestID_Co_Loc: Code[20];
-        updateRequestManager_Cu: Codeunit "DEL Update Request Manager";
-        salesLine_Re_Loc: Record "Sales Line";
+        dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
         GLAccount_Re_Loc: Record "G/L Account";
+        salesLine_Re_Loc: Record "Sales Line";
+        updateRequestManager_Cu: Codeunit "DEL Update Request Manager";
+        shipmentSelected_Bo_Loc: Boolean;
+        updateRequestID_Co_Loc: Code[20];
     begin
 
         shipmentSelected_Bo_Loc := FALSE;
@@ -512,8 +494,8 @@ codeunit 50101 "DEL MGTS_FctMgt"
 
     procedure OnGenJnlLineSetFilter_Fct(var GenJournalLine: Record "Gen. Journal Line")
     var
-        Provision_Cu: Codeunit "DEL Provision";
         genJournalLine_Re_Temp: Record "Gen. Journal Line" TEMPORARY;
+        Provision_Cu: Codeunit "DEL Provision";
     begin
         genJournalLine_Re_Temp.RESET();
         genJournalLine_Re_Temp.SETRANGE("Journal Batch Name", 'PROVISION');
@@ -526,10 +508,10 @@ codeunit 50101 "DEL MGTS_FctMgt"
     ////////
     procedure OnAfterConfirmPost(var SalesHeader: Record "Sales Header")
     var
-        shipmentSelected_Bo_Loc: Boolean;
-        updateRequestManager_Cu: Codeunit "DEL Update Request Manager";
         dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
         Deal_Cu: Codeunit "DEL Deal";
+        updateRequestManager_Cu: Codeunit "DEL Update Request Manager";
+        shipmentSelected_Bo_Loc: Boolean;
         updateRequestID_Co_Loc: Code[20];
     begin
         IF shipmentSelected_Bo_Loc THEN BEGIN
@@ -551,13 +533,12 @@ codeunit 50101 "DEL MGTS_FctMgt"
     //-------CDU82 ---
     procedure OnBeforeConfirmPostFct_COD82(var SalesHeader: Record "Sales Header"; var HideDialog: Boolean; var IsHandled: Boolean; var SendReportAsEmail: Boolean; var DefaultOption: Integer)
     var
-        element_Re_Loc: Record "DEL Element";
         dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
-        updateRequestID_Co_Loc: Code[20];
+        GLAccount_Re_Loc: Record "G/L Account";
+        salesLine_Re_Loc: Record "Sales Line";
         updateRequestManager_Cu: Codeunit "DEL Update Request Manager";
         shipmentSelected_Bo_Loc: Boolean;
-        salesLine_Re_Loc: Record "Sales Line";
-        GLAccount_Re_Loc: Record "G/L Account";
+        updateRequestID_Co_Loc: Code[20];
     begin
         shipmentSelected_Bo_Loc := FALSE;
 
@@ -662,15 +643,15 @@ codeunit 50101 "DEL MGTS_FctMgt"
     /////
     procedure OnAfterInsertPurchOrderHeaderFct(var RequisitionLine: Record "Requisition Line"; var PurchaseOrderHeader: Record "Purchase Header"; CommitIsSuppressed: Boolean; SpecialOrder: Boolean)
     var
+        PurchSetup: Record "Purchases & Payables Setup";
         SalesHeader: Record "Sales Header";
-        PurchSetup: Record 312;
     begin
         IF SalesHeader.GET(SalesHeader."Document Type"::Order, RequisitionLine."Sales Order No.") THEN
             PurchaseOrderHeader."DEL Requested Delivery Date" := SalesHeader."Requested Delivery Date";
 
         IF PurchaseOrderHeader."DEL Requested Delivery Date" <> 0D THEN BEGIN
-            IF NOT PurchSetup.GET THEN
-                PurchSetup.INIT;
+            IF NOT PurchSetup.GET() THEN
+                PurchSetup.INIT();
 
             CASE PurchaseOrderHeader."DEL Ship Per" OF
                 PurchaseOrderHeader."DEL Ship Per"::"Air Flight":
@@ -727,9 +708,9 @@ codeunit 50101 "DEL MGTS_FctMgt"
 
         END;
 
-        SalesHeader.RESET;
+        SalesHeader.RESET();
         SalesHeader.SETRANGE("No.", RequisitionLine."Sales Order No.");
-        IF SalesHeader.FINDFIRST THEN BEGIN
+        IF SalesHeader.FINDFIRST() THEN BEGIN
             PurchaseOrderHeader."DEL Type Order EDI" := SalesHeader."DEL Type Order EDI";
             PurchaseOrderHeader."DEL GLN" := SalesHeader."DEL GLN";
             IF SpecialOrder THEN BEGIN
@@ -740,7 +721,7 @@ codeunit 50101 "DEL MGTS_FctMgt"
                     SalesHeader."DEL Purchase Order Create Date" := CREATEDATETIME(TODAY, TIME);
                     SalesHeader."DEL To Create Purchase Order" := FALSE;
                 END;
-                SalesHeader.MODIFY;
+                SalesHeader.MODIFY();
             END;
 
         END;
@@ -754,12 +735,11 @@ codeunit 50101 "DEL MGTS_FctMgt"
     // COD 7000
     procedure CopySalesPriceToSalesPrice(var FromSalesPrice: Record "Sales Price"; var ToSalesPrice: Record "Sales Price")
     begin
-        with ToSalesPrice do
-            if FromSalesPrice.FindSet() then
-                repeat
-                    ToSalesPrice := FromSalesPrice;
-                    Insert;
-                until FromSalesPrice.Next() = 0;
+        if FromSalesPrice.FindSet() then
+            repeat
+                ToSalesPrice := FromSalesPrice;
+                ToSalesPrice.Insert();
+            until FromSalesPrice.Next() = 0;
     end;
 
     // procedure specifique codeunit 431 "IC Outbox Export"
@@ -811,8 +791,7 @@ codeunit 50101 "DEL MGTS_FctMgt"
     var
         ForAdr: Codeunit "Format Address";
     begin
-        WITH NTO_Contact DO
-            ForAdr.FormatAddr(AddrArray, Name, "Name 2", '', Address, "Address 2", City, "Post Code", County, "Country/Region Code");
+        ForAdr.FormatAddr(AddrArray, NTO_Contact.Name, NTO_Contact."Name 2", '', NTO_Contact.Address, NTO_Contact."Address 2", NTO_Contact.City, NTO_Contact."Post Code", NTO_Contact.County, NTO_Contact."Country/Region Code");
 
     end;
 
@@ -820,20 +799,19 @@ codeunit 50101 "DEL MGTS_FctMgt"
 
 
     var
-        HideDialog: Boolean;
         FromEDI: Boolean;
+        HideDialog: Boolean;
 
 
     /////COD91
     procedure OnBeforeConfirmPostfct_PurchaseHeader(var PurchaseHeader: Record "Purchase Header"; var HideDialog: Boolean; var IsHandled: Boolean; var DefaultOption: Integer)
     var
-        element_Re_Loc: Record "DEL Element";
         dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
-        updateRequestID_Co_Loc: Code[20];
+        GLAccount_Re_Loc: Record "G/L Account";
+        PurchaseLine_Re_Loc: Record "Purchase Line";
         updateRequestManager_Cu: Codeunit "DEL Update Request Manager";
         shipmentSelected_Bo_Loc: Boolean;
-        PurchaseLine_Re_Loc: Record "Purchase Line";
-        GLAccount_Re_Loc: Record "G/L Account";
+        updateRequestID_Co_Loc: Code[20];
 
 
     begin
@@ -955,17 +933,14 @@ codeunit 50101 "DEL MGTS_FctMgt"
     procedure SelectPostReturnOrderOption(var PurchaseHeader: Record "Purchase Header"; DefaultOption: Integer) Result: Boolean //cdu91
     var
         Selection: Integer;
-        IsHandled: Boolean;
         ShipInvoiceQst: Label '&Ship,&Invoice,Ship &and Invoice';
 
     begin
-        with PurchaseHeader do begin
-            Selection := StrMenu(ShipInvoiceQst, DefaultOption);
-            if Selection = 0 then
-                exit(false);
-            Ship := Selection in [1, 3];
-            Invoice := Selection in [2, 3];
-        end;
+        Selection := StrMenu(ShipInvoiceQst, DefaultOption);
+        if Selection = 0 then
+            exit(false);
+        PurchaseHeader.Ship := Selection in [1, 3];
+        PurchaseHeader.Invoice := Selection in [2, 3];
 
         exit(true);
     end;
@@ -977,13 +952,11 @@ codeunit 50101 "DEL MGTS_FctMgt"
 
 
     begin
-        with PurchaseHeader do begin
-            Selection := StrMenu(ReceiveInvoiceQst, DefaultOption);
-            if Selection = 0 then
-                exit(false);
-            Receive := Selection in [1, 3];
-            Invoice := Selection in [2, 3];
-        end;
+        Selection := StrMenu(ReceiveInvoiceQst, DefaultOption);
+        if Selection = 0 then
+            exit(false);
+        PurchaseHeader.Receive := Selection in [1, 3];
+        PurchaseHeader.Invoice := Selection in [2, 3];
 
         exit(true);
     end;
@@ -1007,77 +980,72 @@ codeunit 50101 "DEL MGTS_FctMgt"
         ReleaseSalesDocument: Codeunit "Release Sales Document";
     BEGIN
 
-        WITH PurchHeader DO BEGIN
-            ResetTempLines(TempPurchLine);
-            TempPurchLine.SETFILTER("Special Order Sales Line No.", '<>0');
-            IF NOT TempPurchLine.ISEMPTY THEN BEGIN
-                SpecialOrder := TRUE;
-                IF Receive THEN BEGIN
-                    TempPurchLine.FINDSET;
-                    REPEAT
-                        IF SalesOrderHeader."No." <> TempPurchLine."Special Order Sales No." THEN BEGIN
-                            SalesOrderHeader.GET(SalesOrderHeader."Document Type"::Order, TempPurchLine."Special Order Sales No.");
-                            SalesOrderHeader.TESTFIELD("Bill-to Customer No.");
-                            SalesOrderHeader.Ship := TRUE;
-                            //TODO:PreviewMode is a global var ---- To check
+        ResetTempLines(TempPurchLine);
+        TempPurchLine.SETFILTER("Special Order Sales Line No.", '<>0');
+        IF NOT TempPurchLine.ISEMPTY THEN BEGIN
+            SpecialOrder := TRUE;
+            IF PurchHeader.Receive THEN BEGIN
+                TempPurchLine.FINDSET();
+                REPEAT
+                    IF SalesOrderHeader."No." <> TempPurchLine."Special Order Sales No." THEN BEGIN
+                        SalesOrderHeader.GET(SalesOrderHeader."Document Type"::Order, TempPurchLine."Special Order Sales No.");
+                        SalesOrderHeader.TESTFIELD("Bill-to Customer No.");
+                        SalesOrderHeader.Ship := TRUE;
+                        //TODO:PreviewMode is a global var ---- To check
 
-                            ReleaseSalesDocument.ReleaseSalesHeader(SalesOrderHeader, PreviewMode);
-                            IF SalesOrderHeader."Shipping No." = '' THEN BEGIN
-                                SalesOrderHeader.TESTFIELD("Shipping No. Series");
-                                SalesOrderHeader."Shipping No." :=
-                                  NoSeriesMgt.GetNextNo(SalesOrderHeader."Shipping No. Series", "Posting Date", TRUE);
-                                SalesOrderHeader.MODIFY;
-                            END;
+                        ReleaseSalesDocument.ReleaseSalesHeader(SalesOrderHeader, PreviewMode);
+                        IF SalesOrderHeader."Shipping No." = '' THEN BEGIN
+                            SalesOrderHeader.TESTFIELD("Shipping No. Series");
+                            SalesOrderHeader."Shipping No." :=
+                              NoSeriesMgt.GetNextNo(SalesOrderHeader."Shipping No. Series", PurchHeader."Posting Date", TRUE);
+                            SalesOrderHeader.MODIFY();
                         END;
-                    UNTIL TempPurchLine.NEXT = 0;
-                END;
-            END ELSE
-                SpecialOrder := FALSE;
-        END;
+                    END;
+                UNTIL TempPurchLine.NEXT() = 0;
+            END;
+        END ELSE
+            SpecialOrder := FALSE;
         EXIT(SpecialOrder);
     END;
     //////COD 90
     PROCEDURE CheckSalesDealShipment(PurchOrderNo: Code[20]; SalesOrderNo: Code[20]);
     VAR
-        DealShipmentSelection: Record "DEL Deal Shipment Selection";
-        Element: Record "DEL Element";
-        DealID: Code[20];
         Deal: Record "DEL Deal";
         DealShipment: Record "DEL Deal Shipment";
-        DealShipmentConnection: Record "DEL Deal Shipment Connection";
-        DealShipmentSelectionCopy: Page "DEL Deal Shipment Selection";
-        DealShptSalesLine: Record "Sales Line";
-        ValueSpecial: Code[20];
-        PurchDealShipmentSelection: Record "DEL Deal Shipment Selection";
-        DocMatrixManagement: Codeunit "DEL DocMatrix Management"; //Var global dans le spécifique
-        DealCU: Codeunit "DEL Deal"; //Var global dans le spécifique
+        DealShipmentSelection: Record "DEL Deal Shipment Selection";
         PostDealShipmentSelection: Record "DEL Deal Shipment Selection"; //Var global dans le spécifique
-        ShptUpdateRequestID: Code[20]; //Var global dans le spécifique
-        ShipmentSelected: Boolean; //Var global dans le spécifique
+        PurchDealShipmentSelection: Record "DEL Deal Shipment Selection";
+        Element: Record "DEL Element";
         SalesHeader: Record "Sales Header"; //Var global dans le spécifique
+        DealShptSalesLine: Record "Sales Line";
+        DealCU: Codeunit "DEL Deal"; //Var global dans le spécifique
+        DocMatrixManagement: Codeunit "DEL DocMatrix Management";
+ //Var global dans le spécifique        ShipmentSelected: Boolean;
+ //Var global dans le spécifique        ShptUpdateRequestID: Code[20]; //Var global dans le spécifique
+        ValueSpecial: Code[20];
 
 
     BEGIN
 
-        PurchDealShipmentSelection.RESET;
+        PurchDealShipmentSelection.RESET();
         PurchDealShipmentSelection.SETRANGE("Document Type", PurchDealShipmentSelection."Document Type"::"Purchase Header");
         PurchDealShipmentSelection.SETRANGE("Document No.", PurchOrderNo);
         PurchDealShipmentSelection.SETRANGE(Checked, TRUE);
-        IF PurchDealShipmentSelection.FINDFIRST THEN BEGIN
-            DealShipmentSelection.RESET;
+        IF PurchDealShipmentSelection.FINDFIRST() THEN BEGIN
+            DealShipmentSelection.RESET();
             DealShipmentSelection.SETRANGE("Document Type", DealShipmentSelection."Document Type"::"Sales Header");
             DealShipmentSelection.SETRANGE("Document No.", SalesOrderNo);
             DealShipmentSelection.SETRANGE(Deal_ID, PurchDealShipmentSelection.Deal_ID);
             DealShipmentSelection.SETRANGE("Shipment No.", PurchDealShipmentSelection."Shipment No.");
             DealShipmentSelection.SETRANGE(Checked, TRUE);
-            IF NOT DealShipmentSelection.FINDFIRST THEN BEGIN
+            IF NOT DealShipmentSelection.FINDFIRST() THEN BEGIN
                 ValueSpecial := '';
                 DealShipmentSelection.RESET();
                 DealShipmentSelection.SETRANGE("Document Type", DealShipmentSelection."Document Type"::"Sales Header");
                 DealShipmentSelection.SETRANGE("Document No.", SalesOrderNo);
                 DealShipmentSelection.DELETEALL();
 
-                DealShptSalesLine.RESET;
+                DealShptSalesLine.RESET();
                 DealShptSalesLine.SETCURRENTKEY("Special Order Purchase No.");
                 DealShptSalesLine.ASCENDING(FALSE);
                 DealShptSalesLine.SETRANGE("Document Type", DealShptSalesLine."Document Type"::Order);
@@ -1110,14 +1078,14 @@ codeunit 50101 "DEL MGTS_FctMgt"
                                                 IF (Deal.ID = PurchDealShipmentSelection.Deal_ID) AND (DealShipment.ID = PurchDealShipmentSelection."Shipment No.") THEN
                                                     DealShipmentSelection.Checked := TRUE;
 
-                                                DealShipmentSelection.INSERT;
-                                            UNTIL DealShipment.NEXT = 0;
-                                    UNTIL Deal.NEXT = 0;
+                                                DealShipmentSelection.INSERT();
+                                            UNTIL DealShipment.NEXT() = 0;
+                                    UNTIL Deal.NEXT() = 0;
 
                                 ValueSpecial := DealShptSalesLine."Special Order Purchase No.";
                             END;
                         END;
-                    UNTIL DealShptSalesLine.NEXT = 0;
+                    UNTIL DealShptSalesLine.NEXT() = 0;
                 END;
             END;
         END;

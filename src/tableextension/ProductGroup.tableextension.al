@@ -21,8 +21,6 @@ tableextension 50036 "DEL ProductGroup" extends "Product Group"
             TableRelation = "Salesperson/Purchaser";
 
             trigger OnValidate()
-            var
-                ApprovalEntry: Record "Approval Entry";
             begin
                 //START THM
                 IF VendeurRec.GET("DEL Salesperson Code") THEN

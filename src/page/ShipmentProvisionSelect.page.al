@@ -145,8 +145,6 @@ page 50050 "DEL Shipment Provision Select."
                     ShortCutKey = 'F9';
 
                     trigger OnAction()
-                    var
-                        selected_Int_Loc: Integer;
                     begin
                         totalProvisionAmount := Rec."Total Provision Amount";
                         IF totalProvisionAmount > 0 THEN
@@ -253,30 +251,24 @@ page 50050 "DEL Shipment Provision Select."
     end;
 
     var
-        totalPlannedAmount: Decimal;
-        totalRealAmount: Decimal;
-        totalProvisionAmount: Decimal;
-        lineNumber: Integer;
         flowFields_Re: Record "DEL FlowFields";
-        actual: Code[20];
-        isColored: Boolean;
-        color: Integer;
-        stopColoring: Boolean;
-        Provision_Cu: Codeunit "DEL Provision";
-        date_Da: Date;
-        monthLastWorkingDay: Date;
-        monthFirstWorkingDay: Date;
         Deal_Cu: Codeunit "DEL Deal";
-        isCurrentPeriod_Te: Boolean;
+        Provision_Cu: Codeunit "DEL Provision";
         isCurrentPeriod_Bo: Boolean;
+        isCurrentPeriod_Te: Boolean;
 
         "Provision AmountEmphasize": Boolean;
-        Text19037295: Label 'P R O V I S I O N S';
+        date_Da: Date;
+        monthFirstWorkingDay: Date;
+        monthLastWorkingDay: Date;
+        totalPlannedAmount: Decimal;
+        totalProvisionAmount: Decimal;
+        totalRealAmount: Decimal;
+        color: Integer;
+        lineNumber: Integer;
 
 
     procedure FNC_UpdateTotals()
-    var
-        sps_Re_Loc: Record "DEL Shipment Provision Select.";
     begin
         FNC_InitVars();
 

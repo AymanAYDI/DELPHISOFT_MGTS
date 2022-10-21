@@ -124,8 +124,8 @@ table 50022 "DEL Position"
 
     var
 
-        NoSeriesMgt: Codeunit "NoSeriesManagement";
         Setup: Record "DEL General Setup";
+        NoSeriesMgt: Codeunit "NoSeriesManagement";
 
 }
 

@@ -4,7 +4,6 @@ codeunit 50057 "DEL Vendor Payment Advice Mgt."
     var
         JournalBatchName: Code[10];
         JournalTemplateName: Code[10];
-        FileNameLbl: Label 'PaymentAdvice_%1.pdf';
         Text001: Label 'Vendor : ##################1################## \\ @@@@@@@@@@@@@@@@@@2@@@@@@@@@@@@@@@@@@';
         Text002: Label 'Processing completed !';
 
@@ -12,20 +11,19 @@ codeunit 50057 "DEL Vendor Payment Advice Mgt."
     procedure SendPaymentAdvice(_JournalTemplateName: Code[10]; _JournalBatchName: Code[10])
     var
 
+        CompanyInfo: Record "Company Information";
+        GeneralSetup: Record "DEL General Setup";
         GenJournalLine: Record "Gen. Journal Line";
         TempVendor: Record Vendor temporary;
         Vendor: Record Vendor;
-        CompanyInfo: Record "Company Information";
-        GeneralSetup: Record "DEL General Setup";
-        SendFromName: Text[100];
+        ProgressionDialog: Dialog;
+        Counter: Integer;
+        RecordNumber: Integer;
+        MailBody: Text;
         SendFromAddress: Text;
         SendToAddress: Text;
         SubjectMail: Text;
-        MailBody: Text;
-        ServerFile: Text;
-        RecordNumber: Integer;
-        Counter: Integer;
-        ProgressionDialog: Dialog;
+        SendFromName: Text[100];
     begin
         //Sender Name
         CompanyInfo.GET();
@@ -118,8 +116,6 @@ codeunit 50057 "DEL Vendor Payment Advice Mgt."
     var
         DocMatrixEmailCodes: Record "DEL DocMatrix Email Codes";
         GeneralSetup: Record "DEL General Setup";
-
-        I: Integer;
     begin
         IF EmailCode = '' THEN BEGIN
             GeneralSetup.GET();
@@ -150,8 +146,9 @@ codeunit 50057 "DEL Vendor Payment Advice Mgt."
     local procedure GetBody(var DocMatrixEmailCodes: Record "DEL DocMatrix Email Codes"): Text
     var
         //TempBlob: Record "99008535" temporary; //ancien
-        TypeHelper: Codeunit "Type Helper";
         TempBlob: Codeunit "Temp Blob";
+        //TempBlob: Record "99008535" temporary;
+        TypeHelper: Codeunit "Type Helper";
         InStream: InStream;
         CR: Text;
     begin
@@ -169,15 +166,15 @@ codeunit 50057 "DEL Vendor Payment Advice Mgt."
 
     procedure SavePDF(_JournalTemplateName: Code[10]; _JournalBatchName: Code[10]; _VendorNo: Code[20]; var _ServerAttachmentFilePath: Text)
     var
-        Vendor: Record Vendor;
+        CustRec: Record Customer;
         GenJournalLine: Record "Gen. Journal Line";
+        Vendor: Record Vendor;
         VendorPaymentAdvice: Report "DEL SR Vendor Pay. Advi. Detai";
         FileMgt: Codeunit "File Management";
         //---------
         TempBlob_lRec: Codeunit "Temp Blob";
-        BlobOutStream: OutStream;
         RecRef: RecordRef;
-        CustRec: Record Customer;
+        BlobOutStream: OutStream;
 
     begin
         //TODO   // _ServerAttachmentFilePath := COPYSTR(FileMgt.ServerTempFileName('pdf'), 1, 250);
@@ -192,7 +189,7 @@ codeunit 50057 "DEL Vendor Payment Advice Mgt."
         /////--------- à corriger
         TempBlob_lRec.CreateOutStream(BlobOutStream, TEXTENCODING::UTF8);
         CustRec.SetRange(Blocked, Blocked::All);
-        REPORT.SAVEAS(101, _ServerAttachmentFilePath, REPORTFORMAT::Pdf, BlobOutStream, RecRef);
+        REPORT.SAVEAS(Report::"Customer - List", _ServerAttachmentFilePath, REPORTFORMAT::Pdf, BlobOutStream, RecRef);
         FileMgt.BLOBExport(TempBlob_lRec, 'pdf', TRUE);
     end;
 

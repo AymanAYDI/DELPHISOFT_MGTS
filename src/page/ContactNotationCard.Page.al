@@ -57,8 +57,8 @@ page 50067 "DEL Contact Notation Card"
 
                     trigger OnValidate()
                     var
-                        Customer: Record Customer;
                         ContactBusinessRelation: Record "Contact Business Relation";
+                        Customer: Record Customer;
                     begin
                         IF NOT (IntegrationCustomerNo = '') THEN BEGIN
                             Customer.GET(IntegrationCustomerNo);
@@ -661,24 +661,24 @@ page 50067 "DEL Contact Notation Card"
         Cont: Record Contact;
         CompanyDetails: Page "Company Details";
         NameDetails: Page "Name Details";
-        IntegrationCustomerNo: Code[20];
+        CompanyGroupEnabled: Boolean;
+        [InDataSet]
+        "Company NameEnable": Boolean;
+        [InDataSet]
+        "Company No.Enable": Boolean;
+        [InDataSet]
+        "Currency CodeEnable": Boolean;
         [InDataSet]
 
         MapPointVisible: Boolean;
         [InDataSet]
-        "Currency CodeEnable": Boolean;
-        [InDataSet]
-        "VAT Registration No.Enable": Boolean;
-        [InDataSet]
-        "Company No.Enable": Boolean;
-        [InDataSet]
-        "Company NameEnable": Boolean;
+        NoofJobResponsibilitiesEnable: Boolean;
         [InDataSet]
         OrganizationalLevelCodeEnable: Boolean;
-        [InDataSet]
-        NoofJobResponsibilitiesEnable: Boolean;
-        CompanyGroupEnabled: Boolean;
         PersonGroupEnabled: Boolean;
+        [InDataSet]
+        "VAT Registration No.Enable": Boolean;
+        IntegrationCustomerNo: Code[20];
 
     local procedure EnableFields()
     begin

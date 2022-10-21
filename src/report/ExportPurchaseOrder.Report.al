@@ -90,11 +90,11 @@ report 50053 "DEL Export Purchase Order"
                 ColNo += 1;
                 InsertExcelCell(ColNo, RowNo, Text020, '', FALSE, FALSE, FALSE);
 
-                PurchaseLine.RESET;
+                PurchaseLine.RESET();
                 PurchaseLine.SETRANGE("Document Type", "Document Type");
                 PurchaseLine.SETRANGE("Document No.", "No.");
                 //TODO  // PurchaseLine.SETRANGE("Customer/Vendor", PurchaseLine.Type::Item);
-                IF PurchaseLine.FINDSET THEN
+                IF PurchaseLine.FINDSET() THEN
                     REPEAT
 
                         Item.GET(PurchaseLine."No.");
@@ -153,7 +153,7 @@ report 50053 "DEL Export Purchase Order"
                         ColNo += 1;
                         InsertExcelCell(ColNo, RowNo, ShiptoAddress.Name, '@', FALSE, FALSE, FALSE);
 
-                    UNTIL PurchaseLine.NEXT = 0;
+                    UNTIL PurchaseLine.NEXT() = 0;
 
             end;
 
@@ -161,7 +161,7 @@ report 50053 "DEL Export Purchase Order"
             begin
 
                 IF GUIALLOWED THEN
-                    Window.CLOSE;
+                    Window.CLOSE();
 
                 // ExcelBuffer.CreateBookAndOpenExcel('', Text001, Text002, COMPANYNAME, USERID);
                 // ExcelBuffer.GiveUserControl(); // TODO: The application objects or methods have scope 'OnPrem' and cannot be used for 'Cloud' development.
@@ -196,21 +196,21 @@ report 50053 "DEL Export Purchase Order"
     }
 
     var
+        CompanyInformation: Record "Company Information";
         ExcelBuffer: Record "Excel Buffer" temporary;
-        Text001: Label 'Exported Data';
-        Text002: Label 'Purchase Order';
+        Item: Record Item;
+        PurchaseLine: Record "Purchase Line";
+        ShiptoAddress: Record "Ship-to Address";
+        Vendor: Record Vendor;
+        Window: Dialog;
         ColNo: Integer;
         RowNo: Integer;
         Text003: Label 'Date de livraison';
         Text004: Label 'Processing data ...\Please wait ...';
-        Window: Dialog;
         Text005: Label 'Emetteur';
         Text006: Label 'Fournisseur';
         Text007: Label 'Livre';
-        CompanyInformation: Record "Company Information";
-        Vendor: Record Vendor;
         Text008: Label 'Commande';
-        Text009: Label 'Date';
         Text010: Label 'Type code';
         Text011: Label 'Fournisseur';
         Text012: Label 'Désignation';
@@ -222,16 +222,13 @@ report 50053 "DEL Export Purchase Order"
         Text018: Label 'Unité de qté';
         Text019: Label 'Entrepôt à livrer';
         Text020: Label 'Désignation';
-        PurchaseLine: Record "Purchase Line";
-        Item: Record Item;
-        ShiptoAddress: Record "Ship-to Address";
         //   TODO  // ANVEDICrossReference: Record 5327362; // TODO: Record not exist
         Text021: Label 'Réference cde';
 
     local procedure InsertExcelCell(InsertColNo: Integer; InsertRowNo: Integer; InsertValue: Text; InsertFormat: Text; InsertBold: Boolean; InsertItalic: Boolean; InsertUnderline: Boolean)
     begin
 
-        ExcelBuffer.INIT;
+        ExcelBuffer.INIT();
         ExcelBuffer.VALIDATE("Column No.", InsertColNo);
         ExcelBuffer.VALIDATE("Row No.", InsertRowNo);
         ExcelBuffer."Cell Value as Text" := InsertValue;
@@ -243,7 +240,7 @@ report 50053 "DEL Export Purchase Order"
         IF ExcelBuffer.NumberFormat = '@' THEN
             ExcelBuffer."Cell Type" := ExcelBuffer."Cell Type"::Text;
 
-        ExcelBuffer.INSERT;
+        ExcelBuffer.INSERT();
     end;
 }
 

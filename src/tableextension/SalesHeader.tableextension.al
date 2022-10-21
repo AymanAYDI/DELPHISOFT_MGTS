@@ -232,8 +232,6 @@ tableextension 50026 "DEL SalesHeader" extends "Sales Header"
     end;
 
     var
-        CustPriceGroup: Record "Customer Price Group";
-        Text50000: Label '%1|%2';
         Text50001: Label '''''';
 }
 

@@ -106,10 +106,10 @@ page 50065 "DEL Document Sheet"
         DocumentLine: Record "DEL Document Line";
 
         InStr: InStream;
+        LastLineNo: Integer;
         OutStr: OutStream;
         ImportFileName: Text;
         ServerFileName: Text;
-        LastLineNo: Integer;
     begin
         IF NOT Document_CU.OpenFile(ImportFileName, ServerFileName) THEN
             EXIT;
@@ -149,7 +149,6 @@ page 50065 "DEL Document Sheet"
 
     local procedure Open()
     var
-        oFile: File;
         InStr: InStream;
         OutStr: OutStream;
         Directory: Text;
@@ -158,7 +157,7 @@ page 50065 "DEL Document Sheet"
 
 
 
-        Directory := Document_CU.TempDirectory;
+        Directory := Document_CU.TempDirectory();
         //TODO: Cannot be used for a cloud dev
 
         // oFile.CREATE(Directory + Rec."File Name");

@@ -11,11 +11,6 @@ table 50015 "DEL Reporting Dimension 1 Code"
             NotBlank = true;
 
             trigger OnValidate()
-            var
-                GLAcc: Record "G/L Account";
-                BusUnit: Record "Business Unit";
-                Item: Record Item;
-                Location: Record Location;
             begin
             end;
         }

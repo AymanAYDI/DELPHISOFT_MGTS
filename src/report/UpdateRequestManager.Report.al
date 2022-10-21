@@ -80,15 +80,14 @@ report 50003 "DEL Update Request Manager"
     }
 
     var
-        UpdateRequest_Re: Record "DEL Update Request Manager";
+        UpdateRequest: Codeunit "DEL Update Request";
 
         UpdateRequestManager_CU: Codeunit "DEL Update Request Manager";
-        UpdateRequest: Codeunit "DEL Update Request";
 
         UpdatePlanned_Bo_Par: Boolean;
         i: Integer;
         nbreErreur: Integer;
-        DealErreur: Text[1024];
         TextErreur: Label 'Nombre d''erreur: %1. Liste des affaires: %2.';
+        DealErreur: Text[1024];
 }
 

@@ -237,8 +237,6 @@ report 50023 "DEL Hyperion V3"
         FileManagement: Codeunit "File Management";
         TempBlob: Codeunit "Temp Blob";
 
-        RecRef: RecordRef;
-
         OStream: OutStream;
     begin
         GeneralSetup_Re.GET();
@@ -251,7 +249,7 @@ report 50023 "DEL Hyperion V3"
             TimeNow_Te := DELCHR(FORMAT(TIME), '=', ':/.');
         END;
         TempBlob.CreateOutStream(OStream);
-        XMLPORT.Export(50011, OStream);
+        XMLPORT.Export(XmlPort::"DEL Export Hyperion File", OStream);
         FileManagement.BLOBExport(TempBlob, 'HFM_' + GeneralSetup_Re."Hyperion Company Code" + '_' + StartDate_Loc_Te + '_' + EndDate_Loc_Te + '_' + DateNow_Te + '_' + TimeNow_Te + '.csv', true);
         Dialog_Di.CLOSE();
     end;

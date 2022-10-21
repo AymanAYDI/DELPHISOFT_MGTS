@@ -299,16 +299,10 @@ page 50064 "DEL Vendor Card Notation"
     end;
 
     var
-        CalendarMgmt: Codeunit "Calendar Management";
-        PaymentToleranceMgt: Codeunit "Payment Tolerance Management";
-        CustomizedCalEntry: Record "Customized Calendar Entry";
-        CustomizedCalendar: Record "Customized Calendar Change";
-        Text001: Label 'Do you want to allow payment tolerance for entries that are currently open?';
-        Text002: Label 'Do you want to remove payment tolerance from entries that are currently open?';
-        [InDataSet]
-        MapPointVisible: Boolean;
         [InDataSet]
         ContactEditable: Boolean;
+        [InDataSet]
+        MapPointVisible: Boolean;
 
 
     procedure ActivateFields()
@@ -324,9 +318,9 @@ page 50064 "DEL Vendor Card Notation"
 
     procedure FNC_CopieFrais()
     var
-        Vendor_Fo_Loc: Page "Vendor List";
         Vendor_Re_Loc: Record Vendor;
         FeeMgt_Cu_Loc: Codeunit "DEL Alert and fee copy Mgt";
+        Vendor_Fo_Loc: Page "Vendor List";
     begin
         Vendor_Fo_Loc.LOOKUPMODE(TRUE);
         IF Vendor_Fo_Loc.RUNMODAL() = ACTION::LookupOK THEN BEGIN

@@ -9,7 +9,6 @@ codeunit 50033 "DEL Provision"
         Dispatcher_Cu: Codeunit "DEL Dispatcher";
         Element_Cu: Codeunit "DEL Element";
         Fee_Cu: Codeunit "DEL Fee";
-        UpdateRequestManager_Cu: Codeunit "DEL Update Request Manager";
         NoSeriesMgt_Cu: Codeunit NoSeriesManagement;
         DocumentNo_Co: Code[20];
         postingDate_Da: Date;
@@ -22,7 +21,6 @@ codeunit 50033 "DEL Provision"
         intProgressStep: array[10] of Integer;
         intProgressTotal: array[10] of Integer;
         journalLastLineNo_Int: Integer;
-        "v------PROGRESS BAR------v": Integer;
         ERROR_TXT: Label 'ERREUR\Source : %1\Function : %2\Reason : %3';
         timProgress: array[10] of Time;
 
@@ -31,12 +29,6 @@ codeunit 50033 "DEL Provision"
     var
         sps_Re_Loc: Record "DEL Shipment Provision Select.";
         actual: Code[20];
-        diaProgress: Dialog;
-        interval: Integer;
-        intProgress: Integer;
-        intProgressI: Integer;
-        intProgressTotal: Integer;
-        timProgress: Time;
     begin
         //Initialisation
 
@@ -55,7 +47,7 @@ codeunit 50033 "DEL Provision"
 
         FNC_ProgressBar_Init(1, 1000, 1000, 'Transfert dans le journal...', sps_Re_Loc.COUNT());
 
-        IF sps_Re_Loc.FINDFIRST THEN BEGIN
+        IF sps_Re_Loc.FINDFIRST() THEN BEGIN
             REPEAT
 
                 FNC_ProgressBar_Update(1);
@@ -118,7 +110,7 @@ codeunit 50033 "DEL Provision"
 
         //créer les écritures contrepartie
         TempSPS_Re.RESET();
-        IF TempSPS_Re.FINDFIRST THEN
+        IF TempSPS_Re.FINDFIRST() THEN
             REPEAT
                 IF NOT isExtourne THEN BEGIN
 
@@ -151,8 +143,6 @@ codeunit 50033 "DEL Provision"
 
     procedure FNC_CreateLedgerEntry(sps_Re_Par: Record "DEL Shipment Provision Select."; PostingDate_Da_Par: Date; Amount_Dec_Par: Decimal; IsMainEntry_Bo_Par: Boolean; Description_Te_Par: Text[50])
     var
-        DealShipment_Re_Loc: Record "DEL Deal Shipment";
-        DealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
         GenJnlLine_Re_Loc: Record "Gen. Journal Line";
     begin
         journalLastLineNo_Int += 10000;
@@ -212,7 +202,7 @@ codeunit 50033 "DEL Provision"
         sps_Re_Loc.SETRANGE(USER_ID, USERID);
         sps_Re_Loc.SETRANGE(Deal_Shipment_ID, ShipmentID_Co_Par);
         sps_Re_Loc.SETFILTER("Provision Amount", '>%1', 0);
-        IF sps_Re_Loc.FINDFIRST THEN
+        IF sps_Re_Loc.FINDFIRST() THEN
             REPEAT
                 amount_Dec_Loc += sps_Re_Loc."Provision Amount";
             UNTIL (sps_Re_Loc.NEXT() = 0);
@@ -248,7 +238,7 @@ codeunit 50033 "DEL Provision"
 
         TempSPS_Re.RESET();
         TempSPS_Re.SETRANGE(Fee_ID, sps_Re_Par.Fee_ID);
-        IF TempSPS_Re.FINDFIRST THEN
+        IF TempSPS_Re.FINDFIRST() THEN
           //si ca existe, on cumule
           BEGIN
             TempSPS_Re."Provision Amount" += sps_Re_Par."Provision Amount";
@@ -277,7 +267,7 @@ codeunit 50033 "DEL Provision"
         tot := 0;
 
         TempSPS_Re.RESET();
-        IF TempSPS_Re.FINDFIRST THEN
+        IF TempSPS_Re.FINDFIRST() THEN
             REPEAT
                 tot += TempSPS_Re."Provision Amount";
             UNTIL (TempSPS_Re.NEXT() = 0);
@@ -299,7 +289,7 @@ codeunit 50033 "DEL Provision"
         ELSE
             FNC_ProgressBar_Init(2, 200, 500, 'Traitement des écritures en cours...', sps_Re_Loc.COUNT());
 
-        IF sps_Re_Loc.FINDFIRST THEN
+        IF sps_Re_Loc.FINDFIRST() THEN
             REPEAT
 
                 FNC_ProgressBar_Update(2);
@@ -324,14 +314,6 @@ codeunit 50033 "DEL Provision"
     var
         element_Re_Loc: Record "DEL Element";
         sps_Re_Loc: Record "DEL Shipment Provision Select.";
-        diaProgress: Dialog;
-        interval: Integer;
-        intNextProgressStep: Integer;
-        intProgress: Integer;
-        intProgressI: Integer;
-        intProgressStep: Integer;
-        intProgressTotal: Integer;
-        timProgress: Time;
     begin
         sps_Re_Loc.RESET();
         sps_Re_Loc.SETFILTER(USER_ID, USERID);
@@ -339,7 +321,7 @@ codeunit 50033 "DEL Provision"
 
         FNC_ProgressBar_Init(1, 1000, 1000, 'Validation des provisions en cours...', sps_Re_Loc.COUNT());
 
-        IF sps_Re_Loc.FINDFIRST THEN
+        IF sps_Re_Loc.FINDFIRST() THEN
             REPEAT
 
                 FNC_ProgressBar_Update(1);
@@ -352,7 +334,7 @@ codeunit 50033 "DEL Provision"
                     element_Re_Loc.SETRANGE(Deal_ID, sps_Re_Loc.Deal_ID);
                     element_Re_Loc.SETRANGE(Type, element_Re_Loc.Type::"Purchase Invoice");
                     element_Re_Loc.SETRANGE("Type No.", sps_Re_Loc."Purchase Invoice No.");
-                    IF NOT element_Re_Loc.FINDFIRST THEN
+                    IF NOT element_Re_Loc.FINDFIRST() THEN
                         ERROR(
                             'Répartition de la provision >%1< sur la livraison >%2< impossible car la facture achat liée >%3< est introuvable ' +
                             'dans l''affaire >%4< !',
@@ -381,12 +363,10 @@ codeunit 50033 "DEL Provision"
         element_Re_Loc: Record "DEL Element";
         elementConnection_Re_Loc: Record "DEL Element Connection";
         fee_Re_Loc: Record "DEL Fee";
-        glEntry_Re_Loc: Record "G/L Entry";
         amountToDispatch_Dec_Loc: Decimal;
         sum_Dec_Loc: Decimal;
         value_Ar_Loc: array[300] of Decimal;
         arrayIndex: Integer;
-        textArray: Text[255];
     begin
 
 
@@ -431,12 +411,12 @@ codeunit 50033 "DEL Provision"
             elementConnection_Re_Loc.SETRANGE(Element_ID, element_Re_Loc.ID);
 
             arrayIndex := 1;
-            IF elementConnection_Re_Loc.FINDFIRST THEN
+            IF elementConnection_Re_Loc.FINDFIRST() THEN
                 REPEAT
                     applyElement_Re_Loc.RESET();
                     applyElement_Re_Loc.SETRANGE(Deal_ID, elementConnection_Re_Loc.Deal_ID);
                     applyElement_Re_Loc.SETRANGE(ID, elementConnection_Re_Loc."Apply To");
-                    IF applyElement_Re_Loc.FINDFIRST THEN BEGIN
+                    IF applyElement_Re_Loc.FINDFIRST() THEN BEGIN
 
                         CASE fee_Re_Loc."Ventilation Position" OF
                             fee_Re_Loc."Ventilation Position"::"Prorata Value":
@@ -479,7 +459,7 @@ codeunit 50033 "DEL Provision"
                     END;
 
                     arrayIndex += 1;
-                UNTIL (elementConnection_Re_Loc.NEXT = 0);
+                UNTIL (elementConnection_Re_Loc.NEXT() = 0);
 
         END
 
@@ -488,27 +468,12 @@ codeunit 50033 "DEL Provision"
 
     procedure FNC_Add2Deals()
     var
-        dealShipment_Re_Loc: Record "DEL Deal Shipment";
         dsc_Re_Loc: Record "DEL Deal Shipment Connection";
-        dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
-        dss_Re_Loc: Record "DEL Deal Shipment Selection";
         element_Re_Loc: Record "DEL Element";
-        fee_Re_Loc: Record "DEL Fee";
-        feeConnection_Re_Loc: Record "DEL Fee Connection";
         sps_Re_Loc: Record "DEL Shipment Provision Select.";
-        urm_Re_Loc: Record "DEL Update Request Manager";
-        genJournalLine_Re_Temp: Record "Gen. Journal Line" temporary;
-        BR_Re_Loc: Record "Purch. Rcpt. Header";
-        deal_ID_Co_Loc: Code[20];
         element_ID_Co_Loc: Code[20];
-        myTab: array[300] of Code[20];
-        myUpdateRequests: array[300] of Code[20];
-        nextEntry: Code[20];
         provisionDealID_Co_Loc: Code[20];
-        updateRequest_Co_Loc: Code[20];
-        i: Integer;
         ConnectionType_Op_Par: Option Element,Shipment;
-        Add_Variant_Op_Loc: Option New,Existing;
     begin
         element_ID_Co_Loc := '';
         provisionDealID_Co_Loc := '';
@@ -519,7 +484,7 @@ codeunit 50033 "DEL Provision"
 
         FNC_ProgressBar_Init(1, 1000, 1000, 'Génération des éléments en cours...', sps_Re_Loc.COUNT);
 
-        IF sps_Re_Loc.FINDFIRST THEN BEGIN
+        IF sps_Re_Loc.FINDFIRST() THEN BEGIN
             REPEAT
 
                 FNC_ProgressBar_Update(1);
@@ -529,7 +494,7 @@ codeunit 50033 "DEL Provision"
                 element_Re_Loc.SETRANGE(Type, element_Re_Loc.Type::Provision);
                 element_Re_Loc.SETRANGE(Fee_ID, sps_Re_Loc.Fee_ID);
                 element_Re_Loc.SETRANGE(Fee_Connection_ID, sps_Re_Loc.Fee_Connection_ID);
-                IF element_Re_Loc.FINDFIRST THEN
+                IF element_Re_Loc.FINDFIRST() THEN
                     REPEAT
 
                         //si la provision fait partie de la livraison en cours
@@ -606,7 +571,7 @@ codeunit 50033 "DEL Provision"
 
             FNC_ProgressBar_Init(1, 1000, 500, 'Supression des provisions en cours...', element_Re_Loc.COUNT);
 
-            IF element_Re_Loc.FINDFIRST THEN
+            IF element_Re_Loc.FINDFIRST() THEN
                 REPEAT
 
                     FNC_ProgressBar_Update(1);
@@ -639,7 +604,7 @@ codeunit 50033 "DEL Provision"
 
             FNC_ProgressBar_Init(1, 1000, 500, 'Supression des provisions en cours...', element_Re_Loc.COUNT);
 
-            IF element_Re_Loc.FINDFIRST THEN
+            IF element_Re_Loc.FINDFIRST() THEN
                 REPEAT
 
                     FNC_ProgressBar_Update(1);

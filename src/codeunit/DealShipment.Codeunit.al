@@ -2,15 +2,14 @@ codeunit 50029 "DEL Deal Shipment"
 {
 
     var
-        Deal_Cu: Codeunit "DEL Deal";
         ERROR_TXT: Label 'ERREUR\Source : %1\Function : %2\Reason : %3';
 
 
     procedure FNC_Insert(Deal_ID_Co_Par: Code[20]; Date_Par: Date; BR_No_Co_Par: Code[20]) DealShipment_ID_Ret: Code[20]
     var
         dealShipment_Re_Loc: Record "DEL Deal Shipment";
-        AlertMgt_Cu_Loc: Codeunit "DEL Alert and fee copy Mgt";
         Logistic_Re_Loc: Record "DEL Logistic";
+        AlertMgt_Cu_Loc: Codeunit "DEL Alert and fee copy Mgt";
     begin
         DealShipment_ID_Ret := FNC_GetNextShipmentNo(Deal_ID_Co_Par);
 
@@ -52,7 +51,7 @@ codeunit 50029 "DEL Deal Shipment"
         dealShipment_Re_Loc.RESET();
         dealShipment_Re_Loc.SETCURRENTKEY(Deal_ID);
         dealShipment_Re_Loc.SETRANGE(Deal_ID, Deal_ID_Co_Par);
-        IF dealShipment_Re_Loc.FINDFIRST THEN
+        IF dealShipment_Re_Loc.FINDFIRST() THEN
             ShipmentNo_Co_Ret := dealShipment_Re_Loc.ID
 
     end;
@@ -62,18 +61,16 @@ codeunit 50029 "DEL Deal Shipment"
     var
         deal_Re_Loc: Record "DEL Deal";
     begin
-        WITH deal_Re_Loc DO BEGIN
-            IF GET(Deal_ID_Co_Par) THEN BEGIN
-                "Next Shipment No." += 1;
-                ShipmentNo_Co_Ret := ID + '-' + FORMAT("Next Shipment No.");
-                MODIFY();
-            END ELSE
-                ERROR(
-                  ERROR_TXT,
-                  'Cu50029',
-                  'FNC_GetNextShipmentNo',
-                  STRSUBSTNO('Deal No. >%1< does not exist !', Deal_ID_Co_Par));
-        END
+        IF deal_Re_Loc.GET(Deal_ID_Co_Par) THEN BEGIN
+            deal_Re_Loc."Next Shipment No." += 1;
+            ShipmentNo_Co_Ret := deal_Re_Loc.ID + '-' + FORMAT(deal_Re_Loc."Next Shipment No.");
+            deal_Re_Loc.MODIFY();
+        END ELSE
+            ERROR(
+              ERROR_TXT,
+              'Cu50029',
+              'FNC_GetNextShipmentNo',
+              STRSUBSTNO('Deal No. >%1< does not exist !', Deal_ID_Co_Par));
     end;
 
 
@@ -89,7 +86,7 @@ codeunit 50029 "DEL Deal Shipment"
         dealShipmentConnection_Re_Loc.RESET();
         dealShipmentConnection_Re_Loc.SETCURRENTKEY(dealShipmentConnection_Re_Loc.Shipment_ID);
         dealShipmentConnection_Re_Loc.SETRANGE(Shipment_ID, DealShipmentID_Co_Par);
-        IF dealShipmentConnection_Re_Loc.FINDFIRST THEN BEGIN
+        IF dealShipmentConnection_Re_Loc.FINDFIRST() THEN BEGIN
 
             REPEAT
 
@@ -119,7 +116,7 @@ codeunit 50029 "DEL Deal Shipment"
         dealShipmentConnection_Re_Loc.RESET();
         dealShipmentConnection_Re_Loc.SETCURRENTKEY(dealShipmentConnection_Re_Loc.Shipment_ID);
         dealShipmentConnection_Re_Loc.SETRANGE(Shipment_ID, DealShipmentID_Co_Par);
-        IF dealShipmentConnection_Re_Loc.FINDFIRST THEN BEGIN
+        IF dealShipmentConnection_Re_Loc.FINDFIRST() THEN BEGIN
 
             REPEAT
 
@@ -149,7 +146,7 @@ codeunit 50029 "DEL Deal Shipment"
         dealShipmentConnection_Re_Loc.RESET();
         dealShipmentConnection_Re_Loc.SETCURRENTKEY(dealShipmentConnection_Re_Loc.Shipment_ID);
         dealShipmentConnection_Re_Loc.SETRANGE(Shipment_ID, DealShipmentID_Co_Par);
-        IF dealShipmentConnection_Re_Loc.FINDFIRST THEN BEGIN
+        IF dealShipmentConnection_Re_Loc.FINDFIRST() THEN BEGIN
             REPEAT
 
                 IF element_Re_Loc.GET(dealShipmentConnection_Re_Loc.Element_ID) THEN BEGIN
@@ -176,7 +173,7 @@ codeunit 50029 "DEL Deal Shipment"
 
         dealShipmentConnection_Re_Loc.RESET();
         dealShipmentConnection_Re_Loc.SETRANGE(Shipment_ID, DealShipmentID_Co_Par);
-        IF dealShipmentConnection_Re_Loc.FINDFIRST THEN BEGIN
+        IF dealShipmentConnection_Re_Loc.FINDFIRST() THEN BEGIN
             REPEAT
 
                 IF element_Re_Loc.GET(dealShipmentConnection_Re_Loc.Element_ID) THEN BEGIN
@@ -202,7 +199,7 @@ codeunit 50029 "DEL Deal Shipment"
 
         dealShipmentConnection_Re_Loc.RESET();
         dealShipmentConnection_Re_Loc.SETRANGE(Shipment_ID, DealShipmentID_Co_Par);
-        IF dealShipmentConnection_Re_Loc.FINDFIRST THEN BEGIN
+        IF dealShipmentConnection_Re_Loc.FINDFIRST() THEN BEGIN
             REPEAT
 
                 IF element_Re_Loc.GET(dealShipmentConnection_Re_Loc.Element_ID) THEN BEGIN
@@ -228,7 +225,7 @@ codeunit 50029 "DEL Deal Shipment"
 
         dealShipmentConnection_Re_Loc.RESET();
         dealShipmentConnection_Re_Loc.SETRANGE(Shipment_ID, DealShipmentID_Co_Par);
-        IF dealShipmentConnection_Re_Loc.FINDFIRST THEN BEGIN
+        IF dealShipmentConnection_Re_Loc.FINDFIRST() THEN BEGIN
             REPEAT
 
                 IF element_Re_Loc.GET(dealShipmentConnection_Re_Loc.Element_ID) THEN BEGIN
@@ -255,7 +252,7 @@ codeunit 50029 "DEL Deal Shipment"
 
         dealShipmentConnection_Re_Loc.RESET();
         dealShipmentConnection_Re_Loc.SETRANGE(Shipment_ID, DealShipmentID_Co_Par);
-        IF dealShipmentConnection_Re_Loc.FINDFIRST THEN BEGIN
+        IF dealShipmentConnection_Re_Loc.FINDFIRST() THEN BEGIN
             REPEAT
 
                 IF element_Re_Loc.GET(dealShipmentConnection_Re_Loc.Element_ID) THEN BEGIN
@@ -280,7 +277,7 @@ codeunit 50029 "DEL Deal Shipment"
 
         dealShipmentConnection_Re_Loc.RESET();
         dealShipmentConnection_Re_Loc.SETRANGE(Shipment_ID, DealShipmentID_Co_Par);
-        IF dealShipmentConnection_Re_Loc.FINDFIRST THEN BEGIN
+        IF dealShipmentConnection_Re_Loc.FINDFIRST() THEN BEGIN
             REPEAT
 
                 IF element_Re_Loc.GET(dealShipmentConnection_Re_Loc.Element_ID) THEN BEGIN

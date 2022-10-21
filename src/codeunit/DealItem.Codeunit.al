@@ -8,8 +8,6 @@ codeunit 50024 "DEL Deal Item"
 
     var
 
-        Position_Cu: Codeunit "DEL Position";
-        Element_Cu: Codeunit "DEL Element";
         Deal_Cu: Codeunit "DEL Deal";
         UpdateRequestManager_Cu: Codeunit "DEL Update Request Manager";
 
@@ -20,7 +18,6 @@ codeunit 50024 "DEL Deal Item"
     procedure FNC_Add(Deal_ID_Co_Par: Code[20]; Item_No_Co_Par: Code[20])
     var
         dealItem_Re_Loc: Record "DEL Deal Item";
-        item_Re_Loc: Record Item;
     begin
 
 
@@ -172,13 +169,13 @@ codeunit 50024 "DEL Deal Item"
 
     procedure FNC_Get_Sales_Amount(Deal_ID_Co_Par: Code[20]; ShipmentNo_Co_Par: Code[20]; "Item_No._Co_Par": Code[20]; Instance_Op_Par: Option Planned,Real) Amount_Dec_Ret: Decimal
     var
-        position_Re_Loc: Record "DEL Position";
-        element_Re_Loc: Record "DEL Element";
-        dealShipmentConnection_Re_Loc: Record "DEL Deal Shipment Connection";
-        BR_Header_Re_Loc: Record "Purch. Rcpt. Header";
-        dealShipment_Re_Loc: Record "DEL Deal Shipment";
-        purchRcptLine_Re_Loc: Record "Purch. Rcpt. Line";
         dealItem_Re_Loc: Record "DEL Deal Item";
+        dealShipment_Re_Loc: Record "DEL Deal Shipment";
+        dealShipmentConnection_Re_Loc: Record "DEL Deal Shipment Connection";
+        element_Re_Loc: Record "DEL Element";
+        position_Re_Loc: Record "DEL Position";
+        BR_Header_Re_Loc: Record "Purch. Rcpt. Header";
+        purchRcptLine_Re_Loc: Record "Purch. Rcpt. Line";
     begin
         /*RETOURNE LE MONTANT DES VENTES POUR UN ARTICLE EN PRENANT EN COMPTE LE NUMERO DE LIVRAISON SI IL EST SPECIFIE*/
 
@@ -224,7 +221,6 @@ codeunit 50024 "DEL Deal Item"
                         Element_Cu.FNC_Set_Element(element_Re_Loc, position_Re_Loc.Element_ID);
                         IF element_Re_Loc.Type = element_Re_Loc.Type::VCO THEN
                             Amount_Dec_Ret += Position_Cu.FNC_Get_Amount(position_Re_Loc.ID)
-
                     UNTIL (position_Re_Loc.NEXT() = 0);
 
             END
@@ -261,13 +257,13 @@ codeunit 50024 "DEL Deal Item"
 
     procedure FNC_Get_Purchases_Amount(Deal_ID_Co_Par: Code[20]; ShipmentNo_Co_Par: Code[20]; "Item_No._Co_Par": Code[20]; Instance_Op_Par: Option Planned,Real) Amount_Dec_Ret: Decimal
     var
-        position_Re_Loc: Record "DEL Position";
-        element_Re_Loc: Record "DEL Element";
-        dealShipmentConnection_Re_Loc: Record "DEL Deal Shipment Connection";
-        BR_Header_Re_Loc: Record "Purch. Rcpt. Header";
-        dealShipment_Re_Loc: Record "DEL Deal Shipment";
-        purchRcptLine_Re_Loc: Record "Purch. Rcpt. Line";
         dealItem_Re_Loc: Record "DEL Deal Item";
+        dealShipment_Re_Loc: Record "DEL Deal Shipment";
+        dealShipmentConnection_Re_Loc: Record "DEL Deal Shipment Connection";
+        element_Re_Loc: Record "DEL Element";
+        position_Re_Loc: Record "DEL Position";
+        BR_Header_Re_Loc: Record "Purch. Rcpt. Header";
+        purchRcptLine_Re_Loc: Record "Purch. Rcpt. Line";
     begin
 
 
@@ -349,13 +345,12 @@ codeunit 50024 "DEL Deal Item"
 
     procedure FNC_Get_Fees_Amount(Deal_ID_Co_Par: Code[20]; ShipmentNo_Co_Par: Code[20]; "Item_No._Co_Par": Code[20]; Instance_Op_Par: Option Planned,Real) Amount_Dec_Ret: Decimal
     var
-        position_Re_Loc: Record "DEL Position";
-        element_Re_Loc: Record "DEL Element";
-        dealShipmentConnection_Re_Loc: Record "DEL Deal Shipment Connection";
-        BR_Header_Re_Loc: Record "Purch. Rcpt. Header";
         dealShipment_Re_Loc: Record "DEL Deal Shipment";
+        dealShipmentConnection_Re_Loc: Record "DEL Deal Shipment Connection";
+        element_Re_Loc: Record "DEL Element";
+        position_Re_Loc: Record "DEL Position";
+        BR_Header_Re_Loc: Record "Purch. Rcpt. Header";
         purchRcptLine_Re_Loc: Record "Purch. Rcpt. Line";
-        dealItem_Re_Loc: Record "DEL Deal Item";
     begin
 
 
@@ -570,7 +565,6 @@ codeunit 50024 "DEL Deal Item"
     procedure FNC_Get_Droit_Douanne(Deal_ID_Co_Par: Code[20]; ItemNo_Co_Par: Code[20]) Value_Co_Ret: Decimal
     var
         dealItem_Re_Loc: Record "DEL Deal Item";
-        value_Dec_Loc: Decimal;
     begin
         IF dealItem_Re_Loc.GET(Deal_ID_Co_Par, ItemNo_Co_Par) THEN
             Value_Co_Ret := dealItem_Re_Loc."Droit de douane reduit" / 100
@@ -629,8 +623,8 @@ codeunit 50024 "DEL Deal Item"
 
     procedure FNC_Manual_Update(ItemNo_Co_Par: Code[20])
     var
-        Item_Re_Loc: Record Item;
         DealItem_Re_Loc: Record "DEL Deal Item";
+        Item_Re_Loc: Record Item;
     begin
 
         IF Item_Re_Loc.GET(ItemNo_Co_Par) THEN BEGIN
@@ -670,10 +664,9 @@ codeunit 50024 "DEL Deal Item"
     procedure FNC_UpdateWithACOLine(From_Te_Par: Text[30]; ACOLine_Re_Par: Record "Purchase Line"; xACOLine_Re_Par: Record "Purchase Line")
     var
         element_Re_Loc: Record "DEL Element";
-        Type_Op_Loc: Option Cost,Price;
-        updateNeeded_Bo_Loc: Boolean;
-        ACO_Line_Re_Loc: Record "Purchase Line";
         UpdateRequest_Re: Record "DEL Update Request Manager";
+        ACO_Line_Re_Loc: Record "Purchase Line";
+        Type_Op_Loc: Option Cost,Price;
     begin
 
         IF ACOLine_Re_Par.Quantity > 0 THEN BEGIN
@@ -765,12 +758,11 @@ codeunit 50024 "DEL Deal Item"
 
     procedure FNC_UpdateWithVCOLine(From_Te_Par: Text[30]; VCOLine_Re_Par: Record "Sales Line"; xVCOLine_Re_Par: Record "Sales Line")
     var
-        element_Re_Loc: Record "DEL Element";
-        Type_Op_Loc: Option Cost,Price;
-        updateNeeded_Bo_Loc: Boolean;
-        VCO_Line_Re_Loc: Record "Sales Line";
-        UpdateRequest_Re: Record "DEL Update Request Manager";
         elem_Re_Loc: Record "DEL Element";
+        element_Re_Loc: Record "DEL Element";
+        UpdateRequest_Re: Record "DEL Update Request Manager";
+        VCO_Line_Re_Loc: Record "Sales Line";
+        Type_Op_Loc: Option Cost,Price;
     begin
         //Cette fonction est appelée lorsque des modifications sont effectuées sur les lignes VCO au niveau du prix de vente
         //-> si p.e. on change la quantité, alors le prix de vente est validé et cette fonction est appelée
@@ -903,8 +895,8 @@ codeunit 50024 "DEL Deal Item"
 
     procedure FNC_Manual_Update2(ItemNo_Co_Par: Code[20])
     var
-        Item_Re_Loc: Record Item;
         DealItem_Re_Loc: Record "DEL Deal Item";
+        Item_Re_Loc: Record Item;
     begin
         //utilser pour mise à jour par lot
         /*Mise à jour des champs "Net Weight", "Gross Weight", "Volume CMB", "Volume CMB Carton" et "PCB"*/

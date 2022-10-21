@@ -36,7 +36,7 @@ page 50097 "DEL General regulation Card"
                         CLEAR(Pays_Page);
                         Pays_Page.SETTABLEVIEW(Pays_Rec);
                         Pays_Page.LOOKUPMODE := TRUE;
-                        IF Pays_Page.RUNMODAL = ACTION::LookupOK THEN BEGIN
+                        IF Pays_Page.RUNMODAL() = ACTION::LookupOK THEN BEGIN
                             Pays_Page.GETRECORD(Pays_Rec);
                             IF Rec.Pays = '' THEN BEGIN
                                 Rec.Pays := Pays_Rec.Code;
@@ -115,7 +115,7 @@ page 50097 "DEL General regulation Card"
     }
 
     var
-        Pays_Page: Page "DEL Pays";
         Pays_Rec: Record "DEL Pays";
+        Pays_Page: Page "DEL Pays";
 }
 

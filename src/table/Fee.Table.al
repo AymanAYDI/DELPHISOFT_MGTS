@@ -127,12 +127,12 @@ table 50024 "DEL Fee"
     end;
 
     var
-        NoSeriesMgt: Codeunit "NoSeriesManagement";
-        Setup: Record "DEL General Setup";
         FeeFactor: Record "DEL Fee Factor";
-        ErrorMsg_Te: Text[250];
+        Setup: Record "DEL General Setup";
+        NoSeriesMgt: Codeunit "NoSeriesManagement";
         IsAccountExistingErr: Label 'The account no. %1 is alrealdy attributed with fee id %2';
         IsNotUsedErr: Label 'The fee %1 is still in use in deal %2 !';
+        ErrorMsg_Te: Text[250];
 
 
     procedure UpdateFactor()

@@ -75,11 +75,6 @@ page 50134 "DEL DocMatrix Mail Codes"
         }
     }
 
-    var
-        DocMatrixEmailText: Record "DEL DocMatrix Email Codes";
-        BodyText: Text;
-        PreviousBodyText: Text;
-
 
     procedure ReadBLOB(pCode: Code[20]; pLanguage: Code[10])
     var

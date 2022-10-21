@@ -37,8 +37,8 @@ report 50046 "DEL Init Order API Rec. Track."
 
 
     var
-        ProgressMsg: Label 'Initialization in progress ...';
         Win: Dialog;
         FinshMsg: Label 'Initialization Finished';
+        ProgressMsg: Label 'Initialization in progress ...';
 }
 

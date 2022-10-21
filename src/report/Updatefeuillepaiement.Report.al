@@ -66,8 +66,8 @@ report 50050 "DEL Update feuille paiement"
     var
         Vendor: Record Vendor;
         VendorLedgerEntry: Record "Vendor Ledger Entry";
-        UpdateRef: Boolean;
-        UpdateDesc: Boolean;
         UpdateBank: Boolean;
+        UpdateDesc: Boolean;
+        UpdateRef: Boolean;
 }
 

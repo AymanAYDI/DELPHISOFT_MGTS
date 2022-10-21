@@ -45,19 +45,9 @@ page 50052 "DEL M Deal Sales Inv. linking"
 
                     trigger OnAction()
                     var
-                        dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
-                        ACOElement_Re_Loc: Record "DEL Element";
-                        element_Re_Loc: Record "DEL Element";
                         urm_Re_Loc: Record "DEL Update Request Manager";
-                        salesInvHeader_Re_Loc: Record "Sales Invoice Header";
                         salesInvoiceHeader_Re_Loc: Record "Sales Invoice Header";
-                        salesInvLine_Re_Loc: Record "Sales Invoice Line";
-                        element_ID_Loc: Code[20];
-                        last: Code[20];
                         requestID_Co_Loc: Code[20];
-                        salesInvID_Co_Loc: Code[20];
-                        shipmentID_Co_Loc: Code[20];
-                        add_Variant_Op_Loc: Option New,Existing;
                     begin
 
 

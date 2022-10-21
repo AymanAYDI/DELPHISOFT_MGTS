@@ -13,21 +13,18 @@ codeunit 50003 "DEL MGT Tracking"
     end;
 
     var
-        MyFile: Record File;
         NgtsSetup: Record "DEL General Setup";
         TrackingGeneral: Record "DEL Tracking non traité";
-        TempBlob: Codeunit "Temp Blob";
+        MyFile: Record File;
         FileManagement: Codeunit "File Management";
 
+
+        TempBlob: Codeunit "Temp Blob";
         MyStream: InStream;
-        TestFile: File;
-        //TODO fso: DotNet File;
+        Pos: Integer;
+        // fso: DotNet File;
         outStreamtest: OutStream;
         charXml: Text;
-        Pos: Integer;
-
-
-        OutStr: OutStream;
 
 
     procedure importXMLFiles1()
@@ -61,7 +58,6 @@ codeunit 50003 "DEL MGT Tracking"
 
 
     procedure importXMLFiles2()
-    var
     begin
         IF NgtsSetup.GET() THEN;
 
@@ -124,8 +120,8 @@ codeunit 50003 "DEL MGT Tracking"
 
     procedure export()
     var
-        tempBlob: Codeunit "Temp Blob";
         FileManagement: Codeunit "File Management";
+        tempBlob: Codeunit "Temp Blob";
         tempfilename: text;
     begin
 

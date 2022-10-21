@@ -174,7 +174,7 @@ xmlport 50014 "DEL Hyperion Export"
                 begin
 
                     IF NOT GLAcc.GET("DEL Export Hyperion Datas"."No.") THEN
-                        GLAcc.INIT;
+                        GLAcc.INIT();
 
                     YearValue := FORMAT(DATE2DMY(ToDate, 3));
                     PeriodValue := FORMAT(DATE2DMY(ToDate, 2));
@@ -228,69 +228,68 @@ xmlport 50014 "DEL Hyperion Export"
     trigger OnPostXmlPort()
     begin
 
-        Window.CLOSE;
+        Window.CLOSE();
 
         currXMLport.FILENAME := GeneralSetup."Hyperion File" +
                                 STRSUBSTNO(Text004, GeneralSetup."Hyperion Company Code", DELCHR(FORMAT(FromDate, 0, '<Day,2>.<Month,2>.<Year>'), '=', '.'),
                                 DELCHR(FORMAT(ToDate, 0, '<Day,2>.<Month,2>.<Year>'), '=', '.'), DELCHR(FORMAT(TODAY, 0, '<Day,2>.<Month,2>.<Year>'), '=', '.'),
                                 DELCHR(FORMAT(TIME, 0, '<hours24>:<minutes,2>:<seconds,2>'), '=', ':'));
 
-        ExportHyperionDatas.RESET;
-        ExportHyperionDatas.DELETEALL;
+        ExportHyperionDatas.RESET();
+        ExportHyperionDatas.DELETEALL();
     end;
 
     trigger OnPreXmlPort()
     begin
 
-        IF NOT GeneralSetup.GET THEN
-            GeneralSetup.INIT;
+        IF NOT GeneralSetup.GET() THEN
+            GeneralSetup.INIT();
 
-        IF NOT GLSetup.GET THEN
-            GLSetup.INIT;
+        IF NOT GLSetup.GET() THEN
+            GLSetup.INIT();
 
-        ExportHyperionDatas.RESET;
-        ExportHyperionDatas.DELETEALL;
+        ExportHyperionDatas.RESET();
+        ExportHyperionDatas.DELETEALL();
 
         Window.OPEN(Text002);
 
-        GLAcc.RESET;
+        GLAcc.RESET();
         GLAcc.SETRANGE("DEL Customer Posting Group", FALSE);
         GLAcc.SETRANGE("DEL Vendor Posting Group", FALSE);
         GLAcc.SETRANGE("Account Type", GLAcc."Account Type"::Posting);
-        IF GLAcc.FINDSET THEN
+        IF GLAcc.FINDSET() THEN
             REPEAT
                 Window.UPDATE(1, GLAcc."No.");
                 GetGLEntryValues(GLAcc);
-            UNTIL GLAcc.NEXT = 0;
+            UNTIL GLAcc.NEXT() = 0;
 
-        GLAcc.RESET;
+        GLAcc.RESET();
         GLAcc.SETRANGE("DEL Customer Posting Group", TRUE);
-        IF GLAcc.FINDSET THEN
+        IF GLAcc.FINDSET() THEN
             REPEAT
                 Window.UPDATE(1, GLAcc."No.");
                 GetCustomerValues(GLAcc);
-            UNTIL GLAcc.NEXT = 0;
+            UNTIL GLAcc.NEXT() = 0;
 
-        GLAcc.RESET;
+        GLAcc.RESET();
         GLAcc.SETRANGE("DEL Vendor Posting Group", TRUE);
-        IF GLAcc.FINDSET THEN
+        IF GLAcc.FINDSET() THEN
             REPEAT
                 Window.UPDATE(1, GLAcc."No.");
                 GetVendorValues(GLAcc);
-            UNTIL GLAcc.NEXT = 0;
+            UNTIL GLAcc.NEXT() = 0;
     end;
 
     var
+        ExportHyperionDatas: Record "DEL Export Hyperion Datas";
         GeneralSetup: Record "DEL General Setup";
+        DimSetEntry: Record "Dimension Set Entry";
         GLAcc: Record "G/L Account";
         GLSetup: Record "General Ledger Setup";
-        DimSetEntry: Record "Dimension Set Entry";
-        ExportHyperionDatas: Record "DEL Export Hyperion Datas";
         FromDate: Date;
         ToDate: Date;
-        EmptyValue: Label 'X';
-        Text001: Label '..%1';
         Window: Dialog;
+        Text001: Label '..%1';
         Text002: Label 'The batch is runing...\\Account no.:  #1########';
         Text003: Label 'CLO';
         Text004: Label 'FDM_%1_%2_%3_%4_%5.csv';
@@ -322,7 +321,7 @@ xmlport 50014 "DEL Hyperion Export"
         ShortcutDim3Code: Code[20];
     begin
 
-        GLEntry.RESET;
+        GLEntry.RESET();
         GLEntry.SETRANGE("G/L Account No.", GLAccRec."No.");
 
         IF GLAccRec."Income/Balance" = GLAccRec."Income/Balance"::"Balance Sheet" THEN
@@ -330,18 +329,18 @@ xmlport 50014 "DEL Hyperion Export"
         ELSE
             GLEntry.SETRANGE("Posting Date", FromDate, ToDate);
 
-        IF GLEntry.FINDSET THEN
+        IF GLEntry.FINDSET() THEN
             REPEAT
-                DimSetEntry.RESET;
+                DimSetEntry.RESET();
                 DimSetEntry.SETRANGE("Dimension Set ID", GLEntry."Dimension Set ID");
                 DimSetEntry.SETRANGE("Dimension Code", GLSetup."Shortcut Dimension 3 Code");
-                IF (DimSetEntry.FINDFIRST) THEN BEGIN
+                IF (DimSetEntry.FINDFIRST()) THEN BEGIN
                     ShortcutDim3Code := DimSetEntry."Dimension Value Code";
                 END ELSE BEGIN
                     ShortcutDim3Code := '';
                 END;
 
-                ExportHyperionDatas.RESET;
+                ExportHyperionDatas.RESET();
                 ExportHyperionDatas.SETRANGE("Company Code", GLAccRec."DEL Company Code");
                 ExportHyperionDatas.SETRANGE("No.", GLAccRec."No.");
                 ExportHyperionDatas.SETRANGE("No. 2", GLAccRec."No. 2");
@@ -349,11 +348,11 @@ xmlport 50014 "DEL Hyperion Export"
                 ExportHyperionDatas.SETRANGE("Reporting Dimension 2 Code", GLAccRec."DEL Reporting Dimension 2 Code");
                 ExportHyperionDatas.SETRANGE("Dimension ENSEIGNE", ShortcutDim3Code);
                 ExportHyperionDatas.SETRANGE(Name, GLAccRec.Name);
-                IF (ExportHyperionDatas.FINDFIRST) THEN BEGIN
+                IF (ExportHyperionDatas.FINDFIRST()) THEN BEGIN
                     ExportHyperionDatas.Amount := ExportHyperionDatas.Amount + GLEntry.Amount * GetSign(GLAccRec);
-                    ExportHyperionDatas.MODIFY;
+                    ExportHyperionDatas.MODIFY();
                 END ELSE BEGIN
-                    ExportHyperionDatas.INIT;
+                    ExportHyperionDatas.INIT();
                     ExportHyperionDatas."Company Code" := GeneralSetup."Hyperion Company Code";
                     ExportHyperionDatas."No." := GLAccRec."No.";
                     ExportHyperionDatas."No. 2" := GLAccRec."No. 2";
@@ -363,40 +362,40 @@ xmlport 50014 "DEL Hyperion Export"
                     ExportHyperionDatas.Name := GLAccRec.Name;
                     ExportHyperionDatas.Amount := GLEntry.Amount * GetSign(GLAccRec);
                     ExportHyperionDatas."Line No." := 1;
-                    ExportHyperionDatas.INSERT;
+                    ExportHyperionDatas.INSERT();
                 END;
-            UNTIL GLEntry.NEXT = 0;
+            UNTIL GLEntry.NEXT() = 0;
     end;
 
     local procedure GetCustomerValues(GLAccRec: Record "G/L Account")
     var
-        CustPostGroup: Record "Customer Posting Group";
         Customer: Record Customer;
+        CustPostGroup: Record "Customer Posting Group";
         DefaultDim: Record "Default Dimension";
         ShortcutDim3Code: Code[20];
     begin
 
-        CustPostGroup.RESET;
+        CustPostGroup.RESET();
         CustPostGroup.SETRANGE("Receivables Account", GLAccRec."No.");
-        IF CustPostGroup.FINDSET THEN
+        IF CustPostGroup.FINDSET() THEN
             REPEAT
-                Customer.RESET;
+                Customer.RESET();
                 Customer.SETRANGE("Customer Posting Group", CustPostGroup.Code);
                 Customer.SETFILTER("Date Filter", STRSUBSTNO(Text001, ToDate));
-                IF Customer.FINDSET THEN
+                IF Customer.FINDSET() THEN
                     REPEAT
                         Customer.CALCFIELDS(Customer."Net Change (LCY)");
 
-                        DefaultDim.RESET;
+                        DefaultDim.RESET();
                         DefaultDim.SETRANGE("Table ID", DATABASE::Customer);
                         DefaultDim.SETRANGE("Dimension Code", GLSetup."Shortcut Dimension 3 Code");
                         DefaultDim.SETRANGE("No.", Customer."No.");
-                        IF (DefaultDim.FINDFIRST) THEN BEGIN
+                        IF (DefaultDim.FINDFIRST()) THEN BEGIN
                             ShortcutDim3Code := DefaultDim."Dimension Value Code";
                         END ELSE
                             ShortcutDim3Code := '';
 
-                        ExportHyperionDatas.RESET;
+                        ExportHyperionDatas.RESET();
                         ExportHyperionDatas.SETRANGE("Company Code", GLAccRec."DEL Company Code");
                         ExportHyperionDatas.SETRANGE("No.", GLAccRec."No.");
                         ExportHyperionDatas.SETRANGE("No. 2", GLAccRec."No. 2");
@@ -404,11 +403,11 @@ xmlport 50014 "DEL Hyperion Export"
                         ExportHyperionDatas.SETRANGE("Reporting Dimension 2 Code", GLAccRec."DEL Reporting Dimension 2 Code");
                         ExportHyperionDatas.SETRANGE("Dimension ENSEIGNE", ShortcutDim3Code);
                         ExportHyperionDatas.SETRANGE(Name, GLAccRec.Name);
-                        IF (ExportHyperionDatas.FINDFIRST) THEN BEGIN
+                        IF (ExportHyperionDatas.FINDFIRST()) THEN BEGIN
                             ExportHyperionDatas.Amount := ExportHyperionDatas.Amount + Customer."Net Change (LCY)" * GetSign(GLAccRec);
-                            ExportHyperionDatas.MODIFY;
+                            ExportHyperionDatas.MODIFY();
                         END ELSE BEGIN
-                            ExportHyperionDatas.INIT;
+                            ExportHyperionDatas.INIT();
                             ExportHyperionDatas."Company Code" := GeneralSetup."Hyperion Company Code";
                             ExportHyperionDatas."No." := GLAccRec."No.";
                             ExportHyperionDatas."No. 2" := GLAccRec."No. 2";
@@ -418,41 +417,41 @@ xmlport 50014 "DEL Hyperion Export"
                             ExportHyperionDatas.Name := GLAccRec.Name;
                             ExportHyperionDatas.Amount := Customer."Net Change (LCY)" * GetSign(GLAccRec);
                             ExportHyperionDatas."Line No." := 1;
-                            ExportHyperionDatas.INSERT;
+                            ExportHyperionDatas.INSERT();
                         END;
-                    UNTIL Customer.NEXT = 0;
-            UNTIL CustPostGroup.NEXT = 0;
+                    UNTIL Customer.NEXT() = 0;
+            UNTIL CustPostGroup.NEXT() = 0;
     end;
 
     local procedure GetVendorValues(GLAccRec: Record "G/L Account")
     var
-        VendPostGroup: Record "Vendor Posting Group";
-        Vendor: Record Vendor;
         DefaultDim: Record "Default Dimension";
+        Vendor: Record Vendor;
+        VendPostGroup: Record "Vendor Posting Group";
         ShortcutDim3Code: Code[20];
     begin
 
-        VendPostGroup.RESET;
+        VendPostGroup.RESET();
         VendPostGroup.SETRANGE("Payables Account", GLAccRec."No.");
-        IF VendPostGroup.FINDSET THEN
+        IF VendPostGroup.FINDSET() THEN
             REPEAT
-                Vendor.RESET;
+                Vendor.RESET();
                 Vendor.SETRANGE("Vendor Posting Group", VendPostGroup.Code);
                 Vendor.SETFILTER("Date Filter", STRSUBSTNO(Text001, ToDate));
-                IF Vendor.FINDSET THEN
+                IF Vendor.FINDSET() THEN
                     REPEAT
                         Vendor.CALCFIELDS(Vendor."Net Change (LCY)");
 
-                        DefaultDim.RESET;
+                        DefaultDim.RESET();
                         DefaultDim.SETRANGE("Table ID", DATABASE::Vendor);
                         DefaultDim.SETRANGE("Dimension Code", GLSetup."Shortcut Dimension 3 Code");
                         DefaultDim.SETRANGE("No.", Vendor."No.");
-                        IF (DefaultDim.FINDFIRST) THEN BEGIN
+                        IF (DefaultDim.FINDFIRST()) THEN BEGIN
                             ShortcutDim3Code := DefaultDim."Dimension Value Code";
                         END ELSE
                             ShortcutDim3Code := '';
 
-                        ExportHyperionDatas.RESET;
+                        ExportHyperionDatas.RESET();
                         ExportHyperionDatas.SETRANGE("Company Code", GLAccRec."DEL Company Code");
                         ExportHyperionDatas.SETRANGE("No.", GLAccRec."No.");
                         ExportHyperionDatas.SETRANGE("No. 2", GLAccRec."No. 2");
@@ -460,11 +459,11 @@ xmlport 50014 "DEL Hyperion Export"
                         ExportHyperionDatas.SETRANGE("Reporting Dimension 2 Code", GLAccRec."DEL Reporting Dimension 2 Code");
                         ExportHyperionDatas.SETRANGE("Dimension ENSEIGNE", ShortcutDim3Code);
                         ExportHyperionDatas.SETRANGE(Name, GLAccRec.Name);
-                        IF (ExportHyperionDatas.FINDFIRST) THEN BEGIN
+                        IF (ExportHyperionDatas.FINDFIRST()) THEN BEGIN
                             ExportHyperionDatas.Amount := ExportHyperionDatas.Amount - Vendor."Net Change (LCY)" * GetSign(GLAccRec);
-                            ExportHyperionDatas.MODIFY;
+                            ExportHyperionDatas.MODIFY();
                         END ELSE BEGIN
-                            ExportHyperionDatas.INIT;
+                            ExportHyperionDatas.INIT();
                             ExportHyperionDatas."Company Code" := GeneralSetup."Hyperion Company Code";
                             ExportHyperionDatas."No." := GLAccRec."No.";
                             ExportHyperionDatas."No. 2" := GLAccRec."No. 2";
@@ -474,15 +473,13 @@ xmlport 50014 "DEL Hyperion Export"
                             ExportHyperionDatas.Name := GLAccRec.Name;
                             ExportHyperionDatas.Amount := -Vendor."Net Change (LCY)" * GetSign(GLAccRec);
                             ExportHyperionDatas."Line No." := 1;
-                            ExportHyperionDatas.INSERT;
+                            ExportHyperionDatas.INSERT();
                         END;
-                    UNTIL Vendor.NEXT = 0;
-            UNTIL VendPostGroup.NEXT = 0;
+                    UNTIL Vendor.NEXT() = 0;
+            UNTIL VendPostGroup.NEXT() = 0;
     end;
 
     local procedure GetSign(var pGlAccount: Record "G/L Account"): Decimal
-    var
-        lSign: Decimal;
     begin
 
         CASE pGlAccount."DEL Hyperion Export Sign" OF

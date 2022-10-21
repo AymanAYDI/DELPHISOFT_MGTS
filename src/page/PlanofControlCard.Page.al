@@ -58,10 +58,5 @@ page 50107 "DEL Plan of Control Card"
             }
         }
     }
-
-
-    var
-        TestType: Record "DEL Test Type";
-        TestType_Page: Page "DEL Test Type";
 }
 

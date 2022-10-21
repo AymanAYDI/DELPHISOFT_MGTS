@@ -126,9 +126,6 @@ tableextension 50044 "DEL GenJournalLine" extends "Gen. Journal Line"
         }
     }
 
-    var
-        dealShipmentSelection_Re_Loc: Record "IC Outbox Purchase Header";
-
 
 }
 

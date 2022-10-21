@@ -197,15 +197,15 @@ page 50090 "DEL Matrix General regulation"
     }
 
     var
-        RegGen: Page "DEL Gen. product regulation 2";
         Reglementation: Record "DEL Regulation";
         RegulationMatrixLine: Record "DEL Regulation Matrix Line";
-        ProductCode: Code[20];
+        RegGen: Page "DEL Gen. product regulation 2";
         CategCode: Code[20];
-        Markfilter: Text;
-        DescProduct: Text;
-        MarkOptionENU: Option " ","Own brand","Supplier brand",Licence,"No Name","Premium Brand",NA,"?","All Marks";
-        MarkOptionFRS: Option " ",MDD,"Marque Fournisseur",Licence,"Sans Marque","Marque Prestige",NC,NA,"?","Toutes Marques";
+        ProductCode: Code[20];
         CurrGlobLang: Integer;
+        MarkOptionFRS: Option " ",MDD,"Marque Fournisseur",Licence,"Sans Marque","Marque Prestige",NC,NA,"?","Toutes Marques";
+        MarkOptionENU: Option " ","Own brand","Supplier brand",Licence,"No Name","Premium Brand",NA,"?","All Marks";
+        DescProduct: Text;
+        Markfilter: Text;
 }
 

@@ -112,8 +112,7 @@ report 50020 "DEL MAJ Logis sans Cmde Achat"
 
     var
         LastFieldNo: Integer;
-        FooterPrinted: Boolean;
-        ElementCaptionLbl: Label 'Element';
         CurrReport_PAGENOCaptionLbl: Label 'Page';
+        ElementCaptionLbl: Label 'Element';
 }
 

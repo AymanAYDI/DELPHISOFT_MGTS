@@ -27,8 +27,6 @@ table 50076 "DEL MGTS Change Log Entry"
             //TestTableRelation = false;
 
             trigger OnLookup()
-            var
-                UserMgt: Codeunit 418;
             begin
                 //  TODO // UserMgt.LookupUserID("User ID"); IS NOT SUPPORTED IN V20
             end;

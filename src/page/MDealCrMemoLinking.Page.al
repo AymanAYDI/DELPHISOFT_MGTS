@@ -53,8 +53,8 @@ page 50082 "DEL M Deal Cr. Memo Linking"
                         urm_Re_Loc: Record "DEL Update Request Manager";
 
                         salesCrMemoHeader_Re_Loc: Record "Sales Cr.Memo Header";
-                        add_Variant_Op_Loc: Option New,Existing;
                         requestID_Co_Loc: Code[20];
+                        add_Variant_Op_Loc: Option New,Existing;
 
 
                     begin
@@ -110,22 +110,17 @@ page 50082 "DEL M Deal Cr. Memo Linking"
 
     var
         Element_Cu: Codeunit "DEL Element";
-        Deal_Cu: Codeunit "DEL Deal";
-        UpdateRequestManager_Cu: Codeunit "DEL Update Request Manager";
-        DealShipment_Cu: Codeunit "DEL Deal Shipment";
-        ShipmentConnection_Cu: Codeunit "DEL Deal Shipment Connection";
         Position_CU: Codeunit "DEL Position";
-        Text19022230: Label 'M A N U A L   L I N K I N G';
+        UpdateRequestManager_Cu: Codeunit "DEL Update Request Manager";
 
 
     procedure ChangeCodeAchat_FNC()
     var
-        SalesCreditMemoLine_Re_Loc: Record "Sales Cr.Memo Line";
+        ACOConnection_Rec_Loc: Record "DEL ACO Connection";
         // PostedLine_Re_Loc: Record "359"; TODO: I CHANGED 359 TO 480..
         PostedLine_Re_Loc: Record "Dimension Set Entry";
-        ACOConnection_Rec_Loc: Record "DEL ACO Connection";
-        DealShipment_Rec_Loc: Record "DEL Deal Shipment";
         SalesCreditMemoHeader_Re_Loc: Record "Sales Cr.Memo Header";
+        SalesCreditMemoLine_Re_Loc: Record "Sales Cr.Memo Line";
         NewCodeAchatNo_Co_Par: Code[20];
     begin
 

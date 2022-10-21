@@ -181,8 +181,8 @@ xmlport 50001 "DEL Import tracking"
     end;
 
     var
-        "TrackingNonTraitéRec": Record "DEL Tracking non traité";
         "TrackinggénéraRec": Record "DEL Tracking général";
+        "TrackingNonTraitéRec": Record "DEL Tracking non traité";
 
         DernierNum: Integer;
         DernierNum1: Integer;

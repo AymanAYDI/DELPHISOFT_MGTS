@@ -5,15 +5,14 @@ codeunit 50022 "DEL Position"
     end;
 
     var
-        Deal_Cu: Codeunit "DEL Deal";
-        Element_Cu: Codeunit "DEL Element";
-        DealItem_Cu: Codeunit "DEL Deal Item";
-        ERROR_TXT: Label 'ERREUR\Source : %1\Function : %2\Reason : %3';
-        NoSeriesMgt_Cu: Codeunit NoSeriesManagement;
-        Fee_Cu: Codeunit "DEL Fee";
-        DealShipment_Cu: Codeunit "DEL Deal Shipment";
-        Setup: Record "DEL General Setup";
         Currency_Exchange_Re: Record "DEL Currency Exchange";
+        Setup: Record "DEL General Setup";
+        Deal_Cu: Codeunit "DEL Deal";
+        DealItem_Cu: Codeunit "DEL Deal Item";
+        Element_Cu: Codeunit "DEL Element";
+        Fee_Cu: Codeunit "DEL Fee";
+        NoSeriesMgt_Cu: Codeunit NoSeriesManagement;
+        ERROR_TXT: Label 'ERREUR\Source : %1\Function : %2\Reason : %3';
         INFORMATION_TXT: Label 'INFORMATION\%1';
 
 
@@ -60,7 +59,6 @@ codeunit 50022 "DEL Position"
 
     procedure FNC_Insert_Position(Deal_ID_Co_Par: Code[20]; Element_ID_Co_Par: Code[20]; DealItemNo_Co_Par: Code[20]; Quantity_Dec_Par: Decimal; Currency_Co_Par: Code[10]; Amount_Dec_Par: Decimal; Sub_Element_ID_Co_Par: Code[20]; Rate_Dec_Par: Decimal; CampaignCode_Co_Par: Code[20])
     var
-        deal_Re_Loc: Record "DEL Deal";
         element_Re_Loc: Record "DEL Element";
         position_Re_Loc: Record "DEL Position";
         position_ID_Co_Loc: Code[20];
@@ -113,12 +111,11 @@ codeunit 50022 "DEL Position"
     procedure FNC_Add_ACO_Position(Deal_ID_Co_Par: Code[20])
     var
         element_Re_Loc: Record "DEL Element";
-        ACO_Re_Loc: Record "Purchase Header";
+        importFromInvoice_Re_Temp: Record "DEL Import From Invoice" temporary;
+        purchInvHeader_Re_Loc: Record "Purch. Inv. Header";
+        purchInvLine_Re_Loc: Record "Purch. Inv. Line";
         ACO_Line_Re_Loc: Record "Purchase Line";
         itemCurrency_Co_Loc: Code[10];
-        importFromInvoice_Re_Temp: Record "DEL Import From Invoice" temporary;
-        purchInvLine_Re_Loc: Record "Purch. Inv. Line";
-        purchInvHeader_Re_Loc: Record "Purch. Inv. Header";
     begin
         Deal_Cu.FNC_Get_ACO(element_Re_Loc, Deal_ID_Co_Par);
         IF element_Re_Loc.FINDFIRST() THEN
@@ -236,14 +233,14 @@ codeunit 50022 "DEL Position"
 
     procedure FNC_Add_VCO_Position(Deal_ID_Co_Par: Code[20])
     var
+        ACOElement_Re_Loc: Record "DEL Element";
         element_Re_Loc: Record "DEL Element";
+        elementConnection_Re_Loc: Record "DEL Element Connection";
+        importFromInvoice_Re_Temp: Record "DEL Import From Invoice" temporary;
+        salesInvHeader_Re_Loc: Record "Sales Invoice Header";
+        salesInvLine_Re_Loc: Record "Sales Invoice Line";
         VCO_Line_Re_Loc: Record "Sales Line";
         itemCurrency_Co_Loc: Code[10];
-        elementConnection_Re_Loc: Record "DEL Element Connection";
-        ACOElement_Re_Loc: Record "DEL Element";
-        salesInvLine_Re_Loc: Record "Sales Invoice Line";
-        salesInvHeader_Re_Loc: Record "Sales Invoice Header";
-        importFromInvoice_Re_Temp: Record "DEL Import From Invoice" temporary;
     begin
 
 
@@ -448,9 +445,6 @@ codeunit 50022 "DEL Position"
 
 
     procedure FNC_Add_BR_Position(Deal_ID_Co_Par: Code[20]; Add_Silently_Bo_Par: Boolean)
-    var
-        element_Re_Loc: Record "DEL Element";
-        BR_Line_Re_Loc: Record "Purch. Rcpt. Line";
     begin
 
     end;
@@ -459,8 +453,6 @@ codeunit 50022 "DEL Position"
     procedure FNC_Add_Invoice_Position(Deal_ID_Co_Par: Code[20])
     var
         element_Re_Loc: Record "DEL Element";
-        BR_Line_Re_Loc: Record "Purch. Rcpt. Line";
-        position_Re_Loc: Record "DEL Position";
     begin
         //on recherche tous les "Element" de type Invoice pour un Deal.ID donné
 
@@ -480,10 +472,6 @@ codeunit 50022 "DEL Position"
 
 
     procedure FNC_Add_Provision_Position(Deal_ID_Co_Par: Code[20])
-    var
-        element_Re_Loc: Record "DEL Element";
-        BR_Line_Re_Loc: Record "Purch. Rcpt. Line";
-        position_Re_Loc: Record "DEL Position";
     begin
 
     end;
@@ -491,14 +479,13 @@ codeunit 50022 "DEL Position"
 
     procedure FNC_Add_PurchInvoice_Position(Deal_ID_Co_Par: Code[20]; Add_Silently_Bo_Par: Boolean)
     var
+        currExRate_Re_loc: Record "Currency Exchange Rate";
+        ACOElement_Re_Loc: Record "DEL Element";
         element_Re_Loc: Record "DEL Element";
         purchInvHeader_Re_Loc: Record "Purch. Inv. Header";
         purchInv_Line_Re_Loc: Record "Purch. Inv. Line";
         currency_Co_Loc: Code[10];
         currencyRate_Dec_Loc: Decimal;
-        position_Re_Loc: Record "DEL Position";
-        currExRate_Re_loc: Record "Currency Exchange Rate";
-        ACOElement_Re_Loc: Record "DEL Element";
     begin
         //on recherche tous les "Element" de type Purchase Invoice pour un Deal.ID donné
 
@@ -558,11 +545,11 @@ codeunit 50022 "DEL Position"
 
     procedure FNC_Add_PurchCrMemo_Position(Deal_ID_Co_Par: Code[20]; Add_Silently_Bo_Par: Boolean)
     var
-        element_Re_Loc: Record "DEL Element";
-        ACOElement_Re_Loc: Record "DEL Element";
-        purchCreditMemoLine_Re_Loc: Record "Purch. Cr. Memo Line";
-        purchCreditMemoHeader_Re_Loc: Record "Purch. Cr. Memo Hdr.";
         currExRate_Re_loc: Record "Currency Exchange Rate";
+        ACOElement_Re_Loc: Record "DEL Element";
+        element_Re_Loc: Record "DEL Element";
+        purchCreditMemoHeader_Re_Loc: Record "Purch. Cr. Memo Hdr.";
+        purchCreditMemoLine_Re_Loc: Record "Purch. Cr. Memo Line";
         currency_Co_Loc: Code[10];
         currencyRate_Dec_Loc: Decimal;
     begin
@@ -627,14 +614,13 @@ codeunit 50022 "DEL Position"
 
     procedure FNC_Add_SalesInvoice_Position(Deal_ID_Co_Par: Code[20]; Add_Silently_Bo_Par: Boolean)
     var
+        currExRate_Re_loc: Record "Currency Exchange Rate";
+        ACOElement_Re_Loc: Record "DEL Element";
         element_Re_Loc: Record "DEL Element";
         salesInvHeader_Re_Loc: Record "Sales Invoice Header";
         salesInv_Line_Re_Loc: Record "Sales Invoice Line";
         currency_Co_Loc: Code[10];
         currencyRate_Dec_Loc: Decimal;
-        position_Re_Loc: Record "DEL Position";
-        currExRate_Re_loc: Record "Currency Exchange Rate";
-        ACOElement_Re_Loc: Record "DEL Element";
     begin
         //on recherche tous les "Element" de type Sales Invoice pour un Deal.ID donné
 
@@ -699,11 +685,11 @@ codeunit 50022 "DEL Position"
 
     procedure FNC_Add_SalesCrMemo_Position(Deal_ID_Co_Par: Code[20]; Add_Silently_Bo_Par: Boolean)
     var
-        element_Re_Loc: Record "DEL Element";
-        ACOElement_Re_Loc: Record "DEL Element";
-        salesCreditMemoLine_Re_Loc: Record "Sales Cr.Memo Line";
-        salesCreditMemoHeader_Re_Loc: Record "Sales Cr.Memo Header";
         currExRate_Re_loc: Record "Currency Exchange Rate";
+        ACOElement_Re_Loc: Record "DEL Element";
+        element_Re_Loc: Record "DEL Element";
+        salesCreditMemoHeader_Re_Loc: Record "Sales Cr.Memo Header";
+        salesCreditMemoLine_Re_Loc: Record "Sales Cr.Memo Line";
         currency_Co_Loc: Code[10];
         currencyRate_Dec_Loc: Decimal;
     begin
@@ -770,8 +756,8 @@ codeunit 50022 "DEL Position"
         ds_Re_Loc: Record "DEL Deal Shipment";
         dsc_Re_Loc: Record "DEL Deal Shipment Connection";
         element_Re_Loc: Record "DEL Element";
-        position_Re_Loc: Record "DEL Position";
         feeElement_Re_Loc: Record "DEL Element";
+        position_Re_Loc: Record "DEL Position";
     begin
         //Pour les livraisons de l'affaire qui ont un BR
         ds_Re_Loc.RESET();
@@ -850,12 +836,10 @@ codeunit 50022 "DEL Position"
 
     procedure FNC_Add_DispatchedACO_Position(DealID_Co_Par: Code[20]; BRNo_Co_Par: Code[20]; ElementID_Co_Par: Code[20])
     var
-        element_Re_Loc: Record "DEL Element";
         purchRcptLine_Re_Loc: Record "Purch. Rcpt. Line";
-        BRNo_Co: Code[20];
-        qty_Dec_Loc: Decimal;
-        amount_Dec_Loc: Decimal;
         curr_Co_Loc: Code[10];
+        amount_Dec_Loc: Decimal;
+        qty_Dec_Loc: Decimal;
         rate_Dec_Loc: Decimal;
     begin
 
@@ -888,12 +872,10 @@ codeunit 50022 "DEL Position"
 
     procedure FNC_Add_DispatchedVCO_Position(DealID_Co_Par: Code[20]; BRNo_Co_Par: Code[20]; ElementID_Co_Par: Code[20])
     var
-        element_Re_Loc: Record "DEL Element";
         purchRcptLine_Re_Loc: Record "Purch. Rcpt. Line";
-        BRNo_Co: Code[20];
-        qty_Dec_Loc: Decimal;
-        amount_Dec_Loc: Decimal;
         curr_Co_Loc: Code[10];
+        amount_Dec_Loc: Decimal;
+        qty_Dec_Loc: Decimal;
         rate_Dec_Loc: Decimal;
     begin
         purchRcptLine_Re_Loc.RESET();
@@ -925,15 +907,12 @@ codeunit 50022 "DEL Position"
 
     procedure FNC_Add_DispatchedFee_Position(DealID_Co_Par: Code[20]; BRNo_Co_Par: Code[20]; ElementID_Co_Par: Code[20]; FeeElementID_Co_Par: Code[20])
     var
-        element_Re_Loc: Record "DEL Element";
-        purchRcptLine_Re_Loc: Record "Purch. Rcpt. Line";
         position_Re_Loc: Record "DEL Position";
-        BRNo_Co: Code[20];
-        qty_Dec_Loc: Decimal;
-        amount_Dec_Loc: Decimal;
+        purchRcptLine_Re_Loc: Record "Purch. Rcpt. Line";
         curr_Co_Loc: Code[10];
+        amount_Dec_Loc: Decimal;
+        qty_Dec_Loc: Decimal;
         rate_Dec_Loc: Decimal;
-        feeElement_Re_Loc: Record "DEL Element";
     begin
         purchRcptLine_Re_Loc.RESET();
         purchRcptLine_Re_Loc.SETRANGE("Document No.", BRNo_Co_Par);
@@ -974,7 +953,6 @@ codeunit 50022 "DEL Position"
     procedure FNC_Get_Amount(Position_ID_Co_Par: Code[20]) Amount_Dec_Ret: Decimal
     var
         position_Re_Loc: Record "DEL Position";
-        curr_Re_Loc: Record "DEL Currency Exchange";
     begin
         FNC_Set_Position(position_Re_Loc, Position_ID_Co_Par);
 
@@ -988,7 +966,6 @@ codeunit 50022 "DEL Position"
     procedure FNC_Get_Raw_Amount(Position_ID_Co_Par: Code[20]) Amount_Dec_Ret: Decimal
     var
         position_Re_Loc: Record "DEL Position";
-        curr_Re_Loc: Record "DEL Currency Exchange";
     begin
         FNC_Set_Position(position_Re_Loc, Position_ID_Co_Par);
 

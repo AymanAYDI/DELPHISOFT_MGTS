@@ -42,12 +42,12 @@ codeunit 50058 "DEL Sales Event Mgt."
     var
         SalesLine: Record "Sales Line";
         PriceCalcMgt: Codeunit "Sales Price Calc. Mgt.";
-        NothingToHandleErr: Label 'There is nothing to handle.';
-        UpdatedPriceMess: Label 'Update completed.';
 
         Win: Dialog;
-        UpdatePricesInProgress: Label 'Updating prices...';
         CofirmMessage: Label 'Are you sure you want to update the order prices?';
+        NothingToHandleErr: Label 'There is nothing to handle.';
+        UpdatedPriceMess: Label 'Update completed.';
+        UpdatePricesInProgress: Label 'Updating prices...';
     begin
         IF NOT CONFIRM(CofirmMessage) THEN
             EXIT;

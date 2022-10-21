@@ -73,7 +73,7 @@ page 50081 "DEL Manual Deal Item Update"
                 trigger OnAction()
                 begin
                     //TODO: WE DIDNT BRING YET THE REPORTS 
-                    REPORT.RUN(50032);
+                    REPORT.RUN(Report::"DEL Deal items Update");
 
                 end;
             }
@@ -82,7 +82,6 @@ page 50081 "DEL Manual Deal Item Update"
 
     var
         DealItem_Cu: Codeunit "DEL Deal Item";
-        Text19021811: Label 'D E A L   I T E M   U P D A T E';
 }
 
 

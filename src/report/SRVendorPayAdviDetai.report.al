@@ -200,8 +200,8 @@ report 50035 "DEL SR Vendor Pay. Advi. Detai"
                     trigger OnAfterGetRecord()
                     begin
                         IF Number > 1 THEN
-                            IF TempVendLedgEntry.NEXT = 0 THEN
-                                CurrReport.BREAK;
+                            IF TempVendLedgEntry.NEXT() = 0 THEN
+                                CurrReport.BREAK();
 
                         IF TempVendLedgEntry."Currency Code" = '' THEN
                             TempVendLedgEntry."Currency Code" := GlSetup."LCY Code";
@@ -211,9 +211,9 @@ report 50035 "DEL SR Vendor Pay. Advi. Detai"
 
                     trigger OnPreDataItem()
                     begin
-                        TempVendLedgEntry.RESET;
-                        IF NOT TempVendLedgEntry.FINDSET THEN
-                            CurrReport.BREAK;
+                        TempVendLedgEntry.RESET();
+                        IF NOT TempVendLedgEntry.FINDSET() THEN
+                            CurrReport.BREAK();
                     end;
                 }
                 dataitem(RelatedPmtVendEntryLoop; Integer)
@@ -248,8 +248,8 @@ report 50035 "DEL SR Vendor Pay. Advi. Detai"
                     trigger OnAfterGetRecord()
                     begin
                         IF Number > 1 THEN
-                            IF TempRelatedVendLedgEntry.NEXT = 0 THEN
-                                CurrReport.BREAK;
+                            IF TempRelatedVendLedgEntry.NEXT() = 0 THEN
+                                CurrReport.BREAK();
 
                         IF TempRelatedVendLedgEntry."Currency Code" = '' THEN
                             TempRelatedVendLedgEntry."Currency Code" := GlSetup."LCY Code";
@@ -259,9 +259,9 @@ report 50035 "DEL SR Vendor Pay. Advi. Detai"
 
                     trigger OnPreDataItem()
                     begin
-                        TempRelatedVendLedgEntry.RESET;
-                        IF NOT TempRelatedVendLedgEntry.FINDSET THEN
-                            CurrReport.BREAK;
+                        TempRelatedVendLedgEntry.RESET();
+                        IF NOT TempRelatedVendLedgEntry.FINDSET() THEN
+                            CurrReport.BREAK();
                     end;
                 }
                 dataitem("Vendor Ledger Entry"; "Vendor Ledger Entry")
@@ -326,7 +326,7 @@ report 50035 "DEL SR Vendor Pay. Advi. Detai"
                         ERROR(Text002, "Recipient Bank Account", "Account No.");
 
                         IF VendBank."Payment Form" IN [VendBank."Payment Form"::ESR, VendBank."Payment Form"::"ESR+"] THEN
-                            CurrReport.SKIP;
+                            CurrReport.SKIP();
                     END;
 
                     // Rechnungsposten für Rech. Betrag
@@ -340,7 +340,7 @@ report 50035 "DEL SR Vendor Pay. Advi. Detai"
                         VendEntry.SETRANGE("Document No.", "Applies-to Doc. No.");
                         VendEntry.SETRANGE("Vendor No.", "Account No.");
                         IF NOT VendEntry.FIND('-') THEN
-                            VendEntry.INIT;
+                            VendEntry.INIT();
 
                         VendEntry.CALCFIELDS(Amount, "Remaining Amount");
 
@@ -420,7 +420,7 @@ report 50035 "DEL SR Vendor Pay. Advi. Detai"
                     IF NOT ShowEsrPayments THEN
                         SetEsrFilter(TempGenJourLine);
                     IF TempGenJourLine.COUNT < PrintFromNoOfVendorInvoices THEN
-                        CurrReport.BREAK;
+                        CurrReport.BREAK();
                 end;
             }
 
@@ -483,7 +483,7 @@ report 50035 "DEL SR Vendor Pay. Advi. Detai"
 
             IF (RespPerson = '') AND (USERID <> '') THEN BEGIN
                 User.SETRANGE("User Name", USERID);
-                IF User.FINDFIRST THEN
+                IF User.FINDFIRST() THEN
                     RespPerson := User."Full Name";
             END;
         end;
@@ -505,10 +505,10 @@ report 50035 "DEL SR Vendor Pay. Advi. Detai"
 
     trigger OnPreReport()
     begin
-        CompanyInformation.GET;
+        CompanyInformation.GET();
         FormatAdr.Company(CompanyAdr, CompanyInformation);
 
-        GlSetup.GET;
+        GlSetup.GET();
         IF GlSetup."LCY Code" = '' THEN
             GlSetup."LCY Code" := Text000;
     end;
@@ -579,7 +579,7 @@ report 50035 "DEL SR Vendor Pay. Advi. Detai"
                     TempGenJourLine.MARK(TRUE)
                 ELSE
                     TempGenJourLine.MARK(FALSE);
-            UNTIL TempGenJourLine.NEXT = 0;
+            UNTIL TempGenJourLine.NEXT() = 0;
         END;
         TempGenJourLine.MARKEDONLY(TRUE);
     end;
@@ -589,10 +589,10 @@ report 50035 "DEL SR Vendor Pay. Advi. Detai"
         IF EntryNo = 0 THEN
             EXIT;
 
-        TempVendLedgEntry.RESET;
-        TempVendLedgEntry.DELETEALL;
-        TempRelatedVendLedgEntry.RESET;
-        TempRelatedVendLedgEntry.DELETEALL;
+        TempVendLedgEntry.RESET();
+        TempVendLedgEntry.DELETEALL();
+        TempRelatedVendLedgEntry.RESET();
+        TempRelatedVendLedgEntry.DELETEALL();
 
         UpdateVendLedgEntryBufferRecursively(TempVendLedgEntry, TempRelatedVendLedgEntry, EntryNo);
     end;
@@ -602,13 +602,13 @@ report 50035 "DEL SR Vendor Pay. Advi. Detai"
         VendLedgEntry: Record "Vendor Ledger Entry";
     begin
         VendLedgEntry.SETRANGE("Closed by Entry No.", EntryNo);
-        IF VendLedgEntry.FINDSET THEN
+        IF VendLedgEntry.FINDSET() THEN
             REPEAT
                 VendLedgEntryBuffer := VendLedgEntry;
-                IF VendLedgEntryBuffer.INSERT THEN;
+                IF VendLedgEntryBuffer.INSERT() THEN;
                 UpdateVendLedgEntryBufferRecursively(
                   RelatedVendLedgEntryBuffer, RelatedVendLedgEntryBuffer, VendLedgEntry."Entry No.");
-            UNTIL VendLedgEntry.NEXT = 0;
+            UNTIL VendLedgEntry.NEXT() = 0;
     end;
 
 

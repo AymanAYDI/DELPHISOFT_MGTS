@@ -76,15 +76,13 @@ page 50114 "DEL Matrix Text"
 
     trigger OnNewRecord(BelowxRec: Boolean)
     begin
-        GetNextLineNo(Rec, FALSE);
+        Rec.GetNextLineNo(Rec, FALSE);
     end;
 
 
     procedure EditText()
     var
         RecRef: RecordRef;
-        TextEdit: Codeunit "Export Mail Prod Nouv Et Suiv";
-        Text00001: Label 'Edit Document Text';
     begin
 
         RecRef.GETTABLE(Rec);

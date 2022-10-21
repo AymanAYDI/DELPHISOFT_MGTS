@@ -2,26 +2,14 @@ codeunit 50023 "DEL Fee"
 {
 
     var
-        Setup: Record "DEL General Setup";
         DealShipment_Cu: Codeunit "DEL Deal Shipment";
-        Element_Cu: Codeunit "DEL Element";
-        ElementConnection_Cu: Codeunit "DEL Element Connection";
-        Fee_Cu: Codeunit "DEL Fee";
-        Position_Cu: Codeunit "DEL Position";
         Dispatcher_Cu: Codeunit "DEL Dispatcher";
+        Element_Cu: Codeunit "DEL Element";
+        Fee_Cu: Codeunit "DEL Fee";
         ERROR_TXT: Label 'ERREUR\Source : %1\Function : %2\Reason : %3';
 
 
     procedure FNC_Add(element_ID_Co_Par: Code[20])
-    var
-        element_Re_Loc: Record "DEL Element";
-        element_Re_Temp: Record "DEL Element";
-        elementConnection_Re_Loc: Record "DEL Element Connection";
-        fee_Re_Loc: Record "DEL Fee";
-        fee_Connection_Re_Loc: Record "DEL Fee Connection";
-        ACO_Re_Loc: Record "Purchase Header";
-        VCO_Re_Loc: Record "Sales Header";
-        isToSkip: Boolean;
     begin
         /*AJOUTE TOUS LES FEE D'UN ELEMENT*/
 
@@ -34,11 +22,8 @@ codeunit 50023 "DEL Fee"
     procedure FNC_Add_Deal_Specific(Element_ID_Co_Par: Code[20])
     var
         element_Re_Loc: Record "DEL Element";
-        element_Re_Temp: Record "DEL Element";
         fee_Re_Loc: Record "DEL Fee";
         fee_Connection_Re_Loc: Record "DEL Fee Connection";
-        ACO_Re_Loc: Record "Purchase Header";
-        VCO_Re_Loc: Record "Sales Header";
     begin
         Element_Cu.FNC_Set_Element(element_Re_Loc, Element_ID_Co_Par);
 
@@ -89,8 +74,6 @@ codeunit 50023 "DEL Fee"
         elementConnection_Re_Loc: Record "DEL Element Connection";
         fee_Re_Loc: Record "DEL Fee";
         fee_Connection_Re_Loc: Record "DEL Fee Connection";
-        ACO_Re_Loc: Record "Purchase Header";
-        VCO_Re_Loc: Record "Sales Header";
         isToSkip: Boolean;
     begin
         Element_Cu.FNC_Set_Element(element_Re_Loc, Element_ID_Co_Par);
@@ -148,7 +131,7 @@ codeunit 50023 "DEL Fee"
     end;
 
 
-    procedure FNC_Set(var fee_Re_Par: Record 50024; fee_ID_Co_Par: Code[20])
+    procedure FNC_Set(var fee_Re_Par: Record "DEL Fee"; fee_ID_Co_Par: Code[20])
     begin
         IF NOT fee_Re_Par.GET(fee_ID_Co_Par) THEN
             ERROR('ERREUR\Source : Co 50023\Fonction : FNC_Set()\Raison : GET() impossible avec Fee.ID >%1<', fee_ID_Co_Par);
@@ -161,14 +144,12 @@ codeunit 50023 "DEL Fee"
         element_Re_Loc: Record "DEL Element";
         elementConnection_Re_Loc: Record "DEL Element Connection";
         fee_Re_Loc: Record "DEL Fee";
-        glEntry_Re_Loc: Record "G/L Entry";
         addPositions_Bo_Loc: Boolean;
         isInvoice_Bo_Loc: Boolean;
         amountToDispatch_Dec_Loc: Decimal;
         sum_Dec_Loc: Decimal;
         value_Ar_Loc: array[300] of Decimal;
         arrayIndex: Integer;
-        textArray: Text[255];
     begin
 
 
@@ -341,7 +322,6 @@ codeunit 50023 "DEL Fee"
         element_Re_Loc: Record "DEL Element";
         elementConnection_Re_Loc: Record "DEL Element Connection";
         fee_Re_Loc: Record "DEL Fee";
-        amount_Dec_Loc: Decimal;
         factor_Dec_Loc: Decimal;
     begin
         FNC_Set(fee_Re_Loc, Fee_ID_Co_Par);
@@ -407,14 +387,10 @@ codeunit 50023 "DEL Fee"
 
     procedure FNC_Get_Amount_From_Pos(Element_ID_Co_Par: Code[20]; DealShipmentNo_Co_Par: Code[20]; isPlanned: Boolean): Decimal
     var
-        dealShipment_Re_Loc: Record "DEL Deal Shipment";
         dealShipmentConnection_Re_Loc: Record "DEL Deal Shipment Connection";
-        element_Re_Loc: Record "DEL Element";
         plannedElement_Re_Loc: Record "DEL Element";
         realElement_Re_Loc: Record "DEL Element";
         position_Re_Loc: Record "DEL Position";
-        item_Re_Loc: Record Item;
-        BR_Header_Re_Loc: Record "Purch. Rcpt. Header";
         purchRcptLine_Re_Loc: Record "Purch. Rcpt. Line";
         amount_Dec_Loc: Decimal;
     begin

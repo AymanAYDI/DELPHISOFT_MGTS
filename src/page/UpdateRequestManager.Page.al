@@ -151,8 +151,7 @@ page 50048 "DEL Update Request Manager"
 
     var
 
-        UpdateRequestManager_Cu: Codeunit "DEL Update Request Manager";
         DealItemCompleter_Cu: Codeunit "DEL Deal Item Completer";
-        Text19018791: Label 'U P D A T E   R E Q U E S T   M A N A G E R';
+        UpdateRequestManager_Cu: Codeunit "DEL Update Request Manager";
 }
 

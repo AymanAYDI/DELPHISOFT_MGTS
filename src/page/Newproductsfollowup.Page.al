@@ -152,20 +152,19 @@ page 50004 "DEL New products follow up"
     end;
 
     var
-        Vendor_Rec: Record Vendor;
 
         PurchaseHeader_Rec: Record "Purchase Header";
-        PurchaseLine: Record "Purchase Line";
-        BuyfromVendorName: Text;
+        Vendor_Rec: Record Vendor;
 
 
         PurchCode: Code[10];
+        BuyfromVendorName: Text;
 
 
     local procedure ExistOldPurch(ItemNo: Code[20]): Boolean
     var
-        PurchaseLine: Record "Purchase Line";
         PurchInvLine: Record "Purch. Inv. Line";
+        PurchaseLine: Record "Purchase Line";
     begin
         PurchaseLine.SETRANGE("Document Type", PurchaseLine."Document Type"::Order);
         PurchaseLine.SETRANGE(Type, PurchaseLine.Type::Item);

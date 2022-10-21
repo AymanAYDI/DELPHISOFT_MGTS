@@ -482,17 +482,6 @@ table 99211 "DEL Ex_Item Variant"
     var
         Text001: Label 'You cannot delete item variant %1 because there is at least one %2 that includes this Variant Code.';
         Text002: Label 'You cannot delete item variant %1 because there are one or more outstanding production orders that include this item.';
-        "--- AL.KVK5.0 ---": Integer;
-        //TODO: spécifique pays---------//
-        // grecKatEinr: Record "4006541";
-        // grecArtikelVar: Record "5401";
-        // grecBeschrText: Record "4006511";
-        // grecKatDok: Record "4006515";
-        // grecKatMerkmal: Record "4006501";
-        // grecZuordZeile: Record "4006572";
-        // gpagDoklisteB: Page "4024073";
-        goptQuellenart: Option Artikel,Artikelgruppe,Warengruppe,Kapitel,Kataloggruppe,Textbaustein,Variante;
-        AL0001: Label 'Bildokument %1 ist nicht vorhanden.';
 
     local procedure ProdOrderExist(): Boolean
     var

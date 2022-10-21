@@ -1,4 +1,4 @@
-enum 50048 "DEL Action Taken Filter"
+enum 50048 "DEL Action Taken Filter"  //still an option in the std
 {
     Extensible = false;
 

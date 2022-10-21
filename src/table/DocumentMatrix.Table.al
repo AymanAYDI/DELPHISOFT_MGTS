@@ -260,9 +260,9 @@ table 50067 "DEL Document Matrix"
     var
         DocumentMatrixSetup: Record "DEL DocMatrix Setup";
         DocumentMatrixMgt: Codeunit "DEL DocMatrix Management";
+        boNotificationAlreadySent: Boolean;
 
         Err001: Label 'Please enter the Document Matrix Setup first.';
-        Err002: Label 'You can not desactivate "Save PDF" if EMail or FTP is active, or if "Process Type" is "Automatic".';
         Err003: Label 'You can not delete the "E-Mail From" Address, if a E-Mail Address is entered. First you have to delete all the E-Mail Addresses.';
         Err004: Label 'You can not activate "Print" if the "Process Type" is set to "Automatic"!';
         Err005: Label 'You can not "Post" documents of Type "%1".';
@@ -270,14 +270,11 @@ table 50067 "DEL Document Matrix"
         Err007: Label 'For documents of Type "%1" you have to select "Post = Yes", if you want to post it.';
         Err008: Label 'FTP can only be activated for Type "Customer".';
         Text001: Label 'The field "Save PDF" was set to TRUE to fit the Business Logic.';
-        Text002: Label 'The field "Process Type" might have changed to fit the Business Logic.';
         Text003: Label 'Please check if you have to change the field "Usage".';
-        boNotificationAlreadySent: Boolean;
 
     local procedure CheckUsage()
     var
         lErr001: Label 'The selected Usage/Type combination is not valid!';
-        lErr002: Label 'The selected Usage/Process Type combination is not valid!';
     begin
         CASE TRUE OF
             (Usage = Usage::"P.Invoice") AND (Type = Type::Customer):
@@ -349,8 +346,8 @@ table 50067 "DEL Document Matrix"
 
     procedure SaveRequestPageParameters(precDocumentMatrix: Record "DEL Document Matrix")
     var
-        XmlParameters: Text;
         OStream: OutStream;
+        XmlParameters: Text;
     begin
         XmlParameters := "REPORT".RUNREQUESTPAGE(precDocumentMatrix."Report ID");
         precDocumentMatrix.SETAUTOCALCFIELDS("Request Page Parameters");
@@ -400,7 +397,6 @@ table 50067 "DEL Document Matrix"
     procedure SetRequestPageParametersBigText(var precDocumentMatrix: Record "DEL DocMatrix Setup"; pBigText: BigText)
     var
         DataStream: OutStream;
-        BodyText: BigText;
     begin
         // write text to the BLOB field
         CLEAR("Request Page Parameters");
@@ -412,11 +408,6 @@ table 50067 "DEL Document Matrix"
 
     procedure GetRequestPageParametersBigText(var precDocumentMatrix: Record "DEL DocMatrix Setup"; var pBigText: BigText)
     var
-        TempBlob: Codeunit "Temp Blob";
-        FileManagement: Codeunit "File Management";
-        DataStream: InStream;
-        BodyOutStream: OutStream;
-        BodyText: BigText;
         BLOBInStream: InStream;
     begin
         // get the text from the BLOB field
@@ -434,8 +425,6 @@ table 50067 "DEL Document Matrix"
         InputText: BigText;
         OutputText: BigText;
         SubText: BigText;
-        InStream: InStream;
-        OutStream: OutStream;
 
 
 
@@ -461,9 +450,6 @@ table 50067 "DEL Document Matrix"
 
 
     local procedure u_SetRequestPageParametersFile(var pOutputText: BigText)
-    var
-        TextFile: File;
-        OutStream: OutStream;
     begin
 
         //TODO TextFile.TEXTMODE(FALSE);
@@ -474,9 +460,6 @@ table 50067 "DEL Document Matrix"
     end;
 
     local procedure u_GetRequestPageParametersFile(var pInputText: BigText)
-    var
-        TextFile: File;
-        InStream: InStream;
     begin
 
         //TODO TextFile.TEXTMODE(FALSE);

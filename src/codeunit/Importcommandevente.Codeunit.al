@@ -9,8 +9,8 @@ codeunit 50036 "DEL Import commande vente"
 
     local procedure InsertLine(REImportCdeVente: Record "DEL Import Commande vente")
     var
-        SalesLine: Record "Sales Line";
         ItemRef: Record "Item Reference";
+        SalesLine: Record "Sales Line";
 
     begin
         SalesLine.INIT();

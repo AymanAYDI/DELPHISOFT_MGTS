@@ -41,7 +41,7 @@ xmlport 50006 "DEL Import commande vente"
                 begin
                     I += 1;
                     IF I = 1 THEN
-                        currXMLport.SKIP;
+                        currXMLport.SKIP();
                     LineNo += 10000;
                     "DEL Import Commande vente"."Document No." := DocCmd;
                     "DEL Import Commande vente"."Line No." := LineNo;
@@ -64,14 +64,14 @@ xmlport 50006 "DEL Import commande vente"
 
     trigger OnPreXmlPort()
     begin
-        ImportCommandevente.DELETEALL;
+        ImportCommandevente.DELETEALL();
     end;
 
     var
-        DocCmd: Text;
+        ImportCommandevente: Record "DEL Import Commande vente";
         I: Integer;
         LineNo: Integer;
-        ImportCommandevente: Record "DEL Import Commande vente";
+        DocCmd: Text;
 
     procedure SetDocNo(DocNo: Code[20])
     begin

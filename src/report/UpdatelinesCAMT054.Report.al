@@ -62,9 +62,9 @@ report 50051 "DEL Update lines CAMT054"
     var
         CustLedgEntry: Record "Cust. Ledger Entry";
         CustLedgEntry2: Record "Cust. Ledger Entry";
-        InvCount: Integer;
-        TmpInvNo: Code[10];
         ReferenceNo: Code[10];
+        TmpInvNo: Code[10];
+        InvCount: Integer;
         Text042: Label 'More than one open invoice were found for the Reference No. %1.';
     begin
         ReferenceNo := InInvoiceNo;

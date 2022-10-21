@@ -2,12 +2,12 @@ codeunit 50026 "DEL Dispatcher"
 {
 
     var
-        Element_Cu: Codeunit "DEL Element";
-        ERROR_TXT: Label 'ERREUR\Source : %1\Function : %2\Reason : %3';
-        Position_Cu: Codeunit "DEL Position";
-        Fee_Cu: Codeunit "DEL Fee";
         Currency_Exchange_Re: Record "DEL Currency Exchange";
         DealItem_Cu: Codeunit "DEL Deal Item";
+        Element_Cu: Codeunit "DEL Element";
+        Fee_Cu: Codeunit "DEL Fee";
+        Position_Cu: Codeunit "DEL Position";
+        ERROR_TXT: Label 'ERREUR\Source : %1\Function : %2\Reason : %3';
         MyError_Te: Text[1024];
 
 
@@ -28,11 +28,11 @@ codeunit 50026 "DEL Dispatcher"
 
     procedure FNC_Element_Value(var Value_Ar_Par: array[300] of Decimal; Element_ID_Co_Par: Code[20]; FilterOnDealID_Bo_Par: Boolean)
     var
+        applyElement_Re_Loc: Record "DEL Element";
         element_Re_Loc: Record "DEL Element";
         elementConnection_Re_Loc: Record "DEL Element Connection";
-        arrayIndex: Integer;
-        applyElement_Re_Loc: Record "DEL Element";
         addPositions_Bo_Loc: Boolean;
+        arrayIndex: Integer;
     begin
         Element_Cu.FNC_Set_Element(element_Re_Loc, Element_ID_Co_Par);
 
@@ -101,11 +101,11 @@ codeunit 50026 "DEL Dispatcher"
 
     procedure FNC_Element_Volume(var Value_Ar_Par: array[300] of Decimal; Element_ID_Co_Par: Code[20]; FilterOnDealID_Bo_Par: Boolean)
     var
+        applyElement_Re_Loc: Record "DEL Element";
         element_Re_Loc: Record "DEL Element";
         elementConnection_Re_Loc: Record "DEL Element Connection";
-        arrayIndex: Integer;
-        applyElement_Re_Loc: Record "DEL Element";
         addPositions_Bo_Loc: Boolean;
+        arrayIndex: Integer;
     begin
         Element_Cu.FNC_Set_Element(element_Re_Loc, Element_ID_Co_Par);
 
@@ -174,11 +174,11 @@ codeunit 50026 "DEL Dispatcher"
 
     procedure FNC_Element_VolumeTransport(var Value_Ar_Par: array[300] of Decimal; Element_ID_Co_Par: Code[20]; FilterOnDealID_Bo_Par: Boolean)
     var
+        applyElement_Re_Loc: Record "DEL Element";
         element_Re_Loc: Record "DEL Element";
         elementConnection_Re_Loc: Record "DEL Element Connection";
-        arrayIndex: Integer;
-        applyElement_Re_Loc: Record "DEL Element";
         addPositions_Bo_Loc: Boolean;
+        arrayIndex: Integer;
     begin
         Element_Cu.FNC_Set_Element(element_Re_Loc, Element_ID_Co_Par);
 
@@ -247,11 +247,11 @@ codeunit 50026 "DEL Dispatcher"
 
     procedure FNC_Element_Gross_Weight(var Value_Ar_Par: array[300] of Decimal; Element_ID_Co_Par: Code[20]; FilterOnDealID_Bo_Par: Boolean)
     var
+        applyElement_Re_Loc: Record "DEL Element";
         element_Re_Loc: Record "DEL Element";
         elementConnection_Re_Loc: Record "DEL Element Connection";
-        arrayIndex: Integer;
-        applyElement_Re_Loc: Record "DEL Element";
         addPositions_Bo_Loc: Boolean;
+        arrayIndex: Integer;
     begin
         Element_Cu.FNC_Set_Element(element_Re_Loc, Element_ID_Co_Par);
 
@@ -320,11 +320,11 @@ codeunit 50026 "DEL Dispatcher"
 
     procedure FNC_Element_SommeCout(var Value_Ar_Par: array[300] of Decimal; Element_ID_Co_Par: Code[20]; FilterOnDealID_Bo_Par: Boolean)
     var
+        applyElement_Re_Loc: Record "DEL Element";
         element_Re_Loc: Record "DEL Element";
         elementConnection_Re_Loc: Record "DEL Element Connection";
-        arrayIndex: Integer;
-        applyElement_Re_Loc: Record "DEL Element";
         addPositions_Bo_Loc: Boolean;
+        arrayIndex: Integer;
     begin
         Element_Cu.FNC_Set_Element(element_Re_Loc, Element_ID_Co_Par);
 
@@ -392,11 +392,11 @@ codeunit 50026 "DEL Dispatcher"
 
     procedure FNC_Element_Colis(var Value_Ar_Par: array[300] of Decimal; Element_ID_Co_Par: Code[20]; FilterOnDealID_Bo_Par: Boolean)
     var
+        applyElement_Re_Loc: Record "DEL Element";
         element_Re_Loc: Record "DEL Element";
         elementConnection_Re_Loc: Record "DEL Element Connection";
-        arrayIndex: Integer;
-        applyElement_Re_Loc: Record "DEL Element";
         addPositions_Bo_Loc: Boolean;
+        arrayIndex: Integer;
     begin
         Element_Cu.FNC_Set_Element(element_Re_Loc, Element_ID_Co_Par);
 
@@ -465,11 +465,11 @@ codeunit 50026 "DEL Dispatcher"
 
     procedure FNC_Element_Quantity(var Value_Ar_Par: array[300] of Decimal; Element_ID_Co_Par: Code[20]; FilterOnDealID_Bo_Par: Boolean)
     var
+        applyElement_Re_Loc: Record "DEL Element";
         element_Re_Loc: Record "DEL Element";
         elementConnection_Re_Loc: Record "DEL Element Connection";
-        arrayIndex: Integer;
-        applyElement_Re_Loc: Record "DEL Element";
         addPositions_Bo_Loc: Boolean;
+        arrayIndex: Integer;
     begin
         Element_Cu.FNC_Set_Element(element_Re_Loc, Element_ID_Co_Par);
 
@@ -538,23 +538,21 @@ codeunit 50026 "DEL Dispatcher"
 
     procedure FNC_Position_Prorata_Value(Source_Element_ID_Co_Par: Code[20]; Target_Element_ID_Co_Par: Code[20]; Amount_To_Dispatch_Dec_Par: Decimal; Element_Amount_Dec_Par: Decimal)
     var
+        ACOElement_Re_Loc: Record "DEL Element";
         element_Re_Loc: Record "DEL Element";
         source_Element_Re_Loc: Record "DEL Element";
-        ACO_Line_Re_Loc: Record "Purchase Line";
-        VCO_Line_Re_Loc: Record "Sales Line";
-        amount_Dec_Loc: Decimal;
-        fee_Re_Loc: Record "DEL Fee";
-        purchRcptLine_Re_Loc: Record "Purch. Rcpt. Line";
-        BR_Line_Amount_Dec: Decimal;
-        dealItem_Re_Loc: Record "DEL Deal Item";
-        purchInvLine_Re_Loc: Record "Purch. Inv. Line";
-        purchInv_Line_Amount_Dec: Decimal;
-        exchangeRate_Dec_Loc: Decimal;
-        ACOElement_Re_Loc: Record "DEL Element";
         elementConnection_Re_Loc: Record "DEL Element Connection";
+        fee_Re_Loc: Record "DEL Fee";
+        purchInvLine_Re_Loc: Record "Purch. Inv. Line";
+        purchRcptLine_Re_Loc: Record "Purch. Rcpt. Line";
+        ACO_Line_Re_Loc: Record "Purchase Line";
         salesInvLine_Re_Loc: Record "Sales Invoice Line";
-        purchHeader_Re_Loc: Record "Purchase Header";
+        VCO_Line_Re_Loc: Record "Sales Line";
         currency_Co_Loc: Code[10];
+        amount_Dec_Loc: Decimal;
+        BR_Line_Amount_Dec: Decimal;
+        exchangeRate_Dec_Loc: Decimal;
+        purchInv_Line_Amount_Dec: Decimal;
     begin
         //SOURCE = Fee ou Invoice ou Provision
         Element_Cu.FNC_Set_Element(source_Element_Re_Loc, Source_Element_ID_Co_Par);
@@ -837,24 +835,20 @@ codeunit 50026 "DEL Dispatcher"
 
     procedure FNC_Position_Prorata_Volume(Source_Element_ID_Co_Par: Code[20]; Target_Element_ID_Co_Par: Code[20]; Amount_To_Dispatch_Dec_Par: Decimal; Element_Amount_Dec_Par: Decimal)
     var
-
+        ACOElement_Re_Loc: Record "DEL Element";
         element_Re_Loc: Record "DEL Element";
         source_Element_Re_Loc: Record "DEL Element";
-        ACO_Line_Re_Loc: Record "Purchase Line";
-        VCO_Line_Re_Loc: Record "Sales Line";
-        amount_Dec_Loc: Decimal;
-        fee_Re_Loc: Record "DEL Fee";
-        purchRcptLine_Re_Loc: Record "Purch. Rcpt. Line";
-        BR_Line_Amount_Dec: Decimal;
-        dealItem_Re_Loc: Record "DEL Deal Item";
-        purchInvLine_Re_Loc: Record "Purch. Inv. Line";
-        purchInv_Line_Amount_Dec: Decimal;
-        exchangeRate_Dec_Loc: Decimal;
-        ACOElement_Re_Loc: Record "DEL Element";
         elementConnection_Re_Loc: Record "DEL Element Connection";
+        fee_Re_Loc: Record "DEL Fee";
+        purchInvLine_Re_Loc: Record "Purch. Inv. Line";
+        purchRcptLine_Re_Loc: Record "Purch. Rcpt. Line";
+        ACO_Line_Re_Loc: Record "Purchase Line";
         salesInvLine_Re_Loc: Record "Sales Invoice Line";
-        volume_Dec_Loc: Decimal;
+        VCO_Line_Re_Loc: Record "Sales Line";
         currency_Co_Loc: Code[10];
+        amount_Dec_Loc: Decimal;
+        exchangeRate_Dec_Loc: Decimal;
+        volume_Dec_Loc: Decimal;
     begin
         //SOURCE = Fee ou Invoice
         Element_Cu.FNC_Set_Element(source_Element_Re_Loc, Source_Element_ID_Co_Par);
@@ -1182,24 +1176,20 @@ codeunit 50026 "DEL Dispatcher"
 
     procedure FNC_Position_Prorata_G_Weight(Source_Element_ID_Co_Par: Code[20]; Target_Element_ID_Co_Par: Code[20]; Amount_To_Dispatch_Dec_Par: Decimal; Element_Amount_Dec_Par: Decimal)
     var
+        ACOElement_Re_Loc: Record "DEL Element";
         element_Re_Loc: Record "DEL Element";
         source_Element_Re_Loc: Record "DEL Element";
-        ACO_Line_Re_Loc: Record "Purchase Line";
-        VCO_Line_Re_Loc: Record "Sales Line";
-        amount_Dec_Loc: Decimal;
-        fee_Re_Loc: Record "DEL Fee";
-        purchRcptLine_Re_Loc: Record "Purch. Rcpt. Line";
-        BR_Line_Amount_Dec: Decimal;
-        dealItem_Re_Loc: Record "DEL Deal Item";
-        purchInvLine_Re_Loc: Record "Purch. Inv. Line";
-        purchInv_Line_Amount_Dec: Decimal;
-        exchangeRate_Dec_Loc: Decimal;
-        ACOElement_Re_Loc: Record "DEL Element";
         elementConnection_Re_Loc: Record "DEL Element Connection";
+        fee_Re_Loc: Record "DEL Fee";
+        purchInvLine_Re_Loc: Record "Purch. Inv. Line";
+        purchRcptLine_Re_Loc: Record "Purch. Rcpt. Line";
+        ACO_Line_Re_Loc: Record "Purchase Line";
         salesInvLine_Re_Loc: Record "Sales Invoice Line";
-        purchHeader_Re_Loc: Record "Purchase Header";
-        volume_Dec_Loc: Decimal;
+        VCO_Line_Re_Loc: Record "Sales Line";
         currency_Co_Loc: Code[10];
+        amount_Dec_Loc: Decimal;
+        exchangeRate_Dec_Loc: Decimal;
+        volume_Dec_Loc: Decimal;
     begin
         //SOURCE = Fee ou Invoice
         Element_Cu.FNC_Set_Element(source_Element_Re_Loc, Source_Element_ID_Co_Par);
@@ -1528,26 +1518,22 @@ codeunit 50026 "DEL Dispatcher"
 
     procedure FNC_Position_Prorata_Colis(Source_Element_ID_Co_Par: Code[20]; Target_Element_ID_Co_Par: Code[20]; Amount_To_Dispatch_Dec_Par: Decimal; Element_Amount_Dec_Par: Decimal)
     var
-
+        ACOElement_Re_Loc: Record "DEL Element";
 
 
         element_Re_Loc: Record "DEL Element";
         source_Element_Re_Loc: Record "DEL Element";
-        ACO_Line_Re_Loc: Record "Purchase Line";
-        VCO_Line_Re_Loc: Record "Sales Line";
-        amount_Dec_Loc: Decimal;
+        elementConnection_Re_Loc: Record "DEL Element Connection";
         fee_Re_Loc: Record "DEL Fee";
-        purchRcptLine_Re_Loc: Record "Purch. Rcpt. Line";
-        BR_Line_Amount_Dec: Decimal;
-        dealItem_Re_Loc: Record "DEL Deal Item";
         purchInvLine_Re_Loc: Record "Purch. Inv. Line";
-        purchInv_Line_Amount_Dec: Decimal;
+        purchRcptLine_Re_Loc: Record "Purch. Rcpt. Line";
+        ACO_Line_Re_Loc: Record "Purchase Line";
+        salesInvLine_Re_Loc: Record "Sales Invoice Line";
+        VCO_Line_Re_Loc: Record "Sales Line";
+        currency_Co_Loc: Code[10];
+        amount_Dec_Loc: Decimal;
         exchangeRate_Dec_Loc: Decimal;
         nbrColis_Dec_Loc: Decimal;
-        ACOElement_Re_Loc: Record "DEL Element";
-        elementConnection_Re_Loc: Record "DEL Element Connection";
-        salesInvLine_Re_Loc: Record "Sales Invoice Line";
-        currency_Co_Loc: Code[10];
     begin
         //SOURCE = Fee ou Invoice
         Element_Cu.FNC_Set_Element(source_Element_Re_Loc, Source_Element_ID_Co_Par);
@@ -1874,23 +1860,19 @@ codeunit 50026 "DEL Dispatcher"
 
     procedure FNC_Position_Prorata_Quantity(Source_Element_ID_Co_Par: Code[20]; Target_Element_ID_Co_Par: Code[20]; Amount_To_Dispatch_Dec_Par: Decimal; Element_Amount_Dec_Par: Decimal)
     var
+        ACOElement_Re_Loc: Record "DEL Element";
         element_Re_Loc: Record "DEL Element";
         source_Element_Re_Loc: Record "DEL Element";
-        ACO_Line_Re_Loc: Record "Purchase Line";
-        VCO_Line_Re_Loc: Record "Sales Line";
-        amount_Dec_Loc: Decimal;
-        fee_Re_Loc: Record "DEL Fee";
-        purchRcptLine_Re_Loc: Record "Purch. Rcpt. Line";
-        BR_Line_Amount_Dec: Decimal;
-        dealItem_Re_Loc: Record "DEL Deal Item";
-        purchInvLine_Re_Loc: Record "Purch. Inv. Line";
-        purchInv_Line_Amount_Dec: Decimal;
-        exchangeRate_Dec_Loc: Decimal;
-        ACOElement_Re_Loc: Record "DEL Element";
         elementConnection_Re_Loc: Record "DEL Element Connection";
+        fee_Re_Loc: Record "DEL Fee";
+        purchInvLine_Re_Loc: Record "Purch. Inv. Line";
+        purchRcptLine_Re_Loc: Record "Purch. Rcpt. Line";
+        ACO_Line_Re_Loc: Record "Purchase Line";
         salesInvLine_Re_Loc: Record "Sales Invoice Line";
-        purchHeader_Re_Loc: Record "Purchase Header";
+        VCO_Line_Re_Loc: Record "Sales Line";
         currency_Co_Loc: Code[10];
+        amount_Dec_Loc: Decimal;
+        exchangeRate_Dec_Loc: Decimal;
     begin
         //SOURCE = Fee ou Invoice ou Provision
         Element_Cu.FNC_Set_Element(source_Element_Re_Loc, Source_Element_ID_Co_Par);

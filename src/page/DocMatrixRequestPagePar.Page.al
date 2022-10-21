@@ -38,8 +38,6 @@ page 50136 "DEL DocMatrix Request Page Par"
     end;
 
     trigger OnOpenPage()
-    var
-        OrigMailBodyText: Text;
     begin
         txParameters := '';
     end;

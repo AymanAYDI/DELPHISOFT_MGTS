@@ -13,7 +13,7 @@ report 50001 "DEL DTA Payment Journal detail"
             column(JournalBatchName_GenJournalLine; "Journal Batch Name")
             {
             }
-            column(PageNumber; CurrReport.PAGENO)
+            column(PageNumber; CurrReport.PAGENO())
             {
             }
             column(TodayFormatted; FORMAT(TODAY, 0, 4))
@@ -224,17 +224,17 @@ report 50001 "DEL DTA Payment Journal detail"
                 begin
                     IF GenJournalLine."Applies-to Doc. No." <> ''
                     THEN
-                        CurrReport.SKIP;
+                        CurrReport.SKIP();
                     IF GenJournalLine."Account Type" <> GenJournalLine."Account Type"::Vendor
                     THEN
-                        CurrReport.SKIP;
+                        CurrReport.SKIP();
                 end;
             }
 
             trigger OnAfterGetRecord()
             begin
                 IF ("Account No." = '') AND (Amount = 0) THEN
-                    CurrReport.SKIP;
+                    CurrReport.SKIP();
 
                 IF oldAccNo <> "Account No." THEN BEGIN
                     oldAccNo := "Account No.";
@@ -260,7 +260,7 @@ report 50001 "DEL DTA Payment Journal detail"
                     VendorLedgerEntry.SETRANGE("Document Type", "Applies-to Doc. Type");
                     VendorLedgerEntry.SETRANGE("Document No.", "Applies-to Doc. No.");
                     VendorLedgerEntry.SETRANGE("Vendor No.", "Account No.");
-                    IF NOT VendorLedgerEntry.FINDFIRST THEN
+                    IF NOT VendorLedgerEntry.FINDFIRST() THEN
                         xTxt := Text001Err
                     ELSE BEGIN
                         IF NOT VendorLedgerEntry.Open THEN
@@ -406,16 +406,54 @@ report 50001 "DEL DTA Payment Journal detail"
 
     trigger OnPreReport()
     begin
-        GLSetup.GET;
+        GLSetup.GET();
     end;
 
     var
-        VendorBankAccount: Record "Vendor Bank Account";
-        VendorLedgerEntry: Record "Vendor Ledger Entry";
         CurrencyExchangeRate: Record "Currency Exchange Rate";
         GLSetup: Record "General Ledger Setup";
         Vendor: Record Vendor;
-        DTAMgt: Codeunit "DtaMgt"; //3010541
+        VendorBankAccount: Record "Vendor Bank Account";
+        VendorLedgerEntry: Record "Vendor Ledger Entry";
+
+        oldAccNo: Code[20];
+        CashDeductAmt: Decimal;
+        CashDiscAmtFC: Decimal;
+        LargestAmt: Decimal;
+        OpenRemAmtFC: Decimal;
+        PmtToleranceAmount: Decimal;
+        RestAfterPmt: Decimal;
+        AgeDays: Integer;
+        CashDiscDays: Integer;
+        DueDays: Integer;
+        intLayout: Integer;
+
+
+        n: Integer;
+        NoOfLinesPerVendor: Integer;
+        AccountCaptionLbl: Label 'Account';
+        AgeCaptionLbl: Label 'Age';
+        ApplicationCaptionLbl: Label 'Application';
+        BankCaptionLbl: Label 'Bank';
+        BatchNameCaptionLbl: Label 'Batch Name';
+        BeforePmtCaptionLbl: Label 'before Pmt.';
+        CashDiscCaptionLbl: Label 'Cash Disc.';
+        CashDiscDaysCaptionLbl: Label 'C Dis.';
+        DateDaysCaptionLbl: Label 'Date / Days';
+        DebitBankCaptionLbl: Label 'Debit Bank';
+        DeduCaptionLbl: Label 'Dedu.';
+        DTAPaymentJournalCaptionLbl: Label 'DTA - Payment Journal';
+        DueCaptionLbl: Label 'Due';
+        ExternalDocumentCaptionLbl: Label 'Ext. Doc.';
+        NoOfPaymentsCaptionLbl: Label 'No. of payments';
+        OpenRemAmountCaptionLbl: Label 'Open Rem. Amount';
+        PageCaptionLbl: Label 'Page';
+        PaymentCaptionLbl: Label 'Payment';
+        PaymentTypeCaptionLbl: Label 'Pmt. Type';
+        PossCaptionLbl: Label 'Poss.';
+        PostingDateCaptionLbl: Label 'Posting Date';
+        ReferenceCommentCaptionLbl: Label 'Reference / Comment';
+        RestAfterPmtCaptionLbl: Label 'after Pmt.';
         Text000Err: Label 'No application number';
         Text001Err: Label 'Vendor entry not found';
         Text002Err: Label 'Vendor entry not open';
@@ -425,51 +463,13 @@ report 50001 "DEL DTA Payment Journal detail"
         Text006Msg: Label 'Total bank';
         Text007Lbl: Label 'Total Payment in %1';
         Text008Lbl: Label 'Largest Amount in %1';
-
-
-        n: Integer;
-        "Layout": Option Amounts,Bank;
-        xTxt: Text[40];
-        xAcc: Text;
-        LargestAmt: Decimal;
-        TotalVendorTxt: Text[80];
-        NoOfLinesPerVendor: Integer;
-        AgeDays: Integer;
-        CashDiscDays: Integer;
-        DueDays: Integer;
-        OpenRemAmtFC: Decimal;
-        CashDiscAmtFC: Decimal;
-        CashDeductAmt: Decimal;
-        PmtToleranceAmount: Decimal;
-        RestAfterPmt: Decimal;
-        intLayout: Integer;
-        oldAccNo: Code[20];
-        BatchNameCaptionLbl: Label 'Batch Name';
-        PageCaptionLbl: Label 'Page';
-        DTAPaymentJournalCaptionLbl: Label 'DTA - Payment Journal';
-        PaymentCaptionLbl: Label 'Payment';
-        AgeCaptionLbl: Label 'Age';
-        PossCaptionLbl: Label 'Poss.';
-        DeduCaptionLbl: Label 'Dedu.';
-        VendorCaptionLbl: Label 'Vendor';
-        CashDiscCaptionLbl: Label 'Cash Disc.';
-        BeforePmtCaptionLbl: Label 'before Pmt.';
-        RestAfterPmtCaptionLbl: Label 'after Pmt.';
-        OpenRemAmountCaptionLbl: Label 'Open Rem. Amount';
-        ApplicationCaptionLbl: Label 'Application';
-        DateDaysCaptionLbl: Label 'Date / Days';
-        DueCaptionLbl: Label 'Due';
-        CashDiscDaysCaptionLbl: Label 'C Dis.';
         ToleranceCaptionLbl: Label 'Tolerance';
-        BankCaptionLbl: Label 'Bank';
-        ReferenceCommentCaptionLbl: Label 'Reference / Comment';
-        PaymentTypeCaptionLbl: Label 'Pmt. Type';
-        AccountCaptionLbl: Label 'Account';
-        DebitBankCaptionLbl: Label 'Debit Bank';
-        ExternalDocumentCaptionLbl: Label 'Ext. Doc.';
-        VendorBankCaptionLbl: Label 'Vendor Bank';
-        NoOfPaymentsCaptionLbl: Label 'No. of payments';
-        PostingDateCaptionLbl: Label 'Posting Date';
         TotalText: Label 'Journal total';
+        VendorBankCaptionLbl: Label 'Vendor Bank';
+        VendorCaptionLbl: Label 'Vendor';
+        "Layout": Option Amounts,Bank;
+        xAcc: Text;
+        xTxt: Text[40];
+        TotalVendorTxt: Text[80];
 }
 

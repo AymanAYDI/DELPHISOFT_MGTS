@@ -13,26 +13,26 @@ report 50025 "DEL Export Vente"
             trigger OnAfterGetRecord()
             begin
 
-                SalesInvoiceLine.RESET;
+                SalesInvoiceLine.RESET();
                 SalesInvoiceLine.SETRANGE(SalesInvoiceLine."Posting Date", DateBegin, DateEnd);
                 SalesInvoiceLine.SETRANGE(SalesInvoiceLine.Type, SalesInvoiceLine.Type::Item);
                 IF FiltreArticle <> '' THEN
                     SalesInvoiceLine.SETFILTER(SalesInvoiceLine."No.", FiltreArticle);
                 SalesInvoiceLine.SETFILTER(SalesInvoiceLine.Quantity, '<>0');
-                IF SalesInvoiceLine.FINDSET THEN
+                IF SalesInvoiceLine.FINDSET() THEN
                     REPEAT
                         i := 0;
-                        Item.RESET;
+                        Item.RESET();
                         Item.SETRANGE(Item."No.", SalesInvoiceLine."No.");
                         IF FiltreFourn <> '' THEN
                             Item.SETFILTER(Item."Vendor No.", FiltreFourn);
-                        IF Item.FINDFIRST THEN BEGIN
+                        IF Item.FINDFIRST() THEN BEGIN
                             IF NOT ExportVente.GET(SalesInvoiceLine."No.", '+') THEN BEGIN
-                                ExportVente.INIT;
+                                ExportVente.INIT();
                                 ExportVente."Item No." := SalesInvoiceLine."No.";
                                 ExportVente.Sens := '+';
-                                ExportVente.INSERT;
-                                COMMIT;
+                                ExportVente.INSERT();
+                                COMMIT();
                                 AddInfo('+');
                             END
                             ELSE
@@ -40,11 +40,11 @@ report 50025 "DEL Export Vente"
                         END;
 
 
-                    UNTIL SalesInvoiceLine.NEXT = 0;
+                    UNTIL SalesInvoiceLine.NEXT() = 0;
 
 
 
-                SalesCrMemoLine.RESET;
+                SalesCrMemoLine.RESET();
                 SalesCrMemoLine.SETRANGE(SalesCrMemoLine."Posting Date", DateBegin, DateEnd);
                 SalesCrMemoLine.SETRANGE(SalesCrMemoLine.Type, SalesCrMemoLine.Type::Item);
 
@@ -52,27 +52,27 @@ report 50025 "DEL Export Vente"
                     SalesCrMemoLine.SETFILTER(SalesCrMemoLine."No.", FiltreArticle);
 
                 SalesCrMemoLine.SETFILTER(SalesCrMemoLine.Quantity, '<>0');
-                IF SalesCrMemoLine.FINDSET THEN
+                IF SalesCrMemoLine.FINDSET() THEN
                     REPEAT
-                        Item.RESET;
+                        Item.RESET();
                         Item.SETRANGE(Item."No.", SalesCrMemoLine."No.");
                         IF FiltreFourn <> '' THEN
                             Item.SETFILTER(Item."Vendor No.", FiltreFourn);
 
-                        IF Item.FINDFIRST THEN BEGIN
+                        IF Item.FINDFIRST() THEN BEGIN
                             IF NOT ExportVente.GET(SalesCrMemoLine."No.", '-') THEN BEGIN
-                                ExportVente.INIT;
+                                ExportVente.INIT();
                                 ExportVente."Item No." := SalesCrMemoLine."No.";
                                 ExportVente.Sens := '-';
-                                ExportVente.INSERT;
-                                COMMIT;
+                                ExportVente.INSERT();
+                                COMMIT();
                                 AddInfo('-');
                             END
                             ELSE
                                 AddInfo('-');
 
                         END;
-                    UNTIL SalesCrMemoLine.NEXT = 0;
+                    UNTIL SalesCrMemoLine.NEXT() = 0;
             end;
 
             trigger OnPreDataItem()
@@ -119,14 +119,14 @@ report 50025 "DEL Export Vente"
                     trigger OnAssistEdit()
                     begin
                         CLEAR(ItemList);
-                        Item_Rec.RESET;
+                        Item_Rec.RESET();
                         ItemList.LOOKUPMODE(TRUE);
                         ItemList.SETTABLEVIEW(Item_Rec);
                         ItemList.SETRECORD(Item_Rec);
-                        IF ItemList.RUNMODAL = ACTION::LookupOK THEN BEGIN
+                        IF ItemList.RUNMODAL() = ACTION::LookupOK THEN BEGIN
                             ItemList.GETRECORD(Item_Rec);
                             FiltreArticle := FiltreArticle + Item_Rec."No.";
-                            COMMIT;
+                            COMMIT();
                         END;
                     end;
                 }
@@ -137,14 +137,14 @@ report 50025 "DEL Export Vente"
                     trigger OnAssistEdit()
                     begin
                         CLEAR(VendorList);
-                        Vendor_Rec.RESET;
+                        Vendor_Rec.RESET();
                         VendorList.LOOKUPMODE(TRUE);
                         VendorList.SETTABLEVIEW(Vendor_Rec);
                         VendorList.SETRECORD(Vendor_Rec);
-                        IF VendorList.RUNMODAL = ACTION::LookupOK THEN BEGIN
+                        IF VendorList.RUNMODAL() = ACTION::LookupOK THEN BEGIN
                             VendorList.GETRECORD(Vendor_Rec);
                             FiltreFourn := FiltreFourn + Vendor_Rec."No.";
-                            COMMIT;
+                            COMMIT();
                         END;
                     end;
                 }
@@ -171,7 +171,7 @@ report 50025 "DEL Export Vente"
             DateNow_Te := FORMAT(Year) + '_' + FORMAT(Mois);
         TimeNow_Te := DELCHR(FORMAT(TIME), '=', ':/.');
         FileName := 'CONSO_VENTES_MG_S2_CH_NGT_' + DateNow_Te + '_' + TimeNow_Te + '_fv1.CSV';
-        IF ExportVente.FINDFIRST THEN
+        IF ExportVente.FINDFIRST() THEN
             TempBlob.CreateOutStream(VarOut);
         REPEAT
             Line := ExportVente.Mois + ExportVente.Activité + ExportVente.Pays + ExportVente.Enseigne + ExportVente."Type d'identifiant" + ExportVente."Identifiant produit" + ExportVente."Identifiant fabricant" +
@@ -179,21 +179,20 @@ report 50025 "DEL Export Vente"
                   ExportVente."Référence fabricant" + ExportVente."Fournisseur principal" + ExportVente."Référence fournisseur Prin." + ExportVente."Code article B.U" + ExportVente."Groupe marchandise B.U" +
                   ExportVente."Libellé produit";
             VarOut.WRITETEXT(Line);
-            VarOut.WRITETEXT;
-        UNTIL ExportVente.NEXT = 0;
+            VarOut.WRITETEXT();
+        UNTIL ExportVente.NEXT() = 0;
         MESSAGE('Fichier créer');
         FileManagement.BLOBExport(TempBlob, FileName, True);
     end;
 
     trigger OnPreReport()
     begin
-        ExportVente.DELETEALL;
+        ExportVente.DELETEALL();
     end;
 
     var
         CurrExchRate: Record "Currency Exchange Rate";
         ExportVente: Record "DEL Export vente";
-        GeneralSetup: Record "DEL General Setup";
         Item: Record Item;
         Item_Rec: Record Item;
         SalesCrMemoHeader: Record "Sales Cr.Memo Header";
@@ -207,16 +206,15 @@ report 50025 "DEL Export Vente"
         DateEnd: Date;
         TauxChange1: Decimal;
         TauxChange2: Decimal;
-        FileVente: File;
         i: Integer;
         Mois: Integer;
         Year: Integer;
         Text0001: Label 'Invalid date';
         VarOut: OutStream;
         DateNow_Te: Text;
+        FileName: Text;
         FiltreArticle: Text;
         FiltreFourn: Text;
-        FileName: Text;
         TimeNow_Te: Text;
         Line: Text[312];
 
@@ -264,7 +262,7 @@ report 50025 "DEL Export Vente"
             ExportVente."Code article B.U" := CorLengthTxt(Item_Rec."No.", 10);
             //TODO : check product Group  //ExportVente."Groupe marchandise B.U" := CorLengthTxt(Item_Rec."DEL Product Group Code", 30);           //21
             ExportVente."Libellé produit" := CorLengthTxt(Item_Rec.Description, 50);
-            ExportVente.MODIFY;
+            ExportVente.MODIFY();
         END;
 
         IF SensLine = '-' THEN BEGIN
@@ -307,7 +305,7 @@ report 50025 "DEL Export Vente"
                 ExportVente."CA HT" := ExportVente."CA HT" + ROUND(SalesCrMemoLine.Amount * 100, 1, '=');
             ExportVente.Quantité := CorLengthDec(ExportVente.QuantityDec, 12, '-');
             ExportVente."C.A. H.T." := CorLengthDec(ExportVente."CA HT", 12, '-');
-            ExportVente.MODIFY;
+            ExportVente.MODIFY();
         END;
     end;
 

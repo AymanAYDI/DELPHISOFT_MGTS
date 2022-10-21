@@ -16,7 +16,7 @@ report 50015 "DEL Export Provision"
             column(COMPANYNAME; COMPANYNAME)
             {
             }
-            column(CurrReport_PAGENO; CurrReport.PAGENO)
+            column(CurrReport_PAGENO; CurrReport.PAGENO())
             {
             }
             column("USERID"; USERID)
@@ -167,7 +167,7 @@ report 50015 "DEL Export Provision"
             trigger OnAfterGetRecord()
             begin
                 IF "DEL Shipment Provision Select.".USER_ID <> USERID THEN
-                    CurrReport.SKIP
+                    CurrReport.SKIP()
             end;
 
             trigger OnPreDataItem()
@@ -201,29 +201,23 @@ report 50015 "DEL Export Provision"
 
     var
         TempSPS_Re: Record "DEL Shipment Provision Select." temporary;
-
-        Provision_Cu: Codeunit "DEL Provision";
+        Export2Excel_Bo: Boolean;
+        diaProgress: array[10] of Dialog;
+        interval: array[10] of Integer;
+        intNextProgressStep: array[10] of Integer;
+        intProgress: array[10] of Integer;
+        intProgressI: array[10] of Integer;
+        intProgressStep: array[10] of Integer;
+        intProgressTotal: array[10] of Integer;
 
         LastFieldNo: Integer;
-        FooterPrinted: Boolean;
-        Export2Excel_Bo: Boolean;
-        FeeDescriptionArray: array[20] of Text[100];
-        FeeTotalArray: array[20] of Text[100];
-        i: Integer;
-        period_Da: Date;
-        period_Te: Text[50];
-        "v------PROGRESS BAR------v": Integer;
-        intProgressI: array[10] of Integer;
-        diaProgress: array[10] of Dialog;
-        intProgress: array[10] of Integer;
-        intProgressTotal: array[10] of Integer;
-        intProgressStep: array[10] of Integer;
-        intNextProgressStep: array[10] of Integer;
-        timProgress: array[10] of Time;
-        interval: array[10] of Integer;
-        Shipment_Provision_SelectionCaptionLbl: Label 'Shipment Provision Selection';
         CurrReport_PAGENOCaptionLbl: Label 'Page';
         Period__CaptionLbl: Label 'Period :';
+        Shipment_Provision_SelectionCaptionLbl: Label 'Shipment Provision Selection';
+        period_Te: Text[50];
+        FeeDescriptionArray: array[20] of Text[100];
+        FeeTotalArray: array[20] of Text[100];
+        timProgress: array[10] of Time;
 
     procedure FNC_Add2TempSPS(sps_Re_Par: Record "DEL Shipment Provision Select.")
     begin
@@ -287,7 +281,7 @@ report 50015 "DEL Export Provision"
 
                 timProgress[index_Int_Par] := TIME;
 
-                diaProgress[index_Int_Par].UPDATE;
+                diaProgress[index_Int_Par].UPDATE();
 
             END;
 
@@ -296,7 +290,7 @@ report 50015 "DEL Export Provision"
 
     procedure FNC_ProgressBar_Close(index_Int_Par: Integer)
     begin
-        diaProgress[index_Int_Par].CLOSE;
+        diaProgress[index_Int_Par].CLOSE();
     end;
 }
 

@@ -234,19 +234,6 @@ page 50077 "DEL Item Quality"
         RegGenerale: Boolean;
         RegMat: Boolean;
         RegPlan: Boolean;
-        Regelect: Boolean;
-        Item_Rec: Record Item;
-        LiaisseProduit: Record "DEL Item Quality forms";
-        i: Integer;
-        regArticle: Record "DEL Test Type";
-        RegGenerale2: Boolean;
-        RegMat2: Boolean;
-        RegMachine2: Boolean;
-        Regelect2: Boolean;
-        GeneralSetup: Record "DEL General Setup";
-        Cat1: Decimal;
-        Cat2: Decimal;
-        Cat3: Decimal;
 }
 
 

@@ -208,8 +208,8 @@ xmlport 50000 "DEL IC Transitaire"
     end;
 
     var
-        NGTSSetup: Record "DEL General Setup";
         Transitaires: Record "DEL Forwarding agent 2";
+        NGTSSetup: Record "DEL General Setup";
         Item: Record Item;
         Manufacturer: Record Manufacturer;
 }

@@ -160,8 +160,6 @@ page 50041 "Deal Posted Purch. Rcpt. Sub."
     }
 
     trigger OnOpenPage()
-    var
-        ACOConnection_Re_Loc: Record "DEL ACO Connection";
     begin
         FNC_SetFilters('', '');
     end;

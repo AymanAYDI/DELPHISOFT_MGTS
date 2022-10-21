@@ -130,8 +130,6 @@ page 50030 "DEL Deal Mainboard"
                 end;
 
                 trigger OnValidate()
-                var
-                    dealShipment_Re_Loc: Record "DEL Deal Shipment";
                 begin
 
                     PLLogisticShipmentNoCoOnAfterV();
@@ -169,8 +167,6 @@ page 50030 "DEL Deal Mainboard"
                 end;
 
                 trigger OnValidate()
-                var
-                    dealShipment_Re_Loc: Record "DEL Deal Shipment";
                 begin
 
                     PLDetailShipmentNoCoOnAfterVal();
@@ -205,7 +201,6 @@ page 50030 "DEL Deal Mainboard"
                     var
                         DealShip_Re_Loc: Record "DEL Deal Shipment";
                         DealShipList_Fo_Loc: Page "DEL Deal Ship. Sele.";
-                        CurrencyExchange_page_Loc: Page "DEL Currency Exchange";
                     begin
                         DealShipList_Fo_Loc.LOOKUPMODE := TRUE;
                         IF DealShipList_Fo_Loc.RUNMODAL() = ACTION::LookupOK THEN BEGIN
@@ -254,8 +249,8 @@ page 50030 "DEL Deal Mainboard"
 
                     trigger OnAction()
                     var
-                        requestID_Co_Loc: Code[20];
                         urm_Re_Loc: Record "DEL Update Request Manager";
+                        requestID_Co_Loc: Code[20];
                     begin
 
 
@@ -288,8 +283,8 @@ page 50030 "DEL Deal Mainboard"
 
                     trigger OnAction()
                     var
-                        requestID_Co_Loc: Code[20];
                         urm_Re_Loc: Record "DEL Update Request Manager";
+                        requestID_Co_Loc: Code[20];
                     begin
 
                         requestID_Co_Loc := UpdateRequestManager_Cu.FNC_Add_Request(
@@ -317,18 +312,13 @@ page 50030 "DEL Deal Mainboard"
 
     trigger OnAfterGetRecord()
     var
+        dealShipCon_Re_Loc: Record "DEL Deal Shipment Connection";
         plannedElement_Re_Loc: Record "DEL Element";
         realElement_Re_Loc: Record "DEL Element";
         position_Re_Loc: Record "DEL Position";
         item_Re_Loc: Record Item;
-        dealShipment_Re_Loc: Record "DEL Deal Shipment";
-        BR_Header_Re_Loc: Record "Purch. Rcpt. Header";
         purchRcptLine_Re_Loc: Record "Purch. Rcpt. Line";
-        element_Re_Loc: Record "DEL Element";
         amount_Dec_Loc: Decimal;
-        dealShipmentConnection_Re_Loc: Record "DEL Deal Shipment Connection";
-        elementConnection_Re_Loc: Record "DEL Element Connection";
-        dealShipCon_Re_Loc: Record "DEL Deal Shipment Connection";
     begin
         FNC_InitVars();
 
@@ -562,76 +552,15 @@ page 50030 "DEL Deal Mainboard"
 
     var
 
-        Deal_Item_Cu: Codeunit "DEL Deal Item";
-        Element_Cu: Codeunit "DEL Element";
-        Deal_Cu: Codeunit "DEL Deal";
-        Position_Cu: Codeunit "DEL Position";
-        DealShipment_Cu: Codeunit "DEL Deal Shipment";
-        UpdateRequestManager_Cu: Codeunit "DEL Update Request Manager";
-        Comment: Boolean;
-        Pro_Sales_Dec: Decimal;
-        Pro_Purchases_Dec: Decimal;
-        Pro_Fees_Dec: Decimal;
-        Pro_Gross_Margin_Dec: Decimal;
-        Pro_Final_Margin_Dec: Decimal;
-        Pro_Percent_Gross_Margin_Dec: Decimal;
-        Pro_Percent_Final_Margin_Dec: Decimal;
-        Pro_Neg_Perc_Final_Margin_Dec: Decimal;
-        P_Sales_Dec: Decimal;
-        P_Purchases_Dec: Decimal;
-        P_Fees_Dec: Decimal;
-        P_Gross_Margin_Dec: Decimal;
-        P_Final_Margin_Dec: Decimal;
-        P_Percent_Gross_Margin_Dec: Decimal;
-        P_Percent_Final_Margin_Dec: Decimal;
-        P_Neg_Perc_Final_Margin_Dec: Decimal;
-        R_Sales_Dec: Decimal;
-        R_Purchases_Dec: Decimal;
-        R_Fees_Dec: Decimal;
-        R_Gross_Margin_Dec: Decimal;
-        R_Final_Margin_Dec: Decimal;
-        R_Percent_Gross_Margin_Dec: Decimal;
-        R_Percent_Final_Margin_Dec: Decimal;
-        R_Neg_Perc_Final_Margin_Dec: Decimal;
-        D_Sales_Dec: Decimal;
-        D_Purchases_Dec: Decimal;
-        D_Fees_Dec: Decimal;
-        D_Gross_Margin_Dec: Decimal;
-        D_Final_Margin_Dec: Decimal;
+        PLLogistic_Re_Temp: Record "DEL P&L Logistic" temporary;
         PositionSummary_Re_Temp: Record "DEL Position Summary" temporary;
-        ShipmentList_Te: Text[50];
+        Deal_Item_Cu: Codeunit "DEL Deal Item";
+        DealShipment_Cu: Codeunit "DEL Deal Shipment";
+        Element_Cu: Codeunit "DEL Element";
+        UpdateRequestManager_Cu: Codeunit "DEL Update Request Manager";
         ItemDetailShipmentNo_Co: Code[20];
         PLDetailShipmentNo_Co: Code[20];
-        PLShipmentNo_Co: Code[20];
         PLLogisticShipmentNo_Co: Code[20];
-        PLLogistic_Re_Temp: Record "DEL P&L Logistic" temporary;
-        [InDataSet]
-        PPercFinalMarginCtrlVisible: Boolean;
-        [InDataSet]
-        PNegPercFinalMarginCtrlVisible: Boolean;
-        [InDataSet]
-        RPercFinalMarginCtrlVisible: Boolean;
-        [InDataSet]
-        RNegPercFinalMarginCtrlVisible: Boolean;
-        [InDataSet]
-        ProPercFinalMarginCtrlVisible: Boolean;
-        [InDataSet]
-        ProNegPercFinalMarginCtrlVisib: Boolean;
-        Text19054020: Label 'L O G I S T I C S';
-        Text19024619: Label 'I T E M S   D E T A I L';
-        Text19054932: Label 'P L A N N E D';
-        Text19019719: Label 'R E A L';
-        Text19036953: Label 'P R O F I T S  &&  L O S S E S  D E T A I L';
-        Text19004363: Label 'P R O F I T S  &&  L O S S E S';
-        Text19043039: Label 'P R O F I T S  &&  L O S S E S  L O G I S T I C';
-        Text19006783: Label 'A C O';
-        Text19006410: Label 'V C O';
-        Text19002194: Label 'Planned';
-        Text19075186: Label '% of Gross Income';
-        Text19032023: Label 'Real';
-        Text19061674: Label 'Projected';
-        Text19042911: Label 'Delta';
-        Text19010011: Label 'N G T S';
 
 
     procedure FNC_InitVars()
