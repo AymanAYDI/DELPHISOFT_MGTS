@@ -275,10 +275,10 @@ table 99208 "DEL Ex_Extended Text Header"
     end;
 
     var
+        ExtTextHeader2: Record "Extended Text Header";
+        ExtTextLine: Record "Extended Text Line";
         Text000: Label 'You cannot rename an %1.';
         Text001: Label 'You cannot purchase resources.';
-        ExtTextHeader2: Record 279;
-        ExtTextLine: Record 280;
 
     local procedure NoResourcePurch()
     begin

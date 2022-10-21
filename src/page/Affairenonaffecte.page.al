@@ -131,9 +131,9 @@ page 50057 "DEL Affaire non affectée"
     end;
 
     var
+        Logistic2: Record "DEL Logistic";
+        TrackingDetail: Record "DEL Tracking détail";
         TrackingGeneral: Record "DEL Tracking général";
         TrackingGeneral2: Record "DEL Tracking général";
-        TrackingDetail: Record "DEL Tracking détail";
-        Logistic2: Record "DEL Logistic";
 }
 

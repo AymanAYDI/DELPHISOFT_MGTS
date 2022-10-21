@@ -339,8 +339,8 @@ page 50126 "DEL GL Entries For Reverse"
     procedure SelectGLEntryForReverse()
     var
         GLEntry: Record "G/L Entry";
-        GLSetup: Record "General Ledger Setup";
         ReverseGLEntry: Record "G/L Entry";
+        GLSetup: Record "General Ledger Setup";
         GLEntries: Page "DEL Gen. Ledger Entr. Reverse";
     begin
 

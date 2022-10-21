@@ -62,10 +62,10 @@ table 50053 "DEL Regulation Matrix Text"
     procedure GetNextLineNo(MatriceLineSource: Record "DEL Regulation Matrix Text"; BelowxRec: Boolean): Integer
     var
         MatriceLine: Record "DEL Regulation Matrix Text";
-        LowLineNo: Integer;
         HighLineNo: Integer;
-        NextLineNo: Integer;
         LineStep: Integer;
+        LowLineNo: Integer;
+        NextLineNo: Integer;
     begin
         LowLineNo := 0;
         HighLineNo := 0;

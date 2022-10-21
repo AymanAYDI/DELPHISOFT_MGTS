@@ -30,7 +30,7 @@ pageextension 50012 "DEL PostedSalesInvoices" extends "Posted Sales Invoices" //
                     MGTSEDIManagement: Codeunit "DEL MGTS EDI Management";
                 begin
                     MGTSEDIManagement.ResendCustomerInvoice(Rec);
-                    CurrPage.UPDATE;
+                    CurrPage.UPDATE();
                 end;
             }
         }

@@ -14,7 +14,6 @@ codeunit 50007 "DEL Document Sheet"
     procedure GetOpenFileName(var ClientFileName: Text; UploadToServer: Boolean): Boolean
     var
         DummyFileName: Text;
-        ServerFilename: Text;
     begin
         EXIT(ShowOpenFileDialog(ClientFileName, DummyFileName, FALSE));
     end;
@@ -146,9 +145,9 @@ codeunit 50007 "DEL Document Sheet"
     procedure UploadToServerRTC(ClientFileName: Text; ServerFileName: Text): Text
     var
         TmpServerFile: File;
+        ctAllFiles: Label 'All Files (*.*)|*.*';
         TmpClientFileName: Text;
         TmpServerFileName: Text;
-        ctAllFiles: Label 'All Files (*.*)|*.*';
     // [RunOnClient]
     // IOFile: DotNet File; TODO:
     begin

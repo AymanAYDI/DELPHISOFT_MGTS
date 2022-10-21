@@ -93,12 +93,11 @@ page 50072 "DEL Document Sheet liasse"
     local procedure Add()
     var
         DocumentLine: Record "DEL Document Line";
-        oFile: File;
         InStr: InStream;
+        LastLineNo: Integer;
         OutStr: OutStream;
         ImportFileName: Text;
         ServerFileName: Text;
-        LastLineNo: Integer;
     begin
 
         IF NOT Document_CU.OpenFile(ImportFileName, ServerFileName) THEN
@@ -107,13 +106,13 @@ page 50072 "DEL Document Sheet liasse"
         IF ServerFileName = '' THEN
             EXIT;
 
-        DocumentLine.SETRANGE("Table Name", "Table Name");
-        DocumentLine.SETRANGE("No.", "No.");
-        IF DocumentLine.FINDLAST THEN
+        DocumentLine.SETRANGE("Table Name", Rec."Table Name");
+        DocumentLine.SETRANGE("No.", Rec."No.");
+        IF DocumentLine.FINDLAST() THEN
             LastLineNo := DocumentLine."Line No.";
 
-        INIT;
-        "Line No." := LastLineNo + 10000;
+        Rec.INIT();
+        Rec."Line No." := LastLineNo + 10000;
         //TODO: OPEN, CLOSE AND CREATEINSTREAM ARE NOT USED FOR CLOUD DEV 
         // oFile.OPEN(ServerFileName);
         // oFile.CREATEINSTREAM(InStr);
@@ -121,42 +120,33 @@ page 50072 "DEL Document Sheet liasse"
         COPYSTREAM(OutStr, InStr);
         // oFile.CLOSE;
 
-        "Insert Date" := TODAY;
-        "Insert Time" := TIME;
+        Rec."Insert Date" := TODAY;
+        Rec."Insert Time" := TIME;
 
-        Path := Document_CU.GetDirectoryName(ImportFileName);
-        "File Name" := Document_CU.GetFileName(ImportFileName);
+        Rec.Path := Document_CU.GetDirectoryName(ImportFileName);
+        Rec."File Name" := Document_CU.GetFileName(ImportFileName);
 
-        INSERT(TRUE);
+        Rec.INSERT(TRUE);
         CurrPage.UPDATE(FALSE);
     end;
 
     local procedure SaveAs()
-    var
-        oFile: File;
-        InStr: InStream;
-        OutStr: OutStream;
-        ClientFileName: Text;
-        ServerFileName: Text;
-        cNoDocument: Label 'No document found.';
     begin
     end;
 
     local procedure Open()
     var
-        oFile: File;
         InStr: InStream;
+        cNoDocument: Label 'No document found.';
         OutStr: OutStream;
         Directory: Text;
-        ExportFileName: Text;
-        cNoDocument: Label 'No document found.';
     begin
-        CALCFIELDS(Document);
+        Rec.CALCFIELDS(Document);
         IF NOT Document.HASVALUE THEN
             ERROR(cNoDocument);
 
 
-        Directory := Document_CU.TempDirectory;
+        Directory := Document_CU.TempDirectory();
         //TODO: CREATE, AND CREATEOUTSTREAM ARE NOT USED FOR CLOUD DEV 
         //   oFile.CREATE(Directory + "File Name");
         //   oFile.CREATEOUTSTREAM(OutStr);
@@ -166,7 +156,7 @@ page 50072 "DEL Document Sheet liasse"
         //TODO: CLOSE IS NOT USED FOR CLOUD DEV 
         //   oFile.CLOSE;
 
-        HYPERLINK(Directory + "File Name");
+        HYPERLINK(Directory + Rec."File Name");
     end;
 }
 

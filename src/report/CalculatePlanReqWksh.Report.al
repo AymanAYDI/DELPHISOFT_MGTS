@@ -1,4 +1,4 @@
-report 50079 "Calculate Plan - Req. Wksh."
+report 50079 "DEL Calculate Plan-Req. Wksh."
 {
     Caption = 'Calculate Plan - Req. Wksh.';
     ProcessingOnly = true;
@@ -169,33 +169,33 @@ report 50079 "Calculate Plan - Req. Wksh."
     end;
 
     var
+        ActionMessageEntry: Record "Action Message Entry";
+        MfgSetup: Record "Manufacturing Setup";
+        PlanningAssignment: Record "Planning Assignment";
+        PurchReqLine: Record "Requisition Line";
+        ReqLine: Record "Requisition Line";
+        ReqLineExtern: Record "Requisition Line";
+        SKU: Record "Stockkeeping Unit";
+        InvtProfileOffsetting: Codeunit "Inventory Profile Offsetting";
+        RespectPlanningParm: Boolean;
+        CurrTemplateName: Code[10];
+        CurrWorksheetName: Code[10];
+        UseForecast: Code[10];
+        ReqWkshFilter: Code[50];
+        ReqWkshTemplateFilter: Code[50];
+        ExcludeForecastBefore: Date;
+        FromDate: Date;
+        ToDate: Date;
+        Window: Dialog;
+        Counter: Integer;
+        PeriodLength: Integer;
         Text002: Label 'Enter a starting date.';
         Text003: Label 'Enter an ending date.';
         Text004: Label 'The ending date must not be before the order date.';
         Text005: Label 'You must not use a variant filter when calculating MPS from a forecast.';
         Text006: Label 'Calculating the plan...\\';
         Text007: Label 'Item No.  #1##################';
-        ReqLine: Record "Requisition Line";
-        ActionMessageEntry: Record "Action Message Entry";
-        ReqLineExtern: Record "Requisition Line";
-        PurchReqLine: Record "Requisition Line";
-        SKU: Record "Stockkeeping Unit";
-        PlanningAssignment: Record "Planning Assignment";
-        MfgSetup: Record "Manufacturing Setup";
-        InvtProfileOffsetting: Codeunit "Inventory Profile Offsetting";
-        Window: Dialog;
         CurrWorksheetType: Option Requisition,Planning;
-        PeriodLength: Integer;
-        CurrTemplateName: Code[10];
-        CurrWorksheetName: Code[10];
-        FromDate: Date;
-        ToDate: Date;
-        ReqWkshTemplateFilter: Code[50];
-        ReqWkshFilter: Code[50];
-        Counter: Integer;
-        UseForecast: Code[10];
-        ExcludeForecastBefore: Date;
-        RespectPlanningParm: Boolean;
 
     procedure SetTemplAndWorksheet(TemplateName: Code[10]; WorksheetName: Code[10])
     begin
@@ -211,25 +211,22 @@ report 50079 "Calculate Plan - Req. Wksh."
 
     local procedure SkipPlanningForItemOnReqWksh(Item: Record Item): Boolean
     begin
-        WITH Item DO
-            IF (CurrWorksheetType = CurrWorksheetType::Requisition) AND
-               ("Replenishment System" = "Replenishment System"::Purchase) AND
-               ("Reordering Policy" <> "Reordering Policy"::" ")
-            THEN
-                EXIT(FALSE);
+        IF (CurrWorksheetType = CurrWorksheetType::Requisition) AND
+   (Item."Replenishment System" = Item."Replenishment System"::Purchase) AND
+   (Item."Reordering Policy" <> Item."Reordering Policy"::" ")
+THEN
+            EXIT(FALSE);
 
-        WITH SKU DO BEGIN
-            SETRANGE("Item No.", Item."No.");
-            IF FIND('-') THEN
-                REPEAT
-                    IF (CurrWorksheetType = CurrWorksheetType::Requisition) AND
-                       ("Replenishment System" IN ["Replenishment System"::Purchase,
-                                                   "Replenishment System"::Transfer]) AND
-                       ("Reordering Policy" <> "Reordering Policy"::" ")
-                    THEN
-                        EXIT(FALSE);
-                UNTIL NEXT() = 0;
-        END;
+        SKU.SETRANGE("Item No.", Item."No.");
+        IF SKU.FIND('-') THEN
+            REPEAT
+                IF (CurrWorksheetType = CurrWorksheetType::Requisition) AND
+                   (SKU."Replenishment System" IN [SKU."Replenishment System"::Purchase,
+                                               SKU."Replenishment System"::Transfer]) AND
+                   (SKU."Reordering Policy" <> SKU."Reordering Policy"::" ")
+                THEN
+                    EXIT(FALSE);
+            UNTIL SKU.NEXT() = 0;
 
         EXIT(TRUE);
     end;

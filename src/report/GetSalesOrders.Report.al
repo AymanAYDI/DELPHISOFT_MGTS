@@ -96,34 +96,34 @@ report 50078 "DEL Get Sales Orders"
         ReqWkshName.GET(ReqLine."Worksheet Template Name", ReqLine."Journal Batch Name");
         ReqLine.SETRANGE("Worksheet Template Name", ReqLine."Worksheet Template Name");
         ReqLine.SETRANGE("Journal Batch Name", ReqLine."Journal Batch Name");
-        ReqLine.LOCKTABLE;
-        IF ReqLine.FINDLAST THEN BEGIN
-            ReqLine.INIT;
+        ReqLine.LOCKTABLE();
+        IF ReqLine.FINDLAST() THEN BEGIN
+            ReqLine.INIT();
             LineNo := ReqLine."Line No.";
         END;
         Window.OPEN(Text000);
     end;
 
     var
-        Text000: Label 'Processing sales lines  #1######';
-        Text001: Label 'There are no sales lines to retrieve.';
-        ReqWkshTmpl: Record "Req. Wksh. Template";
-        ReqWkshName: Record "Requisition Wksh. Name";
-        ReqLine: Record "Requisition Line";
-        SalesHeader: Record "Sales Header";
+        Item: Record Item;
         PurchasingCode: Record Purchasing;
+        ReqWkshTmpl: Record "Req. Wksh. Template";
+        ReqLine: Record "Requisition Line";
+        ReqWkshName: Record "Requisition Wksh. Name";
+        SalesHeader: Record "Sales Header";
+        Vendor: Record Vendor;
         ItemTrackingMgt: Codeunit "Item Tracking Management";
         LeadTimeMgt: Codeunit "Lead-Time Management";
+        SalesDocNoFilter: Code[20];
         Window: Dialog;
         LineCount: Integer;
-        SpecOrder: Integer;
-        GetDim: Option Item,"Sales Line";
         LineNo: Integer;
-        Item: Record Item;
+        SpecOrder: Integer;
+        Text000: Label 'Processing sales lines  #1######';
+        Text001: Label 'There are no sales lines to retrieve.';
         Text50000: Label '-%1';
-        Vendor: Record Vendor;
         Text50001: Label '+%1';
-        SalesDocNoFilter: Code[20];
+        GetDim: Option Item,"Sales Line";
 
 
     procedure SetReqWkshLine(NewReqLine: Record "Requisition Line"; SpecialOrder: Integer)
@@ -136,113 +136,111 @@ report 50078 "DEL Get Sales Orders"
     var
         ItemVendor: Record "Item Vendor";
     begin
-        ReqLine.RESET;
+        ReqLine.RESET();
         ReqLine.SETCURRENTKEY(Type, "No.");
         ReqLine.SETRANGE(Type, "Sales Line".Type);
         ReqLine.SETRANGE("No.", "Sales Line"."No.");
         ReqLine.SETRANGE("Sales Order No.", "Sales Line"."Document No.");
         ReqLine.SETRANGE("Sales Order Line No.", "Sales Line"."Line No.");
-        IF ReqLine.FINDFIRST THEN
+        IF ReqLine.FINDFIRST() THEN
             EXIT;
 
         LineNo := LineNo + 10000;
         CLEAR(ReqLine);
         ReqLine.SetDropShipment(SalesLine."Drop Shipment");
-        WITH ReqLine DO BEGIN
-            INIT;
-            "Worksheet Template Name" := ReqWkshName."Worksheet Template Name";
-            "Journal Batch Name" := ReqWkshName.Name;
-            "Line No." := LineNo;
-            VALIDATE(Type, SalesLine.Type);
-            VALIDATE("No.", SalesLine."No.");
-            "Variant Code" := SalesLine."Variant Code";
-            VALIDATE("Location Code", SalesLine."Location Code");
-            "Bin Code" := SalesLine."Bin Code";
+        ReqLine.INIT();
+        ReqLine."Worksheet Template Name" := ReqWkshName."Worksheet Template Name";
+        ReqLine."Journal Batch Name" := ReqWkshName.Name;
+        ReqLine."Line No." := LineNo;
+        ReqLine.VALIDATE(Type, SalesLine.Type);
+        ReqLine.VALIDATE("No.", SalesLine."No.");
+        ReqLine."Variant Code" := SalesLine."Variant Code";
+        ReqLine.VALIDATE("Location Code", SalesLine."Location Code");
+        ReqLine."Bin Code" := SalesLine."Bin Code";
 
-            // Drop Shipment means replenishment by purchase only
-            IF ("Replenishment System" <> "Replenishment System"::Purchase) AND
-               SalesLine."Drop Shipment"
-            THEN
-                VALIDATE("Replenishment System", "Replenishment System"::Purchase);
+        // Drop Shipment means replenishment by purchase only
+        IF (ReqLine."Replenishment System" <> ReqLine."Replenishment System"::Purchase) AND
+           SalesLine."Drop Shipment"
+        THEN
+            ReqLine.VALIDATE("Replenishment System", ReqLine."Replenishment System"::Purchase);
 
-            IF SpecOrder <> 1 THEN
-                VALIDATE("Unit of Measure Code", SalesLine."Unit of Measure Code");
-            VALIDATE(
-              Quantity,
-              ROUND(SalesLine."Outstanding Quantity" * SalesLine."Qty. per Unit of Measure" / "Qty. per Unit of Measure", 0.00001));
-            "Sales Order No." := SalesLine."Document No.";
-            "Sales Order Line No." := SalesLine."Line No.";
-            "Sell-to Customer No." := SalesLine."Sell-to Customer No.";
-            SalesHeader.GET(1, SalesLine."Document No.");
+        IF SpecOrder <> 1 THEN
+            ReqLine.VALIDATE("Unit of Measure Code", SalesLine."Unit of Measure Code");
+        ReqLine.VALIDATE(
+          Quantity,
+          ROUND(SalesLine."Outstanding Quantity" * SalesLine."Qty. per Unit of Measure" / ReqLine."Qty. per Unit of Measure", 0.00001));
+        ReqLine."Sales Order No." := SalesLine."Document No.";
+        ReqLine."Sales Order Line No." := SalesLine."Line No.";
+        ReqLine."Sell-to Customer No." := SalesLine."Sell-to Customer No.";
+        SalesHeader.GET(1, SalesLine."Document No.");
 
-            //MGTS10.023; 002; mhh; deleted line: IF SpecOrder <> 1 THEN
+        //MGTS10.023; 002; mhh; deleted line: IF SpecOrder <> 1 THEN
 
-            "Ship-to Code" := SalesHeader."Ship-to Code";
-            "Item Category Code" := SalesLine."Item Category Code";
-            Nonstock := SalesLine.Nonstock;
-            "Action Message" := "Action Message"::New;
-            "Purchasing Code" := SalesLine."Purchasing Code";
-            // Backward Scheduling
-            "Due Date" := SalesLine."Shipment Date";
+        ReqLine."Ship-to Code" := SalesHeader."Ship-to Code";
+        ReqLine."Item Category Code" := SalesLine."Item Category Code";
+        ReqLine.Nonstock := SalesLine.Nonstock;
+        ReqLine."Action Message" := ReqLine."Action Message"::New;
+        ReqLine."Purchasing Code" := SalesLine."Purchasing Code";
+        // Backward Scheduling
+        ReqLine."Due Date" := SalesLine."Shipment Date";
 
-            //MGTS10.008; 001; ehh; begin
-            IF NOT Item.GET(SalesLine."No.") THEN
-                Item.INIT;
+        //MGTS10.008; 001; ehh; begin
+        IF NOT Item.GET(SalesLine."No.") THEN
+            Item.INIT();
 
-            IF NOT (SalesHeader."Ship-to Country/Region Code" = '') AND (SalesLine.Type = SalesLine.Type::Item) THEN BEGIN
-                ItemVendor.RESET;
-                ItemVendor.SETRANGE("Item No.", SalesLine."No.");
-                ItemVendor.SETRANGE("DEL Country/Region Code", SalesHeader."Ship-to Country/Region Code");
-                IF ItemVendor.FINDFIRST THEN BEGIN
-                    Item."Vendor No." := ItemVendor."Vendor No.";
-                    "Vendor Item No." := ItemVendor."Vendor Item No.";
-                    IF NOT (FORMAT(ItemVendor."Lead Time Calculation") = '') THEN
-                        Item."Lead Time Calculation" := ItemVendor."Lead Time Calculation";
-                END;
+        IF NOT (SalesHeader."Ship-to Country/Region Code" = '') AND (SalesLine.Type = SalesLine.Type::Item) THEN BEGIN
+            ItemVendor.RESET();
+            ItemVendor.SETRANGE("Item No.", SalesLine."No.");
+            ItemVendor.SETRANGE("DEL Country/Region Code", SalesHeader."Ship-to Country/Region Code");
+            IF ItemVendor.FINDFIRST() THEN BEGIN
+                Item."Vendor No." := ItemVendor."Vendor No.";
+                ReqLine."Vendor Item No." := ItemVendor."Vendor Item No.";
+                IF NOT (FORMAT(ItemVendor."Lead Time Calculation") = '') THEN
+                    Item."Lead Time Calculation" := ItemVendor."Lead Time Calculation";
             END;
-            VALIDATE("Vendor No.", Item."Vendor No.");
-            //MGTS10.008; 001; ehh; end
+        END;
+        ReqLine.VALIDATE("Vendor No.", Item."Vendor No.");
+        //MGTS10.008; 001; ehh; end
 
-            //MGTS0125; MHH; begin
-            IF SalesLine.Type = SalesLine.Type::Item THEN BEGIN
-                IF FORMAT(Item."Lead Time Calculation") <> '' THEN BEGIN
-                    "DEL Purchase Order Due Date" := CALCDATE(STRSUBSTNO(Text50000, Item."Lead Time Calculation"), SalesLine."Shipment Date");
-                    "DEL Recalc. Date Of Delivery" := CALCDATE(STRSUBSTNO(Text50001, Item."Lead Time Calculation"), TODAY);
+        //MGTS0125; MHH; begin
+        IF SalesLine.Type = SalesLine.Type::Item THEN BEGIN
+            IF FORMAT(Item."Lead Time Calculation") <> '' THEN BEGIN
+                ReqLine."DEL Purchase Order Due Date" := CALCDATE(STRSUBSTNO(Text50000, Item."Lead Time Calculation"), SalesLine."Shipment Date");
+                ReqLine."DEL Recalc. Date Of Delivery" := CALCDATE(STRSUBSTNO(Text50001, Item."Lead Time Calculation"), TODAY);
+            END ELSE BEGIN
+                IF NOT Vendor.GET(Item."Vendor No.") THEN
+                    Vendor.INIT();
+
+                IF FORMAT(Vendor."Lead Time Calculation") <> '' THEN BEGIN
+                    ReqLine."DEL Purchase Order Due Date" := CALCDATE(STRSUBSTNO(Text50000, Vendor."Lead Time Calculation"), SalesLine."Shipment Date");
+                    ReqLine."DEL Recalc. Date Of Delivery" := CALCDATE(STRSUBSTNO(Text50001, Vendor."Lead Time Calculation"), TODAY);
                 END ELSE BEGIN
-                    IF NOT Vendor.GET(Item."Vendor No.") THEN
-                        Vendor.INIT;
-
-                    IF FORMAT(Vendor."Lead Time Calculation") <> '' THEN BEGIN
-                        "DEL Purchase Order Due Date" := CALCDATE(STRSUBSTNO(Text50000, Vendor."Lead Time Calculation"), SalesLine."Shipment Date");
-                        "DEL Recalc. Date Of Delivery" := CALCDATE(STRSUBSTNO(Text50001, Vendor."Lead Time Calculation"), TODAY);
-                    END ELSE BEGIN
-                        "DEL Purchase Order Due Date" := SalesLine."Shipment Date";
-                        "DEL Recalc. Date Of Delivery" := TODAY;
-                    END;
+                    ReqLine."DEL Purchase Order Due Date" := SalesLine."Shipment Date";
+                    ReqLine."DEL Recalc. Date Of Delivery" := TODAY;
                 END;
             END;
-            //MGTS0125; MHH; end
+        END;
+        //MGTS0125; MHH; end
 
-            "Ending Date" :=
-              LeadTimeMgt.PlannedEndingDate(
-                "No.", "Location Code", "Variant Code", "Due Date", "Vendor No.", "Ref. Order Type");
+        ReqLine."Ending Date" :=
+          LeadTimeMgt.PlannedEndingDate(
+            ReqLine."No.", ReqLine."Location Code", ReqLine."Variant Code", ReqLine."Due Date", ReqLine."Vendor No.", ReqLine."Ref. Order Type");
 
-            // START Interne1
-            "DEL Requested Delivery Date" := SalesLine."Requested Delivery Date";
-            // STOP Interne1
+        // START Interne1
+        ReqLine."DEL Requested Delivery Date" := SalesLine."Requested Delivery Date";
+        // STOP Interne1
 
-            CalcStartingDate('');
-            UpdateDescription;
-            UpdateDatetime;
+        ReqLine.CalcStartingDate('');
+        ReqLine.UpdateDescription();
+        ReqLine.UpdateDatetime();
 
-            INSERT;
-            ItemTrackingMgt.CopyItemTracking(SalesLine.RowID1, RowID1, TRUE);
-            IF GetDim = GetDim::"Sales Line" THEN BEGIN
-                "Shortcut Dimension 1 Code" := SalesLine."Shortcut Dimension 1 Code";
-                "Shortcut Dimension 2 Code" := SalesLine."Shortcut Dimension 2 Code";
-                "Dimension Set ID" := SalesLine."Dimension Set ID";
-                MODIFY;
-            END;
+        ReqLine.INSERT();
+        ItemTrackingMgt.CopyItemTracking(SalesLine.RowID1(), ReqLine.RowID1(), TRUE);
+        IF GetDim = GetDim::"Sales Line" THEN BEGIN
+            ReqLine."Shortcut Dimension 1 Code" := SalesLine."Shortcut Dimension 1 Code";
+            ReqLine."Shortcut Dimension 2 Code" := SalesLine."Shortcut Dimension 2 Code";
+            ReqLine."Dimension Set ID" := SalesLine."Dimension Set ID";
+            ReqLine.MODIFY();
         END;
     end;
 

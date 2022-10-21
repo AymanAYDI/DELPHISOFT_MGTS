@@ -93,12 +93,11 @@ page 50075 "DEL Document Sheet Contrats"
     local procedure Add()
     var
         DocumentLine: Record "DEL Document Line";
-        oFile: File;
         InStr: InStream;
+        LastLineNo: Integer;
         OutStr: OutStream;
         ImportFileName: Text;
         ServerFileName: Text;
-        LastLineNo: Integer;
     begin
         IF NOT Document_CU.OpenFile(ImportFileName, ServerFileName) THEN
             EXIT;

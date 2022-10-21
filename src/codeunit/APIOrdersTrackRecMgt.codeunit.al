@@ -12,112 +12,104 @@ codeunit 50044 "DEL API Orders Track Rec. Mgt."
     var
         Element: Record "DEL Element";
     begin
-        WITH Element DO BEGIN
 
-            SETCURRENTKEY(Type, "Type No.");
-            SETRANGE(Type, Type::ACO);
-            SETRANGE("Type No.", ACONo);
-            SETRANGE(Instance, Instance::planned);
-            IF NOT ISEMPTY THEN BEGIN
-                FINDFIRST;
-                EXIT(Deal_ID);
-            END
-            ELSE
-                EXIT('');
-        END;
+        Element.SETCURRENTKEY(Type, "Type No.");
+        Element.SETRANGE(Type, Element.Type::ACO);
+        Element.SETRANGE("Type No.", ACONo);
+        Element.SETRANGE(Instance, Element.Instance::planned);
+        IF NOT Element.ISEMPTY THEN BEGIN
+            Element.FINDFIRST();
+            EXIT(Element.Deal_ID);
+        END
+        ELSE
+            EXIT('');
     end;
 
     local procedure GetVCODealID(VCONo: Code[20]): Code[20]
     var
         Element: Record "DEL Element";
     begin
-        WITH Element DO BEGIN
 
-            SETCURRENTKEY(Type, "Type No.");
-            SETRANGE(Type, Type::VCO);
-            SETRANGE("Type No.", VCONo);
-            SETRANGE(Instance, Instance::planned);
-            IF NOT ISEMPTY THEN BEGIN
-                FINDFIRST;
-                EXIT(Deal_ID);
-            END
-            ELSE
-                EXIT('');
-        END;
+        Element.SETCURRENTKEY(Type, "Type No.");
+        Element.SETRANGE(Type, Element.Type::VCO);
+        Element.SETRANGE("Type No.", VCONo);
+        Element.SETRANGE(Instance, Element.Instance::planned);
+        IF NOT Element.ISEMPTY THEN BEGIN
+            Element.FINDFIRST();
+            EXIT(Element.Deal_ID);
+        END
+        ELSE
+            EXIT('');
     end;
 
     local procedure ACOInDeal(ACONo: Code[20]): Boolean
     var
+        Deal: Record "DEL Deal";
         Element: Record "DEL Element";
         SalesHeader: Record "Sales Header";
-        Deal: Record "DEL Deal";
     begin
-        WITH Element DO BEGIN
 
-            SETCURRENTKEY(Type, "Type No.");
-            SETRANGE(Type, Type::ACO);
-            SETRANGE("Type No.", ACONo);
-            SETRANGE(Instance, Instance::planned);
-            IF NOT ISEMPTY THEN BEGIN
-                FINDFIRST;
+        Element.SETCURRENTKEY(Type, "Type No.");
+        Element.SETRANGE(Type, Element.Type::ACO);
+        Element.SETRANGE("Type No.", ACONo);
+        Element.SETRANGE(Instance, Element.Instance::planned);
+        IF NOT Element.ISEMPTY THEN BEGIN
+            Element.FINDFIRST();
 
-                IF NOT Deal.GET(Deal_ID) THEN
-                    EXIT(FALSE);
-                IF NOT (Deal.Status IN [Deal.Status::"In order", Deal.Status::"In progress"]) THEN
-                    EXIT(FALSE);
+            IF NOT Deal.GET(Element.Deal_ID) THEN
+                EXIT(FALSE);
+            IF NOT (Deal.Status IN [Deal.Status::"In order", Deal.Status::"In progress"]) THEN
+                EXIT(FALSE);
 
-                SETRANGE("Type No.");
-                SETCURRENTKEY(Deal_ID, Type, Instance);
-                SETRANGE(Type, Type::VCO);
-                SETRANGE(Deal_ID, Deal_ID);
-                SETRANGE(Instance, Instance::planned);
-                IF NOT ISEMPTY THEN BEGIN
-                    FINDFIRST;
-                    EXIT(SalesHeader.GET(SalesHeader."Document Type"::Order, "Type No.") AND ACOHasLines(ACONo));
-                END
-                ELSE
-                    EXIT(FALSE)
+            Element.SETRANGE("Type No.");
+            Element.SETCURRENTKEY(Deal_ID, Type, Instance);
+            Element.SETRANGE(Type, Element.Type::VCO);
+            Element.SETRANGE(Deal_ID, Element.Deal_ID);
+            Element.SETRANGE(Instance, Element.Instance::planned);
+            IF NOT Element.ISEMPTY THEN BEGIN
+                Element.FINDFIRST();
+                EXIT(SalesHeader.GET(SalesHeader."Document Type"::Order, Element."Type No.") AND ACOHasLines(ACONo));
             END
             ELSE
-                EXIT(FALSE);
-        END;
+                EXIT(FALSE)
+        END
+        ELSE
+            EXIT(FALSE);
     end;
 
     local procedure VCOInDeal(VCONo: Code[20]): Boolean
     var
+        Deal: Record "DEL Deal";
         Element: Record "DEL Element";
         PurchaseHeader: Record "Purchase Header";
-        Deal: Record "DEL Deal";
     begin
-        WITH Element DO BEGIN
 
-            SETCURRENTKEY(Type, "Type No.");
-            SETRANGE(Type, Type::VCO);
-            SETRANGE("Type No.", VCONo);
-            SETRANGE(Instance, Instance::planned);
-            IF NOT ISEMPTY THEN BEGIN
-                FINDFIRST;
+        Element.SETCURRENTKEY(Type, "Type No.");
+        Element.SETRANGE(Type, Element.Type::VCO);
+        Element.SETRANGE("Type No.", VCONo);
+        Element.SETRANGE(Instance, Element.Instance::planned);
+        IF NOT Element.ISEMPTY THEN BEGIN
+            Element.FINDFIRST();
 
-                IF NOT Deal.GET(Deal_ID) THEN
-                    EXIT(FALSE);
-                IF NOT (Deal.Status IN [Deal.Status::"In order", Deal.Status::"In progress"]) THEN
-                    EXIT(FALSE);
+            IF NOT Deal.GET(Element.Deal_ID) THEN
+                EXIT(FALSE);
+            IF NOT (Deal.Status IN [Deal.Status::"In order", Deal.Status::"In progress"]) THEN
+                EXIT(FALSE);
 
-                SETRANGE("Type No.");
-                SETCURRENTKEY(Deal_ID, Type, Instance);
-                SETRANGE(Type, Type::ACO);
-                SETRANGE(Deal_ID, Deal_ID);
-                SETRANGE(Instance, Instance::planned);
-                IF NOT ISEMPTY THEN BEGIN
-                    FINDFIRST;
-                    EXIT(PurchaseHeader.GET(PurchaseHeader."Document Type"::Order, "Type No.") AND ACOHasLines(PurchaseHeader."No."));
-                END
-                ELSE
-                    EXIT(FALSE)
+            Element.SETRANGE("Type No.");
+            Element.SETCURRENTKEY(Deal_ID, Type, Instance);
+            Element.SETRANGE(Type, Element.Type::ACO);
+            Element.SETRANGE(Deal_ID, Element.Deal_ID);
+            Element.SETRANGE(Instance, Element.Instance::planned);
+            IF NOT Element.ISEMPTY THEN BEGIN
+                Element.FINDFIRST();
+                EXIT(PurchaseHeader.GET(PurchaseHeader."Document Type"::Order, Element."Type No.") AND ACOHasLines(PurchaseHeader."No."));
             END
             ELSE
-                EXIT(FALSE);
-        END;
+                EXIT(FALSE)
+        END
+        ELSE
+            EXIT(FALSE);
     end;
 
     local procedure ACOHasLines(ACONo: Code[20]): Boolean
@@ -172,9 +164,8 @@ codeunit 50044 "DEL API Orders Track Rec. Mgt."
 
     local procedure GetVCONo(DealID: Code[20]): Code[20]
     var
-        Element: Record "DEL Element";
-        SalesHeader: Record "Sales Header";
         Deal: Record "DEL Deal";
+        Element: Record "DEL Element";
     begin
 
         IF NOT Deal.GET(DealID) THEN
@@ -182,26 +173,22 @@ codeunit 50044 "DEL API Orders Track Rec. Mgt."
         IF NOT (Deal.Status IN [Deal.Status::"In order", Deal.Status::"In progress"]) THEN
             EXIT('');
 
-        WITH Element DO BEGIN
-
-            SETCURRENTKEY(Deal_ID, Type, Instance);
-            SETRANGE(Type, Type::VCO);
-            SETRANGE(Deal_ID, DealID);
-            SETRANGE(Instance, Instance::planned);
-            IF NOT ISEMPTY THEN BEGIN
-                FINDFIRST;
-                EXIT("Type No.");
-            END
-            ELSE
-                EXIT('');
-        END;
+        Element.SETCURRENTKEY(Deal_ID, Type, Instance);
+        Element.SETRANGE(Type, Element.Type::VCO);
+        Element.SETRANGE(Deal_ID, DealID);
+        Element.SETRANGE(Instance, Element.Instance::planned);
+        IF NOT Element.ISEMPTY THEN BEGIN
+            Element.FINDFIRST();
+            EXIT(Element."Type No.");
+        END
+        ELSE
+            EXIT('');
     end;
 
     local procedure GetACONo(DealID: Code[20]): Code[20]
     var
-        Element: Record "DEL Element";
-        SalesHeader: Record "Sales Header";
         Deal: Record "DEL Deal";
+        Element: Record "DEL Element";
     begin
 
         IF NOT Deal.GET(DealID) THEN
@@ -209,19 +196,16 @@ codeunit 50044 "DEL API Orders Track Rec. Mgt."
         IF NOT (Deal.Status IN [Deal.Status::"In order", Deal.Status::"In progress"]) THEN
             EXIT('');
 
-        WITH Element DO BEGIN
-
-            SETCURRENTKEY(Deal_ID, Type, Instance);
-            SETRANGE(Type, Type::ACO);
-            SETRANGE(Deal_ID, DealID);
-            SETRANGE(Instance, Instance::planned);
-            IF NOT ISEMPTY THEN BEGIN
-                FINDFIRST;
-                EXIT("Type No.");
-            END
-            ELSE
-                EXIT('');
-        END;
+        Element.SETCURRENTKEY(Deal_ID, Type, Instance);
+        Element.SETRANGE(Type, Element.Type::ACO);
+        Element.SETRANGE(Deal_ID, DealID);
+        Element.SETRANGE(Instance, Element.Instance::planned);
+        IF NOT Element.ISEMPTY THEN BEGIN
+            Element.FINDFIRST();
+            EXIT(Element."Type No.");
+        END
+        ELSE
+            EXIT('');
     end;
 
     [EventSubscriber(ObjectType::Table, Database::"Purchase Header", 'OnAfterModifyEvent', '', false, false)]
@@ -279,19 +263,19 @@ codeunit 50044 "DEL API Orders Track Rec. Mgt."
 
     local procedure UpdateACOInfo(PurchaseHeader: Record "Purchase Header"; var OrderAPIRecordTracking: Record "DEL Order API Record Tracking")
     var
-        Vendor: Record Vendor;
-        TotalPurchaseLine: Record "Purchase Line";
         PurchaseLine: Record "Purchase Line";
+        TotalPurchaseLine: Record "Purchase Line";
+        Vendor: Record Vendor;
         DocumentTotals: Codeunit "Document Totals";
         VATAmount: Decimal;
     begin
         IF NOT Vendor.GET(PurchaseHeader."Buy-from Vendor No.") THEN
-            Vendor.INIT;
+            Vendor.INIT();
 
         IF NOT OrderAPIRecordTracking.GET(OrderAPIRecordTracking."Deal ID") THEN BEGIN
-            OrderAPIRecordTracking.INIT;
+            OrderAPIRecordTracking.INIT();
             OrderAPIRecordTracking."Deal ID" := OrderAPIRecordTracking."Deal ID";
-            OrderAPIRecordTracking.INSERT;
+            OrderAPIRecordTracking.INSERT();
         END;
 
         IF NOT OrderAPIRecordTracking.GET(OrderAPIRecordTracking."Deal ID") THEN
@@ -321,7 +305,7 @@ codeunit 50044 "DEL API Orders Track Rec. Mgt."
         PurchaseLine.SETRANGE("Document No.", PurchaseHeader."No.");
         PurchaseLine.SETRANGE(Type, PurchaseLine.Type::Item);
         PurchaseLine.SETFILTER(Quantity, '<>%1', 0);
-        PurchaseLine.FINDFIRST;
+        PurchaseLine.FINDFIRST();
         DocumentTotals.CalculatePurchaseTotals(TotalPurchaseLine, VATAmount, PurchaseLine);
         OrderAPIRecordTracking."ACO Amount" := TotalPurchaseLine.Amount;
         OrderAPIRecordTracking."ACO Payment Deadline" := PurchaseHeader."Due Date";
@@ -330,16 +314,16 @@ codeunit 50044 "DEL API Orders Track Rec. Mgt."
         OrderAPIRecordTracking."Sent Deal" := FALSE;
 
 
-        OrderAPIRecordTracking.MODIFY;
+        OrderAPIRecordTracking.MODIFY();
         UpdateACOLineInfo(PurchaseHeader, OrderAPIRecordTracking);
     end;
 
     local procedure UpdateVCOInfo(SalesHeader: Record "Sales Header"; var OrderAPIRecordTracking: Record "DEL Order API Record Tracking")
     begin
         IF NOT OrderAPIRecordTracking.GET(OrderAPIRecordTracking."Deal ID") THEN BEGIN
-            OrderAPIRecordTracking.INIT;
+            OrderAPIRecordTracking.INIT();
             OrderAPIRecordTracking."Deal ID" := OrderAPIRecordTracking."Deal ID";
-            OrderAPIRecordTracking.INSERT;
+            OrderAPIRecordTracking.INSERT();
         END;
 
         IF NOT OrderAPIRecordTracking.GET(OrderAPIRecordTracking."Deal ID") THEN
@@ -353,26 +337,26 @@ codeunit 50044 "DEL API Orders Track Rec. Mgt."
         OrderAPIRecordTracking."Sent Deal" := FALSE;
 
 
-        OrderAPIRecordTracking.MODIFY;
+        OrderAPIRecordTracking.MODIFY();
     end;
 
     local procedure UpdateACOLineInfo(PurchaseHeader: Record "Purchase Header"; OrderAPIRecordTracking: Record "DEL Order API Record Tracking")
     var
-        PurchaseLine: Record "Purchase Line";
         ACOLinesAPIRecordTracking: Record "DEL ACO Lines API Rec. Track.";
+        PurchaseLine: Record "Purchase Line";
     begin
         ACOLinesAPIRecordTracking.SETRANGE("Deal ID", OrderAPIRecordTracking."Deal ID");
-        ACOLinesAPIRecordTracking.DELETEALL;
-        ACOLinesAPIRecordTracking.RESET;
+        ACOLinesAPIRecordTracking.DELETEALL();
+        ACOLinesAPIRecordTracking.RESET();
 
         PurchaseLine.SETRANGE("Document Type", PurchaseLine."Document Type"::Order);
         PurchaseLine.SETRANGE("Document No.", PurchaseHeader."No.");
         PurchaseLine.SETRANGE(Type, PurchaseLine.Type::Item);
         PurchaseLine.SETFILTER(Quantity, '<>%1', 0);
         IF NOT PurchaseLine.ISEMPTY THEN BEGIN
-            PurchaseLine.FINDFIRST;
+            PurchaseLine.FINDFIRST();
             REPEAT
-                ACOLinesAPIRecordTracking.INIT;
+                ACOLinesAPIRecordTracking.INIT();
                 ACOLinesAPIRecordTracking."Deal ID" := OrderAPIRecordTracking."Deal ID";
                 ACOLinesAPIRecordTracking."ACO Line No." := PurchaseLine."Line No.";
                 ACOLinesAPIRecordTracking."ACO Line Type" := PurchaseLine.Type;
@@ -388,19 +372,19 @@ codeunit 50044 "DEL API Orders Track Rec. Mgt."
                 ACOLinesAPIRecordTracking."ACO Product Description" := PurchaseLine.Description;
 
 
-                ACOLinesAPIRecordTracking.INSERT;
-            UNTIL PurchaseLine.NEXT = 0;
+                ACOLinesAPIRecordTracking.INSERT();
+            UNTIL PurchaseLine.NEXT() = 0;
         END;
     end;
 
 
     procedure UpdateOrderAPIRecordTracking(DealID: Code[20])
     var
-        ACONo: Code[20];
-        VCONo: Code[20];
         OrderAPIRecordTracking: Record "DEL Order API Record Tracking";
         PurchaseHeader: Record "Purchase Header";
         SalesHeader: Record "Sales Header";
+        ACONo: Code[20];
+        VCONo: Code[20];
     begin
         ACONo := GetACONo(DealID);
         IF NOT PurchaseHeader.GET(PurchaseHeader."Document Type"::Order, ACONo) THEN
@@ -413,9 +397,9 @@ codeunit 50044 "DEL API Orders Track Rec. Mgt."
             EXIT;
 
         IF NOT OrderAPIRecordTracking.GET(DealID) THEN BEGIN
-            OrderAPIRecordTracking.INIT;
+            OrderAPIRecordTracking.INIT();
             OrderAPIRecordTracking."Deal ID" := DealID;
-            OrderAPIRecordTracking.INSERT;
+            OrderAPIRecordTracking.INSERT();
         END;
         UpdateACOInfo(PurchaseHeader, OrderAPIRecordTracking);
         UpdateVCOInfo(SalesHeader, OrderAPIRecordTracking);

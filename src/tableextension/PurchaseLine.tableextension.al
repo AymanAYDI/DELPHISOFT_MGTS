@@ -535,8 +535,8 @@ tableextension 50029 "DEL PurchaseLine" extends "Purchase Line"
 
     procedure ExistOldPurch(ItemNo: Code[20]; DocNo: Code[20]): Boolean
     var
-        PurchaseLine: Record "Purchase Line";
         PurchInvLine: Record "Purch. Inv. Line";
+        PurchaseLine: Record "Purchase Line";
     begin
         PurchaseLine.SETRANGE("Document Type", PurchaseLine."Document Type"::Order);
         PurchaseLine.SETRANGE(Type, PurchaseLine.Type::Item);
@@ -553,9 +553,9 @@ tableextension 50029 "DEL PurchaseLine" extends "Purchase Line"
 
     procedure UpdateSalesEstimatedDelivery()
     var
-        SalesLine: Record "Sales Line";
         PurchHeader: Record "Purchase Header";
         PurchSetup: Record "Purchases & Payables Setup";
+        SalesLine: Record "Sales Line";
     begin
 
         //MGTS10.00.006; 001; mhh; entire function
@@ -605,49 +605,5 @@ tableextension 50029 "DEL PurchaseLine" extends "Purchase Line"
             END;
 
     end;
-
-    var
-
-       
-        DealItem_Cu: Codeunit "DEL Deal Item";
-        Deal_Cu: Codeunit "DEL Deal";
-
-
-        requestID_Co_Loc: Code[20];
-        element_Re_Loc: Record "DEL Element";
-
-
-        ACOConnection_Re_Loc: Record "DEL ACO Connection";
-
-
-        urm_Re_Loc: Record "DEL Update Request Manager";
-
-
-    //Unsupported feature: Property Modification (Id) on "UpdateFromVAT(Variable 1000000004)".
-
-    //var
-    //>>>> ORIGINAL VALUE:
-    //UpdateFromVAT : 1087;
-    //Variable type has not been exported.
-    //>>>> MODIFIED VALUE:
-    //UpdateFromVAT : 1000000004;
-    //Variable type has not been exported.
-
-
-    //Unsupported feature: Property Modification (Id) on "PrePaymentLineAmountEntered(Variable 1000000003)".
-
-    //var
-    //>>>> ORIGINAL VALUE:
-    //PrePaymentLineAmountEntered : 1042;
-    //Variable type has not been exported.
-    //>>>> MODIFIED VALUE:
-    //PrePaymentLineAmountEntered : 1000000003;
-    //Variable type has not been exported.
-
-    var
-        Item_Rec: Record Item;
-        SalesHeader_Rec: Record "Sales Header";
-        ItemCrossReference: Record "Item Reference";
-        UpdateRequestManager_Cu: Codeunit "DEL Update Request Manager";
 }
 

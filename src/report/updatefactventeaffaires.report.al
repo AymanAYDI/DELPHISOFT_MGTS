@@ -17,7 +17,7 @@ report 50018 "DEL update fact vente/affaires"
             column(COMPANYNAME; COMPANYNAME)
             {
             }
-            column(CurrReport_PAGENO; CurrReport.PAGENO)
+            column(CurrReport_PAGENO; CurrReport.PAGENO())
             {
             }
             column("USERID"; USERID)
@@ -98,22 +98,22 @@ report 50018 "DEL update fact vente/affaires"
                 begin
                     Montant_Total := Montant_Total + "Sales Invoice Line".Amount;
 
-                    DealItem.RESET;
+                    DealItem.RESET();
                     DealItem.SETRANGE(DealItem.Deal_ID, Deal_ID_Co_Par);
                     DealItem.SETRANGE(DealItem."Item No.", "Sales Invoice Line"."No.");
                     IF NOT DealItem.FIND('-') THEN BEGIN
-                        DealItem.INIT;
+                        DealItem.INIT();
                         DealItem.Deal_ID := Deal_ID_Co_Par;
                         DealItem."Item No." := "Sales Invoice Line"."No.";
                         DealItem."Unit Price" := "Sales Invoice Line"."Unit Price";
                         DealItem."Currency Price" := "Sales Invoice Header"."Currency Code";
-                        DealItem.INSERT;
+                        DealItem.INSERT();
                     END;
 
                     Setup.GET();
                     position_ID_Co_Loc := NoSeriesMgt_Cu.GetNextNo(Setup."Position Nos.", TODAY, TRUE);
 
-                    Position_Re.INIT;
+                    Position_Re.INIT();
                     Position_Re.ID := position_ID_Co_Loc;
                     Position_Re.VALIDATE("Deal_ID", Deal_ID_Co_Par);
                     Position_Re.VALIDATE(Element_ID, element_ID_Ret);
@@ -141,7 +141,7 @@ report 50018 "DEL update fact vente/affaires"
                 Deal_ID_Co_Par := '';
                 Element.SETRANGE(Element."Type No.", "Sales Invoice Header"."No.");
                 IF Element.FIND('-') THEN BEGIN
-                    CurrReport.SKIP;
+                    CurrReport.SKIP();
                 END
 
                 ELSE BEGIN
@@ -178,7 +178,7 @@ report 50018 "DEL update fact vente/affaires"
                         Element."Add DateTime" := CURRENTDATETIME;
                         Element.Period := 20130104D;       // 040113D; 
                         Element."Splitt Index" := 0;
-                        Element.INSERT;
+                        Element.INSERT();
                     END;
                 END;
             end;
@@ -202,21 +202,20 @@ report 50018 "DEL update fact vente/affaires"
     }
 
     var
-        LastFieldNo: Integer;
-        FooterPrinted: Boolean;
-        Montant_Total: Decimal;
-        Element: Record "DEL Element";
-        Position_Re: Record "DEL Position";
-        DealItem: Record "DEL Deal Item";
-        Setup: Record "DEL General Setup";
-        element_ID_Ret: Code[20];
-        NoSeriesMgt_Cu: Codeunit NoSeriesManagement;
-        SalesInvoiceLine: Record "Sales Invoice Line";
         ACOConnection: Record "DEL ACO Connection";
-        NComAchat: Code[20];
+        DealItem: Record "DEL Deal Item";
+        Element: Record "DEL Element";
+        Setup: Record "DEL General Setup";
+        Position_Re: Record "DEL Position";
+        SalesInvoiceLine: Record "Sales Invoice Line";
+        NoSeriesMgt_Cu: Codeunit NoSeriesManagement;
         Deal_ID_Co_Par: Code[20];
+        element_ID_Ret: Code[20];
+        NComAchat: Code[20];
         position_ID_Co_Loc: Code[20];
-        Sales_Invoice_LineCaptionLbl: Label 'Sales Invoice Line';
+        Montant_Total: Decimal;
+        LastFieldNo: Integer;
         CurrReport_PAGENOCaptionLbl: Label 'Page';
+        Sales_Invoice_LineCaptionLbl: Label 'Sales Invoice Line';
 }
 

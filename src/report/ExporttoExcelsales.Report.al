@@ -37,7 +37,7 @@ report 50008 "DEL Export to Excel sales"
 
             trigger OnPostDataItem()
             begin
-                Window.CLOSE;
+                Window.CLOSE();
 
                 //TODO: only for onprem dev ! à corriger #Abiir
                 // TempExcelBuffer.CreateBook(Text000, Text000);
@@ -57,7 +57,7 @@ report 50008 "DEL Export to Excel sales"
                 TotalRecNo := "Sales Price Worksheet".COUNT;
                 RecNo := 0;
 
-                TempExcelBuffer.DELETEALL;
+                TempExcelBuffer.DELETEALL();
                 CLEAR(TempExcelBuffer);
                 EnterCell(1, 1, Text000, TRUE, TRUE, FALSE);
                 EnterCell(3, 1, Text002, TRUE, TRUE, FALSE); //dd début
@@ -100,10 +100,10 @@ report 50008 "DEL Export to Excel sales"
     var
         TempExcelBuffer: Record "Excel Buffer" temporary;
         Window: Dialog;
-        Row: Integer;
-        Text000: Label 'Sales Price';
-        TotalRecNo: Integer;
         RecNo: Integer;
+        Row: Integer;
+        TotalRecNo: Integer;
+        Text000: Label 'Sales Price';
         Text001: Label 'Analyzing Data...';
         Text002: Label 'Date début';
         Text003: Label 'Date fin';
@@ -114,19 +114,16 @@ report 50008 "DEL Export to Excel sales"
         Text008: Label 'Code variante';
         Text009: Label 'Code unité';
         Text010: Label 'Quantité minimum';
-        Text012: Label 'Nouveau prix unitaire';
         Text011: Label 'Prix unitaire actuel';
+        Text012: Label 'Nouveau prix unitaire';
         Text013: Label 'Remise facture autorisée';
         Text014: Label 'Prix TTC';
         Text015: Label 'Gpe compta. marché TVA (prix)';
         Text016: Label 'Autoriser remise ligne';
-        "Taux de change": Decimal;
-        MontantFrs: Decimal;
-        TotalMontantFRS: Decimal;
 
     local procedure EnterCell(RowNo: Integer; ColumnNo: Integer; CellValue: Text[250]; Bold: Boolean; Italic: Boolean; UnderLine: Boolean)
     begin
-        TempExcelBuffer.INIT;
+        TempExcelBuffer.INIT();
         TempExcelBuffer.VALIDATE("Row No.", RowNo);
         TempExcelBuffer.VALIDATE("Column No.", ColumnNo);
         TempExcelBuffer."Cell Value as Text" := CellValue;
@@ -134,7 +131,7 @@ report 50008 "DEL Export to Excel sales"
         TempExcelBuffer.Bold := Bold;
         TempExcelBuffer.Italic := Italic;
         TempExcelBuffer.Underline := UnderLine;
-        TempExcelBuffer.INSERT;
+        TempExcelBuffer.INSERT();
     end;
 }
 

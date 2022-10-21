@@ -28,9 +28,9 @@ pageextension 50008 "DEL PostedSalesCreditMemo" extends "Posted Sales Credit Mem
                 var
                     lrecDocMatrixSelection: Record "DEL DocMatrix Selection";
                     lcuDocumentMatrixMgt: Codeunit "DEL DocMatrix Management";
+                    ProcessType: Enum "DEL Process Type";
 
                     lUsage: Enum "DEL Usage DocMatrix Selection";
-                    ProcessType: Enum "DEL Process Type";
 
                 begin
                     IF lcuDocumentMatrixMgt.ShowDocMatrixSelection(Rec."Sell-to Customer No.", ProcessType::Manual, lUsage::"S.Cr.Memo", lrecDocMatrixSelection, TRUE) THEN

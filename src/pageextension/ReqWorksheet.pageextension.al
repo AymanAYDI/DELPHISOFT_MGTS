@@ -34,7 +34,6 @@ pageextension 50030 "DEL ReqWorksheet" extends "Req. Worksheet"
     }
 
     var
-        Item: Record Item;
         ColoredPurchDueDate: Boolean;
         NTO_VolLigne: Decimal;
 

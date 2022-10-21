@@ -47,15 +47,10 @@ pageextension 50040 "DEL SalesCreditMemo" extends "Sales Credit Memo"
 
                 trigger OnAction()
                 var
-                    dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
-                    element_Re_Loc: Record "DEL Element";
-                    deal_ID_Co_Loc: Code[20];
                     deal_Re_Loc: Record "DEL Deal";
                     dealShipment_Re_Loc: Record "DEL Deal Shipment";
-                    dealShipmentConnection_Re_Loc: Record "DEL Deal Shipment Connection";
+                    dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
                     dealShipmentSelection_Form_Loc: Page "DEL Deal Shipment Selection";
-                    SalesLine: Record "Sales Line";
-                    valueSpecial: Code[20];
                 begin
 
                     // T-00551-DEAL -
@@ -139,12 +134,12 @@ pageextension 50040 "DEL SalesCreditMemo" extends "Sales Credit Memo"
                     lrecSalesCrMemoHeader: Record "Sales Cr.Memo Header";
 
                     lcuDocumentMatrixMgt: Codeunit "DEL DocMatrix Management";
-                    ProcessType: enum "DEL Process Type";
-                    lUsage: enum "DEL Usage DocMatrix Selection";
                     lCustNo: Code[20];
                     lNo: Code[20];
-                    lFieldNo: Integer;
+                    ProcessType: enum "DEL Process Type";
+                    lUsage: enum "DEL Usage DocMatrix Selection";
                     lFieldCustNo: Integer;
+                    lFieldNo: Integer;
                 begin
                     //DEL/PD/20190207/LOP003.begin
                     // init

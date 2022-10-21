@@ -131,11 +131,11 @@ page 50024 "DEL Fee"
         [InDataSet]
         FormAmountEnable: Boolean;
         [InDataSet]
-        FormFieldEnable: Boolean;
+        FormCurrencyEnable: Boolean;
         [InDataSet]
         FormFactorEnable: Boolean;
         [InDataSet]
-        FormCurrencyEnable: Boolean;
+        FormFieldEnable: Boolean;
 
 
     procedure UpdateForm()

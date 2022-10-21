@@ -1,4 +1,4 @@
-enum 50026 "DEL Amount Type"
+enum 50026 "DEL Amount Type" //n'existe pas ds le std 
 {
     Extensible = true;
 

@@ -7,8 +7,8 @@ codeunit 50016 "DEL DocMatrix SingleInstance"
     end;
 
     var
-        SendFromAddress: Text;
         DocumentMatrixProcessActive: Boolean;
+        SendFromAddress: Text;
 
 
     procedure SetSendFromAddress(pSendFromAddress: Text)

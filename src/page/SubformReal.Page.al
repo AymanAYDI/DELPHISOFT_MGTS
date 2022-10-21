@@ -74,15 +74,14 @@ page 50034 "DEL Subform Real"
 
                 trigger OnAction()
                 var
+                    customerLedgerEntry_Re_Loc: Record "Cust. Ledger Entry";
+                    element_Re_Loc: Record "DEL Element";
+                    GLEntry_Re_Loc: Record "G/L Entry";
+                    postedPurchCrMemoHeader_Re_Loc: Record "Purch. Cr. Memo Hdr.";
                     purchInvHeader_Re_Loc: Record "Purch. Inv. Header";
+                    postedSalesCrMemoHeader_Re_Loc: Record "Sales Cr.Memo Header";
                     salesInvHeader_Re_Loc: Record "Sales Invoice Header";
                     vendorLedgerEntry_Re_Loc: Record "Vendor Ledger Entry";
-                    customerLedgerEntry_Re_Loc: Record "Cust. Ledger Entry";
-                    GLEntry_Re_Loc: Record "G/L Entry";
-                    entryNo_Int_Loc: Integer;
-                    element_Re_Loc: Record "DEL Element";
-                    postedPurchCrMemoHeader_Re_Loc: Record "Purch. Cr. Memo Hdr.";
-                    postedSalesCrMemoHeader_Re_Loc: Record "Sales Cr.Memo Header";
                 begin
 
                     case Rec.Type of
@@ -214,7 +213,6 @@ page 50034 "DEL Subform Real"
     trigger OnAfterGetRecord()
     var
         position_Re_Loc: Record "DEL Position";
-        currency_Exchange_Re_Loc: Record "DEL Currency Exchange";
     begin
         FeeDescription_Te := '';
 
@@ -235,14 +233,11 @@ page 50034 "DEL Subform Real"
     end;
 
     var
+        Deal_Cu: Codeunit "DEL Deal";
         Fee_Cu: Codeunit "DEL Fee";
-        Element_Cu: Codeunit "DEL Element";
-        FeeDescription_Te: Text[250];
-        Raw_Amount_Dec: Decimal;
         Currency_Code: Code[10];
         Currency_Rate_Dec: Decimal;
-        Amount_Dec: Decimal;
-        Deal_Cu: Codeunit "DEL Deal";
+        FeeDescription_Te: Text[250];
 
 
     procedure FNC_Get_GL_Amount(Element: Record "DEL Element"): Decimal
@@ -267,11 +262,9 @@ page 50034 "DEL Subform Real"
 
     procedure FNC_Get_Currency_Code(Element: Record "DEL Element"): Code[10]
     var
-        vendorLedgerEntry_Re_Loc: Record "Vendor Ledger Entry";
         customerLedgerEntry_Re_Loc: Record "Cust. Ledger Entry";
-        GLEntry_Re_Loc: Record "G/L Entry";
-        element_Re_Loc: Record "DEL Element";
         position_Re_Loc: Record "DEL Position";
+        vendorLedgerEntry_Re_Loc: Record "Vendor Ledger Entry";
     begin
 
         vendorLedgerEntry_Re_Loc.Reset();
@@ -298,11 +291,9 @@ page 50034 "DEL Subform Real"
 
     procedure FNC_Get_Currency_Rate(Element: Record "DEL Element"): Decimal
     var
-        vendorLedgerEntry_Re_Loc: Record "Vendor Ledger Entry";
         customerLedgerEntry_Re_Loc: Record "Cust. Ledger Entry";
-        GLEntry_Re_Loc: Record "G/L Entry";
-        element_Re_Loc: Record "DEL Element";
         position_Re_Loc: Record "DEL Position";
+        vendorLedgerEntry_Re_Loc: Record "Vendor Ledger Entry";
     begin
 
         vendorLedgerEntry_Re_Loc.Reset();

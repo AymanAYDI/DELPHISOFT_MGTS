@@ -367,8 +367,8 @@ tableextension 50028 "DEL PurchaseHeader" extends "Purchase Header"
 
     procedure NTO_UpdateForwardingAgent()
     var
-        _Vendor: Record Vendor;
         _ForwardingAgent: Record "DEL Forwarding Agent";
+        _Vendor: Record Vendor;
         Text001: Label 'Do you want update the Forwarding Agent from "%1" to "%2" ?';
     begin
         // LOCO/ChC
@@ -395,7 +395,6 @@ tableextension 50028 "DEL PurchaseHeader" extends "Purchase Header"
 
     procedure NTO_SetPurchDim()
     var
-        NTO_DocDim: Record "Gen. Jnl. Dim. Filter";
         NTO_DimVal: Record "Dimension Value";
     begin
         NTO_GenSetup.GET();
@@ -417,13 +416,13 @@ tableextension 50028 "DEL PurchaseHeader" extends "Purchase Header"
         // IF NTO_DocDim.INSERT() THEN;
     end;
 
-    procedure NTO_ReportPurchDim2SalesLines(NTO_PurchHead: Record 38)
+    procedure NTO_ReportPurchDim2SalesLines(NTO_PurchHead: Record "Purchase Header")
     var
+        NTO_DocDim: Record "Gen. Jnl. Dim. Filter";
         NTO_PurchLine: Record "Purchase Line";
         NTO_ResEntryPurch: Record "Reservation Entry";
-        NTO_SalesLine: Record "Sales Line";
         NTO_ResEntrySale: Record "Reservation Entry";
-        NTO_DocDim: Record "Gen. Jnl. Dim. Filter";
+        NTO_SalesLine: Record "Sales Line";
     begin
 
         NTO_GenSetup.GET();
@@ -464,8 +463,8 @@ tableextension 50028 "DEL PurchaseHeader" extends "Purchase Header"
     procedure UpdateSalesEstimatedDelivery()
     var
         PurchLine: Record "Purchase Line";
-        SalesLine: Record "Sales Line";
         PurchSetup1: Record "Purchases & Payables Setup";
+        SalesLine: Record "Sales Line";
         Vendor: Record Vendor;
     begin
 
@@ -592,13 +591,7 @@ tableextension 50028 "DEL PurchaseHeader" extends "Purchase Header"
     end;
 
     var
-        NTO_DocDim: Record "Gen. Jnl. Dim. Filter";
-        SalesLine: Record "Sales Line";
-
-    var
         NTO_GenSetup: Record "DEL General Setup";
-        NameAddressDetails: Text[512];
-        NameAddressDetails2: Text[512];
         Text50000: Label '<>''''';
         Text50001: Label '<>0';
 }

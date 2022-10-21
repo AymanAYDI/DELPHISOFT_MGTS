@@ -208,11 +208,11 @@ report 50081 "DEL Archived Sales Order"
                         trigger OnAfterGetRecord()
                         begin
                             IF Number = 1 THEN BEGIN
-                                IF NOT DimSetEntry1.FINDSET THEN
-                                    CurrReport.BREAK;
+                                IF NOT DimSetEntry1.FINDSET() THEN
+                                    CurrReport.BREAK();
                             END ELSE
                                 IF NOT Continue THEN
-                                    CurrReport.BREAK;
+                                    CurrReport.BREAK();
 
                             CLEAR(DimText);
                             Continue := FALSE;
@@ -230,13 +230,13 @@ report 50081 "DEL Archived Sales Order"
                                     Continue := TRUE;
                                     EXIT;
                                 END;
-                            UNTIL DimSetEntry1.NEXT = 0;
+                            UNTIL DimSetEntry1.NEXT() = 0;
                         end;
 
                         trigger OnPreDataItem()
                         begin
                             IF NOT ShowInternalInfo THEN
-                                CurrReport.BREAK;
+                                CurrReport.BREAK();
                         end;
                     }
                     dataitem("Sales Line Archive"; "Sales Line Archive")
@@ -248,7 +248,7 @@ report 50081 "DEL Archived Sales Order"
 
                         trigger OnPreDataItem()
                         begin
-                            CurrReport.BREAK;
+                            CurrReport.BREAK();
                         end;
                     }
                     dataitem(RoundLoop; Integer)
@@ -334,7 +334,7 @@ report 50081 "DEL Archived Sales Order"
                         column(TotalExclVATText; TotalExclVATText)
                         {
                         }
-                        column(VATAmountLine_VATAmountText; VATAmountLine.VATAmountText)
+                        column(VATAmountLine_VATAmountText; VATAmountLine.VATAmountText())
                         {
                         }
                         column(TotalInclVATText; TotalInclVATText)
@@ -368,7 +368,7 @@ report 50081 "DEL Archived Sales Order"
                             AutoFormatExpression = "Sales Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine_VATAmountText_Control133; VATAmountLine.VATAmountText)
+                        column(VATAmountLine_VATAmountText_Control133; VATAmountLine.VATAmountText())
                         {
                         }
                         column(VATAmount_Control134; VATAmount)
@@ -446,11 +446,11 @@ report 50081 "DEL Archived Sales Order"
                             trigger OnAfterGetRecord()
                             begin
                                 IF Number = 1 THEN BEGIN
-                                    IF NOT DimSetEntry2.FINDSET THEN
-                                        CurrReport.BREAK;
+                                    IF NOT DimSetEntry2.FINDSET() THEN
+                                        CurrReport.BREAK();
                                 END ELSE
                                     IF NOT Continue THEN
-                                        CurrReport.BREAK;
+                                        CurrReport.BREAK();
 
                                 CLEAR(DimText);
                                 Continue := FALSE;
@@ -468,13 +468,13 @@ report 50081 "DEL Archived Sales Order"
                                         Continue := TRUE;
                                         EXIT;
                                     END;
-                                UNTIL DimSetEntry2.NEXT = 0;
+                                UNTIL DimSetEntry2.NEXT() = 0;
                             end;
 
                             trigger OnPreDataItem()
                             begin
                                 IF NOT ShowInternalInfo THEN
-                                    CurrReport.BREAK;
+                                    CurrReport.BREAK();
 
                                 DimSetEntry2.SETRANGE("Dimension Set ID", "Sales Line Archive"."Dimension Set ID");
                             end;
@@ -485,7 +485,7 @@ report 50081 "DEL Archived Sales Order"
                             IF Number = 1 THEN
                                 TempSalesLineArchive.FIND('-')
                             ELSE
-                                TempSalesLineArchive.NEXT;
+                                TempSalesLineArchive.NEXT();
                             "Sales Line Archive" := TempSalesLineArchive;
 
                             IF NOT "Sales Header Archive"."Prices Including VAT" AND
@@ -499,7 +499,7 @@ report 50081 "DEL Archived Sales Order"
 
                         trigger OnPostDataItem()
                         begin
-                            TempSalesLineArchive.DELETEALL;
+                            TempSalesLineArchive.DELETEALL();
                         end;
 
                         trigger OnPreDataItem()
@@ -511,7 +511,7 @@ report 50081 "DEL Archived Sales Order"
                             DO
                                 MoreLines := TempSalesLineArchive.NEXT(-1) <> 0;
                             IF NOT MoreLines THEN
-                                CurrReport.BREAK;
+                                CurrReport.BREAK();
                             TempSalesLineArchive.SETRANGE("Line No.", 0, TempSalesLineArchive."Line No.");
                             SETRANGE(Number, 1, TempSalesLineArchive.COUNT);
                             CurrReport.CREATETOTALS(TempSalesLineArchive."Line Amount", TempSalesLineArchive."Inv. Discount Amount",
@@ -673,7 +673,7 @@ report 50081 "DEL Archived Sales Order"
                         trigger OnPreDataItem()
                         begin
                             IF VATAmount = 0 THEN
-                                CurrReport.BREAK;
+                                CurrReport.BREAK();
                             SETRANGE(Number, 1, VATAmountLine.COUNT);
                             CurrReport.CREATETOTALS(
                               VATAmountLine."Line Amount", VATAmountLine."Inv. Disc. Base Amount",
@@ -770,9 +770,9 @@ report 50081 "DEL Archived Sales Order"
                         begin
                             IF (NOT GLSetup."Print VAT specification in LCY") OR
                                ("Sales Header Archive"."Currency Code" = '') OR
-                               (VATAmountLine.GetTotalVATAmount = 0)
+                               (VATAmountLine.GetTotalVATAmount() = 0)
                             THEN
-                                CurrReport.BREAK;
+                                CurrReport.BREAK();
 
                             SETRANGE(Number, 1, VATAmountLine.COUNT);
                             CurrReport.CREATETOTALS(VALVATBaseLCY, VALVATAmountLCY);
@@ -850,7 +850,7 @@ report 50081 "DEL Archived Sales Order"
                         trigger OnPreDataItem()
                         begin
                             IF NOT ShowShippingAddr THEN
-                                CurrReport.BREAK;
+                                CurrReport.BREAK();
                         end;
                     }
                 }
@@ -862,14 +862,14 @@ report 50081 "DEL Archived Sales Order"
                 begin
                     InitTempLines(TempSalesHeader, TempSalesLine);
 
-                    VATAmount := VATAmountLine.GetTotalVATAmount;
-                    VATBaseAmount := VATAmountLine.GetTotalVATBase;
+                    VATAmount := VATAmountLine.GetTotalVATAmount();
+                    VATBaseAmount := VATAmountLine.GetTotalVATBase();
                     VATDiscountAmount :=
                       VATAmountLine.GetTotalVATDiscount(TempSalesHeader."Currency Code", TempSalesHeader."Prices Including VAT");
-                    TotalAmountInclVAT := VATAmountLine.GetTotalAmountInclVAT;
+                    TotalAmountInclVAT := VATAmountLine.GetTotalAmountInclVAT();
 
                     IF Number > 1 THEN BEGIN
-                        CopyText := FormatDocument.GetCOPYText;
+                        CopyText := FormatDocument.GetCOPYText();
                         OutputNo += 1;
                     END;
                     CurrReport.PAGENO := 1;
@@ -938,9 +938,9 @@ report 50081 "DEL Archived Sales Order"
 
     trigger OnInitReport()
     begin
-        GLSetup.GET;
-        CompanyInfo.GET;
-        SalesSetup.GET;
+        GLSetup.GET();
+        CompanyInfo.GET();
+        SalesSetup.GET();
 
         CASE SalesSetup."Logo Position on Documents" OF
             SalesSetup."Logo Position on Documents"::"No Logo":
@@ -949,108 +949,108 @@ report 50081 "DEL Archived Sales Order"
                 CompanyInfo.CALCFIELDS(Picture);
             SalesSetup."Logo Position on Documents"::Center:
                 BEGIN
-                    CompanyInfo1.GET;
+                    CompanyInfo1.GET();
                     CompanyInfo1.CALCFIELDS(Picture);
                 END;
             SalesSetup."Logo Position on Documents"::Right:
                 BEGIN
-                    CompanyInfo2.GET;
+                    CompanyInfo2.GET();
                     CompanyInfo2.CALCFIELDS(Picture);
                 END;
         END;
     end;
 
     var
-        Text004: Label 'Sales Order Archived %1', Comment = '%1 = Document No.';
-        Text005: Label 'Page %1';
-        GLSetup: Record "General Ledger Setup";
-        ShipmentMethod: Record "Shipment Method";
-        PaymentTerms: Record "Payment Terms";
-        PrepmtPaymentTerms: Record "Payment Terms";
-        SalesPurchPerson: Record "Salesperson/Purchaser";
         CompanyInfo: Record "Company Information";
         CompanyInfo1: Record "Company Information";
         CompanyInfo2: Record "Company Information";
-        SalesSetup: Record "Sales & Receivables Setup";
-        VATAmountLine: Record "VAT Amount Line" temporary;
-        TempSalesLineArchive: Record "Sales Line Archive" temporary;
+        CurrExchRate: Record "Currency Exchange Rate";
         DimSetEntry1: Record "Dimension Set Entry";
         DimSetEntry2: Record "Dimension Set Entry";
-        RespCenter: Record "Responsibility Center";
+        GLSetup: Record "General Ledger Setup";
         Language: Record Language;
-        CurrExchRate: Record "Currency Exchange Rate";
+        PaymentTerms: Record "Payment Terms";
+        PrepmtPaymentTerms: Record "Payment Terms";
+        RespCenter: Record "Responsibility Center";
+        SalesSetup: Record "Sales & Receivables Setup";
+        TempSalesLineArchive: Record "Sales Line Archive" temporary;
+        SalesPurchPerson: Record "Salesperson/Purchaser";
+        ShipmentMethod: Record "Shipment Method";
+        VATAmountLine: Record "VAT Amount Line" temporary;
         FormatAddr: Codeunit "Format Address";
         FormatDocument: Codeunit "Format Document";
-        CustAddr: array[8] of Text[50];
-        ShipToAddr: array[8] of Text[50];
-        CompanyAddr: array[8] of Text[50];
-        SalesPersonText: Text[30];
-        VATNoText: Text[80];
-        ReferenceText: Text[80];
-        TotalText: Text[50];
-        TotalExclVATText: Text[50];
-        TotalInclVATText: Text[50];
-        MoreLines: Boolean;
-        NoOfCopies: Integer;
-        NoOfLoops: Integer;
-        CopyText: Text[30];
-        ShowShippingAddr: Boolean;
-        DimText: Text[120];
-        OldDimText: Text[75];
-        ShowInternalInfo: Boolean;
         Continue: Boolean;
+        MoreLines: Boolean;
+        ShowInternalInfo: Boolean;
+        ShowShippingAddr: Boolean;
+        TotalAmountInclVAT: Decimal;
+        VALVATAmountLCY: Decimal;
+        VALVATBaseLCY: Decimal;
         VATAmount: Decimal;
         VATBaseAmount: Decimal;
         VATDiscountAmount: Decimal;
-        TotalAmountInclVAT: Decimal;
-        VALVATBaseLCY: Decimal;
-        VALVATAmountLCY: Decimal;
-        VALSpecLCYHeader: Text[80];
+        NoOfCopies: Integer;
+        NoOfLoops: Integer;
+        OutputNo: Integer;
+        AmountCaptionLbl: Label 'Amount';
+        CompanyInfo__Bank_Account_No__CaptionLbl: Label 'Account No.';
+        CompanyInfo__Bank_Name_CaptionLbl: Label 'Bank';
+        CompanyInfo__Fax_No__CaptionLbl: Label 'Fax No.';
+        CompanyInfo__Giro_No__CaptionLbl: Label 'Giro No.';
+        CompanyInfo__Phone_No__CaptionLbl: Label 'Phone No.';
+        CompanyInfo__VAT_Registration_No__CaptionLbl: Label 'VAT Reg. No.';
+        ContinuedCaption_Control83Lbl: Label 'Continued';
+        ContinuedCaptionLbl: Label 'Continued';
+        Header_DimensionsCaptionLbl: Label 'Header Dimensions';
+        Line_DimensionsCaptionLbl: Label 'Line Dimensions';
+        Order_No_CaptionLbl: Label 'Order No.';
+        PaymentTerms_DescriptionCaptionLbl: Label 'Payment Terms';
+        Sales_Header_Archive___Shipment_Date_CaptionLbl: Label 'Shipment Date';
+        Sales_Line_Archive___Line_Discount___CaptionLbl: Label 'Disc. %';
+        SalesLineArch__Inv__Discount_Amount_CaptionLbl: Label 'Inv. Discount Amount';
+        Ship_to_AddressCaptionLbl: Label 'Ship-to Address';
+        ShipmentMethod_DescriptionCaptionLbl: Label 'Shipment Method';
+        SubtotalCaptionLbl: Label 'Subtotal';
+        Text004: Label 'Sales Order Archived %1', Comment = '%1 = Document No.';
+        Text005: Label 'Page %1';
         Text007: Label 'VAT Amount Specification in ';
         Text008: Label 'Local Currency';
         Text009: Label 'Exchange rate: %1/%2';
-        VALExchRate: Text[50];
         Text011: Label 'Version %1 of %2';
-        OutputNo: Integer;
-        CompanyInfo__Phone_No__CaptionLbl: Label 'Phone No.';
-        CompanyInfo__Fax_No__CaptionLbl: Label 'Fax No.';
-        CompanyInfo__VAT_Registration_No__CaptionLbl: Label 'VAT Reg. No.';
-        CompanyInfo__Giro_No__CaptionLbl: Label 'Giro No.';
-        CompanyInfo__Bank_Name_CaptionLbl: Label 'Bank';
-        CompanyInfo__Bank_Account_No__CaptionLbl: Label 'Account No.';
-        Sales_Header_Archive___Shipment_Date_CaptionLbl: Label 'Shipment Date';
-        Order_No_CaptionLbl: Label 'Order No.';
-        Header_DimensionsCaptionLbl: Label 'Header Dimensions';
         Unit_PriceCaptionLbl: Label 'Unit Price';
-        Sales_Line_Archive___Line_Discount___CaptionLbl: Label 'Disc. %';
-        AmountCaptionLbl: Label 'Amount';
-        ContinuedCaptionLbl: Label 'Continued';
-        ContinuedCaption_Control83Lbl: Label 'Continued';
-        SalesLineArch__Inv__Discount_Amount_CaptionLbl: Label 'Inv. Discount Amount';
-        SubtotalCaptionLbl: Label 'Subtotal';
-        VATDiscountAmountCaptionLbl: Label 'Payment Discount on VAT';
-        Line_DimensionsCaptionLbl: Label 'Line Dimensions';
-        VATAmountLine__VAT___CaptionLbl: Label 'VAT %';
-        VATAmountLine__VAT_Base__Control106CaptionLbl: Label 'VAT Base';
-        VATAmountLine__VAT_Amount__Control107CaptionLbl: Label 'VAT Amount';
-        VAT_Amount_SpecificationCaptionLbl: Label 'VAT Amount Specification';
-        VATAmountLine__Inv__Disc__Base_Amount__Control73CaptionLbl: Label 'Inv. Disc. Base Amount';
-        VATAmountLine__Line_Amount__Control72CaptionLbl: Label 'Line Amount';
-        VATAmountLine__Invoice_Discount_Amount__Control74CaptionLbl: Label 'Invoice Discount Amount';
-        VATAmountLine__VAT_Identifier_CaptionLbl: Label 'VAT Identifier';
-        VATAmountLine__VAT_Base_CaptionLbl: Label 'Continued';
-        VATAmountLine__VAT_Base__Control110CaptionLbl: Label 'Continued';
-        VATAmountLine__VAT_Base__Control114CaptionLbl: Label 'Total';
         VALVATAmountLCY_Control149CaptionLbl: Label 'VAT Amount';
         VALVATBaseLCY_Control150CaptionLbl: Label 'VAT Base';
-        VATAmountLine__VAT____Control151CaptionLbl: Label 'VAT %';
-        VATAmountLine__VAT_Identifier__Control152CaptionLbl: Label 'VAT Identifier';
-        VALVATBaseLCYCaptionLbl: Label 'Continued';
         VALVATBaseLCY_Control157CaptionLbl: Label 'Continued';
         VALVATBaseLCY_Control160CaptionLbl: Label 'Total';
-        PaymentTerms_DescriptionCaptionLbl: Label 'Payment Terms';
-        ShipmentMethod_DescriptionCaptionLbl: Label 'Shipment Method';
-        Ship_to_AddressCaptionLbl: Label 'Ship-to Address';
+        VALVATBaseLCYCaptionLbl: Label 'Continued';
+        VAT_Amount_SpecificationCaptionLbl: Label 'VAT Amount Specification';
+        VATAmountLine__Inv__Disc__Base_Amount__Control73CaptionLbl: Label 'Inv. Disc. Base Amount';
+        VATAmountLine__Invoice_Discount_Amount__Control74CaptionLbl: Label 'Invoice Discount Amount';
+        VATAmountLine__Line_Amount__Control72CaptionLbl: Label 'Line Amount';
+        VATAmountLine__VAT____Control151CaptionLbl: Label 'VAT %';
+        VATAmountLine__VAT___CaptionLbl: Label 'VAT %';
+        VATAmountLine__VAT_Amount__Control107CaptionLbl: Label 'VAT Amount';
+        VATAmountLine__VAT_Base__Control106CaptionLbl: Label 'VAT Base';
+        VATAmountLine__VAT_Base__Control110CaptionLbl: Label 'Continued';
+        VATAmountLine__VAT_Base__Control114CaptionLbl: Label 'Total';
+        VATAmountLine__VAT_Base_CaptionLbl: Label 'Continued';
+        VATAmountLine__VAT_Identifier__Control152CaptionLbl: Label 'VAT Identifier';
+        VATAmountLine__VAT_Identifier_CaptionLbl: Label 'VAT Identifier';
+        VATDiscountAmountCaptionLbl: Label 'Payment Discount on VAT';
+        CopyText: Text[30];
+        SalesPersonText: Text[30];
+        CompanyAddr: array[8] of Text[50];
+        CustAddr: array[8] of Text[50];
+        ShipToAddr: array[8] of Text[50];
+        TotalExclVATText: Text[50];
+        TotalInclVATText: Text[50];
+        TotalText: Text[50];
+        VALExchRate: Text[50];
+        OldDimText: Text[75];
+        ReferenceText: Text[80];
+        VALSpecLCYHeader: Text[80];
+        VATNoText: Text[80];
+        DimText: Text[120];
 
     local procedure FormatAddressFields(var SalesHeaderArchive: Record "Sales Header Archive")
     begin
@@ -1061,23 +1061,21 @@ report 50081 "DEL Archived Sales Order"
 
     local procedure FormatDocumentFields(SalesHeaderArchive: Record "Sales Header Archive")
     begin
-        WITH SalesHeaderArchive DO BEGIN
-            FormatDocument.SetTotalLabels("Currency Code", TotalText, TotalInclVATText, TotalExclVATText);
-            FormatDocument.SetSalesPerson(SalesPurchPerson, "Salesperson Code", SalesPersonText);
-            FormatDocument.SetPaymentTerms(PaymentTerms, "Payment Terms Code", "Language Code");
-            FormatDocument.SetPaymentTerms(PrepmtPaymentTerms, "Prepmt. Payment Terms Code", "Language Code");
-            FormatDocument.SetShipmentMethod(ShipmentMethod, "Shipment Method Code", "Language Code");
+        FormatDocument.SetTotalLabels(SalesHeaderArchive."Currency Code", TotalText, TotalInclVATText, TotalExclVATText);
+        FormatDocument.SetSalesPerson(SalesPurchPerson, SalesHeaderArchive."Salesperson Code", SalesPersonText);
+        FormatDocument.SetPaymentTerms(PaymentTerms, SalesHeaderArchive."Payment Terms Code", SalesHeaderArchive."Language Code");
+        FormatDocument.SetPaymentTerms(PrepmtPaymentTerms, SalesHeaderArchive."Prepmt. Payment Terms Code", SalesHeaderArchive."Language Code");
+        FormatDocument.SetShipmentMethod(ShipmentMethod, SalesHeaderArchive."Shipment Method Code", SalesHeaderArchive."Language Code");
 
-            ReferenceText := FormatDocument.SetText("Your Reference" <> '', FIELDCAPTION("Your Reference"));
-            VATNoText := FormatDocument.SetText("VAT Registration No." <> '', FIELDCAPTION("VAT Registration No."));
-        END;
+        ReferenceText := FormatDocument.SetText(SalesHeaderArchive."Your Reference" <> '', SalesHeaderArchive.FIELDCAPTION("Your Reference"));
+        VATNoText := FormatDocument.SetText(SalesHeaderArchive."VAT Registration No." <> '', SalesHeaderArchive.FIELDCAPTION("VAT Registration No."));
     end;
 
     local procedure InitTempLines(var TempSalesHeader: Record "Sales Header" temporary; var TempSalesLine: Record "Sales Line" temporary)
     begin
         TempSalesLineArchive.CopyTempLines("Sales Header Archive", TempSalesLine);
 
-        VATAmountLine.DELETEALL;
+        VATAmountLine.DELETEALL();
         TempSalesHeader.TRANSFERFIELDS("Sales Header Archive");
         TempSalesLine."Prepayment Line" := TRUE;  // used as flag in CalcVATAmountLines -> not invoice rounding
         TempSalesLine.CalcVATAmountLines(0, TempSalesHeader, TempSalesLine, VATAmountLine);

@@ -173,13 +173,13 @@ page 50092 "DEL Matrix Plan of Control"
         Reglementation: Record "DEL Regulation";
         RegulationMatrixLine: Record "DEL Regulation Matrix Line";
         RegControl: Page "DEL Plan of Control 2";
+        CategCode: Code[20];
 
         ProductCode: Code[20];
-        CategCode: Code[20];
-        Markfilter: Text;
-        DescProduct: Text;
         MarkOptionENU: Enum "DEL Mark";
         MarkOptionFRS: Enum "DEL Mark";
         CurrGlobLang: Integer;
+        DescProduct: Text;
+        Markfilter: Text;
 }
 

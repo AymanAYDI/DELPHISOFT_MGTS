@@ -106,8 +106,7 @@ tableextension 50001 "DEL SalesShipmentHeader" extends "Sales Shipment Header"
     }
 
     var
-        SalesShipmentLine: Record "Sales Shipment Line";
         Trackinggeneral: Record "DEL Tracking général";
-        Trackinggeneral_Page: Page "DEL JSON Requests logs";
+        SalesShipmentLine: Record "Sales Shipment Line";
 }
 

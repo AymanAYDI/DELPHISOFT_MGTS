@@ -32,7 +32,7 @@ page 50084 "DEL Modification Taux tva"
 
                 trigger OnAction()
                 begin
-                   
+
 
                     SalesLine2.SETRANGE("Document Type", SalesLine2."Document Type"::Order);
                     SalesLine2.SETRANGE("Document No.", Rec."No.");
@@ -52,9 +52,7 @@ page 50084 "DEL Modification Taux tva"
     }
 
     var
-        customer: Record Customer;
         SalesLine2: Record "Sales Line";
-        Nclient: Code[20];
         Taux: Decimal;
 
 }

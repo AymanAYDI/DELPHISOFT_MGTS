@@ -5,7 +5,7 @@ page 50014 "DEL Corr. facture vente ligne"
     Editable = true;
     InsertAllowed = false;
     PageType = ListPart;
-    Permissions = TableData 113 = rim;
+    Permissions = TableData "Sales Invoice Line" = rim;
     SourceTable = "Sales Invoice Line";
 
     layout
@@ -188,17 +188,17 @@ page 50014 "DEL Corr. facture vente ligne"
 
     var
         [InDataSet]
-        DescriptionEmphasize: Boolean;
+        "Amount Including VATEmphasize": Boolean;
         [InDataSet]
-        DescriptionIndent: Integer;
+        DescriptionEmphasize: Boolean;
         [InDataSet]
         "Line AmountEmphasize": Boolean;
         [InDataSet]
-        LineAmountText: Text[1024];
-        [InDataSet]
-        "Amount Including VATEmphasize": Boolean;
+        DescriptionIndent: Integer;
         [InDataSet]
         AmountIncludingVATText: Text[1024];
+        [InDataSet]
+        LineAmountText: Text[1024];
     //TODO //  DocumentLineTracking: Page "5005399";
 
 

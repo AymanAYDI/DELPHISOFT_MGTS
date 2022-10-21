@@ -382,17 +382,5 @@ table 99210 "DEL Ex_Campaign"
         {
         }
     }
-
-
-    var
-        Campaign: Record Campaign;
-        CampaignEntry: Record "Campaign Entry";
-        RMCommentLine: Record "Rlshp. Mgt. Comment Line";
-        RMSetup: Record "Marketing Setup";
-        CampaignMgmt: Codeunit "Campaign Target Group Mgt";
-        DimMgt: Codeunit DimensionManagement;
-        NoSeriesMgt: Codeunit NoSeriesManagement;
-        Text000: Label '%1 must be before %2.';
-        Text001: Label '%1 must be after %2.';
 }
 

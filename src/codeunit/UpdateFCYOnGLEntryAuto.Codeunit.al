@@ -1,22 +1,20 @@
 codeunit 50009 "Update FCY On G/L Entry Auto"
 {
-    Permissions = TableData 17 = rim;
+    Permissions = TableData "G/L Entry" = rim;
 
     trigger OnRun()
     var
-        glEntry_Re_Loc: Record "G/L Entry";
-        custLedgerEntry_Re_Loc: Record "Cust. Ledger Entry";
-        vendorLedgerEntry_Re_Loc: Record "Vendor Ledger Entry";
         baLedgerEntry_Re_Loc: Record "Bank Account Ledger Entry";
-        currExRate_Re_loc: Record "Currency Exchange Rate";
+        custLedgerEntry_Re_Loc: Record "Cust. Ledger Entry";
         GLAccount_Re_Loc: Record "G/L Account";
         GLEntry2_Re_Loc: Record "G/L Entry";
         GLEntry3_Re_Loc: Record "G/L Entry";
+        glEntry_Re_Loc: Record "G/L Entry";
+        vendorLedgerEntry_Re_Loc: Record "Vendor Ledger Entry";
         Currency2_Co_Loc: Code[10];
         currency_Co_Loc: Code[10];
-        factor_Dec_Loc: Decimal;
         amount_Dec_Loc: Decimal;
-        "------------------------------": Integer;
+        factor_Dec_Loc: Decimal;
     begin
         //OLD T-00737 IF CONFIRM('Voulez-vous exécuter la fonction ?',TRUE) THEN BEGIN          //grc01
 

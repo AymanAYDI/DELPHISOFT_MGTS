@@ -210,17 +210,11 @@ page 50060 "DEL Correctif Purchase Invoice"
 
                 trigger OnAction()
                 var
-                    element_Re_Loc: Record "DEL Element";
-                    NoSeriesMgt_Cu: Codeunit NoSeriesManagement;
-
-                    Setup: Record "DEL General Setup";
                     urm_Re_Loc: Record "DEL Update Request Manager";
-
-                    element_ID_Ret: Code[20];
-                    requestID_Co_Loc: Code[20];
 
                     UpdateRequestManager_Cu: Codeunit "DEL Update Request Manager";
                     ID_num: Code[20];
+                    requestID_Co_Loc: Code[20];
                     Text: Text;
                 begin
 
@@ -265,8 +259,6 @@ page 50060 "DEL Correctif Purchase Invoice"
 
     var
         PurchInvHeader: Record "Purch. Inv. Header";
-        ChangeExchangeRate: Page "Change Exchange Rate";
-        Deal_Cu: Codeunit "DEL Deal";
         PurchInvLine: Record "Purch. Inv. Line";
 }
 

@@ -94,12 +94,10 @@ page 50018 "DEL Group Reporting"
     end;
 
     var
+        TotalAmount: Decimal;
+        Text000: Label 'File %1 Written.';
         DateFilterBalance: Text[250];
         DateFilterIncome: Text[250];
-        BalanceAmount: Decimal;
-        TotalAmount: Decimal;
-        Filename: File;
-        Text000: Label 'File %1 Written.';
 
 
     procedure CalcBalance(): Decimal

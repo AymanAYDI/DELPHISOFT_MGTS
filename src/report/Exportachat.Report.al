@@ -14,7 +14,7 @@ report 50026 "DEL Export achat"
             begin
 
                 //Facture Achat
-                PurchInvLine.RESET;
+                PurchInvLine.RESET();
                 PurchInvLine.SETRANGE(PurchInvLine."Posting Date", DateDebut, DateFin);
                 PurchInvLine.SETRANGE(PurchInvLine.Type, PurchInvLine.Type::Item);
                 IF FiltreFourn <> '' THEN
@@ -22,7 +22,7 @@ report 50026 "DEL Export achat"
                 IF FiltreArticle <> '' THEN
                     PurchInvLine.SETFILTER(PurchInvLine."No.", FiltreArticle);
                 PurchInvLine.SETFILTER(PurchInvLine.Quantity, '<>0');
-                IF PurchInvLine.FINDSET THEN
+                IF PurchInvLine.FINDSET() THEN
                     REPEAT
                         IF NOT ExportAchat.GET(PurchInvLine."No.", '+') THEN
                             AddInfoArticle(PurchInvLine."No.", '+');
@@ -43,13 +43,13 @@ report 50026 "DEL Export achat"
 
                         ExportAchat."Quantity Fact. Txt" := CorLengthDec(ExportAchat."Quantity Fact.", 12, '+');
                         ExportAchat."CA HT Fact. Txt" := CorLengthDec(ExportAchat."CA HT Fact.", 12, '+');
-                        ExportAchat.MODIFY;
+                        ExportAchat.MODIFY();
 
-                    UNTIL PurchInvLine.NEXT = 0;
+                    UNTIL PurchInvLine.NEXT() = 0;
 
 
                 //Avoir Achat
-                PurchCrMemoLine.RESET;
+                PurchCrMemoLine.RESET();
                 PurchCrMemoLine.SETRANGE(PurchCrMemoLine."Posting Date", DateDebut, DateFin);
                 PurchCrMemoLine.SETRANGE(PurchCrMemoLine.Type, PurchCrMemoLine.Type::Item);
                 IF FiltreArticle <> '' THEN
@@ -57,7 +57,7 @@ report 50026 "DEL Export achat"
                 IF FiltreFourn <> '' THEN
                     PurchCrMemoLine.SETFILTER(PurchCrMemoLine."Buy-from Vendor No.", FiltreFourn);
                 PurchCrMemoLine.SETFILTER(PurchCrMemoLine.Quantity, '<>0');
-                IF PurchCrMemoLine.FINDSET THEN
+                IF PurchCrMemoLine.FINDSET() THEN
                     REPEAT
                         IF NOT ExportAchat.GET(PurchCrMemoLine."No.", '-') THEN
                             AddInfoArticle(PurchCrMemoLine."No.", '-');
@@ -78,12 +78,12 @@ report 50026 "DEL Export achat"
 
                         ExportAchat."Quantity Fact. Txt" := CorLengthDec(ExportAchat."Quantity Fact.", 12, '-');
                         ExportAchat."CA HT Fact. Txt" := CorLengthDec(ExportAchat."CA HT Fact.", 12, '-');
-                        ExportAchat.MODIFY;
+                        ExportAchat.MODIFY();
 
-                    UNTIL PurchCrMemoLine.NEXT = 0;
+                    UNTIL PurchCrMemoLine.NEXT() = 0;
 
                 // Commande achat
-                PurchaseLine.RESET;
+                PurchaseLine.RESET();
                 PurchaseLine.SETRANGE(PurchaseLine."Document Type", PurchaseLine."Document Type"::Order);
                 PurchaseLine.SETRANGE(PurchaseLine.Type, PurchaseLine.Type::Item);
                 PurchaseLine.SETRANGE(PurchaseLine."Order Date", DateDebut, DateFin);
@@ -92,7 +92,7 @@ report 50026 "DEL Export achat"
                 IF FiltreFourn <> '' THEN
                     PurchaseLine.SETFILTER(PurchaseLine."Buy-from Vendor No.", FiltreFourn);
                 PurchaseLine.SETFILTER(PurchaseLine.Quantity, '<>0');
-                IF PurchaseLine.FINDSET THEN
+                IF PurchaseLine.FINDSET() THEN
                     REPEAT
                         IF NOT ExportAchat.GET(PurchaseLine."No.", '+') THEN
                             AddInfoArticle(PurchaseLine."No.", '+');
@@ -112,12 +112,12 @@ report 50026 "DEL Export achat"
                             ExportAchat."CA HT Com." := ExportAchat."CA HT Com." + ROUND(PurchaseLine.Amount * 100, 1, '=');
                         ExportAchat."CA HT Com. Txt" := CorLengthDec(ExportAchat."CA HT Com.", 12, '+');
                         ExportAchat."Quantity Com.Txt" := CorLengthDec(ExportAchat."Quantity Com.", 12, '+');
-                        ExportAchat.MODIFY;
-                    UNTIL PurchaseLine.NEXT = 0;
+                        ExportAchat.MODIFY();
+                    UNTIL PurchaseLine.NEXT() = 0;
 
 
                 // reception achat
-                PurchRcptLine.RESET;
+                PurchRcptLine.RESET();
                 PurchRcptLine.SETRANGE(PurchRcptLine."Posting Date", DateDebut, DateFin);
                 PurchRcptLine.SETRANGE(PurchRcptLine.Type, PurchRcptLine.Type::Item);
                 IF FiltreArticle <> '' THEN
@@ -125,7 +125,7 @@ report 50026 "DEL Export achat"
                 IF FiltreFourn <> '' THEN
                     PurchRcptLine.SETFILTER(PurchRcptLine."Buy-from Vendor No.", FiltreFourn);
                 PurchRcptLine.SETFILTER(PurchRcptLine.Quantity, '<>0');
-                IF PurchRcptLine.FINDSET THEN
+                IF PurchRcptLine.FINDSET() THEN
                     REPEAT
                         IF NOT ExportAchat.GET(PurchRcptLine."No.", '+') THEN
                             AddInfoArticle(PurchRcptLine."No.", '+');
@@ -145,10 +145,10 @@ report 50026 "DEL Export achat"
                         ELSE
                             ExportAchat."CA HT Liv." := ExportAchat."CA HT Liv." + ROUND(PurchRcptLine."Item Charge Base Amount" * 100, 1, '=');
                         ExportAchat."CA HT Liv. Txt" := CorLengthDec(ExportAchat."CA HT Liv.", 12, '+');
-                        ExportAchat.MODIFY;
+                        ExportAchat.MODIFY();
 
 
-                    UNTIL PurchRcptLine.NEXT = 0;
+                    UNTIL PurchRcptLine.NEXT() = 0;
             end;
 
             trigger OnPreDataItem()
@@ -195,14 +195,14 @@ report 50026 "DEL Export achat"
                     trigger OnAssistEdit()
                     begin
                         CLEAR(ItemList);
-                        Item_Rec.RESET;
+                        Item_Rec.RESET();
                         ItemList.LOOKUPMODE(TRUE);
                         ItemList.SETTABLEVIEW(Item_Rec);
                         ItemList.SETRECORD(Item_Rec);
-                        IF ItemList.RUNMODAL = ACTION::LookupOK THEN BEGIN
+                        IF ItemList.RUNMODAL() = ACTION::LookupOK THEN BEGIN
                             ItemList.GETRECORD(Item_Rec);
                             FiltreArticle := FiltreArticle + Item_Rec."No.";
-                            COMMIT;
+                            COMMIT();
                         END;
                     end;
                 }
@@ -213,14 +213,14 @@ report 50026 "DEL Export achat"
                     trigger OnAssistEdit()
                     begin
                         CLEAR(VendorList);
-                        Vendor_Rec.RESET;
+                        Vendor_Rec.RESET();
                         VendorList.LOOKUPMODE(TRUE);
                         VendorList.SETTABLEVIEW(Vendor_Rec);
                         VendorList.SETRECORD(Vendor_Rec);
-                        IF VendorList.RUNMODAL = ACTION::LookupOK THEN BEGIN
+                        IF VendorList.RUNMODAL() = ACTION::LookupOK THEN BEGIN
                             VendorList.GETRECORD(Vendor_Rec);
                             FiltreFourn := FiltreFourn + Vendor_Rec."No.";
-                            COMMIT;
+                            COMMIT();
                         END;
                     end;
                 }
@@ -248,9 +248,9 @@ report 50026 "DEL Export achat"
             DateNow_Te := FORMAT(Year) + '_' + FORMAT(Mois);
         TimeNow_Te := DELCHR(FORMAT(TIME), '=', ':/.');
         FileName := 'CONSO_ACHATS_MG_S2_CH_NGT_' + DateNow_Te + '_' + TimeNow_Te + '_fv1.CSV';
-        ExportAchat.RESET;
+        ExportAchat.RESET();
         ExportAchat.SETFILTER(ExportAchat."Item No.", '<>%1', '');
-        IF ExportAchat.FINDFIRST THEN BEGIN
+        IF ExportAchat.FINDFIRST() THEN BEGIN
             TempBlob.CreateOutStream(VarOut);
             REPEAT
                 Line := ExportAchat.Mois +
@@ -283,8 +283,8 @@ report 50026 "DEL Export achat"
                       ExportAchat."CA HT Liv. Txt";
 
                 VarOut.WRITETEXT(Line);
-                VarOut.WRITETEXT;
-            UNTIL ExportAchat.NEXT = 0;
+                VarOut.WRITETEXT();
+            UNTIL ExportAchat.NEXT() = 0;
             MESSAGE(Text0002);
             FileManagement.BLOBExport(TempBlob, FileName, true);
         END;
@@ -292,14 +292,12 @@ report 50026 "DEL Export achat"
 
     trigger OnPreReport()
     begin
-        ExportAchat.DELETEALL;
+        ExportAchat.DELETEALL();
     end;
 
     var
         CurrExchRate: Record "Currency Exchange Rate";
         ExportAchat: Record "DEL Export Achat";
-        GeneralSetup: Record "DEL General Setup";
-        Item: Record Item;
         Item_Rec: Record Item;
         PurchCrMemoHdr: Record "Purch. Cr. Memo Hdr.";
         PurchCrMemoLine: Record "Purch. Cr. Memo Line";
@@ -316,16 +314,15 @@ report 50026 "DEL Export achat"
         DateFin: Date;
         TauxChange1: Decimal;
         TauxChange2: Decimal;
-        FileVente: File;
         Mois: Integer;
         Year: Integer;
         Text0001: Label 'Invalid date';
         Text0002: Label 'Generated file';
         VarOut: OutStream;
         DateNow_Te: Text;
+        FileName: Text;
         FiltreArticle: Text;
         FiltreFourn: Text;
-        FileName: Text;
         TimeNow_Te: Text;
         Line: Text[383];
 
@@ -382,7 +379,7 @@ report 50026 "DEL Export achat"
     procedure AddInfoArticle(CodeArticle: Code[20]; SensLine: Text[1])
     begin
         IF NOT ExportAchat.GET(CodeArticle, SensLine) THEN BEGIN
-            ExportAchat.INIT;
+            ExportAchat.INIT();
             Item_Rec.GET(CodeArticle);
             ExportAchat."Item No." := CodeArticle;
             IF Mois < 10 THEN
@@ -417,7 +414,7 @@ report 50026 "DEL Export achat"
             ExportAchat."Code article B.U" := CorLengthTxt(Item_Rec."No.", 10);
             //TODO   // ExportAchat."Groupe marchandise B.U" := CorLengthTxt(Item_Rec."DEL Product Group Code", 30);
             ExportAchat."Libellé produit" := CorLengthTxt(Item_Rec.Description, 50);
-            ExportAchat.INSERT;
+            ExportAchat.INSERT();
         END;
     end;
 }

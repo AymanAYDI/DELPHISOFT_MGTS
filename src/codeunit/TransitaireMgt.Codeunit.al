@@ -3,26 +3,13 @@ codeunit 50002 "DEL TransitaireMgt"
 
 
     trigger OnRun()
-    var
-        XmlExpPort: XMLport "DEL IC Transitaire";
-        PurchHeader: Record "Purchase Header";
     begin
     end;
 
     var
-        Testfile: File;
-        TestStream: InStream;
-        XMLPor: XMLport "DEL IC Transitaire";
-        TestStream1: OutStream;
         GLSetup: Record "General Ledger Setup";
-        CompanyInfo: Record "Company Information";
-        GLSetupFound: Boolean;
-        CompanyInfoFound: Boolean;
         DimMgt: Codeunit DimensionManagement;
-        Text001: Label 'Intercompany transactions from %1.';
-        Text002: Label 'Attached to this mail is an xml file containing one or more intercompany transactions from %1 (%2 %3).';
-        Text003: Label 'Do you want to complete line actions?';
-        ICInboxOutboxMgt: Codeunit ICInboxOutboxMgt;
+        GLSetupFound: Boolean;
         Text010: Label 'This Purchase Order Number %1 does not exist.';
         Text50000: Label 'A Message was already sent away. Do you want to send a new away?';
         Text50001: Label 'The operation was broken off.';
@@ -30,9 +17,6 @@ codeunit 50002 "DEL TransitaireMgt"
 
 
     procedure SendForwardingDoc(PurchHeader: Record "Purchase Header"; Post: Boolean)
-    var
-        ICPartner: Record "IC Partner";
-        Release: Codeunit "Release Purchase Document";
     begin
         IF PurchHeader."DEL Forwarding Agent Code" <> '' THEN
             CreateOutboxForwardingDocTrans(PurchHeader, FALSE, Post)
@@ -43,14 +27,13 @@ codeunit 50002 "DEL TransitaireMgt"
 
     procedure CreateOutboxForwardingDocTrans(PurchHeader: Record "Purchase Header"; Rejection: Boolean; Post: Boolean)
     var
-        OutboxTransaction: Record "IC Outbox Transaction";
-        Vendor: Record Vendor;
-        PurchLine: Record "Purchase Line";
         ICOutBoxPurchHeader: Record "IC Outbox Purchase Header";
         ICOutBoxPurchLine: Record "IC Outbox Purchase Line";
-        TempDocDim: Record "Gen. Jnl. Dim. Filter" temporary;
-        TransactionNo: Integer;
+        OutboxTransaction: Record "IC Outbox Transaction";
+        PurchLine: Record "Purchase Line";
+        Vendor: Record Vendor;
         LinesCreated: Boolean;
+        TransactionNo: Integer;
     begin
         GLSetup.LOCKTABLE();
         GetGLSetup();
@@ -59,29 +42,27 @@ codeunit 50002 "DEL TransitaireMgt"
         GLSetup.MODIFY();
         Vendor.GET(PurchHeader."Buy-from Vendor No.");
         Vendor.CheckBlockedVendOnDocs(Vendor, FALSE);
-        WITH PurchHeader DO BEGIN
-            OutboxTransaction.INIT();
-            OutboxTransaction."Transaction No." := TransactionNo;
-            OutboxTransaction."IC Partner Code" := Vendor."IC Partner Code";
-            CASE PurchHeader."Document Type" OF
-                PurchHeader."Document Type"::Order:
-                    OutboxTransaction."Document Type" := OutboxTransaction."Document Type"::Order;
-                PurchHeader."Document Type"::Invoice:
-                    OutboxTransaction."Document Type" := OutboxTransaction."Document Type"::Invoice;
-                PurchHeader."Document Type"::"Credit Memo":
-                    OutboxTransaction."Document Type" := OutboxTransaction."Document Type"::"Credit Memo";
-                PurchHeader."Document Type"::"Return Order":
-                    OutboxTransaction."Document Type" := OutboxTransaction."Document Type"::"Return Order";
-            END;
-            OutboxTransaction."Document No." := "No.";
-            OutboxTransaction."Posting Date" := "Posting Date";
-            OutboxTransaction."Document Date" := "Document Date";
-            IF Rejection THEN
-                OutboxTransaction."Transaction Source" := OutboxTransaction."Transaction Source"::"Rejected by Current Company"
-            ELSE
-                OutboxTransaction."Transaction Source" := OutboxTransaction."Transaction Source"::"Created by Current Company";
-            OutboxTransaction.INSERT();
+        OutboxTransaction.INIT();
+        OutboxTransaction."Transaction No." := TransactionNo;
+        OutboxTransaction."IC Partner Code" := Vendor."IC Partner Code";
+        CASE PurchHeader."Document Type" OF
+            PurchHeader."Document Type"::Order:
+                OutboxTransaction."Document Type" := OutboxTransaction."Document Type"::Order;
+            PurchHeader."Document Type"::Invoice:
+                OutboxTransaction."Document Type" := OutboxTransaction."Document Type"::Invoice;
+            PurchHeader."Document Type"::"Credit Memo":
+                OutboxTransaction."Document Type" := OutboxTransaction."Document Type"::"Credit Memo";
+            PurchHeader."Document Type"::"Return Order":
+                OutboxTransaction."Document Type" := OutboxTransaction."Document Type"::"Return Order";
         END;
+        OutboxTransaction."Document No." := PurchHeader."No.";
+        OutboxTransaction."Posting Date" := PurchHeader."Posting Date";
+        OutboxTransaction."Document Date" := PurchHeader."Document Date";
+        IF Rejection THEN
+            OutboxTransaction."Transaction Source" := OutboxTransaction."Transaction Source"::"Rejected by Current Company"
+        ELSE
+            OutboxTransaction."Transaction Source" := OutboxTransaction."Transaction Source"::"Created by Current Company";
+        OutboxTransaction.INSERT();
         ICOutBoxPurchHeader.TRANSFERFIELDS(PurchHeader);
         ICOutBoxPurchHeader."IC Transaction No." := OutboxTransaction."Transaction No.";
         ICOutBoxPurchHeader."IC Partner Code" := OutboxTransaction."IC Partner Code";
@@ -92,39 +73,37 @@ codeunit 50002 "DEL TransitaireMgt"
         DimMgt.CopyDocDimtoICDocDim(DATABASE::"IC Outbox Purchase Header", ICOutBoxPurchHeader."IC Transaction No.",
           ICOutBoxPurchHeader."IC Partner Code", ICOutBoxPurchHeader."Transaction Source", 0, PurchHeader."Dimension Set ID");
 
-        WITH ICOutBoxPurchLine DO BEGIN
-            PurchLine.RESET();
-            PurchLine.SETRANGE("Document Type", PurchHeader."Document Type");
-            PurchLine.SETRANGE("Document No.", PurchHeader."No.");
-            IF PurchLine.FINDFIRST() THEN
-                REPEAT
-                    INIT();
-                    TRANSFERFIELDS(PurchLine);
-                    CASE PurchLine."Document Type" OF
-                        PurchLine."Document Type"::Order:
-                            ICOutBoxPurchLine."Document Type" := ICOutBoxPurchLine."Document Type"::Order;
-                        PurchLine."Document Type"::Invoice:
-                            ICOutBoxPurchLine."Document Type" := ICOutBoxPurchLine."Document Type"::Invoice;
-                        PurchLine."Document Type"::"Credit Memo":
-                            ICOutBoxPurchLine."Document Type" := ICOutBoxPurchLine."Document Type"::"Credit Memo";
-                        PurchLine."Document Type"::"Return Order":
-                            ICOutBoxPurchLine."Document Type" := ICOutBoxPurchLine."Document Type"::"Return Order";
-                    END;
-                    "IC Partner Code" := OutboxTransaction."IC Partner Code";
-                    "IC Transaction No." := OutboxTransaction."Transaction No.";
-                    "Transaction Source" := OutboxTransaction."Transaction Source";
+        PurchLine.RESET();
+        PurchLine.SETRANGE("Document Type", PurchHeader."Document Type");
+        PurchLine.SETRANGE("Document No.", PurchHeader."No.");
+        IF PurchLine.FINDFIRST() THEN
+            REPEAT
+                ICOutBoxPurchLine.INIT();
+                ICOutBoxPurchLine.TRANSFERFIELDS(PurchLine);
+                CASE PurchLine."Document Type" OF
+                    PurchLine."Document Type"::Order:
+                        ICOutBoxPurchLine."Document Type" := ICOutBoxPurchLine."Document Type"::Order;
+                    PurchLine."Document Type"::Invoice:
+                        ICOutBoxPurchLine."Document Type" := ICOutBoxPurchLine."Document Type"::Invoice;
+                    PurchLine."Document Type"::"Credit Memo":
+                        ICOutBoxPurchLine."Document Type" := ICOutBoxPurchLine."Document Type"::"Credit Memo";
+                    PurchLine."Document Type"::"Return Order":
+                        ICOutBoxPurchLine."Document Type" := ICOutBoxPurchLine."Document Type"::"Return Order";
+                END;
+                ICOutBoxPurchLine."IC Partner Code" := OutboxTransaction."IC Partner Code";
+                ICOutBoxPurchLine."IC Transaction No." := OutboxTransaction."Transaction No.";
+                ICOutBoxPurchLine."Transaction Source" := OutboxTransaction."Transaction Source";
 
-                    "Currency Code" := ICOutBoxPurchHeader."Currency Code";
-                    DimMgt.CopyDocDimtoICDocDim(
-                      DATABASE::"IC Outbox Purchase Line", "IC Transaction No.", "IC Partner Code", "Transaction Source",
-                      "Line No.", PurchLine."Dimension Set ID");
+                ICOutBoxPurchLine."Currency Code" := ICOutBoxPurchHeader."Currency Code";
+                DimMgt.CopyDocDimtoICDocDim(
+                  DATABASE::"IC Outbox Purchase Line", ICOutBoxPurchLine."IC Transaction No.", ICOutBoxPurchLine."IC Partner Code", ICOutBoxPurchLine."Transaction Source",
+                  ICOutBoxPurchLine."Line No.", PurchLine."Dimension Set ID");
 
-                    IF PurchLine.Type = PurchLine.Type::" " THEN
-                        ICOutBoxPurchLine."IC Partner Reference" := '';
-                    IF INSERT(TRUE) THEN
-                        LinesCreated := TRUE;
-                UNTIL PurchLine.NEXT() = 0;
-        END;
+                IF PurchLine.Type = PurchLine.Type::" " THEN
+                    ICOutBoxPurchLine."IC Partner Reference" := '';
+                IF ICOutBoxPurchLine.INSERT(TRUE) THEN
+                    LinesCreated := TRUE;
+            UNTIL PurchLine.NEXT() = 0;
 
         IF LinesCreated THEN BEGIN
             ICOutBoxPurchHeader.INSERT();
@@ -165,23 +144,16 @@ codeunit 50002 "DEL TransitaireMgt"
 
     procedure SendToTransitairePartner(ICOutboxTrans: Record "IC Outbox Transaction")
     var
-        ICPartner: Record "IC Partner";
         Transitaire: Record "DEL Forwarding agent 2";
-        PurchHeader: Record "Purchase Header";
         NGTSSetup: Record "DEL General Setup";
-        MailHandler: Codeunit Mail;
-        tempBlob: Codeunit "Temp Blob";
-        ICOutboxExportXML: XMLport "IC Outbox Imp/Exp";
-        OFile: File;
-        FileName: Text[250];
-        Ostr: OutStream;
-        ICPartnerFilter: Text[1024];
-        i: Integer;
-        ToName: Text[100];
-        CcName: Text[100];
-        XMLPortOutbox: XMLport "DEL IC Transitaire";
         ICPurchHeaderArchiv: Record "Handled IC Outbox Purch. Hdr";
+        PurchHeader: Record "Purchase Header";
+        tempBlob: Codeunit "Temp Blob";
+        XMLPortOutbox: XMLport "DEL IC Transitaire";
         XMLPortOutboxNew: XMLport "DEL IC Transitaire with hscode";
+        ICOutboxExportXML: XMLport "IC Outbox Imp/Exp";
+        Ostr: OutStream;
+        FileName: Text[250];
     begin
         PurchHeader.SETRANGE("Document Type", PurchHeader."Document Type"::Order);
         PurchHeader.SETRANGE("No.", ICOutboxTrans."Document No.");
@@ -208,13 +180,13 @@ codeunit 50002 "DEL TransitaireMgt"
             IF Transitaire."HSCODE Enable" = FALSE THEN BEGIN
                 XMLPortOutbox.SETDESTINATION(Ostr);
                 XMLPortOutbox.SETTABLEVIEW(PurchHeader);
-                XMLPortOutbox.EXPORT;
+                XMLPortOutbox.EXPORT();
             END;
 
             IF Transitaire."HSCODE Enable" = TRUE THEN BEGIN
                 XMLPortOutboxNew.SETDESTINATION(Ostr);
                 XMLPortOutboxNew.SETTABLEVIEW(PurchHeader);
-                XMLPortOutboxNew.EXPORT;
+                XMLPortOutboxNew.EXPORT();
             END;
 
 

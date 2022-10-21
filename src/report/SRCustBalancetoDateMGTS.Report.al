@@ -190,14 +190,14 @@ report 50055 "SR Cust. Balance to Date MGTS"
                     begin
                         IF NOT PrintUnappliedEntries THEN
                             IF Unapplied THEN
-                                CurrReport.SKIP;
+                                CurrReport.SKIP();
 
                         AmtLCY := "Amount (LCY)";
                         Amt := Amount;
                         CurrencyCode := "Currency Code";
 
                         IF (Amt = 0) AND (AmtLCY = 0) THEN
-                            CurrReport.SKIP;
+                            CurrReport.SKIP();
 
                         IF CurrencyCode = '' THEN BEGIN
                             CurrencyCode := GLSetup."LCY Code";
@@ -240,7 +240,7 @@ report 50055 "SR Cust. Balance to Date MGTS"
 
                 trigger OnPreDataItem()
                 begin
-                    RESET;
+                    RESET();
                     DtldCustLedgEntry.SETCURRENTKEY("Customer No.", "Posting Date", "Entry Type");
                     DtldCustLedgEntry.SETRANGE("Customer No.", Customer."No.");
                     DtldCustLedgEntry.SETRANGE("Posting Date", CALCDATE('<+1D>', FixedDay), 19991231D);// TODO: Check date 12319999
@@ -248,20 +248,20 @@ report 50055 "SR Cust. Balance to Date MGTS"
                     IF NOT PrintUnappliedEntries THEN
                         DtldCustLedgEntry.SETRANGE(Unapplied, FALSE);
 
-                    IF DtldCustLedgEntry.FINDSET THEN
+                    IF DtldCustLedgEntry.FINDSET() THEN
                         REPEAT
                             "Entry No." := DtldCustLedgEntry."Cust. Ledger Entry No.";
                             MARK(TRUE);
-                        UNTIL DtldCustLedgEntry.NEXT = 0;
+                        UNTIL DtldCustLedgEntry.NEXT() = 0;
 
                     SETCURRENTKEY("Customer No.", Open);
                     SETRANGE("Customer No.", Customer."No.");
                     SETRANGE(Open, TRUE);
                     SETRANGE("Posting Date", 0D, FixedDay);
-                    IF FINDSET THEN
+                    IF FINDSET() THEN
                         REPEAT
                             MARK(TRUE);
-                        UNTIL NEXT = 0;
+                        UNTIL NEXT() = 0;
 
                     SETCURRENTKEY("Entry No.");
                     SETRANGE(Open);
@@ -299,11 +299,11 @@ report 50055 "SR Cust. Balance to Date MGTS"
                 trigger OnAfterGetRecord()
                 begin
                     IF Number = 1 THEN
-                        OK := CurrencyTotalBuffer.FINDSET
+                        OK := CurrencyTotalBuffer.FINDSET()
                     ELSE
-                        OK := CurrencyTotalBuffer.NEXT <> 0;
+                        OK := CurrencyTotalBuffer.NEXT() <> 0;
                     IF NOT OK THEN
-                        CurrReport.BREAK;
+                        CurrReport.BREAK();
 
                     CurrencyTotalBuffer2.UpdateTotal(
                       CurrencyTotalBuffer."Currency Code",
@@ -316,12 +316,12 @@ report 50055 "SR Cust. Balance to Date MGTS"
                     IF (CurrencyTotalBuffer."Total Amount" = 0) AND
                        (CurrencyTotalBuffer."Total Amount (LCY)" = 0)
                     THEN
-                        CurrReport.SKIP;
+                        CurrReport.SKIP();
                 end;
 
                 trigger OnPostDataItem()
                 begin
-                    CurrencyTotalBuffer.DELETEALL;
+                    CurrencyTotalBuffer.DELETEALL();
                 end;
 
                 trigger OnPreDataItem()
@@ -342,7 +342,7 @@ report 50055 "SR Cust. Balance to Date MGTS"
             trigger OnPreDataItem()
             begin
                 CurrReport.NEWPAGEPERRECORD := PrintOnePerPage;
-                GLSetup.GET;
+                GLSetup.GET();
                 OutputNo := 0;
             end;
         }
@@ -375,27 +375,27 @@ report 50055 "SR Cust. Balance to Date MGTS"
             trigger OnAfterGetRecord()
             begin
                 IF Number = 1 THEN
-                    OK := CurrencyTotalBuffer2.FINDSET
+                    OK := CurrencyTotalBuffer2.FINDSET()
                 ELSE
-                    OK := CurrencyTotalBuffer2.NEXT <> 0;
+                    OK := CurrencyTotalBuffer2.NEXT() <> 0;
                 IF NOT OK THEN
-                    CurrReport.BREAK;
+                    CurrReport.BREAK();
 
                 TotalReportLCY := TotalReportLCY + CurrencyTotalBuffer2."Total Amount (LCY)";
 
                 IF (CurrencyTotalBuffer2."Total Amount" = 0) AND
                    (CurrencyTotalBuffer2."Total Amount (LCY)" = 0)
                 THEN
-                    CurrReport.SKIP;
+                    CurrReport.SKIP();
             end;
 
             trigger OnPostDataItem()
             begin
-                CurrencyTotalBuffer2.DELETEALL;
+                CurrencyTotalBuffer2.DELETEALL();
 
                 Customer.SETRANGE("Date Filter");
                 IF CheckGLReceivables AND (Customer.GETFILTERS = '') THEN
-                    CheckReceivablesAccounts;
+                    CheckReceivablesAccounts();
             end;
         }
     }
@@ -446,7 +446,7 @@ report 50055 "SR Cust. Balance to Date MGTS"
         trigger OnOpenPage()
         begin
             IF FixedDay = 0D THEN
-                FixedDay := WORKDATE;
+                FixedDay := WORKDATE();
         end;
     }
 
@@ -464,48 +464,48 @@ report 50055 "SR Cust. Balance to Date MGTS"
         CurrencyTotalBuffer2: Record "Currency Total Buffer" temporary;
         DtldCustLedgEntry: Record "Detailed Cust. Ledg. Entry";
         GLSetup: Record "General Ledger Setup";
+        CheckGLReceivables: Boolean;
+        OK: Boolean;
         PrintOnePerPage: Boolean;
-        CustFilter: Text[250];
+        PrintUnappliedEntries: Boolean;
+        CurrencyCode: Code[10];
         FixedDay: Date;
-        OriginalAmt: Decimal;
-        OriginalAmtLCY: Decimal;
         Amt: Decimal;
         AmtLCY: Decimal;
+        CustomerTotalLCY: Decimal;
+        OriginalAmt: Decimal;
+        OriginalAmtLCY: Decimal;
         RemainingAmt: Decimal;
         RemainingAmtLCY: Decimal;
-        Counter1: Integer;
-        OK: Boolean;
-        CurrencyCode: Code[10];
+        TotalReportLCY: Decimal;
+        TransferAmt: Decimal;
         AgeDays: Integer;
+        ConsNoDtldCustLedgEntry: Integer;
+        Counter1: Integer;
         DueDays: Integer;
         NoOpenEntries: Integer;
-        TransferAmt: Decimal;
-        TotalReportLCY: Decimal;
-        CheckGLReceivables: Boolean;
-        PrintUnappliedEntries: Boolean;
+        OutputNo: Integer;
+        AgeCaptionLbl: Label 'Age';
+        AmountCaptionLbl: Label 'Amount';
+        AmountLCYCaptionLbl: Label 'Amount LCY';
+        CustBalancetoDateCaptionLbl: Label 'Customer - Balance to Date';
+        DateCaptionLbl: Label 'Date';
+        DaysCaptionLbl: Label 'Days';
+        DescriptionCaptionLbl: Label 'Description';
+        DocumentCaptionLbl: Label 'Document';
+        DueDateCaptionLbl: Label 'Due Date';
+        EntryNoCaptionLbl: Label 'Entry No.';
+        NoCaptionLbl: Label 'No.';
+        PageNoCaptionLbl: Label 'Page';
+        ReferenceCaptionLbl: Label 'Reference';
         Text000: Label 'Balance on %1';
         Text001: Label 'Remaining Amount Document';
         Text002: Label 'Total';
         Text003: Label 'The calculated balance of the report doesn''t meet the balance of all receivables accounts in G/L. There''s a difference of %1 %2. Please check if no direct postings have been done on this accounts.';
-        CustBalancetoDateCaptionLbl: Label 'Customer - Balance to Date';
-        PageNoCaptionLbl: Label 'Page';
-        DueDateCaptionLbl: Label 'Due Date';
-        AgeCaptionLbl: Label 'Age';
-        DateCaptionLbl: Label 'Date';
-        DaysCaptionLbl: Label 'Days';
-        ReferenceCaptionLbl: Label 'Reference';
-        EntryNoCaptionLbl: Label 'Entry No.';
-        NoCaptionLbl: Label 'No.';
-        DocumentCaptionLbl: Label 'Document';
-        DescriptionCaptionLbl: Label 'Description';
-        AmountCaptionLbl: Label 'Amount';
-        AmountLCYCaptionLbl: Label 'Amount LCY';
-        TransferCaptionLbl: Label 'Transfer';
-        TotalCaptionLbl: Label 'Total';
         TotalBalancetoDateCaptionLbl: Label 'Total Balance to Date';
-        CustomerTotalLCY: Decimal;
-        ConsNoDtldCustLedgEntry: Integer;
-        OutputNo: Integer;
+        TotalCaptionLbl: Label 'Total';
+        TransferCaptionLbl: Label 'Transfer';
+        CustFilter: Text[250];
 
 
     procedure CheckReceivablesAccounts()
@@ -515,7 +515,7 @@ report 50055 "SR Cust. Balance to Date MGTS"
         TmpGLAcc: Record "G/L Account" temporary;
         TotalReceivables: Decimal;
     begin
-        IF CustPostGroup.FINDSET THEN BEGIN
+        IF CustPostGroup.FINDSET() THEN BEGIN
             // Insert Receivabels Accounts in temp. table because the same account can be in
             // more than one posting groups
             REPEAT
@@ -523,17 +523,17 @@ report 50055 "SR Cust. Balance to Date MGTS"
                    (CustPostGroup."Receivables Account" <> '')
                 THEN BEGIN
                     TmpGLAcc."No." := CustPostGroup."Receivables Account";
-                    TmpGLAcc.INSERT;
+                    TmpGLAcc.INSERT();
                 END;
-            UNTIL CustPostGroup.NEXT = 0;
+            UNTIL CustPostGroup.NEXT() = 0;
 
-            IF TmpGLAcc.FINDSET THEN
+            IF TmpGLAcc.FINDSET() THEN
                 REPEAT
                     GLAcc.GET(TmpGLAcc."No.");
                     GLAcc.SETFILTER("Date Filter", '..%1', FixedDay);
                     GLAcc.CALCFIELDS("Balance at Date");
                     TotalReceivables := TotalReceivables + GLAcc."Balance at Date";
-                UNTIL TmpGLAcc.NEXT = 0;
+                UNTIL TmpGLAcc.NEXT() = 0;
 
             IF TotalReportLCY <> TotalReceivables THEN
                 MESSAGE(Text003, GLSetup."LCY Code", ABS(TotalReportLCY - TotalReceivables));

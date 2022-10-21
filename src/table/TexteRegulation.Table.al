@@ -52,10 +52,10 @@ table 50001 "DEL Texte Regulation"
     procedure GetNextLineNo(RegulationLineSource: Record "DEL Texte Regulation"; BelowxRec: Boolean): Integer
     var
         RegulationLine: Record "DEL Texte Regulation";
-        LowLineNo: Integer;
         HighLineNo: Integer;
-        NextLineNo: Integer;
         LineStep: Integer;
+        LowLineNo: Integer;
+        NextLineNo: Integer;
     begin
         LowLineNo := 0;
         HighLineNo := 0;

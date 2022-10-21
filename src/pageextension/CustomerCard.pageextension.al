@@ -19,7 +19,7 @@ pageextension 50019 "DEL CustomerCard" extends "Customer Card" //21
             field("DEL FTP Save 2"; Rec."DEL FTP Save 2")
             {
             }
-            field("DEL EDI"; "DEL EDI")
+            field("DEL EDI"; Rec."DEL EDI")
             {
             }
         }

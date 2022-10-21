@@ -199,11 +199,11 @@ report 50076 "DEL Archived Purchase Order"
                         trigger OnAfterGetRecord()
                         begin
                             IF Number = 1 THEN BEGIN
-                                IF NOT DimSetEntry1.FINDSET THEN
-                                    CurrReport.BREAK;
+                                IF NOT DimSetEntry1.FINDSET() THEN
+                                    CurrReport.BREAK();
                             END ELSE
                                 IF NOT Continue THEN
-                                    CurrReport.BREAK;
+                                    CurrReport.BREAK();
 
                             CLEAR(DimText);
                             Continue := FALSE;
@@ -221,13 +221,13 @@ report 50076 "DEL Archived Purchase Order"
                                     Continue := TRUE;
                                     EXIT;
                                 END;
-                            UNTIL DimSetEntry1.NEXT = 0;
+                            UNTIL DimSetEntry1.NEXT() = 0;
                         end;
 
                         trigger OnPreDataItem()
                         begin
                             IF NOT ShowInternalInfo THEN
-                                CurrReport.BREAK;
+                                CurrReport.BREAK();
                         end;
                     }
                     dataitem("Purchase Line Archive"; "Purchase Line Archive")
@@ -241,7 +241,7 @@ report 50076 "DEL Archived Purchase Order"
 
                         trigger OnPreDataItem()
                         begin
-                            CurrReport.BREAK;
+                            CurrReport.BREAK();
                         end;
                     }
                     dataitem(RoundLoop; Integer)
@@ -347,7 +347,7 @@ report 50076 "DEL Archived Purchase Order"
                             AutoFormatExpression = "Purchase Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine_VATAmountText_Control32; VATAmountLine.VATAmountText)
+                        column(VATAmountLine_VATAmountText_Control32; VATAmountLine.VATAmountText())
                         {
                         }
                         column(TotalExclVATText_Control51; TotalExclVATText)
@@ -448,11 +448,11 @@ report 50076 "DEL Archived Purchase Order"
                             trigger OnAfterGetRecord()
                             begin
                                 IF Number = 1 THEN BEGIN
-                                    IF NOT DimSetEntry2.FINDSET THEN
-                                        CurrReport.BREAK;
+                                    IF NOT DimSetEntry2.FINDSET() THEN
+                                        CurrReport.BREAK();
                                 END ELSE
                                     IF NOT Continue THEN
-                                        CurrReport.BREAK;
+                                        CurrReport.BREAK();
 
                                 CLEAR(DimText);
                                 Continue := FALSE;
@@ -470,13 +470,13 @@ report 50076 "DEL Archived Purchase Order"
                                         Continue := TRUE;
                                         EXIT;
                                     END;
-                                UNTIL DimSetEntry2.NEXT = 0;
+                                UNTIL DimSetEntry2.NEXT() = 0;
                             end;
 
                             trigger OnPreDataItem()
                             begin
                                 IF NOT ShowInternalInfo THEN
-                                    CurrReport.BREAK;
+                                    CurrReport.BREAK();
 
                                 DimSetEntry2.SETRANGE("Dimension Set ID", "Purchase Line Archive"."Dimension Set ID");
                             end;
@@ -487,7 +487,7 @@ report 50076 "DEL Archived Purchase Order"
                             IF Number = 1 THEN
                                 PurchLineArch.FIND('-')
                             ELSE
-                                PurchLineArch.NEXT;
+                                PurchLineArch.NEXT();
                             "Purchase Line Archive" := PurchLineArch;
 
                             IF NOT "Purchase Header Archive"."Prices Including VAT" AND
@@ -507,7 +507,7 @@ report 50076 "DEL Archived Purchase Order"
 
                         trigger OnPostDataItem()
                         begin
-                            PurchLineArch.DELETEALL;
+                            PurchLineArch.DELETEALL();
                         end;
 
                         trigger OnPreDataItem()
@@ -521,7 +521,7 @@ report 50076 "DEL Archived Purchase Order"
                                 MoreLines := PurchLineArch.NEXT(-1) <> 0;
 
                             IF NOT MoreLines THEN
-                                CurrReport.BREAK;
+                                CurrReport.BREAK();
 
                             PurchLineArch.SETRANGE("Line No.", 0, PurchLineArch."Line No.");
                             SETRANGE(Number, 1, PurchLineArch.COUNT);
@@ -683,7 +683,7 @@ report 50076 "DEL Archived Purchase Order"
                         trigger OnPreDataItem()
                         begin
                             IF VATAmount = 0 THEN
-                                CurrReport.BREAK;
+                                CurrReport.BREAK();
                             SETRANGE(Number, 1, VATAmountLine.COUNT);
                             CurrReport.CREATETOTALS(
                               VATAmountLine."Line Amount", VATAmountLine."Inv. Disc. Base Amount",
@@ -780,9 +780,9 @@ report 50076 "DEL Archived Purchase Order"
                         begin
                             IF (NOT GLSetup."Print VAT specification in LCY") OR
                                ("Purchase Header Archive"."Currency Code" = '') OR
-                               (VATAmountLine.GetTotalVATAmount = 0)
+                               (VATAmountLine.GetTotalVATAmount() = 0)
                             THEN
-                                CurrReport.BREAK;
+                                CurrReport.BREAK();
 
                             SETRANGE(Number, 1, VATAmountLine.COUNT);
                             CurrReport.CREATETOTALS(VALVATBaseLCY, VALVATAmountLCY);
@@ -860,7 +860,7 @@ report 50076 "DEL Archived Purchase Order"
                         trigger OnPreDataItem()
                         begin
                             IF "Purchase Header Archive"."Buy-from Vendor No." = "Purchase Header Archive"."Pay-to Vendor No." THEN
-                                CurrReport.BREAK;
+                                CurrReport.BREAK();
                         end;
                     }
                     dataitem(Total3; Integer)
@@ -907,7 +907,7 @@ report 50076 "DEL Archived Purchase Order"
                         trigger OnPreDataItem()
                         begin
                             IF ("Purchase Header Archive"."Sell-to Customer No." = '') AND (ShipToAddr[1] = '') THEN
-                                CurrReport.BREAK;
+                                CurrReport.BREAK();
                         end;
                     }
                     dataitem(PrepmtLoop; Integer)
@@ -961,7 +961,7 @@ report 50076 "DEL Archived Purchase Order"
                         column(TotalInclVATText_Control188; TotalInclVATText)
                         {
                         }
-                        column(VATAmountLine_VATAmountText_Control189; VATAmountLine.VATAmountText)
+                        column(VATAmountLine_VATAmountText_Control189; VATAmountLine.VATAmountText())
                         {
                         }
                         column(PrepmtVATAmount_Control190; PrepmtVATAmount)
@@ -1023,11 +1023,11 @@ report 50076 "DEL Archived Purchase Order"
                             trigger OnAfterGetRecord()
                             begin
                                 IF Number = 1 THEN BEGIN
-                                    IF NOT PrepmtDimSetEntry.FINDSET THEN
-                                        CurrReport.BREAK;
+                                    IF NOT PrepmtDimSetEntry.FINDSET() THEN
+                                        CurrReport.BREAK();
                                 END ELSE
                                     IF NOT Continue THEN
-                                        CurrReport.BREAK;
+                                        CurrReport.BREAK();
 
                                 CLEAR(DimText);
                                 Continue := FALSE;
@@ -1045,7 +1045,7 @@ report 50076 "DEL Archived Purchase Order"
                                         Continue := TRUE;
                                         EXIT;
                                     END;
-                                UNTIL PrepmtDimSetEntry.NEXT = 0;
+                                UNTIL PrepmtDimSetEntry.NEXT() = 0;
                             end;
                         }
 
@@ -1053,10 +1053,10 @@ report 50076 "DEL Archived Purchase Order"
                         begin
                             IF Number = 1 THEN BEGIN
                                 IF NOT PrepmtInvBuf.FIND('-') THEN
-                                    CurrReport.BREAK;
+                                    CurrReport.BREAK();
                             END ELSE
-                                IF PrepmtInvBuf.NEXT = 0 THEN
-                                    CurrReport.BREAK;
+                                IF PrepmtInvBuf.NEXT() = 0 THEN
+                                    CurrReport.BREAK();
 
                             IF ShowInternalInfo THEN
                                 PrepmtDimSetEntry.SETRANGE("Dimension Set ID", PrepmtInvBuf."Dimension Set ID");
@@ -1212,43 +1212,43 @@ report 50076 "DEL Archived Purchase Order"
                         trigger OnPreDataItem()
                         begin
                             IF NOT PrepmtInvBuf.FIND('-') THEN
-                                CurrReport.BREAK;
+                                CurrReport.BREAK();
                         end;
                     }
                 }
 
                 trigger OnAfterGetRecord()
                 var
-                    PurchLineArchive: Record "Purchase Line Archive";
                     TempPurchHeader: Record "Purchase Header" temporary;
                     TempPurchLine: Record "Purchase Line" temporary;
+                    PurchLineArchive: Record "Purchase Line Archive";
                 begin
                     CLEAR(PurchLineArch);
-                    PurchLineArch.DELETEALL;
+                    PurchLineArch.DELETEALL();
                     PurchLineArchive.SETRANGE("Document Type", "Purchase Header Archive"."Document Type");
                     PurchLineArchive.SETRANGE("Document No.", "Purchase Header Archive"."No.");
                     PurchLineArchive.SETRANGE("Version No.", "Purchase Header Archive"."Version No.");
-                    IF PurchLineArchive.FINDSET THEN
+                    IF PurchLineArchive.FINDSET() THEN
                         REPEAT
                             PurchLineArch := PurchLineArchive;
-                            PurchLineArch.INSERT;
+                            PurchLineArch.INSERT();
                             TempPurchLine.TRANSFERFIELDS(PurchLineArchive);
-                            TempPurchLine.INSERT;
-                        UNTIL PurchLineArchive.NEXT = 0;
+                            TempPurchLine.INSERT();
+                        UNTIL PurchLineArchive.NEXT() = 0;
 
-                    VATAmountLine.DELETEALL;
+                    VATAmountLine.DELETEALL();
 
                     TempPurchHeader.TRANSFERFIELDS("Purchase Header Archive");
                     TempPurchLine."Prepayment Line" := TRUE;  // used as flag in CalcVATAmountLines -> not invoice rounding
                     TempPurchLine.CalcVATAmountLines(0, TempPurchHeader, TempPurchLine, VATAmountLine);
-                    VATAmount := VATAmountLine.GetTotalVATAmount;
-                    VATBaseAmount := VATAmountLine.GetTotalVATBase;
+                    VATAmount := VATAmountLine.GetTotalVATAmount();
+                    VATBaseAmount := VATAmountLine.GetTotalVATBase();
                     VATDiscountAmount :=
                       VATAmountLine.GetTotalVATDiscount(TempPurchHeader."Currency Code", TempPurchHeader."Prices Including VAT");
-                    TotalAmountInclVAT := VATAmountLine.GetTotalAmountInclVAT;
+                    TotalAmountInclVAT := VATAmountLine.GetTotalAmountInclVAT();
 
                     IF Number > 1 THEN
-                        CopyText := FormatDocument.GetCOPYText;
+                        CopyText := FormatDocument.GetCOPYText();
                     CurrReport.PAGENO := 1;
                     OutputNo := OutputNo + 1;
                     TotalSubTotal := 0;
@@ -1320,134 +1320,134 @@ report 50076 "DEL Archived Purchase Order"
 
     trigger OnInitReport()
     begin
-        GLSetup.GET;
-        CompanyInfo.GET;
-        CompanyInfo1.GET;
+        GLSetup.GET();
+        CompanyInfo.GET();
+        CompanyInfo1.GET();
         CompanyInfo1.CALCFIELDS(Picture);
     end;
 
     var
-        Text004: Label 'Purchase Order Archived %1', Comment = '%1 = Document No.';
-        Text005: Label 'Page %1';
-        GLSetup: Record "General Ledger Setup";
         CompanyInfo: Record "Company Information";
-        ShipmentMethod: Record "Shipment Method";
-        PaymentTerms: Record "Payment Terms";
-        PrepmtPaymentTerms: Record "Payment Terms";
-        SalesPurchPerson: Record "Salesperson/Purchaser";
-        VATAmountLine: Record "VAT Amount Line" temporary;
-        PrepmtVATAmountLine: Record "VAT Amount Line" temporary;
-        PurchLineArch: Record "Purchase Line Archive" temporary;
+
+        CompanyInfo1: Record "Company Information";
+        CurrExchRate: Record "Currency Exchange Rate";
         DimSetEntry1: Record "Dimension Set Entry";
         DimSetEntry2: Record "Dimension Set Entry";
         PrepmtDimSetEntry: Record "Dimension Set Entry";
-        PrepmtInvBuf: Record "Prepayment Inv. Line Buffer" temporary;
-        RespCenter: Record "Responsibility Center";
+        GLSetup: Record "General Ledger Setup";
         Language: Record Language;
-        CurrExchRate: Record "Currency Exchange Rate";
-
-        CompanyInfo1: Record "Company Information";
+        PaymentTerms: Record "Payment Terms";
+        PrepmtPaymentTerms: Record "Payment Terms";
+        PrepmtInvBuf: Record "Prepayment Inv. Line Buffer" temporary;
+        PurchLineArch: Record "Purchase Line Archive" temporary;
+        RespCenter: Record "Responsibility Center";
+        SalesPurchPerson: Record "Salesperson/Purchaser";
+        ShipmentMethod: Record "Shipment Method";
+        PrepmtVATAmountLine: Record "VAT Amount Line" temporary;
+        VATAmountLine: Record "VAT Amount Line" temporary;
         FormatAddr: Codeunit "Format Address";
         FormatDocument: Codeunit "Format Document";
-        VendAddr: array[8] of Text[50];
-        ShipToAddr: array[8] of Text[50];
-        CompanyAddr: array[8] of Text[50];
-        BuyFromAddr: array[8] of Text[50];
-        PurchaserText: Text[30];
-        VATNoText: Text[80];
-        ReferenceText: Text[80];
-        TotalText: Text[50];
-        TotalInclVATText: Text[50];
-        TotalExclVATText: Text[50];
-        MoreLines: Boolean;
-        NoOfCopies: Integer;
-        NoOfLoops: Integer;
-        CopyText: Text[30];
-        OutputNo: Integer;
-        DimText: Text[120];
-        OldDimText: Text[75];
-        ShowInternalInfo: Boolean;
         Continue: Boolean;
+        MoreLines: Boolean;
+        ShowInternalInfo: Boolean;
+        PrepmtLineAmount: Decimal;
+        PrepmtTotalAmountInclVAT: Decimal;
+        PrepmtVATAmount: Decimal;
+        PrepmtVATBaseAmount: Decimal;
+        TotalAmount: Decimal;
+        TotalAmountInclVAT: Decimal;
+        TotalInvoiceDiscountAmount: Decimal;
+        TotalSubTotal: Decimal;
+        VALVATAmountLCY: Decimal;
+        VALVATBaseLCY: Decimal;
         VATAmount: Decimal;
         VATBaseAmount: Decimal;
         VATDiscountAmount: Decimal;
-        TotalAmountInclVAT: Decimal;
-        VALVATBaseLCY: Decimal;
-        VALVATAmountLCY: Decimal;
-        VALSpecLCYHeader: Text[80];
-        VALExchRate: Text[50];
+        NoOfCopies: Integer;
+        NoOfLoops: Integer;
+        OutputNo: Integer;
+        PurchaseLineArchiveType: Integer;
+        AmountCaptionLbl: Label 'Amount';
+        CompanyInfo__Bank_Account_No__CaptionLbl: Label 'Account No.';
+        CompanyInfo__Bank_Name_CaptionLbl: Label 'Bank';
+        CompanyInfo__Fax_No__CaptionLbl: Label 'Fax No.';
+        CompanyInfo__Giro_No__CaptionLbl: Label 'Giro No.';
+        CompanyInfo__Phone_No__CaptionLbl: Label 'Phone No.';
+        CompanyInfo__VAT_Registration_No__CaptionLbl: Label 'VAT Reg. No.';
+        ContinuedCaption_Control76Lbl: Label 'Continued';
+        ContinuedCaption_Control176Lbl: Label 'Continued';
+        ContinuedCaption_Control178Lbl: Label 'Continued';
+        ContinuedCaption_Control209Lbl: Label 'Continued';
+        ContinuedCaption_Control214Lbl: Label 'Continued';
+        ContinuedCaptionLbl: Label 'Continued';
+        Direct_Unit_CostCaptionLbl: Label 'Direct Unit Cost';
+        Header_DimensionsCaptionLbl: Label 'Header Dimensions';
+        Line_DimensionsCaption_Control180Lbl: Label 'Line Dimensions';
+        Line_DimensionsCaptionLbl: Label 'Line Dimensions';
+        Order_No_CaptionLbl: Label 'Order No.';
+        PageCaptionLbl: Label 'Page';
+        Payment_DetailsCaptionLbl: Label 'Payment Details';
+        PaymentTerms_DescriptionCaptionLbl: Label 'Payment Terms';
+        Prepayment_SpecificationCaptionLbl: Label 'Prepayment Specification';
+        Prepayment_VAT_Amount_SpecificationCaptionLbl: Label 'Prepayment VAT Amount Specification';
+        PrepmtInvBuf__G_L_Account_No__CaptionLbl: Label 'G/L Account No.';
+        PrepmtInvBuf_DescriptionCaptionLbl: Label 'Description';
+        PrepmtLineAmount_Control173CaptionLbl: Label 'Amount';
+        PrepmtPaymentTerms_DescriptionCaptionLbl: Label 'Prepmt. Payment Terms';
+        PrepmtVATAmountLine__Line_Amount__Control196CaptionLbl: Label 'Line Amount';
+        PrepmtVATAmountLine__VAT____Control197CaptionLbl: Label 'VAT %';
+        PrepmtVATAmountLine__VAT_Amount__Control194CaptionLbl: Label 'VAT Amount';
+        PrepmtVATAmountLine__VAT_Base__Control195CaptionLbl: Label 'VAT Base';
+        PrepmtVATAmountLine__VAT_Base__Control216CaptionLbl: Label 'Total';
+        PrepmtVATAmountLine__VAT_Identifier_CaptionLbl: Label 'VAT Identifier';
+        Purchase_Line_Archive___Line_Discount___CaptionLbl: Label 'Disc. %';
+        PurchLineArch__Inv__Discount_Amount_CaptionLbl: Label 'Inv. Discount Amount';
+        Ship_to_AddressCaptionLbl: Label 'Ship-to Address';
+        ShipmentMethod_DescriptionCaptionLbl: Label 'Shipment Method';
+        SubtotalCaptionLbl: Label 'Subtotal';
+        Text004: Label 'Purchase Order Archived %1', Comment = '%1 = Document No.';
+        Text005: Label 'Page %1';
         Text007: Label 'VAT Amount Specification in ';
         Text008: Label 'Local Currency';
         Text009: Label 'Exchange rate: %1/%2';
-        PrepmtVATAmount: Decimal;
-        PrepmtVATBaseAmount: Decimal;
-        PrepmtTotalAmountInclVAT: Decimal;
-        PrepmtLineAmount: Decimal;
         Text010: Label 'Version %1 of %2 ';
-        PricesInclVATtxt: Text[30];
-        AllowInvDisctxt: Text[30];
-        PurchaseLineArchiveType: Integer;
-        TotalSubTotal: Decimal;
-        TotalAmount: Decimal;
-        TotalInvoiceDiscountAmount: Decimal;
-        CompanyInfo__Phone_No__CaptionLbl: Label 'Phone No.';
-        CompanyInfo__Fax_No__CaptionLbl: Label 'Fax No.';
-        CompanyInfo__VAT_Registration_No__CaptionLbl: Label 'VAT Reg. No.';
-        CompanyInfo__Giro_No__CaptionLbl: Label 'Giro No.';
-        CompanyInfo__Bank_Name_CaptionLbl: Label 'Bank';
-        CompanyInfo__Bank_Account_No__CaptionLbl: Label 'Account No.';
-        Order_No_CaptionLbl: Label 'Order No.';
-        PageCaptionLbl: Label 'Page';
-        Header_DimensionsCaptionLbl: Label 'Header Dimensions';
-        Direct_Unit_CostCaptionLbl: Label 'Direct Unit Cost';
-        Purchase_Line_Archive___Line_Discount___CaptionLbl: Label 'Disc. %';
-        AmountCaptionLbl: Label 'Amount';
-        ContinuedCaptionLbl: Label 'Continued';
-        ContinuedCaption_Control76Lbl: Label 'Continued';
-        PurchLineArch__Inv__Discount_Amount_CaptionLbl: Label 'Inv. Discount Amount';
-        SubtotalCaptionLbl: Label 'Subtotal';
-        VATDiscountAmountCaptionLbl: Label 'Payment Discount on VAT';
-        Line_DimensionsCaptionLbl: Label 'Line Dimensions';
-        VATAmountLine__VAT___CaptionLbl: Label 'VAT %';
-        VATAmountLine__VAT_Base__Control99CaptionLbl: Label 'VAT Base';
-        VATAmountLine__VAT_Amount__Control100CaptionLbl: Label 'VAT Amount';
-        VAT_Amount_SpecificationCaptionLbl: Label 'VAT Amount Specification';
-        VATAmountLine__VAT_Identifier_CaptionLbl: Label 'VAT Identifier';
-        VATAmountLine__Inv__Disc__Base_Amount__Control132CaptionLbl: Label 'Inv. Disc. Base Amount';
-        VATAmountLine__Line_Amount__Control131CaptionLbl: Label 'Line Amount';
-        VATAmountLine__Invoice_Discount_Amount__Control133CaptionLbl: Label 'Invoice Discount Amount';
-        VATAmountLine__VAT_Base_CaptionLbl: Label 'Continued';
-        VATAmountLine__VAT_Base__Control103CaptionLbl: Label 'Continued';
-        VATAmountLine__VAT_Base__Control107CaptionLbl: Label 'Total';
         VALVATAmountLCY_Control158CaptionLbl: Label 'VAT Amount';
         VALVATBaseLCY_Control159CaptionLbl: Label 'VAT Base';
-        VATAmountLine__VAT____Control160CaptionLbl: Label 'VAT %';
-        VATAmountLine__VAT_Identifier__Control161CaptionLbl: Label 'VAT Identifier';
-        VALVATBaseLCYCaptionLbl: Label 'Continued';
         VALVATBaseLCY_Control163CaptionLbl: Label 'Continued';
         VALVATBaseLCY_Control166CaptionLbl: Label 'Total';
-        PaymentTerms_DescriptionCaptionLbl: Label 'Payment Terms';
-        ShipmentMethod_DescriptionCaptionLbl: Label 'Shipment Method';
-        Payment_DetailsCaptionLbl: Label 'Payment Details';
+        VALVATBaseLCYCaptionLbl: Label 'Continued';
+        VAT_Amount_SpecificationCaptionLbl: Label 'VAT Amount Specification';
+        VATAmountLine__Inv__Disc__Base_Amount__Control132CaptionLbl: Label 'Inv. Disc. Base Amount';
+        VATAmountLine__Invoice_Discount_Amount__Control133CaptionLbl: Label 'Invoice Discount Amount';
+        VATAmountLine__Line_Amount__Control131CaptionLbl: Label 'Line Amount';
+        VATAmountLine__VAT____Control160CaptionLbl: Label 'VAT %';
+        VATAmountLine__VAT___CaptionLbl: Label 'VAT %';
+        VATAmountLine__VAT_Amount__Control100CaptionLbl: Label 'VAT Amount';
+        VATAmountLine__VAT_Base__Control99CaptionLbl: Label 'VAT Base';
+        VATAmountLine__VAT_Base__Control103CaptionLbl: Label 'Continued';
+        VATAmountLine__VAT_Base__Control107CaptionLbl: Label 'Total';
+        VATAmountLine__VAT_Base_CaptionLbl: Label 'Continued';
+        VATAmountLine__VAT_Identifier__Control161CaptionLbl: Label 'VAT Identifier';
+        VATAmountLine__VAT_Identifier_CaptionLbl: Label 'VAT Identifier';
+        VATDiscountAmountCaptionLbl: Label 'Payment Discount on VAT';
         Vendor_No_CaptionLbl: Label 'Vendor No.';
-        Ship_to_AddressCaptionLbl: Label 'Ship-to Address';
-        PrepmtLineAmount_Control173CaptionLbl: Label 'Amount';
-        PrepmtInvBuf_DescriptionCaptionLbl: Label 'Description';
-        PrepmtInvBuf__G_L_Account_No__CaptionLbl: Label 'G/L Account No.';
-        Prepayment_SpecificationCaptionLbl: Label 'Prepayment Specification';
-        ContinuedCaption_Control176Lbl: Label 'Continued';
-        ContinuedCaption_Control178Lbl: Label 'Continued';
-        Line_DimensionsCaption_Control180Lbl: Label 'Line Dimensions';
-        PrepmtVATAmountLine__VAT_Amount__Control194CaptionLbl: Label 'VAT Amount';
-        PrepmtVATAmountLine__VAT_Base__Control195CaptionLbl: Label 'VAT Base';
-        PrepmtVATAmountLine__Line_Amount__Control196CaptionLbl: Label 'Line Amount';
-        PrepmtVATAmountLine__VAT____Control197CaptionLbl: Label 'VAT %';
-        Prepayment_VAT_Amount_SpecificationCaptionLbl: Label 'Prepayment VAT Amount Specification';
-        PrepmtVATAmountLine__VAT_Identifier_CaptionLbl: Label 'VAT Identifier';
-        ContinuedCaption_Control209Lbl: Label 'Continued';
-        ContinuedCaption_Control214Lbl: Label 'Continued';
-        PrepmtVATAmountLine__VAT_Base__Control216CaptionLbl: Label 'Total';
-        PrepmtPaymentTerms_DescriptionCaptionLbl: Label 'Prepmt. Payment Terms';
+        AllowInvDisctxt: Text[30];
+        CopyText: Text[30];
+        PricesInclVATtxt: Text[30];
+        PurchaserText: Text[30];
+        BuyFromAddr: array[8] of Text[50];
+        CompanyAddr: array[8] of Text[50];
+        ShipToAddr: array[8] of Text[50];
+        TotalExclVATText: Text[50];
+        TotalInclVATText: Text[50];
+        TotalText: Text[50];
+        VALExchRate: Text[50];
+        VendAddr: array[8] of Text[50];
+        OldDimText: Text[75];
+        ReferenceText: Text[80];
+        VALSpecLCYHeader: Text[80];
+        VATNoText: Text[80];
+        DimText: Text[120];
 
     local procedure FormatAddressFields(var PurchaseHeaderArchive: Record "Purchase Header Archive")
     begin
@@ -1460,15 +1460,13 @@ report 50076 "DEL Archived Purchase Order"
 
     local procedure FormatDocumentFields(PurchaseHeaderArchive: Record "Purchase Header Archive")
     begin
-        WITH PurchaseHeaderArchive DO BEGIN
-            FormatDocument.SetTotalLabels("Currency Code", TotalText, TotalInclVATText, TotalExclVATText);
-            FormatDocument.SetPurchaser(SalesPurchPerson, "Purchaser Code", PurchaserText);
-            FormatDocument.SetPaymentTerms(PaymentTerms, "Payment Terms Code", "Language Code");
-            FormatDocument.SetPaymentTerms(PrepmtPaymentTerms, "Prepmt. Payment Terms Code", "Language Code");
-            FormatDocument.SetShipmentMethod(ShipmentMethod, "Shipment Method Code", "Language Code");
-            ReferenceText := FormatDocument.SetText("Your Reference" <> '', FIELDCAPTION("Your Reference"));
-            VATNoText := FormatDocument.SetText("VAT Registration No." <> '', FIELDCAPTION("VAT Registration No."));
-        END;
+        FormatDocument.SetTotalLabels(PurchaseHeaderArchive."Currency Code", TotalText, TotalInclVATText, TotalExclVATText);
+        FormatDocument.SetPurchaser(SalesPurchPerson, PurchaseHeaderArchive."Purchaser Code", PurchaserText);
+        FormatDocument.SetPaymentTerms(PaymentTerms, PurchaseHeaderArchive."Payment Terms Code", PurchaseHeaderArchive."Language Code");
+        FormatDocument.SetPaymentTerms(PrepmtPaymentTerms, PurchaseHeaderArchive."Prepmt. Payment Terms Code", PurchaseHeaderArchive."Language Code");
+        FormatDocument.SetShipmentMethod(ShipmentMethod, PurchaseHeaderArchive."Shipment Method Code", PurchaseHeaderArchive."Language Code");
+        ReferenceText := FormatDocument.SetText(PurchaseHeaderArchive."Your Reference" <> '', PurchaseHeaderArchive.FIELDCAPTION("Your Reference"));
+        VATNoText := FormatDocument.SetText(PurchaseHeaderArchive."VAT Registration No." <> '', PurchaseHeaderArchive.FIELDCAPTION("VAT Registration No."));
     end;
 }
 

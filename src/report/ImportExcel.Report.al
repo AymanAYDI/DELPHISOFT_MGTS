@@ -62,26 +62,23 @@ report 50006 "DEL Import Excel"
     var
         ExcelBuffer: Record "Excel Buffer";
         SalesPriceWorksheet: Record "Sales Price Worksheet";
-        FileManagement: Codeunit "File Management";
+        CurrencyCode: Code[10];
+        UnitCode: Code[10];
+        ItemNo: Code[20];
+        SalesCode: Code[20];
+        VendorNo: Code[20];
+        EndDate: Date;
+        StartDate: Date;
+        CurrentUnitPrice: Decimal;
+        NewPrice: Decimal;
+        FileName: InStream;
+        i: Integer;
 
         TotalColumns: Integer;
         Totalrows: Integer;
-        FileName: InStream;
-        sheetName: Text;
-        ExcelExtension: Label '*.xlsx;*.xls';
-        i: Integer;
-        ItemNo: Code[20];
-        UnitCode: Code[10];
-        StartDate: Date;
-        EndDate: Date;
-        NewPrice: Decimal;
-        VendorNo: Code[20];
-        CurrencyCode: Code[10];
-        SalesCode: Code[20];
-        SalesType: Text;
         SalesTypeOption: Option Customer,"Customer Price Group","All Customers",Campaign;
-        SalesTypeOptionFR: Option Client,"Groupe tarifs client","Tous les clients",Campagne;
-        CurrentUnitPrice: Decimal;
+        SalesType: Text;
+        sheetName: Text;
 
     local procedure GetLastRowandColumns()
     begin

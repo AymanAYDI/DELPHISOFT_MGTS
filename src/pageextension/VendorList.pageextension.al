@@ -5,7 +5,7 @@ pageextension 50028 "DEL VendorList" extends "Vendor List"
     {
         addafter("Balance Due (LCY)")
         {
-            field("DEL Supplier Base ID"; "DEL Supplier Base ID")
+            field("DEL Supplier Base ID"; Rec."DEL Supplier Base ID")
             {
             }
         }

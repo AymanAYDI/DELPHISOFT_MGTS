@@ -57,8 +57,8 @@ pageextension 50009 "DEL PostedPurchaseInvoice" extends "Posted Purchase Invoice
                     lrecDocMatrixSelection: Record "DEL DocMatrix Selection";
 
                     lcuDocumentMatrixMgt: Codeunit "DEL DocMatrix Management";
-                    lUsage: Enum "DEL Usage DocMatrix Selection";
                     ProcessType: Enum "DEL Process Type";
+                    lUsage: Enum "DEL Usage DocMatrix Selection";
                 begin
                     IF lcuDocumentMatrixMgt.ShowDocMatrixSelection(Rec."Buy-from Vendor No.", ProcessType::Manual, lUsage::"P.Invoice", lrecDocMatrixSelection, FALSE) THEN
                         lcuDocumentMatrixMgt.ProcessDocumentMatrix(lUsage::"P.Invoice", ProcessType::Manual, Rec, Rec.FIELDNO("Buy-from Vendor No."), Rec.FIELDNO("No."), lrecDocMatrixSelection, Rec.FIELDNO("Purchaser Code"));

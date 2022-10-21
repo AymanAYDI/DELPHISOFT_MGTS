@@ -29,7 +29,7 @@ table 50075 "DEL ACO Lines API Rec. Track."
         }
         field(6; "ACO Supplier Item No."; Code[20])
         {
-            AccessByPermission = TableData 5717 = R;
+            AccessByPermission = TableData "Item Reference" = R;
             Caption = 'ACO Supplier Item No.';
         }
         field(7; "ACO External reference NGTS"; Text[30])

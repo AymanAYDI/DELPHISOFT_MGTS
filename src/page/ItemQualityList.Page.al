@@ -194,12 +194,8 @@ page 50078 "DEL Item Quality List"
     end;
 
     var
-        Item_Rec: Record "Item";
-        LiaisseProduit: Record "DEL Item Quality forms";
         RegGenerale: Boolean;
         RegMat: Boolean;
         RegPlan: Boolean;
-        Regelect: Boolean;
-        i: Integer;
 }
 

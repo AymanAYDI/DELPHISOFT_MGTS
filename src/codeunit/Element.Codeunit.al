@@ -4,15 +4,15 @@ codeunit 50021 "DEL Element"
     var
         Currency_Exchange_Re: Record "DEL Currency Exchange";
         Setup: Record "DEL General Setup";
+        Deal_Cu: Codeunit "DEL Deal";
         DealItem_Cu: Codeunit "DEL Deal Item";
         DealShipment_Cu: Codeunit "DEL Deal Shipment";
         DealShipmentConnection_Cu: Codeunit "DEL Deal Shipment Connection";
-        Deal_Cu: Codeunit "DEL Deal";
         Element_Cu: Codeunit "DEL Element";
         ElementConnection_Cu: Codeunit "DEL Element Connection";
         Fee_Cu: Codeunit "DEL Fee";
-        NoSeriesMgt_Cu: Codeunit NoSeriesManagement;
         Position_Cu: Codeunit "DEL Position";
+        NoSeriesMgt_Cu: Codeunit NoSeriesManagement;
         ERROR_TXT: Label 'ERREUR\Source : %1\Function : %2\Reason : %3';
 
 
@@ -20,7 +20,6 @@ codeunit 50021 "DEL Element"
     var
         deal_Re_Loc: Record "DEL Deal";
         element_Re_Loc: Record "DEL Element";
-        isPlanned_Op_Loc: Option;
     begin
         // Ajoute un "Element" de type ACO
 
@@ -55,7 +54,6 @@ codeunit 50021 "DEL Element"
     var
         deal_Re_Loc: Record "DEL Deal";
         element_Re_Loc: Record "DEL Element";
-        isPlanned_Op_Loc: Option;
     begin
         // Ajoute un "Element" de type ACO
 
@@ -86,8 +84,6 @@ codeunit 50021 "DEL Element"
 
     procedure FNC_Add_BR(Deal_ID_Co_Par: Code[20]; BR_Header_Re_Par: Record "Purch. Rcpt. Header"; DealShipmentNo_Co_Par: Code[20]; Add_Variant_Op_Par: Option New,Existing)
     var
-        deal_Re_Loc: Record "DEL Deal";
-        dealShipment_Re_Loc: Record "DEL Deal Shipment";
         dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
         element_Re_Loc: Record "DEL Element";
         logistic_Re_Loc: Record "DEL Logistic";
@@ -256,7 +252,6 @@ codeunit 50021 "DEL Element"
     var
         dsc_Re_Loc: Record "DEL Deal Shipment Connection";
         ACOElement_Re_Loc: Record "DEL Element";
-        BRElement_Re_Loc: Record "DEL Element";
         element_Re_Loc: Record "DEL Element";
         FeeElement_Re_Loc: Record "DEL Element";
         VCOElement_Re_Loc: Record "DEL Element";
@@ -415,10 +410,6 @@ codeunit 50021 "DEL Element"
 
 
     procedure FNC_Add_Element_Fee(Element_ID_Co_Par: Code[20])
-    var
-        element_Re_Loc: Record "DEL Element";
-        ACO_Re_Loc: Record "Purchase Header";
-        VCO_Re_Loc: Record "Sales Header";
     begin
         // Ajoute tous les "Fee" d'un "Element" en fonction de son ID
         // P.e. ajoute tous les "Fee" liés à un ACO ou une VCO
@@ -434,7 +425,6 @@ codeunit 50021 "DEL Element"
         fee_Re_Loc: Record "DEL Fee";
         GLAccount_Re_Loc: Record "G/L Account";
         GLEntries_Re_Loc: Record "G/L Entry";
-        applyTo_Co_Loc: Code[20];
         BRNo_Co_Loc: Code[20];
         element_ID_Loc: Code[20];
         purchaseInvoiceNo_Co_Loc: Code[20];
@@ -618,9 +608,7 @@ codeunit 50021 "DEL Element"
         element_Re_Loc: Record "DEL Element";
         feeConnection_Re_Loc: Record "DEL Fee Connection";
         glEntry_Re_Loc: Record "G/L Entry";
-        genJournalLine_Re_Loc: Record "Gen. Journal Line";
         billToCustomerNo_Co_Loc: Code[20];
-        element_ID_Co_Loc: Code[20];
     begin
         /*__Ajoute un element de type invoice à partir de la feuille compta ou feuille achat__*/
 
@@ -740,9 +728,7 @@ codeunit 50021 "DEL Element"
         element_Re_Loc: Record "DEL Element";
         feeConnection_Re_Loc: Record "DEL Fee Connection";
         glEntry_Re_Loc: Record "G/L Entry";
-        genJournalLine_Re_Loc: Record "Gen. Journal Line";
         billToCustomerNo_Co_Loc: Code[20];
-        element_ID_Co_Loc: Code[20];
     begin
         element_ID_Co_Ret := '';
         billToCustomerNo_Co_Loc := '';
@@ -857,10 +843,7 @@ codeunit 50021 "DEL Element"
     procedure FNC_Add_New_Invoice_Connection(Element_ID_Co_Par: Code[20]; DealShipmentSelection_Re_Par: Record "DEL Deal Shipment Selection"; ConnectionType_Op_Par: Option Element,Shipment; SplitIndex_Int_Par: Integer)
     var
         element_Re_Loc: Record "DEL Element";
-        feeConnection_Re_Loc: Record "DEL Fee Connection";
-        genJournalLine_Re_Loc: Record "Gen. Journal Line";
         deal_ID_Co_Loc: Code[20];
-        element_ID_Co_Loc: Code[20];
     begin
 
         Element_Cu.FNC_Set_Element(element_Re_Loc, Element_ID_Co_Par);
@@ -957,9 +940,7 @@ codeunit 50021 "DEL Element"
         ACO_Connection_Re_Loc: Record "DEL ACO Connection";
         purchaseInvoiceHeader_Re_Loc: Record "Purch. Inv. Header";
         ACO_Re_Loc: Record "Purchase Header";
-        purchaseLine_Re_Loc: Record "Purchase Line";
         salesHeader_Re_Loc: Record "Sales Header";
-        VCO_Re_Loc: Record "Sales Header";
         salesInvoiceHeader_Re_Loc: Record "Sales Invoice Header";
         salesInvoiceLine_Re_Loc: Record "Sales Invoice Line";
         salesLine_Re_Loc: Record "Sales Line";
@@ -1086,7 +1067,6 @@ codeunit 50021 "DEL Element"
     var
         element_Re_Loc: Record "DEL Element";
         docNo_Co_Par: Code[20];
-        element_ID_Co_Loc: Code[20];
         postingDate_Da_Loc: Date;
     begin
 
@@ -1121,10 +1101,7 @@ codeunit 50021 "DEL Element"
     procedure FNC_Add_Provision_Connection(Element_ID_Co_Par: Code[20]; sps_Re_Par: Record "DEL Shipment Provision Select."; ConnectionType_Op_Par: Option Element,Shipment)
     var
         element_Re_Loc: Record "DEL Element";
-        feeConnection_Re_Loc: Record "DEL Fee Connection";
-        genJournalLine_Re_Loc: Record "Gen. Journal Line";
         deal_ID_Co_Loc: Code[20];
-        element_ID_Co_Loc: Code[20];
     begin
 
         Element_Cu.FNC_Set_Element(element_Re_Loc, Element_ID_Co_Par);
@@ -1220,14 +1197,9 @@ codeunit 50021 "DEL Element"
 
     procedure FNC_Add_Purch_Cr_Memo(Deal_ID_Co_Par: Code[20]; creditMemoHeader_Re_Par: Record "Purch. Cr. Memo Hdr."; ShipmentNo_Co_Par: Code[20]; Add_Variant_Op_Par: Option New,Existing)
     var
-        dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
         element_Re_Loc: Record "DEL Element";
-        salesInvHeader_Re_Loc: Record "Sales Invoice Header";
-        salesInvLine_Re_Loc: Record "Sales Invoice Line";
         element_ID_Loc: Code[20];
-        last: Code[20];
         purchInvID_Co_Loc: Code[20];
-        shipmentID_Co_Loc: Code[20];
     begin
         IF Add_Variant_Op_Par = Add_Variant_Op_Par::New THEN BEGIN
 
@@ -1270,7 +1242,6 @@ codeunit 50021 "DEL Element"
 
     procedure FNC_Add_Purchase_Invoice(Deal_ID_Co_Par: Code[20]; PurchaseInvoiceHeader_Re_Par: Record "Purch. Inv. Header"; ShipmentNo_Co_Par: Code[20]; Add_Variant_Op_Par: Option New,Existing)
     var
-        dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
         element_Re_Loc: Record "DEL Element";
         purchInvHeader_Re_Loc: Record "Purch. Inv. Header";
         purchInvLine_Re_Loc: Record "Purch. Inv. Line";
@@ -1408,14 +1379,9 @@ codeunit 50021 "DEL Element"
 
     procedure FNC_Add_Sales_Cr_Memo(Deal_ID_Co_Par: Code[20]; creditMemoHeader_Re_Par: Record "Sales Cr.Memo Header"; ShipmentNo_Co_Par: Code[20]; Add_Variant_Op_Par: Option New,Existing)
     var
-        dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
         element_Re_Loc: Record "DEL Element";
-        salesInvHeader_Re_Loc: Record "Sales Invoice Header";
-        salesInvLine_Re_Loc: Record "Sales Invoice Line";
         element_ID_Loc: Code[20];
-        last: Code[20];
         salesInvID_Co_Loc: Code[20];
-        shipmentID_Co_Loc: Code[20];
     begin
 
         IF Add_Variant_Op_Par = Add_Variant_Op_Par::New THEN BEGIN
@@ -1459,7 +1425,6 @@ codeunit 50021 "DEL Element"
 
     procedure FNC_Add_Sales_Invoice(Deal_ID_Co_Par: Code[20]; SalesInvoiceHeader_Re_Par: Record "Sales Invoice Header"; ShipmentNo_Co_Par: Code[20]; Add_Variant_Op_Par: Option New,Existing)
     var
-        dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
         element_Re_Loc: Record "DEL Element";
         salesInvHeader_Re_Loc: Record "Sales Invoice Header";
         salesInvLine_Re_Loc: Record "Sales Invoice Line";
@@ -1592,7 +1557,6 @@ codeunit 50021 "DEL Element"
     var
         element_Re_Loc: Record "DEL Element";
         element_ID_Co_Loc: Code[20];
-        isPlanned_Op_Loc: Option;
     begin
         element_ID_Co_Loc :=
           FNC_Insert_Element(
@@ -1616,11 +1580,10 @@ codeunit 50021 "DEL Element"
     end;
 
 
-    procedure FNC_Add_VCO_From_Invoice(Deal_ID_Co_Par: Code[20]; ACO_Co_Par: Code[20]; SalesInvoiceHeader_Re_Loc: Record 112)
+    procedure FNC_Add_VCO_From_Invoice(Deal_ID_Co_Par: Code[20]; ACO_Co_Par: Code[20]; SalesInvoiceHeader_Re_Loc: Record "Sales Invoice Header")
     var
         element_Re_Loc: Record "DEL Element";
         element_ID_Co_Loc: Code[20];
-        isPlanned_Op_Loc: Option;
     begin
         element_ID_Co_Loc :=
           FNC_Insert_Element(
@@ -1664,27 +1627,20 @@ codeunit 50021 "DEL Element"
 
     procedure FNC_Get_Amount_FCY(Element_ID_Co_Par: Code[20]) amount_Dec_Ret: Decimal
     var
-        currExRate_Re_loc: Record "Currency Exchange Rate";
         customerLedgerEntry: Record "Cust. Ledger Entry";
-        dealItem_Re_Loc: Record "DEL Deal Item";
         ACOElement_Re_Loc: Record "DEL Element";
         element_Re_Loc: Record "DEL Element";
         elementConnection_Re_Loc: Record "DEL Element Connection";
-        fee_Re_Loc: Record "DEL Fee";
         feeConnection_Re_Loc: Record "DEL Fee Connection";
-        GLEntry_Re_Loc: Record "G/L Entry";
         purchInvLine_Re_Loc: Record "Purch. Inv. Line";
         purchRcptLine_Re_Loc: Record "Purch. Rcpt. Line";
         ACO_Line_Re_Loc: Record "Purchase Line";
         salesInvLine_Re_Loc: Record "Sales Invoice Line";
         VCO_Line_Re_Loc: Record "Sales Line";
         vendorLedgerEntry: Record "Vendor Ledger Entry";
-        curr_Co_Loc: Code[10];
         deal_ID_Co_Loc: Code[20];
         amount_Dec_Loc: Decimal;
         qty_Dec_Loc: Decimal;
-        rate_Dec_Loc: Decimal;
-        entryNo_Int_Loc: Integer;
     begin
 
         FNC_Set_Element(element_Re_Loc, Element_ID_Co_Par);
@@ -1893,7 +1849,6 @@ codeunit 50021 "DEL Element"
     procedure FNC_Get_Amount_From_Positions(Element_ID_Co_Par: Code[20]) amount_Dec_Ret: Decimal
     var
         element_Re_Loc: Record "DEL Element";
-        position_Re_Loc: Record "DEL Position";
     begin
         FNC_Set_Element(element_Re_Loc, Element_ID_Co_Par);
 
@@ -1909,11 +1864,9 @@ codeunit 50021 "DEL Element"
     var
         currExRate_Re_loc: Record "Currency Exchange Rate";
         customerLedgerEntry: Record "Cust. Ledger Entry";
-        dealItem_Re_Loc: Record "DEL Deal Item";
         ACOElement_Re_Loc: Record "DEL Element";
         element_Re_Loc: Record "DEL Element";
         elementConnection_Re_Loc: Record "DEL Element Connection";
-        fee_Re_Loc: Record "DEL Fee";
         feeConnection_Re_Loc: Record "DEL Fee Connection";
         GLEntry_Re_Loc: Record "G/L Entry";
         purchInvLine_Re_Loc: Record "Purch. Inv. Line";
@@ -1927,7 +1880,6 @@ codeunit 50021 "DEL Element"
         amount_Dec_Loc: Decimal;
         qty_Dec_Loc: Decimal;
         rate_Dec_Loc: Decimal;
-        EntryNo_Int_Loc: Integer;
     begin
 
         FNC_Set_Element(element_Re_Loc, Element_ID_Co_Par);
@@ -2161,18 +2113,13 @@ codeunit 50021 "DEL Element"
 
     procedure FNC_Get_Colis(Element_ID_Co_Par: Code[20]) nbColis_Dec_Ret: Decimal
     var
-        customerLedgerEntry: Record "Cust. Ledger Entry";
-        dealItem_Re_Loc: Record "DEL Deal Item";
         ACOElement_Re_Loc: Record "DEL Element";
         element_Re_Loc: Record "DEL Element";
         elementConnection_Re_Loc: Record "DEL Element Connection";
-        fee_Re_Loc: Record "DEL Fee";
-        feeConnection_Re_Loc: Record "DEL Fee Connection";
         purchInvLine_Re_Loc: Record "Purch. Inv. Line";
         purchRcptLine_Re_Loc: Record "Purch. Rcpt. Line";
         ACO_Line_Re_Loc: Record "Purchase Line";
         VCO_Line_Re_Loc: Record "Sales Line";
-        vendorLedgerEntry: Record "Vendor Ledger Entry";
         deal_ID_Co_loc: Code[20];
     begin
         FNC_Set_Element(element_Re_Loc, Element_ID_Co_Par);
@@ -2289,24 +2236,14 @@ codeunit 50021 "DEL Element"
 
     procedure FNC_Get_Currency(Element_ID_Co_Par: Code[20]) currency_Code_Ret: Code[10]
     var
-
-        currExRate_Re_Loc: Record "Currency Exchange Rate";
         customerLedgerEntry: Record "Cust. Ledger Entry";
-        dealItem_Re_Loc: Record "DEL Deal Item";
         element_Re_Loc: Record "DEL Element";
-        fee_Re_Loc: Record "DEL Fee";
-        feeConnection_Re_Loc: Record "DEL Fee Connection";
         position_Re_Loc: Record "DEL Position";
-        GLEntry_Re_Loc: Record "G/L Entry";
         purchInvHeader_Re_Loc: Record "Purch. Inv. Header";
-        purchRcptLine_Re_Loc: Record "Purch. Rcpt. Line";
         purchHeader_Re_Loc: Record "Purchase Header";
-        ACO_Line_Re_Loc: Record "Purchase Line";
         salesHeader_Re_Loc: Record "Sales Header";
         salesInvHeader_Re_Loc: Record "Sales Invoice Header";
-        VCO_Line_Re_Loc: Record "Sales Line";
         vendorLedgerEntry: Record "Vendor Ledger Entry";
-        entryNo_Int_Loc: Integer;
     begin
         FNC_Set_Element(element_Re_Loc, Element_ID_Co_Par);
 
@@ -2428,30 +2365,19 @@ codeunit 50021 "DEL Element"
 
     procedure FNC_Get_Douane(Element_ID_Co_Par: Code[20]) amount_Dec_Ret: Decimal
     var
-        currExRate_Re_loc: Record "Currency Exchange Rate";
-        customerLedgerEntry: Record "Cust. Ledger Entry";
-        dealItem_Re_Loc: Record "DEL Deal Item";
         ACOElement_Re_Loc: Record "DEL Element";
         element_Re_Loc: Record "DEL Element";
         elementConnection_Re_Loc: Record "DEL Element Connection";
-        fee_Re_Loc: Record "DEL Fee";
-        feeConnection_Re_Loc: Record "DEL Fee Connection";
-
-        GLEntry_Re_Loc: Record "G/L Entry";
         purchInvLine_Re_Loc: Record "Purch. Inv. Line";
         purchRcptLine_Re_Loc: Record "Purch. Rcpt. Line";
         ACO_Line_Re_Loc: Record "Purchase Line";
         salesInvLine_Re_Loc: Record "Sales Invoice Line";
         VCO_Line_Re_Loc: Record "Sales Line";
-        vendorLedgerEntry: Record "Vendor Ledger Entry";
-        curr_Co_Loc: Code[10];
         deal_ID_Co_loc: Code[20];
         amount_Dec_Loc: Decimal;
         douane_Dec_Loc: Decimal;
 
         qty_Dec_Loc: Decimal;
-        rate_Dec_Loc: Decimal;
-        EntryNo_Int_Loc: Integer;
     begin
 
         FNC_Set_Element(element_Re_Loc, Element_ID_Co_Par);
@@ -2589,14 +2515,7 @@ codeunit 50021 "DEL Element"
     var
         currExRate_Re_loc: Record "Currency Exchange Rate";
         customerLedgerEntry: Record "Cust. Ledger Entry";
-        dealItem_Re_Loc: Record "DEL Deal Item";
         element_Re_Loc: Record "DEL Element";
-        fee_Re_Loc: Record "DEL Fee";
-        feeConnection_Re_Loc: Record "DEL Fee Connection";
-        purchInvHeader_Re_Loc: Record "Purch. Inv. Header";
-        purchRcptLine_Re_Loc: Record "Purch. Rcpt. Line";
-        ACO_Line_Re_Loc: Record "Purchase Line";
-        VCO_Line_Re_Loc: Record "Sales Line";
         vendorLedgerEntry: Record "Vendor Ledger Entry";
     begin
         FNC_Set_Element(element_Re_Loc, Element_ID_Co_Par);
@@ -2678,7 +2597,6 @@ codeunit 50021 "DEL Element"
 
     procedure FNC_Get_Gross_Weight(Element_ID_Co_Par: Code[20]) Gross_Weight_Dec_Ret: Decimal
     var
-        dealItem_Re_Loc: Record "DEL Deal Item";
         ACOElement_Re_Loc: Record "DEL Element";
         element_Re_Loc: Record "DEL Element";
         elementConnection_Re_Loc: Record "DEL Element Connection";
@@ -2804,7 +2722,6 @@ codeunit 50021 "DEL Element"
 
     procedure FNC_Get_Net_Weight(Element_ID_Co_Par: Code[20]) Net_Weight_Dec_Ret: Decimal
     var
-        dealItem_Re_Loc: Record "DEL Deal Item";
         ACOElement_Re_Loc: Record "DEL Element";
         element_Re_Loc: Record "DEL Element";
         elementConnection_Re_Loc: Record "DEL Element Connection";
@@ -2945,8 +2862,6 @@ codeunit 50021 "DEL Element"
         ACOElement_Re_Loc: Record "DEL Element";
         element_Re_Loc: Record "DEL Element";
         elementConnection_Re_Loc: Record "DEL Element Connection";
-        fee_Re_Loc: Record "DEL Fee";
-        feeConnection_Re_Loc: Record "DEL Fee Connection";
 
         purchInvLine_Re_Loc: Record "Purch. Inv. Line";
         purchRcptLine_Re_Loc: Record "Purch. Rcpt. Line";
@@ -3070,7 +2985,6 @@ codeunit 50021 "DEL Element"
     procedure FNC_Get_Raw_Amount_From_Pos(Element_ID_Co_Par: Code[20]) amount_Dec_Ret: Decimal
     var
         element_Re_Loc: Record "DEL Element";
-        position_Re_Loc: Record "DEL Position";
     begin
         //retourne l'amount d'un element en fonction de ses positions dans la table position
         FNC_Set_Element(element_Re_Loc, Element_ID_Co_Par);
@@ -3086,18 +3000,13 @@ codeunit 50021 "DEL Element"
 
     procedure FNC_Get_Volume(Element_ID_Co_Par: Code[20]) Volume_Dec_Ret: Decimal
     var
-        customerLedgerEntry: Record "Cust. Ledger Entry";
-        dealItem_Re_Loc: Record "DEL Deal Item";
         ACOElement_Re_Loc: Record "DEL Element";
         element_Re_Loc: Record "DEL Element";
         elementConnection_Re_Loc: Record "DEL Element Connection";
-        fee_Re_Loc: Record "DEL Fee";
-        feeConnection_Re_Loc: Record "DEL Fee Connection";
         purchInvLine_Re_Loc: Record "Purch. Inv. Line";
         purchRcptLine_Re_Loc: Record "Purch. Rcpt. Line";
         ACO_Line_Re_Loc: Record "Purchase Line";
         VCO_Line_Re_Loc: Record "Sales Line";
-        vendorLedgerEntry: Record "Vendor Ledger Entry";
         Deal_ID_Co_loc: Code[20];
     begin
         //retourne le volume d'un element
@@ -3219,18 +3128,13 @@ codeunit 50021 "DEL Element"
 
     procedure FNC_Get_VolumeTransport(Element_ID_Co_Par: Code[20]) volume_Dec_Ret: Decimal
     var
-        customerLedgerEntry: Record "Cust. Ledger Entry";
-        dealItem_Re_Loc: Record "DEL Deal Item";
         ACOElement_Re_Loc: Record "DEL Element";
         element_Re_Loc: Record "DEL Element";
         elementConnection_Re_Loc: Record "DEL Element Connection";
-        fee_Re_Loc: Record "DEL Fee";
-        feeConnection_Re_Loc: Record "DEL Fee Connection";
         purchInvLine_Re_Loc: Record "Purch. Inv. Line";
         purchRcptLine_Re_Loc: Record "Purch. Rcpt. Line";
         ACO_Line_Re_Loc: Record "Purchase Line";
         VCO_Line_Re_Loc: Record "Sales Line";
-        vendorLedgerEntry: Record "Vendor Ledger Entry";
         deal_ID_Co_loc: Code[20];
     begin
         //retourne le volume d'un element

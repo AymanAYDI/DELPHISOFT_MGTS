@@ -9,8 +9,8 @@ codeunit 50052 "DEL MGTS EDI Management"
 
     local procedure SendPurchaseOrder(PurchaseHeader: Record "Purchase Header"; Force: Boolean)
     var
-        Vendor: Record Vendor;
         TempEDIExportBufferLine: Record "DEL EDI Export Buffer Line" temporary;
+        Vendor: Record Vendor;
     begin
         Vendor.GET(PurchaseHeader."Buy-from Vendor No.");
         IF NOT Vendor."DEL EDI" THEN
@@ -24,9 +24,9 @@ codeunit 50052 "DEL MGTS EDI Management"
 
     local procedure InsertPurchEDIExportBuffer(PurchaseHeader: Record "Purchase Header"; var TempEDIExportBufferLine: Record "DEL EDI Export Buffer Line" temporary)
     var
+        CompanyInformation: Record "Company Information";
         EDIExportBuffer: Record "DEL EDI Export Buffer";
         EDIExportBufferLine: Record "DEL EDI Export Buffer Line";
-        CompanyInformation: Record "Company Information";
         Vendor: Record Vendor;
     begin
         Vendor.GET(PurchaseHeader."Buy-from Vendor No.");
@@ -76,8 +76,8 @@ codeunit 50052 "DEL MGTS EDI Management"
 
     local procedure GetPurchEDIExportBufferLines(PurchaseHeader: Record "Purchase Header"; var TempEDIExportBufferLine: Record "DEL EDI Export Buffer Line" temporary; Force: Boolean)
     var
-        PurchaseLine: Record "Purchase Line";
         Item: Record Item;
+        PurchaseLine: Record "Purchase Line";
         LineNo: Integer;
     begin
         TempEDIExportBufferLine.RESET();
@@ -141,12 +141,12 @@ codeunit 50052 "DEL MGTS EDI Management"
 
     local procedure InsertSalesInvoiceEDIExportBuffer(SalesInvoiceHeader: Record "Sales Invoice Header"; var TempEDIExportBufferLine: Record "DEL EDI Export Buffer Line" temporary)
     var
-        EDIExportBuffer: Record "DEL EDI Export Buffer";
-        EDIExportBufferLine: Record "DEL EDI Export Buffer Line";
         CompanyInformation: Record "Company Information";
-        Customer: Record Customer;
 
         Contact: Record Contact;
+        Customer: Record Customer;
+        EDIExportBuffer: Record "DEL EDI Export Buffer";
+        EDIExportBufferLine: Record "DEL EDI Export Buffer Line";
         SalesShipmentHeader: Record "Sales Shipment Header";
     begin
         IF (SalesInvoiceHeader."Order No." = '') THEN
@@ -272,8 +272,8 @@ codeunit 50052 "DEL MGTS EDI Management"
 
     local procedure GetSalesInvoiceEDIExportBufferLines(SalesInvoiceHeader: Record "Sales Invoice Header"; var TempEDIExportBufferLine: Record "DEL EDI Export Buffer Line" temporary; Force: Boolean)
     var
-        SalesInvoiceLine: Record "Sales Invoice Line";
         Item: Record Item;
+        SalesInvoiceLine: Record "Sales Invoice Line";
         LineNo: Integer;
     begin
         TempEDIExportBufferLine.RESET();
@@ -329,9 +329,9 @@ codeunit 50052 "DEL MGTS EDI Management"
 
     procedure GenerateSalesInvoiceEDIBuffer(InvoiceNo: Code[20]; Force: Boolean)
     var
+        Customer: Record Customer;
         TempEDIExportBufferLine: Record "DEL EDI Export Buffer Line" temporary;
         SalesInvoiceHeader: Record "Sales Invoice Header";
-        Customer: Record Customer;
     begin
         IF (InvoiceNo = '') THEN
             EXIT;
@@ -353,11 +353,11 @@ codeunit 50052 "DEL MGTS EDI Management"
 
     local procedure GenerateSalesInvoiceVATAndTextEDInfos(SalesInvoiceHeader: Record "Sales Invoice Header"; EDIExportBuffer: Record "DEL EDI Export Buffer")
     var
+        CompanyInformation: Record "Company Information";
+        EDIExportBufferAddInfos: Record "DEL EDI Exp. Buffer Add. Infos";
+        PaymentTerms: Record "Payment Terms";
         SalesInvoiceLine: Record "Sales Invoice Line";
         TempVATAmountLine: Record "VAT Amount Line" temporary;
-        EDIExportBufferAddInfos: Record "DEL EDI Exp. Buffer Add. Infos";
-        CompanyInformation: Record "Company Information";
-        PaymentTerms: Record "Payment Terms";
         LineNo: Integer;
         Cst000: Label 'Payment Terms :  %1';
     begin
@@ -550,8 +550,8 @@ codeunit 50052 "DEL MGTS EDI Management"
 
     procedure ResendCustomerInvoice(SalesInvoiceHeader: Record "Sales Invoice Header")
     var
-        MsgResend: Label 'Resend in progress';
         ConfirmEDISend: Label 'Are you sure you want to send invoice %1 via EDI?';
+        MsgResend: Label 'Resend in progress';
     begin
         IF NOT CONFIRM(STRSUBSTNO(ConfirmEDISend, SalesInvoiceHeader."No.")) THEN
             EXIT;

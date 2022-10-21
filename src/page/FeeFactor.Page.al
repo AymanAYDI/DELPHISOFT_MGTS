@@ -34,8 +34,5 @@ page 50049 "DEL Fee Factor"
     actions
     {
     }
-
-    var
-        fee: Record "DEL Fee";
 }
 

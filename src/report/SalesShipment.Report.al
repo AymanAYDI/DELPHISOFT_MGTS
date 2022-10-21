@@ -254,11 +254,11 @@ report 50071 "DEL Sales - Shipment"
                         trigger OnAfterGetRecord()
                         begin
                             IF Number = 1 THEN BEGIN
-                                IF NOT DimSetEntry1.FINDSET THEN
-                                    CurrReport.BREAK;
+                                IF NOT DimSetEntry1.FINDSET() THEN
+                                    CurrReport.BREAK();
                             END ELSE
                                 IF NOT Continue THEN
-                                    CurrReport.BREAK;
+                                    CurrReport.BREAK();
 
                             CLEAR(DimText);
                             Continue := FALSE;
@@ -276,13 +276,13 @@ report 50071 "DEL Sales - Shipment"
                                     Continue := TRUE;
                                     EXIT;
                                 END;
-                            UNTIL DimSetEntry1.NEXT = 0;
+                            UNTIL DimSetEntry1.NEXT() = 0;
                         end;
 
                         trigger OnPreDataItem()
                         begin
                             IF NOT ShowInternalInfo THEN
-                                CurrReport.BREAK;
+                                CurrReport.BREAK();
                         end;
                     }
                     dataitem("Sales Shipment Line"; "Sales Shipment Line")
@@ -376,11 +376,11 @@ report 50071 "DEL Sales - Shipment"
                             trigger OnAfterGetRecord()
                             begin
                                 IF Number = 1 THEN BEGIN
-                                    IF NOT DimSetEntry2.FINDSET THEN
-                                        CurrReport.BREAK;
+                                    IF NOT DimSetEntry2.FINDSET() THEN
+                                        CurrReport.BREAK();
                                 END ELSE
                                     IF NOT Continue THEN
-                                        CurrReport.BREAK;
+                                        CurrReport.BREAK();
 
                                 CLEAR(DimText);
                                 Continue := FALSE;
@@ -398,22 +398,22 @@ report 50071 "DEL Sales - Shipment"
                                         Continue := TRUE;
                                         EXIT;
                                     END;
-                                UNTIL DimSetEntry2.NEXT = 0;
+                                UNTIL DimSetEntry2.NEXT() = 0;
                             end;
 
                             trigger OnPreDataItem()
                             begin
                                 IF NOT ShowInternalInfo THEN
-                                    CurrReport.BREAK;
+                                    CurrReport.BREAK();
                             end;
                         }
                         dataitem(DisplayAsmInfo; Integer)
                         {
                             DataItemTableView = SORTING(Number);
-                            column(PostedAsmLineItemNo; BlanksForIndent + PostedAsmLine."No.")
+                            column(PostedAsmLineItemNo; BlanksForIndent() + PostedAsmLine."No.")
                             {
                             }
-                            column(PostedAsmLineDescription; BlanksForIndent + PostedAsmLine.Description)
+                            column(PostedAsmLineDescription; BlanksForIndent() + PostedAsmLine.Description)
                             {
                             }
                             column(PostedAsmLineQuantity; PostedAsmLine.Quantity)
@@ -426,12 +426,12 @@ report 50071 "DEL Sales - Shipment"
 
                             trigger OnAfterGetRecord()
                             var
-                                ItemTranslation: Record 30;
+                                ItemTranslation: Record "Item Translation";
                             begin
                                 IF Number = 1 THEN
-                                    PostedAsmLine.FINDSET
+                                    PostedAsmLine.FINDSET()
                                 ELSE
-                                    PostedAsmLine.NEXT;
+                                    PostedAsmLine.NEXT();
 
                                 IF ItemTranslation.GET(PostedAsmLine."No.",
                                      PostedAsmLine."Variant Code",
@@ -443,9 +443,9 @@ report 50071 "DEL Sales - Shipment"
                             trigger OnPreDataItem()
                             begin
                                 IF NOT DisplayAssemblyInformation THEN
-                                    CurrReport.BREAK;
+                                    CurrReport.BREAK();
                                 IF NOT AsmHeaderExists THEN
-                                    CurrReport.BREAK;
+                                    CurrReport.BREAK();
 
                                 PostedAsmLine.SETRANGE("Document No.", PostedAsmHeader."No.");
                                 SETRANGE(Number, 1, PostedAsmLine.COUNT);
@@ -456,11 +456,11 @@ report 50071 "DEL Sales - Shipment"
                         begin
                             LinNo := "Line No.";
                             IF NOT ShowCorrectionLines AND Correction THEN
-                                CurrReport.SKIP;
+                                CurrReport.SKIP();
                             //DEL.SAZ
                             IF (("Sales Shipment Line".Type = "Sales Shipment Line".Type::Item) OR ("Sales Shipment Line".Type = "Sales Shipment Line".Type::"G/L Account"))
                               AND ("Sales Shipment Line".Quantity = 0) THEN
-                                CurrReport.SKIP;
+                                CurrReport.SKIP();
 
                             IF Item_Rec.GET("Sales Shipment Line"."No.") THEN;
                             //EDN DELsaz
@@ -490,7 +490,7 @@ report 50071 "DEL Sales - Shipment"
                             WHILE MoreLines AND (Description = '') AND ("No." = '') AND (Quantity = 0) DO
                                 MoreLines := NEXT(-1) <> 0;
                             IF NOT MoreLines THEN
-                                CurrReport.BREAK;
+                                CurrReport.BREAK();
                             SETRANGE("Line No.", 0, "Line No.");
 
                             NewPageLine := FALSE;
@@ -509,7 +509,7 @@ report 50071 "DEL Sales - Shipment"
                         trigger OnPreDataItem()
                         begin
                             IF NOT ShowCustAddr THEN
-                                CurrReport.BREAK;
+                                CurrReport.BREAK();
                         end;
                     }
                     dataitem(ItemTrackingLine; Integer)
@@ -563,12 +563,12 @@ report 50071 "DEL Sales - Shipment"
                         trigger OnAfterGetRecord()
                         begin
                             IF Number = 1 THEN
-                                TrackingSpecBuffer.FINDSET
+                                TrackingSpecBuffer.FINDSET()
                             ELSE
-                                TrackingSpecBuffer.NEXT;
+                                TrackingSpecBuffer.NEXT();
 
                             IF NOT ShowCorrectionLines AND TrackingSpecBuffer.Correction THEN
-                                CurrReport.SKIP;
+                                CurrReport.SKIP();
                             IF TrackingSpecBuffer.Correction THEN
                                 TrackingSpecBuffer."Quantity (Base)" := -TrackingSpecBuffer."Quantity (Base)";
 
@@ -591,8 +591,8 @@ report 50071 "DEL Sales - Shipment"
                         trigger OnPreDataItem()
                         begin
                             IF TrackingSpecCount = 0 THEN
-                                CurrReport.BREAK;
-                            CurrReport.NEWPAGE;
+                                CurrReport.BREAK();
+                            CurrReport.NEWPAGE();
                             SETRANGE(Number, 1, TrackingSpecCount);
                             TrackingSpecBuffer.SETCURRENTKEY("Source ID", "Source Type", "Source Subtype", "Source Batch Name",
                               "Source Prod. Order Line", "Source Ref. No.");
@@ -613,7 +613,7 @@ report 50071 "DEL Sales - Shipment"
                 trigger OnAfterGetRecord()
                 begin
                     IF Number > 1 THEN BEGIN
-                        CopyText := FormatDocument.GetCOPYText;
+                        CopyText := FormatDocument.GetCOPYText();
                         OutputNo += 1;
                     END;
                     CurrReport.PAGENO := 1;
@@ -639,8 +639,8 @@ report 50071 "DEL Sales - Shipment"
             begin
                 CurrReport.LANGUAGE := Language.GetLanguageID("Language Code");
 
-                PrepareHeader;
-                PrepareFooter;
+                PrepareHeader();
+                PrepareFooter();
 
                 FormatAddressFields("Sales Shipment Header");
                 FormatDocumentFields("Sales Shipment Header");
@@ -654,7 +654,7 @@ report 50071 "DEL Sales - Shipment"
                           "Campaign No.", "Posting Description", '');
                 //DEL.SAZ 14.03.19
                 ShiptoAddress_Rec.SETRANGE(Code, "Sales Shipment Header"."Ship-to Code");
-                IF ShiptoAddress_Rec.FINDFIRST THEN BEGIN
+                IF ShiptoAddress_Rec.FINDFIRST() THEN BEGIN
                     BilAdr[1] := ShiptoAddress_Rec.Name;
                     BilAdr[2] := ShiptoAddress_Rec."Name 2";
                     BilAdr[3] := ShiptoAddress_Rec.Address;
@@ -721,7 +721,7 @@ report 50071 "DEL Sales - Shipment"
 
         trigger OnOpenPage()
         begin
-            InitLogInteraction;
+            InitLogInteraction();
             LogInteractionEnable := LogInteraction;
         end;
     }
@@ -732,113 +732,104 @@ report 50071 "DEL Sales - Shipment"
 
     trigger OnInitReport()
     begin
-        CompanyInfo.GET;
-        SalesSetup.GET;
+        CompanyInfo.GET();
+        SalesSetup.GET();
         FormatDocument.SetLogoPosition(SalesSetup."Logo Position on Documents", CompanyInfo1, CompanyInfo2, CompanyInfo3);
     end;
 
     trigger OnPreReport()
     begin
         IF NOT CurrReport.USEREQUESTPAGE THEN
-            InitLogInteraction;
+            InitLogInteraction();
         AsmHeaderExists := FALSE;
     end;
 
     var
-        Text002: Label 'Sales - Shipment %1', Comment = '%1 = Document No.';
-        SalesPurchPerson: Record 13;
-        CompanyInfo: Record 79;
-        CompanyInfo1: Record 79;
-        CompanyInfo2: Record 79;
-        CompanyInfo3: Record 79;
-        SalesSetup: Record 311;
-        DimSetEntry1: Record 480;
-        DimSetEntry2: Record 480;
-        Language: Record 8;
-        TrackingSpecBuffer: Record 336 temporary;
-        PostedAsmHeader: Record 910;
-        PostedAsmLine: Record 911;
-        RespCenter: Record 5714;
-        ItemTrackingAppendix: Report 6521;
-        FormatAddr: Codeunit 365;
-        FormatDocument: Codeunit 368;
-        SegManagement: Codeunit 5051;
-        ItemTrackingDocMgt: Codeunit 6503;
-        CustAddr: array[8] of Text[50];
-        ShipToAddr: array[8] of Text[50];
-        CompanyAddr: array[8] of Text[50];
-        SalesPersonText: Text[20];
-        ReferenceText: Text[80];
-        MoreLines: Boolean;
-        NoOfCopies: Integer;
-        OutputNo: Integer;
-        NoOfLoops: Integer;
-        TrackingSpecCount: Integer;
-        OldRefNo: Integer;
-        OldNo: Code[20];
-        CopyText: Text[30];
-        ShowCustAddr: Boolean;
-        DimText: Text[120];
-        OldDimText: Text[75];
-        ShowInternalInfo: Boolean;
+        Language: Record Language;
+        SalesPurchPerson: Record "Salesperson/Purchaser";
+        Item_Rec: Record Item;
+        CompanyInfo: Record "Company Information";
+        CompanyInfo1: Record "Company Information";
+        CompanyInfo2: Record "Company Information";
+        CompanyInfo3: Record "Company Information";
+        ShiptoAddress_Rec: Record "Ship-to Address";
+        SalesSetup: Record "Sales & Receivables Setup";
+        TrackingSpecBuffer: Record "Tracking Specification" temporary;
+        DimSetEntry1: Record "Dimension Set Entry";
+        DimSetEntry2: Record "Dimension Set Entry";
+        PostedAsmHeader: Record "Posted Assembly Header";
+        PostedAsmLine: Record "Posted Assembly Line";
+        RespCenter: Record "Responsibility Center";
+        ItemTrackingAppendix: Report "Item Tracking Appendix";
+        FormatAddr: Codeunit "Format Address";
+        FormatDocument: Codeunit "Format Document";
+        SegManagement: Codeunit SegManagement;
+        ItemTrackingDocMgt: Codeunit "Item Tracking Doc. Management";
+        AsmHeaderExists: Boolean;
         Continue: Boolean;
+        DisplayAssemblyInformation: Boolean;
         LogInteraction: Boolean;
-        ShowCorrectionLines: Boolean;
-        ShowLotSN: Boolean;
-        ShowTotal: Boolean;
-        ShowGroup: Boolean;
-        TotalQty: Decimal;
         [InDataSet]
         LogInteractionEnable: Boolean;
-        DisplayAssemblyInformation: Boolean;
-        AsmHeaderExists: Boolean;
+        MoreLines: Boolean;
+        NewPageLine: Boolean;
+        ShowCorrectionLines: Boolean;
+        ShowCustAddr: Boolean;
+        ShowGroup: Boolean;
+        ShowInternalInfo: Boolean;
+        ShowLotSN: Boolean;
+        ShowTotal: Boolean;
+        OldNo: Code[20];
+        TotalQty: Decimal;
+        InnerGroupNo: Integer;
         LinNo: Integer;
-        ItemTrackingAppendixCaptionLbl: Label 'Item Tracking - Appendix';
-        PhoneNoCaptionLbl: Label 'Phone No.';
-        VATRegNoCaptionLbl: Label 'VAT Reg. No.';
-        GiroNoCaptionLbl: Label 'Giro No.';
-        BankNameCaptionLbl: Label 'Bank';
-        BankAccNoCaptionLbl: Label 'Account No.';
-        ShipmentNoCaptionLbl: Label 'Shipment No.';
-        ShipmentDateCaptionLbl: Label 'Shipment Date';
-        HomePageCaptionLbl: Label 'Home Page';
-        EmailCaptionLbl: Label 'Email';
-        DocumentDateCaptionLbl: Label 'Document Date';
-        HeaderDimensionsCaptionLbl: Label 'Header Dimensions';
-        LineDimensionsCaptionLbl: Label 'Line Dimensions';
-        BilltoAddressCaptionLbl: Label 'Bill-to Address';
-        QuantityCaptionLbl: Label 'Quantity';
-        SerialNoCaptionLbl: Label 'Serial No.';
-        LotNoCaptionLbl: Label 'Lot No.';
+        NewPageGroupNo: Integer;
+        NoOfCopies: Integer;
+        NoOfLoops: Integer;
+        OldRefNo: Integer;
+        OutputNo: Integer;
+        TotalPageNo: Integer;
+        TrackingSpecCount: Integer;
+        CaptionAffaire: Label 'ACO (affaire)';
+        CompanyInfoRegNoCaptionLbl: Label 'Reg. No.';
+        CustomerNoCaptionLbl: Label 'Customer No.';
         DescriptionCaptionLbl: Label 'Description';
-        NoCaptionLbl: Label 'No.';
-        HeaderLabel: array[20] of Text[30];
-        HeaderTxt: array[20] of Text[120];
-        FooterLabel: array[20] of Text[30];
-        FooterTxt: array[20] of Text[120];
-        ML_SalesPerson: Label 'Salesperson';
-        ML_Reference: Label 'Reference';
-        ML_PmtTerms: Label 'Payment Terms';
+        DocumentDateCaptionLbl: Label 'Document Date';
+        EmailCaptionLbl: Label 'Email';
+        HeaderDimensionsCaptionLbl: Label 'Header Dimensions';
+        HomePageCaptionLbl: Label 'Home Page';
+        ItemTrackingAppendixCaptionLbl: Label 'Item Tracking - Appendix';
+        LineDimensionsCaptionLbl: Label 'Line Dimensions';
+        LotNoCaptionLbl: Label 'Lot No.';
         ML_ApplyToDoc: Label 'Refers to Document';
-        ML_ShipCond: Label 'Shipping Conditions';
-        ML_ShipAdr: Label 'Shipping Address';
         ML_InvAdr: Label 'Invoice Address';
         ML_OrderAdr: Label 'Order Address';
+        ML_PmtTerms: Label 'Payment Terms';
+        ML_Reference: Label 'Reference';
+        ML_SalesPerson: Label 'Salesperson';
+        ML_ShipAdr: Label 'Shipping Address';
+        ML_ShipCond: Label 'Shipping Conditions';
         ML_ShipDate: Label 'Shipping Date';
-        TotalPageNo: Integer;
-        InnerGroupNo: Integer;
-        HiddenHeader: Integer;
-        ShowNumber: Boolean;
-        HiddenFooter: Integer;
-        CustomerNoCaptionLbl: Label 'Customer No.';
-        CompanyInfoRegNoCaptionLbl: Label 'Reg. No.';
-        CaptionAffaire: Label 'ACO (affaire)';
-        NewPageGroupNo: Integer;
-        NewPageLine: Boolean;
+        NoCaptionLbl: Label 'No.';
+        PhoneNoCaptionLbl: Label 'Phone No.';
+        QuantityCaptionLbl: Label 'Quantity';
+        SerialNoCaptionLbl: Label 'Serial No.';
+        Text002: Label 'Sales - Shipment %1', Comment = '%1 = Document No.';
+        VATRegNoCaptionLbl: Label 'VAT Reg. No.';
         BilAdr: array[5] of Text;
-        ShiptoAddress_Rec: Record 222;
         BilAdr2: array[5] of Text;
-        Item_Rec: Record 27;
+        SalesPersonText: Text[20];
+        CopyText: Text[30];
+        FooterLabel: array[20] of Text[30];
+        HeaderLabel: array[20] of Text[30];
+        CompanyAddr: array[8] of Text[50];
+        CustAddr: array[8] of Text[50];
+        ShipToAddr: array[8] of Text[50];
+        OldDimText: Text[75];
+        ReferenceText: Text[80];
+        DimText: Text[120];
+        FooterTxt: array[20] of Text[120];
+        HeaderTxt: array[20] of Text[120];
 
 
     procedure InitLogInteraction()
@@ -857,24 +848,22 @@ report 50071 "DEL Sales - Shipment"
         DisplayAssemblyInformation := DisplayAsmInfo;
     end;
 
-    local procedure FormatAddressFields(SalesShipmentHeader: Record 110)
+    local procedure FormatAddressFields(SalesShipmentHeader: Record "Sales Shipment Header")
     begin
         FormatAddr.GetCompanyAddr(SalesShipmentHeader."Responsibility Center", RespCenter, CompanyInfo, CompanyAddr);
         FormatAddr.SalesShptShipTo(ShipToAddr, SalesShipmentHeader);
         ShowCustAddr := FormatAddr.SalesShptBillTo(CustAddr, ShipToAddr, SalesShipmentHeader);
     end;
 
-    local procedure FormatDocumentFields(SalesShipmentHeader: Record 110)
+    local procedure FormatDocumentFields(SalesShipmentHeader: Record "Sales Shipment Header")
     begin
-        WITH SalesShipmentHeader DO BEGIN
-            FormatDocument.SetSalesPerson(SalesPurchPerson, "Salesperson Code", SalesPersonText);
-            ReferenceText := FormatDocument.SetText("Your Reference" <> '', FIELDCAPTION("Your Reference"));
-        END;
+        FormatDocument.SetSalesPerson(SalesPurchPerson, SalesShipmentHeader."Salesperson Code", SalesPersonText);
+        ReferenceText := FormatDocument.SetText(SalesShipmentHeader."Your Reference" <> '', SalesShipmentHeader.FIELDCAPTION("Your Reference"));
     end;
 
     local procedure GetUnitOfMeasureDescr(UOMCode: Code[10]): Text[10]
     var
-        UnitOfMeasure: Record 204;
+        UnitOfMeasure: Record "Unit of Measure";
     begin
         IF NOT UnitOfMeasure.GET(UOMCode) THEN
             EXIT(UOMCode);
@@ -893,84 +882,78 @@ report 50071 "DEL Sales - Shipment"
         CLEAR(HeaderLabel);
         CLEAR(HeaderTxt);
 
-        WITH "Sales Shipment Header" DO BEGIN
-            FormatAddr.SalesShptShipTo(CustAddr, "Sales Shipment Header");
+        FormatAddr.SalesShptShipTo(CustAddr, "Sales Shipment Header");
 
-            IF SalesPurchPerson.GET("Salesperson Code") THEN BEGIN
-                HeaderLabel[2] := ML_SalesPerson;
-                HeaderTxt[2] := SalesPurchPerson.Name;
-            END;
-
-            IF "Your Reference" <> '' THEN BEGIN
-                HeaderLabel[3] := ML_Reference;
-                HeaderTxt[3] := "Your Reference";
-            END;
-
-            COMPRESSARRAY(HeaderLabel);
-            COMPRESSARRAY(HeaderTxt);
-
-            // To filter rounding line
-            // Cust.GET("Bill-to Customer No.");
-            // CustPostGrp.GET("Customer Posting Group");
-
+        IF SalesPurchPerson.GET("Sales Shipment Header"."Salesperson Code") THEN BEGIN
+            HeaderLabel[2] := ML_SalesPerson;
+            HeaderTxt[2] := SalesPurchPerson.Name;
         END;
+
+        IF "Sales Shipment Header"."Your Reference" <> '' THEN BEGIN
+            HeaderLabel[3] := ML_Reference;
+            HeaderTxt[3] := "Sales Shipment Header"."Your Reference";
+        END;
+
+        COMPRESSARRAY(HeaderLabel);
+        COMPRESSARRAY(HeaderTxt);
+        // To filter rounding line
+        // Cust.GET("Bill-to Customer No.");
+        // CustPostGrp.GET("Customer Posting Group");
     end;
 
 
     procedure PrepareFooter()
     var
-        PmtMethod: Record 3;
-        ShipMethod: Record 10;
+        PmtMethod: Record "Payment Terms";
+        ShipMethod: Record "Shipment Method";
     begin
         CLEAR(FooterLabel);
         CLEAR(FooterTxt);
 
-        WITH "Sales Shipment Header" DO BEGIN
-            IF PmtMethod.GET("Payment Terms Code") THEN BEGIN
-                FooterLabel[1] := ML_PmtTerms;
-                PmtMethod.TranslateDescription(PmtMethod, "Language Code");
-                FooterTxt[1] := PmtMethod.Description;
-            END;
-
-            // Application no for credit memos
-            IF "Applies-to Doc. No." <> '' THEN BEGIN
-                FooterLabel[2] := ML_ApplyToDoc;
-                FooterTxt[2] := FORMAT("Applies-to Doc. Type") + ' ' + "Applies-to Doc. No.";
-            END;
-
-            // Shipping Conditions
-            IF ShipMethod.GET("Shipment Method Code") THEN BEGIN
-                FooterLabel[3] := ML_ShipCond;
-                ShipMethod.TranslateDescription(ShipMethod, "Language Code");
-                FooterTxt[3] := ShipMethod.Description;
-            END;
-
-            // Shipping Address
-            IF "Ship-to Code" <> '' THEN BEGIN
-                FooterLabel[4] := ML_ShipAdr;
-                FooterTxt[4] := "Ship-to Name" + ' ' + "Ship-to City";
-            END;
-
-            // Invoice and Order Address
-            IF "Sell-to Customer No." <> "Bill-to Customer No." THEN BEGIN
-                FooterLabel[5] := ML_InvAdr;
-                FooterTxt[5] := "Bill-to Name" + ', ' + "Bill-to City";
-                FooterLabel[6] := ML_OrderAdr;
-                FooterTxt[6] := "Sell-to Customer Name" + ', ' + "Sell-to City";
-            END;
-
-            // Shipping Date if <> Document Date
-            IF ("Shipment Date" <> "Document Date") AND ("Shipment Date" <> 0D) THEN BEGIN
-                FooterLabel[7] := ML_ShipDate;
-                FooterTxt[7] := FORMAT("Shipment Date", 0, 4);
-            END;
-
-            TotalPageNo += 1;
-            InnerGroupNo := 1;
-
-            COMPRESSARRAY(FooterLabel);
-            COMPRESSARRAY(FooterTxt);
+        IF PmtMethod.GET("Sales Shipment Header"."Payment Terms Code") THEN BEGIN
+            FooterLabel[1] := ML_PmtTerms;
+            PmtMethod.TranslateDescription(PmtMethod, "Sales Shipment Header"."Language Code");
+            FooterTxt[1] := PmtMethod.Description;
         END;
+
+        // Application no for credit memos
+        IF "Sales Shipment Header"."Applies-to Doc. No." <> '' THEN BEGIN
+            FooterLabel[2] := ML_ApplyToDoc;
+            FooterTxt[2] := FORMAT("Sales Shipment Header"."Applies-to Doc. Type") + ' ' + "Sales Shipment Header"."Applies-to Doc. No.";
+        END;
+
+        // Shipping Conditions
+        IF ShipMethod.GET("Sales Shipment Header"."Shipment Method Code") THEN BEGIN
+            FooterLabel[3] := ML_ShipCond;
+            ShipMethod.TranslateDescription(ShipMethod, "Sales Shipment Header"."Language Code");
+            FooterTxt[3] := ShipMethod.Description;
+        END;
+
+        // Shipping Address
+        IF "Sales Shipment Header"."Ship-to Code" <> '' THEN BEGIN
+            FooterLabel[4] := ML_ShipAdr;
+            FooterTxt[4] := "Sales Shipment Header"."Ship-to Name" + ' ' + "Sales Shipment Header"."Ship-to City";
+        END;
+
+        // Invoice and Order Address
+        IF "Sales Shipment Header"."Sell-to Customer No." <> "Sales Shipment Header"."Bill-to Customer No." THEN BEGIN
+            FooterLabel[5] := ML_InvAdr;
+            FooterTxt[5] := "Sales Shipment Header"."Bill-to Name" + ', ' + "Sales Shipment Header"."Bill-to City";
+            FooterLabel[6] := ML_OrderAdr;
+            FooterTxt[6] := "Sales Shipment Header"."Sell-to Customer Name" + ', ' + "Sales Shipment Header"."Sell-to City";
+        END;
+
+        // Shipping Date if <> Document Date
+        IF ("Sales Shipment Header"."Shipment Date" <> "Sales Shipment Header"."Document Date") AND ("Sales Shipment Header"."Shipment Date" <> 0D) THEN BEGIN
+            FooterLabel[7] := ML_ShipDate;
+            FooterTxt[7] := FORMAT("Sales Shipment Header"."Shipment Date", 0, 4);
+        END;
+
+        TotalPageNo += 1;
+        InnerGroupNo := 1;
+
+        COMPRESSARRAY(FooterLabel);
+        COMPRESSARRAY(FooterTxt);
     end;
 }
 

@@ -93,7 +93,7 @@ page 50063 "DEL Notation vendor list"
                     Vendor_rec."DEL Qualified vendor" := FALSE;
                 END;
                 Vendor_rec.MODIFY(TRUE);
-            UNTIL Vendor_rec.NEXT = 0;
+            UNTIL Vendor_rec.NEXT() = 0;
     end;
 
     var

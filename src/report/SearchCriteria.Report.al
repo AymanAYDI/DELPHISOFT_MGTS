@@ -7,7 +7,7 @@ report 50054 "DEL Search Criteria"
     {
         dataitem("DEL JSON Requests log"; "DEL JSON Requests log")
         {
-            DataItemTableView = SORTING (Date);
+            DataItemTableView = SORTING(Date);
             RequestFilterFields = Date, Type, "Function", Error;
 
             trigger OnAfterGetRecord()
@@ -39,7 +39,7 @@ report 50054 "DEL Search Criteria"
 
             trigger OnPreDataItem()
             var
-                JSONRequestslog: Record 50073;
+                JSONRequestslog: Record "DEL JSON Requests log";
             begin
                 IF GETFILTER(Date) = '' THEN
                     DIALOG.ERROR(Text001, FIELDCAPTION(Date));
@@ -88,17 +88,16 @@ report 50054 "DEL Search Criteria"
     }
 
     var
-        CounterTotal: Integer;
+        Window: Dialog;
         Counter: Integer;
         CounterFiltered: Integer;
-        Window: Dialog;
+        CounterTotal: Integer;
         Text001: Label 'You must define a filter on the %1 field.';
         Text002: Label 'Filter Messages   #1########## @2@@@@@@@@@@@@@';
-        Text003: Label '%1 messages filtered / %2 Total Messages .';
-        TextToFilter: Text;
         Text004: Label 'Search';
+        TextToFilter: Text;
 
-   
+
     procedure GetResult(var _TextToFilter: Text)
     begin
         _TextToFilter := STRSUBSTNO('%1, %2', TextToFilter, "DEL JSON Requests log".GETFILTERS);

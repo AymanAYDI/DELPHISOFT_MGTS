@@ -46,19 +46,9 @@ page 50052 "DEL M Deal Sales Inv. linking"
 
                     trigger OnAction()
                     var
-                        dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
-                        ACOElement_Re_Loc: Record "DEL Element";
-                        element_Re_Loc: Record "DEL Element";
                         urm_Re_Loc: Record "DEL Update Request Manager";
-                        salesInvHeader_Re_Loc: Record "Sales Invoice Header";
                         salesInvoiceHeader_Re_Loc: Record "Sales Invoice Header";
-                        salesInvLine_Re_Loc: Record "Sales Invoice Line";
-                        element_ID_Loc: Code[20];
-                        last: Code[20];
                         requestID_Co_Loc: Code[20];
-                        salesInvID_Co_Loc: Code[20];
-                        shipmentID_Co_Loc: Code[20];
-                        add_Variant_Op_Loc: Option New,Existing;
                     begin
 
 
@@ -111,22 +101,11 @@ page 50052 "DEL M Deal Sales Inv. linking"
         Rec.FILTERGROUP(0);
     end;
 
-    var
-        //TODO //CODEUNIT
-        // Element_Cu: Codeunit 50021;
-        // Deal_Cu: Codeunit 50020;
-        // UpdateRequestManager_Cu: Codeunit 50032;
-        // DealShipment_Cu: Codeunit 50029;
-        // ShipmentConnection_Cu: Codeunit 50027;
-        // Position_CU: Codeunit 50022;
-        Text19022230: Label 'M A N U A L   L I N K I N G';
-
 
     procedure ChangeCodeAchat_FNC()
     var
-        PostedLine_Re_Loc: Record 480;   //  changement du table 350 --> 480
+        PostedLine_Re_Loc: Record "Dimension Set Entry";   //  changement du table 350 --> 480
         ACOConnection_Rec_Loc: Record "DEL ACO Connection";
-        DealShipment_Rec_Loc: Record "DEL Deal Shipment";
         SalesInvoiceHeader_Re_Loc: Record "Sales Invoice Header";
         SalesInvoiceLine_Re_Loc: Record "Sales Invoice Line";
         NewCodeAchatNo_Co_Par: Code[20];

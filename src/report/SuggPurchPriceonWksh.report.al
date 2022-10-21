@@ -41,7 +41,7 @@ report 50010 "DEL Sugg Purch Price on Wksh."
                     PurchPriceWksh."Unit of Measure Code" := ToUnitOfMeasure.Code;
                     IF NOT (PurchPriceWksh."Unit of Measure Code" IN ['', Item."Base Unit of Measure"]) THEN
                         IF NOT ItemUnitOfMeasure.GET("Item No.", PurchPriceWksh."Unit of Measure Code") THEN
-                            CurrReport.SKIP;
+                            CurrReport.SKIP();
                     PurchPriceWksh."New Unit Price" :=
                       PurchPriceWksh."New Unit Price" *
                       UOMMgt.GetQtyPerUnitOfMeasure(Item, PurchPriceWksh."Unit of Measure Code") /
@@ -70,20 +70,20 @@ report 50010 "DEL Sugg Purch Price on Wksh."
                         FromCurrency.TESTFIELD(Code);
                         PurchPriceWksh."New Unit Price" :=
                           CurrExchRate.ExchangeAmtFCYToLCY(
-                            WORKDATE, "Currency Code", PurchPriceWksh."New Unit Price",
+                            WORKDATE(), "Currency Code", PurchPriceWksh."New Unit Price",
                             CurrExchRate.ExchangeRate(
-                              WORKDATE, "Currency Code"));
+                              WORKDATE(), "Currency Code"));
                     END;
                     IF PurchPriceWksh."Currency Code" <> '' THEN
                         PurchPriceWksh."New Unit Price" :=
                           CurrExchRate.ExchangeAmtLCYToFCY(
-                            WORKDATE, PurchPriceWksh."Currency Code",
+                            WORKDATE(), PurchPriceWksh."Currency Code",
                             PurchPriceWksh."New Unit Price", CurrExchRate.ExchangeRate(
-                              WORKDATE, PurchPriceWksh."Currency Code"));
+                              WORKDATE(), PurchPriceWksh."Currency Code"));
                 END;
 
                 IF PurchPriceWksh."Currency Code" = '' THEN
-                    Currency2.InitRoundingPrecision
+                    Currency2.InitRoundingPrecision()
                 ELSE BEGIN
                     Currency2.GET(PurchPriceWksh."Currency Code");
                     Currency2.TESTFIELD("Unit-Amount Rounding Precision");
@@ -202,10 +202,10 @@ report 50010 "DEL Sugg Purch Price on Wksh."
 
         ToVend."No." := ToPurchCode;
         IF ToVend."No." <> '' THEN
-            ToVend.FIND
+            ToVend.FIND()
         ELSE BEGIN
-            IF NOT ToVend.FIND THEN
-                ToVend.INIT;
+            IF NOT ToVend.FIND() THEN
+                ToVend.INIT();
             ToPurchCode := ToVend."No.";
         END;
 
@@ -217,54 +217,40 @@ report 50010 "DEL Sugg Purch Price on Wksh."
         ReplaceEndingDate := ToEndDate <> 0D;
 
         IF ReplaceUnitOfMeasure AND (ToUnitOfMeasure.Code <> '') THEN
-            ToUnitOfMeasure.FIND;
+            ToUnitOfMeasure.FIND();
 
         RoundingMethod.SETRANGE(Code, RoundingMethod.Code);
     end;
 
     var
-        Vendor: Record Vendor;
-
-        SalesPrice2: Record "Sales Price";
-        SalesPriceWksh2: Record "Sales Price Worksheet";
-        SalesPriceWksh: Record "Sales Price Worksheet";
-        ToCust: Record Customer;
-        ToCustPriceGr: Record "Customer Price Group";
-        ToCampaign: Record Campaign;
-        ToUnitOfMeasure: Record "Unit of Measure";
-        ItemUnitOfMeasure: Record "Item Unit of Measure";
-        ToCurrency: Record Currency;
-        FromCurrency: Record Currency;
         Currency2: Record Currency;
+        FromCurrency: Record Currency;
+        ToCurrency: Record Currency;
         CurrExchRate: Record "Currency Exchange Rate";
-        RoundingMethod: Record "Rounding Method";
-        Item: Record Item;
-        PurchPrice2: Record "Purchase Price";
-        PurchPriceWksh2: Record "DEL Purchase Price Worksheet";
+        ToCustPriceGr: Record "Customer Price Group";
         PurchPriceWksh: Record "DEL Purchase Price Worksheet";
+        PurchPriceWksh2: Record "DEL Purchase Price Worksheet";
+        Item: Record Item;
+        ItemUnitOfMeasure: Record "Item Unit of Measure";
+        RoundingMethod: Record "Rounding Method";
+        ToUnitOfMeasure: Record "Unit of Measure";
         ToVend: Record Vendor;
 
         UOMMgt: Codeunit "Unit of Measure Management";
-        Window: Dialog;
-        PriceAlreadyExists: Boolean;
         CreateNewPrices: Boolean;
-        UnitPriceFactor: Decimal;
-        PriceLowerLimit: Decimal;
-        ToSalesType: Option Customer,"Customer Price Group","All Customers",Campaign;
-        ToSalesCode: Code[20];
-        ToStartDate: Date;
-        ToEndDate: Date;
-        ReplaceSalesCode: Boolean;
-        ReplaceUnitOfMeasure: Boolean;
+        PriceAlreadyExists: Boolean;
         ReplaceCurrency: Boolean;
-        ReplaceStartingDate: Boolean;
         ReplaceEndingDate: Boolean;
-        Text002: Label 'Purchase Code must be specified when copying from %1 to All Vendors.';
-        Text001: Label 'Processing items  #1##########';
-
-        "+++++++++500000": Integer;
-        ToPurchCode: Code[20];
         ReplacePurchCode: Boolean;
+        ReplaceStartingDate: Boolean;
+        ReplaceUnitOfMeasure: Boolean;
+        ToPurchCode: Code[20];
+        ToEndDate: Date;
+        ToStartDate: Date;
+        PriceLowerLimit: Decimal;
+        UnitPriceFactor: Decimal;
+        Window: Dialog;
+        Text001: Label 'Processing items  #1##########';
         ToPurchType: Option Vendor;
 
     procedure InitializeRequest(NewToPurchType: Option Vendor; NewToPurchCode: Code[20]; NewToStartDate: Date; NewToEndDate: Date; NewToCurrCode: Code[10]; NewToUOMCode: Code[10]; NewCreateNewPrices: Boolean)

@@ -43,7 +43,7 @@ pageextension 50011 "DEL PostedSalesShipments" extends "Posted Sales Shipments" 
                     NMfichier := 'DESADV_' + FORMAT(DATE2DMY(TODAY, 3)) + MM + DD + DELCHR(FORMAT(TIME), '=', ':') + '.xml';
                     ExportBL2.FILENAME(NMfichier);
                     ExportBL2.SETTABLEVIEW(SalesShptHeader);
-                    ExportBL2.RUN;
+                    ExportBL2.RUN();
                 end;
             }
         }
@@ -51,8 +51,8 @@ pageextension 50011 "DEL PostedSalesShipments" extends "Posted Sales Shipments" 
 
     var
         ExportBL2: XMLport "DEL Hyperion Export";
-        NMfichier: Text;
-        MM: Text;
         DD: Text;
+        MM: Text;
+        NMfichier: Text;
 }
 

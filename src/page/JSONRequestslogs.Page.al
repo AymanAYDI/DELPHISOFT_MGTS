@@ -138,7 +138,7 @@ page 50140 "DEL JSON Requests logs" //TODO
                 var
                     FilterMessage: Report "DEL Search Criteria";
                 begin
-                    FilterMessage.RUNMODAL;
+                    FilterMessage.RUNMODAL();
                     FilterMessage.GetResult(TextToFilter);
                     TextToFilter := STRSUBSTNO(Text001, TextToFilter);
 
@@ -149,7 +149,7 @@ page 50140 "DEL JSON Requests logs" //TODO
                         TextToFilter := '';
                     END;
 
-                    CurrPage.UPDATE;
+                    CurrPage.UPDATE();
                 end;
             }
             action("Init")
@@ -179,8 +179,8 @@ page 50140 "DEL JSON Requests logs" //TODO
     }
 
     var
+        Text001: Label 'WARNING ! You are filtered. Search criteria : %1.';
         [InDataSet]
         TextToFilter: Text;
-        Text001: Label 'WARNING ! You are filtered. Search criteria : %1.';
 }
 

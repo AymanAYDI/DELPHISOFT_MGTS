@@ -20,12 +20,12 @@ pageextension 50020 "DEL CustomerList" extends "Customer List" //22
         Customer: Record Customer;
 
         CustSalesLCY: array[4] of Decimal;
-        CustDateFilter: array[4] of Text[30];
         i: Integer;
+        Text001: Label 'Sales (LCY)';
         DateFilter1: Text;
         DateFilter2: Text;
         DateFilter3: Text;
-        Text001: Label 'Sales (LCY)';
+        CustDateFilter: array[4] of Text[30];
 
 
     trigger OnOpenpage()

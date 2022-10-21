@@ -30,7 +30,7 @@ xmlport 50013 "DEL Import ligne vente"
                         IF Article = '' THEN
                             IF ArtExt <> '' THEN BEGIN
                                 ItemCrossRef.SETRANGE("Reference No.", ArtExt);
-                                IF ItemCrossRef.FINDFIRST THEN
+                                IF ItemCrossRef.FINDFIRST() THEN
                                     //START T-00778
                                     REPEAT
                                         ItemCrossRef.CALCFIELDS(ItemCrossRef."DEL Sale blocked");
@@ -40,7 +40,7 @@ xmlport 50013 "DEL Import ligne vente"
                                             Article := ItemCrossRef."Item No.";
 
                                     //START T-00778
-                                    UNTIL (ItemCrossRef.NEXT = 0) OR (Article <> '');
+                                    UNTIL (ItemCrossRef.NEXT() = 0) OR (Article <> '');
                                 //STOP T-00778
                             END;
 
@@ -52,7 +52,7 @@ xmlport 50013 "DEL Import ligne vente"
 
                             SalesLine.SETFILTER("Document No.", DocCmd);
 
-                            IF SalesLine.FINDLAST THEN
+                            IF SalesLine.FINDLAST() THEN
                                 Num := SalesLine."Line No." + 10000
                             ELSE
                                 Num += 10000;
@@ -87,7 +87,7 @@ xmlport 50013 "DEL Import ligne vente"
                 begin
                     I += 1;
                     IF I = 1 THEN
-                        currXMLport.SKIP;
+                        currXMLport.SKIP();
                 end;
             }
 
@@ -131,12 +131,10 @@ xmlport 50013 "DEL Import ligne vente"
     end;
 
     var
-        Num: Integer;
-        SalesHeader: Record "Sales Header";
-        SaleHeaderP: Page "Sales Order";
-        DocCmd: Text;
-        SalesLine: Record "Sales Line";
         ItemCrossRef: Record "Item Reference";
+        SalesLine: Record "Sales Line";
         I: Integer;
+        Num: Integer;
+        DocCmd: Text;
 }
 

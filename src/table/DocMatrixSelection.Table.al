@@ -119,7 +119,7 @@ table 50071 "DEL DocMatrix Selection"
                     IF NOT "Save PDF" THEN BEGIN
                         "Save PDF" := TRUE;
                         IF "E-Mail From" = '' THEN
-                            "E-Mail From" := CheckEmailFromAddress;
+                            "E-Mail From" := CheckEmailFromAddress();
                     END;
             end;
         }
@@ -214,16 +214,10 @@ table 50071 "DEL DocMatrix Selection"
         // DocumentMatrixMgt: Codeunit 50015;
 
         boNotificationAlreadySent: Boolean;
-        Err001: Label 'Please enter the Document Matrix Setup first.';
-        Err002: Label 'You can not desactivate "Save PDF" if EMail or FTP is active, or if "Process Type" is "Automatic".';
         Err003: Label 'You can not delete the "E-Mail From" Address, if a E-Mail Address is entered. First you have to delete all the E-Mail Addresses.';
-        Err004: Label 'You can not activate "Print" if the "Process Type" is set to "Automatic"!';
         Err005: Label 'You can not "Post" documents of Type "%1".';
         Err006: Label 'You can select "Post = Yes" only for documents of Type "%1".';
         Err007: Label 'For documents of Type "%1" you have to select "Post = Yes", if you want to post it.';
-        Text001: Label 'The field "Save PDF" was set to TRUE to fit the Business Logic.';
-        Text002: Label 'The field "Process Type" might have changed to fit the Business Logic.';
-        Text003: Label 'Please check if you have to change the field "Usage".';
 
     local procedure EMailAddresExists(): Boolean
     begin

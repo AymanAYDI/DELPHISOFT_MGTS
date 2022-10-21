@@ -163,7 +163,7 @@ report 50019 "DEL Delete doc Sales/Pur"
     }
 
     var
-        DeleteVente: Boolean;
         DeleteAchat: Boolean;
+        DeleteVente: Boolean;
 }
 

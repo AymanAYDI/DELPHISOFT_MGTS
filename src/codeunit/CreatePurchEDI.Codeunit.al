@@ -11,8 +11,8 @@ codeunit 50019 "DEL Create Purch. EDI"
     end;
 
     var
-        Param: Option " ",CreateAndValidateReqWorksheet,CreateDeal;
         DocNo: Code[20];
+        Param: Option " ",CreateAndValidateReqWorksheet,CreateDeal;
 
 
     procedure SetParam(pParam: Option " ",CreateAndValidateReqWorksheet,CreateDeal; pDocNo: Code[20])
@@ -23,10 +23,10 @@ codeunit 50019 "DEL Create Purch. EDI"
 
     procedure CreateAndValidateReqWorksheet(DocNo: Code[20])
     var
-        RequisitionLine: Record "Requisition Line";
         GeneralSetup: Record "DEL General Setup";
-        GetSalesOrder: Report "Get Sales Orders";
+        RequisitionLine: Record "Requisition Line";
         PerformAction: Report "Carry Out Action Msg. - Req.";
+        GetSalesOrder: Report "DEL Get Sales Orders";
     begin
         GeneralSetup.GET();
         GeneralSetup.TESTFIELD("Worksheet Template Name");
@@ -61,8 +61,8 @@ codeunit 50019 "DEL Create Purch. EDI"
     var
         PurchaseLine: Record "Purchase Line";
         Deal_Cu: Codeunit "DEL Deal";
-        LastDocNo: Code[20];
         affaireNo_Co_Loc: Code[20];
+        LastDocNo: Code[20];
 
     begin
         LastDocNo := '';

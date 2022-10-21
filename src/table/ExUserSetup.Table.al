@@ -18,15 +18,11 @@ table 99205 "DEL Ex_User Setup"
             ValidateTableRelation = false;
 
             trigger OnLookup()
-            var
-                UserMgt: Codeunit "User Management";
             begin
                 //TODO UserMgt.LookupUserID("User ID");
             end;
 
             trigger OnValidate()
-            var
-                UserMgt: Codeunit "User Management";
             begin
                 //TODO UserMgt.ValidateUserID("User ID");
             end;

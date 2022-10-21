@@ -62,10 +62,5 @@ page 50021 "DEL Element"
     actions
     {
     }
-
-    var
-
-        Element_Cu: Codeunit "DEL Element";
-        Fee_Cu: Codeunit "DEL Fee";
 }
 

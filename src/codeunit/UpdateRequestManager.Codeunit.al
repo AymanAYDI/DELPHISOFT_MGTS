@@ -9,18 +9,18 @@ codeunit 50032 "DEL Update Request Manager"
     end;
 
     var
-        UpdateRequest_Re: Record "DEL Update Request Manager";
         Setup: Record "DEL General Setup";
-        NoSeriesMgt_Cu: Codeunit NoSeriesManagement;
+        UpdateRequest_Re: Record "DEL Update Request Manager";
         Deal_Cu: Codeunit "DEL Deal";
-        intProgressTotal: array[10] of Integer;
-        intProgressStep: array[10] of Integer;
-        intNextProgressStep: array[10] of Integer;
-        timProgress: array[10] of Time;
+        NoSeriesMgt_Cu: Codeunit NoSeriesManagement;
+        diaProgress: Array[10] of Dialog;
         interval: array[10] of Integer;
+        intNextProgressStep: array[10] of Integer;
         intProgress: Array[10] of Integer;
         intProgressI: Array[10] of Integer;
-        diaProgress: Array[10] of Dialog;
+        intProgressStep: array[10] of Integer;
+        intProgressTotal: array[10] of Integer;
+        timProgress: array[10] of Time;
 
 
     procedure FNC_Process_Requests(updateRequest_Re_Par: Record "DEL Update Request Manager"; deleteWhenUpdated: Boolean; UpdatePlanned_Bo_Par: Boolean; processSilently_Bo_Par: Boolean)
@@ -127,7 +127,6 @@ codeunit 50032 "DEL Update Request Manager"
     procedure FNC_Import_All()
     var
         deal_Re_Loc: Record "DEL Deal";
-        element_Re_Loc: Record "DEL Element";
         counter_Loc: Integer;
     begin
         /*

@@ -16,8 +16,8 @@ codeunit 50018 "DEL Create Purch. EDI Launcher"
 
     local procedure CreateReqWorkSheet()
     var
-        SalesHeader: Record "Sales Header";
         TypeOrderEDI: Record "DEL Type Order EDI";
+        SalesHeader: Record "Sales Header";
         CreatePurchEDI: Codeunit "DEL Create Purch. EDI";
     begin
         SalesHeader.SETRANGE("DEL To Create Purchase Order", TRUE);

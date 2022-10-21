@@ -15,60 +15,48 @@ codeunit 50053 "DEL D365FM PDF Email Send"
     end;
 
     var
-        //TODO  CduGSMTPMail: Codeunit 400;
-        BooGManualyRun: Boolean;
-        IntGLanguage: Integer;
-        TxtGObject: Text[250];
-        TxtGSender: Text[250];
-        TxtGCustEmail: Text[250];
-        TxtGCci: Text;
+
+        Email: Codeunit Email;
+        EmailMessage: Codeunit "Email Message"; //CduGSMTPMail: Codeunit 400;    
+        RecRefMaster: RecordRef;
+        NewPage: Boolean;
+        PrintPicture: Boolean;
         CodGLanguage: Code[20];
+        RemTermsCod: Code[20];
+        RenewalStdTextCode: Code[20];
+        EntryNo: Integer;
+        IntGLanguage: Integer;
+        RemLevelInt: Integer;
         OptGDocType: Option " ","Service Invoice","Service Credit Memo","Issued Reminder";
         Param: Text;
-        RecRefMaster: RecordRef;
-        RemTermsCod: Code[20];
-        RemLevelInt: Integer;
-        AttachmentInstream: InStream;
-        AttachmentOutStream: OutStream;
-        //TODO TempBlob: Record "99008535";
-        ServerAttachmentFilePath: Text;
-        RenewalStdTextCode: Code[20];
-        PrintPicture: Boolean;
-        EntryNo: Integer;
-        NewPage: Boolean;
+        TxtGCci: Text;
         TemplateMailString: Text[250];
+        TxtGCustEmail: Text[250];
+        TxtGObject: Text[250];
+        TxtGSender: Text[250];
 
 
     procedure FctLaunchExport(): Boolean
     var
-        Text001: Label 'Escompte pour paiement à réception : 0.3% par mois. ';
-        Text002: Label 'Conformément à l''article L441-6 du Code de Commerce, des pénalités de retard seront appliquées dès le jour suivant la date de règlement mentionnée sur la facture au taux directeur de la BCE + 10 points ainsi qu''une indemnité forfaitaire de 40€ pour frais de recouvrement. ';
-        Text003: Label 'Adresse de facturation ne doit pas être vide.';
-        Text004: Label 'Adresse de livraison de doit pas être vide.';
-        Text005: Label 'Adresse de commande ne doit pas être vide.';
-        ServiceInvoiceHeader: Record "Service Invoice Header";
+        LanguageTemplateMail: Record "DEL D365FM Mail Template";
         IssuedReminderHeader: Record "Issued Reminder Header";
-        RecLCompanyInfo: Record "Company Information";
-        RecLCust: Record Customer;
-        RefLRecordRef: RecordRef;
-        FldLFieldRef: FieldRef;
-        TxtLEmailBodyText: Text;
-        ToFile: Text;
-        OutSteam: OutStream;
-        //TODO  RecLBLOBRef: Record "99008535";
+        JobQueueEntry: Record "Job Queue Entry";
+        ServiceHeader: Record "Service Header";
+        ServiceHeader2: Record "Service Header";
+        ServiceInvoiceHeader: Record "Service Invoice Header";
+        RecLBLOBRef: Codeunit "Temp Blob";// it was a call for the record tempBlob which is removed now     
         Text006: Label 'E-mail is empty.';
         Text007: Label 'E-mail template to apply not found.';
         Text008: Label 'Sender is empty.';
-        LanguageTemplateMail: Record "DEL D365FM Mail Template";
-        ServiceHeader: Record "Service Header";
-        ServiceInvoiceHeader2: Record "Service Invoice Header";
-        IssuedReminderHeader2: Record "Issued Reminder Header";
-        ServiceHeader2: Record "Service Header";
-        JobQueueEntry: Record "Job Queue Entry";
+        ToFile: Text;
+        TxtLEmailBodyText: Text;
+        Tempblob: Codeunit "Temp Blob";
+        Instream: InStream;
+        OutStream: OutStream;
     begin
         RecRefMaster.SETRECFILTER();
 
-        CLEAR(CduGSMTPMail);
+        CLEAR(EmailMessage);
 
         IF NOT GetTemplateWithLanguage(RecRefMaster, OptGDocType, CodGLanguage, RecLBLOBRef, TxtGObject, TxtGSender, TxtGCci, RemTermsCod, RemLevelInt, LanguageTemplateMail) THEN
             ERROR(Text007);
@@ -78,21 +66,21 @@ codeunit 50053 "DEL D365FM PDF Email Send"
             5992:
                 BEGIN
                     RecRefMaster.SETTABLE(ServiceInvoiceHeader);
-                    ServiceInvoiceHeader.FINDSET;
+                    ServiceInvoiceHeader.FINDSET();
                     TxtGObject := STRSUBSTNO(TxtGObject, ServiceInvoiceHeader."No.");
                 END;
             // Service Header
             5900:
                 BEGIN
                     RecRefMaster.SETTABLE(ServiceHeader);
-                    ServiceHeader.FINDSET;
+                    ServiceHeader.FINDSET();
                     TxtGObject := STRSUBSTNO(TxtGObject, ServiceHeader."No.");
                 END;
             // Issue reminder
             297:
                 BEGIN
                     RecRefMaster.SETTABLE(IssuedReminderHeader);
-                    IssuedReminderHeader.FINDSET;
+                    IssuedReminderHeader.FINDSET();
                     TxtGObject := STRSUBSTNO(TxtGObject, IssuedReminderHeader."No.");
                 END;
         END;
@@ -104,11 +92,12 @@ codeunit 50053 "DEL D365FM PDF Email Send"
         IF TxtGCustEmail = '' THEN
             ERROR(Text006);
 
-        CduGSMTPMail.CreateMessage(COMPANYNAME, TxtGSender, '', TxtGObject, '', TRUE);
-        CduGSMTPMail.AddRecipients(TxtGCustEmail);
+        EmailMessage.Create('', TxtGObject, '', true);
+
+        EmailMessage.AddRecipient(Enum::"Email Recipient Type"::"To", TxtGCustEmail);
 
         IF TxtGCci <> '' THEN
-            CduGSMTPMail.AddBCC(TxtGCci);
+            EmailMessage.AddRecipient(Enum::"Email Recipient Type"::"Bcc", TxtGCci);
 
         CASE RecRefMaster.NUMBER OF
             // Service Invoice
@@ -117,48 +106,48 @@ codeunit 50053 "DEL D365FM PDF Email Send"
                     RecRefMaster.SETTABLE(ServiceInvoiceHeader);
 
                     LoadMailBody(RecLBLOBRef, TxtLEmailBodyText, RecRefMaster);
-                    CduGSMTPMail.AppendBody(TxtLEmailBodyText);
-                    ToFile := SaveReportAsPDF(RecRefMaster);
-                    CduGSMTPMail.AddAttachment(ToFile, 'Facture.pdf');
+                    EmailMessage.AppendToBody(TxtLEmailBodyText);
+                    //ToFile := SaveReportAsPDF(RecRefMaster); //TODO : on a essayé de la remplacer  
+                    REPORT.SAVEAS(RecRefMaster.RecordId.TableNo, '', ReportFormat::Pdf, OutStream, RecRefMaster); // TODO: Check
+                    Tempblob.CreateOutStream(OutStream);
+                    Tempblob.CreateInStream(Instream);
+                    EmailMessage.AddAttachment('Facture', '', Instream);
                     GetAttachmentDocuments(EntryNo);
-                    IF CduGSMTPMail.TrySend THEN BEGIN
-                        //ServiceInvoiceHeader2.GET(ServiceInvoiceHeader."No.");
-                        //ServiceInvoiceHeader2."DEL No. Send Email" +=1;
-                        //ServiceInvoiceHeader2.MODIFY;
-                    END;
+                    Email.Send(EmailMessage);
                 END;
             // Service header
             5900:
                 BEGIN
                     RecRefMaster.SETTABLE(ServiceHeader);
-
                     LoadMailBody(RecLBLOBRef, TxtLEmailBodyText, RecRefMaster);
-                    CduGSMTPMail.AppendBody(TxtLEmailBodyText);
-                    ToFile := SaveReportAsPDF(RecRefMaster);
-                    CduGSMTPMail.AddAttachment(ToFile, 'Facture.pdf');
+                    EmailMessage.AppendtoBody(TxtLEmailBodyText);
+                    //ToFile := SaveReportAsPDF(RecRefMaster); //TODO : on a essayé de la remplacer
+                    REPORT.SAVEAS(RecRefMaster.RecordId.TableNo, '', ReportFormat::Pdf, OutStream, RecRefMaster); // TODO: Check
+                    Tempblob.CreateOutStream(OutStream);
+                    Tempblob.CreateInStream(Instream);
+                    EmailMessage.AddAttachment('Facture', '', Instream);
                     GetAttachmentDocuments(EntryNo);
-                    IF CduGSMTPMail.TrySend THEN BEGIN
-                        //ServiceHeader2.GET(ServiceHeader."Document Type",ServiceHeader."No.");
-                        //ServiceHeader2."DEL No. Send Email" +=1;
-                        //ServiceHeader2."DEL Subscribtion Print Date" := TODAY;
-                        ServiceHeader2.MODIFY;
-                    END;
+                    Email.Send(EmailMessage);
+                    // IF Email.Send(EmailMessage) THEN BEGIN  //TODO :we replaced it 
+                    //     //ServiceHeader2.GET(ServiceHeader."Document Type",ServiceHeader."No.");
+                    //     //ServiceHeader2."DEL No. Send Email" +=1;
+                    //     //ServiceHeader2."DEL Subscribtion Print Date" := TODAY;
+                    //     ServiceHeader2.MODIFY();
+                    // END;
                 END;
             // Issue reminder
             297:
                 BEGIN
                     RecRefMaster.SETTABLE(IssuedReminderHeader);
-
                     LoadMailBody(RecLBLOBRef, TxtLEmailBodyText, RecRefMaster);
-                    CduGSMTPMail.AppendBody(TxtLEmailBodyText);
+                    EmailMessage.AppendToBody(TxtLEmailBodyText);
                     ToFile := SaveReportAsPDF(RecRefMaster);
-                    CduGSMTPMail.AddAttachment(ToFile, 'Relance.pdf');
+                    REPORT.SAVEAS(RecRefMaster.RecordId.TableNo, '', ReportFormat::Pdf, OutStream, RecRefMaster); // TODO: Check
+                    Tempblob.CreateOutStream(OutStream);
+                    Tempblob.CreateInStream(Instream);
+                    EmailMessage.AddAttachment('Relance.pdf', '', Instream);
                     GetAttachmentDocuments(EntryNo);
-                    IF CduGSMTPMail.TrySend THEN BEGIN
-                        //IssuedReminderHeader2.GET(IssuedReminderHeader."No.");
-                        //IssuedReminderHeader2."DEL No. Send Email" +=1;
-                        //IssuedReminderHeader2.MODIFY;
-                    END;
+                    Email.Send(EmailMessage);
                 END;
             //>>D365FM14.00.00.11
             472:
@@ -166,9 +155,9 @@ codeunit 50053 "DEL D365FM PDF Email Send"
                     RecRefMaster.SETTABLE(JobQueueEntry);
 
                     LoadMailBody(RecLBLOBRef, TxtLEmailBodyText, RecRefMaster);
-                    CduGSMTPMail.AppendBody(TxtLEmailBodyText);
+                    EmailMessage.AppendToBody(TxtLEmailBodyText);
 
-                    IF CduGSMTPMail.TrySend THEN BEGIN
+                    IF Email.Send(EmailMessage) THEN BEGIN
                     END;
                 END;
         END;
@@ -177,27 +166,25 @@ codeunit 50053 "DEL D365FM PDF Email Send"
     end;
 
 
-    procedure LoadMailBody(var RecPBLOBRef: Record TempBlob; var TxtPEmailBody: Text; var RecPRef: RecordRef)
+    procedure LoadMailBody(var RecPBLOBRef: Codeunit "Temp Blob"; var TxtPEmailBody: Text; var RecPRef: RecordRef)
     var
-        TxtLRepeatLine: Text[1024];
-        BooLStop: Boolean;
-        y: Integer;
-        InStreamTemplate: InStream;
-        TxtLTempPath: Text[1024];
-        InSReadChar: Text[1];
-        Body: Text[1024];
-        CharNo: Text[30];
-        I: Integer;
         BooLSkip: Boolean;
-        BooWrongEnd: Boolean;
-        z: Integer;
+        BooLStop: Boolean;
+        InStreamTemplate: InStream;
+        I: Integer;
+        y: Integer;
+        InSReadChar: Text[1];
+        CharNo: Text[30];
+        Body: Text[1024];
+        TxtLRepeatLine: Text[1024];
+        TxtLTempPath: Text[1024];
     begin
         CLEAR(TxtPEmailBody);
 
-
-        TxtLTempPath := TEMPORARYPATH + 'TempTemplate.HTM';
-        RecPBLOBRef.Blob.CREATEINSTREAM(InStreamTemplate, TEXTENCODING::Windows);
-
+        // TODO 
+        // TxtLTempPath := TEMPORARYPATH + 'TempTemplate.HTM';
+        //   RecPBLOBRef.Blob.CREATEINSTREAM(InStreamTemplate, TEXTENCODING::Windows);
+        RecPBLOBRef.CreateInStream(InStreamTemplate, TEXTENCODING::Windows);
         WHILE InStreamTemplate.READ(InSReadChar, 1) <> 0 DO BEGIN
             IF InSReadChar = '%' THEN BEGIN
                 TxtPEmailBody += Body;
@@ -287,24 +274,15 @@ codeunit 50053 "DEL D365FM PDF Email Send"
 
     procedure FillTemplate(var Body: Text[1024]; TextNo: Text[30]; TxtPSpecialText: Text[200]; IntPPageNo: Integer; var RecPRef: RecordRef)
     var
-        FldLRef: FieldRef;
-        FldLRef2: FieldRef;
-        IntLFieldNumber: Integer;
-        IntLFieldNumber2: Integer;
-        IntLOptionValue: Integer;
-        i: Integer;
-        TxtLOptionString: Text[1024];
-        TxtLMySelectedOptionString: Text[1024];
-        DecLValue1: Decimal;
-        DecLValue2: Decimal;
         RecLActiveSession: Record "Active Session";
         RecLCompanyInfo: Record "Company Information";
-        ServiceInvoiceHeader: Record "Service Invoice Header";
         IssuedReminderHeader: Record "Issued Reminder Header";
+        JobQueueEntry: Record "Job Queue Entry";
+        ServiceHeader: Record "Service Header";
+        ServiceInvoiceHeader: Record "Service Invoice Header";
         DocNo: Code[20];
         PostingDate: Date;
-        ServiceHeader: Record "Service Header";
-        JobQueueEntry: Record "Job Queue Entry";
+        IntLFieldNumber: Integer;
     begin
         IF TextNo = '' THEN
             EXIT;
@@ -313,28 +291,28 @@ codeunit 50053 "DEL D365FM PDF Email Send"
             5992:
                 BEGIN
                     RecPRef.SETTABLE(ServiceInvoiceHeader);
-                    ServiceInvoiceHeader.FINDSET;
+                    ServiceInvoiceHeader.FINDSET();
                     DocNo := ServiceInvoiceHeader."No.";
                     PostingDate := ServiceInvoiceHeader."Posting Date";
                 END;
             5900:
                 BEGIN
                     RecPRef.SETTABLE(ServiceHeader);
-                    ServiceHeader.FINDSET;
+                    ServiceHeader.FINDSET();
                     DocNo := ServiceHeader."No.";
                     PostingDate := ServiceHeader."Posting Date";
                 END;
             297:
                 BEGIN
                     RecPRef.SETTABLE(IssuedReminderHeader);
-                    IssuedReminderHeader.FINDSET;
+                    IssuedReminderHeader.FINDSET();
                     DocNo := IssuedReminderHeader."No.";
                     PostingDate := IssuedReminderHeader."Posting Date";
                 END;
             472:
                 BEGIN
                     RecPRef.SETTABLE(JobQueueEntry);
-                    JobQueueEntry.FINDSET;
+                    JobQueueEntry.FINDSET();
                 END;
         END;
 
@@ -347,14 +325,14 @@ codeunit 50053 "DEL D365FM PDF Email Send"
                     BEGIN
                         RecLActiveSession.SETRANGE("Server Instance ID", SERVICEINSTANCEID());
                         RecLActiveSession.SETRANGE("Session ID", SESSIONID());
-                        RecLActiveSession.FINDFIRST;
+                        RecLActiveSession.FINDFIRST();
                         Body := STRSUBSTNO(Body, ConvertString(RecLActiveSession."Server Computer Name"));
                     END;
                 200000004:
                     BEGIN
                         RecLActiveSession.SETRANGE("Server Instance ID", SERVICEINSTANCEID());
                         RecLActiveSession.SETRANGE("Session ID", SESSIONID());
-                        RecLActiveSession.FINDFIRST;
+                        RecLActiveSession.FINDFIRST();
                         Body := STRSUBSTNO(Body, ConvertString(RecLActiveSession."Database Name"));
                     END;
                 200000005:
@@ -367,7 +345,7 @@ codeunit 50053 "DEL D365FM PDF Email Send"
                     Body := STRSUBSTNO(Body, FORMAT(PostingDate));
                 300000001:
                     BEGIN
-                        RecLCompanyInfo.GET;
+                        RecLCompanyInfo.GET();
                         Body := STRSUBSTNO(Body, ConvertString(RecLCompanyInfo.City));
                     END;
                 //>>D365FM14.00.00.11
@@ -427,14 +405,7 @@ codeunit 50053 "DEL D365FM PDF Email Send"
             EXIT(IntGLanguage);
     end;
 
-    local procedure SaveReportAsPDF(var RecPRef: RecordRef): Text
-    var
-        FileManagement: Codeunit "File Management";
-        ServerSaveAsPdfFailedErr: Label 'Impossible d''ouvrir le document car il est vide ou ne peut pas être créé.';
-        ServiceInvoiceHeader: Record "Service Invoice Header";
-        IssuedReminderHeader: Record "Issued Reminder Header";
-        ServiceHeader: Record "Service Header";
-        ReportSelection: Record "Report Selections";
+    local procedure SaveReportAsPDF(var RecPRef: RecordRef): Text //TODO: procedure vide donc on a essayé de la remplacer 
     begin
     end;
 
@@ -453,50 +424,60 @@ codeunit 50053 "DEL D365FM PDF Email Send"
     end;
 
 
-    procedure GetTemplateWithLanguage(var RecPRef: RecordRef; OptPDocumentType: Option " ","Service Invoice","Service Credit Memo","Issued Reminder","Service Header"; CodPLanguage: Code[10]; var RecPBLOBRef: Record "99008535"; var TxtPObject: Text; var TxtPSender: Text; var TxtPCCI: Text; "Code": Code[20]; Level: Integer; var LanguageTemplateMail: Record "DEL D365FM Mail Template"): Boolean
+    procedure GetTemplateWithLanguage(var RecPRef: RecordRef; OptPDocumentType: Option " ","Service Invoice","Service Credit Memo","Issued Reminder","Service Header"; CodPLanguage: Code[10]; var RecPBLOBRef: Codeunit "Temp Blob"; var TxtPObject: Text; var TxtPSender: Text; var TxtPCCI: Text; "Code": Code[20]; Level: Integer; var LanguageTemplateMail: Record "DEL D365FM Mail Template"): Boolean
+    var
+        Instream: InStream;
+        OutStream: OutStream;
     begin
         CASE RecPRef.NUMBER OF
             5992:
                 BEGIN
                     LanguageTemplateMail.SETRANGE("Document Type", OptPDocumentType);
                     LanguageTemplateMail.SETRANGE("Language Code", CodPLanguage);
-                    IF LanguageTemplateMail.FINDFIRST THEN BEGIN
+                    IF LanguageTemplateMail.FINDFIRST() THEN BEGIN
                         LanguageTemplateMail.CALCFIELDS("Template mail");
-                        RecPBLOBRef.Blob := LanguageTemplateMail."Template mail";
+                        LanguageTemplateMail."Template mail".CreateInStream(Instream);
+                        CopyStream(OutStream, Instream);
+                        RecPBLOBRef.CreateOutStream(OutStream);
                         TxtPObject := LanguageTemplateMail.Title;
                         TxtPSender := LanguageTemplateMail."Sender Address";
                         TxtPCCI := LanguageTemplateMail.Cci;
                     END ELSE BEGIN
                         LanguageTemplateMail.SETRANGE("Language Code");
                         LanguageTemplateMail.SETRANGE(Default, TRUE);
-                        IF NOT LanguageTemplateMail.FINDFIRST THEN
+                        IF NOT LanguageTemplateMail.FINDFIRST() THEN
                             EXIT(FALSE);
                         LanguageTemplateMail.CALCFIELDS("Template mail");
-                        RecPBLOBRef.Blob := LanguageTemplateMail."Template mail";
+                        LanguageTemplateMail."Template mail".CreateInStream(Instream);
+                        CopyStream(OutStream, Instream);
+                        RecPBLOBRef.CreateOutStream(OutStream);
                         TxtPObject := LanguageTemplateMail.Title;
                         TxtPSender := LanguageTemplateMail."Sender Address";
                         TxtPCCI := LanguageTemplateMail.Cci;
                     END;
-
                     EXIT(TRUE);
                 END;
             5900:
                 BEGIN
                     LanguageTemplateMail.SETRANGE("Document Type", OptPDocumentType);
                     LanguageTemplateMail.SETRANGE("Language Code", CodPLanguage);
-                    IF LanguageTemplateMail.FINDFIRST THEN BEGIN
+                    IF LanguageTemplateMail.FINDFIRST() THEN BEGIN
                         LanguageTemplateMail.CALCFIELDS("Template mail");
-                        RecPBLOBRef.Blob := LanguageTemplateMail."Template mail";
+                        LanguageTemplateMail."Template mail".CreateInStream(Instream);
+                        CopyStream(OutStream, Instream);
+                        RecPBLOBRef.CreateOutStream(OutStream);
                         TxtPObject := LanguageTemplateMail.Title;
                         TxtPSender := LanguageTemplateMail."Sender Address";
                         TxtPCCI := LanguageTemplateMail.Cci;
                     END ELSE BEGIN
                         LanguageTemplateMail.SETRANGE("Language Code");
                         LanguageTemplateMail.SETRANGE(Default, TRUE);
-                        IF NOT LanguageTemplateMail.FINDFIRST THEN
+                        IF NOT LanguageTemplateMail.FINDFIRST() THEN
                             EXIT(FALSE);
                         LanguageTemplateMail.CALCFIELDS("Template mail");
-                        RecPBLOBRef.Blob := LanguageTemplateMail."Template mail";
+                        LanguageTemplateMail."Template mail".CreateInStream(Instream);
+                        CopyStream(OutStream, Instream);
+                        RecPBLOBRef.CreateOutStream(OutStream);
                         TxtPObject := LanguageTemplateMail.Title;
                         TxtPSender := LanguageTemplateMail."Sender Address";
                         TxtPCCI := LanguageTemplateMail.Cci;
@@ -516,19 +497,23 @@ codeunit 50053 "DEL D365FM PDF Email Send"
                         LanguageTemplateMail.SETRANGE(Default, TRUE);
                     END;
 
-                    IF LanguageTemplateMail.FINDFIRST THEN BEGIN
+                    IF LanguageTemplateMail.FINDFIRST() THEN BEGIN
                         LanguageTemplateMail.CALCFIELDS("Template mail");
-                        RecPBLOBRef.Blob := LanguageTemplateMail."Template mail";
+                        LanguageTemplateMail."Template mail".CreateInStream(Instream);
+                        CopyStream(OutStream, Instream);
+                        RecPBLOBRef.CreateOutStream(OutStream);
                         TxtPObject := LanguageTemplateMail.Title;
                         TxtPSender := LanguageTemplateMail."Sender Address";
                         TxtPCCI := LanguageTemplateMail.Cci;
                     END ELSE BEGIN
                         LanguageTemplateMail.SETRANGE("Language Code");
                         LanguageTemplateMail.SETRANGE(Default, TRUE);
-                        IF NOT LanguageTemplateMail.FINDFIRST THEN
+                        IF NOT LanguageTemplateMail.FINDFIRST() THEN
                             EXIT(FALSE);
                         LanguageTemplateMail.CALCFIELDS("Template mail");
-                        RecPBLOBRef.Blob := LanguageTemplateMail."Template mail";
+                        LanguageTemplateMail."Template mail".CreateInStream(Instream);
+                        CopyStream(OutStream, Instream);
+                        RecPBLOBRef.CreateOutStream(OutStream);
                         TxtPObject := LanguageTemplateMail.Title;
                         TxtPSender := LanguageTemplateMail."Sender Address";
                         TxtPCCI := LanguageTemplateMail.Cci;
@@ -539,9 +524,11 @@ codeunit 50053 "DEL D365FM PDF Email Send"
             472:
                 BEGIN
                     LanguageTemplateMail.SETRANGE("Parameter String", TemplateMailString);
-                    IF LanguageTemplateMail.FINDFIRST THEN BEGIN
+                    IF LanguageTemplateMail.FINDFIRST() THEN BEGIN
                         LanguageTemplateMail.CALCFIELDS("Template mail");
-                        RecPBLOBRef.Blob := LanguageTemplateMail."Template mail";
+                        LanguageTemplateMail."Template mail".CreateInStream(Instream);
+                        CopyStream(OutStream, Instream);
+                        RecPBLOBRef.CreateOutStream(OutStream);
                         TxtPObject := LanguageTemplateMail.Title;
                         TxtPSender := LanguageTemplateMail."Sender Address";
                         TxtPCCI := LanguageTemplateMail.Cci;
@@ -574,13 +561,6 @@ codeunit 50053 "DEL D365FM PDF Email Send"
     end;
 
     local procedure GetAttachmentDocuments(EntryNo: Integer)
-    var
-        lTempBlob: Record "99008535";
-        OutputFile: File;
-        ServerAttachmentFilePath: Text;
-        FileManagement: Codeunit "File Management";
-        lAttachmentOutStream: OutStream;
-        lAttachmentInstream: InStream;
     begin
     end;
 }

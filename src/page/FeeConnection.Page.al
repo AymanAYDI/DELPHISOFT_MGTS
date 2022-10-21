@@ -95,12 +95,12 @@ page 50025 "DEL Fee Connection"
     end;
 
     var
-        Type_Op: Option Vendor,Customer;
-        No_Co: Code[20];
         [InDataSet]
         FormAmountEnable: Boolean;
         [InDataSet]
         FormFactorEnable: Boolean;
+        No_Co: Code[20];
+        Type_Op: Option Vendor,Customer;
 
 
     procedure FNC_Set_Type(Type_Op_Par: Option Vendor,Customer; No_Co_Par: Code[20])

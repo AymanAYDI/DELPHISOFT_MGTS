@@ -38,15 +38,10 @@ pageextension 50039 "DEL SalesInvoice" extends "Sales Invoice"
 
                 trigger OnAction()
                 var
-                    dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
-                    element_Re_Loc: Record "DEL Element";
-                    deal_ID_Co_Loc: Code[20];
                     deal_Re_Loc: Record "DEL Deal";
                     dealShipment_Re_Loc: Record "DEL Deal Shipment";
-                    dealShipmentConnection_Re_Loc: Record "DEL Deal Shipment Connection";
+                    dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
                     dealShipmentSelection_Form_Loc: Page "DEL Deal Shipment Selection";
-                    SalesLine: Record "Sales Line";
-                    valueSpecial: Code[20];
                 begin
 
                     // T-00551-DEAL -
@@ -93,7 +88,7 @@ pageextension 50039 "DEL SalesInvoice" extends "Sales Invoice"
                     CLEAR(dealShipmentSelection_Form_Loc);
                     dealShipmentSelection_Form_Loc.SETTABLEVIEW(dealShipmentSelection_Re_Loc);
                     dealShipmentSelection_Form_Loc.SETRECORD(dealShipmentSelection_Re_Loc);
-                    dealShipmentSelection_Form_Loc.RUN
+                    dealShipmentSelection_Form_Loc.RUN()
                     // T-00551-DEAL +
                 end;
 

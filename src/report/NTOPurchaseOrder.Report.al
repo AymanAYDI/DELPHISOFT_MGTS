@@ -191,7 +191,7 @@ report 50004 "DEL NTO - Purchase Order"
                     column(CompanyAddr_1_; CompanyAddr[1])
                     {
                     }
-                    column(STRSUBSTNO_Text005_FORMAT_CurrReport_PAGENO__; STRSUBSTNO(Text005, FORMAT(CurrReport.PAGENO)))
+                    column(STRSUBSTNO_Text005_FORMAT_CurrReport_PAGENO__; STRSUBSTNO(Text005, FORMAT(CurrReport.PAGENO())))
                     {
                     }
                     column(CopyText_Control1000006; CopyText)
@@ -264,10 +264,10 @@ report 50004 "DEL NTO - Purchase Order"
                         begin
                             IF Number = 1 THEN BEGIN
                                 IF NOT DocDim1.FIND('-') THEN
-                                    CurrReport.BREAK;
+                                    CurrReport.BREAK();
                             END ELSE
                                 IF NOT Continue THEN
-                                    CurrReport.BREAK;
+                                    CurrReport.BREAK();
 
                             CLEAR(DimText);
                             Continue := FALSE;
@@ -286,13 +286,13 @@ report 50004 "DEL NTO - Purchase Order"
                                     Continue := TRUE;
                                     EXIT;
                                 END;
-                            UNTIL (DocDim1.NEXT = 0);
+                            UNTIL (DocDim1.NEXT() = 0);
                         end;
 
                         trigger OnPreDataItem()
                         begin
                             IF NOT ShowInternalInfo THEN
-                                CurrReport.BREAK;
+                                CurrReport.BREAK();
                         end;
                     }
                     dataitem("Purchase Line"; "Purchase Line")
@@ -304,7 +304,7 @@ report 50004 "DEL NTO - Purchase Order"
 
                         trigger OnPreDataItem()
                         begin
-                            CurrReport.BREAK;
+                            CurrReport.BREAK();
                         end;
                     }
                     dataitem(RoundLoop; Integer)
@@ -367,7 +367,7 @@ report 50004 "DEL NTO - Purchase Order"
                         column(TotalInclVATText; TotalInclVATText)
                         {
                         }
-                        column(VATAmountLine_VATAmountText; VATAmountLine.VATAmountText)
+                        column(VATAmountLine_VATAmountText; VATAmountLine.VATAmountText())
                         {
                         }
                         column(VATAmount; VATAmount)
@@ -393,7 +393,7 @@ report 50004 "DEL NTO - Purchase Order"
                             AutoFormatExpression = "Purchase Header"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine_VATAmountText_Control32; VATAmountLine.VATAmountText)
+                        column(VATAmountLine_VATAmountText_Control32; VATAmountLine.VATAmountText())
                         {
                         }
                         column(TotalExclVATText_Control51; TotalExclVATText)
@@ -453,10 +453,10 @@ report 50004 "DEL NTO - Purchase Order"
                             begin
                                 IF Number = 1 THEN BEGIN
                                     IF NOT DocDim2.FIND('-') THEN
-                                        CurrReport.BREAK;
+                                        CurrReport.BREAK();
                                 END ELSE
                                     IF NOT Continue THEN
-                                        CurrReport.BREAK;
+                                        CurrReport.BREAK();
 
                                 CLEAR(DimText);
                                 Continue := FALSE;
@@ -475,7 +475,7 @@ report 50004 "DEL NTO - Purchase Order"
                                         Continue := TRUE;
                                         EXIT;
                                     END;
-                                UNTIL (DocDim1.NEXT = 0);
+                                UNTIL (DocDim1.NEXT() = 0);
                             end;
 
                             trigger OnPreDataItem()
@@ -483,7 +483,7 @@ report 50004 "DEL NTO - Purchase Order"
                                 PurchLine: Record "Purchase Line";
                             begin
                                 IF NOT ShowInternalInfo THEN
-                                    CurrReport.BREAK;
+                                    CurrReport.BREAK();
 
 
                                 //TODO : à vérifier .. #Abir
@@ -505,7 +505,7 @@ report 50004 "DEL NTO - Purchase Order"
                             IF Number = 1 THEN
                                 PurchLine.FIND('-')
                             ELSE
-                                PurchLine.NEXT;
+                                PurchLine.NEXT();
                             "Purchase Line" := PurchLine;
 
                             IF NOT "Purchase Header"."Prices Including VAT" AND
@@ -526,7 +526,7 @@ report 50004 "DEL NTO - Purchase Order"
                         trigger OnPostDataItem()
                         begin
 
-                            PurchLine.DELETEALL;
+                            PurchLine.DELETEALL();
                         end;
 
                         trigger OnPreDataItem()
@@ -537,7 +537,7 @@ report 50004 "DEL NTO - Purchase Order"
                                   (PurchLine.Amount = 0) DO
                                 MoreLines := PurchLine.NEXT(-1) <> 0;
                             IF NOT MoreLines THEN
-                                CurrReport.BREAK;
+                                CurrReport.BREAK();
                             PurchLine.SETRANGE("Line No.", 0, PurchLine."Line No.");
                             SETRANGE(Number, 1, PurchLine.COUNT);
                             CurrReport.CREATETOTALS(PurchLine."Line Amount", PurchLine."Inv. Discount Amount");
@@ -698,7 +698,7 @@ report 50004 "DEL NTO - Purchase Order"
                         trigger OnPreDataItem()
                         begin
                             IF VATAmount = 0 THEN
-                                CurrReport.BREAK;
+                                CurrReport.BREAK();
                             SETRANGE(Number, 1, VATAmountLine.COUNT);
                             CurrReport.CREATETOTALS(
                               VATAmountLine."Line Amount", VATAmountLine."Inv. Disc. Base Amount",
@@ -719,16 +719,16 @@ report 50004 "DEL NTO - Purchase Order"
                 begin
                     CLEAR(PurchLine);
                     CLEAR(PurchPost);
-                    PurchLine.DELETEALL;
-                    VATAmountLine.DELETEALL;
+                    PurchLine.DELETEALL();
+                    VATAmountLine.DELETEALL();
                     PurchPost.GetPurchLines("Purchase Header", PurchLine, 0);
                     PurchLine.CalcVATAmountLines(0, "Purchase Header", PurchLine, VATAmountLine);
                     PurchLine.UpdateVATOnLines(0, "Purchase Header", PurchLine, VATAmountLine);
-                    VATAmount := VATAmountLine.GetTotalVATAmount;
-                    VATBaseAmount := VATAmountLine.GetTotalVATBase;
+                    VATAmount := VATAmountLine.GetTotalVATAmount();
+                    VATBaseAmount := VATAmountLine.GetTotalVATBase();
                     VATDiscountAmount :=
                       VATAmountLine.GetTotalVATDiscount("Purchase Header"."Currency Code", "Purchase Header"."Prices Including VAT");
-                    TotalAmountInclVAT := VATAmountLine.GetTotalAmountInclVAT;
+                    TotalAmountInclVAT := VATAmountLine.GetTotalAmountInclVAT();
 
                     IF Number > 1 THEN
                         CopyText := Text003;
@@ -756,9 +756,9 @@ report 50004 "DEL NTO - Purchase Order"
                 //TODO 
                 CurrReport.LANGUAGE := Language.GetLanguageID("Language Code");
 
-                CompanyInfo.GET;
-                PrepareHeader;
-                PrepareFooter;
+                CompanyInfo.GET();
+                PrepareHeader();
+                PrepareFooter();
                 IF RespCenter.GET("Responsibility Center") THEN BEGIN
                     FormatAddr.RespCenter(CompanyAddr, RespCenter);
                     CompanyInfo."Phone No." := RespCenter."Phone No.";
@@ -776,7 +776,7 @@ report 50004 "DEL NTO - Purchase Order"
 
 
                 IF "Purchaser Code" = '' THEN BEGIN
-                    SalesPurchPerson.INIT;
+                    SalesPurchPerson.INIT();
                     PurchaserText := '';
                 END ELSE BEGIN
                     SalesPurchPerson.GET("Purchaser Code");
@@ -805,11 +805,11 @@ report 50004 "DEL NTO - Purchase Order"
                 IF ("Purchase Header"."Buy-from Vendor No." <> "Purchase Header"."Pay-to Vendor No.") THEN
                     FormatAddr.PurchHeaderPayTo(VendAddr, "Purchase Header");
                 IF "Payment Terms Code" = '' THEN
-                    PaymentTerms.INIT
+                    PaymentTerms.INIT()
                 ELSE
                     PaymentTerms.GET("Payment Terms Code");
                 IF "Shipment Method Code" = '' THEN
-                    ShipmentMethod.INIT
+                    ShipmentMethod.INIT()
                 ELSE
                     ShipmentMethod.GET("Shipment Method Code");
 
@@ -849,10 +849,68 @@ report 50004 "DEL NTO - Purchase Order"
 
     trigger OnInitReport()
     begin
-        GLSetup.GET;
+        GLSetup.GET();
     end;
 
     var
+        CompanyInfo: Record "Company Information";
+        // DocDim1: Record 357; //Document Dimension
+        // DocDim2: Record 357;
+        //   TODO : dimensions have been removed ! ! 
+        DocDim1: Record "Dimension Set Entry"; //480 
+        DocDim2: Record "General Ledger Setup";
+        GLSetup: Record "General Ledger Setup";
+        Item_temp: Record Item;
+        Language: Record Language;
+        PaymentTerms: Record "Payment Terms";
+        PurchLine: Record "Purchase Line" temporary;
+
+        RespCenter: Record "Responsibility Center";
+        SalesPurchPerson: Record "Salesperson/Purchaser";
+        ShipmentMethod: Record "Shipment Method";
+        VATAmountLine: Record "VAT Amount Line" temporary;
+        ArchiveManagement: Codeunit ArchiveManagement;
+        DimMgt: Codeunit DimensionManagement; //408
+        FormatAddr: Codeunit "Format Address";
+        PurchPost: Codeunit "Purch.-Post";
+        PurchCountPrinted: Codeunit "Purch.Header-Printed";
+        SegManagement: Codeunit SegManagement;
+        ArchiveDocument: Boolean;
+        Continue: Boolean;
+        LogInteraction: Boolean;
+        MoreLines: Boolean;
+        ShowInternalInfo: Boolean;
+        TotalAmountInclVAT: Decimal;
+        VATAmount: Decimal;
+        VATBaseAmount: Decimal;
+        VATDiscountAmount: Decimal;
+        NoOfCopies: Integer;
+        NoOfLoops: Integer;
+        AmountCaptionLbl: Label 'Amount';
+        CompanyInfo__Fax_No__CaptionLbl: Label 'Fax No.';
+        CompanyInfo__Phone_No__CaptionLbl: Label 'Phone No.';
+        CompanyInfo__VAT_Registration_No__CaptionLbl: Label 'VAT Reg. No.';
+        ContinuedCaption_Control76Lbl: Label 'Continued';
+        ContinuedCaptionLbl: Label 'Continued';
+        Customer_No_CaptionLbl: Label 'Customer No.';
+        DateCaptionLbl: Label 'Date';
+        Header_DimensionsCaptionLbl: Label 'Header Dimensions';
+        Line_DimensionsCaptionLbl: Label 'Line Dimensions';
+        ML_Date_Receipt: Label 'Shipment Date';
+        ML_Forwarder: Label 'Forwarder';
+        ML_InvAdr: Label 'Invoice Address';
+        ML_Location_code: Label 'Destination';
+        ML_Method: Label 'Ship per';
+        ML_OrderAdr: Label 'Order Address';
+        ML_PmtTerms: Label 'Payment Terms';
+        ML_PurchPerson: Label 'Purchaser';
+        ML_Reference: Label 'Reference';
+        ML_ShipCond: Label 'Incoterm';
+        ML_ShipDate: Label 'Shipping Date';
+        PriceCaptionLbl: Label 'Price';
+        PurchLine__Inv__Discount_Amount_CaptionLbl: Label 'Inv. Discount Amount';
+        QtyCaptionLbl: Label 'Qty';
+        SubtotalCaptionLbl: Label 'Subtotal';
         Text000: Label 'Purchaser';
         Text001: Label 'Total %1';
         Text002: Label 'Total %1 Incl. VAT';
@@ -860,180 +918,113 @@ report 50004 "DEL NTO - Purchase Order"
         Text004: Label 'PURCHASE ORDER N° %1';
         Text005: Label 'Page %1';
         Text006: Label 'Total %1 Excl. VAT';
-        GLSetup: Record "General Ledger Setup";
-        CompanyInfo: Record "Company Information";
-        ShipmentMethod: Record "Shipment Method";
-        PaymentTerms: Record "Payment Terms";
-        SalesPurchPerson: Record "Salesperson/Purchaser";
-        VATAmountLine: Record "VAT Amount Line" temporary;
-        PurchLine: Record "Purchase Line" temporary;
-        // DocDim1: Record 357; //Document Dimension
-        // DocDim2: Record 357;
-        //   TODO : dimensions have been removed ! ! 
-        DocDim1: Record "Dimension Set Entry"; //480 
-        DocDim2: Record "General Ledger Setup";
-        DimMgt: Codeunit DimensionManagement; //408
-
-        RespCenter: Record "Responsibility Center";
-        Language: Record Language;
-        PurchCountPrinted: Codeunit "Purch.Header-Printed";
-        FormatAddr: Codeunit "Format Address";
-        PurchPost: Codeunit "Purch.-Post";
-        ArchiveManagement: Codeunit ArchiveManagement;
-        SegManagement: Codeunit SegManagement;
-        VendAddr: array[8] of Text[50];
-        ShipToAddr: array[8] of Text[50];
-        CompanyAddr: array[8] of Text[50];
-        BuyFromAddr: array[8] of Text[50];
-        PurchaserText: Text[30];
-        VATNoText: Text[30];
-        ReferenceText: Text[30];
-        TotalText: Text[50];
-        TotalInclVATText: Text[50];
-        TotalExclVATText: Text[50];
-        MoreLines: Boolean;
-        NoOfCopies: Integer;
-        NoOfLoops: Integer;
-        CopyText: Text[30];
-        DimText: Text[120];
-        OldDimText: Text[75];
-        ShowInternalInfo: Boolean;
-        Continue: Boolean;
-        ArchiveDocument: Boolean;
-        LogInteraction: Boolean;
-        VATAmount: Decimal;
-        VATBaseAmount: Decimal;
-        VATDiscountAmount: Decimal;
-        TotalAmountInclVAT: Decimal;
-        HeaderLabel: array[20] of Text[30];
-        HeaderTxt: array[20] of Text[120];
-        FooterLabel: array[20] of Text[30];
-        FooterTxt: array[20] of Text[120];
-        ML_OrderNo: Label 'Order No.';
-        ML_PurchPerson: Label 'Purchaser';
-        ML_Reference: Label 'Reference';
-        ML_InvoiceNo: Label 'Ext Invoice No.';
-        ML_PmtTerms: Label 'Payment Terms';
-        ML_ShipCond: Label 'Incoterm';
-        ML_ShipAdr: Label 'Shipping Address';
-        ML_InvAdr: Label 'Invoice Address';
-        ML_OrderAdr: Label 'Order Address';
-        ML_ShipDate: Label 'Shipping Date';
-        ML_Location_code: Label 'Destination';
-        ML_Method: Label 'Ship per';
-        ML_Date_Receipt: Label 'Shipment Date';
-        Item_temp: Record Item;
-        ref_fourn: Text[30];
-        ML_Forwarder: Label 'Forwarder';
-        CompanyInfo__Phone_No__CaptionLbl: Label 'Phone No.';
-        CompanyInfo__Fax_No__CaptionLbl: Label 'Fax No.';
-        CompanyInfo__VAT_Registration_No__CaptionLbl: Label 'VAT Reg. No.';
-        DateCaptionLbl: Label 'Date';
-        Customer_No_CaptionLbl: Label 'Customer No.';
-        Header_DimensionsCaptionLbl: Label 'Header Dimensions';
-        QtyCaptionLbl: Label 'Qty';
-        PriceCaptionLbl: Label 'Price';
-        AmountCaptionLbl: Label 'Amount';
-        Vendor_RefCaptionLbl: Label 'Vendor Ref';
-        ContinuedCaptionLbl: Label 'Continued';
-        ContinuedCaption_Control76Lbl: Label 'Continued';
-        PurchLine__Inv__Discount_Amount_CaptionLbl: Label 'Inv. Discount Amount';
-        SubtotalCaptionLbl: Label 'Subtotal';
-        VATDiscountAmountCaptionLbl: Label 'Payment Discount on VAT';
-        Line_DimensionsCaptionLbl: Label 'Line Dimensions';
-        VATAmountLine__VAT___CaptionLbl: Label 'VAT %';
-        VATAmountLine__VAT_Base__Control99CaptionLbl: Label 'VAT Base';
-        VATAmountLine__VAT_Amount__Control100CaptionLbl: Label 'VAT Amount';
         VAT_Amount_SpecificationCaptionLbl: Label 'VAT Amount Specification';
-        VATAmountLine__VAT_Identifier_CaptionLbl: Label 'VAT Identifier';
         VATAmountLine__Inv__Disc__Base_Amount__Control132CaptionLbl: Label 'Inv. Disc. Base Amount';
-        VATAmountLine__Line_Amount__Control131CaptionLbl: Label 'Line Amount';
         VATAmountLine__Invoice_Discount_Amount__Control133CaptionLbl: Label 'Invoice Discount Amount';
-        VATAmountLine__VAT_Base_CaptionLbl: Label 'Continued';
+        VATAmountLine__Line_Amount__Control131CaptionLbl: Label 'Line Amount';
+        VATAmountLine__VAT___CaptionLbl: Label 'VAT %';
+        VATAmountLine__VAT_Amount__Control100CaptionLbl: Label 'VAT Amount';
+        VATAmountLine__VAT_Base__Control99CaptionLbl: Label 'VAT Base';
         VATAmountLine__VAT_Base__Control103CaptionLbl: Label 'Continued';
         VATAmountLine__VAT_Base__Control107CaptionLbl: Label 'Total';
+        VATAmountLine__VAT_Base_CaptionLbl: Label 'Continued';
+        VATAmountLine__VAT_Identifier_CaptionLbl: Label 'VAT Identifier';
+        VATDiscountAmountCaptionLbl: Label 'Payment Discount on VAT';
+        Vendor_RefCaptionLbl: Label 'Vendor Ref';
+        CopyText: Text[30];
+        FooterLabel: array[20] of Text[30];
+        HeaderLabel: array[20] of Text[30];
+        PurchaserText: Text[30];
+        ref_fourn: Text[30];
+        ReferenceText: Text[30];
+        VATNoText: Text[30];
+        BuyFromAddr: array[8] of Text[50];
+        CompanyAddr: array[8] of Text[50];
+        ShipToAddr: array[8] of Text[50];
+        TotalExclVATText: Text[50];
+        TotalInclVATText: Text[50];
+        TotalText: Text[50];
+        VendAddr: array[8] of Text[50];
+        OldDimText: Text[75];
+        DimText: Text[120];
+        FooterTxt: array[20] of Text[120];
+        HeaderTxt: array[20] of Text[120];
 
     procedure PrepareHeader()
     begin
 
-        WITH "Purchase Header" DO BEGIN
-            FormatAddr.PurchHeaderBuyFrom(VendAddr, "Purchase Header");
+        FormatAddr.PurchHeaderBuyFrom(VendAddr, "Purchase Header");
 
-            IF SalesPurchPerson.GET("Purchaser Code") THEN BEGIN
-                HeaderLabel[2] := ML_PurchPerson;
-                HeaderTxt[2] := SalesPurchPerson.Name;
-            END;
-
-            IF "Your Reference" <> '' THEN BEGIN
-                HeaderLabel[3] := ML_Reference;
-                HeaderTxt[3] := "Your Reference";
-            END;
-
-            COMPRESSARRAY(HeaderLabel);
-            COMPRESSARRAY(HeaderTxt);
-
+        IF SalesPurchPerson.GET("Purchase Header"."Purchaser Code") THEN BEGIN
+            HeaderLabel[2] := ML_PurchPerson;
+            HeaderTxt[2] := SalesPurchPerson.Name;
         END;
+
+        IF "Purchase Header"."Your Reference" <> '' THEN BEGIN
+            HeaderLabel[3] := ML_Reference;
+            HeaderTxt[3] := "Purchase Header"."Your Reference";
+        END;
+
+        COMPRESSARRAY(HeaderLabel);
+        COMPRESSARRAY(HeaderTxt);
 
         CompanyInfo.CALCFIELDS(Picture);
     end;
 
     procedure PrepareFooter()
     var
+        transitaire_Re_Loc: Record "DEL Forwarding agent 2";
         PmtMethod: Record "Payment Terms";
         ShipMethod: Record "Shipment Method";
-        transitaire_Re_Loc: Record "DEL Forwarding agent 2";
     begin
         CLEAR(FooterLabel);
         CLEAR(FooterTxt);
 
-        WITH "Purchase Header" DO BEGIN
-
-            IF PmtMethod.GET("Payment Terms Code") THEN BEGIN
-                FooterLabel[1] := ML_PmtTerms;
-                FooterTxt[1] := PmtMethod.Description;
-            END;
-
-            IF ShipMethod.GET("Shipment Method Code") THEN BEGIN
-                FooterLabel[2] := ML_ShipCond;
-                FooterTxt[2] := ShipMethod.Description;
-            END;
-
-            IF "DEL Forwarding Agent Code" <> '' THEN BEGIN
-                IF transitaire_Re_Loc.GET("DEL Forwarding Agent Code") THEN BEGIN
-                    FooterLabel[3] := ML_Forwarder;
-                    FooterTxt[3] := transitaire_Re_Loc.Description;
-                END;
-            END;
-            IF "Location Code" <> '' THEN BEGIN
-                FooterLabel[4] := ML_Location_code;
-                FooterTxt[4] := "Location Code";
-            END;
-            IF FORMAT("Purchase Header"."DEL Ship Per") <> '' THEN BEGIN
-                FooterLabel[5] := ML_Method;
-                FooterTxt[5] := FORMAT("Purchase Header"."DEL Ship Per");
-            END;
-
-            IF FORMAT("Purchase Header"."Requested Receipt Date") <> '' THEN BEGIN
-                FooterLabel[6] := ML_Date_Receipt;
-                FooterTxt[6] := FORMAT("Purchase Header"."Requested Receipt Date");
-            END;
-
-            IF "Buy-from Vendor No." <> "Pay-to Vendor No." THEN BEGIN
-                FooterLabel[7] := ML_InvAdr;
-                FooterTxt[7] := "Pay-to Name" + ', ' + "Pay-to City";
-                FooterLabel[8] := ML_OrderAdr;
-                FooterTxt[8] := "Buy-from Vendor Name" + ', ' + "Buy-from City";
-            END;
-
-
-            IF NOT ("Purchase Header"."Expected Receipt Date" IN ["Purchase Header"."Document Date", 0D]) THEN BEGIN
-                FooterLabel[9] := ML_ShipDate;
-                FooterTxt[9] := FORMAT("Purchase Header"."Expected Receipt Date", 0, 4);
-            END;
-
-            COMPRESSARRAY(FooterLabel);
-            COMPRESSARRAY(FooterTxt);
+        IF PmtMethod.GET("Purchase Header"."Payment Terms Code") THEN BEGIN
+            FooterLabel[1] := ML_PmtTerms;
+            FooterTxt[1] := PmtMethod.Description;
         END;
+
+        IF ShipMethod.GET("Purchase Header"."Shipment Method Code") THEN BEGIN
+            FooterLabel[2] := ML_ShipCond;
+            FooterTxt[2] := ShipMethod.Description;
+        END;
+
+        IF "Purchase Header"."DEL Forwarding Agent Code" <> '' THEN BEGIN
+            IF transitaire_Re_Loc.GET("Purchase Header"."DEL Forwarding Agent Code") THEN BEGIN
+                FooterLabel[3] := ML_Forwarder;
+                FooterTxt[3] := transitaire_Re_Loc.Description;
+            END;
+        END;
+        IF "Purchase Header"."Location Code" <> '' THEN BEGIN
+            FooterLabel[4] := ML_Location_code;
+            FooterTxt[4] := "Purchase Header"."Location Code";
+        END;
+        IF FORMAT("Purchase Header"."DEL Ship Per") <> '' THEN BEGIN
+            FooterLabel[5] := ML_Method;
+            FooterTxt[5] := FORMAT("Purchase Header"."DEL Ship Per");
+        END;
+
+        IF FORMAT("Purchase Header"."Requested Receipt Date") <> '' THEN BEGIN
+            FooterLabel[6] := ML_Date_Receipt;
+            FooterTxt[6] := FORMAT("Purchase Header"."Requested Receipt Date");
+        END;
+
+        IF "Purchase Header"."Buy-from Vendor No." <> "Purchase Header"."Pay-to Vendor No." THEN BEGIN
+            FooterLabel[7] := ML_InvAdr;
+            FooterTxt[7] := "Purchase Header"."Pay-to Name" + ', ' + "Purchase Header"."Pay-to City";
+            FooterLabel[8] := ML_OrderAdr;
+            FooterTxt[8] := "Purchase Header"."Buy-from Vendor Name" + ', ' + "Purchase Header"."Buy-from City";
+        END;
+
+
+        IF NOT ("Purchase Header"."Expected Receipt Date" IN ["Purchase Header"."Document Date", 0D]) THEN BEGIN
+            FooterLabel[9] := ML_ShipDate;
+            FooterTxt[9] := FORMAT("Purchase Header"."Expected Receipt Date", 0, 4);
+        END;
+
+        COMPRESSARRAY(FooterLabel);
+        COMPRESSARRAY(FooterTxt);
     end;
 }
 

@@ -149,25 +149,20 @@ report 50021 "DEL Exp. Hyperion Insert Lines"
     end;
 
     var
+        AccountingPeriod_Re: Record "Accounting Period";
         ExportHyperionDatas_Re: Record "DEL Export Hyperion Datas";
-        StartDate_Da: Date;
-        StartPeriodeDate_Da: Date;
-        EndDate_Da: Date;
+        GeneralSetup_Re: Record "DEL General Setup";
+        DimensionSetEntry_Re: Record "Dimension Set Entry";
         GLAccount_Re: Record "G/L Account";
         GLEntry_Re: Record "G/L Entry";
-        DimensionSetEntry_Re: Record "Dimension Set Entry";
-        CODEENSEIGNE_TE: Text;
-        //TODO ExportHyperionFile_XP: XMLport 50011;
-        CSVFile_Fi: File;
-        CSVOutStream_OutS: OutStream;
-        AccountingPeriod_Re: Record "Accounting Period";
+        EndDate_Da: Date;
+        StartDate_Da: Date;
+        StartPeriodeDate_Da: Date;
         LOGITEXT0001: Label 'The batch is runing...';
-        GeneralSetup_Re: Record "DEL General Setup";
-        XmlStream_Os: OutStream;
-        CustXmlFile_Fi: File;
-        StartDate_Loc_Te: Text;
-        EndDate_Loc_Te: Text;
-        TimeNow_Te: Text;
+        CODEENSEIGNE_TE: Text;
         DateNow_Te: Text;
+        EndDate_Loc_Te: Text;
+        StartDate_Loc_Te: Text;
+        TimeNow_Te: Text;
 }
 

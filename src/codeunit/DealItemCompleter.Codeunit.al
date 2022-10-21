@@ -74,8 +74,8 @@ codeunit 50038 "DEL Deal Item Completer"
 
     procedure CompleteACO_FNC(DealID_Co_Par: Code[20]; DocumentNo_Co_Par: Code[20])
     var
-        PurchLine_Re_Loc: Record "Purchase Line";
         DealItem_Re_Loc: Record "DEL Deal Item";
+        PurchLine_Re_Loc: Record "Purchase Line";
     begin
 
 
@@ -97,9 +97,9 @@ codeunit 50038 "DEL Deal Item Completer"
 
     procedure CompleteVCO_FNC(DealID_Co_Par: Code[20]; DocumentNo_Co_Par: Code[20])
     var
-        SalesLine_Re_Loc: Record "Sales Line";
         DealItem_Re_Loc: Record "DEL Deal Item";
         ACOElement_Re_Loc: Record "DEL Element";
+        SalesLine_Re_Loc: Record "Sales Line";
     begin
 
         Deal_Cu.FNC_Get_ACO(ACOElement_Re_Loc, DealID_Co_Par);
@@ -137,8 +137,8 @@ codeunit 50038 "DEL Deal Item Completer"
 
     procedure CompleteBR_FNC(DealID_Co_Par: Code[20]; DocumentNo_Co_Par: Code[20])
     var
-        purchRcptLine_Re_Loc: Record "Purch. Rcpt. Line";
         DealItem_Re_Loc: Record "DEL Deal Item";
+        purchRcptLine_Re_Loc: Record "Purch. Rcpt. Line";
     begin
 
 
@@ -166,8 +166,8 @@ codeunit 50038 "DEL Deal Item Completer"
 
     procedure CompletePurchInv_FNC(DealID_Co_Par: Code[20]; DocumentNo_Co_Par: Code[20])
     var
-        purchInvLine_Re_Loc: Record "Purch. Inv. Line";
         DealItem_Re_Loc: Record "DEL Deal Item";
+        purchInvLine_Re_Loc: Record "Purch. Inv. Line";
     begin
 
         purchInvLine_Re_Loc.RESET();
@@ -188,9 +188,9 @@ codeunit 50038 "DEL Deal Item Completer"
 
     procedure CompleteSalesInv_FNC(DealID_Co_Par: Code[20]; DocumentNo_Co_Par: Code[20])
     var
-        salesInvLine_Re_Loc: Record "Sales Invoice Line";
         DealItem_Re_Loc: Record "DEL Deal Item";
         ACOElement_Re_Loc: Record "DEL Element";
+        salesInvLine_Re_Loc: Record "Sales Invoice Line";
     begin
 
         Deal_Cu.FNC_Get_ACO(ACOElement_Re_Loc, DealID_Co_Par);

@@ -97,13 +97,7 @@ table 50030 "DEL Deal Shipment"
     end;
 
     trigger OnInsert()
-    var
-        deal_Re_Loc: Record "DEL Deal";
     begin
     end;
-
-    var
-        Setup: Record "DEL General Setup";
-        NoSeriesMgt: Codeunit "NoSeriesManagement";
 }
 

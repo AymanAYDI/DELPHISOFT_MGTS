@@ -1,4 +1,4 @@
-report 50077 "Carry Out Action Msg. - Req."
+report 50077 "DEL CarryOut Act. Msg. - Req."
 {
 
     Caption = 'Carry Out Action Msg. - Req.';
@@ -54,19 +54,19 @@ report 50077 "Carry Out Action Msg. - Req."
     end;
 
     var
+        PurchOrderHeader: Record "Purchase Header";
+        ReqWkshTmpl: Record "Req. Wksh. Template";
+        ReqLine: Record "Requisition Line";
+        ReqWkshName: Record "Requisition Wksh. Name";
+        ReqWkshMakeOrders: Codeunit "Req. Wksh.-Make Order";
+        CreateFromEDI: Boolean;
+        HideDialog: Boolean;
+        PrintOrders: Boolean;
+        TempJnlBatchName: Code[10];
+        EndOrderDate: Date;
         Text000: Label 'cannot be filtered when you create orders';
         Text001: Label 'There is nothing to create.';
         Text003: Label 'You are now in worksheet %1.';
-        ReqWkshTmpl: Record "Req. Wksh. Template";
-        ReqWkshName: Record "Requisition Wksh. Name";
-        ReqLine: Record "Requisition Line";
-        PurchOrderHeader: Record "Purchase Header";
-        ReqWkshMakeOrders: Codeunit "Req. Wksh.-Make Order";
-        EndOrderDate: Date;
-        PrintOrders: Boolean;
-        TempJnlBatchName: Code[10];
-        HideDialog: Boolean;
-        CreateFromEDI: Boolean;
 
 
     procedure SetReqWkshLine(var NewReqLine: Record "Requisition Line")
@@ -91,41 +91,39 @@ report 50077 "Carry Out Action Msg. - Req."
     var
         DELMGTS_FctMgt: Codeunit "DEL MGTS_FctMgt";
     begin
-        WITH ReqLine DO BEGIN
-            ReqWkshTmpl.GET("Worksheet Template Name");
-            IF ReqWkshTmpl.Recurring AND (GETFILTER("Order Date") <> '') THEN
-                FIELDERROR("Order Date", Text000);
-            TempJnlBatchName := "Journal Batch Name";
-            //>>MGTSEDI10.00.00.23
-            IF CreateFromEDI THEN BEGIN
-                DELMGTS_FctMgt.SetEDIParam(TRUE, TRUE);
+        ReqWkshTmpl.GET(ReqLine."Worksheet Template Name");
+        IF ReqWkshTmpl.Recurring AND (ReqLine.GETFILTER("Order Date") <> '') THEN
+            ReqLine.FIELDERROR("Order Date", Text000);
+        TempJnlBatchName := ReqLine."Journal Batch Name";
+        //>>MGTSEDI10.00.00.23
+        IF CreateFromEDI THEN BEGIN
+            DELMGTS_FctMgt.SetEDIParam(TRUE, TRUE);
 
-                //>>MGTSEDI10.00.00.24
-                PurchOrderHeader."Order Date" := TODAY;
-                //<<MGTSEDI10.00.00.24
+            //>>MGTSEDI10.00.00.24
+            PurchOrderHeader."Order Date" := TODAY;
+            //<<MGTSEDI10.00.00.24
 
-            END;
-            //<<MGTSEDI10.00.00.23
-            ReqWkshMakeOrders.Set(PurchOrderHeader, EndOrderDate, PrintOrders);
-            ReqWkshMakeOrders.CarryOutBatchAction(ReqLine);
+        END;
+        //<<MGTSEDI10.00.00.23
+        ReqWkshMakeOrders.Set(PurchOrderHeader, EndOrderDate, PrintOrders);
+        ReqWkshMakeOrders.CarryOutBatchAction(ReqLine);
 
-            IF "Line No." = 0 THEN
-                MESSAGE(Text001)
-            ELSE
-                IF NOT HideDialog THEN
-                    IF TempJnlBatchName <> "Journal Batch Name" THEN
-                        MESSAGE(
-                          Text003,
-                          "Journal Batch Name");
+        IF ReqLine."Line No." = 0 THEN
+            MESSAGE(Text001)
+        ELSE
+            IF NOT HideDialog THEN
+                IF TempJnlBatchName <> ReqLine."Journal Batch Name" THEN
+                    MESSAGE(
+                      Text003,
+                      ReqLine."Journal Batch Name");
 
-            IF NOT FIND('=><') OR (TempJnlBatchName <> "Journal Batch Name") THEN BEGIN
-                RESET();
-                FILTERGROUP := 2;
-                SETRANGE("Worksheet Template Name", "Worksheet Template Name");
-                SETRANGE("Journal Batch Name", "Journal Batch Name");
-                FILTERGROUP := 0;
-                "Line No." := 1;
-            END;
+        IF NOT ReqLine.FIND('=><') OR (TempJnlBatchName <> ReqLine."Journal Batch Name") THEN BEGIN
+            ReqLine.RESET();
+            ReqLine.FILTERGROUP := 2;
+            ReqLine.SETRANGE("Worksheet Template Name", ReqLine."Worksheet Template Name");
+            ReqLine.SETRANGE("Journal Batch Name", ReqLine."Journal Batch Name");
+            ReqLine.FILTERGROUP := 0;
+            ReqLine."Line No." := 1;
         END;
     end;
 

@@ -408,12 +408,5 @@ table 99200 "DEL Ex_Currency"
     fieldgroups
     {
     }
-
-
-
-    var
-        Text000: Label 'must be rounded to the nearest %1';
-        Text001: Label '%1 must be rounded to the nearest %2.';
-        Text002: Label 'There is one or more opened entries in the %1 table using %2 %3.', Comment = '1 either customer or vendor ledger entry table 2 name co currency table 3 currencency code';
 }
 

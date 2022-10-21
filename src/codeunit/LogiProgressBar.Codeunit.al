@@ -8,15 +8,14 @@ codeunit 50037 "DEL LogiProgressBar"
 
     var
         LogiProgressBar_Cu: Codeunit "DEL LogiProgressBar";
-        "v------PROGRESS BAR------v": Integer;
-        intProgressI: array[10] of Integer;
         diaProgress: array[10] of Dialog;
-        intProgress: array[10] of Integer;
-        intProgressTotal: array[10] of Integer;
-        intProgressStep: array[10] of Integer;
-        intNextProgressStep: array[10] of Integer;
-        timProgress: array[10] of Time;
         interval: array[10] of Integer;
+        intNextProgressStep: array[10] of Integer;
+        intProgress: array[10] of Integer;
+        intProgressI: array[10] of Integer;
+        intProgressStep: array[10] of Integer;
+        intProgressTotal: array[10] of Integer;
+        timProgress: array[10] of Time;
 
 
     procedure FNC_TestProgressBar()

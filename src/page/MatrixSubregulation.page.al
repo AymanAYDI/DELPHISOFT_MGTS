@@ -200,16 +200,16 @@ page 50091 "DEL Matrix Sub. regulation"
         Reglementation: Record "DEL Regulation";
         RegulationMatrixLine: Record "DEL Regulation Matrix Line";
         RegMat: Page "DEL Substance regulation 2";
+        CategCode: Code[20];
 
 
         ProductCode: Code[20];
-        CategCode: Code[20];
-        Markfilter: Text;
-        DescProduct: Text;
         MarkOptionENU: Enum "DEL Mark";
         //àvérifier MarkOptionFRS: Option " ",MDD,"Marque Fournisseur",Licence,"Sans Marque","Marque Prestige",NC,NA,"?","Toutes Marques";
         //car ce'est le meme enum mais traduit en francais
         MarkOptionFRS: Enum "DEL Mark";
         CurrGlobLang: Integer;
+        DescProduct: Text;
+        Markfilter: Text;
 }
 

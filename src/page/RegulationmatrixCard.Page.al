@@ -212,10 +212,10 @@ page 50086 "DEL Regulation matrix Card"
     end;
 
     var
+        deleteVar: Boolean;
+        PlanControl: Boolean;
         RegGenerale: Boolean;
         RegMat: Boolean;
-        PlanControl: Boolean;
         Text0001: Label 'The fields %1, %2, %3, %4, %5, %6 must not be empty.';
-        deleteVar: Boolean;
 }
 
