@@ -39,6 +39,7 @@ report 50012 "DEL Export to Excel purchase"
                 //TODO: NOT USED ON CLOUD : à corriger
                 // TempExcelBuffer.CreateBook(Text000, Text000);
                 // TempExcelBuffer.GiveUserControl;
+
                 TempExcelBuffer.CreateNewBook(Text000);
                 TempExcelBuffer.WriteSheet('Text000', CompanyName(), UserId());
                 TempExcelBuffer.CloseBook();

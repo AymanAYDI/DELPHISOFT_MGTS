@@ -257,10 +257,9 @@ report 50025 "DEL Export Vente"
             ExportVente.Fabricant := CorLengthTxt('', 10);
             ExportVente."Référence fabricant" := CorLengthTxt('', 30);
             ExportVente."Fournisseur principal" := CorLengthTxt(Item_Rec."Vendor No.", 10);
-
             ExportVente."Référence fournisseur Prin." := CorLengthTxt(Item_Rec."Vendor Item No.", 30);
             ExportVente."Code article B.U" := CorLengthTxt(Item_Rec."No.", 10);
-            //TODO : check product Group  //ExportVente."Groupe marchandise B.U" := CorLengthTxt(Item_Rec."DEL Product Group Code", 30);           //21
+            //TODO : check product Group  //ExportVente."Groupe marchandise B.U" := CorLengthTxt(Item_Rec."DEL Product Group Code", 30);//21
             ExportVente."Libellé produit" := CorLengthTxt(Item_Rec.Description, 50);
             ExportVente.MODIFY();
         END;

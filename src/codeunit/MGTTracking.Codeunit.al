@@ -15,7 +15,7 @@ codeunit 50003 "DEL MGT Tracking"
     var
         NgtsSetup: Record "DEL General Setup";
         TrackingGeneral: Record "DEL Tracking non traité";
-        MyFile: Record File; //TODO
+        MyFile: Record File;
         FileManagement: Codeunit "File Management";
 
 

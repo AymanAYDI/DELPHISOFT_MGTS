@@ -5,7 +5,7 @@ table 50071 "DEL DocMatrix Selection"
 
     fields
     {
-        field(1; Type; Enum "DEL Type Fee Connection")
+        field(1; Type; Enum "Credit Transfer Account Type")
         {
             Caption = 'Type';
             DataClassification = ToBeClassified;

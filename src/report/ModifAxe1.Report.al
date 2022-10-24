@@ -13,8 +13,6 @@ report 50052 "DEL Modif Axe 1"
             trigger OnAfterGetRecord()
             begin
                 "Shortcut Dimension 1 Code" := 'ACO-24803';
-                //MODIFY;
-                //MESSAGE('no %1 ',"No.");
             end;
         }
     }

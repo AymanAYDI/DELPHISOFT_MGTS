@@ -166,13 +166,10 @@ report 50027 "DEL Create Provision2"
     labels
     {
     }
-
     trigger OnInitReport()
     begin
         date_Da := TODAY;
-
         monthLastWorkingDay := Deal_Cu.FNC_GetMonthLastWorkDay(date_Da);
-
         monthFirstWorkingDay := Deal_Cu.FNC_GetMonthFirstWorkDay(CALCDATE('<+1M>', date_Da));
 
         currentPeriod_Bo := TRUE;

@@ -64,26 +64,20 @@ report 50065 "DEL Upd Items Dim 2"
     var
         DefaultDimension_Rec: Record "Default Dimension";
     begin
-        //MIG2017
-        // T-00746 START
         IF DefaultDimension_Rec.GET(27, Item."No.", 'Categorie') THEN BEGIN
             IF DefaultDimension_Rec."Dimension Value Code" <> CategCode THEN BEGIN
                 DefaultDimension_Rec.VALIDATE("Dimension Value Code", CategCode);
                 DefaultDimension_Rec.MODIFY();
             END;
         END
-        // T-00746 END
         ELSE BEGIN
-            // T-00746 START
             DefaultDimension_Rec.INIT();
             DefaultDimension_Rec.VALIDATE("Table ID", 27);
             DefaultDimension_Rec.VALIDATE("No.", Item."No.");
             DefaultDimension_Rec.VALIDATE("Dimension Code", 'Categorie');
             DefaultDimension_Rec.VALIDATE("Dimension Value Code", CategCode);
             DefaultDimension_Rec.INSERT();
-            // T-00746 END
         END;
-        //END MIG2017
     end;
 }
 

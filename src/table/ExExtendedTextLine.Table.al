@@ -6,7 +6,7 @@ table 99209 "DEL Ex_Extended Text Line"
 
     fields
     {
-        field(1; "Table Name"; Enum "DEL Table Name")
+        field(1; "Table Name"; Enum "Extended Text Table Name")
         {
             Caption = 'Table Name';
         }
@@ -44,11 +44,11 @@ table 99209 "DEL Ex_Extended Text Line"
             Caption = 'Inherited';
 
         }
-        field(4006497; Separator; Enum "Separator ")
-        {
-            Caption = 'Separator';
+        //TODO field(4006497; Separator; Enum "Separator ")
+        // {
+        //     Caption = 'Separator';
 
-        }
+        // }
     }
 
     keys

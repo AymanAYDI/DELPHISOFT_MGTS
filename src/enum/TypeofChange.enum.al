@@ -1,4 +1,4 @@
-enum 50042 "DEL Type of Change"
+enum 50042 "DEL Type of Change" //existe dans STD table 405 (field 9)
 {
     Extensible = false;
 

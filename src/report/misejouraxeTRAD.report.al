@@ -19,7 +19,6 @@ report 50033 "DEL mise à jour axe TRAD"
                 DimensionSetEntry.VALIDATE(DimensionSetEntry."Dimension Set ID", "Purchase Header"."Dimension Set ID");
                 DimensionSetEntry.VALIDATE(DimensionSetEntry."Dimension Code", 'ACTIVITES');
                 DimensionSetEntry.VALIDATE(DimensionSetEntry."Dimension Value Code", 'TRAD');
-                //DimensionSetEntry.VALIDATE(DimensionSetEntry."Dimension Value ID",
                 IF DimensionSetEntry.INSERT() THEN
                     IF PurchLinesExist() THEN
                         UpdateAllLineDim("Purchase Header"."Dimension Set ID", 0);

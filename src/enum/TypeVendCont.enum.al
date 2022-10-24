@@ -1,4 +1,4 @@
-enum 50011 "DEL Type Vend/Cont"
+enum 50011 "DEL Type Vend/Cont" //existe mais l'ordre 'Customer,Vendor,Contact'(table249)  
 {
     Extensible = true;
 

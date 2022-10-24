@@ -32,7 +32,7 @@ report 50003 "DEL Update Request Manager"
                     END;
                 END;
                 i := i + 1;
-                //TODO UpdateRequestManager_CU.FNC_ProgressBar_Update(1);
+                UpdateRequestManager_CU.FNC_ProgressBar_Update(1);
             end;
 
             trigger OnPostDataItem()

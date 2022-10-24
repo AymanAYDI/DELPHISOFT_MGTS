@@ -24,7 +24,7 @@ report 50041 "DEL MAJ code devise"
 
                 trigger OnAfterGetRecord()
                 begin
-                    // "VAT Entry"."Currency Code" := 'EUR'; // TODO: Record "VAT Entry"' does not contain a definition for 'Currency Code
+                    "VAT Entry"."Currency Code" := 'EUR';
                     "VAT Entry".MODIFY();
                 end;
             }
@@ -62,7 +62,7 @@ report 50041 "DEL MAJ code devise"
 
                 trigger OnAfterGetRecord()
                 begin
-                    // "Currency Code" := 'EUR'; // TODO: Record "VAT Entry"' does not contain a definition for 'Currency Code
+                    "Currency Code" := 'EUR';
                     MODIFY();
                 end;
             }
@@ -93,16 +93,12 @@ report 50041 "DEL MAJ code devise"
     {
 
         layout
-        {
-        }
+        { }
 
         actions
-        {
-        }
+        { }
     }
-
     labels
-    {
-    }
+    { }
 }
 

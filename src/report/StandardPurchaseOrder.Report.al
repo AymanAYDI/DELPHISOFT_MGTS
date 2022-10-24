@@ -1,4 +1,4 @@
-report 50080 "DEL Standard Purchase - Order"
+report 50080 "DEL Standard Purchase - Order" //1322
 {
     RDLCLayout = './StandardPurchaseOrder.rdlc';
     WordLayout = './StandardPurchaseOrder.docx';

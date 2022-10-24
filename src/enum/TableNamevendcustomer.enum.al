@@ -1,5 +1,5 @@
 
-enum 50001 "DEL Table Namevend/customer"
+enum 50001 "DEL Table Namevend/customer" //EXISTE dans le STD, mais sans l'espace " "
 {
     Extensible = true;
 

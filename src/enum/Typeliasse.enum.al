@@ -1,4 +1,4 @@
-enum 50003 "DEL Type liasse"
+enum 50003 "DEL Type liasse" //n'existe pas dans l'STD 
 {
     Extensible = true;
 

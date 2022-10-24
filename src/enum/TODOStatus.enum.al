@@ -1,4 +1,4 @@
-enum 50049 "DEL TODOStatus"
+enum 50049 "DEL TODOStatus" // table de STD 5102 (field 21 )
 {
     Extensible = false;
 

@@ -1,4 +1,4 @@
-enum 50027 "DEL Ventilation Element"
+enum 50027 "DEL Ventilation Element" //n'existe pas dans l'STD 
 {
     Extensible = true;
 

@@ -1,4 +1,4 @@
-enum 50044 "DEL TYPES VAT"
+enum 50044 "DEL TYPES VAT" //n'existe pas dans l'STD 
 {
     Extensible = false;
 

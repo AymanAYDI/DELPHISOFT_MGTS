@@ -1,4 +1,4 @@
-enum 50024 "DEL TypePoisDetail"
+enum 50024 "DEL TypePoisDetail" //n'existe pas dans l'STD 
 {
     Extensible = true;
 

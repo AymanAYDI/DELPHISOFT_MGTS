@@ -1,4 +1,4 @@
-report 50071 "DEL Sales - Shipment"
+report 50071 "DEL Sales - Shipment"  //208
 {
     DefaultLayout = RDLC;
     RDLCLayout = './SalesShipment.rdlc';
@@ -652,7 +652,6 @@ report 50071 "DEL Sales - Shipment"
                         SegManagement.LogDocument(
                           5, "No.", 0, 0, DATABASE::Customer, "Sell-to Customer No.", "Salesperson Code",
                           "Campaign No.", "Posting Description", '');
-                //DEL.SAZ 14.03.19
                 ShiptoAddress_Rec.SETRANGE(Code, "Sales Shipment Header"."Ship-to Code");
                 IF ShiptoAddress_Rec.FINDFIRST() THEN BEGIN
                     BilAdr[1] := ShiptoAddress_Rec.Name;
@@ -665,7 +664,6 @@ report 50071 "DEL Sales - Shipment"
                 BilAdr2[1] := "Sales Shipment Header"."Bill-to Name";
                 BilAdr2[2] := "Sales Shipment Header"."Bill-to Contact";
 
-                //DEL.SAZ
             end;
         }
     }
@@ -896,9 +894,6 @@ report 50071 "DEL Sales - Shipment"
 
         COMPRESSARRAY(HeaderLabel);
         COMPRESSARRAY(HeaderTxt);
-        // To filter rounding line
-        // Cust.GET("Bill-to Customer No.");
-        // CustPostGrp.GET("Customer Posting Group");
     end;
 
 

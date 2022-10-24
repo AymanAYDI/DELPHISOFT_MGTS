@@ -1,6 +1,5 @@
 xmlport 50013 "DEL Import ligne vente"
 {
-    // T-00778     THM     16.03.16          add "Sale blocked"
 
     Direction = Import;
     // Encoding = UTF16; TODO: Format= VariableText
@@ -31,22 +30,15 @@ xmlport 50013 "DEL Import ligne vente"
                             IF ArtExt <> '' THEN BEGIN
                                 ItemCrossRef.SETRANGE("Reference No.", ArtExt);
                                 IF ItemCrossRef.FINDFIRST() THEN
-                                    //START T-00778
                                     REPEAT
                                         ItemCrossRef.CALCFIELDS(ItemCrossRef."DEL Sale blocked");
                                         IF ItemCrossRef."DEL Sale blocked" = FALSE THEN
-                                            //STOP T-00778
-
                                             Article := ItemCrossRef."Item No.";
 
-                                    //START T-00778
                                     UNTIL (ItemCrossRef.NEXT() = 0) OR (Article <> '');
-                                //STOP T-00778
                             END;
 
-                        //START T-00778
                         IF Article <> '' THEN BEGIN
-                            //STOP T-00778
                             IF DocCmd = '' THEN
                                 DocCmd := "Sales Line".GETFILTER("Document No.");
 
@@ -64,9 +56,7 @@ xmlport 50013 "DEL Import ligne vente"
                             "Sales Line".VALIDATE("No.", Article);
 
                             CLEAR(Article);
-                            //START T-00778
                         END;
-                        //STOP T-00778
                     end;
                 }
                 textelement(des)

@@ -43,7 +43,7 @@ table 50076 "DEL MGTS Change Log Entry"
             Caption = 'Table Caption';
             FieldClass = FlowField;
         }
-        field(7; "Type of Change"; Enum "DEL Type of Change")
+        field(7; "Type of Change"; Enum "Change Log Entry Type")
         {
             Caption = 'Type of Change';
         }
@@ -65,7 +65,7 @@ table 50076 "DEL MGTS Change Log Entry"
     }
 
 
-    procedure InsertLogEntry(UserID: Text[50]; TableNo: Integer; ChangeType: Enum "DEL Type of Change"; RecordID: Text[250])
+    procedure InsertLogEntry(UserID: Text[50]; TableNo: Integer; ChangeType: Enum "Change Log Entry Type"; RecordID: Text[250])
     begin
         INIT();
         "Date and Time" := CURRENTDATETIME;

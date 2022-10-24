@@ -1,4 +1,4 @@
-enum 50053 "DEL Table Name"
+enum 50053 "DEL Table Name" //enum existant dans le STD
 {
     Extensible = false;
 

@@ -1,7 +1,5 @@
 report 50053 "DEL Export Purchase Order"
 {
-    // 
-    //   MGTS10.009; Created object
 
     ProcessingOnly = true;
 
@@ -54,9 +52,6 @@ report 50053 "DEL Export Purchase Order"
                 ColNo := 1;
                 InsertExcelCell(ColNo, RowNo, Text008, '', FALSE, FALSE, FALSE);
 
-                //ColNo += 1;
-                //InsertExcelCell(ColNo, RowNo, Text009, '', FALSE, FALSE, FALSE);
-
                 ColNo += 1;
                 InsertExcelCell(ColNo, RowNo, Text010, '', FALSE, FALSE, FALSE);
 
@@ -93,7 +88,7 @@ report 50053 "DEL Export Purchase Order"
                 PurchaseLine.RESET();
                 PurchaseLine.SETRANGE("Document Type", "Document Type");
                 PurchaseLine.SETRANGE("Document No.", "No.");
-                //TODO  // PurchaseLine.SETRANGE("Customer/Vendor", PurchaseLine.Type::Item);
+                PurchaseLine.SETRANGE(Type, PurchaseLine.Type::Item);
                 IF PurchaseLine.FINDSET() THEN
                     REPEAT
 
@@ -116,9 +111,6 @@ report 50053 "DEL Export Purchase Order"
                         RowNo += 1;
                         ColNo := 1;
                         InsertExcelCell(ColNo, RowNo, "No.", '', FALSE, FALSE, FALSE);
-
-                        //ColNo += 1;
-                        //InsertExcelCell(ColNo, RowNo, FORMAT(PurchaseLine."Requested Receipt Date"), '', FALSE, FALSE, FALSE);
 
                         ColNo += 1;
                         InsertExcelCell(ColNo, RowNo, "DEL Type Order EDI", '', FALSE, FALSE, FALSE);
@@ -163,8 +155,15 @@ report 50053 "DEL Export Purchase Order"
                 IF GUIALLOWED THEN
                     Window.CLOSE();
 
+                // TODO: The application objects or methods have scope 'OnPrem' 
                 // ExcelBuffer.CreateBookAndOpenExcel('', Text001, Text002, COMPANYNAME, USERID);
-                // ExcelBuffer.GiveUserControl(); // TODO: The application objects or methods have scope 'OnPrem' and cannot be used for 'Cloud' development.
+                // ExcelBuffer.GiveUserControl(); 
+                ////// à corriger 
+                ExcelBuffer.CreateNewBook('');
+                ExcelBuffer.WriteSheet('', COMPANYNAME(), USERID());
+                ExcelBuffer.CloseBook();
+                ExcelBuffer.OpenExcel();
+                Error('');
             end;
 
             trigger OnPreDataItem()

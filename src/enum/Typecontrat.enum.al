@@ -1,4 +1,4 @@
-enum 50004 "DEL Type contrat"
+enum 50004 "DEL Type contrat" //n'existe pas dans l'STD 
 {
     Extensible = true;
 

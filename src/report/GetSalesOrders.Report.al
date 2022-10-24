@@ -1,4 +1,4 @@
-report 50078 "DEL Get Sales Orders"
+report 50078 "DEL Get Sales Orders" //698
 {
 
     Caption = 'Get Sales Orders';
@@ -49,12 +49,10 @@ report 50078 "DEL Get Sales Orders"
 
             trigger OnPreDataItem()
             begin
-                //>>MGTSEDI10.00.00.23
                 IF SalesDocNoFilter <> '' THEN BEGIN
                     "Sales Line".SETFILTER("Document Type", '%1', "Sales Line"."Document Type"::Order);
                     "Sales Line".SETFILTER("Document No.", SalesDocNoFilter);
                 END;
-                //<<MGTSEDI10.00.00.23
             end;
         }
     }
@@ -173,9 +171,6 @@ report 50078 "DEL Get Sales Orders"
         ReqLine."Sales Order Line No." := SalesLine."Line No.";
         ReqLine."Sell-to Customer No." := SalesLine."Sell-to Customer No.";
         SalesHeader.GET(1, SalesLine."Document No.");
-
-        //MGTS10.023; 002; mhh; deleted line: IF SpecOrder <> 1 THEN
-
         ReqLine."Ship-to Code" := SalesHeader."Ship-to Code";
         ReqLine."Item Category Code" := SalesLine."Item Category Code";
         ReqLine.Nonstock := SalesLine.Nonstock;
@@ -183,8 +178,6 @@ report 50078 "DEL Get Sales Orders"
         ReqLine."Purchasing Code" := SalesLine."Purchasing Code";
         // Backward Scheduling
         ReqLine."Due Date" := SalesLine."Shipment Date";
-
-        //MGTS10.008; 001; ehh; begin
         IF NOT Item.GET(SalesLine."No.") THEN
             Item.INIT();
 
@@ -200,10 +193,7 @@ report 50078 "DEL Get Sales Orders"
             END;
         END;
         ReqLine.VALIDATE("Vendor No.", Item."Vendor No.");
-        //MGTS10.008; 001; ehh; end
-
-        //MGTS0125; MHH; begin
-        IF SalesLine.Type = SalesLine.Type::Item THEN BEGIN
+        IF SalesLine.Type = SalesLine.Type::Item THEN
             IF FORMAT(Item."Lead Time Calculation") <> '' THEN BEGIN
                 ReqLine."DEL Purchase Order Due Date" := CALCDATE(STRSUBSTNO(Text50000, Item."Lead Time Calculation"), SalesLine."Shipment Date");
                 ReqLine."DEL Recalc. Date Of Delivery" := CALCDATE(STRSUBSTNO(Text50001, Item."Lead Time Calculation"), TODAY);
@@ -219,16 +209,11 @@ report 50078 "DEL Get Sales Orders"
                     ReqLine."DEL Recalc. Date Of Delivery" := TODAY;
                 END;
             END;
-        END;
-        //MGTS0125; MHH; end
-
         ReqLine."Ending Date" :=
           LeadTimeMgt.PlannedEndingDate(
             ReqLine."No.", ReqLine."Location Code", ReqLine."Variant Code", ReqLine."Due Date", ReqLine."Vendor No.", ReqLine."Ref. Order Type");
 
-        // START Interne1
         ReqLine."DEL Requested Delivery Date" := SalesLine."Requested Delivery Date";
-        // STOP Interne1
 
         ReqLine.CalcStartingDate('');
         ReqLine.UpdateDescription();

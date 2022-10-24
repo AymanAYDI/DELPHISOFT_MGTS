@@ -1,4 +1,4 @@
-enum 50073 "DEL Type Contact"
+enum 50073 "DEL Type Contact" //n'existe pas dans l'STD 
 {
     Extensible = false;
 

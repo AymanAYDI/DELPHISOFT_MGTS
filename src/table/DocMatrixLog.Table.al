@@ -6,7 +6,7 @@ table 50068 "DEL DocMatrix Log"
     {
 
 
-        field(1; Type; Enum "DEL type2")
+        field(1; Type; Enum "Credit Transfer Account Type")
 
         {
 

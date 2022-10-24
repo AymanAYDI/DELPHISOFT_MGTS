@@ -1,4 +1,4 @@
-enum 50007 "DEL Subject Type"
+enum 50007 "DEL Subject Type" //n'existe pas dans l'STD 
 {
     Extensible = true;
 

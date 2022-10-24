@@ -5,7 +5,7 @@ table 50067 "DEL Document Matrix"
 
     fields
     {
-        field(1; Type; Enum "DEL Type Fee Connection")
+        field(1; Type; Enum "Credit Transfer Account Type")
         {
             Caption = 'Type';
             DataClassification = ToBeClassified;
@@ -21,9 +21,8 @@ table 50067 "DEL Document Matrix"
 
             trigger OnValidate()
             begin
-                // TODO codeunit 50015
-                //TODO Name := DocumentMatrixMgt.GetCustVendName(Type, "No.");
-                // "Mail Text Langauge Code" := DocumentMatrixMgt.GetCustVendLanguageCode(Type, "No.");
+                Name := DocumentMatrixMgt.GetCustVendName(Type, "No.");
+                "Mail Text Langauge Code" := DocumentMatrixMgt.GetCustVendLanguageCode(Type, "No.");
             end;
         }
         field(3; "Process Type"; Enum "DEL Process Type")
@@ -188,7 +187,7 @@ table 50067 "DEL Document Matrix"
         {
             Caption = 'Mail Text Code';
             DataClassification = ToBeClassified;
-            //TODO TableRelation = "DEL DocMatrix Email Codes" WHERE("Language Code"=FILTER("MAIL TEXT LANGAUGE CODE"|''));
+            TableRelation = "DEL DocMatrix Email Codes" WHERE("Language Code" = FILTER('MAIL TEXT LANGAUGE CODE' | ''));
         }
         field(51; "Mail Text Langauge Code"; Code[10])
         {
@@ -275,6 +274,7 @@ table 50067 "DEL Document Matrix"
     local procedure CheckUsage()
     var
         lErr001: Label 'The selected Usage/Type combination is not valid!';
+        lErr002: Label 'The selected Usage/Process Type combination is not valid!';
     begin
         CASE TRUE OF
             (Usage = Usage::"P.Invoice") AND (Type = Type::Customer):
@@ -287,8 +287,8 @@ table 50067 "DEL Document Matrix"
                 ERROR(lErr001);
             (Usage = Usage::"S.Order") AND (Type = Type::Vendor):
                 ERROR(lErr001);
-        //TODO (Usage = Usage::"54") AND ("Process Type" = "Process Type"::Manual):
-        //ERROR(lErr002);
+        //TODO (Usage = Usage::54) AND ("Process Type" = "Process Type"::Manual):
+        // ERROR(lErr002);
         END;
     end;
 
@@ -374,16 +374,11 @@ table 50067 "DEL Document Matrix"
 
     procedure GetRequestPageParametersText(precDocumentMatrix: Record "DEL DocMatrix Setup") Value: Text
     var
-        // TempBlob: Record "TempBlob";
-        // FileManagement: Codeunit "File Management";
-        // DataStream: InStream;
-        // BodyOutStream: OutStream;
-        // BodyText: BigText;
         MyBigText: BigText;
         BLOBInStream: InStream;
     begin
         // get the text from the BLOB field
-        //TODO CALCFIELDS("Request Page Parameters");
+        CALCFIELDS("Request Page Parameters");
         IF "Request Page Parameters".HASVALUE THEN BEGIN
             CLEAR(MyBigText);
             "Request Page Parameters".CREATEINSTREAM(BLOBInStream);
@@ -411,7 +406,7 @@ table 50067 "DEL Document Matrix"
         BLOBInStream: InStream;
     begin
         // get the text from the BLOB field
-        //TODO CALCFIELDS("Request Page Parameters");
+        CALCFIELDS("Request Page Parameters");
         IF "Request Page Parameters".HASVALUE THEN BEGIN
             CLEAR(pBigText);
             "Request Page Parameters".CREATEINSTREAM(BLOBInStream);

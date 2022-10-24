@@ -1,6 +1,5 @@
 report 50066 "DEL Update Entry No"
 {
-    // Mgts10.00.04.00      07.12.2021 : Create object
 
     ProcessingOnly = true;
 

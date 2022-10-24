@@ -1,4 +1,4 @@
-enum 50061 "DEL Statut PA"
+enum 50061 "DEL Statut PA" //n'existe pas dans l'STD 
 {
     Extensible = false;
 

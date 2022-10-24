@@ -94,11 +94,16 @@ page 50018 "DEL Group Reporting"
     end;
 
     var
+        TempBlob: Codeunit "Temp Blob";
+        FileManagement: Codeunit "File Management";
+
+        Outsr: OutStream;
+
         TotalAmount: Decimal;
         Text000: Label 'File %1 Written.';
         DateFilterBalance: Text[250];
         DateFilterIncome: Text[250];
-        Filename: File;
+        Filename: Text;
 
 
     procedure CalcBalance(): Decimal
@@ -144,22 +149,23 @@ page 50018 "DEL Group Reporting"
     procedure PrepareFile()
     var
         GeneralSetup: Record "DEL General Setup";
+
     begin
         GeneralSetup.GET();
         //TODO: methods are not used for cloud dev---------------
-
         // Filename.TEXTMODE := TRUE;
         // Filename.WRITEMODE := TRUE;
         // Filename.QUERYREPLACE := TRUE;
         // Filename.CREATE(GeneralSetup."Reporting File");
         // WriteData();
         // Filename.CLOSE();
+        ///////// TO CHECK
+        Filename := GeneralSetup."Reporting File";
+        TempBlob.CreateOutStream(Outsr);
+        Outsr.WriteText(GeneralSetup."Reporting File");
+        WriteData();
+        MESSAGE(Text000);
 
-
-
-
-
-        MESSAGE(Text000, GeneralSetup."Reporting File");
     end;
 
 
@@ -167,6 +173,7 @@ page 50018 "DEL Group Reporting"
     var
         GLAccount: Record "G/L Account";
         ExportData: Text[250];
+        Outs: OutStream;
     begin
         GLAccount.SETRANGE("Account Type", Rec."Account Type"::Posting);
         GLAccount.SETFILTER("DEL Reporting Dimension 1 Code", '<>%1', '');
@@ -183,7 +190,8 @@ page 50018 "DEL Group Reporting"
                 GLAccount.CALCFIELDS("Net Change");
                 ExportData := GLAccount."DEL Reporting Dimension 1 Code" + '$' + GLAccount."DEL Reporting Dimension 2 Code" + '$' + GLAccount."No." + '$' +
                               GLAccount."No. 2" + '$' + GLAccount.Name + '$' + FORMAT(GLAccount."Income/Balance") + '$' + FORMAT(GLAccount."Net Change");
-            //TODO Filename.WRITE(ExportData);
+                //TODO Filename.WRITE(ExportData);
+                Outs.Write(ExportData);
             UNTIL GLAccount.NEXT() = 0;
     end;
 }

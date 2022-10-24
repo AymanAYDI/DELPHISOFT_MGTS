@@ -17,7 +17,7 @@ table 50069 "DEL DocMatrix Setup"
 
             trigger OnValidate()
             begin
-                //todo  GeneralMgt.CheckFolderName("Sales File Folder");
+                //TODO GeneralMgt.CheckFolderName("Sales File Folder");
             end;
         }
         field(11; "Purchase File Folder"; Text[250])
@@ -64,8 +64,10 @@ table 50069 "DEL DocMatrix Setup"
     {
     }
 
+    var
+        GeneralMgt: Codeunit "GeneralMgt";
 
-    procedure GetStorageLocation(Type: Enum "DEL type2"): Text[250]
+    procedure GetStorageLocation(Type: Enum "Credit Transfer Account Type"): Text[250] //enum 50103
     begin
         CASE Type OF
             Type::Customer:

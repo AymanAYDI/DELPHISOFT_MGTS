@@ -117,9 +117,8 @@ xmlport 50002 "DEL IC Transitaire with hscode"
                             trigger OnBeforePassVariable()
                             begin
                                 Item.SETRANGE("No.", "Purchase Line"."No.");
-                                IF Item.FIND('-') THEN BEGIN
+                                IF Item.FIND('-') THEN
                                     HSCODE := Item."DEL Code nomenc. douaniere";
-                                END;
                             end;
                         }
                         textelement(Quantite)
@@ -134,9 +133,8 @@ xmlport 50002 "DEL IC Transitaire with hscode"
                             begin
                                 longueur := STRLEN(FORMAT("Purchase Line".Quantity));
 
-                                IF (longueur < 4) THEN BEGIN
-                                    Quantite := FORMAT("Purchase Line".Quantity)
-                                END;
+                                IF (longueur < 4) THEN
+                                    Quantite := FORMAT("Purchase Line".Quantity);
 
 
                                 IF (longueur < 8) AND (longueur > 3) THEN BEGIN

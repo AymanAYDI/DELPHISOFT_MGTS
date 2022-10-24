@@ -6,7 +6,7 @@ table 99208 "DEL Ex_Extended Text Header"
 
     fields
     {
-        field(1; "Table Name"; Enum "DEL Table Name")
+        field(1; "Table Name"; Enum "Extended Text Table Name")
         {
             Caption = 'Table Name';
         }

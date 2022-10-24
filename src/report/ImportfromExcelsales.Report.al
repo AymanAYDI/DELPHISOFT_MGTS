@@ -49,13 +49,15 @@ report 50009 "DEL Import from Excel sales"
         ExcelBuf: Record "Excel Buffer";
         SalesPriceWorksheet: Record "Sales Price Worksheet";
         FileName: InStream;
-    // i changed filename from text[250] to instream        SheetName: Text[250];
+        // i changed filename from text[250] to instream      
+        SheetName: Text[250];
 
     local procedure ReadExcelSheet()
     begin
         //TODO only for onprem dev ! #Abir
         //ExcelBuf.OpenBook(FileName, SheetName);
-        // ExcelBuf.OpenBookStream(FileName, SheetName);
+
+        ExcelBuf.OpenBookStream(FileName, SheetName);
         ExcelBuf.ReadSheet();
     end;
 

@@ -140,9 +140,8 @@ report 50018 "DEL update fact vente/affaires"
             begin
                 Deal_ID_Co_Par := '';
                 Element.SETRANGE(Element."Type No.", "Sales Invoice Header"."No.");
-                IF Element.FIND('-') THEN BEGIN
-                    CurrReport.SKIP();
-                END
+                IF Element.FIND('-') THEN
+                    CurrReport.SKIP()
 
                 ELSE BEGIN
                     SalesInvoiceLine.SETRANGE(SalesInvoiceLine."Document No.", "Sales Invoice Header"."No.");
@@ -176,7 +175,7 @@ report 50018 "DEL update fact vente/affaires"
                         Element.VALIDATE("Entry No.", 0);
                         Element.VALIDATE("Bill-to Customer No.", "Sales Invoice Header"."Bill-to Customer No.");
                         Element."Add DateTime" := CURRENTDATETIME;
-                        Element.Period := 20130104D;       // 040113D; 
+                        Element.Period := 20130104D;       //CHECK DATE 040113D; 
                         Element."Splitt Index" := 0;
                         Element.INSERT();
                     END;

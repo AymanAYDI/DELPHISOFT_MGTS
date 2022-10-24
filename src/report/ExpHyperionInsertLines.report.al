@@ -141,11 +141,25 @@ report 50021 "DEL Exp. Hyperion Insert Lines"
             DateNow_Te := DELCHR(FORMAT(TODAY), '=', ':/.');
             TimeNow_Te := DELCHR(FORMAT(TIME), '=', ':/.');
         END;
+        //TODO: cloud mode ! 
 
-        //  TODO CustXmlFile_Fi.CREATE(GeneralSetup_Re."Hyperion File" + '\HFM_' + GeneralSetup_Re."Hyperion Company Code" + '_' + StartDate_Loc_Te + '_' + EndDate_Loc_Te + '_' + DateNow_Te + '_' + TimeNow_Te + '.csv');
+        // CustXmlFile_Fi.CREATE(GeneralSetup_Re."Hyperion File" + '\HFM_' +
+        // GeneralSetup_Re."Hyperion Company Code" + '_' + StartDate_Loc_Te + '_' + EndDate_Loc_Te +
+        //  '_' + DateNow_Te + '_' + TimeNow_Te + '.csv');
+
         // CustXmlFile_Fi.CREATEOUTSTREAM(XmlStream_Os);
         // XMLPORT.EXPORT(50011, XmlStream_Os);
         // CustXmlFile_Fi.CLOSE;
+
+        ///////// à corriger ! 
+        CustXmlFile_Fi := GeneralSetup_Re."Hyperion File" + '\HFM_' +
+        GeneralSetup_Re."Hyperion Company Code" + '_' + StartDate_Loc_Te + '_' + EndDate_Loc_Te +
+         '_' + DateNow_Te + '_' + TimeNow_Te + '.csv';
+        TempBlob.CreateOutStream(XmlStream_Os, TEXTENCODING::UTF8);
+        XMLPORT.EXPORT(XMLPORT::"DEL Export Hyperion File", XmlStream_Os);
+        MESSAGE('Export Xml File!');
+
+
     end;
 
     var
@@ -155,6 +169,8 @@ report 50021 "DEL Exp. Hyperion Insert Lines"
         DimensionSetEntry_Re: Record "Dimension Set Entry";
         GLAccount_Re: Record "G/L Account";
         GLEntry_Re: Record "G/L Entry";
+        tempblob: Codeunit "Temp Blob";
+
         EndDate_Da: Date;
         StartDate_Da: Date;
         StartPeriodeDate_Da: Date;
@@ -164,5 +180,7 @@ report 50021 "DEL Exp. Hyperion Insert Lines"
         EndDate_Loc_Te: Text;
         StartDate_Loc_Te: Text;
         TimeNow_Te: Text;
+        CustXmlFile_Fi: Text;
+        XmlStream_Os: OutStream;
 }
 

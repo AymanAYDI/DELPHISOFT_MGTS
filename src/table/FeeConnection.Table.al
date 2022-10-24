@@ -6,7 +6,7 @@ table 50025 "DEL Fee Connection"
 
     fields
     {
-        field(1; Type; Enum "DEL Type Fee Connection")
+        field(1; Type; Enum "Credit Transfer Account Type")
         {
             Caption = 'Type';
             DataClassification = CustomerContent;

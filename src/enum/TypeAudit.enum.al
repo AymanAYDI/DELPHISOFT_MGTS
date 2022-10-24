@@ -1,4 +1,4 @@
-enum 50008 "DEL Type Audit"
+enum 50008 "DEL Type Audit" // //n'existe pas dans l'STD 
 {
     Extensible = true;
 

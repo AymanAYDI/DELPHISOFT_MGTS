@@ -49,14 +49,15 @@ report 50013 "DEL Import from Excel purch"
     var
         PurchPriceWorksheet: Record "DEL Purchase Price Worksheet";
         ExcelBuf: Record "Excel Buffer";
-        FileName: InStream;
-    //Text[250];        SheetName: Text[250];
+        FileName: InStream; //Text[250]; 
+        SheetName: Text[250];
+
 
     local procedure ReadExcelSheet()
     begin
         //TODO:CLOUD ExcelBuf.OpenBook(FileName, SheetName);
-        // ExcelBuf.OpenBookStream(FileName, SheetName);
 
+        ExcelBuf.OpenBookStream(FileName, SheetName);
         ExcelBuf.ReadSheet();
     end;
 
@@ -97,7 +98,7 @@ report 50013 "DEL Import from Excel purch"
             last := ExcelBuf."Row No.";
 
         i := 5;
-        IF ExcelBuf.FIND('-') THEN BEGIN
+        IF ExcelBuf.FIND('-') THEN
             WHILE (i <= last) DO BEGIN
                 ExcelBuf.SETRANGE("Row No.", i);
                 PurchPriceWorksheet."Item No." := '';
@@ -111,7 +112,7 @@ report 50013 "DEL Import from Excel purch"
                 PurchPriceWorksheet."Direct Unit Cost" := 0;
                 PurchPriceWorksheet."Ending Date" := 0D;
                 PurchPriceWorksheet."New Unit Price" := 0;
-                IF ExcelBuf.FIND('-') THEN BEGIN
+                IF ExcelBuf.FIND('-') THEN
                     REPEAT
                         IF ExcelBuf."Column No." = 1 THEN BEGIN
                             EVALUATE(FormatDate, ExcelBuf."Cell Value as Text");
@@ -160,12 +161,10 @@ report 50013 "DEL Import from Excel purch"
                             PurchPriceWorksheet."New Unit Price" := FormatDecimal3;
                         END;
                     UNTIL ExcelBuf.NEXT() = 0;
-                END;
                 PurchPriceWorksheet.INSERT();
 
                 i := i + 1;
             END;
-        END;
     end;
 }
 

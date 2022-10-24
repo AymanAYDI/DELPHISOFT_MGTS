@@ -1,4 +1,4 @@
-enum 50028 "DEL Ventilation Position"
+enum 50028 "DEL Ventilation Position" //n'existe pas dans l'STD 
 {
     Extensible = true;
 

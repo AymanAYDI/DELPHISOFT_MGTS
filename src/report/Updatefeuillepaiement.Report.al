@@ -12,13 +12,13 @@ report 50050 "DEL Update feuille paiement"
             begin
                 IF UpdateRef THEN
                     IF VendorLedgerEntry.GET("Gen. Journal Line"."Source Line No.") THEN
-                        // "Gen. Journal Line"."Reference No." := VendorLedgerEntry."Reference No."; TODO: field "Reference No." is not exist in "Gen. Journal Line" and "Vendor Ledger Entry" record
+                        "Gen. Journal Line"."Reference No." := VendorLedgerEntry."Reference No.";
 
                 IF UpdateDesc THEN
-                            IF VendorLedgerEntry.GET("Gen. Journal Line"."Source Line No.") THEN BEGIN
-                                Vendor.GET(VendorLedgerEntry."Vendor No.");
-                                "Gen. Journal Line".Description := COPYSTR(Vendor.Name, 1, 49 - STRLEN(VendorLedgerEntry."External Document No.")) + '/' + VendorLedgerEntry."External Document No.";
-                            END;
+                    IF VendorLedgerEntry.GET("Gen. Journal Line"."Source Line No.") THEN BEGIN
+                        Vendor.GET(VendorLedgerEntry."Vendor No.");
+                        "Gen. Journal Line".Description := COPYSTR(Vendor.Name, 1, 49 - STRLEN(VendorLedgerEntry."External Document No.")) + '/' + VendorLedgerEntry."External Document No.";
+                    END;
 
                 IF UpdateBank THEN
                     IF VendorLedgerEntry.GET("Gen. Journal Line"."Source Line No.") THEN

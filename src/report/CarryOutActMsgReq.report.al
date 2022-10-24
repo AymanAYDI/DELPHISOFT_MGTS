@@ -1,4 +1,4 @@
-report 50077 "DEL CarryOut Act. Msg. - Req."
+report 50077 "DEL CarryOut Act. Msg. - Req." //493
 {
 
     Caption = 'Carry Out Action Msg. - Req.';
@@ -87,38 +87,38 @@ report 50077 "DEL CarryOut Act. Msg. - Req."
         ReqWkshTmpl.GET(NewReqWkshName."Worksheet Template Name");
     end;
 
-    local procedure UseOneJnl(var ReqLine: Record "Requisition Line")
+    local procedure UseOneJnl(var ReqLine1: Record "Requisition Line")
     var
         DELMGTS_FctMgt: Codeunit "DEL MGTS_FctMgt";
     begin
-        ReqWkshTmpl.GET(ReqLine."Worksheet Template Name");
-        IF ReqWkshTmpl.Recurring AND (ReqLine.GETFILTER("Order Date") <> '') THEN
-            ReqLine.FIELDERROR("Order Date", Text000);
-        TempJnlBatchName := ReqLine."Journal Batch Name";
+        ReqWkshTmpl.GET(ReqLine1."Worksheet Template Name");
+        IF ReqWkshTmpl.Recurring AND (ReqLine1.GETFILTER("Order Date") <> '') THEN
+            ReqLine1.FIELDERROR("Order Date", Text000);
+        TempJnlBatchName := ReqLine1."Journal Batch Name";
         IF CreateFromEDI THEN BEGIN
             DELMGTS_FctMgt.SetEDIParam(TRUE, TRUE);
             PurchOrderHeader."Order Date" := TODAY;
 
         END;
         ReqWkshMakeOrders.Set(PurchOrderHeader, EndOrderDate, PrintOrder);
-        ReqWkshMakeOrders.CarryOutBatchAction(ReqLine);
+        ReqWkshMakeOrders.CarryOutBatchAction(ReqLine1);
 
-        IF ReqLine."Line No." = 0 THEN
+        IF ReqLine1."Line No." = 0 THEN
             MESSAGE(Text001)
         ELSE
             IF NOT HideDialog THEN
-                IF TempJnlBatchName <> ReqLine."Journal Batch Name" THEN
+                IF TempJnlBatchName <> ReqLine1."Journal Batch Name" THEN
                     MESSAGE(
                       Text003,
-                      ReqLine."Journal Batch Name");
+                      ReqLine1."Journal Batch Name");
 
-        IF NOT ReqLine.FIND('=><') OR (TempJnlBatchName <> ReqLine."Journal Batch Name") THEN BEGIN
-            ReqLine.RESET();
-            ReqLine.FILTERGROUP := 2;
-            ReqLine.SETRANGE("Worksheet Template Name", ReqLine."Worksheet Template Name");
-            ReqLine.SETRANGE("Journal Batch Name", ReqLine."Journal Batch Name");
-            ReqLine.FILTERGROUP := 0;
-            ReqLine."Line No." := 1;
+        IF NOT ReqLine1.FIND('=><') OR (TempJnlBatchName <> ReqLine1."Journal Batch Name") THEN BEGIN
+            ReqLine1.RESET();
+            ReqLine1.FILTERGROUP := 2;
+            ReqLine1.SETRANGE("Worksheet Template Name", ReqLine1."Worksheet Template Name");
+            ReqLine1.SETRANGE("Journal Batch Name", ReqLine1."Journal Batch Name");
+            ReqLine1.FILTERGROUP := 0;
+            ReqLine1."Line No." := 1;
         END;
     end;
 

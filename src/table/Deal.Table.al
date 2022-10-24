@@ -27,8 +27,8 @@ table 50020 "DEL Deal"
         }
         field(20; Comment; Boolean)
         {
-            CalcFormula = Exist("Comment Line" WHERE("Table Name" = CONST(14),
-                                                      "No." = FIELD(ID)));
+            CalcFormula = Exist("Comment Line" WHERE("Table Name" = CONST("IC Partner"),
+                                                      "No." = FIELD(ID))); //CONST(14)
             Caption = 'Comment';
             Editable = false;
             FieldClass = FlowField;

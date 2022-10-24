@@ -1,4 +1,4 @@
-enum 50066 "DEL Statut CG"
+enum 50066 "DEL Statut CG" //n'existe pas dans l'STD 
 {
     Extensible = false;
 

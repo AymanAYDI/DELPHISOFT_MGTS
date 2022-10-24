@@ -241,7 +241,7 @@ table 99210 "DEL Ex_Campaign"
             MinValue = 0;
         }
 
-        field(33; "To-do Status Filter"; Enum "DEL TODOStatus")
+        field(33; "To-do Status Filter"; Enum "Task Status")
         {
             Caption = 'To-do Status Filter';
             FieldClass = FlowFilter;

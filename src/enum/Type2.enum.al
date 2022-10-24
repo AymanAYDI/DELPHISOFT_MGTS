@@ -1,4 +1,4 @@
-enum 50103 "DEL type2"
+enum 50103 "DEL type2" //existe dans l'STD table 1206 (field3)
 {
     Extensible = true;
 

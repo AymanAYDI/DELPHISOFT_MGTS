@@ -412,10 +412,14 @@ report 50026 "DEL Export achat"
             ;
             ExportAchat."Référence fournisseur Prin." := CorLengthTxt(Item_Rec."Vendor Item No.", 30);
             ExportAchat."Code article B.U" := CorLengthTxt(Item_Rec."No.", 10);
-            //TODO   // ExportAchat."Groupe marchandise B.U" := CorLengthTxt(Item_Rec."DEL Product Group Code", 30);
+            //TODO ExportAchat."Groupe marchandise B.U" := CorLengthTxt(Item_Rec."DEL Product Group Code", 30);
             ExportAchat."Libellé produit" := CorLengthTxt(Item_Rec.Description, 50);
             ExportAchat.INSERT();
         END;
+
+
+
+
     end;
 }
 
