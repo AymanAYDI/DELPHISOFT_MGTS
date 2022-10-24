@@ -1,4 +1,4 @@
-enum 50063 "DEL Level"
+enum 50063 "DEL Level" //n'existe pas 
 {
     Extensible = false;
 
@@ -6,11 +6,12 @@ enum 50063 "DEL Level"
     {
         Caption = 'Standard';
     }
-    value(1; "Intermédiaire")
+    value(1; "Intermediate")
     {
-        Caption = 'Intermediate Premium';
+        Caption = 'Intermediate';
     }
     value(2; Premium)
     {
+        Caption = 'Premium';
     }
 }

@@ -1,4 +1,4 @@
-enum 50046 "DEL Field"
+enum 50046 "DEL Field" //n'existe pas
 {
     Extensible = true;
 

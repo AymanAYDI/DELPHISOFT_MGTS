@@ -1,4 +1,4 @@
-enum 50020 "DEL Request_Status"
+enum 50020 "DEL Request_Status" //n'existe pas dans l'STD 
 {
     Extensible = true;
 

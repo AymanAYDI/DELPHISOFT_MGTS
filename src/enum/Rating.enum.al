@@ -1,4 +1,4 @@
-enum 50010 "DEL Rating"
+enum 50010 "DEL Rating" //n'existe pas dans l'STD 
 {
     Extensible = true;
 

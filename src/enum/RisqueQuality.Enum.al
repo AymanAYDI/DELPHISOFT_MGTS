@@ -1,4 +1,4 @@
-enum 50021 "DEL Risque Quality"
+enum 50021 "DEL Risque Quality"  //n'existe pas dans l'STD 
 {
     Extensible = true;
 

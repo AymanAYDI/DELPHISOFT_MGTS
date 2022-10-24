@@ -1,4 +1,4 @@
-enum 50051 "Separator "
+enum 50051 "DEL Separator" //n'existe pas dans l'STD 
 {
     Extensible = false;
 

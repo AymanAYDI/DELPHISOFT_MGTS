@@ -1,4 +1,5 @@
-enum 50100 "DEL Status Purchase Order"
+enum 50100 "DEL Status Purchase Order" //n'existe pas dans l'STD 
+
 {
     Extensible = false;
 

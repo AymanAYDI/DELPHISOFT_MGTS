@@ -1,4 +1,4 @@
-enum 50029 "DEL Nature de Regulation"
+enum 50029 "DEL Nature de Regulation" //n'existe pas in the STD 
 {
     Extensible = false;
 

@@ -1,4 +1,4 @@
-enum 50012 "DEL Product Type"
+enum 50012 "DEL Product Type" //n'existe pas dans l'STD 
 {
     Extensible = true;
 

@@ -1,4 +1,4 @@
-enum 50016 "DEL Document Type"
+enum 50016 "DEL Document Type" //n'existe pas dans cet ordre 
 {
     Extensible = true;
 

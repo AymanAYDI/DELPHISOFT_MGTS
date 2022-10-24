@@ -10,10 +10,10 @@ codeunit 50024 "DEL Deal Item"
 
         Deal_Cu: Codeunit "DEL Deal";
         UpdateRequestManager_Cu: Codeunit "DEL Update Request Manager";
-
         Type_Op: Option Cost,Price;
-
         ERROR_TXT: Label 'ERREUR\Source : %1\Function : %2\Reason : %3';
+        Element_Cu: Codeunit "DEL Element";
+        Position_Cu: Codeunit "DEL Position";
 
     procedure FNC_Add(Deal_ID_Co_Par: Code[20]; Item_No_Co_Par: Code[20])
     var

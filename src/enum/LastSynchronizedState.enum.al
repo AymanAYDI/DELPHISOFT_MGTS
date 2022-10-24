@@ -1,4 +1,4 @@
-enum 50047 "DEL Last Synchronized State"
+enum 50047 "DEL Last Synchronized State" //still an option in the STD ( 5967 )
 {
     Extensible = false;
 

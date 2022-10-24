@@ -25,7 +25,7 @@ codeunit 50019 "DEL Create Purch. EDI"
     var
         GeneralSetup: Record "DEL General Setup";
         RequisitionLine: Record "Requisition Line";
-        PerformAction: Report "Carry Out Action Msg. - Req.";
+        PerformAction: Report "DEL CarryOut Act. Msg. - Req.";
         GetSalesOrder: Report "DEL Get Sales Orders";
     begin
         GeneralSetup.GET();

@@ -1,4 +1,4 @@
-enum 50067 "DEL Ship Per"
+enum 50067 "DEL Ship Per"//n'existe pas dans l'STD 
 {
     Extensible = false;
 

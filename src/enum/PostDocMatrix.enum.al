@@ -1,4 +1,4 @@
-enum 50045 "DEL Post DocMatrix"
+enum 50045 "DEL Post DocMatrix"  //n'existe pas dans le STD 
 {
     Extensible = false;
 

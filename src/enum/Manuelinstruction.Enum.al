@@ -1,4 +1,4 @@
-enum 50033 "DEL Manuel instruction"
+enum 50033 "DEL Manuel instruction" //n'existe pas dans le STD mais 
 {
     Extensible = true;
 

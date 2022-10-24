@@ -1,4 +1,4 @@
-enum 50037 "DoC Facture Type"
+enum 50037 "DEL DoC Facture Type" //n'existe pas 
 {
     Extensible = false;
 

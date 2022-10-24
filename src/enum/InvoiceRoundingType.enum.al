@@ -1,4 +1,4 @@
-enum 50075 "DEL Invoice Rounding Type"
+enum 50075 "DEL Invoice Rounding Type" //still an option in the STD (tab4 currency)
 {
     Extensible = false;
 

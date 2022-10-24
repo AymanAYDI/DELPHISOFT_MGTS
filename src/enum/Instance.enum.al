@@ -1,4 +1,4 @@
-enum 50005 "DEL Instance"
+enum 50005 "DEL Instance" //n'existe pas dans le STD
 {
     Extensible = true;
 

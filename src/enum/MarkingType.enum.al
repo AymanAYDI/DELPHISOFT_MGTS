@@ -1,4 +1,4 @@
-enum 50023 "DEL Marking Type"
+enum 50023 "DEL Marking Type" //n'existe pas dans l'STD 
 {
     Extensible = false;
 

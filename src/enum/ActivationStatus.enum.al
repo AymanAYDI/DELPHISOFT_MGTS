@@ -1,4 +1,4 @@
-enum 50038 "DEL ActivationStatus"   // still an option in the std exp status in 13
+enum 50038 "DEL ActivationStatus"   //TODO : still an option in the std exp status in 13 there is an enum "Impact Status" that has the same options but not in the same order 
 {
     Extensible = false;
 

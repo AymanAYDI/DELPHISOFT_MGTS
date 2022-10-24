@@ -1,4 +1,4 @@
-enum 50000 "DEL Status"
+enum 50000 "DEL Status" //n'existe pas dans l'STD 
 {
     Extensible = true;
 

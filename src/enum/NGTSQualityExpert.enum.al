@@ -1,4 +1,4 @@
-enum 50070 "DEL NGTS Quality Expert"
+enum 50070 "DEL NGTS Quality Expert" //n'existe pas dans le STD 
 {
     Extensible = false;
 

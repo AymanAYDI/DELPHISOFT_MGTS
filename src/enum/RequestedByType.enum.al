@@ -1,4 +1,4 @@
-enum 50022 "DEL Requested By Type"
+enum 50022 "DEL Requested By Type" //n'existe pas dans l'STD de cet ordre 
 {
     Extensible = true;
 

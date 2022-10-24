@@ -11,7 +11,7 @@ tableextension 50032 "DEL HandledICOutboxPurchHdr" extends "Handled IC Outbox Pu
         field(50003; "Port de départ"; Text[30])
         {
         }
-        field(50004; "Code événement"; Enum "DEL Event Code")
+        field(50004; "Code événement"; Enum "DEL Code Event")
         {
         }
         field(50005; "Récépissé transitaire"; Text[30])
