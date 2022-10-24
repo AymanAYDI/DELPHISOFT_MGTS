@@ -1,4 +1,4 @@
-enum 50035 "DEL Process Type"
+enum 50035 "DEL Process Type" //n'existe pas dans le STD 
 {
     Extensible = false;
 

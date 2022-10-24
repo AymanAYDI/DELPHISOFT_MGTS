@@ -293,7 +293,7 @@ tableextension 50020 "DEL Item" extends Item //27
             Editable = false;
             FieldClass = FlowField;
         }
-        field(60003; "DEL Risque Securitaire"; Enum "DEL Risque Securitaire")
+        field(60003; "DEL Risque Securitaire"; Enum "DEL Risque Quality")
         {
             //TODO CalcFormula = Lookup("DEL Regulation Matrix"."Risque Quality"
             //  WHERE ("Item Category Code"=FIELD("Item Category Code"),
@@ -356,7 +356,7 @@ tableextension 50020 "DEL Item" extends Item //27
             Editable = false;
             FieldClass = FlowField;
         }
-        field(60010; "DEL Marque Produit"; Enum "DEL Marque Produit")
+        field(60010; "DEL Marque Produit"; Enum "DEL Mark")
         {
             Caption = 'Brand Type';
 

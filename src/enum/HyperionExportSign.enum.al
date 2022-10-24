@@ -1,4 +1,4 @@
-enum 50060 "DEL Hyperion Export Sign"
+enum 50060 "DEL Hyperion Export Sign" //n'existe pas dans le std 
 {
     Extensible = false;
 

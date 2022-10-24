@@ -1,5 +1,5 @@
 
-enum 50055 "DEL Priority Filter"
+enum 50055 "DEL Priority Filter" //still an option in the STD ( tab13 , Priority Filter )
 
 {
     Extensible = false;
@@ -8,7 +8,7 @@ enum 50055 "DEL Priority Filter"
     {
         Caption = 'Low';
     }
-    value(1; Normal)
+    value(1; Medium)
     {
         Caption = 'Normal';
     }

@@ -1,4 +1,4 @@
-enum 50032 "DEL Mark"
+enum 50032 "DEL Mark"   //n'existe pas dans l'std 
 {
     Extensible = true;
 

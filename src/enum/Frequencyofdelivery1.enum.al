@@ -1,4 +1,4 @@
-enum 50065 "DEL Frequency of delivery 1"
+enum 50065 "DEL Frequency of delivery 1" // n'existe pas 
 {
     Extensible = false;
 

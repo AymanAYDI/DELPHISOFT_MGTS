@@ -94,7 +94,7 @@ table 50000 "DEL General Setup"
             TableRelation = "No. Series";
             Caption = 'Provision Nos.';
         }
-        field(856; "Folder Expeditors"; Text[250])
+        field(856; "Folder Expeditors"; Blob) //TODO: Check modification text[250]
         {
             Caption = 'Folder Expeditors';
 
@@ -103,7 +103,7 @@ table 50000 "DEL General Setup"
                 //TODO //codeunit // GeneralMgt.CheckFolderName("Folder Expeditors");
             end;
         }
-        field(857; "Folder Expeditors Archive"; Text[250])
+        field(857; "Folder Expeditors Archive"; Blob) //TODO: Check modification text[250]
         {
             Caption = 'Folder Expeditors Archive';
 
@@ -112,7 +112,7 @@ table 50000 "DEL General Setup"
                 //TODO //codeunit //   GeneralMgt.CheckFolderName("Folder Expeditors Archive");
             end;
         }
-        field(858; "Folder Maersk"; Text[250])
+        field(858; "Folder Maersk"; Blob) //TODO: Check modification text[250]
         {
             Caption = 'Folder Maersk';
 
@@ -121,7 +121,7 @@ table 50000 "DEL General Setup"
                 //TODO //codeunit //    GeneralMgt.CheckFolderName("Folder Maersk");
             end;
         }
-        field(859; "Folder Maersk Archive"; Text[250])
+        field(859; "Folder Maersk Archive"; Blob) //TODO: Check modification text[250]
         {
             Caption = 'Folder Maersk Archive';
 

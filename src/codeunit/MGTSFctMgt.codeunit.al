@@ -1089,9 +1089,9 @@ codeunit 50101 "DEL MGTS_FctMgt"
                 END;
             END;
         END;
-
-        //DocMatrixManagement.TestShipmentSelectionBeforeUptdateRequest(SalesHeader, PostDealShipmentSelection, ShptUpdateRequestID, ShipmentSelected);
-        DealCU.FNC_Reinit_Deal(PostDealShipmentSelection.Deal_ID, FALSE, TRUE);
+        // TODO
+        // DocMatrixManagement.TestShipmentSelectionBeforeUptdateRequest(SalesHeader, PostDealShipmentSelection, ShptUpdateRequestID, ShipmentSelected);
+        // DealCU.FNC_Reinit_Deal(PostDealShipmentSelection.Deal_ID, FALSE, TRUE);
     END;
 
 

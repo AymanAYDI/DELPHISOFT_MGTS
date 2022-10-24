@@ -1,4 +1,4 @@
-enum 50040 "DEL Type ReqRes"
+enum 50040 "DEL Type ReqRes" //n'existe pas 
 {
     Extensible = false;
 

@@ -1,4 +1,4 @@
-enum 50062 "DEL Fréquence de facturation"
+enum 50062 "DEL Fréquence de facturation" // n'existe pas dans le STD
 {
     Extensible = false;
 

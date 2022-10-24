@@ -22,7 +22,7 @@ table 50027 "DEL Element Connection"
             Caption = 'Apply To';
 
         }
-        field(4; Instance; Enum "DEL Apply To")
+        field(4; Instance; Enum "DEL Instance")
         {
 
             Caption = 'Instance';

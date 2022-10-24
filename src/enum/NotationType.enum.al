@@ -1,4 +1,4 @@
-enum 50002 "DEL Notation Type"
+enum 50002 "DEL Notation Type" //n'existe pas dans le std 
 {
     Extensible = true;
 

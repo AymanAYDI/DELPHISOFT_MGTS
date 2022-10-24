@@ -1,4 +1,4 @@
-enum 50034 "DEL Control Type de regulation"
+enum 50034 "DEL Control Type de regulation"  //n'existe pas 
 {
     Extensible = false;
 

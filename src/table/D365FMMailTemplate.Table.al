@@ -47,7 +47,7 @@ table 50082 "DEL D365FM Mail Template"
             DataClassification = ToBeClassified;
             TableRelation = "Reminder Level"."No." WHERE("Reminder Terms Code" = FIELD("Reminder Terms Code"));
         }
-        field(10; "Document Type"; Enum "DoC Facture Type")
+        field(10; "Document Type"; Enum "DEL DoC Facture Type")
         {
             Caption = 'Type document';
             DataClassification = ToBeClassified;
