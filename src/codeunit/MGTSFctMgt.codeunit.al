@@ -1020,8 +1020,8 @@ codeunit 50101 "DEL MGTS_FctMgt"
         DealShptSalesLine: Record "Sales Line";
         DealCU: Codeunit "DEL Deal"; //Var global dans le spécifique
         DocMatrixManagement: Codeunit "DEL DocMatrix Management";
- //Var global dans le spécifique        ShipmentSelected: Boolean;
- //Var global dans le spécifique        ShptUpdateRequestID: Code[20]; //Var global dans le spécifique
+        //Var global dans le spécifique        ShipmentSelected: Boolean;
+        //Var global dans le spécifique        ShptUpdateRequestID: Code[20]; //Var global dans le spécifique
         ValueSpecial: Code[20];
 
 
@@ -1090,7 +1090,7 @@ codeunit 50101 "DEL MGTS_FctMgt"
             END;
         END;
 
-        DocMatrixManagement.TestShipmentSelectionBeforeUptdateRequest(SalesHeader, PostDealShipmentSelection, ShptUpdateRequestID, ShipmentSelected);
+        //DocMatrixManagement.TestShipmentSelectionBeforeUptdateRequest(SalesHeader, PostDealShipmentSelection, ShptUpdateRequestID, ShipmentSelected);
         DealCU.FNC_Reinit_Deal(PostDealShipmentSelection.Deal_ID, FALSE, TRUE);
     END;
 

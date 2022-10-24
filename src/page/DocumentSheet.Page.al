@@ -104,38 +104,48 @@ page 50065 "DEL Document Sheet"
     local procedure Add()
     var
         DocumentLine: Record "DEL Document Line";
-
         InStr: InStream;
+        //oFile: file;
         LastLineNo: Integer;
         OutStr: OutStream;
         ImportFileName: Text;
         ServerFileName: Text;
+        ////////---------
+        TempBlob: Codeunit "Temp Blob";
     begin
-        IF NOT Document_CU.OpenFile(ImportFileName, ServerFileName) THEN
-            EXIT;
+        //TODO: Document_CU a été commenté car il contient le Dotnet
+        // IF NOT Document_CU.OpenFile(ImportFileName, ServerFileName) THEN
+        //     EXIT;
 
         IF ServerFileName = '' THEN
             EXIT;
         //TODO 
-        // DocumentLine.SETRANGE(Rec."Table Name", Rec."Table Name");
-        // DocumentLine.SETRANGE(Rec."No.", Rec."No.");
+        DocumentLine.SETRANGE("Table Name", Rec."Table Name");
+        DocumentLine.SETRANGE("No.", Rec."No.");
+
         IF DocumentLine.FINDLAST() THEN
             LastLineNo := DocumentLine."Line No.";
-
         Rec.INIT();
         Rec."Line No." := LastLineNo + 10000;
-
-        //TODO Cannot be used for a cloud dev oFile.OPEN(ServerFileName);
+        //TODO Cannot be used for a cloud dev: à corriger
+        //  oFile.OPEN(ServerFileName);
         // oFile.CREATEINSTREAM(InStr);
+        // Rec.Document.CREATEOUTSTREAM(OutStr);
+        // COPYSTREAM(OutStr, InStr); == > code originale ! 
+        // oFile.CLOSE;
+
+        TempBlob.CREATEINSTREAM(InStr, TEXTENCODING::UTF8);
         Rec.Document.CREATEOUTSTREAM(OutStr);
         COPYSTREAM(OutStr, InStr);
-        //TODO: Cannot be used for a cloud dev oFile.CLOSE;
+
+
 
         Rec."Insert Date" := TODAY;
         Rec."Insert Time" := TIME;
 
-        Rec.Path := Document_CU.GetDirectoryName(ImportFileName);
-        Rec."File Name" := Document_CU.GetFileName(ImportFileName);
+        //TODO: Document_CU a été commenté car il contient le Dotnet
+        // Rec.Path := Document_CU.GetDirectoryName(ImportFileName);
+        // Rec."File Name" := Document_CU.GetFileName(ImportFileName);
 
         Rec.INSERT(TRUE);
         CurrPage.UPDATE(FALSE);
@@ -143,7 +153,6 @@ page 50065 "DEL Document Sheet"
 
     local procedure SaveAs()
     var
-
     begin
     end;
 
@@ -152,21 +161,25 @@ page 50065 "DEL Document Sheet"
         InStr: InStream;
         OutStr: OutStream;
         Directory: Text;
+        //oFile: File;
+        ExportFileName: text;
+        TempBlob: Codeunit "Temp Blob";
 
     begin
+        //TODO: Document_CU a été commenté car il contient le Dotnet
+        // Directory := Document_CU.TempDirectory();
 
-
-
-        Directory := Document_CU.TempDirectory();
-        //TODO: Cannot be used for a cloud dev
-
+        //TODO: Cannot be used for a cloud dev: à vérifier le create 
         // oFile.CREATE(Directory + Rec."File Name");
         // oFile.CREATEOUTSTREAM(OutStr);
+        // Rec.Document.CREATEINSTREAM(InStr);
+        // COPYSTREAM(OutStr, InStr);
+        // oFile.CLOSE;
 
-        Rec.Document.CREATEINSTREAM(InStr);
+        TempBlob.CREATEINSTREAM(InStr, TEXTENCODING::UTF8);
+        Rec.Document.CREATEOUTSTREAM(OutStr);
         COPYSTREAM(OutStr, InStr);
 
-        //TODO oFile.CLOSE; Cannot be used for a cloud dev
 
         HYPERLINK(Directory + Rec."File Name");
     end;

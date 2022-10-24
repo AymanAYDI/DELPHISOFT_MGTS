@@ -98,64 +98,65 @@ page 50075 "DEL Document Sheet Contrats"
         OutStr: OutStream;
         ImportFileName: Text;
         ServerFileName: Text;
+        TempBlob: Codeunit "Temp Blob";
+
     begin
-        IF NOT Document_CU.OpenFile(ImportFileName, ServerFileName) THEN
-            EXIT;
+        //TODO: Document_CU a été commenté car il contient le Dotnet
+        // IF NOT Document_CU.OpenFile(ImportFileName, ServerFileName) THEN
+        //     EXIT;
 
         IF ServerFileName = '' THEN
             EXIT;
-
         DocumentLine.SETRANGE("Table Name", Rec."Table Name");
         DocumentLine.SETRANGE("No.", Rec."No.");
         IF DocumentLine.FINDLAST() THEN
             LastLineNo := DocumentLine."Line No.";
-
         Rec.INIT();
         Rec."Line No." := LastLineNo + 10000;
 
         //TODO oFile.OPEN(ServerFileName);
         // oFile.CREATEINSTREAM(InStr);
+        // Rec.Document.CREATEOUTSTREAM(OutStr);
+        // COPYSTREAM(OutStr, InStr);
+        //TODO oFile.CLOSE;
+
+        TempBlob.CREATEINSTREAM(InStr, TEXTENCODING::UTF8);
         Rec.Document.CREATEOUTSTREAM(OutStr);
         COPYSTREAM(OutStr, InStr);
-        //TODO oFile.CLOSE;
+
 
         Rec."Insert Date" := TODAY;
         Rec."Insert Time" := TIME;
-
         //TODO Path := Document_CU.GetDirectoryName(ImportFileName);
         // "File Name" := Document_CU.GetFileName(ImportFileName);
-
         Rec.INSERT(TRUE);
         CurrPage.UPDATE(FALSE);
     end;
 
     local procedure SaveAs()
     var
-
     begin
     end;
 
     local procedure Open()
     var
-
+        TempBlob: Codeunit "Temp Blob";
+        OutStr: OutStream;
+        InStr: InStream;
         Directory: Text;
 
     begin
-        //CALCFIELDS(Document);
-        //IF NOT Document.HASVALUE THEN
-        // ERROR(cNoDocument);
-
-
         //TODO Directory := Document_CU.TempDirectory;
 
         // oFile.CREATE(Directory + "File Name");
         // oFile.CREATEOUTSTREAM(OutStr);
-
-        // Document.CREATEINSTREAM(InStr);
+        // Document.CREATEINSTREAM(InStr); ==> code initiale
         // COPYSTREAM(OutStr, InStr);
-
         // oFile.CLOSE;
 
+        TempBlob.CREATEINSTREAM(InStr, TEXTENCODING::UTF8);
+        Rec.Document.CREATEOUTSTREAM(OutStr);
+        COPYSTREAM(OutStr, InStr);
         HYPERLINK(Directory + Rec."File Name");
     end;
 }

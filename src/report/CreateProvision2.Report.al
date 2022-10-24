@@ -80,7 +80,7 @@ report 50027 "DEL Create Provision2"
                             sps_Re."Purchase Invoice No." := "DEL Deal Shipment"."Purchase Invoice No.";
 
                             sps_Re.USER_ID := USERID;
-                            sps_Re.IsColored := isColored; //true->la ligne sera en couleur
+                            sps_Re.IsColored := isColored;
 
                             IF NOT sps_Re.INSERT() THEN
                                 ERROR('Problème à l''insertion dans la table ''Shipment Provision Selection''!');
@@ -240,7 +240,7 @@ report 50027 "DEL Create Provision2"
         realElement_Re_Loc.RESET();
         realElement_Re_Loc.SETCURRENTKEY(Deal_ID, Type);
         realElement_Re_Loc.SETRANGE(Deal_ID, "DEL Deal".ID);
-        realElement_Re_Loc.SETRANGE(Type, realElement_Re_Loc.Type::Invoice); //CHG-DEV-PROVISION filter sur invoice|provision
+        realElement_Re_Loc.SETRANGE(Type, realElement_Re_Loc.Type::Invoice);
         realElement_Re_Loc.SETRANGE(Fee_ID, plannedElement_Re_Par.Fee_ID);
         realElement_Re_Loc.SETRANGE(Fee_Connection_ID, plannedElement_Re_Par.Fee_Connection_ID);
         IF realElement_Re_Loc.FINDFIRST() THEN
@@ -252,14 +252,13 @@ report 50027 "DEL Create Provision2"
                 IF position_Re_Loc.FINDFIRST() THEN
                     REPEAT
 
-                        IF dealShipmentConnection_Re_Loc.GET("DEL Deal".ID, "DEL Deal Shipment".ID, position_Re_Loc."Sub Element_ID") THEN BEGIN
+                        IF dealShipmentConnection_Re_Loc.GET("DEL Deal".ID, "DEL Deal Shipment".ID, position_Re_Loc."Sub Element_ID") THEN
                             IF position_Re_Loc.Currency = '' THEN
                                 amount_Dec_Ret += position_Re_Loc."Line Amount"
                             ELSE BEGIN
                                 rate_Dec_Loc := 1 / currExRate_Re_loc.ExchangeRate(realElement_Re_Loc.Date, position_Re_Loc.Currency);
                                 amount_Dec_Ret += position_Re_Loc."Line Amount" * rate_Dec_Loc;
                             END;
-                        END
 
                     UNTIL (position_Re_Loc.NEXT() = 0);
 
@@ -270,8 +269,8 @@ report 50027 "DEL Create Provision2"
     procedure FNC_ProgressBar_Init(index_Int_Par: Integer; interval_Int_Par: Integer; stepProgress_Int_Par: Integer; text_Te_Par: Text[50]; total_Int_Par: Integer)
     begin
         intProgress[index_Int_Par] := 0;
-        interval[index_Int_Par] := interval_Int_Par; //en milisecondes
-        intProgressStep[index_Int_Par] := stepProgress_Int_Par; //update si au moins 5% d'avancé (échelle : 10% = 1000)
+        interval[index_Int_Par] := interval_Int_Par;
+        intProgressStep[index_Int_Par] := stepProgress_Int_Par;
         intNextProgressStep[index_Int_Par] := intProgressStep[index_Int_Par];
         intProgressI[index_Int_Par] := 0;
         diaProgress[index_Int_Par].OPEN(

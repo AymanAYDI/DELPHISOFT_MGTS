@@ -137,7 +137,7 @@ page 50012 "DEL Tracked product follow up"
         Item: Record Item;
         PurchaseHeader_Rec: Record "Purchase Header";
         Vendor_Rec: Record Vendor;
-        PurchCode: Code[10];
+        PurchCode: Code[20];
         DateRecCalc: Date;
         BuyfromVendorName: Text;
         motif: Text[100];

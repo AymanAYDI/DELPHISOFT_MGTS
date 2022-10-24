@@ -98,6 +98,7 @@ page 50018 "DEL Group Reporting"
         Text000: Label 'File %1 Written.';
         DateFilterBalance: Text[250];
         DateFilterIncome: Text[250];
+        Filename: File;
 
 
     procedure CalcBalance(): Decimal
@@ -146,12 +147,17 @@ page 50018 "DEL Group Reporting"
     begin
         GeneralSetup.GET();
         //TODO: methods are not used for cloud dev---------------
+
         // Filename.TEXTMODE := TRUE;
         // Filename.WRITEMODE := TRUE;
         // Filename.QUERYREPLACE := TRUE;
         // Filename.CREATE(GeneralSetup."Reporting File");
         // WriteData();
         // Filename.CLOSE();
+
+
+
+
 
         MESSAGE(Text000, GeneralSetup."Reporting File");
     end;

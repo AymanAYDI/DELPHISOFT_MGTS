@@ -638,18 +638,17 @@ page 50073 "DEL Suivi des contrats"
                 field("URL document CE"; Rec."DEL URL document CE")
                 {
                     Caption = 'URL document CE';
-
-                    //TODO trigger OnLookup(var Text: Text): Boolean
-                    // begin
-                    //     CLEAR(DocumentLine);
-                    //     DocumentLine.RESET();
-                    //     DocumentLine.SETRANGE(DocumentLine."Table Name", DocumentLine."Table Name"::Customer);
-                    //     DocumentLine.SETRANGE(DocumentLine."No.", Rec."No.");
-                    //     DocumentLine.SETRANGE(DocumentLine."Type contrat",
-                    //      DocumentLine."Type contrat"::'Charte ethique' );
-                    //     DocumentContrat.SETTABLEVIEW(DocumentLine);
-                    //     DocumentContrat.RUN();
-                    // end;
+                    trigger OnLookup(var Text: Text): Boolean
+                    begin
+                        CLEAR(DocumentLine);
+                        DocumentLine.RESET();
+                        DocumentLine.SETRANGE(DocumentLine."Table Name", DocumentLine."Table Name"::Customer);
+                        DocumentLine.SETRANGE(DocumentLine."No.", Rec."No.");
+                        DocumentLine.SETRANGE(DocumentLine."Type contrat",
+                         DocumentLine."Type contrat"::"Charte ethique");
+                        DocumentContrat.SETTABLEVIEW(DocumentLine);
+                        DocumentContrat.RUN();
+                    end;
                 }
             }
             group(Quality)

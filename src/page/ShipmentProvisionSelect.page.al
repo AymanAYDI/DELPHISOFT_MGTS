@@ -297,7 +297,6 @@ page 50050 "DEL Shipment Provision Select."
         totalRealAmount := 0;
         totalProvisionAmount := 0;
         lineNumber := 0;
-        color := 8421376;
     end;
 
 
@@ -322,18 +321,12 @@ page 50050 "DEL Shipment Provision Select."
                 Rec.SETCURRENTKEY(Deal_ID, Deal_Shipment_ID, Fee_ID, USER_ID);
 
             END ELSE BEGIN
-
                 isCurrentPeriod_Te := FALSE;
                 isCurrentPeriod_Bo := FALSE;
                 Rec.SETCURRENTKEY(Period, Deal_ID, Deal_Shipment_ID);
-
             END;
-
         END;
-
-
         monthLastWorkingDay := Deal_Cu.FNC_GetMonthLastWorkDay(date_Da);
-
         monthFirstWorkingDay := Deal_Cu.FNC_GetMonthFirstWorkDay(CALCDATE('<+1M>', date_Da));
 
     end;
@@ -341,7 +334,6 @@ page 50050 "DEL Shipment Provision Select."
 
     local procedure ProvisionAmountOnFormat()
     begin
-
         "Provision AmountEmphasize" := TRUE;
     end;
 }

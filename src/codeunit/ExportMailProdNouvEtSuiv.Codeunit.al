@@ -5,26 +5,17 @@ codeunit 50010 "Export Mail Prod Nouv Et Suiv"
     begin
         CLEARALL();
         CLEARLASTERROR();
-        /*
-        IF EXISTS('D:\Export\New_products_follow_up.csv') THEN
-         ERASE('D:\Export\New_products_follow_up.csv');
-        
-        IF EXISTS('D:\Export\Tracked_product_follow_up.csv') THEN
-         ERASE('D:\Export\Tracked_product_follow_up.csv');
-        */
         WTAB := 9;
         //Nouveau produit
-
+        // TODO: ancien code: à corriger
         // FileVendor.CREATE('C:\Export\New_products_follow_up.csv');
         // FileVendor.CREATEOUTSTREAM(FoutStream);
-        // streamWriter := streamWriter.StreamWriter(FoutStream, encoding.Unicode); // TODO: ancient code
-
+        // streamWriter := streamWriter.StreamWriter(FoutStream, encoding.Unicode); 
         tempBlob1.CreateOutStream(OutStr, TextEncoding::UTF8);
-
         PurchaseLine_Nouv.SETCURRENTKEY("Document Type", "Document No.", "Line No.");
         PurchaseLine_Nouv.SETRANGE("DEL First Purch. Order", TRUE);
         PurchaseLine_Nouv.SETRANGE(Type, PurchaseLine_Nouv.Type::Item);
-        PurchaseLine_Nouv.SETRANGE("DEL Photo And DDoc", FALSE);//DEL.SAZ 30.10.18
+        PurchaseLine_Nouv.SETRANGE("DEL Photo And DDoc", FALSE);
         IF PurchaseLine_Nouv.FINDSET() THEN BEGIN
             //PurchaseHeader_Nouv
 
@@ -37,9 +28,9 @@ codeunit 50010 "Export Mail Prod Nouv Et Suiv"
                                     + 'Order Date' + FORMAT(WTAB)
                                     + 'PI delivery date' + FORMAT(WTAB)
                                     + 'Quantity' + FORMAT(WTAB)
-                                    + 'DDOCS provided' + FORMAT(WTAB) //DEL.SAZ 30.10.18
-                                    + 'DDOCS date' + FORMAT(WTAB) //DEL.SAZ 30.10.18
-                                    + 'DDOCS by' + FORMAT(WTAB) //DEL.SAZ 30.10.18
+                                    + 'DDOCS provided' + FORMAT(WTAB)
+                                    + 'DDOCS date' + FORMAT(WTAB)
+                                    + 'DDOCS by' + FORMAT(WTAB)
                                     + 'Picture Taken' + FORMAT(WTAB)
                                     + 'Picture Date' + FORMAT(WTAB)
                                     + 'Photo Taked By' + FORMAT(WTAB)
@@ -74,28 +65,24 @@ codeunit 50010 "Export Mail Prod Nouv Et Suiv"
 
         // streamWriter.Close();
         // streamWriter.Dispose();
-        // FileVendor.CLOSE(); // TODO: ancient code
+        // FileVendor.CLOSE(); // TODO: ancien code
 
         //Produit suivi
         CLEAR(FileVendor);
         CLEAR(OutStr);
         // CLEAR(streamWriter);
-
         // FileVendor.CREATE('C:\Export\Tracked_product_follow_up.csv');
         // FileVendor.CREATEOUTSTREAM(FoutStream);
-        // streamWriter := streamWriter.StreamWriter(FoutStream, encoding.Unicode); // TODO: ancient code
+        // streamWriter := streamWriter.StreamWriter(FoutStream, encoding.Unicode); // TODO: ancien code
 
         tempBlob2.CreateOutStream(OutStr, TextEncoding::UTF8);
 
         PurchaseLine_Suiv.SETCURRENTKEY("Document Type", "Document No.", "Line No.");
         PurchaseLine_Suiv.SETRANGE("DEL Risk Item", TRUE);
         PurchaseLine_Suiv.SETRANGE(Type, PurchaseLine_Suiv.Type::Item);
-
-        //DEL.SAZ 19.09.2018
         PurchaseLine_Suiv.SETRANGE("DEL Photo Risk Item Taked", FALSE);
         DateRecCalc := CALCDATE('<-5D>', WORKDATE());
         PurchaseLine_Suiv.SETFILTER("Expected Receipt Date", '>%1', DateRecCalc);
-        //END DEL.SAZ 19.09.2018
         IF PurchaseLine_Suiv.FINDSET() THEN BEGIN
 
             OutStr.WriteText('Buy-from Vendor No.' + FORMAT(WTAB)
@@ -115,12 +102,10 @@ codeunit 50010 "Export Mail Prod Nouv Et Suiv"
                 BuyfromVendorName := '';
                 IF Vendor_Rec.GET(PurchaseLine_Suiv."Buy-from Vendor No.") THEN
                     BuyfromVendorName := Vendor_Rec.Name;
-                //DEL.SAZ 17.09.2018
                 motif := '';
                 IF Item.GET(PurchaseLine_Suiv."No.") THEN
                     IF Listedesmotifs.GET(Item."DEL Code motif de suivi") THEN
                         motif := Listedesmotifs.Motif;
-                //END DEL.SAZ 18.09.2018
                 PurchaseHeader_Suiv.SETRANGE("No.");
                 PurchaseHeader_Suiv.SETRANGE("No.", PurchaseLine_Suiv."Document No.");
                 IF PurchaseHeader_Suiv.FINDFIRST() THEN;
@@ -162,9 +147,8 @@ codeunit 50010 "Export Mail Prod Nouv Et Suiv"
         //variable  SMTP code unit SMTP Mail
 
         if GeneralSetup.GET() then begin
-            //report_MGTS@mgts.com
-            //SMTPMailSetup."Sender mail"
-            // SMTP.CreateMessage('report_MGTS', 'report_MGTS@mgts.com', '', 'List New_products_follow_up and Tracked_product_follow_up', 'List New_products_follow_up and Tracked_product_follow_up', TRUE); TODO: Check
+            // TODO: Check
+            // SMTP.CreateMessage('report_MGTS', 'report_MGTS@mgts.com', '', 'List New_products_follow_up and Tracked_product_follow_up', 'List New_products_follow_up and Tracked_product_follow_up', TRUE); 
             EmailMessage.Create('', 'List New_products_follow_up and Tracked_product_follow_up', 'List New_products_follow_up and Tracked_product_follow_up', true);
             if GeneralSetup.Mail1 <> '' then
                 EmailMessage.AddRecipient(Enum::"Email Recipient Type"::"To", GeneralSetup.Mail1);
@@ -191,7 +175,6 @@ codeunit 50010 "Export Mail Prod Nouv Et Suiv"
 
         // IF EXISTS('C:\Export\New_products_follow_up.csv') THEN
         //     ERASE('C:\Export\New_products_follow_up.csv');
-
         // IF EXISTS('C:\Export\Tracked_product_follow_up.csv') THEN
         //     ERASE('C:\Export\Tracked_product_follow_up.csv'); // TODO: ancient code
 

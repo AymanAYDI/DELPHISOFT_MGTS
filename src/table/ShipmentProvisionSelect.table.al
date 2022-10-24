@@ -120,7 +120,6 @@ table 50042 "DEL Shipment Provision Select."
         }
         field(190; USER_ID; Code[50])
         {
-            Description = 'Mgts10.00.06.01';
             Caption = 'USER_ID';
         }
         field(200; IsColored; Boolean)

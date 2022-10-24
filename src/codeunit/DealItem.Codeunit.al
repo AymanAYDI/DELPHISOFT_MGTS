@@ -7,8 +7,9 @@ codeunit 50024 "DEL Deal Item"
     end;
 
     var
-
+        Element_Cu: Codeunit "DEL Element";
         Deal_Cu: Codeunit "DEL Deal";
+        Position_Cu: Codeunit "DEL Position";
         UpdateRequestManager_Cu: Codeunit "DEL Update Request Manager";
 
         Type_Op: Option Cost,Price;
@@ -225,7 +226,6 @@ codeunit 50024 "DEL Deal Item"
 
             END
 
-            //Real
         END ELSE
             IF Instance_Op_Par = Instance_Op_Par::Real THEN BEGIN
 
@@ -404,8 +404,6 @@ codeunit 50024 "DEL Deal Item"
                     UNTIL (position_Re_Loc.NEXT() = 0);
 
             END
-
-            //Real
         END ELSE
             IF Instance_Op_Par = Instance_Op_Par::Real THEN BEGIN
 
@@ -438,8 +436,6 @@ codeunit 50024 "DEL Deal Item"
     var
         position_Re_Loc: Record "DEL Position";
     begin
-        /*RETOURNE LE MONTANT TOTAL D'UN ARTICLE (ACHAT, VENTE ET FRAIS)*/
-
         position_Re_Loc.RESET();
         position_Re_Loc.SETRANGE(Deal_ID, Deal_ID_Co_Par);
         position_Re_Loc.SETRANGE("Deal Item No.", "Item_No._Co_Par");

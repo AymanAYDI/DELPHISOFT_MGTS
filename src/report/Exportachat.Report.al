@@ -26,18 +26,18 @@ report 50026 "DEL Export achat"
                     REPEAT
                         IF NOT ExportAchat.GET(PurchInvLine."No.", '+') THEN
                             AddInfoArticle(PurchInvLine."No.", '+');
-                        TauxChange1 := 0;
-                        TauxChange2 := 0;
+                        TauxChange := 0;
+                        TauxChange0 := 0;
                         PurchInvHeader.GET(PurchInvLine."Document No.");
                         IF PurchInvHeader."Currency Code" <> 'EUR' THEN BEGIN
-                            TauxChange1 := PurchInvHeader."Currency Factor";
-                            TauxChange2 := CurrExchRate.ExchangeRate(PurchInvHeader."Posting Date", 'EUR');
+                            TauxChange := PurchInvHeader."Currency Factor";
+                            TauxChange0 := CurrExchRate.ExchangeRate(PurchInvHeader."Posting Date", 'EUR');
                         END;
 
                         ExportAchat."Code Fournisseur" := CorLengthTxt(PurchInvLine."Buy-from Vendor No.", 10);
                         ExportAchat."Quantity Fact." := ExportAchat."Quantity Fact." + PurchInvLine.Quantity;
-                        IF (TauxChange1 <> 0) AND (TauxChange2 <> 0) THEN
-                            ExportAchat."CA HT Fact." := ExportAchat."CA HT Fact." + ROUND(((PurchInvLine.Amount / TauxChange1) * TauxChange2) * 100, 1, '=')
+                        IF (TauxChange <> 0) AND (TauxChange0 <> 0) THEN
+                            ExportAchat."CA HT Fact." := ExportAchat."CA HT Fact." + ROUND(((PurchInvLine.Amount / TauxChange) * TauxChange0) * 100, 1, '=')
                         ELSE
                             ExportAchat."CA HT Fact." := ExportAchat."CA HT Fact." + ROUND(PurchInvLine.Amount * 100, 1, '=');
 
@@ -61,18 +61,18 @@ report 50026 "DEL Export achat"
                     REPEAT
                         IF NOT ExportAchat.GET(PurchCrMemoLine."No.", '-') THEN
                             AddInfoArticle(PurchCrMemoLine."No.", '-');
-                        TauxChange1 := 0;
-                        TauxChange2 := 0;
+                        TauxChange := 0;
+                        TauxChange0 := 0;
                         PurchCrMemoHdr.GET(PurchCrMemoLine."Document No.");
                         IF PurchCrMemoHdr."Currency Code" <> 'EUR' THEN BEGIN
-                            TauxChange1 := PurchCrMemoHdr."Currency Factor";
-                            TauxChange2 := CurrExchRate.ExchangeRate(PurchCrMemoHdr."Posting Date", 'EUR');
+                            TauxChange := PurchCrMemoHdr."Currency Factor";
+                            TauxChange0 := CurrExchRate.ExchangeRate(PurchCrMemoHdr."Posting Date", 'EUR');
                         END;
 
                         ExportAchat."Code Fournisseur" := CorLengthTxt(PurchCrMemoLine."Buy-from Vendor No.", 10);
                         ExportAchat."Quantity Fact." := ExportAchat."Quantity Fact." + PurchCrMemoLine.Quantity;
-                        IF (TauxChange1 <> 0) AND (TauxChange2 <> 0) THEN
-                            ExportAchat."CA HT Fact." := ExportAchat."CA HT Fact." + ROUND(((PurchCrMemoLine.Amount / TauxChange1) * TauxChange2) * 100, 1, '=')
+                        IF (TauxChange <> 0) AND (TauxChange0 <> 0) THEN
+                            ExportAchat."CA HT Fact." := ExportAchat."CA HT Fact." + ROUND(((PurchCrMemoLine.Amount / TauxChange) * TauxChange0) * 100, 1, '=')
                         ELSE
                             ExportAchat."CA HT Fact." := ExportAchat."CA HT Fact." + ROUND(PurchCrMemoLine.Amount * 100, 1, '=');
 
@@ -96,18 +96,18 @@ report 50026 "DEL Export achat"
                     REPEAT
                         IF NOT ExportAchat.GET(PurchaseLine."No.", '+') THEN
                             AddInfoArticle(PurchaseLine."No.", '+');
-                        TauxChange1 := 0;
-                        TauxChange2 := 0;
+                        TauxChange := 0;
+                        TauxChange0 := 0;
                         PurchaseHeader.GET(PurchaseLine."Document Type", PurchaseLine."Document No.");
                         IF PurchaseHeader."Currency Code" <> 'EUR' THEN BEGIN
-                            TauxChange1 := PurchaseHeader."Currency Factor";
-                            TauxChange2 := CurrExchRate.ExchangeRate(PurchaseHeader."Posting Date", 'EUR');
+                            TauxChange := PurchaseHeader."Currency Factor";
+                            TauxChange0 := CurrExchRate.ExchangeRate(PurchaseHeader."Posting Date", 'EUR');
                         END;
 
                         ExportAchat."Code Fournisseur" := CorLengthTxt(PurchaseLine."Buy-from Vendor No.", 10);
                         ExportAchat."Quantity Com." := ExportAchat."Quantity Com." + PurchaseLine.Quantity;
-                        IF (TauxChange1 <> 0) AND (TauxChange2 <> 0) THEN
-                            ExportAchat."CA HT Com." := ExportAchat."CA HT Com." + ROUND(((PurchaseLine.Amount / TauxChange1) * TauxChange2) * 100, 1, '=')
+                        IF (TauxChange <> 0) AND (TauxChange0 <> 0) THEN
+                            ExportAchat."CA HT Com." := ExportAchat."CA HT Com." + ROUND(((PurchaseLine.Amount / TauxChange) * TauxChange0) * 100, 1, '=')
                         ELSE
                             ExportAchat."CA HT Com." := ExportAchat."CA HT Com." + ROUND(PurchaseLine.Amount * 100, 1, '=');
                         ExportAchat."CA HT Com. Txt" := CorLengthDec(ExportAchat."CA HT Com.", 12, '+');
@@ -129,19 +129,19 @@ report 50026 "DEL Export achat"
                     REPEAT
                         IF NOT ExportAchat.GET(PurchRcptLine."No.", '+') THEN
                             AddInfoArticle(PurchRcptLine."No.", '+');
-                        TauxChange1 := 0;
-                        TauxChange2 := 0;
+                        TauxChange := 0;
+                        TauxChange0 := 0;
                         PurchRcptHeader.GET(PurchRcptLine."Document No.");
                         IF PurchRcptHeader."Currency Code" <> 'EUR' THEN BEGIN
-                            TauxChange1 := PurchRcptHeader."Currency Factor";
-                            TauxChange2 := CurrExchRate.ExchangeRate(PurchRcptHeader."Posting Date", 'EUR');
+                            TauxChange := PurchRcptHeader."Currency Factor";
+                            TauxChange0 := CurrExchRate.ExchangeRate(PurchRcptHeader."Posting Date", 'EUR');
                         END;
 
                         ExportAchat."Code Fournisseur" := CorLengthTxt(PurchRcptLine."Buy-from Vendor No.", 10);
                         ExportAchat."Quantity Liv." := ExportAchat."Quantity Liv." + PurchRcptLine.Quantity;
                         ExportAchat."Quantity Liv. Txt" := CorLengthDec(ExportAchat."Quantity Liv.", 12, '+');
-                        IF (TauxChange1 <> 0) AND (TauxChange2 <> 0) THEN
-                            ExportAchat."CA HT Liv." := ExportAchat."CA HT Liv." + ROUND(((PurchRcptLine."Item Charge Base Amount" / TauxChange1) * TauxChange2) * 100, 1, '=')
+                        IF (TauxChange <> 0) AND (TauxChange0 <> 0) THEN
+                            ExportAchat."CA HT Liv." := ExportAchat."CA HT Liv." + ROUND(((PurchRcptLine."Item Charge Base Amount" / TauxChange) * TauxChange0) * 100, 1, '=')
                         ELSE
                             ExportAchat."CA HT Liv." := ExportAchat."CA HT Liv." + ROUND(PurchRcptLine."Item Charge Base Amount" * 100, 1, '=');
                         ExportAchat."CA HT Liv. Txt" := CorLengthDec(ExportAchat."CA HT Liv.", 12, '+');
@@ -312,8 +312,8 @@ report 50026 "DEL Export achat"
         VendorList: Page "Vendor List";
         DateDebut: Date;
         DateFin: Date;
-        TauxChange1: Decimal;
-        TauxChange2: Decimal;
+        TauxChange: Decimal;
+        TauxChange0: Decimal;
         Mois: Integer;
         Year: Integer;
         Text0001: Label 'Invalid date';

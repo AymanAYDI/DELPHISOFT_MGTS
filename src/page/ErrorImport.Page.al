@@ -1,6 +1,6 @@
 page 50003 "DEL Error Import"
 {
-    PageType = List;
+    PageType = ListPart;
     SourceTable = "DEL Error Import vente";
 
     layout

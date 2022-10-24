@@ -73,12 +73,6 @@ table 50070 "DEL DocMatrix Email Codes"
 
     procedure GetBodyText(pCode: Code[20]; pLanguage: Code[10]) Value: Text
     var
-        //-----------local variables are not used-----------------//
-        // TempBlob: Record "TempBlob"; //99008535
-        // FileManagement: Codeunit "File Management"; //419
-        // DataStream: InStream;
-        // BodyOutStream: OutStream;
-        // BodyText: BigText;
         MyBigText: BigText;
         BLOBInStream: InStream;
     begin

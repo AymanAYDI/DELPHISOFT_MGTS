@@ -1,6 +1,6 @@
 page 50119 "DEL Contract comment"
 {
-    PageType = List;
+    PageType = ListPart; 
     SourceTable = "DEL Contrat Comment";
     ApplicationArea = All;
     UsageCategory = Administration;

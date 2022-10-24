@@ -462,17 +462,13 @@ page 50074 "DEL Liste Suivi des contrats"
                 IF Customer."DEL Date de fin SSA" < TODAY THEN
                     Customer."DEL Statut SSA" := Customer."DEL Statut SSA"::Échu;
 
-                //START T-00767
                 IF Customer."DEL Period of denunciation" < TODAY THEN
                     Customer."DEL Denunciation to analyze" := TRUE
                 ELSE
                     Customer."DEL Denunciation to analyze" := FALSE;
 
-                IF (Customer."DEL Denunciation Replanned") AND (Customer."DEL Period of denunciation" <> 0D) THEN BEGIN
+                IF (Customer."DEL Denunciation Replanned") AND (Customer."DEL Period of denunciation" <> 0D) THEN
                     Customer."DEL Denunciation Replanned" := FALSE;
-
-                END;
-                //STOP T-00767
 
                 CustDateFilter[1] := FORMAT(DMY2DATE(1, 1, DATE2DMY(TODAY, 3))) + '..' + FORMAT(DMY2DATE(31, 12, DATE2DMY(TODAY, 3)));
                 CustDateFilter[2] := FORMAT(DMY2DATE(1, 1, DATE2DMY(TODAY, 3) - 1)) + '..' + FORMAT(DMY2DATE(31, 12, DATE2DMY(TODAY, 3) - 1));

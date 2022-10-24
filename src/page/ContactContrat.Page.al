@@ -3,7 +3,7 @@ page 50117 "DEL Contact Contrat"
 
 
     Caption = 'Follow contracts contacts';
-    PageType = List;
+    PageType = ListPart;
     SourceTable = Contact;
 
     layout

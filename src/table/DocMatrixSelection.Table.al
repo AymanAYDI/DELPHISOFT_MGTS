@@ -207,11 +207,9 @@ table 50071 "DEL DocMatrix Selection"
     }
 
     var
-        //-------------Unused global variable------------//
 
         DocumentMatrixSetup: Record "DEL DocMatrix Setup";
-        //TODO: documentMatrix lors de la creation des codeunits
-        // DocumentMatrixMgt: Codeunit 50015;
+        DocumentMatrixMgt: Codeunit "DEL DocMatrix Management";
 
         boNotificationAlreadySent: Boolean;
         Err003: Label 'You can not delete the "E-Mail From" Address, if a E-Mail Address is entered. First you have to delete all the E-Mail Addresses.';

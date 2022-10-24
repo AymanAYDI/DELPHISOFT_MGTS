@@ -19,7 +19,7 @@ report 50077 "DEL CarryOut Act. Msg. - Req."
                 group(Options)
                 {
                     Caption = 'Options';
-                    field(PrintOrders; PrintOrders)
+                    field(PrintOrders; PrintOrder)
                     {
                         Caption = 'Print Orders';
                         ToolTip = 'Specifies whether to print the purchase orders after they are created.';
@@ -61,7 +61,7 @@ report 50077 "DEL CarryOut Act. Msg. - Req."
         ReqWkshMakeOrders: Codeunit "Req. Wksh.-Make Order";
         CreateFromEDI: Boolean;
         HideDialog: Boolean;
-        PrintOrders: Boolean;
+        PrintOrder: Boolean;
         TempJnlBatchName: Code[10];
         EndOrderDate: Date;
         Text000: Label 'cannot be filtered when you create orders';
@@ -95,17 +95,12 @@ report 50077 "DEL CarryOut Act. Msg. - Req."
         IF ReqWkshTmpl.Recurring AND (ReqLine.GETFILTER("Order Date") <> '') THEN
             ReqLine.FIELDERROR("Order Date", Text000);
         TempJnlBatchName := ReqLine."Journal Batch Name";
-        //>>MGTSEDI10.00.00.23
         IF CreateFromEDI THEN BEGIN
             DELMGTS_FctMgt.SetEDIParam(TRUE, TRUE);
-
-            //>>MGTSEDI10.00.00.24
             PurchOrderHeader."Order Date" := TODAY;
-            //<<MGTSEDI10.00.00.24
 
         END;
-        //<<MGTSEDI10.00.00.23
-        ReqWkshMakeOrders.Set(PurchOrderHeader, EndOrderDate, PrintOrders);
+        ReqWkshMakeOrders.Set(PurchOrderHeader, EndOrderDate, PrintOrder);
         ReqWkshMakeOrders.CarryOutBatchAction(ReqLine);
 
         IF ReqLine."Line No." = 0 THEN

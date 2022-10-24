@@ -183,9 +183,9 @@ page 50008 "DEL Lig vente validés/réalisés"
                 {
                     Caption = 'Exit Point';
                 }
-                //TODO         field("Area"; Area)
-                // {
-                // }
+                field("Area"; Rec.Area)
+                {
+                }
                 field("Transaction Specification"; Rec."Transaction Specification")
                 {
                     Caption = 'Transaction Specification';

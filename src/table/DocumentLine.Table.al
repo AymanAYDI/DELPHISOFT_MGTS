@@ -2,9 +2,8 @@ table 50008 "DEL Document Line"
 {
     Caption = 'Document Line';
     DataPerCompany = false;
-    //TODO:en attendant les pages
-    // DrillDownPageID = 50065;
-    // LookupPageID = 50065;
+    DrillDownPageID = "DEL Document Sheet";
+    LookupPageID = "DEL Document Sheet";
 
     fields
     {

@@ -58,7 +58,7 @@ page 50001 "DEL Regulation Text"
 
                 trigger OnAction()
                 begin
-                    //TODO EditText;
+                    EditText();
                 end;
             }
         }
@@ -70,25 +70,24 @@ page 50001 "DEL Regulation Text"
     end;
 
 
-    // procedure EditText()
-    // var
-    //     RecRef: RecordRef;
-    //    //TODO:until we merge the codeunit
-    //    // TextEdit: Codeunit "50010";
-    //     Text00001: Label 'Edit Document Text';
-    // begin
+    procedure EditText()
+    var
+        RecRef: RecordRef;
+        TextEdit: Codeunit "Export Mail Prod Nouv Et Suiv";
+        Text00001: Label 'Edit Document Text';
+    begin
 
-    //     RecRef.GETTABLE(Rec);
-    //     TextEdit.EditTextLines(RecRef,
-    //                            'Text',
-    //                            '',
-    //                            '',
-    //                            'Attached to Line No.',
-    //                            'Line No.',
-    //                            FALSE,
-    //                            '',
-    //                            'Edit Text');
+        RecRef.GETTABLE(Rec);
+        //TODO TextEdit.EditTextLines(RecRef,
+        //                        'Text',
+        //                        '',
+        //                        '',
+        //                        'Attached to Line No.',
+        //                        'Line No.',
+        //                        FALSE,
+        //                        '',
+        //                        'Edit Text');
 
-    // end;
+    end;
 }
 

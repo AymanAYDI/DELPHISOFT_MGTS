@@ -82,19 +82,26 @@ page 50114 "DEL Matrix Text"
 
     procedure EditText()
     var
+        TextEdit: Codeunit "Export Mail Prod Nouv Et Suiv";
         RecRef: RecordRef;
+
     begin
 
         RecRef.GETTABLE(Rec);
-        //TODO TextEdit.EditTextLines(RecRef,
-        //                        'Text',
-        //                        '',
-        //                        '',
-        //                        'Attached to Line No.',
-        //                        'Line No.',
-        //                        FALSE,
-        //                        '',
-        //                        'Edit Text');
+        //TODO: EditTextLines n'existe pas dans le code ancien
+
+        // TextEdit.EditTextLines(RecRef,
+        //                       'Text',
+        //                       '',
+        //                       '',
+        //                       'Attached to Line No.',
+        //                       'Line No.',
+        //                       FALSE,
+        //                       '',
+        //                       'Edit Text');
+
+
+
 
     end;
 }
