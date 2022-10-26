@@ -14,7 +14,6 @@ table 50069 "DEL DocMatrix Setup"
         {
             Caption = 'Sales File Folder';
             DataClassification = ToBeClassified;
-
             trigger OnValidate()
             begin
                 //TODO GeneralMgt.CheckFolderName("Sales File Folder");
