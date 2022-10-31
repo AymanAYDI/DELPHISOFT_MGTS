@@ -19,15 +19,14 @@ table 50047 "DEL Manual Deal Sales Inv. L"
             TableRelation = "DEL Deal Shipment";
             Caption = 'Shipment Selection';
         }
-        field(51; "User ID Filter"; Code[20])
+        field(51; "User ID Filter"; Code[50])
         {
             CaptionClass = '1,3,1';
             Caption = 'Global Dimension 1 Filter';
             FieldClass = FlowFilter;
-            //    TODO // TableRelation = Table2000000002;
+            TableRelation = User;
         }
     }
-
     keys
     {
         key(Key1; "Sales Invoice No.")

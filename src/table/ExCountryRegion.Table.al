@@ -28,17 +28,14 @@ table 99202 "DEL Ex_Country/Region"
             Caption = 'Address Format';
             InitValue = "City+Post Code";
         }
-        field(9; "Contact Address Format"; Option)
+        field(9; "Contact Address Format"; Enum "DEL Contact Add. Format")
         {
             Caption = 'Contact Address Format';
             InitValue = "After Company Name";
-            OptionCaption = 'First,After Company Name,Last';
-            OptionMembers = First,"After Company Name",Last;
         }
         field(4006496; Mandant; Text[30])
         {
             Caption = 'Company';
-            Description = 'AL.KVK5.0';
         }
     }
 
@@ -62,11 +59,5 @@ table 99202 "DEL Ex_Country/Region"
     fieldgroups
     {
     }
-    //TODO
-    // trigger OnDelete()
-    // var
-    //     VATRegNoFormat: Record "381";
-    // begin
-    // end;
 }
 

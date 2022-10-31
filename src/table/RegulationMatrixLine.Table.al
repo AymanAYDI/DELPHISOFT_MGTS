@@ -21,7 +21,6 @@ table 50051 "DEL Regulation Matrix Line"
         {
             Caption = 'Product Group Code';
             Editable = false;
-
             TableRelation = "Product Group".Code WHERE("Item Category Code" = FIELD("Item Category Code"));
 
 
@@ -79,7 +78,6 @@ table 50051 "DEL Regulation Matrix Line"
             CalcFormula = Exist("DEL Texte Regulation" WHERE("No." = FIELD("No."),
                                                           Type = FIELD(Type),
                                                           Champs = FILTER(Description)));
-
             Caption = 'Description';
             Editable = false;
             FieldClass = FlowField;
@@ -91,7 +89,6 @@ table 50051 "DEL Regulation Matrix Line"
                                                                    Type = FIELD(Type)));
 
             Caption = 'Starting date';
-            Description = 'General/Materials';
             Editable = false;
             FieldClass = FlowField;
         }
@@ -102,7 +99,6 @@ table 50051 "DEL Regulation Matrix Line"
                                                               Type = FIELD(Type)));
 
             Caption = 'End date';
-            Description = 'General/Materials';
             Editable = false;
             FieldClass = FlowField;
         }
@@ -113,7 +109,6 @@ table 50051 "DEL Regulation Matrix Line"
                                                                         Type = FIELD(Type)));
 
             Caption = 'Text of connection';
-            Description = 'General';
             Editable = false;
             FieldClass = FlowField;
         }
@@ -123,7 +118,6 @@ table 50051 "DEL Regulation Matrix Line"
             CalcFormula = Lookup("DEL Regulation".Statut WHERE("No." = FIELD("No."),
                                                           Type = FIELD(Type)));
             Caption = 'Status';
-
             Editable = false;
             FieldClass = FlowField;
         }
@@ -132,7 +126,6 @@ table 50051 "DEL Regulation Matrix Line"
             CalcFormula = Lookup("DEL Regulation"."Texte de remplacement" WHERE("No." = FIELD("No."),
                                                                            Type = FIELD(Type)));
             Caption = 'Text of substitution';
-
             Editable = false;
             FieldClass = FlowField;
         }
@@ -142,7 +135,6 @@ table 50051 "DEL Regulation Matrix Line"
                                                                       Type = FIELD(Type)));
 
             Caption = 'Type of material';
-            Description = 'Materials';
             Editable = false;
             FieldClass = FlowField;
         }
@@ -153,7 +145,6 @@ table 50051 "DEL Regulation Matrix Line"
                                                          Type = FIELD(Type)));
 
             Caption = 'Usage';
-            Description = 'Materials';
             Editable = false;
             FieldClass = FlowField;
         }
@@ -164,7 +155,6 @@ table 50051 "DEL Regulation Matrix Line"
                                                                               Type = FIELD(Type)));
 
             Caption = 'Substance ID';
-            Description = 'Materials';
             Editable = false;
             FieldClass = FlowField;
         }
@@ -175,7 +165,6 @@ table 50051 "DEL Regulation Matrix Line"
                                                                      Type = FIELD(Type)));
 
             Caption = 'Substance name';
-            Description = 'Materials';
             Editable = false;
             FieldClass = FlowField;
         }
@@ -186,7 +175,6 @@ table 50051 "DEL Regulation Matrix Line"
                                                           Type = FIELD(Type)));
 
             Caption = 'Origine';
-            Description = 'Materials';
             Editable = false;
             FieldClass = FlowField;
         }
@@ -198,7 +186,6 @@ table 50051 "DEL Regulation Matrix Line"
                                                           Champs = FILTER("Description Usage in French")));
 
             Caption = 'Description Usage in French';
-            Description = 'Materials';
             Editable = false;
             FieldClass = FlowField;
         }
@@ -206,9 +193,9 @@ table 50051 "DEL Regulation Matrix Line"
         field(24; "List Items Associated"; Integer)
         {
             //TODO CalcFormula = Count("Item" WHERE("Item Category Code" = FIELD("Item Category Code"),
-            //                                 //TODO  // "Product Group Code"=FIELD("Product Group Code"),
-            //                                 "DEL Product Description" = FIELD("DEL Product Description"),
-            //                                 "DEL Marque Produit" = FIELD(Mark)));
+            //   //TODO  // "Product Group Code"=FIELD("Product Group Code"),
+            //    "DEL Product Description" = FIELD("DEL Product Description"),
+            //   "DEL Marque Produit" = FIELD(Mark)));
 
             Caption = 'List Items Associated';
             Editable = false;
@@ -222,7 +209,6 @@ table 50051 "DEL Regulation Matrix Line"
                                                           Champs = FILTER("Norm of testing")));
 
             Caption = 'Norm of testing';
-            Description = 'Materials';
             Editable = false;
             FieldClass = FlowField;
         }
@@ -233,10 +219,8 @@ table 50051 "DEL Regulation Matrix Line"
                                                         Type = FIELD(Type)));
 
             Caption = 'Country Code';
-            Description = 'General/Materials';
             Editable = false;
             FieldClass = FlowField;
-
             TableRelation = "DEL Pays";
         }
         field(41; Checked; Boolean)
@@ -250,7 +234,6 @@ table 50051 "DEL Regulation Matrix Line"
                                                           Champs = FILTER("Livrables 1")));
 
             Caption = 'Deliverables 1';
-            Description = 'Plan Of control/General';
             Editable = false;
             FieldClass = FlowField;
         }
@@ -261,7 +244,6 @@ table 50051 "DEL Regulation Matrix Line"
                                                          Type = FIELD(Type)));
 
             Caption = 'Scope';
-            Description = 'General';
             Editable = false;
             FieldClass = FlowField;
         }
@@ -272,7 +254,6 @@ table 50051 "DEL Regulation Matrix Line"
                                                                Type = FIELD(Type)));
 
             Caption = 'Test Type';
-            Description = 'Plan Of control';
             FieldClass = FlowField;
         }
 
@@ -283,7 +264,6 @@ table 50051 "DEL Regulation Matrix Line"
                                                           Champs = FILTER(Descriptive)));
 
             Caption = 'Descriptive';
-            Description = 'Plan Of control';
             Editable = false;
             FieldClass = FlowField;
         }
@@ -294,7 +274,6 @@ table 50051 "DEL Regulation Matrix Line"
                                                                   Type = FIELD(Type)));
 
             Caption = 'Support Text';
-            Description = 'Plan Of control';
             Editable = false;
             FieldClass = FlowField;
         }
@@ -304,7 +283,6 @@ table 50051 "DEL Regulation Matrix Line"
             CalcFormula = Lookup("DEL Regulation"."Control Type" WHERE("No." = FIELD("No."),
                                                                   Type = FIELD(Type)));
             Caption = 'Type de contrôle';
-            Description = 'Plan Of control';
             FieldClass = FlowField;
 
         }
@@ -314,7 +292,6 @@ table 50051 "DEL Regulation Matrix Line"
                                                              Type = FIELD(Type)));
 
             Caption = 'Frequency';
-            Description = 'Plan Of control';
             Editable = false;
             FieldClass = FlowField;
         }
@@ -325,7 +302,6 @@ table 50051 "DEL Regulation Matrix Line"
                                                                          Type = FIELD(Type)));
 
             Caption = 'Referent Laboratory';
-            Description = 'Plan Of control';
             Editable = false;
             FieldClass = FlowField;
         }
@@ -378,7 +354,6 @@ table 50051 "DEL Regulation Matrix Line"
                                                                                  Type = FIELD(Type)));
 
             Caption = 'Description';
-            Description = 'Plan Of control';
             FieldClass = FlowField;
             TableRelation = "DEL Desc Plan of control".Description;
         }
@@ -394,7 +369,6 @@ table 50051 "DEL Regulation Matrix Line"
                                                           Champs = FILTER("Description Usage in English")));
 
             Caption = 'Description Usage in English';
-            Description = 'Materials';
             Editable = false;
             FieldClass = FlowField;
         }

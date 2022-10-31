@@ -1,11 +1,7 @@
 table 50043 "DEL Fee Factor"
 {
-
-
     Caption = 'Fee Factor';
-    //TODO
-    // LookupPageID = 50049;
-
+    LookupPageID = "DEL Fee Factor";
 
     fields
     {
@@ -29,7 +25,6 @@ table 50043 "DEL Fee Factor"
             Caption = 'Factor';
         }
     }
-
     keys
     {
         key(Key1; Fee_ID, "Allow From")

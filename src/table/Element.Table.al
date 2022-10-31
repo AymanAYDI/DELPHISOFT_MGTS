@@ -144,46 +144,13 @@ table 50021 "DEL Element"
 
     procedure FNC_Date2DateTime()
     var
-        myDT: DateTime;
     begin
-
-        RESET();
-        FIND('-');
-        REPEAT
-            myDT := 0DT;
-            IF EVALUATE(myDT, FORMAT(Date)) THEN BEGIN
-                //TODO DateTime := myDT;
-                Date := 0D;
-                MODIFY();
-            END ELSE
-                ERROR('Evaluate exception with rec >%1<', ID);
-        UNTIL NEXT() = 0;
-
-
     end;
-
 
     procedure FNC_DateTime2Date()
     var
-        myD: Date;
     begin
-
-        //transforme les DateTime en Date
-        RESET();
-        FIND('-');
-        REPEAT
-
-            myD := 0D;
-            IF EVALUATE(myD, COPYSTR(FORMAT("Add DateTime"), 1, 8)) THEN BEGIN
-                Date := myD;
-                //TODO DateTime := 0DT;
-                MODIFY();
-            END ELSE
-                ERROR('Evaluate exception with rec >%1<', ID);
-
-        UNTIL NEXT() = 0;
-
-
     end;
 }
+
 

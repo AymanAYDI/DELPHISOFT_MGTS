@@ -17,15 +17,26 @@ table 99205 "DEL Ex_User Setup"
 
             ValidateTableRelation = false;
 
-            trigger OnLookup()
+            // trigger OnLookup() => à supprimer comme le STD
+            // begin
+            //     //TODO UserMgt.LookupUserID("User ID");
+            // end;
+
+            // trigger OnValidate()
+            // begin
+            //     //TODO UserMgt.ValidateUserID("User ID");
+            // end;
+            trigger OnValidate()
+            var
+                UserSelection: Codeunit "User Selection";
             begin
-                //TODO UserMgt.LookupUserID("User ID");
+                UserSelection.ValidateUserName("User ID");
             end;
 
-            trigger OnValidate()
-            begin
-                //TODO UserMgt.ValidateUserID("User ID");
-            end;
+
+
+
+
         }
         field(2; "Allow Posting From"; Date)
         {
@@ -194,6 +205,7 @@ table 99205 "DEL Ex_User Setup"
             Caption = 'Service Resp. Ctr. Filter';
             TableRelation = "Responsibility Center";
         }
+        //---------Spécifique pays Suisse
 
         field(4006496; "Katalog ID"; Code[20])
 

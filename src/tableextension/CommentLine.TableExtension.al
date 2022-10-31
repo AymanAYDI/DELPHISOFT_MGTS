@@ -12,13 +12,20 @@ tableextension 50048 "DEL CommentLine" extends "Comment Line" //97
             Caption = 'User ID';
             DataClassification = CustomerContent;
             TableRelation = User."User Name";
-            //TODO: dans le standard 20 this method is not supported
+            //TODO: //  à vérifier // dans le standard 20 this method is not supported
             // trigger OnLookup()
             // var
             //     UserMgt: Codeunit "User Management";
             // begin
             //     UserMgt.LookupUserID("DEL User ID");
             // end;
+
+            trigger onvalidate()
+            var
+                UserSelection: Codeunit "User Selection";
+            begin
+                UserSelection.ValidateUserName("DEL User ID");
+            end;
         }
     }
     keys

@@ -22,14 +22,15 @@ table 50076 "DEL MGTS Change Log Entry"
         field(4; "User ID"; Code[50])
         {
             Caption = 'User ID';
-            TableRelation = User."User Name";
-            //This property is currently not supported
-            //TestTableRelation = false;
+            //TODO: à voir le warning // TestTableRelation = false;
+            TableRelation = User."User Security ID";
 
-            trigger OnLookup()
-            begin
-                //  TODO // UserMgt.LookupUserID("User ID"); IS NOT SUPPORTED IN V20
-            end;
+            //TODO trigger OnLookup() ==> à supprimer comme le STD 
+            // var
+            //     UserMgt: Codeunit "User Management";
+            // begin
+            //     //  TODO // UserMgt.LookupUserID("User ID"); IS NOT SUPPORTED IN V20
+            // end;
         }
         field(5; "Table No."; Integer)
         {
@@ -63,7 +64,7 @@ table 50076 "DEL MGTS Change Log Entry"
         {
         }
     }
-
+    var
 
     procedure InsertLogEntry(UserID: Text[50]; TableNo: Integer; ChangeType: Enum "Change Log Entry Type"; RecordID: Text[250])
     begin

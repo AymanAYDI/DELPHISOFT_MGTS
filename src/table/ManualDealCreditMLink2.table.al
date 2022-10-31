@@ -32,7 +32,7 @@ table 50046 "DEL Manual DealCredit M Link.2"
             CaptionClass = '1,3,1';
             Caption = 'Global Dimension 1 Filter';
             FieldClass = FlowFilter;
-            //TODO //TableRelation = Table2000000002;
+            TableRelation = User;
         }
         field(52; "ACO No."; Code[20])
         {

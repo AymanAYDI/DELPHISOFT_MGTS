@@ -442,26 +442,39 @@ table 50067 "DEL Document Matrix"
         SetRequestPageParametersBigText(precDocumentMatrix, OutputText);
     end;
 
-
-
     local procedure u_SetRequestPageParametersFile(var pOutputText: BigText)
+    var
+        TempBlob: Codeunit "Temp Blob";
+        Outsr: OutStream;
+        TextFile: File;
     begin
-
-        //TODO TextFile.TEXTMODE(FALSE);
+        //TODO: à corrigerr
+        //TextFile.TEXTMODE(FALSE);
         // TextFile.CREATE('C:\TEMP\TextFile3.txt');
         // TextFile.CREATEOUTSTREAM(OutStream);
         // pOutputText.WRITE(OutStream);
         // TextFile.CLOSE;
+
+        TempBlob.CreateOutStream(Outsr);
+        pOutputText.WRITE(Outsr);
     end;
 
     local procedure u_GetRequestPageParametersFile(var pInputText: BigText)
+    var
+        TempBlob: Codeunit "Temp Blob";
+        TextFile: file;
+        Instr: InStream;
     begin
-
-        //TODO TextFile.TEXTMODE(FALSE);
+        //TODO : à corigerr
+        //TextFile.TEXTMODE(FALSE);
         // TextFile.OPEN('C:\TEMP\TextFile1.txt');
         // TextFile.CREATEINSTREAM(InStream);
         // pInputText.READ(InStream);
         // TextFile.CLOSE;
+        TempBlob.CreateInStream(Instr);
+        WHILE NOT Instr.EOS DO BEGIN
+            pInputText.READ(Instr);
+        END;
     end;
 }
 

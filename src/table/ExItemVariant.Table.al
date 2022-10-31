@@ -25,6 +25,7 @@ table 99211 "DEL Ex_Item Variant"
         {
             Caption = 'Description 2';
         }
+        //------------- Spécifique pays Suisse 
         field(4006496; ZeilenID; Integer)
         {
             Caption = 'Line ID';

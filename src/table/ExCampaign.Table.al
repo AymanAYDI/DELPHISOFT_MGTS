@@ -331,31 +331,26 @@ table 99210 "DEL Ex_Campaign"
         field(4006496; Hauptkampagne; Boolean)
         {
             Caption = 'Main Campaign';
-            Description = 'AL.KVK4.5';
         }
         field(4006497; eCommerce; Boolean)
 
         {
             Caption = 'eCommerce';
-            Description = 'AL.KVK4.5';
         }
 
         field(4006498; Mediacode; Code[5])
         {
             Caption = 'Mediacore';
-            Description = 'AL.KVK4.5';
         }
 
         field(4006499; "eCommerce Mandant"; Text[30])
         {
             Caption = 'eCommerce Company';
-            Description = 'AL.KVK4.5';
             TableRelation = Company;
         }
         field(4006500; Kurztext; Text[150])
         {
             Caption = 'Short Text';
-            Description = 'AL.KVK4.5';
         }
     }
 

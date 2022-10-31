@@ -8,7 +8,6 @@ table 50074 "DEL Order API Record Tracking"
         field(1; "Deal ID"; Code[20])
         {
             Caption = 'Deal ID';
-
             TableRelation = "DEL Deal".ID;
 
         }
@@ -35,7 +34,6 @@ table 50074 "DEL Order API Record Tracking"
         field(6; "ACO Supplier ERP Name"; Text[100])
         {
             CalcFormula = Lookup(Vendor.Name WHERE("No." = FIELD("ACO Supplier ERP Code")));
-
             Caption = 'ACO Supplier ERP Name';
             Editable = false;
             FieldClass = FlowField;
@@ -118,7 +116,6 @@ table 50074 "DEL Order API Record Tracking"
 
         {
             Caption = 'Completed';
-            Description = 'MGTS10.00.012';
         }
     }
 

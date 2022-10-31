@@ -29,6 +29,7 @@ table 99201 "DEL Ex_Language"
             FieldClass = FlowField;
 
         }
+        //---------Spécifique pays Suisse
         field(4006496; Katalogsprache; Boolean)
         {
 

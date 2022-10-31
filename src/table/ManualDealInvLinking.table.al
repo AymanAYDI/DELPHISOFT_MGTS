@@ -34,7 +34,7 @@ table 50037 "DEL Manual Deal Inv. Linking"
             CaptionClass = '1,3,1';
             Caption = 'Global Dimension 1 Filter';
             FieldClass = FlowFilter;
-            //TODO // TableRelation = 2000000002;
+             TableRelation = User;
         }
     }
 

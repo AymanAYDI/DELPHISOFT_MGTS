@@ -13,14 +13,12 @@ table 50061 "DEL Sourceur"
         {
             Caption = 'Code';
             NotBlank = true;
-
             DataClassification = CustomerContent;
 
         }
         field(2; Name; Text[50])
         {
             Caption = 'Name';
-
             DataClassification = CustomerContent;
 
         }

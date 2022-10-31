@@ -1,9 +1,5 @@
 table 50055 "DEL Type/Nature Enregistrement"
 {
-
-
-
-
     Caption = 'Type of forms';
     DrillDownPageID = "Type / Nature Enregistrement";
     LookupPageID = "Type / Nature Enregistrement";

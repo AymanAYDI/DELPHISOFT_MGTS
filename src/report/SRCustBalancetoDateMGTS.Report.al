@@ -1,7 +1,6 @@
 report 50055 "SR Cust. Balance to Date MGTS"
 {
-    // MGTS10.00.06.00    | 07.01.2022 | Send Payment Advice : List of changes:
-    //                                              Modify Design (Remove Amount LCY and Remove Line not applied)
+    //    Modify Design (Remove Amount LCY and Remove Line not applied)
     DefaultLayout = RDLC;
     RDLCLayout = './SRCustBalancetoDateMGTS.rdlc';
 

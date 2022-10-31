@@ -355,12 +355,10 @@ table 99200 "DEL Ex_Currency"
             Caption = 'Max. VAT Difference Allowed';
         }
 
-        field(53; "VAT Rounding Type"; Option)
+        field(53; "VAT Rounding Type"; Enum "DEL VAT Rounding Type")
 
         {
             Caption = 'VAT Rounding Type';
-            OptionCaption = 'Nearest,Up,Down';
-            OptionMembers = Nearest,Up,Down;
         }
 
         field(54; "Payment Tolerance %"; Decimal)
@@ -376,7 +374,7 @@ table 99200 "DEL Ex_Currency"
         field(55; "Max. Payment Tolerance Amount"; Decimal)
         {
             AutoFormatExpression = Code;
-            //TODO //AuFormatType = 1;
+            //TODO AuFormatType = 1;
             Caption = 'Max. Payment Tolerance Amount';
             Editable = false;
             MinValue = 0;
@@ -392,7 +390,6 @@ table 99200 "DEL Ex_Currency"
 
         field(4006497; Kennzeichen; Text[10])
         {
-            Description = 'AL.KVK5.0';
         }
 
     }

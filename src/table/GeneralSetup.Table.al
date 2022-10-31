@@ -99,8 +99,19 @@ table 50000 "DEL General Setup"
             Caption = 'Folder Expeditors';
 
             trigger OnValidate()
+            var
+                Instr: InStream;
             begin
-                //TODO //codeunit // GeneralMgt.CheckFolderName("Folder Expeditors");
+                //TODOGeneralMgt.CheckFolderName("Folder Expeditors");
+
+                BlobVarText := '\';
+                if Rec."Folder Expeditors".HasValue then begin
+                    Rec."Folder Expeditors".CreateInStream(Instr);
+                    Instr.ReadText(BlobVarText);
+                    Message(BlobVarText);
+                end
+                else
+                    BlobVarText := 'No value of a slash on the Blob field';
             end;
         }
         field(857; "Folder Expeditors Archive"; Blob) //TODO: Check modification text[250]
@@ -108,8 +119,20 @@ table 50000 "DEL General Setup"
             Caption = 'Folder Expeditors Archive';
 
             trigger OnValidate()
+            var
+                Instr: InStream;
             begin
-                //TODO //codeunit //   GeneralMgt.CheckFolderName("Folder Expeditors Archive");
+                //TODO: à corriger //codeunit //   GeneralMgt.CheckFolderName("Folder Expeditors Archive");
+
+                BlobVarText := '\';
+                if Rec."Folder Expeditors Archive".HasValue then begin
+                    Rec."Folder Expeditors Archive".CreateInStream(Instr);
+                    Instr.ReadText(BlobVarText);
+                    Message(BlobVarText);
+                end
+                else
+                    BlobVarText := 'No value of a slash on the Blob field';
+
             end;
         }
         field(858; "Folder Maersk"; Blob) //TODO: Check modification text[250]
@@ -117,8 +140,20 @@ table 50000 "DEL General Setup"
             Caption = 'Folder Maersk';
 
             trigger OnValidate()
+            var
+                Instr: InStream;
+
             begin
-                //TODO //codeunit //    GeneralMgt.CheckFolderName("Folder Maersk");
+                //TODO: à corriger //codeunit // GeneralMgt.CheckFolderName("Folder Maersk");
+
+                BlobVarText := '\';
+                if Rec."Folder Maersk".HasValue then begin
+                    Rec."Folder Maersk".CreateInStream(Instr);
+                    Instr.ReadText(BlobVarText);
+                    Message(BlobVarText);
+                end
+                else
+                    BlobVarText := 'No value of a slash on the Blob field';
             end;
         }
         field(859; "Folder Maersk Archive"; Blob) //TODO: Check modification text[250]
@@ -126,8 +161,20 @@ table 50000 "DEL General Setup"
             Caption = 'Folder Maersk Archive';
 
             trigger OnValidate()
+            var
+                Instr: InStream;
             begin
                 //TODO //codeunit // GeneralMgt.CheckFolderName("Folder Maersk Archive");
+
+                BlobVarText := '\';
+                if Rec."Folder Maersk Archive".HasValue then begin
+                    Rec."Folder Maersk Archive".CreateInStream(Instr);
+                    Instr.ReadText(BlobVarText);
+                    Message(BlobVarText);
+                end
+                else
+                    BlobVarText := 'No value of a slash on the Blob field';
+
             end;
         }
         field(860; "Reporting File"; Text[250])
@@ -147,14 +194,12 @@ table 50000 "DEL General Setup"
                 GLAccount_Re: Record "G/L Account";
             begin
                 GLAccount_Re.RESET();
-                IF GLAccount_Re.FINDFIRST() THEN BEGIN
-                    IF ("Hyperion Company Code" <> '') THEN BEGIN
+                IF GLAccount_Re.FINDFIRST() THEN
+                    IF ("Hyperion Company Code" <> '') THEN
                         REPEAT
-                            //TODO  GLAccount_Re."Company Code" := "Hyperion Company Code";
+                            GLAccount_Re."DEL Company Code" := "Hyperion Company Code";
                             GLAccount_Re.MODIFY();
                         UNTIL GLAccount_Re.NEXT() = 0;
-                    END;
-                END;
             end;
         }
         field(863; "Sales File"; Text[250])
@@ -244,7 +289,7 @@ table 50000 "DEL General Setup"
         {
             Caption = 'Default Email Template';
 
-            //TODO  TableRelation = "DocMatrix Email Codes".Code;
+            TableRelation = "DEL DocMatrix Email Codes".Code;
         }
         field(50015; Mail1; Text[250])
         {
@@ -281,7 +326,9 @@ table 50000 "DEL General Setup"
     }
 
     var
-    //TODO //codeunit 
-    // GeneralMgt: Codeunit "11501";
+        //TODO //codeunit: je l'a  modifié dans les triggers OnValidate()
+        GeneralMgt: Codeunit GeneralMgt;
+        BlobVarText: Text;
+
 }
 

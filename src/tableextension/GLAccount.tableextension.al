@@ -18,7 +18,7 @@ tableextension 50011 "DEL GLAccount" extends "G/L Account"
             Caption = 'Excluded from the Link Control Delivery';
 
         }
-        field(50003; "DEL Company Code"; Text[30])
+        field(50003; "DEL Company Code"; Text[50]) //Text[30==>50]
         {
             FieldClass = Normal;
             Caption = 'Company Code';

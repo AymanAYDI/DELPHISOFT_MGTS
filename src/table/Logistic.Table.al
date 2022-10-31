@@ -28,7 +28,7 @@ table 50034 "DEL Logistic"
             TableRelation = "Purch. Rcpt. Header"."No.";
             Caption = 'BR No.';
         }
-        field(40; "Supplier Name"; Text[50])
+        field(40; "Supplier Name"; Text[100]) //Text[50 to 100]
         {
             Caption = 'Supplier Name';
         }
@@ -101,7 +101,7 @@ table 50034 "DEL Logistic"
         {
             Caption = 'Effective Booking date';
         }
-        field(170; "BL N°"; Code[30])
+        field(170; "BL N°"; Code[50]) //Code[30 TO 50]
         {
             Caption = 'BL N°';
         }

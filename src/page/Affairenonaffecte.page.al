@@ -89,8 +89,6 @@ page 50057 "DEL Affaire non affectée"
 
                 trigger OnAction()
                 begin
-
-
                     Rec.SETRANGE("Display record", TRUE);
                     IF Rec.FIND('-') THEN
                         REPEAT
@@ -98,10 +96,7 @@ page 50057 "DEL Affaire non affectée"
                             Rec.MODIFY();
                         UNTIL Rec.NEXT() = 0;
                     Rec.RESET();
-
                     COMMIT();
-
-
                     Logistic2.SETRANGE("BL N°", '');
                     IF Logistic2.FIND('-') THEN
                         REPEAT
@@ -122,12 +117,7 @@ page 50057 "DEL Affaire non affectée"
 
     trigger OnOpenPage()
     begin
-
-
-
         Rec.SETRANGE("Display record", TRUE);
-
-
     end;
 
     var

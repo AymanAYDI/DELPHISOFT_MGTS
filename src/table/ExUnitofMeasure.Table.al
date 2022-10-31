@@ -18,7 +18,9 @@ table 99206 "DEL Ex_Unit of Measure"
         {
             Caption = 'Description';
         }
-        field(4006496; "ISO Code"; Code[3])
+
+        field(4006496; "ISO Code"; Code[3])  //---------Spécifique pays Suisse
+
         {
             Caption = 'ISO Code';
 

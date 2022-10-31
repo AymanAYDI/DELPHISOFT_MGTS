@@ -44,7 +44,8 @@ table 99209 "DEL Ex_Extended Text Line"
             Caption = 'Inherited';
 
         }
-        //TODO field(4006497; Separator; Enum "Separator ")
+        //TODO 
+        // field(4006497; Separator; Enum "Separator ")
         // {
         //     Caption = 'Separator';
 

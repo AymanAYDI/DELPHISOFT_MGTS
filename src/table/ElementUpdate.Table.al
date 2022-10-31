@@ -84,10 +84,10 @@ table 50041 "DEL Element Update"
         {
             Caption = 'Add DateTime';
         }
-        field(31; "User ID"; Code[20])
+        field(31; "User ID"; Code[50])
         {
             Caption = 'User ID';
-            //TODO  TableRelation = Table2000000002.Field1;
+            TableRelation = User."User Name";
         }
         field(32; Shipment_ID; Code[20])
         {
@@ -123,45 +123,13 @@ table 50041 "DEL Element Update"
         Setup: Record "DEL General Setup";
         NoSeriesMgt: Codeunit NoSeriesManagement;
 
-
     procedure FNC_Date2DateTime()
     begin
-        /*TODO
-       RESET();
-       FIND('-');
-       REPEAT
-         myDT := 0DT;
-         IF EVALUATE(myDT, FORMAT(Date)) THEN BEGIN
-           DateTime := myDT;
-           //Date := 0D;
-           MODIFY();
-         END ELSE
-           ERROR('Evaluate exception with rec >%1<', ID);
-       UNTIL NEXT() = 0;
-       */
 
     end;
 
-
     procedure FNC_DateTime2Date()
     begin
-        /*TODO
-        //transforme les DateTime en Date
-        RESET();
-        FIND('-');
-        REPEAT
-        
-          myD := 0D;
-          IF EVALUATE(myD, COPYSTR(FORMAT("Add DateTime"),1,8)) THEN BEGIN
-            Date := myD;
-            //DateTime := 0DT;
-            MODIFY();
-          END ELSE
-            ERROR('Evaluate exception with rec >%1<', ID);
-        
-        UNTIL NEXT() = 0;
-        */
-
     end;
 }
 

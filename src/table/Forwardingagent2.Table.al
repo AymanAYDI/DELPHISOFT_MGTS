@@ -1,7 +1,5 @@
 table 50009 "DEL Forwarding agent 2"
 {
-
-
     Caption = 'Forwarding agent';
     LookupPageID = "DEL Forwarding agent";
 

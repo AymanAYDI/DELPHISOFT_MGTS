@@ -195,26 +195,23 @@ table 99208 "DEL Ex_Extended Text Header"
             Caption = 'Purchase Return Order';
             InitValue = true;
         }
+        //---------Spécifique pays Suisse: à voir avec Ayman
         field(4006496; Lieferantext; Boolean)
         {
-            Description = 'AL.KVK4.5';
             Caption = 'Lieferantext';
         }
         field(4006497; Vererbt; Boolean)
         {
             Caption = 'Inherited';
-            Description = 'AL.KVK4.5';
         }
         field(4006498; Quellzeilennr; Boolean)
         {
             Caption = 'Source Line No.';
-            Description = 'AL.KVK4.5';
         }
         field(4006499; Beschreibung; BLOB)
         {
             Caption = 'Description';
             Compressed = false;
-            Description = 'AL.KVK4.5';
             SubType = Memo;
         }
         field(5005270; "Delivery Reminder"; Boolean)
