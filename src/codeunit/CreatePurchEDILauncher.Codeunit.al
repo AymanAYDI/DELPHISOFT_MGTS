@@ -2,17 +2,13 @@ codeunit 50018 "DEL Create Purch. EDI Launcher"
 {
     trigger OnRun()
     begin
-        //CASE Rec."Parameter String" OF
-        //  'CREATEREQWORKSHEET':CreateReqWorkSheet;
-        //  'CREATEPURCHDEAL':CreatePurchDeal;
-        //END;
 
         CreateReqWorkSheet();
         CreatePurchDeal();
     end;
 
     var
-        Param: Option " ",CreateAndValidateReqWorksheet,CreateDeal;
+        Param: Enum "DEL Param";
 
     local procedure CreateReqWorkSheet()
     var
@@ -32,7 +28,7 @@ codeunit 50018 "DEL Create Purch. EDI Launcher"
                     IF NOT CreatePurchEDI.RUN() THEN BEGIN
                         SalesHeader."DEL Status Purch. Order Create" := SalesHeader."DEL Status Purch. Order Create"::"Create Req. Worksheet";
                         SalesHeader."DEL Error Purch. Order Create" := TRUE;
-                        SalesHeader."DEL Error Text Purch. Order Create" := COPYSTR(GETLASTERRORTEXT, 1, 250);
+                        SalesHeader."DEL Err Text Pur. Order Create" := COPYSTR(GETLASTERRORTEXT, 1, 250);
                         SalesHeader."DEL To Create Purchase Order" := FALSE;
                         SalesHeader.MODIFY();
                     END;
@@ -59,11 +55,11 @@ codeunit 50018 "DEL Create Purch. EDI Launcher"
                 IF NOT CreatePurchEDI.RUN() THEN BEGIN
                     SalesHeader."DEL Status Purch. Order Create" := SalesHeader."DEL Status Purch. Order Create"::"Create Deal";
                     SalesHeader."DEL Error Purch. Order Create" := TRUE;
-                    SalesHeader."DEL Error Text Purch. Order Create" := COPYSTR(GETLASTERRORTEXT, 1, 250);
+                    SalesHeader."DEL Err Text Pur. Order Create" := COPYSTR(GETLASTERRORTEXT, 1, 250);
                     SalesHeader.MODIFY();
                 END ELSE BEGIN
                     SalesHeader."DEL Status Purch. Order Create" := SalesHeader."DEL Status Purch. Order Create"::Created;
-                    SalesHeader."DEL Error Text Purch. Order Create" := '';
+                    SalesHeader."DEL Err Text Pur. Order Create" := '';
                     SalesHeader.MODIFY();
                 END;
             UNTIL SalesHeader.NEXT() = 0;

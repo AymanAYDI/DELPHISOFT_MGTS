@@ -1,4 +1,4 @@
-tableextension 50044 "DEL GenJournalLine" extends "Gen. Journal Line"
+tableextension 50044 "DEL GenJournalLine" extends "Gen. Journal Line" //81
 {
     fields
     {

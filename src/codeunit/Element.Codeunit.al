@@ -23,7 +23,6 @@ codeunit 50021 "DEL Element"
     begin
         // Ajoute un "Element" de type ACO
 
-        //CHG07
         deal_Re_Loc.GET(Deal_ID_Co_Par);
 
         //insère un enregistrement dans la table "Element" 50021
@@ -57,7 +56,6 @@ codeunit 50021 "DEL Element"
     begin
         // Ajoute un "Element" de type ACO
 
-        //CHG07
         deal_Re_Loc.GET(Deal_ID_Co_Par);
 
         element_ID_Co_Ret :=
@@ -82,7 +80,7 @@ codeunit 50021 "DEL Element"
     end;
 
 
-    procedure FNC_Add_BR(Deal_ID_Co_Par: Code[20]; BR_Header_Re_Par: Record "Purch. Rcpt. Header"; DealShipmentNo_Co_Par: Code[20]; Add_Variant_Op_Par: Option New,Existing)
+    procedure FNC_Add_BR(Deal_ID_Co_Par: Code[20]; BR_Header_Re_Par: Record "Purch. Rcpt. Header"; DealShipmentNo_Co_Par: Code[20]; Add_Variant_Op_Par: Enum "New/Existing")
     var
         dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
         element_Re_Loc: Record "DEL Element";
@@ -142,12 +140,10 @@ codeunit 50021 "DEL Element"
                 END;
                 DealShipment_Cu.FNC_SetBRNo(dealShipmentSelection_Re_Loc."Shipment No.", BR_Header_Re_Par."No.");
 
-                //grc01 begin
                 IF logistic_Re_Loc.GET(dealShipmentSelection_Re_Loc."Shipment No.", dealShipmentSelection_Re_Loc.Deal_ID) THEN BEGIN
                     logistic_Re_Loc.VALIDATE("BR No.", BR_Header_Re_Par."No.");
                     logistic_Re_Loc.MODIFY();
                 END;
-                //grc01 end
 
 
 
@@ -167,16 +163,12 @@ codeunit 50021 "DEL Element"
                     purchRcptLine_Re_Loc.SETRANGE("Shortcut Dimension 1 Code", element_Re_Loc."Type No.");
                     purchRcptLine_Re_Loc.SETRANGE(Correction, FALSE);
                     purchRcptLine_Re_Loc.SETRANGE(Type, purchRcptLine_Re_Loc.Type::Item);
-                    // START STG01
                     purchRcptLine_Re_Loc.SETFILTER(Quantity, '<>%1', 0);
-                    // STOP STG01
                     IF purchRcptLine_Re_Loc.FINDFIRST() THEN BEGIN
 
                         REPEAT
 
                             IF purchRcptLine_Re_Loc."Document No." <> last THEN BEGIN
-                                //MESSAGE(purchRcptLine_Re_Loc."Document No.");
-
                                 IF BR_Header_Re_Par.GET(purchRcptLine_Re_Loc."Document No.") THEN BEGIN
 
                                     /*_Ajoute une ligne dans table "Element"_*/
@@ -418,7 +410,7 @@ codeunit 50021 "DEL Element"
     end;
 
 
-    procedure FNC_Add_Invoice(Deal_ID_Co_Par: Code[20]; Type_No_Par: Code[20]; Subject_Type_Par: Option; Subject_No_Par: Code[20]; Fee_ID_Co_Par: Code[20]; FeeConnection_ID_Co_Par: Code[20]; Add_Variant_Op_Par: Option New,Existing)
+    procedure FNC_Add_Invoice(Deal_ID_Co_Par: Code[20]; Type_No_Par: Code[20]; Subject_Type_Par: Option; Subject_No_Par: Code[20]; Fee_ID_Co_Par: Code[20]; FeeConnection_ID_Co_Par: Code[20]; Add_Variant_Op_Par: Enum "New/Existing")
     var
         dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
         element_Re_Loc: Record "DEL Element";
@@ -438,11 +430,6 @@ codeunit 50021 "DEL Element"
         IF Add_Variant_Op_Par = Add_Variant_Op_Par::Existing THEN BEGIN
 
             /*_On cherche l'ACO liée à l'affaire_*/
-            //element_Re_Loc.RESET();
-            //element_Re_Loc.SETCURRENTKEY(Deal_ID, Type);
-            //element_Re_Loc.SETRANGE(Deal_ID, Deal_ID_Co_Par);
-            //element_Re_Loc.SETRANGE(Type, element_Re_Loc.Type::ACO);
-            //element_Re_Loc.setrange(Instance, element_Re_Loc.Instance::planned);
 
             Deal_Cu.FNC_Get_ACO(element_Re_Loc, Deal_ID_Co_Par);
             IF element_Re_Loc.FINDFIRST() THEN BEGIN
@@ -459,10 +446,6 @@ codeunit 50021 "DEL Element"
                         GLAccount_Re_Loc.SETRANGE("No.", GLEntries_Re_Loc."G/L Account No.");
                         GLAccount_Re_Loc.SETRANGE("Income/Balance", GLAccount_Re_Loc."Income/Balance"::"Income Statement");
                         IF GLAccount_Re_Loc.FINDFIRST() THEN BEGIN
-                            //REPEAT
-
-                            //MESSAGE('ADD');
-
                             /*_Avant d'ajouter, on controle si l'invoice est pas déjà liée à l'affaire_*/
                             element_Re_Loc.RESET();
                             element_Re_Loc.SETCURRENTKEY(Deal_ID, Type);
@@ -478,7 +461,6 @@ codeunit 50021 "DEL Element"
                                 fee_Re_Loc.SETRANGE("Used For Import", TRUE);
                                 IF fee_Re_Loc.FINDFIRST() THEN BEGIN
 
-                                    //MESSAGE('ici ok');
                                     /*_Insère un enregistrement dans la table "Element" 50021_*/
                                     element_ID_Loc := FNC_Insert_Element(
                                      Deal_ID_Co_Par,                               //deal id
@@ -558,7 +540,6 @@ codeunit 50021 "DEL Element"
 
                             END
 
-                            //UNTIL(GLAccount_Re_Loc.NEXT() = 0);
                         END
 
                     UNTIL (GLEntries_Re_Loc.NEXT() = 0);
@@ -840,7 +821,7 @@ codeunit 50021 "DEL Element"
     end;
 
 
-    procedure FNC_Add_New_Invoice_Connection(Element_ID_Co_Par: Code[20]; DealShipmentSelection_Re_Par: Record "DEL Deal Shipment Selection"; ConnectionType_Op_Par: Option Element,Shipment; SplitIndex_Int_Par: Integer)
+    procedure FNC_Add_New_Invoice_Connection(Element_ID_Co_Par: Code[20]; DealShipmentSelection_Re_Par: Record "DEL Deal Shipment Selection"; ConnectionType_Op_Par: Enum "Element/Shipment"; SplitIndex_Int_Par: Integer)
     var
         element_Re_Loc: Record "DEL Element";
         deal_ID_Co_Loc: Code[20];
@@ -1088,7 +1069,7 @@ codeunit 50021 "DEL Element"
             element_Re_Loc."Subject Type"::" ",            //subject type
             '',                                            //subjet no
             sps_Re_Par.Fee_ID,                             //fee id
-            sps_Re_Par.Fee_Connection_ID,                  //fee connection id
+            sps_Re_Par.Fee_Connection_ID,                  //fee connection idType_Op_Par
             postingDate_Da_Loc,                            //date
             0,                                             //entry no
             '',                                            //bill-to
@@ -1098,7 +1079,7 @@ codeunit 50021 "DEL Element"
     end;
 
 
-    procedure FNC_Add_Provision_Connection(Element_ID_Co_Par: Code[20]; sps_Re_Par: Record "DEL Shipment Provision Select."; ConnectionType_Op_Par: Option Element,Shipment)
+    procedure FNC_Add_Provision_Connection(Element_ID_Co_Par: Code[20]; sps_Re_Par: Record "DEL Shipment Provision Select."; ConnectionType_Op_Par: Enum "Element/Shipment")
     var
         element_Re_Loc: Record "DEL Element";
         deal_ID_Co_Loc: Code[20];
@@ -1195,7 +1176,7 @@ codeunit 50021 "DEL Element"
     end;
 
 
-    procedure FNC_Add_Purch_Cr_Memo(Deal_ID_Co_Par: Code[20]; creditMemoHeader_Re_Par: Record "Purch. Cr. Memo Hdr."; ShipmentNo_Co_Par: Code[20]; Add_Variant_Op_Par: Option New,Existing)
+    procedure FNC_Add_Purch_Cr_Memo(Deal_ID_Co_Par: Code[20]; creditMemoHeader_Re_Par: Record "Purch. Cr. Memo Hdr."; ShipmentNo_Co_Par: Code[20]; Add_Variant_Op_Par: Enum "New/Existing")
     var
         element_Re_Loc: Record "DEL Element";
         element_ID_Loc: Code[20];
@@ -1240,7 +1221,7 @@ codeunit 50021 "DEL Element"
     end;
 
 
-    procedure FNC_Add_Purchase_Invoice(Deal_ID_Co_Par: Code[20]; PurchaseInvoiceHeader_Re_Par: Record "Purch. Inv. Header"; ShipmentNo_Co_Par: Code[20]; Add_Variant_Op_Par: Option New,Existing)
+    procedure FNC_Add_Purchase_Invoice(Deal_ID_Co_Par: Code[20]; PurchaseInvoiceHeader_Re_Par: Record "Purch. Inv. Header"; ShipmentNo_Co_Par: Code[20]; Add_Variant_Op_Par: Enum "New/Existing")
     var
         element_Re_Loc: Record "DEL Element";
         purchInvHeader_Re_Loc: Record "Purch. Inv. Header";
@@ -1367,7 +1348,7 @@ codeunit 50021 "DEL Element"
         BR_Header_Re_Loc: Record "Purch. Rcpt. Header";
         SalesInvHeader_Re_Loc: Record "Sales Invoice Header";
         option: Option;
-        option_Re_Loc: Option New,Existing;
+        option_Re_Loc: Enum "New/Existing";
     begin
         FNC_Add_BR(deal_ID_Co_Par, BR_Header_Re_Loc, '', option_Re_Loc::Existing);
         FNC_Add_Purchase_Invoice(deal_ID_Co_Par, PurchInvHeader_Re_Loc, '', option_Re_Loc::Existing);
@@ -1377,7 +1358,7 @@ codeunit 50021 "DEL Element"
     end;
 
 
-    procedure FNC_Add_Sales_Cr_Memo(Deal_ID_Co_Par: Code[20]; creditMemoHeader_Re_Par: Record "Sales Cr.Memo Header"; ShipmentNo_Co_Par: Code[20]; Add_Variant_Op_Par: Option New,Existing)
+    procedure FNC_Add_Sales_Cr_Memo(Deal_ID_Co_Par: Code[20]; creditMemoHeader_Re_Par: Record "Sales Cr.Memo Header"; ShipmentNo_Co_Par: Code[20]; Add_Variant_Op_Par: Enum "New/Existing")
     var
         element_Re_Loc: Record "DEL Element";
         element_ID_Loc: Code[20];
@@ -1423,7 +1404,7 @@ codeunit 50021 "DEL Element"
     end;
 
 
-    procedure FNC_Add_Sales_Invoice(Deal_ID_Co_Par: Code[20]; SalesInvoiceHeader_Re_Par: Record "Sales Invoice Header"; ShipmentNo_Co_Par: Code[20]; Add_Variant_Op_Par: Option New,Existing)
+    procedure FNC_Add_Sales_Invoice(Deal_ID_Co_Par: Code[20]; SalesInvoiceHeader_Re_Par: Record "Sales Invoice Header"; ShipmentNo_Co_Par: Code[20]; Add_Variant_Op_Par: Enum "New/Existing")
     var
         element_Re_Loc: Record "DEL Element";
         salesInvHeader_Re_Loc: Record "Sales Invoice Header";
@@ -1471,7 +1452,6 @@ codeunit 50021 "DEL Element"
             END ELSE
                 ERROR(ERROR_TXT, 'Co_50021', 'FNC_Add_Sales_Purchase_Invoice()',
                   STRSUBSTNO('Aucune livraison sélectionnée pour la Sales Invoice >%1< !', SalesInvoiceHeader_Re_Par."No."));
-            //STOP CHG05
 
 
         END ELSE
@@ -3147,7 +3127,6 @@ codeunit 50021 "DEL Element"
 
             element_Re_Loc.Type::ACO:
                 BEGIN
-                    //MESSAGE('ACO');
                     ACO_Line_Re_Loc.RESET();
                     ACO_Line_Re_Loc.SETRANGE("Document Type", ACO_Line_Re_Loc."Document Type"::Order);
                     ACO_Line_Re_Loc.SETRANGE("Document No.", element_Re_Loc."Type No.");
@@ -3232,7 +3211,6 @@ codeunit 50021 "DEL Element"
                 END;
             element_Re_Loc.Type::BR:
                 BEGIN
-                    //MESSAGE('BR');
                     purchRcptLine_Re_Loc.RESET();
                     purchRcptLine_Re_Loc.SETRANGE("Document No.", element_Re_Loc."Type No.");
                     purchRcptLine_Re_Loc.SETRANGE(Type, purchRcptLine_Re_Loc.Type::Item);
@@ -3247,7 +3225,6 @@ codeunit 50021 "DEL Element"
                 END;
             element_Re_Loc.Type::"Purchase Invoice":
                 BEGIN
-                    //MESSAGE('Purch. Inv.');
                     purchInvLine_Re_Loc.RESET();
                     purchInvLine_Re_Loc.SETRANGE("Document No.", element_Re_Loc."Type No.");
                     purchInvLine_Re_Loc.SETRANGE(Type, purchInvLine_Re_Loc.Type::Item);
@@ -3268,7 +3245,7 @@ codeunit 50021 "DEL Element"
     end;
 
 
-    procedure FNC_Insert_Element(Deal_ID_Co_Par: Code[20]; Instance_Op_Par: Option; Type_Op_Par: Option; "No._Co_Par": Code[20]; Apply_To_Co_Par: Code[20]; SubjectType_Op_Par: Option; SubjectNo_Co_Par: Code[20]; Fee_ID_Co_Par: Code[20]; Fee_Connection_ID_Co_Par: Code[20]; Element_Date_Par: Date; EntryNo_Int_Par: Integer; BillToCustomerNo_Co_Par: Code[20]; Period_Da_Par: Date; SplittIndex_Int_Par: Integer) element_ID_Ret: Code[20]
+    procedure FNC_Insert_Element(Deal_ID_Co_Par: Code[20]; Instance_Op_Par: Enum "DEL Instance"; Type_Op_Par: Option; "No._Co_Par": Code[20]; Apply_To_Co_Par: Code[20]; SubjectType_Op_Par: Option; SubjectNo_Co_Par: Code[20]; Fee_ID_Co_Par: Code[20]; Fee_Connection_ID_Co_Par: Code[20]; Element_Date_Par: Date; EntryNo_Int_Par: Integer; BillToCustomerNo_Co_Par: Code[20]; Period_Da_Par: Date; SplittIndex_Int_Par: Integer) element_ID_Ret: Code[20]
     var
         element_Re_Loc: Record "DEL Element";
     begin
@@ -3292,9 +3269,7 @@ codeunit 50021 "DEL Element"
         element_Re_Loc.Date := Element_Date_Par;
         element_Re_Loc.VALIDATE("Entry No.", EntryNo_Int_Par);
         element_Re_Loc.VALIDATE("Bill-to Customer No.", BillToCustomerNo_Co_Par);
-        //START CHG04
         element_Re_Loc."Add DateTime" := CURRENTDATETIME;
-        //STOP CHG04
         element_Re_Loc.Period := Period_Da_Par;
         element_Re_Loc."Splitt Index" := SplittIndex_Int_Par;
 
@@ -3305,10 +3280,8 @@ codeunit 50021 "DEL Element"
                 ElementConnection_Cu.FNC_Add(Deal_ID_Co_Par, element_ID_Ret, Apply_To_Co_Par, Instance_Op_Par, 0);
         END;
 
-        //GRC03 begin add n.client sur chaque element
         FNC_Add_Nclient(Deal_ID_Co_Par);
 
-        //GRC03 end
 
     end;
 

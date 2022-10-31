@@ -345,7 +345,6 @@ codeunit 50023 "DEL Fee"
                 factor_Dec_Loc := Default_Factor_Dec_Par
 
             ELSE BEGIN
-                //START CHG03
                 deal_Re_Loc.RESET();
                 IF deal_Re_Loc.GET(element_Re_Loc.Deal_ID) THEN BEGIN
 
@@ -376,7 +375,6 @@ codeunit 50023 "DEL Fee"
                             Amount_Dec_Ret += Element_Cu.FNC_Get_Colis(elementConnection_Re_Loc."Apply To") * factor_Dec_Loc;
                         fee_Re_Loc.Field::Douane:
                             Amount_Dec_Ret += Element_Cu.FNC_Get_Douane(elementConnection_Re_Loc."Apply To") * factor_Dec_Loc;
-                        //CHG02
                         fee_Re_Loc.Field::Quantity:
                             Amount_Dec_Ret += Element_Cu.FNC_Get_Quantity(elementConnection_Re_Loc."Apply To") * factor_Dec_Loc;
                     END
@@ -413,9 +411,6 @@ codeunit 50023 "DEL Fee"
                         position_Re_Loc.SETRANGE(Element_ID, Element_ID_Co_Par);
                         position_Re_Loc.SETRANGE("Deal Item No.", purchRcptLine_Re_Loc."No.");
                         IF position_Re_Loc.FINDFIRST() THEN
-                            //THM
-                            //  REPEAT
-                            //STOP THM
                             amount_Dec_Loc += position_Re_Loc.Amount * purchRcptLine_Re_Loc.Quantity * position_Re_Loc.Rate;
                     UNTIL (purchRcptLine_Re_Loc.NEXT() = 0);
 

@@ -66,10 +66,8 @@ codeunit 50026 "DEL Dispatcher"
                     IF addPositions_Bo_Loc THEN BEGIN
 
                         Value_Ar_Par[arrayIndex] := Element_Cu.FNC_Get_Amount_LCY(elementConnection_Re_Loc."Apply To");
-                        //CHG
                         IF (Value_Ar_Par[arrayIndex] = 0) AND (STRLEN(MyError_Te) < MAXSTRLEN(MyError_Te) - 10) THEN
                             MyError_Te := MyError_Te + '\' + elementConnection_Re_Loc."Apply To";
-                        //CHG
                         arrayIndex += 1;
 
                     END;
@@ -77,21 +75,17 @@ codeunit 50026 "DEL Dispatcher"
                 END ELSE BEGIN
 
                     Value_Ar_Par[arrayIndex] := Element_Cu.FNC_Get_Amount_LCY(elementConnection_Re_Loc."Apply To");
-                    //CHG
                     IF (Value_Ar_Par[arrayIndex] = 0) AND (STRLEN(MyError_Te) < MAXSTRLEN(MyError_Te) - 10) THEN
                         MyError_Te := MyError_Te + '\' + elementConnection_Re_Loc."Apply To";
-                    //CHG
                     arrayIndex += 1;
 
                 END;
 
             UNTIL (elementConnection_Re_Loc.NEXT() = 0);
 
-            //CHG
             IF (FNC_Array_Sum(Value_Ar_Par) = 0) THEN
                 ERROR('L''élément >' + element_Re_Loc.ID + '< de l''affaire ' + element_Re_Loc.Deal_ID + ' ne peut pas être réparti' +
                 ' car le total des éléments auxquel il est lié vaut 0 : ' + MyError_Te);
-            //CHG
 
         END ELSE
             ERROR(ERROR_TXT, 'Co50026', 'FNC_Element_Value()',
@@ -139,10 +133,8 @@ codeunit 50026 "DEL Dispatcher"
                     IF addPositions_Bo_Loc THEN BEGIN
 
                         Value_Ar_Par[arrayIndex] := Element_Cu.FNC_Get_Volume(elementConnection_Re_Loc."Apply To");
-                        //CHG
                         IF (Value_Ar_Par[arrayIndex] = 0) AND (STRLEN(MyError_Te) < MAXSTRLEN(MyError_Te) - 10) THEN
                             MyError_Te := MyError_Te + '\' + elementConnection_Re_Loc."Apply To";
-                        //CHG
                         arrayIndex += 1;
 
                     END;
@@ -150,21 +142,17 @@ codeunit 50026 "DEL Dispatcher"
                 END ELSE BEGIN
 
                     Value_Ar_Par[arrayIndex] := Element_Cu.FNC_Get_Volume(elementConnection_Re_Loc."Apply To");
-                    //CHG
                     IF (Value_Ar_Par[arrayIndex] = 0) AND (STRLEN(MyError_Te) < MAXSTRLEN(MyError_Te) - 10) THEN
                         MyError_Te := MyError_Te + '\' + elementConnection_Re_Loc."Apply To";
-                    //CHG
                     arrayIndex += 1;
 
                 END;
 
             UNTIL (elementConnection_Re_Loc.NEXT() = 0);
 
-            //CHG
             IF (FNC_Array_Sum(Value_Ar_Par) = 0) THEN
                 ERROR('L''élément >' + element_Re_Loc.ID + '< de l''affaire ' + element_Re_Loc.Deal_ID + ' ne peut pas être réparti' +
                 ' car le total des éléments auxquel il est lié vaut 0 : ' + MyError_Te);
-            //CHG
 
         END ELSE
             ERROR(ERROR_TXT, 'Co50026', 'FNC_Element_Element_Volume()',
@@ -212,10 +200,8 @@ codeunit 50026 "DEL Dispatcher"
                     IF addPositions_Bo_Loc THEN BEGIN
 
                         Value_Ar_Par[arrayIndex] := Element_Cu.FNC_Get_VolumeTransport(elementConnection_Re_Loc."Apply To");
-                        //CHG
                         IF (Value_Ar_Par[arrayIndex] = 0) AND (STRLEN(MyError_Te) < MAXSTRLEN(MyError_Te) - 10) THEN
                             MyError_Te := MyError_Te + '\' + elementConnection_Re_Loc."Apply To";
-                        //CHG
                         arrayIndex += 1;
 
                     END;
@@ -223,21 +209,17 @@ codeunit 50026 "DEL Dispatcher"
                 END ELSE BEGIN
 
                     Value_Ar_Par[arrayIndex] := Element_Cu.FNC_Get_VolumeTransport(elementConnection_Re_Loc."Apply To");
-                    //CHG
                     IF (Value_Ar_Par[arrayIndex] = 0) AND (STRLEN(MyError_Te) < MAXSTRLEN(MyError_Te) - 10) THEN
                         MyError_Te := MyError_Te + '\' + elementConnection_Re_Loc."Apply To";
-                    //CHG
                     arrayIndex += 1;
 
                 END;
 
             UNTIL (elementConnection_Re_Loc.NEXT() = 0);
 
-            //CHG
             IF (FNC_Array_Sum(Value_Ar_Par) = 0) THEN
                 ERROR('L''élément >' + element_Re_Loc.ID + '< de l''affaire ' + element_Re_Loc.Deal_ID + ' ne peut pas être réparti' +
                 ' car le total des éléments auxquel il est lié vaut 0 : ' + MyError_Te);
-            //CHG
 
         END ELSE
             ERROR(ERROR_TXT, 'Co50026', 'FNC_Element_VolumeTransport()',
@@ -296,21 +278,17 @@ codeunit 50026 "DEL Dispatcher"
                 END ELSE BEGIN
 
                     Value_Ar_Par[arrayIndex] := Element_Cu.FNC_Get_Gross_Weight(elementConnection_Re_Loc."Apply To");
-                    //CHG
                     IF (Value_Ar_Par[arrayIndex] = 0) AND (STRLEN(MyError_Te) < MAXSTRLEN(MyError_Te) - 10) THEN
                         MyError_Te := MyError_Te + '\' + elementConnection_Re_Loc."Apply To";
-                    //CHG
                     arrayIndex += 1;
 
                 END;
 
             UNTIL (elementConnection_Re_Loc.NEXT() = 0);
 
-            //CHG
             IF (FNC_Array_Sum(Value_Ar_Par) = 0) THEN
                 ERROR('L''élément >' + element_Re_Loc.ID + '< de l''affaire ' + element_Re_Loc.Deal_ID + ' ne peut pas être réparti' +
                 ' car le total des éléments auxquel il est lié vaut 0 : ' + MyError_Te);
-            //CHG
 
         END ELSE
             ERROR(ERROR_TXT, 'Co50026', 'FNC_Element_Gross_Weight()',
@@ -357,10 +335,8 @@ codeunit 50026 "DEL Dispatcher"
                     IF addPositions_Bo_Loc THEN BEGIN
 
                         Value_Ar_Par[arrayIndex] := 1; //peut importe la valeur.. tant qu'elle est la meme pour tous les éléments du tableau..
-                                                       //CHG
                         IF (Value_Ar_Par[arrayIndex] = 0) AND (STRLEN(MyError_Te) < MAXSTRLEN(MyError_Te) - 10) THEN
                             MyError_Te := MyError_Te + '\' + elementConnection_Re_Loc."Apply To";
-                        //CHG
                         arrayIndex += 1;
 
                     END;
@@ -368,21 +344,17 @@ codeunit 50026 "DEL Dispatcher"
                 END ELSE BEGIN
 
                     Value_Ar_Par[arrayIndex] := 1; //peut importe la valeur.. tant qu'elle est la meme pour tous les éléments du tableau..
-                                                   //CHG
                     IF (Value_Ar_Par[arrayIndex] = 0) AND (STRLEN(MyError_Te) < MAXSTRLEN(MyError_Te) - 10) THEN
                         MyError_Te := MyError_Te + '\' + elementConnection_Re_Loc."Apply To";
-                    //CHG
                     arrayIndex += 1;
 
                 END;
 
             UNTIL (elementConnection_Re_Loc.NEXT() = 0);
 
-            //CHG
             IF (FNC_Array_Sum(Value_Ar_Par) = 0) THEN
                 ERROR('L''élément >' + element_Re_Loc.ID + '< de l''affaire ' + element_Re_Loc.Deal_ID + ' ne peut pas être réparti' +
                 ' car le total des éléments auxquel il est lié vaut 0 : ' + MyError_Te);
-            //CHG
 
         END ELSE
             ERROR(ERROR_TXT, 'Co50026', 'FNC_Element_SommeCout()',
@@ -430,10 +402,8 @@ codeunit 50026 "DEL Dispatcher"
                     IF addPositions_Bo_Loc THEN BEGIN
 
                         Value_Ar_Par[arrayIndex] := Element_Cu.FNC_Get_Colis(elementConnection_Re_Loc."Apply To");
-                        //CHG
                         IF (Value_Ar_Par[arrayIndex] = 0) AND (STRLEN(MyError_Te) < MAXSTRLEN(MyError_Te) - 10) THEN
                             MyError_Te := MyError_Te + '\' + elementConnection_Re_Loc."Apply To";
-                        //CHG
                         arrayIndex += 1;
 
                     END;
@@ -441,21 +411,16 @@ codeunit 50026 "DEL Dispatcher"
                 END ELSE BEGIN
 
                     Value_Ar_Par[arrayIndex] := Element_Cu.FNC_Get_Colis(elementConnection_Re_Loc."Apply To");
-                    //CHG
                     IF (Value_Ar_Par[arrayIndex] = 0) AND (STRLEN(MyError_Te) < MAXSTRLEN(MyError_Te) - 10) THEN
                         MyError_Te := MyError_Te + '\' + elementConnection_Re_Loc."Apply To";
-                    //CHG
                     arrayIndex += 1;
 
                 END;
 
             UNTIL (elementConnection_Re_Loc.NEXT() = 0);
-
-            //CHG
             IF (FNC_Array_Sum(Value_Ar_Par) = 0) THEN
                 ERROR('L''élément >' + element_Re_Loc.ID + '< de l''affaire ' + element_Re_Loc.Deal_ID + ' ne peut pas être réparti' +
                 ' car le total des éléments auxquel il est lié vaut 0 : ' + MyError_Te);
-            //CHG
 
         END ELSE
             ERROR(ERROR_TXT, 'Co50026', 'FNC_Element_Colis()',
@@ -503,10 +468,8 @@ codeunit 50026 "DEL Dispatcher"
                     IF addPositions_Bo_Loc THEN BEGIN
 
                         Value_Ar_Par[arrayIndex] := Element_Cu.FNC_Get_Quantity(elementConnection_Re_Loc."Apply To");
-                        //CHG
                         IF (Value_Ar_Par[arrayIndex] = 0) AND (STRLEN(MyError_Te) < MAXSTRLEN(MyError_Te) - 10) THEN
                             MyError_Te := MyError_Te + '\' + elementConnection_Re_Loc."Apply To";
-                        //CHG
                         arrayIndex += 1;
 
                     END;
@@ -514,21 +477,17 @@ codeunit 50026 "DEL Dispatcher"
                 END ELSE BEGIN
 
                     Value_Ar_Par[arrayIndex] := Element_Cu.FNC_Get_Quantity(elementConnection_Re_Loc."Apply To");
-                    //CHG
                     IF (Value_Ar_Par[arrayIndex] = 0) AND (STRLEN(MyError_Te) < MAXSTRLEN(MyError_Te) - 10) THEN
                         MyError_Te := MyError_Te + '\' + elementConnection_Re_Loc."Apply To";
-                    //CHG
                     arrayIndex += 1;
 
                 END;
 
             UNTIL (elementConnection_Re_Loc.NEXT() = 0);
 
-            //CHG
             IF (FNC_Array_Sum(Value_Ar_Par) = 0) THEN
                 ERROR('L''élément >' + element_Re_Loc.ID + '< de l''affaire ' + element_Re_Loc.Deal_ID + ' ne peut pas être réparti' +
                 ' car le total des éléments auxquel il est lié vaut 0 : ' + MyError_Te);
-            //CHG
 
         END ELSE
             ERROR(ERROR_TXT, 'Co50026', 'FNC_Element_Quantity()',

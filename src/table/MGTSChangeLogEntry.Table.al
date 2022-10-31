@@ -27,7 +27,7 @@ table 50076 "DEL MGTS Change Log Entry"
 
             //TODO trigger OnLookup() ==> à supprimer comme le STD 
             // var
-            //     UserMgt: Codeunit "User Management";
+            //     UserMgt: Codeunit "User Management"; // 418
             // begin
             //     //  TODO // UserMgt.LookupUserID("User ID"); IS NOT SUPPORTED IN V20
             // end;

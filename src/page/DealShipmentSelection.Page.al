@@ -128,11 +128,11 @@ page 50038 "DEL Deal Shipment Selection"
 
     var
         GenJnlLine_Re: Record "Gen. Journal Line";
-        openerType_Op: Option Invoice,"Purchase Header","Sales Header";
+        openerType_Op: Enum "DEL Document Type";
         FeeDescription_Te: Text[50];
 
 
-    procedure FNC_OpenedBy(openerType_Op_Par: Option Invoice,"Purchase Header","Sales Header"; openerNo_Co_Par: Code[20])
+    procedure FNC_OpenedBy(openerType_Op_Par: Enum "DEL Document Type"; openerNo_Co_Par: Code[20])
     begin
         openerType_Op := openerType_Op_Par;
 

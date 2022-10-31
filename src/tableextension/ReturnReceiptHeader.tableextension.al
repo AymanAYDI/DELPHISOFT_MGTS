@@ -1,4 +1,4 @@
-tableextension 50039 "DEL ReturnReceiptHeader" extends "Return Receipt Header"
+tableextension 50039 "DEL ReturnReceiptHeader" extends "Return Receipt Header" //6660
 {
     fields
     {

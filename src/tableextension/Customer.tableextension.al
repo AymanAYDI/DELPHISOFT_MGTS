@@ -1,4 +1,4 @@
-tableextension 50013 "DEL Customer" extends Customer
+tableextension 50013 "DEL Customer" extends Customer //18
 {
 
 

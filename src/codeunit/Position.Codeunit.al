@@ -111,7 +111,7 @@ codeunit 50022 "DEL Position"
     procedure FNC_Add_ACO_Position(Deal_ID_Co_Par: Code[20])
     var
         element_Re_Loc: Record "DEL Element";
-        importFromInvoice_Re_Temp: Record "DEL Import From Invoice" temporary;
+        Temp_importFromInvoice_Re: Record "DEL Import From Invoice" temporary;
         purchInvHeader_Re_Loc: Record "Purch. Inv. Header";
         purchInvLine_Re_Loc: Record "Purch. Inv. Line";
         ACO_Line_Re_Loc: Record "Purchase Line";
@@ -174,55 +174,54 @@ codeunit 50022 "DEL Position"
                                   STRSUBSTNO('Purch. Inv. >%1< not found', purchInvLine_Re_Loc."Document No.")
                                 );
 
-                            importFromInvoice_Re_Temp.INIT();
-                            importFromInvoice_Re_Temp."Item No." := purchInvLine_Re_Loc."No.";
-                            importFromInvoice_Re_Temp.Quantity := purchInvLine_Re_Loc.Quantity;
-                            importFromInvoice_Re_Temp.Amount := purchInvLine_Re_Loc."Unit Cost";
-                            importFromInvoice_Re_Temp.Currency := purchInvHeader_Re_Loc."Currency Code";
-                            importFromInvoice_Re_Temp.Rate :=
+                            Temp_importFromInvoice_Re.INIT();
+                            Temp_importFromInvoice_Re."Item No." := purchInvLine_Re_Loc."No.";
+                            Temp_importFromInvoice_Re.Quantity := purchInvLine_Re_Loc.Quantity;
+                            Temp_importFromInvoice_Re.Amount := purchInvLine_Re_Loc."Unit Cost";
+                            Temp_importFromInvoice_Re.Currency := purchInvHeader_Re_Loc."Currency Code";
+                            Temp_importFromInvoice_Re.Rate :=
                               Currency_Exchange_Re.FNC_Get_Rate(element_Re_Loc.Deal_ID, purchInvHeader_Re_Loc."Currency Code", 'EUR');
 
-                            IF NOT importFromInvoice_Re_Temp.INSERT() THEN BEGIN
-                                IF importFromInvoice_Re_Temp.GET(purchInvLine_Re_Loc."No.") THEN BEGIN
-                                    importFromInvoice_Re_Temp.Quantity += purchInvLine_Re_Loc.Quantity;
-                                    importFromInvoice_Re_Temp.MODIFY();
+                            IF NOT Temp_importFromInvoice_Re.INSERT() THEN BEGIN
+                                IF Temp_importFromInvoice_Re.GET(purchInvLine_Re_Loc."No.") THEN BEGIN
+                                    Temp_importFromInvoice_Re.Quantity += purchInvLine_Re_Loc.Quantity;
+                                    Temp_importFromInvoice_Re.MODIFY();
                                 END;
                             END;
 
                         UNTIL (purchInvLine_Re_Loc.NEXT() = 0);
 
                     //2. Lire la table et créer les positions
-                    importFromInvoice_Re_Temp.RESET();
-                    IF importFromInvoice_Re_Temp.FINDFIRST() THEN
+                    Temp_importFromInvoice_Re.RESET();
+                    IF Temp_importFromInvoice_Re.FINDFIRST() THEN
                         REPEAT
 
                             //La fonction ajoute seulement si l'item n'a jamais été enregistré !
-                            DealItem_Cu.FNC_Add(Deal_ID_Co_Par, importFromInvoice_Re_Temp."Item No.");
+                            DealItem_Cu.FNC_Add(Deal_ID_Co_Par, Temp_importFromInvoice_Re."Item No.");
 
                             //La fonction met à jour seulement si Unit Cost n'a jamais été défini
                             DealItem_Cu.FNC_Update_Unit_Cost(
                               Deal_ID_Co_Par,
-                              importFromInvoice_Re_Temp."Item No.",
-                              importFromInvoice_Re_Temp.Amount,
-                              importFromInvoice_Re_Temp.Currency
+                              Temp_importFromInvoice_Re."Item No.",
+                              Temp_importFromInvoice_Re.Amount,
+                              Temp_importFromInvoice_Re.Currency
                             );
 
                             FNC_Insert_Position(
                               Deal_ID_Co_Par,
                               element_Re_Loc.ID,
-                              importFromInvoice_Re_Temp."Item No.",
-                              importFromInvoice_Re_Temp.Quantity,
-                              importFromInvoice_Re_Temp.Currency,
-                              importFromInvoice_Re_Temp.Amount * -1,
+                              Temp_importFromInvoice_Re."Item No.",
+                              Temp_importFromInvoice_Re.Quantity,
+                              Temp_importFromInvoice_Re.Currency,
+                              Temp_importFromInvoice_Re.Amount * -1,
                               '',
-                              importFromInvoice_Re_Temp.Rate,
-                              DealItem_Cu.FNC_Get_Campaign_Code(Deal_ID_Co_Par, importFromInvoice_Re_Temp."Item No.")
+                              Temp_importFromInvoice_Re.Rate,
+                              DealItem_Cu.FNC_Get_Campaign_Code(Deal_ID_Co_Par, Temp_importFromInvoice_Re."Item No.")
                             );
 
-                        UNTIL (importFromInvoice_Re_Temp.NEXT() = 0);
+                        UNTIL (Temp_importFromInvoice_Re.NEXT() = 0);
 
-                    //correction 06.11.08
-                    importFromInvoice_Re_Temp.DELETEALL();
+                    Temp_importFromInvoice_Re.DELETEALL();
 
                 END
 
@@ -415,7 +414,6 @@ codeunit 50022 "DEL Position"
 
                                 UNTIL (importFromInvoice_Re_Temp.NEXT() = 0);
 
-                            //correction 06.11.08
                             importFromInvoice_Re_Temp.DELETEALL();
 
                         END
@@ -530,7 +528,6 @@ codeunit 50022 "DEL Position"
                         UNTIL (purchInv_Line_Re_Loc.NEXT() = 0)
 
                     ELSE BEGIN
-                        //CHG02
                         IF NOT Add_Silently_Bo_Par THEN
                             MESSAGE(INFORMATION_TXT,
                             STRSUBSTNO('Aucunes lignes trouvées pour cette affaire sur Purchase Header No. >%1<', element_Re_Loc."Type No."));
@@ -599,7 +596,6 @@ codeunit 50022 "DEL Position"
                         UNTIL (purchCreditMemoLine_Re_Loc.NEXT() = 0)
 
                     ELSE BEGIN
-                        //CHG02
                         IF NOT Add_Silently_Bo_Par THEN
                             MESSAGE(INFORMATION_TXT,
                               STRSUBSTNO('Aucunes lignes trouvées pour cette affaire sur' +
@@ -647,9 +643,7 @@ codeunit 50022 "DEL Position"
                             salesInvHeader_Re_Loc.GET(salesInv_Line_Re_Loc."Document No.");
                             currency_Co_Loc := salesInvHeader_Re_Loc."Currency Code";
                             IF (currency_Co_Loc = 'EUR')
-                              //THM020318 START
                               OR (currency_Co_Loc = '') THEN
-                                //THM020318 END
                                 currencyRate_Dec_Loc := 1
                             ELSE
                                 currencyRate_Dec_Loc :=
@@ -671,7 +665,6 @@ codeunit 50022 "DEL Position"
                         UNTIL (salesInv_Line_Re_Loc.NEXT() = 0)
 
                     ELSE BEGIN
-                        //CHG02
                         IF NOT Add_Silently_Bo_Par THEN
                             MESSAGE(INFORMATION_TXT,
                               STRSUBSTNO('La facture No. >%1< n''a pas de lignes concernant cette affaire', element_Re_Loc."Type No."));
@@ -737,7 +730,6 @@ codeunit 50022 "DEL Position"
                         UNTIL (salesCreditMemoLine_Re_Loc.NEXT() = 0)
 
                     ELSE BEGIN
-                        //CHG02
                         IF NOT Add_Silently_Bo_Par THEN
                             MESSAGE(INFORMATION_TXT,
                               STRSUBSTNO('Aucunes lignes trouvées pour cette affaire sur' +

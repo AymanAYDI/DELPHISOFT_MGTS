@@ -1,4 +1,4 @@
-tableextension 50029 "DEL PurchaseLine" extends "Purchase Line"
+tableextension 50029 "DEL PurchaseLine" extends "Purchase Line" //39
 {
 
     fields

@@ -44,20 +44,18 @@ codeunit 50101 "DEL MGTS_FctMgt"
         exit(not ItemChargeAssgntPurch.IsEmpty);
     end;
     //PROC de CDU 80
-    procedure OnAfterInsertPostedHeaders(var SalesHeader: Record "Sales Header"; var SalesShipmentHeader: Record "Sales Shipment Header"; var SalesInvoiceHeader: Record "Sales Invoice Header"; var SalesCrMemoHdr: Record "Sales Cr.Memo Header"; var ReceiptHeader: Record "Return Receipt Header")
+    procedure OnAfterInsertPostedHeaders(var SalesHeader: Record "Sales Header"; var SalesShipmentHeader:
+ Record "Sales Shipment Header"; var SalesInvoiceHeader: Record "Sales Invoice Header";
+  var SalesCrMemoHdr: Record "Sales Cr.Memo Header"; var ReceiptHeader: Record "Return Receipt Header")
     var
         dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
-        SalesCrMemoHeader: Record "Sales Cr.Memo Header";
         Element_Cu: Codeunit "DEL Element";
-
-        add_Variant_Op_Loc: option New,Existing;
-
+        add_Variant_Op_Loc: Enum "New/Existing";
     begin
         if SalesHeader.Invoice then
             if SalesHeader."Document Type" in [SalesHeader."Document Type"::Order, SalesHeader."Document Type"::Invoice] then begin
                 dealShipmentSelection_Re_Loc.RESET();
                 dealShipmentSelection_Re_Loc.SETRANGE("Document No.", SalesHeader."No.");
-
 
                 IF SalesHeader."Document Type" = SalesHeader."Document Type"::Order THEN
                     dealShipmentSelection_Re_Loc.SETRANGE("Document Type",
@@ -77,7 +75,7 @@ codeunit 50101 "DEL MGTS_FctMgt"
                       add_Variant_Op_Loc::New);
             END ELSE BEGIN
                 dealShipmentSelection_Re_Loc.RESET();
-                dealShipmentSelection_Re_Loc.SETRANGE("Document No.", SalesCrMemoHeader."No.");
+                dealShipmentSelection_Re_Loc.SETRANGE("Document No.", SalesCrMemoHdr."No.");
                 dealShipmentSelection_Re_Loc.SETRANGE("Document Type",
                     dealShipmentSelection_Re_Loc."Document Type"::"Sales Cr. Memo");
                 dealShipmentSelection_Re_Loc.SETRANGE(Checked, TRUE);
@@ -85,7 +83,7 @@ codeunit 50101 "DEL MGTS_FctMgt"
                 IF dealShipmentSelection_Re_Loc.FindFirst() THEN
                     Element_Cu.FNC_Add_Sales_Cr_Memo(
                       dealShipmentSelection_Re_Loc.Deal_ID,
-                      SalesCrMemoHeader,
+                      SalesCrMemoHdr,
                       dealShipmentSelection_Re_Loc."Shipment No.",
                       add_Variant_Op_Loc::New);
             end;
@@ -276,7 +274,7 @@ codeunit 50101 "DEL MGTS_FctMgt"
         elementConnectionSplitIndex: Integer;
         i: Integer;
         splittIndex: Integer;
-        ConnectionType_Op_Par: Option Element,Shipment;
+        ConnectionType_Op_Par: Enum "Element/Shipment";
 
     begin
         genJournalLine_Re_Temp.RESET();
@@ -929,6 +927,31 @@ codeunit 50101 "DEL MGTS_FctMgt"
 
         END;
     end;
+    //COD91
+    PROCEDURE SetSpecOrderPosting(NewSpecOrderPosting: Boolean)
+    var
+        SpecOrderPost: Boolean;
+    BEGIN
+        //MGTS0123; MHH; entire function
+        SpecOrderPost := NewSpecOrderPosting;
+    END;
+
+    PROCEDURE GetSpecialOrderBuffer(VAR pTempSH: Record "Sales Header" temporary)
+    var
+        tempSpecialSHBuffer: Record "Sales Header" TEMPORARY;
+    BEGIN
+        //MGTS0123
+        pTempSH.RESET;
+        pTempSH.DELETEALL;
+        tempSpecialSHBuffer.RESET;
+        IF tempSpecialSHBuffer.FINDSET THEN
+            REPEAT
+                pTempSH := tempSpecialSHBuffer;
+                pTempSH.INSERT;
+            UNTIL tempSpecialSHBuffer.NEXT = 0;
+    END;
+
+
 
     procedure SelectPostReturnOrderOption(var PurchaseHeader: Record "Purchase Header"; DefaultOption: Integer) Result: Boolean //cdu91
     var
@@ -971,6 +994,7 @@ codeunit 50101 "DEL MGTS_FctMgt"
         TempPurchLineLocal.Copy(TempPurchLineGlobal, true);
 
     end;
+    //////COD 90
 
     PROCEDURE UpdateAssosSpecialOrderPostingNos(PurchHeader: Record "Purchase Header"; var PreviewMode: Boolean) SpecialOrder: Boolean;
     VAR
@@ -992,7 +1016,6 @@ codeunit 50101 "DEL MGTS_FctMgt"
                         SalesOrderHeader.TESTFIELD("Bill-to Customer No.");
                         SalesOrderHeader.Ship := TRUE;
                         //TODO:PreviewMode is a global var ---- To check
-
                         ReleaseSalesDocument.ReleaseSalesHeader(SalesOrderHeader, PreviewMode);
                         IF SalesOrderHeader."Shipping No." = '' THEN BEGIN
                             SalesOrderHeader.TESTFIELD("Shipping No. Series");

@@ -72,7 +72,7 @@ page 50080 "DEL Manual Deal Invoice Link."
                         elementConnectionSplitIndex: Integer;
                         i: Integer;
                         splittIndex: Integer;
-                        ConnectionType_Op_Par: Option Element,Shipment;
+                        ConnectionType_Op_Par: Enum "Element/Shipment";
                     begin
                         IF Rec."Shipment Selection" = 0 THEN
                             ERROR('Veuillez sélectionner au moins 1 livraison !');

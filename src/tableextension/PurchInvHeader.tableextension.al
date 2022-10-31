@@ -1,4 +1,4 @@
-tableextension 50008 "DEL PurchInvHeader" extends "Purch. Inv. Header"
+tableextension 50008 "DEL PurchInvHeader" extends "Purch. Inv. Header" //122 
 {
 
     fields

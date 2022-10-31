@@ -1,4 +1,4 @@
-tableextension 50011 "DEL GLAccount" extends "G/L Account"
+tableextension 50011 "DEL GLAccount" extends "G/L Account" //15
 {
 
     fields

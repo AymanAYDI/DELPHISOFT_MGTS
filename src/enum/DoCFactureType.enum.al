@@ -18,4 +18,9 @@ enum 50037 "DEL DoC Facture Type" //n'existe pas
     {
         Caption = 'Relance émise';
     }
+    value(4; "Service Header")
+    {
+        Caption = 'Service Header';
+    }
+
 }

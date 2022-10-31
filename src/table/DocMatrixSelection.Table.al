@@ -150,7 +150,7 @@ table 50071 "DEL DocMatrix Selection"
         {
             Caption = 'Mail Text Code';
             DataClassification = ToBeClassified;
-            //TODO TableRelation = "DEL DocMatrix Email Codes" WHERE("Language Code" = FILTER("MAIL TEXT LANGAUGE CODE" | ''));
+            TableRelation = "DEL DocMatrix Email Codes" WHERE("Language Code" = FILTER('MAIL TEXT LANGAUGE CODE' | ''));
         }
         field(51; "Mail Text Langauge Code"; Code[10])
         {

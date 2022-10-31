@@ -76,7 +76,7 @@ report 50006 "DEL Import Excel"
 
         TotalColumns: Integer;
         Totalrows: Integer;
-        SalesTypeOption: Option Customer,"Customer Price Group","All Customers",Campaign;
+        SalesTypeOption: Enum "Sales Price Type";
         SalesType: Text;
         sheetName: Text;
 
@@ -140,7 +140,8 @@ report 50006 "DEL Import Excel"
             SalesPriceWorksheet."Current Unit Price" := CurrentUnitPrice;
             SalesPriceWorksheet."New Unit Price" := NewPrice;
             SalesPriceWorksheet.VALIDATE("New Unit Price");
-            //TODO: "vendor no." does not exist  SalesPriceWorksheet."Vendor No." := VendorNo;
+            //TODO "vendor no." does not exist
+            //SalesPriceWorksheet."Vendor No." := VendorNo;
             SalesPriceWorksheet.INSERT();
         END;
     end;

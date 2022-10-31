@@ -1,4 +1,4 @@
-tableextension 50035 "DEL ItemReference" extends "Item Reference"
+tableextension 50035 "DEL ItemReference" extends "Item Reference" //5777
 {
 
     fields

@@ -1,6 +1,5 @@
 table 50000 "DEL General Setup"
 {
-
     Caption = 'General Setup';
 
     fields
@@ -94,48 +93,29 @@ table 50000 "DEL General Setup"
             TableRelation = "No. Series";
             Caption = 'Provision Nos.';
         }
-        field(856; "Folder Expeditors"; Blob) //TODO: Check modification text[250]
+        field(856; "Folder Expeditors"; text[250])
         {
             Caption = 'Folder Expeditors';
 
             trigger OnValidate()
             var
-                Instr: InStream;
             begin
                 //TODOGeneralMgt.CheckFolderName("Folder Expeditors");
 
-                BlobVarText := '\';
-                if Rec."Folder Expeditors".HasValue then begin
-                    Rec."Folder Expeditors".CreateInStream(Instr);
-                    Instr.ReadText(BlobVarText);
-                    Message(BlobVarText);
-                end
-                else
-                    BlobVarText := 'No value of a slash on the Blob field';
             end;
         }
-        field(857; "Folder Expeditors Archive"; Blob) //TODO: Check modification text[250]
+        field(857; "Folder Expeditors Archive"; text[250])
         {
             Caption = 'Folder Expeditors Archive';
 
             trigger OnValidate()
             var
-                Instr: InStream;
             begin
                 //TODO: à corriger //codeunit //   GeneralMgt.CheckFolderName("Folder Expeditors Archive");
 
-                BlobVarText := '\';
-                if Rec."Folder Expeditors Archive".HasValue then begin
-                    Rec."Folder Expeditors Archive".CreateInStream(Instr);
-                    Instr.ReadText(BlobVarText);
-                    Message(BlobVarText);
-                end
-                else
-                    BlobVarText := 'No value of a slash on the Blob field';
-
             end;
         }
-        field(858; "Folder Maersk"; Blob) //TODO: Check modification text[250]
+        field(858; "Folder Maersk"; text[250])
         {
             Caption = 'Folder Maersk';
 
@@ -144,37 +124,19 @@ table 50000 "DEL General Setup"
                 Instr: InStream;
 
             begin
-                //TODO: à corriger //codeunit // GeneralMgt.CheckFolderName("Folder Maersk");
+                //TODO:GeneralMgt.CheckFolderName("Folder Maersk");
 
-                BlobVarText := '\';
-                if Rec."Folder Maersk".HasValue then begin
-                    Rec."Folder Maersk".CreateInStream(Instr);
-                    Instr.ReadText(BlobVarText);
-                    Message(BlobVarText);
-                end
-                else
-                    BlobVarText := 'No value of a slash on the Blob field';
             end;
+
         }
-        field(859; "Folder Maersk Archive"; Blob) //TODO: Check modification text[250]
+        field(859; "Folder Maersk Archive"; text[250])
         {
             Caption = 'Folder Maersk Archive';
 
             trigger OnValidate()
             var
-                Instr: InStream;
             begin
                 //TODO //codeunit // GeneralMgt.CheckFolderName("Folder Maersk Archive");
-
-                BlobVarText := '\';
-                if Rec."Folder Maersk Archive".HasValue then begin
-                    Rec."Folder Maersk Archive".CreateInStream(Instr);
-                    Instr.ReadText(BlobVarText);
-                    Message(BlobVarText);
-                end
-                else
-                    BlobVarText := 'No value of a slash on the Blob field';
-
             end;
         }
         field(860; "Reporting File"; Text[250])

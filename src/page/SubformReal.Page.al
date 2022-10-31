@@ -339,5 +339,4 @@ page 50034 "DEL Subform Real"
     end;
 }
 
-#pragma implicitwith restore
 

@@ -1,4 +1,4 @@
-tableextension 50047 "DEL ItemVendor" extends "Item Vendor"
+tableextension 50047 "DEL ItemVendor" extends "Item Vendor" //99
 {
     fields
     {

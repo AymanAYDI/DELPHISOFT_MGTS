@@ -1,4 +1,4 @@
-tableextension 50025 "DEL PurchasesPayablesSetup" extends "Purchases & Payables Setup"
+tableextension 50025 "DEL PurchasesPayablesSetup" extends "Purchases & Payables Setup" //312
 {
 
     fields

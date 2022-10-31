@@ -7,9 +7,9 @@ page 50063 "DEL Notation vendor list"
     Editable = false;
     PageType = List;
     SourceTable = Vendor;
-    //TODO SourceTableView = SORTING("No.")
-    //             ORDER(Ascending)
-    //               WHERE("Vendor Posting Group" = FILTER(MARCH));
+    SourceTableView = SORTING("No.")
+                ORDER(Ascending)
+                  WHERE("Vendor Posting Group" = FILTER('MARCH'));
 
     layout
     {
@@ -78,18 +78,18 @@ page 50063 "DEL Notation vendor list"
             REPEAT
 
                 IF Vendor_rec."DEL Revision Date quality" < TODAY THEN BEGIN
-                    Vendor_rec."DEL Quality status" := Vendor_rec."DEL Quality status"::Inactif;
+                    Vendor_rec."DEL Quality status" := Vendor_rec."DEL Quality status"::Inactive;
                     IF Vendor_rec."No." = '58698' THEN
                         Vendor_rec."DEL Qualified vendor" := FALSE;
                 END;
                 IF Vendor_rec."DEL Revision Date Soc" < TODAY THEN BEGIN
-                    Vendor_rec."DEL Social status" := Vendor_rec."DEL Social status"::Inactif;
+                    Vendor_rec."DEL Social status" := Vendor_rec."DEL Social status"::Inactive;
                     IF Vendor_rec."No." = '58698' THEN
                         Vendor_rec."DEL Qualified vendor" := FALSE;
                 END;
                 IF Vendor_rec."DEL Revision Date env" < TODAY THEN BEGIN
                     IF Vendor_rec."No." = '58698' THEN
-                        Vendor_rec."DEL Environmental status" := Vendor_rec."DEL Environmental status"::Inactif;
+                        Vendor_rec."DEL Environmental status" := Vendor_rec."DEL Environmental status"::Inactive;
                     Vendor_rec."DEL Qualified vendor" := FALSE;
                 END;
                 Vendor_rec.MODIFY(TRUE);

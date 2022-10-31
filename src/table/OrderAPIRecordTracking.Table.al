@@ -43,11 +43,10 @@ table 50074 "DEL Order API Record Tracking"
         {
             Caption = 'ACO Supplier Base Code';
         }
-        field(8; "ACO Transport Mode"; Option)
+        field(8; "ACO Transport Mode"; Enum "DEL Ship Per")
 
         {
             Caption = 'ACO Transport Mode';
-            OptionMembers = "Air Flight","Sea Vessel","Sea/Air",Truck,Train;
         }
 
         field(9; "ACO Departure Port"; Text[30])

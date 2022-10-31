@@ -1,4 +1,4 @@
-tableextension 50007 "DEL DirectDebitCollectionEntry" extends "Direct Debit Collection Entry"
+tableextension 50007 "DEL DirectDebitCollectionEntry" extends "Direct Debit Collection Entry" //1208
 {
 
     fields

@@ -6,9 +6,9 @@ page 50070 "DEL Liste suivi liasse doc"
     Editable = false;
     PageType = List;
     SourceTable = Vendor;
-    //TODO SourceTableView = SORTING("No.")
-    //                   ORDER(Ascending)
-    //                   WHERE("Vendor Posting Group"=FILTER(MARCH));
+    SourceTableView = SORTING("No.")
+                      ORDER(Ascending)
+                      WHERE("Vendor Posting Group" = FILTER('MARCH'));
 
 
     layout

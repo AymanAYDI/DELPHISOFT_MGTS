@@ -1,4 +1,4 @@
-tableextension 50041 "DEL PurchasePrice" extends "Purchase Price"
+tableextension 50041 "DEL PurchasePrice" extends "Purchase Price" //7012
 {
 
 

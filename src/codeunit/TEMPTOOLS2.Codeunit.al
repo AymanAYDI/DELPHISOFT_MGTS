@@ -7,9 +7,6 @@ codeunit 50099 "DEL TEMP TOOLS 2"
 
         JSONRequestslog: Record "DEL JSON Requests log";
     begin
-
-
-
         JSONRequestslog.SETRANGE(Error, TRUE);
         MESSAGE('%1', JSONRequestslog.COUNT);
 

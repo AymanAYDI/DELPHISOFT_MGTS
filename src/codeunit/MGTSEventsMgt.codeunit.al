@@ -389,25 +389,7 @@ codeunit 50100 "DEL MGTS_EventsMgt"
         end;
     end;
     ////
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnAfterInsertPostedHeaders', '', false, false)]
-    local procedure OnAfterInsertPostedHeaders_SalesHeader(var SalesHeader: Record "Sales Header"; var SalesShipmentHeader: Record "Sales Shipment Header"; var SalesInvoiceHeader: Record "Sales Invoice Header"; var SalesCrMemoHdr: Record "Sales Cr.Memo Header"; var ReceiptHeader: Record "Return Receipt Header")
-    var
-        MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
-    begin
-        MGTSFactMgt.OnAfterInsertPostedHeaders(SalesHeader, SalesShipmentHeader, SalesInvoiceHeader, SalesCrMemoHdr, ReceiptHeader);
-    end;
-    ////
 
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnBeforePostSalesDoc', '', false, false)]
-    local procedure OnBeforePostSalesDoc(var SalesHeader: Record "Sales Header"; CommitIsSuppressed: Boolean; PreviewMode: Boolean; var HideProgressWindow: Boolean; var IsHandled: Boolean)
-    var
-        SkipCommit: Boolean; //Cdu 80
-    begin
-        IF SkipCommit THEN BEGIN
-            CLEARALL();
-            SkipCommit := TRUE;
-        END;
-    end;
 
     [EventSubscriber(ObjectType::Table, Database::"Purchase Header", 'OnBeforeTransferSavedFieldsSpecialOrder', '', false, false)]
     local procedure T38_OnBeforeTransferSavedFieldsSpecialOrder_PurchaseHeader(var DestinationPurchaseLine: Record "Purchase Line"; var SourcePurchaseLine: Record "Purchase Line"; var IsHandled: Boolean)
@@ -659,20 +641,6 @@ codeunit 50100 "DEL MGTS_EventsMgt"
 
     //TODO:I suppose CommitIsSupressed say if the commit is suppressed (Skipped) during the posting
 
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnBeforePostSalesDoc', '', false, false)]
-    local procedure COD80_OnBeforePostSalesDoc(var SalesHeader: Record "Sales Header"; CommitIsSuppressed: Boolean; PreviewMode: Boolean; var HideProgressWindow: Boolean; var IsHandled: Boolean)
-    VAR
-        SkipCommit: Boolean; //Cdu 80
-    begin
-
-
-        IF SkipCommit THEN BEGIN
-            CLEARALL();
-            SkipCommit := TRUE;
-        END;
-
-    end;
-
 
     [EventSubscriber(ObjectType::Table, Database::"Purchase Line", 'OnDeleteOnBeforePurchLineDeleteAll', '', false, false)]
     local procedure T39_OnDeleteOnBeforePurchLineDeleteAll_PurchaseLine(var PurchaseLine: Record "Purchase Line")
@@ -773,9 +741,9 @@ codeunit 50100 "DEL MGTS_EventsMgt"
             PurchaseLine.VALIDATE(PurchaseLine."DEL Total volume", (Item."DEL Vol cbm carton transport" * PurchaseLine.Quantity / Item."DEL PCB"));
     end;
 
-
+    //COD 80
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnAfterPostSalesDoc', '', false, false)]
-    local procedure OnAfterPostSalesDoc(var SalesHeader: Record "Sales Header";
+    local procedure COD80_OnAfterPostSalesDoc(var SalesHeader: Record "Sales Header";
      var GenJnlPostLine: Codeunit "Gen. Jnl.-Post Line"; SalesShptHdrNo: Code[20];
       RetRcpHdrNo: Code[20];
       SalesInvHdrNo: Code[20]; SalesCrMemoHdrNo: Code[20]; CommitIsSuppressed: Boolean;
@@ -783,7 +751,6 @@ codeunit 50100 "DEL MGTS_EventsMgt"
        WhseShip: Boolean; WhseReceiv: Boolean)
     var
         Cust: Record Customer;
-        SalesInvHeader: Record "Sales Invoice Header";
         MGTSEDIManagement: Codeunit "DEL MGTS EDI Management";
         Text50050: Label 'Do you want to export the invoice %2 from document No. %1 with EDI', Comment = 'FRA="Voulez-vous exporter la facture %2 du document n° %1 avec EDI?"';
 
@@ -793,53 +760,41 @@ codeunit 50100 "DEL MGTS_EventsMgt"
                 Cust.INIT();
 
             IF Cust."DEL EDI" THEN
-                IF CONFIRM(STRSUBSTNO(Text50050, SalesHeader."No.", SalesInvHeader."No.")) THEN BEGIN
+                IF CONFIRM(STRSUBSTNO(Text50050, SalesHeader."No.", SalesInvHdrNo)) THEN BEGIN
                     SalesHeader."DEL Export With EDI" := TRUE;
-                    MGTSEDIManagement.GenerateSalesInvoiceEDIBuffer(SalesInvHeader."No.", TRUE);
+                    MGTSEDIManagement.GenerateSalesInvoiceEDIBuffer(SalesInvHdrNo, TRUE);
                 END;
         END;
 
     end;
+    //TODO COD80  // je n'ai pas trouvé un evenement qui appel la "SuppressCommit"
+    // LOCAL PROCEDURE UpdateWhseDocuments();
+    // BEGIN
+    //   IF WhseReceive THEN BEGIN
+    //     //MGTS0123; MHH; single
+    //     WhsePostRcpt.SkipCUCommit(SkipCommit);
+    //     WhsePostRcpt.PostUpdateWhseDocuments(WhseRcptHeader);
+    //     TempWhseRcptHeader.DELETE;
+    //   END;
+    //   IF WhseShip THEN BEGIN
+    //     //MGTS0123; MHH; single
+    //     WhsePostShpt.SkipCUCommit(SkipCommit);
+    //     WhsePostShpt.PostUpdateWhseDocuments(WhseShptHeader);
+    //     TempWhseShptHeader.DELETE;
+    //   END;
+    // END;
 
-    //TODO
-    // [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnCheckAndUpdateOnBeforeCheckPostRestrictions', '', false, false)]
-    // local procedure OnCheckAndUpdateOnBeforeCheckPostRestrictions(var SalesHeader: Record "Sales Header"; PreviewMode: Boolean)
-    // var
-    //     MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
-    //     SuppressCommit: Boolean;
-    //     SalesPost: Codeunit "Sales-Post";
-    // begin
-    //     MGTSFactMgt.SetSuppressCommit(true);
-    //     IF NOT SuppressCommit THEN
-    //         if SalesHeader.Invoice then
-    //             SalesHeader.Invoice := CalcInvoice(SalesHeader);
-
-    // end;
-
-
-    //TODO: je n'ai pas trouvé un evenement qui appel la "SuppressCommit"
-    // [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnBeforeUpdateWhseDocuments', '', false, false)]
-    // local procedure OnBeforeUpdateWhseDocuments(var SalesHeader: Record "Sales Header";
-    //  var IsHandled: Boolean; WhseReceive: Boolean; WhseShip: Boolean;
-    // WhseRcptHeader: Record "Warehouse Receipt Header";
-    //  WhseShptHeader: Record "Warehouse Shipment Header"; var TempWhseRcptHeader:
-    //  Record "Warehouse Receipt Header" temporary; var TempWhseShptHeader:
-    //  Record "Warehouse Shipment Header" temporary)
-    // var
-    //     WhsePostRcpt: Codeunit "Whse.-Post Receipt";
-
-    // begin
-    //     IsHandled := true;
-    //     if WhseReceive then begin
-    //         WhsePostRcpt.SetSuppressCommit(SuppressCommit);
-    //     end;
-    //     IsHandled:=true;
-    //     if WhseShip then begin
-    //     WhsePostShpt.SetSuppressCommit(SuppressCommit);    
-    // end;
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnAfterInsertPostedHeaders', '', false, false)]
+    local procedure COD80_OnAfterInsertPostedHeaders_SalesHeader(var SalesHeader: Record "Sales Header"; var SalesShipmentHeader: Record "Sales Shipment Header"; var SalesInvoiceHeader: Record "Sales Invoice Header"; var SalesCrMemoHdr: Record "Sales Cr.Memo Header"; var ReceiptHeader: Record "Return Receipt Header")
+    var
+        MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
+    begin
+        MGTSFactMgt.OnAfterInsertPostedHeaders(SalesHeader, SalesShipmentHeader, SalesInvoiceHeader, SalesCrMemoHdr, ReceiptHeader);
+    end;
+    ////
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnBeforeDeleteAfterPosting', '', false, false)]
-    local procedure OnBeforeDeleteAfterPosting(var SalesHeader: Record "Sales Header"; var SalesInvoiceHeader: Record "Sales Invoice Header"; var SalesCrMemoHeader: Record "Sales Cr.Memo Header"; var SkipDelete: Boolean; CommitIsSuppressed: Boolean; EverythingInvoiced: Boolean; var TempSalesLineGlobal: Record "Sales Line" temporary)
+    local procedure COD80_OnBeforeDeleteAfterPosting(var SalesHeader: Record "Sales Header"; var SalesInvoiceHeader: Record "Sales Invoice Header"; var SalesCrMemoHeader: Record "Sales Cr.Memo Header"; var SkipDelete: Boolean; CommitIsSuppressed: Boolean; EverythingInvoiced: Boolean; var TempSalesLineGlobal: Record "Sales Line" temporary)
     var
         MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
     begin
@@ -999,21 +954,28 @@ codeunit 50100 "DEL MGTS_EventsMgt"
                 Deal_Cu.FNC_Reinit_Deal(ACOConnection_Re_Loc.Deal_ID, FALSE, FALSE);
         END;
     end;
-    //TODO: les variables "tempSpecialSHBuffer" et "SpecOrderPost"sont globales.-----------------------///
-    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post (Yes/No)", 'OnBeforeRunPurchPost', '', false, false)]
-    local procedure COD91_OnBeforeRunPurchPost(var PurchaseHeader: Record "Purchase Header")
 
-    begin
-        //TODO IF SpecOrderPost THEN BEGIN
-        //     CLEAR(PostPurchCU);
-        //     MGTSFactMgt.SetSpecOrderPosting(TRUE);
-        //     PostPurchCU.RUN(PurchaseHeader);
-        //     MGTSFactMgt.GetSpecialOrderBuffer(tempSpecialSHBuffer);
-        // END ELSE
-        //     CODEUNIT.Run(CODEUNIT::"Purch.-Post", PurchaseHeader);
+    //TODO: les variables "tempSpecialSHBuffer" et "SpecOrderPost"sont globales.---///
+    // [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post (Yes/No)", 'OnBeforeRunPurchPost', '', false, false)]
+    // local procedure COD91_OnBeforeRunPurchPost(var PurchaseHeader: Record "Purchase Header")
+    // VAR
+    //     MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
+    //     PostPurchCU: Codeunit "Purch.-Post";
+    // begin
+    //     //TODO 
+    //     //MGTS0123; MHH; begin
+    //     IF SpecOrderPost THEN BEGIN
+    //       CLEAR(PostPurchCU);
+    //       PostPurchCU.SetSpecOrderPosting(TRUE);
+    //       PostPurchCU.RUN(PurchaseHeader);
+    //     //MGTS0123; MHH; end
+    //       //MGTS0123
+    //       PostPurchCU.GetSpecialOrderBuffer(tempSpecialSHBuffer);
+    //     END ELSE
 
-    end;
-    //-----------------------------------------------------------------------------///
+    // end;
+
+
     //----------CDU 92
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post + Print", 'OnBeforeConfirmPost', '', false, false)]
 
@@ -1120,8 +1082,28 @@ codeunit 50100 "DEL MGTS_EventsMgt"
         //     CLEARALL;
 
     end;
-    ///////aprés   Code;
-    // Rec := SalesHeader;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post", 'OnAfterCheckMandatoryFields', '', false, false)]
+    local procedure COD90_OnAfterCheckMandatoryFields(var PurchaseHeader: Record "Purchase Header"; CommitIsSupressed: Boolean)
+    begin
+        //MGTS10.024; 003; mhh; begin //TODO: à vérifier l'Event
+        IF PurchaseHeader.Invoice THEN
+            PurchaseHeader.TESTFIELD("DEL Due Date Calculation");
+        //MGTS10.024; 003; mhh; end
+    end;
+    //TODO: CHECK
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post", 'OnBeforePostCommitPurchaseDoc', '', false, false)]
+    local procedure COD90_OnBeforePostCommitPurchaseDoc(var PurchaseHeader: Record "Purchase Header"; var GenJnlPostLine: Codeunit "Gen. Jnl.-Post Line"; PreviewMode: Boolean; ModifyHeader: Boolean; var CommitIsSupressed: Boolean; var TempPurchLineGlobal: Record "Purchase Line" temporary)
+    var
+        MGTSFctMgt: Codeunit "DEL MGTS_FctMgt";
+    begin
+        IF CommitIsSupressed THEN
+            CommitIsSupressed := MGTSFctMgt.UpdateAssosSpecialOrderPostingNos(PurchaseHeader, PreviewMode)
+        ELSE
+            CommitIsSupressed := FALSE;
+    end;
+
+
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"GLN Calculator", 'OnBeforeIsValidCheckDigit', '', false, false)]
     procedure COD1607_OnBeforeIsValidCheckDigit(GLNValue: Code[20]; ExpectedSize: Integer; var IsValid: Boolean; var IsHandled: Boolean)
     var

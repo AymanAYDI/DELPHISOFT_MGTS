@@ -1,4 +1,4 @@
-tableextension 50046 "DEL GeneralLedgerSetup" extends "General Ledger Setup"
+tableextension 50046 "DEL GeneralLedgerSetup" extends "General Ledger Setup" //98
 {
     fields
     {

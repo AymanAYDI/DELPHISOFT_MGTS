@@ -1,7 +1,6 @@
 codeunit 50002 "DEL TransitaireMgt"
 {
 
-
     trigger OnRun()
     begin
     end;
@@ -122,26 +121,6 @@ codeunit 50002 "DEL TransitaireMgt"
         GLSetupFound := TRUE;
     end;
 
-    // procedure CopyDocDimToDocDim(var TempDocDim: Record 357 temporary; "Table ID": Integer; DocType: Integer; DocNo: Code[20]; LineNo: Integer)
-    // var
-    //     // DocDim: Record 357;
-    //     DocDim: Codeunit 408;
-    // begin
-    //     TempDocDim.RESET();
-    //     TempDocDim.DELETEALL();
-    //     DocDim.RESET();
-    //     DocDim.SETRANGE(DocDim."Table ID", "Table ID");
-    //     DocDim.SETRANGE("Document Type", DocType);
-    //     DocDim.SETRANGE("Document No.", DocNo);
-    //     DocDim.SETRANGE("Line No.", LineNo);
-    //     IF DocDim.FINDFIRST() THEN
-    //         REPEAT
-    //             TempDocDim := DocDim;
-    //             TempDocDim.INSERT();
-    //         UNTIL DocDim.NEXT() = 0;
-    // end; // TODO:
-
-
     procedure SendToTransitairePartner(ICOutboxTrans: Record "IC Outbox Transaction")
     var
         Transitaire: Record "DEL Forwarding agent 2";
@@ -173,7 +152,7 @@ codeunit 50002 "DEL TransitaireMgt"
                       NGTSSetup."Nom emetteur", NGTSSetup."Nom achat commande transitaire",
                       ICOutboxTrans."Document No.");
 
-            // OFile.CREATE(FileName);
+            //TODO OFile.CREATE(FileName);
             // OFile.CREATEOUTSTREAM(Ostr);
             tempBlob.CreateOutStream(Ostr);
 

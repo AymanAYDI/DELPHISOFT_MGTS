@@ -97,7 +97,7 @@ tableextension 50023 "DEL Vendor" extends Vendor
                         "DEL Quality status" := Note_Rec."Impact statut"
 
                     ELSE
-                        "DEL Quality status" := "DEL Quality status"::Inactif;
+                        "DEL Quality status" := "DEL Quality status"::Inactive;
                     MODIFY(TRUE);
                 end;
             end;
@@ -139,12 +139,12 @@ tableextension 50023 "DEL Vendor" extends Vendor
             begin
                 IF ("DEL Revision Date quality" = 0D) OR ("DEL Revision Date quality" < TODAY) THEN BEGIN
                     "DEL Qualified vendor" := FALSE;
-                    "DEL Quality status" := "DEL Quality status"::Inactif;
+                    "DEL Quality status" := "DEL Quality status"::Inactive;
                     "DEL Date updated" := TODAY;
                     MODIFY();
                 END
                 ELSE BEGIN
-                    "DEL Quality status" := "DEL Quality status"::Actif;
+                    "DEL Quality status" := "DEL Quality status"::Active;
                     MODIFY(TRUE);
 
                 END;
@@ -177,7 +177,7 @@ tableextension 50023 "DEL Vendor" extends Vendor
                         "DEL Social status" := Note_Rec."Impact statut"
 
                     ELSE
-                        "DEL Social status" := "DEL Social status"::Inactif;
+                        "DEL Social status" := "DEL Social status"::Inactive;
                     MODIFY(TRUE);
                 end;
             end;
@@ -221,12 +221,12 @@ tableextension 50023 "DEL Vendor" extends Vendor
             begin
                 IF ("DEL Revision Date Soc" = 0D) OR ("DEL Revision Date Soc" < TODAY) THEN BEGIN
                     "DEL Qualified vendor" := FALSE;
-                    "DEL Social status" := "DEL Social status"::Inactif;
+                    "DEL Social status" := "DEL Social status"::Inactive;
                     "DEL Date updated" := TODAY;
                     MODIFY();
                 END
                 ELSE BEGIN
-                    "DEL Social status" := "DEL Social status"::Actif;
+                    "DEL Social status" := "DEL Social status"::Active;
                     MODIFY(TRUE);
 
                 END;
@@ -261,7 +261,7 @@ tableextension 50023 "DEL Vendor" extends Vendor
                     "DEL Environmental status" := Note_Rec."Impact statut";
                 END
                 ELSE
-                    "DEL Environmental status" := "DEL Environmental status"::Inactif;
+                    "DEL Environmental status" := "DEL Environmental status"::Inactive;
                 MODIFY(TRUE);
             end;
         }
@@ -303,12 +303,12 @@ tableextension 50023 "DEL Vendor" extends Vendor
             begin
                 IF ("DEL Revision Date env" = 0D) OR ("DEL Revision Date env" < TODAY) THEN BEGIN
                     "DEL Qualified vendor" := FALSE;
-                    "DEL Environmental status" := "DEL Environmental status"::Inactif;
+                    "DEL Environmental status" := "DEL Environmental status"::Inactive;
                     "DEL Date updated" := TODAY;
                     MODIFY();
                 END
                 ELSE BEGIN
-                    "DEL Environmental status" := "DEL Environmental status"::Actif;
+                    "DEL Environmental status" := "DEL Environmental status"::Active;
                     MODIFY(TRUE);
 
                 END;
@@ -370,23 +370,17 @@ tableextension 50023 "DEL Vendor" extends Vendor
             Editable = false;
             FieldClass = FlowField;
         }
-        field(60015; "DEL Quality status"; Option)
+        field(60015; "DEL Quality status"; Enum "DEL Impact Status")
         {
             Caption = 'Quality status';
-            OptionCaption = ' ,Inactive,Active';
-            OptionMembers = " ",Inactif,Actif;
         }
-        field(60016; "DEL Social status"; Option)
+        field(60016; "DEL Social status"; Enum "DEL Impact Status")
         {
             Caption = 'Social status';
-            OptionCaption = ' ,Inactive,Active';
-            OptionMembers = " ",Inactif,Actif;
         }
-        field(60017; "DEL Environmental status"; Option)
+        field(60017; "DEL Environmental status"; Enum "DEL Impact Status")
         {
             Caption = 'Environmental status';
-            OptionCaption = ' ,Inactive,Active';
-            OptionMembers = " ",Inactif,Actif;
         }
         field(60018; "DEL Derogation"; Boolean)
         {

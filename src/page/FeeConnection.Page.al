@@ -100,7 +100,7 @@ page 50025 "DEL Fee Connection"
         [InDataSet]
         FormFactorEnable: Boolean;
         No_Co: Code[20];
-        Type_Op: Option Vendor,Customer;
+        Type_Op: Enum "Credit Transfer Account Type";
 
 
     procedure FNC_Set_Type(Type_Op_Par: Enum "Credit Transfer Account Type"; No_Co_Par: Code[20])

@@ -121,7 +121,7 @@ report 50078 "DEL Get Sales Orders" //698
         Text001: Label 'There are no sales lines to retrieve.';
         Text50000: Label '-%1';
         Text50001: Label '+%1';
-        GetDim: Option Item,"Sales Line";
+        GetDim: enum "DEL Get Dim";
 
 
     procedure SetReqWkshLine(NewReqLine: Record "Requisition Line"; SpecialOrder: Integer)

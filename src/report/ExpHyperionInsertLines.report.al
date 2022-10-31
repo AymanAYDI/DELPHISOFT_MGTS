@@ -151,14 +151,15 @@ report 50021 "DEL Exp. Hyperion Insert Lines"
         // XMLPORT.EXPORT(50011, XmlStream_Os);
         // CustXmlFile_Fi.CLOSE;
 
-        ///////// à corriger ! 
-        CustXmlFile_Fi := GeneralSetup_Re."Hyperion File" + '\HFM_' +
+        ///////// à VERIFIE LE PATH ! 
+        CustXmlFile_Fi := 'HFM_' +
         GeneralSetup_Re."Hyperion Company Code" + '_' + StartDate_Loc_Te + '_' + EndDate_Loc_Te +
          '_' + DateNow_Te + '_' + TimeNow_Te + '.csv';
         TempBlob.CreateOutStream(XmlStream_Os, TEXTENCODING::UTF8);
         XMLPORT.EXPORT(XMLPORT::"DEL Export Hyperion File", XmlStream_Os);
+        TempBlob.CreateInStream(XmlStream_Is);
+        DownloadFromStream(XmlStream_Is, '', '', '', CustXmlFile_Fi);
         MESSAGE('Export Xml File!');
-
 
     end;
 
@@ -182,5 +183,7 @@ report 50021 "DEL Exp. Hyperion Insert Lines"
         TimeNow_Te: Text;
         CustXmlFile_Fi: Text;
         XmlStream_Os: OutStream;
+        XmlStream_Is: InStream;
+
 }
 

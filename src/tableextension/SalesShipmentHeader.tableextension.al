@@ -75,12 +75,10 @@ tableextension 50001 "DEL SalesShipmentHeader" extends "Sales Shipment Header"
 
             Editable = false;
         }
-        field(50022; "DEL Status Purch. Order Create"; Option)
+        field(50022; "DEL Status Purch. Order Create"; Enum "DEL Status Purchase Order")
         {
             Caption = 'Statut création commande achat';
 
-            OptionCaption = ' ,Création demande d''achat,Création affaire,Commande créée';
-            OptionMembers = " ","Create Req. Worksheet","Create Deal",Created;
         }
         field(50023; "DEL Error Text Purch. Order Create"; Text[250])
         {

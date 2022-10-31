@@ -1,4 +1,4 @@
-tableextension 50031 "DEL ICOutboxPurchaseHeader" extends "IC Outbox Purchase Header"
+tableextension 50031 "DEL ICOutboxPurchaseHeader" extends "IC Outbox Purchase Header" //428
 {
 
     fields

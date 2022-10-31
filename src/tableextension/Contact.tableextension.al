@@ -1,40 +1,26 @@
-tableextension 50033 "DEL Contact" extends Contact
+tableextension 50033 "DEL Contact" extends Contact //5050
 {
     fields
     {
         field(50000; "DEL Password_webAccess"; Text[30])
         {
-            Description = 'Temp400';
         }
         field(50001; "DEL Categories"; Integer)
         {
             CalcFormula = Count("DEL Contact_ItemCategory" WHERE(contactNo = FIELD("No.")));
-            Description = 'Temp400';
             Editable = false;
             FieldClass = FlowField;
 
-            trigger OnLookup()
-            begin
-                // NTO appel matrice configuration
-                /*
-                NTO_CatMatrix.SetContactFilter("No.");
-                NTO_CatMatrix.RUN;
-                */
-
-            end;
         }
         field(50002; "DEL Commande_web"; Boolean)
         {
-            Description = 'Temp400';
         }
         field(50003; "DEL adv"; Boolean)
         {
             Caption = 'Administration des vents';
-            Description = 'Temp400';
         }
         field(50004; "N° de TVA"; Text[20])
         {
-            Description = 'Temp400';
         }
         field(50005; "DEL GLN"; Code[13])
         {
@@ -56,29 +42,6 @@ tableextension 50033 "DEL Contact" extends Contact
 
             trigger OnValidate()
             begin
-                /*IF "Realisation Date Quality"<>0D THEN
-                BEGIN
-                  TESTFIELD("Note Quality");
-                  Note_Rec.RESET;
-                  IF Note_Rec.GET("Note Quality",Note_Rec."Type audit"::Quality) THEN
-                  BEGIN
-                  IF  FORMAT(Note_Rec."Revision Calculation")='' THEN
-                     VALIDATE("Revision Date quality",0D)
-                    ELSE
-                    BEGIN
-                    "Revision Date quality":=CALCDATE(Note_Rec."Revision Calculation","Realisation Date Quality");
-                    VALIDATE("Revision Date quality");
-                    END;
-                  END;
-                END;
-                Note_Rec.RESET;
-                IF Note_Rec.GET("Note Quality",Note_Rec."Type audit"::Quality) THEN
-                BEGIN
-                  "Quality status":=Note_Rec."Impact statut";
-                END
-                ELSE
-                "Quality status":="Quality status"::Inactif;
-                */
 
             end;
         }
@@ -112,31 +75,6 @@ tableextension 50033 "DEL Contact" extends Contact
 
             trigger OnValidate()
             begin
-                /*
-                IF "Realisation Date Soc"<>0D THEN
-                BEGIN
-                  TESTFIELD("Note Soc");
-                  Note_Rec.RESET;
-                  IF Note_Rec.GET("Note Soc",Note_Rec."Type audit"::social) THEN
-                  BEGIN
-                  IF  FORMAT(Note_Rec."Revision Calculation")='' THEN
-                     VALIDATE("Revision Date Soc",0D)
-                    ELSE
-                    BEGIN
-                    "Revision Date Soc":=CALCDATE(Note_Rec."Revision Calculation","Realisation Date Soc");
-                    VALIDATE("Revision Date Soc");
-                    END;
-                  END;
-                END;
-                Note_Rec.RESET;
-                IF Note_Rec.GET("Note Soc",Note_Rec."Type audit"::social) THEN
-                BEGIN
-                  "Social status":=Note_Rec."Impact statut";
-                END
-                ELSE
-                  "Social status":= "Social status"::Inactif;
-                */
-
             end;
         }
         field(60005; "DEL Realisation Date Soc"; Date)
@@ -171,31 +109,6 @@ tableextension 50033 "DEL Contact" extends Contact
 
             trigger OnValidate()
             begin
-                /*IF "Realisation Date Env"<>0D THEN
-                BEGIN
-                  TESTFIELD("Note Env");
-                  Note_Rec.RESET;
-                  IF Note_Rec.GET("Note Env",Note_Rec."Type audit"::Environmental) THEN
-                  BEGIN
-                  IF  FORMAT(Note_Rec."Revision Calculation")='' THEN
-                     VALIDATE("Revision Date env",0D)
-                    ELSE
-                    BEGIN
-                    "Revision Date env":=CALCDATE(Note_Rec."Revision Calculation","Realisation Date Env");
-                    VALIDATE("Revision Date env");
-                    END;
-                  END;
-                END;
-                
-                Note_Rec.RESET;
-                IF Note_Rec.GET("Note Env",Note_Rec."Type audit"::Environmental) THEN
-                BEGIN
-                  "Environmental status":=Note_Rec."Impact statut";
-                END
-                ELSE
-                "Environmental status":="Environmental status"::Inactif;
-                 */
-
             end;
         }
         field(60008; "DEL Realisation Date Env"; Date)
@@ -247,29 +160,22 @@ tableextension 50033 "DEL Contact" extends Contact
             Editable = false;
             FieldClass = FlowField;
         }
-        field(60015; "DEL Quality status"; Option)
+        field(60015; "DEL Quality status"; Enum "DEL Impact Status")
         {
             Caption = 'Quality status';
-            OptionCaption = ' ,Inactif,Actif';
-            OptionMembers = " ",Inactif,Actif;
+            //cette option a été en francais ! à vérifier 
         }
-        field(60016; "DEL Social status"; Option)
+        field(60016; "DEL Social status"; enum "DEL Impact Status")
         {
             Caption = 'Social status';
-            OptionCaption = ' ,Inactif,Actif';
-            OptionMembers = " ",Inactif,Actif;
         }
-        field(60017; "DEL Environmental status"; Option)
+        field(60017; "DEL Environmental status"; enum "DEL Impact Status")
         {
             Caption = 'Environmental status';
-            OptionCaption = ' ,Inactif,Actif';
-            OptionMembers = " ",Inactif,Actif;
         }
-        field(70000; "DEL Type Contact"; Option)
+        field(70000; "DEL Type Contact"; enum "DEL Type Contact")
         {
             Caption = 'Contact Type';
-            OptionCaption = 'Commercial,Juridical,Accountant,Quality';
-            OptionMembers = Commercial,Juridical,Accountant,Quality;
         }
         field(70001; "DEL Customer No."; Code[20])
         {
@@ -282,9 +188,7 @@ tableextension 50033 "DEL Contact" extends Contact
 
             trigger OnValidate()
             begin
-                //START THM080517
                 Name := "DEL Name Contact" + ' ' + "DEL First Name Contact";
-                //END THM080517
             end;
         }
         field(70003; "DEL First Name Contact"; Text[30])
@@ -293,9 +197,7 @@ tableextension 50033 "DEL Contact" extends Contact
 
             trigger OnValidate()
             begin
-                //START THM080517
                 Name := "DEL Name Contact" + ' ' + "DEL First Name Contact";
-                //END THM080517
             end;
         }
     }

@@ -5,7 +5,6 @@ codeunit 50038 "DEL Deal Item Completer"
         EXIT;
 
         CompleteDeal_FNC('AFF-');
-
         MESSAGE('done !');
     end;
 
@@ -20,19 +19,12 @@ codeunit 50038 "DEL Deal Item Completer"
         element_Re_Loc: Record "DEL Element";
 
     begin
-
-
         element_Re_Loc.RESET();
         element_Re_Loc.SETRANGE(Deal_ID, DealID_Co_Par);
         IF element_Re_Loc.FINDFIRST() THEN
             REPEAT
-
-
                 CompleteElement_FNC(element_Re_Loc.ID);
-
-
             UNTIL (element_Re_Loc.NEXT() = 0);
-
     end;
 
 
@@ -77,8 +69,6 @@ codeunit 50038 "DEL Deal Item Completer"
         DealItem_Re_Loc: Record "DEL Deal Item";
         PurchLine_Re_Loc: Record "Purchase Line";
     begin
-
-
         PurchLine_Re_Loc.RESET();
         PurchLine_Re_Loc.SETCURRENTKEY("Document Type", "Document No.", "Line No.");
         PurchLine_Re_Loc.SETRANGE("Document Type", PurchLine_Re_Loc."Document Type"::Order);
@@ -93,7 +83,6 @@ codeunit 50038 "DEL Deal Item Completer"
             UNTIL (PurchLine_Re_Loc.NEXT() = 0);
 
     end;
-
 
     procedure CompleteVCO_FNC(DealID_Co_Par: Code[20]; DocumentNo_Co_Par: Code[20])
     var
@@ -116,8 +105,6 @@ codeunit 50038 "DEL Deal Item Completer"
 
                 IF NOT DealItem_Re_Loc.GET(DealID_Co_Par, SalesLine_Re_Loc."No.") THEN
                     DealItem_Cu.FNC_Add(DealID_Co_Par, SalesLine_Re_Loc."No.");
-
-
             UNTIL (SalesLine_Re_Loc.NEXT() = 0)
 
     end;
@@ -134,14 +121,11 @@ codeunit 50038 "DEL Deal Item Completer"
     begin
     end;
 
-
     procedure CompleteBR_FNC(DealID_Co_Par: Code[20]; DocumentNo_Co_Par: Code[20])
     var
         DealItem_Re_Loc: Record "DEL Deal Item";
         purchRcptLine_Re_Loc: Record "Purch. Rcpt. Line";
     begin
-
-
         purchRcptLine_Re_Loc.RESET();
         purchRcptLine_Re_Loc.SETRANGE("Document No.", DocumentNo_Co_Par);
         purchRcptLine_Re_Loc.SETRANGE(Type, purchRcptLine_Re_Loc.Type::Item);
@@ -159,10 +143,8 @@ codeunit 50038 "DEL Deal Item Completer"
 
     procedure CompleteBL_FNC(DealID_Co_Par: Code[20]; DocumentNo_Co_Par: Code[20])
     var
-
     begin
     end;
-
 
     procedure CompletePurchInv_FNC(DealID_Co_Par: Code[20]; DocumentNo_Co_Par: Code[20])
     var
@@ -216,7 +198,6 @@ codeunit 50038 "DEL Deal Item Completer"
     var
     begin
     end;
-
 
     procedure CompleteSalesCrMemo_FNC(DealID_Co_Par: Code[20]; DocumentNo_Co_Par: Code[20])
     var

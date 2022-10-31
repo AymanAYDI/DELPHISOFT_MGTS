@@ -22,9 +22,7 @@ codeunit 50029 "DEL Deal Shipment"
         IF NOT dealShipment_Re_Loc.INSERT() THEN
             ERROR(ERROR_TXT, 'Cu50029', 'FNC_Insert()', 'Insert impossible !');
 
-        //START JUK
         AlertMgt_Cu_Loc.FNC_LogisticCopy(Deal_ID_Co_Par, DealShipment_ID_Ret);
-        //STOP JUK
 
         //GRC modif begin Création dans table logistic à la création de l'affaire
         Logistic_Re_Loc.SETRANGE(ID, dealShipment_Re_Loc.ID);
@@ -98,8 +96,7 @@ codeunit 50029 "DEL Deal Shipment"
                 END
 
             UNTIL (dealShipmentConnection_Re_Loc.NEXT() = 0);
-        END //ELSE
-            //ERROR('wrong dealShipmentID');
+        END
 
     end;
 
@@ -128,8 +125,7 @@ codeunit 50029 "DEL Deal Shipment"
                 END
 
             UNTIL (dealShipmentConnection_Re_Loc.NEXT() = 0);
-        END //ELSE
-            //ERROR('wrong dealShipmentID');
+        END
 
     end;
 
@@ -157,8 +153,7 @@ codeunit 50029 "DEL Deal Shipment"
                 END
 
             UNTIL (dealShipmentConnection_Re_Loc.NEXT() = 0);
-        END //ELSE
-            //ERROR('wrong dealShipmentID');
+        END
 
     end;
 
@@ -184,9 +179,7 @@ codeunit 50029 "DEL Deal Shipment"
                 END
 
             UNTIL (dealShipmentConnection_Re_Loc.NEXT() = 0);
-        END //ELSE
-            //ERROR('wrong dealShipmentID');
-
+        END
     end;
 
 
@@ -210,8 +203,7 @@ codeunit 50029 "DEL Deal Shipment"
                 END
 
             UNTIL (dealShipmentConnection_Re_Loc.NEXT() = 0);
-        END //ELSE
-            //ERROR('wrong dealShipmentID');
+        END
 
     end;
 
@@ -236,8 +228,7 @@ codeunit 50029 "DEL Deal Shipment"
                 END
 
             UNTIL (dealShipmentConnection_Re_Loc.NEXT() = 0);
-        END //ELSE
-            //ERROR('wrong dealShipmentID');
+        END
 
     end;
 

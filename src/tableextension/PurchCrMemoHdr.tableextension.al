@@ -1,4 +1,4 @@
-tableextension 50009 "DEL PurchCrMemoHdr" extends "Purch. Cr. Memo Hdr."
+tableextension 50009 "DEL PurchCrMemoHdr" extends "Purch. Cr. Memo Hdr." //124 
 {
     fields
     {

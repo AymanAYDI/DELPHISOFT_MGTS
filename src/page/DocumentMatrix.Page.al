@@ -83,9 +83,9 @@ page 50130 "DEL Document Matrix"
                 {
                     AssistEdit = false;
                     DrillDown = false;
-                    //TODO DrillDownPageID = 50132;  //50132 n'existe pas 
                     Lookup = true;
                     Caption = 'Mail Text Code';
+                    //TODO DrillDownPageID = 50132;  //50132 n'existe pas 
 
                     trigger OnLookup(var Text: Text): Boolean
                     var

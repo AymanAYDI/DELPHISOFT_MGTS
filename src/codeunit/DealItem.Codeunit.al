@@ -1,7 +1,6 @@
 codeunit 50024 "DEL Deal Item"
 {
 
-
     trigger OnRun()
     begin
     end;
@@ -11,7 +10,7 @@ codeunit 50024 "DEL Deal Item"
         Deal_Cu: Codeunit "DEL Deal";
         Position_Cu: Codeunit "DEL Position";
         UpdateRequestManager_Cu: Codeunit "DEL Update Request Manager";
-        Type_Op: Option Cost,Price;
+        Type_Op: Enum "DEL Type_Op"; //OPTION: Cost,Price
         ERROR_TXT: Label 'ERREUR\Source : %1\Function : %2\Reason : %3';
 
     procedure FNC_Add(Deal_ID_Co_Par: Code[20]; Item_No_Co_Par: Code[20])
@@ -166,7 +165,7 @@ codeunit 50024 "DEL Deal Item"
     end;
 
 
-    procedure FNC_Get_Sales_Amount(Deal_ID_Co_Par: Code[20]; ShipmentNo_Co_Par: Code[20]; "Item_No._Co_Par": Code[20]; Instance_Op_Par: Option Planned,Real) Amount_Dec_Ret: Decimal
+    procedure FNC_Get_Sales_Amount(Deal_ID_Co_Par: Code[20]; ShipmentNo_Co_Par: Code[20]; "Item_No._Co_Par": Code[20]; Instance_Op_Par: Enum "DEL Instance") Amount_Dec_Ret: Decimal
     var
         dealItem_Re_Loc: Record "DEL Deal Item";
         dealShipment_Re_Loc: Record "DEL Deal Shipment";
@@ -253,7 +252,7 @@ codeunit 50024 "DEL Deal Item"
     end;
 
 
-    procedure FNC_Get_Purchases_Amount(Deal_ID_Co_Par: Code[20]; ShipmentNo_Co_Par: Code[20]; "Item_No._Co_Par": Code[20]; Instance_Op_Par: Option Planned,Real) Amount_Dec_Ret: Decimal
+    procedure FNC_Get_Purchases_Amount(Deal_ID_Co_Par: Code[20]; ShipmentNo_Co_Par: Code[20]; "Item_No._Co_Par": Code[20]; Instance_Op_Par: Enum "DEL Instance") Amount_Dec_Ret: Decimal
     var
         dealItem_Re_Loc: Record "DEL Deal Item";
         dealShipment_Re_Loc: Record "DEL Deal Shipment";
@@ -341,7 +340,7 @@ codeunit 50024 "DEL Deal Item"
     end;
 
 
-    procedure FNC_Get_Fees_Amount(Deal_ID_Co_Par: Code[20]; ShipmentNo_Co_Par: Code[20]; "Item_No._Co_Par": Code[20]; Instance_Op_Par: Option Planned,Real) Amount_Dec_Ret: Decimal
+    procedure FNC_Get_Fees_Amount(Deal_ID_Co_Par: Code[20]; ShipmentNo_Co_Par: Code[20]; "Item_No._Co_Par": Code[20]; Instance_Op_Par: Enum "DEL Instance") Amount_Dec_Ret: Decimal
     var
         dealShipment_Re_Loc: Record "DEL Deal Shipment";
         dealShipmentConnection_Re_Loc: Record "DEL Deal Shipment Connection";
@@ -430,7 +429,7 @@ codeunit 50024 "DEL Deal Item"
     end;
 
 
-    procedure FNC_Get_Amount(Deal_ID_Co_Par: Code[20]; "Item_No._Co_Par": Code[20]; Instance_Op_Par: Option) Amount_Dec_Ret: Decimal
+    procedure FNC_Get_Amount(Deal_ID_Co_Par: Code[20]; "Item_No._Co_Par": Code[20]; Instance_Op_Par: Enum "DEL Instance") Amount_Dec_Ret: Decimal
     var
         position_Re_Loc: Record "DEL Position";
     begin
@@ -660,7 +659,7 @@ codeunit 50024 "DEL Deal Item"
         element_Re_Loc: Record "DEL Element";
         UpdateRequest_Re: Record "DEL Update Request Manager";
         ACO_Line_Re_Loc: Record "Purchase Line";
-        Type_Op_Loc: Option Cost,Price;
+        Type_Op_Loc: Enum "DEL Type_Op";
     begin
 
         IF ACOLine_Re_Par.Quantity > 0 THEN BEGIN
@@ -756,7 +755,7 @@ codeunit 50024 "DEL Deal Item"
         element_Re_Loc: Record "DEL Element";
         UpdateRequest_Re: Record "DEL Update Request Manager";
         VCO_Line_Re_Loc: Record "Sales Line";
-        Type_Op_Loc: Option Cost,Price;
+        Type_Op_Loc: Enum "DEL Type_Op";
     begin
         //Cette fonction est appelée lorsque des modifications sont effectuées sur les lignes VCO au niveau du prix de vente
         //-> si p.e. on change la quantité, alors le prix de vente est validé et cette fonction est appelée
@@ -865,17 +864,17 @@ codeunit 50024 "DEL Deal Item"
     end;
 
 
-    procedure FNC_NeedsToBeUpdated(DealID_Co_Par: Code[20]; ItemNo_Co_Par: Code[20]; Type_Op: Option Cost,Price; Amount_Dec_Par: Decimal; Currency_Co_Par: Code[10]) needsUpdate_Bo_Ret: Boolean
+    procedure FNC_NeedsToBeUpdated(DealID_Co_Par: Code[20]; ItemNo_Co_Par: Code[20]; Type_Op2: Enum "DEL Type_Op"; Amount_Dec_Par: Decimal; Currency_Co_Par: Code[10]) needsUpdate_Bo_Ret: Boolean
     begin
 
-        IF Type_Op = Type_Op::Cost THEN
+        IF Type_Op2 = Type_Op2::Cost THEN
             needsUpdate_Bo_Ret :=
               (Amount_Dec_Par = FNC_Get_Unit_Cost(DealID_Co_Par, ItemNo_Co_Par))
               AND
               (Currency_Co_Par = FNC_Get_Currency_Cost(DealID_Co_Par, ItemNo_Co_Par)
             )
         ELSE
-            IF Type_Op = Type_Op::Price THEN
+            IF Type_Op2 = Type_Op2::Price THEN
                 needsUpdate_Bo_Ret :=
                   (Amount_Dec_Par = FNC_Get_Unit_Price(DealID_Co_Par, ItemNo_Co_Par))
                   AND

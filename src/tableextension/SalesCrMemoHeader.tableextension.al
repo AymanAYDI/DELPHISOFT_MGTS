@@ -1,4 +1,4 @@
-tableextension 50005 "DEL SalesCrMemoHeader" extends "Sales Cr.Memo Header"
+tableextension 50005 "DEL SalesCrMemoHeader" extends "Sales Cr.Memo Header" //114
 {
     fields
     { //TODO

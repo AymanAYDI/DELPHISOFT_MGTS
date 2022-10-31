@@ -27,7 +27,7 @@ codeunit 50053 "DEL D365FM PDF Email Send"
         EntryNo: Integer;
         IntGLanguage: Integer;
         RemLevelInt: Integer;
-        OptGDocType: Option " ","Service Invoice","Service Credit Memo","Issued Reminder";
+        OptGDocType: Enum "DEL DoC Facture Type";
         Param: Text;
         TxtGCci: Text;
         TemplateMailString: Text[250];
@@ -149,7 +149,6 @@ codeunit 50053 "DEL D365FM PDF Email Send"
                     GetAttachmentDocuments(EntryNo);
                     Email.Send(EmailMessage);
                 END;
-            //>>D365FM14.00.00.11
             472:
                 BEGIN
                     RecRefMaster.SETTABLE(JobQueueEntry);
@@ -348,7 +347,6 @@ codeunit 50053 "DEL D365FM PDF Email Send"
                         RecLCompanyInfo.GET();
                         Body := STRSUBSTNO(Body, ConvertString(RecLCompanyInfo.City));
                     END;
-                //>>D365FM14.00.00.11
                 400000001:
                     BEGIN
                         Body := STRSUBSTNO(Body, FORMAT(JobQueueEntry.Status));
@@ -411,7 +409,7 @@ codeunit 50053 "DEL D365FM PDF Email Send"
 
 
     procedure InitValue(var NewTxtPObject: Text; var NewTxtPSender: Text; var NewTxtPCustEmail: Text[250];
-     NewOptPDocType: Option " ","Service Invoice","Service Credit Memo","Issued Reminder"; NewCodGLanguage: Code[20];
+     NewOptPDocType: Enum "DEL DoC Facture Type"; NewCodGLanguage: Code[20];
      NewPRemTermsCod: Code[20]; NewPRemLevelInt: Integer; NewEntryNo: Integer; NewParam: Text)
     begin
         TxtGObject := NewTxtPObject;
@@ -426,7 +424,7 @@ codeunit 50053 "DEL D365FM PDF Email Send"
     end;
 
 
-    procedure GetTemplateWithLanguage(var RecPRef: RecordRef; OptPDocumentType: Option " ","Service Invoice","Service Credit Memo","Issued Reminder","Service Header"; CodPLanguage: Code[10]; var RecPBLOBRef: Codeunit "Temp Blob"; var TxtPObject: Text; var TxtPSender: Text; var TxtPCCI: Text; "Code": Code[20]; Level: Integer; var LanguageTemplateMail: Record "DEL D365FM Mail Template"): Boolean
+    procedure GetTemplateWithLanguage(var RecPRef: RecordRef; OptPDocumentType: Enum "DEL DoC Facture Type"; CodPLanguage: Code[10]; var RecPBLOBRef: Codeunit "Temp Blob"; var TxtPObject: Text; var TxtPSender: Text; var TxtPCCI: Text; "Code": Code[20]; Level: Integer; var LanguageTemplateMail: Record "DEL D365FM Mail Template"): Boolean
     var
         Instream: InStream;
         OutStream: OutStream;

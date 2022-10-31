@@ -2,7 +2,7 @@ codeunit 50028 "DEL Alert and fee copy Mgt"
 {
 
     var
-        LogisticTmp_Re: Record "DEL Logistic" temporary;
+        temp_LogisticTmp_Re: Record "DEL Logistic" temporary;
 
 
     procedure FNC_GlobalCheck(Deal_ID: Code[20])
@@ -16,18 +16,18 @@ codeunit 50028 "DEL Alert and fee copy Mgt"
         Logistic_Re_Loc.SETRANGE(Deal_ID, Deal_ID);
         IF Logistic_Re_Loc.FINDFIRST() THEN
             REPEAT
-                LogisticTmp_Re.TRANSFERFIELDS(Logistic_Re_Loc);
-                IF NOT LogisticTmp_Re.INSERT()
+                temp_LogisticTmp_Re.TRANSFERFIELDS(Logistic_Re_Loc);
+                IF NOT temp_LogisticTmp_Re.INSERT()
                   THEN
-                    LogisticTmp_Re.MODIFY();
+                    temp_LogisticTmp_Re.MODIFY();
             UNTIL Logistic_Re_Loc.NEXT() = 0;
 
         DealShip_Re_Loc.SETFILTER(Deal_ID, Deal_ID);
         IF DealShip_Re_Loc.FINDFIRST() THEN
             REPEAT
                 IF DealShip2_Re_Loc.GET(DealShip_Re_Loc.ID) THEN BEGIN
-                    LogisticTmp_Re.SETFILTER(ID, DealShip2_Re_Loc.ID);
-                    IF LogisticTmp_Re.FINDFIRST() THEN
+                    temp_LogisticTmp_Re.SETFILTER(ID, DealShip2_Re_Loc.ID);
+                    IF temp_LogisticTmp_Re.FINDFIRST() THEN
                         FNC_Alert1(DealShip2_Re_Loc);
                     FNC_Alert2(DealShip2_Re_Loc);
                     FNC_Alert3(DealShip2_Re_Loc);
@@ -42,7 +42,7 @@ codeunit 50028 "DEL Alert and fee copy Mgt"
     procedure FNC_Alert1(var DealShip_Re_Par: Record "DEL Deal Shipment")
     begin
 
-        IF (LogisticTmp_Re."PI approval date" <> 0D) AND (LogisticTmp_Re."PI approved by" <> '') THEN
+        IF (temp_LogisticTmp_Re."PI approval date" <> 0D) AND (temp_LogisticTmp_Re."PI approved by" <> '') THEN
             DealShip_Re_Par.PI := DealShip_Re_Par.PI::OK
         ELSE
             DealShip_Re_Par.PI := DealShip_Re_Par.PI::"En cours";
@@ -56,7 +56,7 @@ codeunit 50028 "DEL Alert and fee copy Mgt"
     procedure FNC_Alert2(var DealShip_Re_Par: Record "DEL Deal Shipment")
     begin
 
-        IF LogisticTmp_Re."Customer Delivery date" <> 0D THEN
+        IF temp_LogisticTmp_Re."Customer Delivery date" <> 0D THEN
             DealShip_Re_Par."A facturer" := DealShip_Re_Par."A facturer"::"A Facturer"
         ELSE
             DealShip_Re_Par."A facturer" := DealShip_Re_Par."A facturer"::"En cours";
@@ -67,8 +67,8 @@ codeunit 50028 "DEL Alert and fee copy Mgt"
     procedure FNC_Alert3(var DealShip_Re_Par: Record "DEL Deal Shipment")
     begin
 
-        IF LogisticTmp_Re."Revised ETD" <> 0D THEN BEGIN
-            IF (LogisticTmp_Re."Actual departure date" = 0D) AND (LogisticTmp_Re."Revised ETD" <= TODAY) THEN
+        IF temp_LogisticTmp_Re."Revised ETD" <> 0D THEN BEGIN
+            IF (temp_LogisticTmp_Re."Actual departure date" = 0D) AND (temp_LogisticTmp_Re."Revised ETD" <= TODAY) THEN
                 DealShip_Re_Par."Depart shipment" := TRUE
             ELSE
                 DealShip_Re_Par."Depart shipment" := FALSE;
@@ -80,8 +80,8 @@ codeunit 50028 "DEL Alert and fee copy Mgt"
     procedure FNC_Alert4(var DealShip_Re_Par: Record "DEL Deal Shipment")
     begin
 
-        IF LogisticTmp_Re."ETA date" <> 0D THEN BEGIN
-            IF (LogisticTmp_Re."ETA date" <= TODAY) AND (LogisticTmp_Re."Actual Arrival date" = 0D) THEN
+        IF temp_LogisticTmp_Re."ETA date" <> 0D THEN BEGIN
+            IF (temp_LogisticTmp_Re."ETA date" <= TODAY) AND (temp_LogisticTmp_Re."Actual Arrival date" = 0D) THEN
                 DealShip_Re_Par."Arrival ship" := TRUE
             ELSE
                 DealShip_Re_Par."Arrival ship" := FALSE;
@@ -90,7 +90,7 @@ codeunit 50028 "DEL Alert and fee copy Mgt"
     end;
 
 
-    procedure FNC_FeeCopy(Type_Op_Par: Option Customer,Vendor; No_Co_Par: Code[20]; OriNo_Co_Par: Code[20])
+    procedure FNC_FeeCopy(Type_Op_Par: Enum "Credit Transfer Account Type"; No_Co_Par: Code[20]; OriNo_Co_Par: Code[20])
     var
         ConnectionFee_Re_Loc: Record "DEL Fee Connection";
         ConnectionFeeIns_Re_Loc: Record "DEL Fee Connection";

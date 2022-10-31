@@ -1,4 +1,4 @@
-tableextension 50026 "DEL SalesHeader" extends "Sales Header"
+tableextension 50026 "DEL SalesHeader" extends "Sales Header" //36
 {
 
     //Unsupported feature: Property Insertion (Permissions) on ""Sales Header"(Table 36)".
@@ -12,8 +12,6 @@ tableextension 50026 "DEL SalesHeader" extends "Sales Header"
         //     //Unsupported feature: Property Modification (Data type) on ""Customer Price Group"(Field 34)".
 
         // }
-
-
 
         //TODO //unsupprted   modifs On lookup 
         // modify("Customer Price Group")
@@ -30,13 +28,23 @@ tableextension 50026 "DEL SalesHeader" extends "Sales Header"
         //     end;
 
         // }
-
-
+        //------à vérifier ! 
+        modify("Customer Price Group")
+        {
+            trigger OnAfterValidate()
+            var
+                CustPriceGroup: Record "Customer Price Group";
+                Text50000: Label 'ENU=%1|%2';
+            begin
+                CustPriceGroup.RESET();
+                IF PAGE.RUNMODAL(0, CustPriceGroup) = ACTION::LookupOK THEN
+                    IF "Customer Price Group" = '' THEN
+                        "Customer Price Group" := CustPriceGroup.Code
+                    ELSE
+                        "Customer Price Group" := STRSUBSTNO(Text50000, "Customer Price Group", CustPriceGroup.Code);
+            end;
+        }
         //Unsupported feature: Property Deletion (TableRelation) on ""Customer Price Group"(Field 34)".
-
-
-
-
         field(50000; "DEL Fiscal Repr."; Code[10])
         {
             Caption = 'Fiscal Repr.';
@@ -61,8 +69,6 @@ tableextension 50026 "DEL SalesHeader" extends "Sales Header"
         field(50004; "DEL Event Code"; enum "DEL Code Event")
         {
             Caption = 'Event Code';
-            Description = 'EDI,MGTS10.025';
-
         }
         field(50005; "DEL Estimated Delivery Date"; Date)
         {
@@ -135,7 +141,7 @@ tableextension 50026 "DEL SalesHeader" extends "Sales Header"
             Caption = 'Statut création commande achat';
 
         }
-        field(50023; "DEL Error Text Purch. Order Create"; Text[250])
+        field(50023; "DEL Err Text Pur. Order Create"; Text[250])
         {
             Caption = 'Texte erreur création commande achat';
 
@@ -153,7 +159,7 @@ tableextension 50026 "DEL SalesHeader" extends "Sales Header"
                 IF NOT HideValidationDialog THEN
                     IF ("DEL Error Purch. Order Create" = FALSE) AND ("DEL Status Purch. Order Create" <> "DEL Status Purch. Order Create"::Created) THEN
                         IF CONFIRM(TextCst001, FALSE) THEN BEGIN
-                            "DEL Error Text Purch. Order Create" := '';
+                            "DEL Err Text Pur. Order Create" := '';
                             "DEL To Create Purchase Order" := TRUE;
                         END;
             end;
@@ -170,9 +176,6 @@ tableextension 50026 "DEL SalesHeader" extends "Sales Header"
         }
     }
 
-
-
-
     procedure SelectGLEntryForReverse()
     var
         GLEntry: Record "G/L Entry";
@@ -182,13 +185,11 @@ tableextension 50026 "DEL SalesHeader" extends "Sales Header"
 
     begin
 
-        //MGTS10.00.001; 001; mhh; entire function
         IF NOT GLSetup.GET() THEN
             GLSetup.INIT();
 
         GLSetup.TESTFIELD("DEL Provision Source Code");
         GLSetup.TESTFIELD("DEL Provision Journal Batch");
-
         GLEntry.RESET();
         GLEntry.SETCURRENTKEY("Document No.", "Posting Date");
         GLEntry.FILTERGROUP(2);
@@ -202,12 +203,12 @@ tableextension 50026 "DEL SalesHeader" extends "Sales Header"
         GLEntries.SETTABLEVIEW(GLEntry);
         GLEntries.LOOKUPMODE(TRUE);
         IF GLEntries.RUNMODAL() = ACTION::LookupOK THEN
-            //TODO // GLEntries.SetGLEntry(ReverseGLEntry);
-            IF ReverseGLEntry.FINDSET() THEN
-                REPEAT
-                    ReverseGLEntry."DEL Reverse With Doc. No." := "No.";
-                    ReverseGLEntry.MODIFY();
-                UNTIL ReverseGLEntry.NEXT() = 0;
+            GLEntries.SetGLEntry(ReverseGLEntry);
+        IF ReverseGLEntry.FINDSET() THEN
+            REPEAT
+                ReverseGLEntry."DEL Reverse With Doc. No." := "No.";
+                ReverseGLEntry.MODIFY();
+            UNTIL ReverseGLEntry.NEXT() = 0;
     end;
 
     procedure ShowSelectedEntriesForReverse()
@@ -216,17 +217,14 @@ tableextension 50026 "DEL SalesHeader" extends "Sales Header"
         GLEntriesForReverse: Page "DEL GL Entries For Reverse";
     begin
 
-        //MGTS10.00.001; 001; mhh; entire function
         TESTFIELD("No.");
-
         GLEntry.RESET();
         GLEntry.SETCURRENTKEY("DEL Reverse With Doc. No.");
         GLEntry.FILTERGROUP(2);
         GLEntry.SETRANGE("DEL Reverse With Doc. No.", "No.");
         GLEntry.FILTERGROUP(4);
-
         CLEAR(GLEntriesForReverse);
-        //TODO        // GLEntriesForReverse.SetRelatedOrder(Rec);
+        GLEntriesForReverse.SetRelatedOrder(Rec);
         GLEntriesForReverse.SETTABLEVIEW(GLEntry);
         GLEntriesForReverse.RUN();
     end;

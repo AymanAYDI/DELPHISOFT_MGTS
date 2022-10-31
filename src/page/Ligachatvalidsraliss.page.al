@@ -183,9 +183,9 @@ page 50007 "DEL Lig achat validés/réalisés"
                 {
                     Caption = 'Exit Point';
                 }
-                //         field("Area"; Area)
-                // {
-                // }
+                field("Area"; Rec.Area)
+                {
+                }
                 field("Transaction Specification"; Rec."Transaction Specification")
                 {
                     Caption = 'Transaction Specification';

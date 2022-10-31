@@ -1,4 +1,4 @@
-tableextension 50042 "DEL CompanyInformation" extends "Company Information"
+tableextension 50042 "DEL CompanyInformation" extends "Company Information" //79
 {
     fields
     {

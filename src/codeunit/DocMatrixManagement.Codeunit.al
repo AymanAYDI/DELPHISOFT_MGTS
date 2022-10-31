@@ -17,7 +17,7 @@ codeunit 50015 "DEL DocMatrix Management" //TODO
     var
         lpgDocMatrixSelection: Page "DEL DocMatrix Selection Card";
         lErr001: Label 'There is no Document Matrix Configuration available for"%1".';
-        lType: Option Customer,Vendor;
+        lType: Enum "Credit Transfer Account Type";
     begin
         IF CreateDocMatrixSelection(pNo, pProcessType, pUsage, precDocMatrixSelection, pPrintOnly) THEN BEGIN
 
@@ -47,8 +47,8 @@ codeunit 50015 "DEL DocMatrix Management" //TODO
         lDocNo: Code[20];
         lNo: Code[20];
         lErr001: Label 'A unexpected problem with the parameter for the function "ProcessDocumentMatrix" occured.';
-        lType: Option Customer,Vendor;
-        lAction: Option Print,Save,Mail,FTP1,FTP2;
+        lType: Enum "Credit Transfer Account Type";
+        lAction: Enum "DEL Action100";
         lErrPrint: Text;
         ltxClientFile: Text;
         ltxClientPath: Text;
@@ -143,8 +143,8 @@ codeunit 50015 "DEL DocMatrix Management" //TODO
         lLastStatementNo: Integer;
         lReportID: Integer;
         lType: Integer;
-        lProcessType: Option Manual,Automatic;
-        lAction: Option Print,Save,Mail,FTP1,FTP2,,,,,,JobQueueEntry;
+        lProcessType: Enum "DEL Process Type";
+        lAction: Enum "DEL Action100";
         ltxClientFile: Text;
         lvarCustomer: Variant;
     begin
@@ -219,7 +219,7 @@ codeunit 50015 "DEL DocMatrix Management" //TODO
         END;
     end;
 
-    local procedure CheckDocumentMatrixSelection(pAction: Option Print,Save,Mail,FTP1,FTP2; precDocMatrixSelection: Record "DEL DocMatrix Selection"): Boolean
+    local procedure CheckDocumentMatrixSelection(pAction: Enum "DEL Action100"; precDocMatrixSelection: Record "DEL DocMatrix Selection"): Boolean
     begin
         CASE pAction OF
             pAction::Print:
@@ -235,7 +235,7 @@ codeunit 50015 "DEL DocMatrix Management" //TODO
         END;
     end;
 
-    local procedure CheckDocumentMatrix(pAction: Option Print,Save,Mail,FTP1,FTP2; pType: Option Customer,Vendor; pNo: Code[20]; pProcessType: Option Manual,Automatic; pUsage: Integer): Boolean
+    local procedure CheckDocumentMatrix(pAction: Enum "DEL Action100"; pType: Enum "Credit Transfer Account Type"; pNo: Code[20]; pProcessType: Enum "DEL Process Type"; pUsage: Integer): Boolean
     var
         DocumentMatrix: Record "DEL Document Matrix";
     begin
@@ -315,7 +315,7 @@ codeunit 50015 "DEL DocMatrix Management" //TODO
     //     Process.Start(ProcessStartInfo);
     // end;
 
-    local procedure ProcessMail(pUsage: Integer; pProcessType: Option Manual,Automatic; pAction: Option Print,Save,Mail,FTP1,FTP2; pNo: Code[20]; pDocNo: Code[20]; precDocMatrixSelection: Record "DEL DocMatrix Selection"; ptxClientFile: Text; pRecordVariant: Variant): Boolean
+    local procedure ProcessMail(pUsage: Integer; pProcessType: Enum "DEL Process Type"; pAction: Enum "DEL Action100"; pNo: Code[20]; pDocNo: Code[20]; precDocMatrixSelection: Record "DEL DocMatrix Selection"; ptxClientFile: Text; pRecordVariant: Variant): Boolean
     var
         lintLogID: Integer;
         lErr002: Label 'There is no Attachement File available to send by Email.';
@@ -333,7 +333,7 @@ codeunit 50015 "DEL DocMatrix Management" //TODO
     end;
 
 
-    procedure SendMail(pUsage: Integer; pProcessType: Option Manual,Automatic; pRecordVariant: Variant; pNo: Code[20]; ptxAttachementFullPathFileName: Text; precDocMatrixSelection: Record "DEL DocMatrix Selection"; pDocNo: Code[20])
+    procedure SendMail(pUsage: Integer; pProcessType: Enum "DEL Process Type"; pRecordVariant: Variant; pNo: Code[20]; ptxAttachementFullPathFileName: Text; precDocMatrixSelection: Record "DEL DocMatrix Selection"; pDocNo: Code[20])
     var
         lrecCompanyInformation: Record "Company Information";
         lcuDocMatrixSingleInstance: Codeunit "DEL DocMatrix SingleInstance";
@@ -456,7 +456,7 @@ codeunit 50015 "DEL DocMatrix Management" //TODO
         Email.Send(lcuSMTP);
     end;
 
-    local procedure ProcessFTP(pAction: Option Print,Save,Mail,FTP1,FTP2; pNo: Code[20]; pDocNo: Code[20]; precDocMatrixSelection: Record "DEL DocMatrix Selection"; ptxClientFile: Text): Boolean
+    local procedure ProcessFTP(pAction: Enum "DEL Action100"; pNo: Code[20]; pDocNo: Code[20]; precDocMatrixSelection: Record "DEL DocMatrix Selection"; ptxClientFile: Text): Boolean
     var
         lboFTPsuccessful: Boolean;
         lintLogID: Integer;
@@ -471,7 +471,7 @@ codeunit 50015 "DEL DocMatrix Management" //TODO
         EXIT(TRUE);
     end;
 
-    local procedure FTPProcessFile(pAction: Option Print,Save,Mail,FTP1,FTP2; ptxFullPathFileName: Text; pCustNo: Code[20]; var pDescription: Text): Boolean
+    local procedure FTPProcessFile(pAction: Enum "DEL Action100"; ptxFullPathFileName: Text; pCustNo: Code[20]; var pDescription: Text): Boolean
     var
         lrecFTPCustomer: Record "DEL DocMatrix Customer FTP";
         lboTransferSucessful: Boolean;
@@ -619,7 +619,7 @@ codeunit 50015 "DEL DocMatrix Management" //TODO
         EXIT(ltxClientFile);
     end;
 
-    local procedure LogAction(pAction: Option Print,Save,Mail,FTP1,FTP2,,,,,,JobQueueEntry; pDocNo: Code[20]; precDocMatrixSelection: Record "DEL DocMatrix Selection"; pError: Boolean; pDescription: Text): Integer
+    local procedure LogAction(pAction: Enum "DEL Action100"; pDocNo: Code[20]; precDocMatrixSelection: Record "DEL DocMatrix Selection"; pError: Boolean; pDescription: Text): Integer
     var
         lrecDocMatrixLog: Record "DEL DocMatrix Log";
     begin
@@ -666,7 +666,7 @@ codeunit 50015 "DEL DocMatrix Management" //TODO
             pRecordVariant := lRecRef;
     end;
 
-    local procedure CreateDocMatrixSelection(pNo: Code[20]; pProcessType: Option Manual,Automatic; pUsage: Integer; var precDocMatrixSelection: Record "DEL DocMatrix Selection"; pPrintOnly: Boolean): Boolean
+    local procedure CreateDocMatrixSelection(pNo: Code[20]; pProcessType: Enum "DEL Process Type"; pUsage: Integer; var precDocMatrixSelection: Record "DEL DocMatrix Selection"; pPrintOnly: Boolean): Boolean
     var
         DocumentMatrix: Record "DEL Document Matrix";
         lPostOptionSOrder: Integer;
@@ -717,7 +717,7 @@ codeunit 50015 "DEL DocMatrix Management" //TODO
     end;
 
 
-    procedure UpdateDocMatrixSelection(pNo: Code[20]; pProcessType: Option Manual,Automatic; pUsage: Integer; var precDocMatrixSelection: Record "DEL DocMatrix Selection"; pPrintOnly: Boolean)
+    procedure UpdateDocMatrixSelection(pNo: Code[20]; pProcessType: Enum "DEL Process Type"; pUsage: Integer; var precDocMatrixSelection: Record "DEL DocMatrix Selection"; pPrintOnly: Boolean)
     var
         DocumentMatrix: Record "DEL Document Matrix";
         lPostOptionSOrder: Integer;
@@ -776,7 +776,7 @@ codeunit 50015 "DEL DocMatrix Management" //TODO
         EXIT(precSalesCrMemoHeader.FINDFIRST());
     end;
 
-    local procedure GetParameters(pUsage: Integer; pRecordVariant: Variant; pFieldNo: Integer; pFieldDocNo: Integer; var pType: Option Customer,Vendor; var pNo: Code[20]; var pDocNo: Code[20]; pFieldPurchCode: Integer; var pPurchCode: Code[10])
+    local procedure GetParameters(pUsage: Integer; pRecordVariant: Variant; pFieldNo: Integer; pFieldDocNo: Integer; var pType: Enum "Credit Transfer Account Type"; var pNo: Code[20]; var pDocNo: Code[20]; pFieldPurchCode: Integer; var pPurchCode: Code[10])
     var
         RecRef: RecordRef;
         FieldRef: FieldRef;
@@ -894,7 +894,7 @@ codeunit 50015 "DEL DocMatrix Management" //TODO
     end;
 
 
-    procedure GetCustVendName(pType: Option Customer,Vendor; pNo: Code[20]): Text[50]
+    procedure GetCustVendName(pType: Enum "Credit Transfer Account Type"; pNo: Code[20]): Text[50]
     var
         Customer: Record Customer;
         Vendor: Record Vendor;
@@ -910,7 +910,7 @@ codeunit 50015 "DEL DocMatrix Management" //TODO
     end;
 
 
-    procedure GetCustVendLanguageCode(pType: Option Customer,Vendor; pNo: Code[20]): Code[10]
+    procedure GetCustVendLanguageCode(pType: Enum "Credit Transfer Account Type"; pNo: Code[20]): Code[10]
     var
         Customer: Record Customer;
         Vendor: Record Vendor;
@@ -938,7 +938,7 @@ codeunit 50015 "DEL DocMatrix Management" //TODO
 
     local procedure GetTypeWithUsage(pUsage: Integer): Integer
     var
-        lType: Option Customer,Vendor;
+        lType: Enum "Credit Transfer Account Type";
     begin
         // get the type of contact
         CASE pUsage OF
@@ -1126,7 +1126,7 @@ codeunit 50015 "DEL DocMatrix Management" //TODO
     var
         lrecDocMatrixSetup: Record "DEL DocMatrix Setup";
         i: Integer;
-        lType: Option Customer,Vendor;
+        lType: Enum "Credit Transfer Account Type";
         ltxtStorageLocation: Text;
     begin
 

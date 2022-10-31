@@ -1,4 +1,4 @@
-tableextension 50006 "DEL PurchRcptHeader" extends "Purch. Rcpt. Header"
+tableextension 50006 "DEL PurchRcptHeader" extends "Purch. Rcpt. Header" //120
 {
     fields
     {

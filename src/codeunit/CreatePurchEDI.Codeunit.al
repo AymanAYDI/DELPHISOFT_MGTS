@@ -12,10 +12,10 @@ codeunit 50019 "DEL Create Purch. EDI"
 
     var
         DocNo: Code[20];
-        Param: Option " ",CreateAndValidateReqWorksheet,CreateDeal;
+        Param: Enum "DEL Param";
 
 
-    procedure SetParam(pParam: Option " ",CreateAndValidateReqWorksheet,CreateDeal; pDocNo: Code[20])
+    procedure SetParam(pParam: Enum "DEL Param"; pDocNo: Code[20])
     begin
         Param := pParam;
         DocNo := pDocNo;

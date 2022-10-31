@@ -1,4 +1,4 @@
-tableextension 50043 "DEL Language" extends Language
+tableextension 50043 "DEL Language" extends Language //8
 {
     fields
     {

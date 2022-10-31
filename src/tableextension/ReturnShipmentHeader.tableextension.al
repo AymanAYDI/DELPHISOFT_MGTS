@@ -1,4 +1,4 @@
-tableextension 50038 "DEL ReturnShipmentHeader" extends "Return Shipment Header"
+tableextension 50038 "DEL ReturnShipmentHeader" extends "Return Shipment Header" //6650
 {
     fields
     {

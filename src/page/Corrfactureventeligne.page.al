@@ -179,7 +179,7 @@ page 50014 "DEL Corr. facture vente ligne"
     trigger OnAfterGetRecord()
     begin
         DescriptionIndent := 0;
-        //TODO   DescriptionOnFormat;
+        DescriptionOnFormat;
         LineAmountText := FORMAT(Rec."Line Amount");
         LineAmountTextOnFormat(LineAmountText);
         AmountIncludingVATText := FORMAT(Rec."Amount Including VAT");

@@ -473,7 +473,7 @@ codeunit 50033 "DEL Provision"
         sps_Re_Loc: Record "DEL Shipment Provision Select.";
         element_ID_Co_Loc: Code[20];
         provisionDealID_Co_Loc: Code[20];
-        ConnectionType_Op_Par: Option Element,Shipment;
+        ConnectionType_Op_Par: Enum "Element/Shipment";
     begin
         element_ID_Co_Loc := '';
         provisionDealID_Co_Loc := '';

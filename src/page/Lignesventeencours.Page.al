@@ -230,9 +230,9 @@ page 50009 "DEL Lignes vente en cours"
                 {
                     Caption = 'Exit Point';
                 }
-                //TODO         field("Area"; Area)
-                // {
-                // }
+                field("Area"; Rec.Area)
+                {
+                }
                 field("Transaction Specification"; Rec."Transaction Specification")
                 {
                     Caption = 'Transaction Specification';
@@ -568,9 +568,9 @@ page 50009 "DEL Lignes vente en cours"
                 {
                     Caption = 'Customer Disc. Group';
                 }
-                //TODO field("Customer line reference2"; Rec."Customer line reference2")
-                // {
-                // }
+                field("Customer line reference2"; Rec."DEL Customer line reference2")
+                {
+                }
                 field(Level; Rec.Level)
                 {
                     Caption = 'Level';

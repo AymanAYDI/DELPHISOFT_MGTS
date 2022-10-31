@@ -260,16 +260,11 @@ page 50030 "DEL Deal Mainboard"
                           USERID,
                           CURRENTDATETIME
                         );
-
                         urm_Re_Loc.GET(requestID_Co_Loc);
-
-
-
                         UpdateRequestManager_Cu.FNC_Process_RequestsDeal(urm_Re_Loc, FALSE, FALSE, TRUE, requestID_Co_Loc);
                         urm_Re_Loc.SETRANGE(urm_Re_Loc.ID, requestID_Co_Loc);
                         IF urm_Re_Loc.FINDFIRST() THEN
                             urm_Re_Loc.DELETE();
-                        // end THM
                         CurrPage.UPDATE();
                     end;
                 }
@@ -295,14 +290,10 @@ page 50030 "DEL Deal Mainboard"
                         );
 
                         urm_Re_Loc.GET(requestID_Co_Loc);
-
-
                         UpdateRequestManager_Cu.FNC_Process_RequestsDeal(urm_Re_Loc, FALSE, TRUE, TRUE, requestID_Co_Loc);
                         urm_Re_Loc.SETRANGE(urm_Re_Loc.ID, requestID_Co_Loc);
                         IF urm_Re_Loc.FINDFIRST() THEN
                             urm_Re_Loc.DELETE();
-
-
                         CurrPage.UPDATE();
                     end;
                 }
@@ -329,10 +320,7 @@ page 50030 "DEL Deal Mainboard"
         IF ItemDetailShipmentNo_Co = '' THEN
             CurrPage.ShipmentSubpage.PAGE.FNC_SetFilters(Rec.ID, '');
 
-
         PLLogistic_Re_Temp.DELETEALL();
-
-
         IF PLLogisticShipmentNo_Co = '' THEN BEGIN
 
             plannedElement_Re_Loc.RESET();
@@ -366,9 +354,6 @@ page 50030 "DEL Deal Mainboard"
                                 PLLogistic_Re_Temp."Real Element ID" := realElement_Re_Loc.ID;
 
                                 PLLogistic_Re_Temp."Real Amount" += Element_Cu.FNC_Get_Amount_From_Positions(realElement_Re_Loc.ID);
-
-
-
                             END;
 
                         UNTIL (realElement_Re_Loc.NEXT() = 0);
@@ -398,8 +383,6 @@ page 50030 "DEL Deal Mainboard"
 
                     PLLogistic_Re_Temp.INIT();
                     amount_Dec_Loc := 0;
-
-
                     purchRcptLine_Re_Loc.RESET();
                     purchRcptLine_Re_Loc.SETRANGE("Document No.", DealShipment_Cu.FNC_GetBRNo(PLLogisticShipmentNo_Co));
                     purchRcptLine_Re_Loc.SETRANGE(Type, purchRcptLine_Re_Loc.Type::Item);

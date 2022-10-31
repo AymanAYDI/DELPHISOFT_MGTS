@@ -471,6 +471,7 @@ table 50067 "DEL Document Matrix"
         // TextFile.CREATEINSTREAM(InStream);
         // pInputText.READ(InStream);
         // TextFile.CLOSE;
+
         TempBlob.CreateInStream(Instr);
         WHILE NOT Instr.EOS DO BEGIN
             pInputText.READ(Instr);

@@ -8,7 +8,7 @@ codeunit 50055 "DEL Record Modification Track"
 
 
     var
-        SynchroniseState: Option Insert,Modify,Delete,Rename;
+        SynchroniseState: Enum "DEL Last Synchronized State";
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"GlobalTriggerManagement", 'OnAfterGetDatabaseTableTriggerSetup', '', false, false)]
 
@@ -81,7 +81,7 @@ codeunit 50055 "DEL Record Modification Track"
         InsertUpdateSynchronizedRecord(RecRef, TimeStamp, SynchroniseState::Rename);
     end;
 
-    local procedure InsertUpdateSynchronizedRecord(RecRef: RecordRef; LastModified: DateTime; CurrentSynchroniseState: Option Insert,Modify,Delete,Rename)
+    local procedure InsertUpdateSynchronizedRecord(RecRef: RecordRef; LastModified: DateTime; CurrentSynchroniseState: Enum "DEL Last Synchronized State")
     var
         RecordModificationTracking: Record "DEL Record Modifs. Tracking";
         PurchasePrice: Record "Purchase Price";

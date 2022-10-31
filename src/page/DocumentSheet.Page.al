@@ -138,8 +138,6 @@ page 50065 "DEL Document Sheet"
         Rec.Document.CREATEOUTSTREAM(OutStr);
         COPYSTREAM(OutStr, InStr);
 
-
-
         Rec."Insert Date" := TODAY;
         Rec."Insert Time" := TIME;
 
@@ -158,12 +156,12 @@ page 50065 "DEL Document Sheet"
 
     local procedure Open()
     var
+        TempBlob: Codeunit "Temp Blob";
         InStr: InStream;
         OutStr: OutStream;
         Directory: Text;
         //oFile: File;
         ExportFileName: text;
-        TempBlob: Codeunit "Temp Blob";
 
     begin
         //TODO: Document_CU a été commenté car il contient le Dotnet
@@ -179,7 +177,6 @@ page 50065 "DEL Document Sheet"
         TempBlob.CREATEINSTREAM(InStr, TEXTENCODING::UTF8);
         Rec.Document.CREATEOUTSTREAM(OutStr);
         COPYSTREAM(OutStr, InStr);
-
 
         HYPERLINK(Directory + Rec."File Name");
     end;

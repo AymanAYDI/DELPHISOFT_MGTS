@@ -1,4 +1,4 @@
-tableextension 50032 "DEL HandledICOutboxPurchHdr" extends "Handled IC Outbox Purch. Hdr"
+tableextension 50032 "DEL HandledICOutboxPurchHdr" extends "Handled IC Outbox Purch. Hdr" //432
 {
     fields
     {
