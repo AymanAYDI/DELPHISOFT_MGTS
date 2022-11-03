@@ -301,7 +301,7 @@ codeunit 50052 "DEL MGTS EDI Management"
                 TempEDIExportBufferLine.Description := SalesInvoiceLine.Description;
                 TempEDIExportBufferLine.EAN := Item."DEL Code EAN 13";
                 TempEDIExportBufferLine."Supplier Item No." := SalesInvoiceLine."No.";
-                TempEDIExportBufferLine."Customer Item No." := SalesInvoiceLine."Cross-Reference No.";
+                TempEDIExportBufferLine."Customer Item No." := SalesInvoiceLine."Item Reference No.";
                 TempEDIExportBufferLine."Unit of Measure" := SalesInvoiceLine."Unit of Measure Code";
                 TempEDIExportBufferLine.Quantity := SalesInvoiceLine.Quantity;
                 TempEDIExportBufferLine."Net Price" := ROUND(SalesInvoiceLine."Line Amount" / SalesInvoiceLine.Quantity, 0.01);

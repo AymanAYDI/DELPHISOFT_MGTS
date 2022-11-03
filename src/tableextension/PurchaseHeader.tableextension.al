@@ -97,10 +97,8 @@ tableextension 50028 "DEL PurchaseHeader" extends "Purchase Header" //38
             trigger OnValidate()
             begin
 
-                //MGTS10.024; 007; mhh; begin
                 VALIDATE("Payment Terms Code");
                 VALIDATE("Prepmt. Payment Terms Code");
-                //MGTS10.024; 007; mhh; end
             end;
         }
     }
@@ -371,31 +369,25 @@ tableextension 50028 "DEL PurchaseHeader" extends "Purchase Header" //38
         _Vendor: Record Vendor;
         Text001: Label 'Do you want update the Forwarding Agent from "%1" to "%2" ?';
     begin
-        // LOCO/ChC
         IF NOT _ForwardingAgent.GET("Buy-from Vendor No.", "Location Code") THEN
             IF _Vendor.GET("Buy-from Vendor No.") THEN
                 _ForwardingAgent."Forwarding Agent" := _Vendor."DEL Forwarding Agent Code";
-        ///T-00799
-        //IF (_ForwardingAgent."Forwarding Agent" = "Forwarding Agent Code" THEN
-        //  EXIT;
 
         IF "DEL Forwarding Agent Code" <> _ForwardingAgent."Forwarding Agent" THEN
-            //T-00799
-            //>>MGTSEDI10.00.00.23
             IF NOT HideValidationDialog THEN
-                //>>MGTSEDI10.00.00.23
                 IF NOT CONFIRM(STRSUBSTNO(Text001, "DEL Forwarding Agent Code", _ForwardingAgent."Forwarding Agent")) THEN
                     EXIT;
 
         "DEL Forwarding Agent Code" := _ForwardingAgent."Forwarding Agent";
-        //T-00799
         "Port de départ" := _ForwardingAgent."Departure port";
-        //T-00799
     end;
 
     procedure NTO_SetPurchDim()
     var
-        NTO_DimVal: Record "Dimension Value";
+        //TODO TABLE 357
+        NTO_DocDim: Record "Dimension Set Entry"; //357 
+        NTO_DimVal: Record "Dimension Value"; //349 
+
     begin
         NTO_GenSetup.GET();
         // Créer nouvelle Dimension Value
@@ -407,13 +399,13 @@ tableextension 50028 "DEL PurchaseHeader" extends "Purchase Header" //38
 
         // Créer nouveau Axe Document
         //TODO //DOCDim
-        // NTO_DocDim.INIT();
-        // NTO_DocDim."Table ID" := 38;
+        NTO_DocDim.INIT();
+        //TODO NTO_DocDim."Table ID" := 38;
         // NTO_DocDim."Document Type" := "Document Type";
         // NTO_DocDim."Document No." := "No.";
-        // NTO_DocDim."Dimension Code" := NTO_GenSetup."Code Axe Achat";
-        // NTO_DocDim."Dimension Value Code" := "No.";
-        // IF NTO_DocDim.INSERT() THEN;
+        NTO_DocDim."Dimension Code" := NTO_GenSetup."Code Axe Achat";
+        NTO_DocDim."Dimension Value Code" := "No.";
+        IF NTO_DocDim.INSERT() THEN;
     end;
 
     procedure NTO_ReportPurchDim2SalesLines(NTO_PurchHead: Record "Purchase Header")
@@ -459,7 +451,7 @@ tableextension 50028 "DEL PurchaseHeader" extends "Purchase Header" //38
                     UNTIL NTO_ResEntryPurch.NEXT() = 0;
             UNTIL NTO_PurchLine.NEXT() = 0;
     end;
-    //todo 
+
     procedure UpdateSalesEstimatedDelivery()
     var
         PurchLine: Record "Purchase Line";

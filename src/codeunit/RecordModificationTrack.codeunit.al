@@ -133,7 +133,7 @@ codeunit 50055 "DEL Record Modification Track"
           [
            DATABASE::"Sales Price",
            DATABASE::"Purchase Price",
-           DATABASE::"Item Cross Reference"
+           DATABASE::"Item Reference"
           ]);
     end;
 }

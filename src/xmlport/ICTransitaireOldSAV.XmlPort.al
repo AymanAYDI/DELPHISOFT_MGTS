@@ -108,7 +108,7 @@ xmlport 50003 "DEL IC Transitaire Old SAV"
                         fieldelement(Designation1; "Purchase Line".Description)
                         {
                         }
-                        fieldelement(ReferenceFournisseur; "Purchase Line"."Cross-Reference No.")
+                        fieldelement(ReferenceFournisseur; "Purchase Line"."Item Reference No.")
                         {
                         }
                         textelement(Quantite)

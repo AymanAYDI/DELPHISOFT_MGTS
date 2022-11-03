@@ -1,0 +1,239 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="DataSource">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString />
+      </ConnectionProperties>
+      <rd:SecurityType>None</rd:SecurityType>
+    </DataSource>
+  </DataSources>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <Height>2in</Height>
+        <Style />
+      </Body>
+      <Width>6.5in</Width>
+      <Page>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <Code>Public Function BlankZero(ByVal Value As Decimal)
+    if Value = 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankPos(ByVal Value As Decimal)
+    if Value &gt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankZeroAndPos(ByVal Value As Decimal)
+    if Value &gt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNeg(ByVal Value As Decimal)
+    if Value &lt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNegAndZero(ByVal Value As Decimal)
+    if Value &lt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+</Code>
+  <Language>=User!Language</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="FORMAT_TODAY_0_4_">
+          <DataField>FORMAT_TODAY_0_4_</DataField>
+        </Field>
+        <Field Name="COMPANYNAME">
+          <DataField>COMPANYNAME</DataField>
+        </Field>
+        <Field Name="CurrReport_PAGENO">
+          <DataField>CurrReport_PAGENO</DataField>
+        </Field>
+        <Field Name="USERID">
+          <DataField>USERID</DataField>
+        </Field>
+        <Field Name="period_Te">
+          <DataField>period_Te</DataField>
+        </Field>
+        <Field Name="FeeDescriptionArray_1_">
+          <DataField>FeeDescriptionArray_1_</DataField>
+        </Field>
+        <Field Name="FeeTotalArray_1_">
+          <DataField>FeeTotalArray_1_</DataField>
+        </Field>
+        <Field Name="FeeDescriptionArray_2_">
+          <DataField>FeeDescriptionArray_2_</DataField>
+        </Field>
+        <Field Name="FeeDescriptionArray_3_">
+          <DataField>FeeDescriptionArray_3_</DataField>
+        </Field>
+        <Field Name="FeeDescriptionArray_4_">
+          <DataField>FeeDescriptionArray_4_</DataField>
+        </Field>
+        <Field Name="FeeDescriptionArray_5_">
+          <DataField>FeeDescriptionArray_5_</DataField>
+        </Field>
+        <Field Name="FeeTotalArray_2_">
+          <DataField>FeeTotalArray_2_</DataField>
+        </Field>
+        <Field Name="FeeTotalArray_3_">
+          <DataField>FeeTotalArray_3_</DataField>
+        </Field>
+        <Field Name="FeeTotalArray_4_">
+          <DataField>FeeTotalArray_4_</DataField>
+        </Field>
+        <Field Name="FeeTotalArray_5_">
+          <DataField>FeeTotalArray_5_</DataField>
+        </Field>
+        <Field Name="FeeDescriptionArray_10_">
+          <DataField>FeeDescriptionArray_10_</DataField>
+        </Field>
+        <Field Name="FeeDescriptionArray_9_">
+          <DataField>FeeDescriptionArray_9_</DataField>
+        </Field>
+        <Field Name="FeeDescriptionArray_8_">
+          <DataField>FeeDescriptionArray_8_</DataField>
+        </Field>
+        <Field Name="FeeDescriptionArray_7_">
+          <DataField>FeeDescriptionArray_7_</DataField>
+        </Field>
+        <Field Name="FeeDescriptionArray_6_">
+          <DataField>FeeDescriptionArray_6_</DataField>
+        </Field>
+        <Field Name="FeeTotalArray_10_">
+          <DataField>FeeTotalArray_10_</DataField>
+        </Field>
+        <Field Name="FeeTotalArray_9_">
+          <DataField>FeeTotalArray_9_</DataField>
+        </Field>
+        <Field Name="FeeTotalArray_8_">
+          <DataField>FeeTotalArray_8_</DataField>
+        </Field>
+        <Field Name="FeeTotalArray_7_">
+          <DataField>FeeTotalArray_7_</DataField>
+        </Field>
+        <Field Name="FeeTotalArray_6_">
+          <DataField>FeeTotalArray_6_</DataField>
+        </Field>
+        <Field Name="FeeDescriptionArray_11_">
+          <DataField>FeeDescriptionArray_11_</DataField>
+        </Field>
+        <Field Name="FeeTotalArray_11_">
+          <DataField>FeeTotalArray_11_</DataField>
+        </Field>
+        <Field Name="Shipment_Provision_Selection_Deal_ID">
+          <DataField>Shipment_Provision_Selection_Deal_ID</DataField>
+        </Field>
+        <Field Name="Shipment_Provision_Selection_Deal_ID_Control1000000011">
+          <DataField>Shipment_Provision_Selection_Deal_ID_Control1000000011</DataField>
+        </Field>
+        <Field Name="Shipment_Provision_Selection_Deal_Shipment_ID">
+          <DataField>Shipment_Provision_Selection_Deal_Shipment_ID</DataField>
+        </Field>
+        <Field Name="Shipment_Provision_Selection_Fee_ID">
+          <DataField>Shipment_Provision_Selection_Fee_ID</DataField>
+        </Field>
+        <Field Name="Shipment_Provision_Selection__Fee_Description_">
+          <DataField>Shipment_Provision_Selection__Fee_Description_</DataField>
+        </Field>
+        <Field Name="Shipment_Provision_Selection__Planned_Amount_">
+          <DataField>Shipment_Provision_Selection__Planned_Amount_</DataField>
+        </Field>
+        <Field Name="Shipment_Provision_Selection__Planned_Amount_Format">
+          <DataField>Shipment_Provision_Selection__Planned_Amount_Format</DataField>
+        </Field>
+        <Field Name="Shipment_Provision_Selection__Real_Amount_">
+          <DataField>Shipment_Provision_Selection__Real_Amount_</DataField>
+        </Field>
+        <Field Name="Shipment_Provision_Selection__Real_Amount_Format">
+          <DataField>Shipment_Provision_Selection__Real_Amount_Format</DataField>
+        </Field>
+        <Field Name="Shipment_Provision_Selection_Delta">
+          <DataField>Shipment_Provision_Selection_Delta</DataField>
+        </Field>
+        <Field Name="Shipment_Provision_Selection_DeltaFormat">
+          <DataField>Shipment_Provision_Selection_DeltaFormat</DataField>
+        </Field>
+        <Field Name="Shipment_Provision_Selection__Provision_Amount_">
+          <DataField>Shipment_Provision_Selection__Provision_Amount_</DataField>
+        </Field>
+        <Field Name="Shipment_Provision_Selection__Provision_Amount_Format">
+          <DataField>Shipment_Provision_Selection__Provision_Amount_Format</DataField>
+        </Field>
+        <Field Name="Shipment_Provision_Selection_Period">
+          <DataField>Shipment_Provision_Selection_Period</DataField>
+        </Field>
+        <Field Name="Shipment_Provision_SelectionCaption">
+          <DataField>Shipment_Provision_SelectionCaption</DataField>
+        </Field>
+        <Field Name="CurrReport_PAGENOCaption">
+          <DataField>CurrReport_PAGENOCaption</DataField>
+        </Field>
+        <Field Name="Period__Caption">
+          <DataField>Period__Caption</DataField>
+        </Field>
+        <Field Name="Shipment_Provision_Selection_Deal_ID_Control1000000011Caption">
+          <DataField>Shipment_Provision_Selection_Deal_ID_Control1000000011Caption</DataField>
+        </Field>
+        <Field Name="Shipment_Provision_Selection_Deal_Shipment_IDCaption">
+          <DataField>Shipment_Provision_Selection_Deal_Shipment_IDCaption</DataField>
+        </Field>
+        <Field Name="Shipment_Provision_Selection_Fee_IDCaption">
+          <DataField>Shipment_Provision_Selection_Fee_IDCaption</DataField>
+        </Field>
+        <Field Name="Shipment_Provision_Selection__Fee_Description_Caption">
+          <DataField>Shipment_Provision_Selection__Fee_Description_Caption</DataField>
+        </Field>
+        <Field Name="Shipment_Provision_Selection__Planned_Amount_Caption">
+          <DataField>Shipment_Provision_Selection__Planned_Amount_Caption</DataField>
+        </Field>
+        <Field Name="Shipment_Provision_Selection__Real_Amount_Caption">
+          <DataField>Shipment_Provision_Selection__Real_Amount_Caption</DataField>
+        </Field>
+        <Field Name="Shipment_Provision_Selection_DeltaCaption">
+          <DataField>Shipment_Provision_Selection_DeltaCaption</DataField>
+        </Field>
+        <Field Name="Shipment_Provision_Selection__Provision_Amount_Caption">
+          <DataField>Shipment_Provision_Selection__Provision_Amount_Caption</DataField>
+        </Field>
+        <Field Name="Shipment_Provision_Selection_PeriodCaption">
+          <DataField>Shipment_Provision_Selection_PeriodCaption</DataField>
+        </Field>
+        <Field Name="Shipment_Provision_Selection_Deal_IDCaption">
+          <DataField>Shipment_Provision_Selection_Deal_IDCaption</DataField>
+        </Field>
+        <Field Name="Shipment_Provision_Selection_USER_ID">
+          <DataField>Shipment_Provision_Selection_USER_ID</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
+</Report>

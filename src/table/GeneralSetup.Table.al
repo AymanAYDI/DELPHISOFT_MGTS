@@ -121,7 +121,6 @@ table 50000 "DEL General Setup"
 
             trigger OnValidate()
             var
-                Instr: InStream;
 
             begin
                 //TODO:GeneralMgt.CheckFolderName("Folder Maersk");
@@ -288,9 +287,7 @@ table 50000 "DEL General Setup"
     }
 
     var
-        //TODO //codeunit: je l'a  modifié dans les triggers OnValidate()
-        GeneralMgt: Codeunit GeneralMgt;
-        BlobVarText: Text;
+    //TODO //GeneralMgt: Codeunit GeneralMgt;
 
 }
 

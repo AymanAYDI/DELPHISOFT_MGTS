@@ -359,7 +359,7 @@ report 50071 "DEL Sales - Shipment"  //208
                         column(Volcbm; Item_Rec.GetVolCBM(TRUE))
                         {
                         }
-                        column(CrossReference; "Cross-Reference No.")
+                        column(CrossReference; "Item Reference No.")
                         {
                         }
                         dataitem(DimensionLoop2; Integer)
@@ -478,7 +478,7 @@ report 50071 "DEL Sales - Shipment"  //208
                             IF ShowLotSN THEN BEGIN
                                 ItemTrackingDocMgt.SetRetrieveAsmItemTracking(TRUE);
                                 TrackingSpecCount :=
-                                  ItemTrackingDocMgt.RetrieveDocumentItemTracking(TrackingSpecBuffer,
+                                  ItemTrackingDocMgt.RetrieveDocumentItemTracking(temp_TrackingSpecBuffer,
                                     "Sales Shipment Header"."No.", DATABASE::"Sales Shipment Header", 0);
                                 ItemTrackingDocMgt.SetRetrieveAsmItemTracking(FALSE);
                             END;
@@ -515,19 +515,19 @@ report 50071 "DEL Sales - Shipment"  //208
                     dataitem(ItemTrackingLine; Integer)
                     {
                         DataItemTableView = SORTING(Number);
-                        column(TrackingSpecBufferNo; TrackingSpecBuffer."Item No.")
+                        column(TrackingSpecBufferNo; temp_TrackingSpecBuffer."Item No.")
                         {
                         }
-                        column(TrackingSpecBufferDesc; TrackingSpecBuffer.Description)
+                        column(TrackingSpecBufferDesc; temp_TrackingSpecBuffer.Description)
                         {
                         }
-                        column(TrackingSpecBufferLotNo; TrackingSpecBuffer."Lot No.")
+                        column(TrackingSpecBufferLotNo; temp_TrackingSpecBuffer."Lot No.")
                         {
                         }
-                        column(TrackingSpecBufferSerNo; TrackingSpecBuffer."Serial No.")
+                        column(TrackingSpecBufferSerNo; temp_TrackingSpecBuffer."Serial No.")
                         {
                         }
-                        column(TrackingSpecBufferQty; TrackingSpecBuffer."Quantity (Base)")
+                        column(TrackingSpecBufferQty; temp_TrackingSpecBuffer."Quantity (Base)")
                         {
                         }
                         column(ShowTotal; ShowTotal)
@@ -563,29 +563,29 @@ report 50071 "DEL Sales - Shipment"  //208
                         trigger OnAfterGetRecord()
                         begin
                             IF Number = 1 THEN
-                                TrackingSpecBuffer.FINDSET()
+                                temp_TrackingSpecBuffer.FINDSET()
                             ELSE
-                                TrackingSpecBuffer.NEXT();
+                                temp_TrackingSpecBuffer.NEXT();
 
-                            IF NOT ShowCorrectionLines AND TrackingSpecBuffer.Correction THEN
+                            IF NOT ShowCorrectionLines AND temp_TrackingSpecBuffer.Correction THEN
                                 CurrReport.SKIP();
-                            IF TrackingSpecBuffer.Correction THEN
-                                TrackingSpecBuffer."Quantity (Base)" := -TrackingSpecBuffer."Quantity (Base)";
+                            IF temp_TrackingSpecBuffer.Correction THEN
+                                temp_TrackingSpecBuffer."Quantity (Base)" := -temp_TrackingSpecBuffer."Quantity (Base)";
 
                             ShowTotal := FALSE;
-                            IF ItemTrackingAppendix.IsStartNewGroup(TrackingSpecBuffer) THEN
+                            IF ItemTrackingAppendix.IsStartNewGroup(temp_TrackingSpecBuffer) THEN
                                 ShowTotal := TRUE;
 
                             ShowGroup := FALSE;
-                            IF (TrackingSpecBuffer."Source Ref. No." <> OldRefNo) OR
-                               (TrackingSpecBuffer."Item No." <> OldNo)
+                            IF (temp_TrackingSpecBuffer."Source Ref. No." <> OldRefNo) OR
+                               (temp_TrackingSpecBuffer."Item No." <> OldNo)
                             THEN BEGIN
-                                OldRefNo := TrackingSpecBuffer."Source Ref. No.";
-                                OldNo := TrackingSpecBuffer."Item No.";
+                                OldRefNo := temp_TrackingSpecBuffer."Source Ref. No.";
+                                OldNo := temp_TrackingSpecBuffer."Item No.";
                                 TotalQty := 0;
                             END ELSE
                                 ShowGroup := TRUE;
-                            TotalQty += TrackingSpecBuffer."Quantity (Base)";
+                            TotalQty += temp_TrackingSpecBuffer."Quantity (Base)";
                         end;
 
                         trigger OnPreDataItem()
@@ -594,7 +594,7 @@ report 50071 "DEL Sales - Shipment"  //208
                                 CurrReport.BREAK();
                             CurrReport.NEWPAGE();
                             SETRANGE(Number, 1, TrackingSpecCount);
-                            TrackingSpecBuffer.SETCURRENTKEY("Source ID", "Source Type", "Source Subtype", "Source Batch Name",
+                            temp_TrackingSpecBuffer.SETCURRENTKEY("Source ID", "Source Type", "Source Subtype", "Source Batch Name",
                               "Source Prod. Order Line", "Source Ref. No.");
                         end;
                     }
@@ -752,7 +752,7 @@ report 50071 "DEL Sales - Shipment"  //208
         CompanyInfo3: Record "Company Information";
         ShiptoAddress_Rec: Record "Ship-to Address";
         SalesSetup: Record "Sales & Receivables Setup";
-        TrackingSpecBuffer: Record "Tracking Specification" temporary;
+        temp_TrackingSpecBuffer: Record "Tracking Specification" temporary;
         DimSetEntry1: Record "Dimension Set Entry";
         DimSetEntry2: Record "Dimension Set Entry";
         PostedAsmHeader: Record "Posted Assembly Header";

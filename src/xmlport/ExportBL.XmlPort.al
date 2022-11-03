@@ -59,7 +59,7 @@ xmlport 50005 "DEL Export BL"
                     fieldelement(Name; "Sales Shipment Line".Description)
                     {
                     }
-                    fieldelement(ExternalItemId; "Sales Shipment Line"."Cross-Reference No.")
+                    fieldelement(ExternalItemId; "Sales Shipment Line"."Item Reference No.")
                     {
                     }
                     fieldelement(Ordered; "Sales Shipment Line".Quantity)

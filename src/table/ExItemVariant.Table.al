@@ -25,195 +25,6 @@ table 99211 "DEL Ex_Item Variant"
         {
             Caption = 'Description 2';
         }
-        //------------- Spécifique pays Suisse 
-        field(4006496; ZeilenID; Integer)
-        {
-            Caption = 'Line ID';
-
-        }
-        field(4006497; ZeilenIDCode; Code[20])
-        {
-            Caption = 'Line ID Code';
-
-        }
-        field(4006498; "Bilddokument ID"; Code[20])
-        {
-            Caption = 'Picture Document ID';
-            //TODO TableRelation = "Dokument Katalog" WHERE(Art = CONST(Bild));
-
-            //  //TODO trigger OnLookup()
-            // begin
-            //     CLEAR(gpagDoklisteB);
-
-            //     // --- Filter setzen --- //
-            //     gpagDoklisteB.FilterSetzen(goptQuellenart::Variante, ZeilenIDCode, 0);
-
-            //     gpagDoklisteB.LOOKUPMODE(TRUE);
-            //     IF gpagDoklisteB.RUNMODAL = ACTION::LookupOK THEN BEGIN
-            //         gpagDoklisteB.GETRECORD(grecKatDok);
-            //         IF grecKatDok.Nummer <> "Bilddokument ID" THEN
-            //             VALIDATE("Bilddokument ID", grecKatDok.Nummer);
-            //     END;
-            // end;
-
-            // //TODO  trigger OnValidate()
-            // begin
-            //     IF Rec."Bilddokument ID" <> '' THEN BEGIN
-            //         // --- Katalogdokument --- //
-            //         grecKatDok.RESET;
-            //         grecKatDok.SETRANGE(Quelle, grecKatDok.Quelle::Variante);
-            //         grecKatDok.SETRANGE(Art, grecKatDok.Art::Bild);
-            //         grecKatDok.SETRANGE(Code, ZeilenIDCode);
-            //         grecKatDok.SETRANGE(Nummer, "Bilddokument ID");
-            //         IF NOT grecKatDok.FIND('-') THEN
-            //             ERROR(AL0001);
-            //     END;
-            // end;
-        }
-        field(4006499; "Vererbung Beschreibungen"; Boolean)
-        {
-            Caption = 'Inherit Descriptions';
-        }
-        field(4006500; "Vererbung Merkmale"; Boolean)
-        {
-            Caption = 'Inherit Features';
-        }
-        field(4006501; "Vererbung Schlagworte"; Boolean)
-        {
-            Caption = 'Inherit Keywords';
-        }
-        field(4006502; "Vererbung Bilder"; Boolean)
-        {
-            Caption = 'Inherit Pictures';
-        }
-        field(4006503; "Vererbung Dokumente"; Boolean)
-        {
-            Caption = 'Inherit Documents';
-        }
-        field(4006504; "Vererbung Grafik"; Boolean)
-        {
-            Caption = 'Inherit Graphic';
-        }
-        field(4006505; "Vererbung Referenzen"; Boolean)
-        {
-            Caption = 'Inherit References';
-        }
-        field(4006506; "Vererbung Merkmalwerte"; Boolean)
-        {
-            Caption = 'Inherit Feature Values';
-        }
-        field(4006507; Sprache_01; Code[10])
-        {
-            //TODO   CalcFormula = Lookup("Katalog Einrichtung"."Sprache 01" WHERE(Primaerschluessel = CONST()));
-            Caption = 'Language 1';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(4006508; Sprache_02; Code[10])
-        {
-            //TODO    CalcFormula = Lookup("Katalog Einrichtung"."Sprache 02" WHERE(Primaerschluessel = CONST()));
-            Caption = 'Language 1';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(4006509; Sprache_03; Code[10])
-        {
-            //TODO   CalcFormula = Lookup("Katalog Einrichtung"."Sprache 03" WHERE(Primaerschluessel = CONST()));
-            Caption = 'Language 3';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(4006510; Sprache_04; Code[10])
-        {
-            //TODO   CalcFormula = Lookup("Katalog Einrichtung"."Sprache 04" WHERE(Primaerschluessel = CONST()));
-            Caption = 'Language 4';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(4006511; Sprache_05; Code[10])
-        {
-            //TODO    CalcFormula = Lookup("Katalog Einrichtung"."Sprache 05" WHERE(Primaerschluessel = CONST()));
-            Caption = 'Language 5';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(4006512; Sprache_06; Code[10])
-        {
-            //TODO   CalcFormula = Lookup("Katalog Einrichtung"."Sprache 06" WHERE(Primaerschluessel = CONST()));
-            Caption = 'Language 6';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(4006513; Sprache_07; Code[10])
-        {
-            //TODO   CalcFormula = Lookup("Katalog Einrichtung"."Sprache 07" WHERE(Primaerschluessel = CONST()));
-            Caption = 'Language 7';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(4006514; Sprache_08; Code[10])
-        {
-            //TODO   CalcFormula = Lookup("Katalog Einrichtung"."Sprache 08" WHERE(Primaerschluessel = CONST()));
-            Caption = 'Language 8';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(4006515; Sprache_09; Code[10])
-        {
-            //TODO   CalcFormula = Lookup("Katalog Einrichtung"."Sprache 09" WHERE(Primaerschluessel = CONST()));
-            Caption = 'Language 9';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(4006516; Sprache_10; Code[10])
-        {
-            //TODO  CalcFormula = Lookup("Katalog Einrichtung"."Sprache 10" WHERE(Primaerschluessel = CONST()));
-            Caption = 'Language 10';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(4006517; Systemstatus; Option)
-        {
-            Caption = 'System Status';
-            OptionCaption = 'New,Under Development,Certified';
-            OptionMembers = Neu,"In Entwicklung",Zertifiziert;
-        }
-        field(4006518; "Checklistennr."; Code[20])
-        {
-            Caption = 'Checklist Number';
-            //TODO TableRelation = Checklistkopf WHERE(Klasse = CONST(Artikelgruppe));
-
-            trigger OnValidate()
-            begin
-                IF xRec."Checklistennr." <> Rec."Checklistennr." THEN
-                    Systemstatus := Systemstatus::"In Entwicklung";
-            end;
-        }
-        field(4006519; "Systemstatus pruefen"; Boolean)
-        {
-            //TODO CalcFormula = Lookup(Checklistkopf."Systemstatus pruefen" WHERE(Code = FIELD("Checklistennr.")));
-            Caption = 'Check System Status';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(4006520; Publikationsgruppe; Code[20])
-        {
-            Caption = 'Publication Group';
-            //TODO TableRelation = Publikationsgruppe;
-        }
-        field(4006521; ZertifizierungID; BigInteger)
-        {
-            Caption = 'Certification ID';
-        }
-        field(4006522; Vorlagencode; Code[20])
-        {
-            Caption = 'Template Code';
-            //TODO  TableRelation = Vorlage.Code WHERE(Dokumententyp = CONST(InDesign));
-        }
-        field(4006523; Uebersetzung; Boolean)
-        {
-            Caption = 'Translation';
-        }
     }
 
     keys
@@ -237,7 +48,7 @@ table 99211 "DEL Ex_Item Variant"
         SKU: Record "Stockkeeping Unit";
         ItemIdent: Record "Item Identifier";
 #pragma warning disable AL0432
-        ItemCrossReference: Record "Item Cross Reference";
+        ItemCrossReference: Record "Item Reference";
 #pragma warning restore AL0432
 #pragma warning disable AL0432
         SalesPrice: Record "Sales Price";
@@ -476,7 +287,7 @@ table 99211 "DEL Ex_Item Variant"
         // "Vererbung Bilder" := grecKatEinr."Vererbung Bilder";
         // "Vererbung Dokumente" := grecKatEinr."Vererbung Dokumente";
         // "Vererbung Grafik" := grecKatEinr."Vererbung Grafik";
-        Uebersetzung := TRUE;
+        //Uebersetzung := TRUE;
         // --- AL.KVK4.5, END --- //
     end;
 

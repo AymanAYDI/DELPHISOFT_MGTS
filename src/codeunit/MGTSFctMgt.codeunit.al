@@ -338,17 +338,14 @@ codeunit 50101 "DEL MGTS_FctMgt"
                                 //on enregistre une requete de mise … jour
                                 IF nextEntry <> dealShipmentSelection_Re_Loc.Deal_ID THEN BEGIN
 
-                                    //CHG03
                                     myTab[i] := dealShipmentSelection_Re_Loc.Deal_ID;
 
-                                    //START CHG02
                                     myUpdateRequests[i] := UpdateRequestManager_Cu.FNC_Add_Request(
                                       dealShipmentSelection_Re_Loc.Deal_ID,
                                       dealShipmentSelection_Re_Loc."Document Type",
                                       dealShipmentSelection_Re_Loc."Document No.",
                                       CURRENTDATETIME
                                     );
-                                    //STOP CHG02
 
                                     //MESSAGE('update for ' + myTab[i]);
                                     i += 1;

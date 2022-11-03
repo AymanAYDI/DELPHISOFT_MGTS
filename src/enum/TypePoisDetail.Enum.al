@@ -28,18 +28,18 @@ enum 50024 "DEL TypePoisDetail" //n'existe pas dans l'STD
     }
     value(6; "Purchase Invoice")
     {
-        Caption = '"Purchase Invoice"';
+        Caption = 'Purchase Invoice';
     }
     value(7; "Sales Invoice")
     {
-        Caption = '"Sales Invoice"';
+        Caption = 'Sales Invoice';
     }
     value(8; "Sales Cr. Memo")
     {
-        Caption = '"Sales Cr. Memo"';
+        Caption = 'Sales Cr. Memo';
     }
     value(9; "Purch. Cr. Memo")
     {
-        Caption = '"Purch. Cr. Memo";';
+        Caption = 'Purch. Cr. Memo';
     }
 }

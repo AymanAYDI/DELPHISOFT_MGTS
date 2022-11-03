@@ -32,7 +32,7 @@ page 50014 "DEL Corr. facture vente ligne"
                     Editable = false;
                     Visible = false;
                 }
-                field("Cross-Reference No."; Rec."Cross-Reference No.")
+                field("Cross-Reference No."; Rec."Item Reference No.")
                 {
                     Editable = false;
                     Visible = false;

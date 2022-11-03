@@ -49,12 +49,11 @@ codeunit 50035 "DEL Update FCY On G/L Entry"
 
                             IF baLedgerEntry_Re_Loc.GET(glEntry_Re_Loc."Entry No.") THEN BEGIN
                                 currency_Co_Loc := baLedgerEntry_Re_Loc."Currency Code";
-                                IF baLedgerEntry_Re_Loc.Amount <> 0 THEN BEGIN
-                                    factor_Dec_Loc := baLedgerEntry_Re_Loc."Amount (LCY)" / baLedgerEntry_Re_Loc.Amount;
-                                END ELSE BEGIN
+                                IF baLedgerEntry_Re_Loc.Amount <> 0 THEN
+                                    factor_Dec_Loc := baLedgerEntry_Re_Loc."Amount (LCY)" / baLedgerEntry_Re_Loc.Amount
+                                ELSE
                                     MESSAGE('Amount is 0 on Bank Account Ledger entry >%1< and exchange rate can ' +
                                     'therefore not be calculated !', glEntry_Re_Loc."Entry No.");
-                                END;
 
                                 //factor_Dec_Loc := 1;
                                 amount_Dec_Loc := baLedgerEntry_Re_Loc.Amount;
@@ -89,10 +88,8 @@ codeunit 50035 "DEL Update FCY On G/L Entry"
                                         GLEntry3_Re_Loc.MODIFY();
                                     END;
                                 UNTIL GLEntry3_Re_Loc.NEXT() = 0;
-                        // STOP STG02
                         UNTIL GLEntry2_Re_Loc.NEXT() = 0;
                 UNTIL GLAccount_Re_Loc.NEXT() = 0;
-            //YAH01-
 
             MESSAGE('Mise à jour effectuée !');
 

@@ -4,7 +4,7 @@ codeunit 50025 "DEL Element Connection"
         ERROR_TXT: Label 'ERREUR\Source : %1\Function : %2\Reason : %3';
 
 
-    procedure FNC_Add(Deal_ID_Co_Par: Code[20]; Element_ID_Co_Par: Code[20]; ApplyTo_Co_Par: Code[20]; Instance_Op_Par: Option; SplittIndex_Int_Par: Integer)
+    procedure FNC_Add(Deal_ID_Co_Par: Code[20]; Element_ID_Co_Par: Code[20]; ApplyTo_Co_Par: Code[20]; Instance_Op_Par: Enum "DEL Instance"; SplittIndex_Int_Par: Integer)
     begin
         FNC_Insert(Deal_ID_Co_Par, Element_ID_Co_Par, ApplyTo_Co_Par, Instance_Op_Par, SplittIndex_Int_Par)
 

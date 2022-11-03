@@ -131,7 +131,7 @@ report 50053 "DEL Export Purchase Order"
                         InsertExcelCell(ColNo, RowNo, Item."DEL Code EAN 13", '@', FALSE, FALSE, FALSE);
 
                         ColNo += 1;
-                        InsertExcelCell(ColNo, RowNo, PurchaseLine."Cross-Reference No.", '@', FALSE, FALSE, FALSE);
+                        InsertExcelCell(ColNo, RowNo, PurchaseLine."Item Reference No.", '@', FALSE, FALSE, FALSE);
 
                         ColNo += 1;
                         InsertExcelCell(ColNo, RowNo, FORMAT(PurchaseLine.Quantity), '', FALSE, FALSE, FALSE);
@@ -159,10 +159,10 @@ report 50053 "DEL Export Purchase Order"
                 // ExcelBuffer.CreateBookAndOpenExcel('', Text001, Text002, COMPANYNAME, USERID);
                 // ExcelBuffer.GiveUserControl(); 
                 ////// à corriger 
-                ExcelBuffer.CreateNewBook('');
-                ExcelBuffer.WriteSheet('', COMPANYNAME(), USERID());
-                ExcelBuffer.CloseBook();
-                ExcelBuffer.OpenExcel();
+                temp_ExcelBuffer.CreateNewBook('');
+                temp_ExcelBuffer.WriteSheet('', COMPANYNAME(), USERID());
+                temp_ExcelBuffer.CloseBook();
+                temp_ExcelBuffer.OpenExcel();
                 Error('');
             end;
 
@@ -196,7 +196,7 @@ report 50053 "DEL Export Purchase Order"
 
     var
         CompanyInformation: Record "Company Information";
-        ExcelBuffer: Record "Excel Buffer" temporary;
+        temp_ExcelBuffer: Record "Excel Buffer" temporary;
         Item: Record Item;
         PurchaseLine: Record "Purchase Line";
         ShiptoAddress: Record "Ship-to Address";
@@ -227,19 +227,19 @@ report 50053 "DEL Export Purchase Order"
     local procedure InsertExcelCell(InsertColNo: Integer; InsertRowNo: Integer; InsertValue: Text; InsertFormat: Text; InsertBold: Boolean; InsertItalic: Boolean; InsertUnderline: Boolean)
     begin
 
-        ExcelBuffer.INIT();
-        ExcelBuffer.VALIDATE("Column No.", InsertColNo);
-        ExcelBuffer.VALIDATE("Row No.", InsertRowNo);
-        ExcelBuffer."Cell Value as Text" := InsertValue;
-        ExcelBuffer.NumberFormat := InsertFormat;
-        ExcelBuffer.Bold := InsertBold;
-        ExcelBuffer.Italic := InsertItalic;
-        ExcelBuffer.Underline := InsertUnderline;
+        temp_ExcelBuffer.INIT();
+        temp_ExcelBuffer.VALIDATE("Column No.", InsertColNo);
+        temp_ExcelBuffer.VALIDATE("Row No.", InsertRowNo);
+        temp_ExcelBuffer."Cell Value as Text" := InsertValue;
+        temp_ExcelBuffer.NumberFormat := InsertFormat;
+        temp_ExcelBuffer.Bold := InsertBold;
+        temp_ExcelBuffer.Italic := InsertItalic;
+        temp_ExcelBuffer.Underline := InsertUnderline;
 
-        IF ExcelBuffer.NumberFormat = '@' THEN
-            ExcelBuffer."Cell Type" := ExcelBuffer."Cell Type"::Text;
+        IF temp_ExcelBuffer.NumberFormat = '@' THEN
+            temp_ExcelBuffer."Cell Type" := temp_ExcelBuffer."Cell Type"::Text;
 
-        ExcelBuffer.INSERT();
+        temp_ExcelBuffer.INSERT();
     end;
 }
 

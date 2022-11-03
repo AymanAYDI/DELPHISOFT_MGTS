@@ -3245,7 +3245,7 @@ codeunit 50021 "DEL Element"
     end;
 
 
-    procedure FNC_Insert_Element(Deal_ID_Co_Par: Code[20]; Instance_Op_Par: Enum "DEL Instance"; Type_Op_Par: Option; "No._Co_Par": Code[20]; Apply_To_Co_Par: Code[20]; SubjectType_Op_Par: Option; SubjectNo_Co_Par: Code[20]; Fee_ID_Co_Par: Code[20]; Fee_Connection_ID_Co_Par: Code[20]; Element_Date_Par: Date; EntryNo_Int_Par: Integer; BillToCustomerNo_Co_Par: Code[20]; Period_Da_Par: Date; SplittIndex_Int_Par: Integer) element_ID_Ret: Code[20]
+    procedure FNC_Insert_Element(Deal_ID_Co_Par: Code[20]; Instance_Op_Par: Enum "DEL Instance"; Type_Op_Par: Enum "DEL Type"; "No._Co_Par": Code[20]; Apply_To_Co_Par: Code[20]; SubjectType_Op_Par: Enum "DEL Subject Type"; SubjectNo_Co_Par: Code[20]; Fee_ID_Co_Par: Code[20]; Fee_Connection_ID_Co_Par: Code[20]; Element_Date_Par: Date; EntryNo_Int_Par: Integer; BillToCustomerNo_Co_Par: Code[20]; Period_Da_Par: Date; SplittIndex_Int_Par: Integer) element_ID_Ret: Code[20]
     var
         element_Re_Loc: Record "DEL Element";
     begin

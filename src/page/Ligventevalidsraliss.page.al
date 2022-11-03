@@ -294,19 +294,19 @@ page 50008 "DEL Lig vente validés/réalisés"
                 {
                     Caption = 'Responsibility Center';
                 }
-                field("Cross-Reference No."; Rec."Cross-Reference No.")
+                field("Item Reference No."; Rec."Item Reference No.")
                 {
                     Caption = 'Cross-Reference No.';
                 }
-                field("Unit of Measure (Cross Ref.)"; Rec."Unit of Measure (Cross Ref.)")
+                field("Item Reference Unit of Measure"; Rec."Item Reference Unit of Measure")
                 {
                     Caption = 'Unit of Measure (Cross Ref.)';
                 }
-                field("Cross-Reference Type"; Rec."Cross-Reference Type")
+                field("Item Reference Type"; Rec."Item Reference Type")
                 {
                     Caption = 'Cross-Reference Type';
                 }
-                field("Cross-Reference Type No."; Rec."Cross-Reference Type No.")
+                field("Item Reference Type No."; Rec."Item Reference Type No.")
                 {
                     Caption = 'Cross-Reference Type No.';
                 }

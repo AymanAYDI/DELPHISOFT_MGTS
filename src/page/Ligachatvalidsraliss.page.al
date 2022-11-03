@@ -295,7 +295,7 @@ page 50007 "DEL Lig achat validés/réalisés"
                     Caption = 'Responsibility Center';
                 }
                 //corss- Reference
-                field("Cross-Reference No."; Rec."Item Reference No.")
+                field("Item Reference No."; Rec."Item Reference No.")
                 {
                     Caption = 'Cross-Reference No.';
                 }
@@ -304,11 +304,11 @@ page 50007 "DEL Lig achat validés/réalisés"
                 {
                     Caption = 'Unit of Measure (Cross Ref.)';
                 }
-                field("Cross-Reference Type"; Rec."Cross-Reference Type")
+                field("Item Reference Type"; Rec."Item Reference Type")
                 {
                     Caption = 'Cross-Reference Type';
                 }
-                field("Cross-Reference Type No."; Rec."Cross-Reference Type No.")
+                field("Item Reference Type No."; Rec."Item Reference Type No.")
                 {
                     Caption = 'Cross-Reference Type No.';
                 }

@@ -38,7 +38,7 @@ page 50041 "Deal Posted Purch. Rcpt. Sub."
                 {
                     Caption = 'Description';
                 }
-                field("Cross-Reference No."; Rec."Cross-Reference No.")
+                field("Cross-Reference No."; Rec."Item Reference No.")
                 {
                     Visible = true;
                     Caption = 'Cross-Reference No.';

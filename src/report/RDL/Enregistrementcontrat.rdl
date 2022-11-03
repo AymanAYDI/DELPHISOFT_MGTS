@@ -1,0 +1,400 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <AutoRefresh>0</AutoRefresh>
+  <DataSources>
+    <DataSource Name="DataSource">
+      <ConnectionProperties>
+        <DataProvider>SQL</DataProvider>
+        <ConnectString />
+      </ConnectionProperties>
+      <rd:SecurityType>None</rd:SecurityType>
+    </DataSource>
+  </DataSources>
+  <ReportSections>
+    <ReportSection>
+      <Body>
+        <Height>2in</Height>
+        <Style />
+      </Body>
+      <Width>6.5in</Width>
+      <Page>
+        <Style />
+      </Page>
+    </ReportSection>
+  </ReportSections>
+  <ReportParameters>
+    <ReportParameter Name="SalespersonCode_CustomerCaption">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>SalespersonCode_CustomerCaption</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>SalespersonCode_CustomerCaption</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="Name_CustomerCaption">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>Name_CustomerCaption</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>Name_CustomerCaption</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="Partnershipagreement_CustomerCaption">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>Partnershipagreement_CustomerCaption</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>Partnershipagreement_CustomerCaption</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="Serviceagreement_CustomerCaption">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>Serviceagreement_CustomerCaption</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>Serviceagreement_CustomerCaption</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="LibelléSSA_CustomerCaption">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>LibelléSSA_CustomerCaption</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>LibelléSSA_CustomerCaption</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="DatededébutSSA_CustomerCaption">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>DatededébutSSA_CustomerCaption</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>DatededébutSSA_CustomerCaption</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="DatedefinSSA_CustomerCaption">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>DatedefinSSA_CustomerCaption</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>DatedefinSSA_CustomerCaption</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="Level_CustomerCaption">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>Level_CustomerCaption</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>Level_CustomerCaption</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="StatutCE_CustomerCaption">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>StatutCE_CustomerCaption</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>StatutCE_CustomerCaption</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="DateSignatureCE_CustomerCaption">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>DateSignatureCE_CustomerCaption</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>DateSignatureCE_CustomerCaption</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="NationalMark_CustomerCaption">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>NationalMark_CustomerCaption</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>NationalMark_CustomerCaption</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="MDD_CustomerCaption">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>MDD_CustomerCaption</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>MDD_CustomerCaption</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="NORAUTO_CustomerCaption">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>NORAUTO_CustomerCaption</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>NORAUTO_CustomerCaption</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="MIDAS_CustomerCaption">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>MIDAS_CustomerCaption</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>MIDAS_CustomerCaption</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="ATU_CustomerCaption">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>ATU_CustomerCaption</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>ATU_CustomerCaption</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="ATYSE_CustomerCaption">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>ATYSE_CustomerCaption</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>ATYSE_CustomerCaption</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="CARTERCASH_CustomerCaption">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>CARTERCASH_CustomerCaption</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>CARTERCASH_CustomerCaption</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="SYNCHRO_CustomerCaption">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>SYNCHRO_CustomerCaption</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>SYNCHRO_CustomerCaption</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="ParentCompany_CustomerCaption">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>ParentCompany_CustomerCaption</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>ParentCompany_CustomerCaption</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="DatededébutPA_CustomerCaption">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>DatededébutPA_CustomerCaption</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>DatededébutPA_CustomerCaption</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="DatedefinPA_CustomerCaption">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>DatedefinPA_CustomerCaption</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>DatedefinPA_CustomerCaption</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="CommentPA_CustomerCaption">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>CommentPA_CustomerCaption</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>CommentPA_CustomerCaption</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="LibelléPA_CustomerCaption">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>LibelléPA_CustomerCaption</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>LibelléPA_CustomerCaption</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="Enfacturation_CustomerCaption">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>Enfacturation_CustomerCaption</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>Enfacturation_CustomerCaption</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="CommentSSA_CustomerCaption">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>CommentSSA_CustomerCaption</Value>
+        </Values>
+      </DefaultValue>
+      <Prompt>CommentSSA_CustomerCaption</Prompt>
+    </ReportParameter>
+  </ReportParameters>
+  <Code>Public Function BlankZero(ByVal Value As Decimal)
+    if Value = 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankPos(ByVal Value As Decimal)
+    if Value &gt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankZeroAndPos(ByVal Value As Decimal)
+    if Value &gt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNeg(ByVal Value As Decimal)
+    if Value &lt; 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+
+Public Function BlankNegAndZero(ByVal Value As Decimal)
+    if Value &lt;= 0 then
+        Return ""
+    end if
+    Return Value
+End Function
+</Code>
+  <Language>=User!Language</Language>
+  <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="CaptionTitre">
+          <DataField>CaptionTitre</DataField>
+        </Field>
+        <Field Name="SalespersonCode_Customer">
+          <DataField>SalespersonCode_Customer</DataField>
+        </Field>
+        <Field Name="VendeurName">
+          <DataField>VendeurName</DataField>
+        </Field>
+        <Field Name="No_Customer">
+          <DataField>No_Customer</DataField>
+        </Field>
+        <Field Name="Name_Customer">
+          <DataField>Name_Customer</DataField>
+        </Field>
+        <Field Name="Partnershipagreement_Customer">
+          <DataField>Partnershipagreement_Customer</DataField>
+        </Field>
+        <Field Name="Serviceagreement_Customer">
+          <DataField>Serviceagreement_Customer</DataField>
+        </Field>
+        <Field Name="LibelléSSA_Customer">
+          <DataField>LibelléSSA_Customer</DataField>
+        </Field>
+        <Field Name="DatededébutSSA_Customer">
+          <DataField>DatededébutSSA_Customer</DataField>
+        </Field>
+        <Field Name="DatedefinSSA_Customer">
+          <DataField>DatedefinSSA_Customer</DataField>
+        </Field>
+        <Field Name="Level_Customer">
+          <DataField>Level_Customer</DataField>
+        </Field>
+        <Field Name="StatutCE_Customer">
+          <DataField>StatutCE_Customer</DataField>
+        </Field>
+        <Field Name="DateSignatureCE_Customer">
+          <DataField>DateSignatureCE_Customer</DataField>
+        </Field>
+        <Field Name="NationalMark_Customer">
+          <DataField>NationalMark_Customer</DataField>
+        </Field>
+        <Field Name="MDD_Customer">
+          <DataField>MDD_Customer</DataField>
+        </Field>
+        <Field Name="NORAUTO_Customer">
+          <DataField>NORAUTO_Customer</DataField>
+        </Field>
+        <Field Name="MIDAS_Customer">
+          <DataField>MIDAS_Customer</DataField>
+        </Field>
+        <Field Name="ATU_Customer">
+          <DataField>ATU_Customer</DataField>
+        </Field>
+        <Field Name="ATYSE_Customer">
+          <DataField>ATYSE_Customer</DataField>
+        </Field>
+        <Field Name="CARTERCASH_Customer">
+          <DataField>CARTERCASH_Customer</DataField>
+        </Field>
+        <Field Name="SYNCHRO_Customer">
+          <DataField>SYNCHRO_Customer</DataField>
+        </Field>
+        <Field Name="ParentCompany_Customer">
+          <DataField>ParentCompany_Customer</DataField>
+        </Field>
+        <Field Name="DatededébutPA_Customer">
+          <DataField>DatededébutPA_Customer</DataField>
+        </Field>
+        <Field Name="DatedefinPA_Customer">
+          <DataField>DatedefinPA_Customer</DataField>
+        </Field>
+        <Field Name="CommentPA_Customer">
+          <DataField>CommentPA_Customer</DataField>
+        </Field>
+        <Field Name="CaptionGeneral">
+          <DataField>CaptionGeneral</DataField>
+        </Field>
+        <Field Name="CaptionPA">
+          <DataField>CaptionPA</DataField>
+        </Field>
+        <Field Name="CaptionSSA">
+          <DataField>CaptionSSA</DataField>
+        </Field>
+        <Field Name="CaptionMarque">
+          <DataField>CaptionMarque</DataField>
+        </Field>
+        <Field Name="CaptionEnseigne">
+          <DataField>CaptionEnseigne</DataField>
+        </Field>
+        <Field Name="LibelléPA_Customer">
+          <DataField>LibelléPA_Customer</DataField>
+        </Field>
+        <Field Name="Enfacturation_Customer">
+          <DataField>Enfacturation_Customer</DataField>
+        </Field>
+        <Field Name="CommentSSA_Customer">
+          <DataField>CommentSSA_Customer</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
+</Report>
