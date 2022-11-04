@@ -1,7 +1,7 @@
 report 50015 "DEL Export Provision"
 {
     DefaultLayout = RDLC;
-    RDLCLayout = './ExportProvision.rdlc';
+    RDLCLayout = './src/report/RDL/ExportProvision.rdlc';
 
     dataset
     {

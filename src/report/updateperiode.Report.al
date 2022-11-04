@@ -1,7 +1,7 @@
 report 50029 "DEL update periode"
 {
     DefaultLayout = RDLC;
-    RDLCLayout = './updateperiode.rdlc';
+    RDLCLayout = './src/report/RDL/updateperiode.rdlc';
 
     dataset
     {

@@ -1,7 +1,7 @@
 report 50071 "DEL Sales - Shipment"  //208
 {
     DefaultLayout = RDLC;
-    RDLCLayout = './SalesShipment.rdlc';
+    RDLCLayout = './src/report/RDL/SalesShipment.rdlc';
 
     Caption = 'Sales - Shipment';
     PreviewMode = PrintLayout;

@@ -1,7 +1,7 @@
 report 50074 "DEL Purchase - Invoice" //406
 {
     DefaultLayout = RDLC;
-    RDLCLayout = './PurchaseInvoice.rdlc';
+    RDLCLayout = './src/report/RDL/PurchaseInvoice.rdlc';
 
     Caption = 'Purchase - Invoice';
     PreviewMode = PrintLayout;

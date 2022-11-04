@@ -1,7 +1,7 @@
 report 50037 "DEL Validate Segment"
 {
     DefaultLayout = RDLC;
-    RDLCLayout = './ValidateSegment.rdlc';
+    RDLCLayout = './src/report/RDL/ValidateSegment.rdlc';
 
     dataset
     {

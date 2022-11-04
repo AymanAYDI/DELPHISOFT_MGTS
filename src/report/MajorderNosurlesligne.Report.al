@@ -1,7 +1,7 @@
 report 50039 "Maj order No. sur les ligne"
 {
     DefaultLayout = RDLC;
-    RDLCLayout = './MajorderNosurlesligne.rdlc';
+    RDLCLayout = './src/report/RDL/MajorderNosurlesligne.rdlc';
     Permissions = TableData "Sales Invoice Line" = rimd;
 
     dataset

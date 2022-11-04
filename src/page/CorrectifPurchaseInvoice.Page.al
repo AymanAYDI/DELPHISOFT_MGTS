@@ -21,108 +21,87 @@ page 50060 "DEL Correctif Purchase Invoice"
                 {
                     Editable = false;
                     Importance = Promoted;
-                    Caption = 'No.';
                 }
                 field("Buy-from Vendor No."; Rec."Buy-from Vendor No.")
                 {
                     Editable = false;
                     Importance = Promoted;
-                    Caption = 'Buy-from Vendor No.';
                 }
                 field("Buy-from Contact No."; Rec."Buy-from Contact No.")
                 {
                     Editable = false;
-                    Caption = 'Buy-from Contact No.';
                 }
                 field("Buy-from Vendor Name"; Rec."Buy-from Vendor Name")
                 {
                     Editable = false;
-                    Caption = 'Buy-from Vendor Name';
                 }
                 field("Buy-from Address"; Rec."Buy-from Address")
                 {
                     Editable = false;
-                    Caption = 'Buy-from Address';
                 }
                 field("Buy-from Address 2"; Rec."Buy-from Address 2")
                 {
                     Editable = false;
-                    Caption = 'Buy-from Address 2';
                 }
                 field("Buy-from Post Code"; Rec."Buy-from Post Code")
                 {
                     Editable = false;
-                    Caption = 'Buy-from Post Code';
                 }
                 field("Buy-from City"; Rec."Buy-from City")
                 {
                     Editable = false;
-                    Caption = 'Buy-from City';
                 }
                 field("Buy-from Contact"; Rec."Buy-from Contact")
                 {
                     Editable = false;
-                    Caption = 'Buy-from Contact';
                 }
                 field("No. Printed"; Rec."No. Printed")
                 {
                     Editable = false;
-                    Caption = 'No. Printed';
                 }
                 field("Posting Date"; Rec."Posting Date")
                 {
                     Editable = false;
                     Importance = Promoted;
-                    Caption = 'Posting Date';
                 }
                 field("Document Date"; Rec."Document Date")
                 {
                     Editable = false;
-                    Caption = 'Document Date';
                 }
                 field("Quote No."; Rec."Quote No.")
                 {
-                    Caption = 'Quote No.';
                 }
                 field("Order No."; Rec."Order No.")
                 {
                     Editable = false;
-                    Caption = 'Order No.';
                 }
                 field("Pre-Assigned No."; Rec."Pre-Assigned No.")
                 {
                     Editable = false;
-                    Caption = 'Pre-Assigned No.';
                 }
                 field("Vendor Order No."; Rec."Vendor Order No.")
                 {
                     Editable = false;
-                    Caption = 'Vendor Order No.';
                 }
                 field("Vendor Invoice No."; Rec."Vendor Invoice No.")
                 {
                     Editable = false;
                     Importance = Promoted;
-                    Caption = 'Vendor Invoice No.';
                 }
                 field("Order Address Code"; Rec."Order Address Code")
                 {
                     Editable = false;
-                    Caption = 'Order Address Code';
                 }
                 field("Purchaser Code"; Rec."Purchaser Code")
                 {
                     Editable = false;
-                    Caption = 'Purchaser Code';
                 }
                 field("Responsibility Center"; Rec."Responsibility Center")
                 {
                     Editable = false;
-                    Caption = 'Responsibility Center';
                 }
                 field("Shortcut Dimension 1 Code"; Rec."Shortcut Dimension 1 Code")
                 {
-                    Caption = 'Shortcut Dimension 1 Code';
                 }
             }
             part(PurchInvLines; "DEL Correct Purch. Inv Subform")

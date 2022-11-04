@@ -1,7 +1,7 @@
 report 50081 "DEL Archived Sales Order" //216
 {
     DefaultLayout = RDLC;
-    RDLCLayout = './ArchivedSalesOrder.rdlc';
+    RDLCLayout = './src/report/RDL/ArchivedSalesOrder.rdlc';
     Caption = 'Archived Sales Order';
 
     dataset

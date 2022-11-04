@@ -2,7 +2,7 @@ report 50055 "SR Cust. Balance to Date MGTS"
 {
     //    Modify Design (Remove Amount LCY and Remove Line not applied)
     DefaultLayout = RDLC;
-    RDLCLayout = './SRCustBalancetoDateMGTS.rdlc';
+    RDLCLayout = './src/report/RDL/SRCustBalancetoDateMGTS.rdlc';
 
     Caption = 'Customer - Balance to Date';
 

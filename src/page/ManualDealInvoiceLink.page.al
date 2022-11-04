@@ -13,7 +13,6 @@ page 50080 "DEL Manual Deal Invoice Link."
         {
             field("Entry No."; Rec."Entry No.")
             {
-                Caption = 'Entry No.';
 
                 trigger OnValidate()
                 begin
@@ -23,16 +22,13 @@ page 50080 "DEL Manual Deal Invoice Link."
             field("Document No."; Rec."Document No.")
             {
                 Editable = false;
-                Caption = 'Document No.';
             }
             field("Account No."; Rec."Account No.")
             {
                 Editable = false;
-                Caption = 'Account No.';
             }
             field("Shipment Selection"; Rec."Shipment Selection")
             {
-                Caption = 'Shipment Selection';
 
                 trigger OnDrillDown()
                 begin

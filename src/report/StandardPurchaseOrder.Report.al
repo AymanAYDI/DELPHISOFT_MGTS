@@ -1,6 +1,6 @@
 report 50080 "DEL Standard Purchase - Order" //1322
 {
-    RDLCLayout = './StandardPurchaseOrder.rdlc';
+    RDLCLayout = './src/report/RDL/StandardPurchaseOrder.rdlc';
     WordLayout = './StandardPurchaseOrder.docx';
     Caption = 'Purchase - Order';
     DefaultLayout = Word;

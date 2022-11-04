@@ -1,7 +1,7 @@
 report 50034 "DEL Save marque item"
 {
     DefaultLayout = RDLC;
-    RDLCLayout = './Savemarqueitem.rdlc';
+    RDLCLayout = './src/report/RDL/Savemarqueitem.rdlc';
 
     dataset
     {

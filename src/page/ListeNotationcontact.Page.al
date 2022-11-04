@@ -14,51 +14,39 @@ page 50066 "DEL Liste Notation contact"
             {
                 field("No."; Rec."No.")
                 {
-                    Caption = 'No.';
                 }
                 field(Name; Rec.Name)
                 {
-                    Caption = 'Name';
                 }
                 field(Type; Rec.Type)
                 {
-                    Caption = 'Type';
                 }
                 field("Note Quality"; Rec."DEL Note Quality")
                 {
-                    Caption = 'Quality rating';
                 }
                 field("Realisation Date Quality"; Rec."DEL Realisation Date Quality")
                 {
-                    Caption = 'Creation Date';
                 }
                 field("Revision Date quality"; Rec."DEL Revision Date quality")
                 {
-                    Caption = 'Expired Date';
                 }
                 field("Note Soc"; Rec."DEL Note Soc")
                 {
-                    Caption = 'Social rating';
                 }
                 field("Realisation Date Soc"; Rec."DEL Realisation Date Soc")
                 {
-                    Caption = 'Creation Date Soc';
                 }
                 field("Revision Date Soc"; Rec."DEL Revision Date Soc")
                 {
-                    Caption = 'Expired Date Soc';
                 }
                 field("Note Env"; Rec."DEL Note Env")
                 {
-                    Caption = 'Environmental rating';
                 }
                 field("Realisation Date Env"; Rec."DEL Realisation Date Env")
                 {
-                    Caption = 'Creation Date Env';
                 }
                 field("Revision Date env"; Rec."DEL Revision Date env")
                 {
-                    Caption = 'Expired Date Env';
                 }
             }
         }

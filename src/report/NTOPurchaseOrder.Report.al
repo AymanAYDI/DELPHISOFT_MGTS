@@ -1,7 +1,7 @@
 report 50004 "DEL NTO - Purchase Order"
 {
     DefaultLayout = RDLC;
-    RDLCLayout = './NTOPurchaseOrder.rdlc';
+    RDLCLayout = './src/report/RDL/NTOPurchaseOrder.rdlc';
 
     Caption = 'Order';
 

@@ -17,44 +17,36 @@ page 50038 "DEL Deal Shipment Selection"
                 {
                     Editable = false;
                     Visible = false;
-                    Caption = 'Document Type';
                 }
                 field("Document No."; Rec."Document No.")
                 {
                     Editable = false;
                     Visible = false;
-                    Caption = 'Document No.';
                 }
                 field(Deal_ID; Rec.Deal_ID)
                 {
                     Editable = false;
-                    Caption = 'Deal_ID';
                 }
                 field("Shipment No."; Rec."Shipment No.")
                 {
                     Editable = false;
-                    Caption = 'Shipment No.';
                 }
                 field("BR No."; Rec."BR No.")
                 {
                     Editable = false;
-                    Caption = 'BR No.';
                 }
                 field("Purchase Invoice No."; Rec."Purchase Invoice No.")
                 {
                     Editable = false;
-                    Caption = 'Purchase Invoice No.';
                 }
                 field("Sales Invoice No."; Rec."Sales Invoice No.")
                 {
                     Editable = false;
-                    Caption = 'Sales Invoice No.';
                 }
                 field("Fee Connection"; Rec."Fee Connection")
                 {
                     Enabled = false;
                     Visible = false;
-                    Caption = 'Fee Connection';
 
                     trigger OnLookup(var Text: Text): Boolean
                     begin
@@ -64,12 +56,9 @@ page 50038 "DEL Deal Shipment Selection"
                 field("Connected Fee Description"; Rec."Connected Fee Description")
                 {
                     Editable = false;
-                    Caption = 'Connected Fee Description';
                 }
                 field(Checked; Rec.Checked)
                 {
-                    Caption = 'Checked';
-
                     trigger OnValidate()
                     var
                         FeeConnectionID_Co_Loc: Code[20];

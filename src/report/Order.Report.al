@@ -1,7 +1,7 @@
 report 50073 "DEL Order" //405
 {
     DefaultLayout = RDLC;
-    RDLCLayout = './Order.rdlc';
+    RDLCLayout = './src/report/RDL/Order.rdlc';
 
     Caption = 'Order';
 

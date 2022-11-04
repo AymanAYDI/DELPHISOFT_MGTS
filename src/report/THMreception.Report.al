@@ -1,7 +1,7 @@
 report 50040 "DEL THM reception"
 {
     DefaultLayout = RDLC;
-    RDLCLayout = './THMreception.rdlc';
+    RDLCLayout = './src/report/RDL/THMreception.rdlc';
 
     dataset
     {

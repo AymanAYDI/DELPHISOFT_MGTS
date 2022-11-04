@@ -1,7 +1,7 @@
 report 50043 "DEL Insert axe segument"
 {
     DefaultLayout = RDLC;
-    RDLCLayout = './Insertaxesegument.rdlc';
+    RDLCLayout = './src/report/RDL/Insertaxesegument.rdlc';
 
     dataset
     {

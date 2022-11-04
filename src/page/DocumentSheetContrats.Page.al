@@ -21,27 +21,21 @@ page 50075 "DEL Document Sheet Contrats"
             {
                 field("Insert Date"; Rec."Insert Date")
                 {
-                    Caption = 'Date';
                 }
                 field("Insert Time"; Rec."Insert Time")
                 {
-                    Caption = 'Time';
                 }
                 field(Path; Rec.Path)
                 {
-                    Caption = 'Path';
                 }
                 field("File Name"; Rec."File Name")
                 {
-                    Caption = 'File Name';
                 }
                 field("Type contrat"; Rec."Type contrat")
                 {
-                    Caption = 'Type of contract';
                 }
                 field("User ID"; Rec."User ID")
                 {
-                    Caption = 'User ID';
                 }
             }
         }

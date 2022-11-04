@@ -15,27 +15,21 @@ page 50117 "DEL Contact Contrat"
                 field("No."; Rec."No.")
                 {
                     Editable = false;
-                    Caption = 'No.';
                 }
                 field("Type Contact"; Rec."DEL Type Contact")
                 {
-                    Caption = 'Contact Type';
                 }
                 field("Name Contact"; Rec."DEL Name Contact")
                 {
-                    Caption = 'Name';
                 }
                 field("First Name Contact"; Rec."DEL First Name Contact")
                 {
-                    Caption = 'First Name';
                 }
                 field("E-Mail"; Rec."E-Mail")
                 {
-                    Caption = 'Email';
                 }
                 field("Phone No."; Rec."Phone No.")
                 {
-                    Caption = 'Phone No.';
                 }
             }
         }

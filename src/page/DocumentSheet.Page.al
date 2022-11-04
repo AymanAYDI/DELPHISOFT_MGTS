@@ -21,27 +21,21 @@ page 50065 "DEL Document Sheet"
             {
                 field("Insert Date"; Rec."Insert Date")
                 {
-                    Caption = 'Date';
                 }
                 field("Insert Time"; Rec."Insert Time")
                 {
-                    Caption = 'Time';
                 }
                 field(Path; Rec.Path)
                 {
-                    Caption = 'Path';
                 }
                 field("File Name"; Rec."File Name")
                 {
-                    Caption = 'File Name';
                 }
                 field("Notation Type"; Rec."Notation Type")
                 {
-                    Caption = 'Rating type';
                 }
                 field("User ID"; Rec."User ID")
                 {
-                    Caption = 'User ID';
                 }
             }
         }

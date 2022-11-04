@@ -14,19 +14,15 @@ page 50011 "DEL Forwarding Agents"
             {
                 field("Vendor No."; Rec."Vendor No.")
                 {
-                    Caption = 'Vendor No.';
                 }
                 field("Location Code"; Rec."Location Code")
                 {
-                    Caption = 'Location Code';
                 }
                 field("Forwarding Agent"; Rec."Forwarding Agent")
                 {
-                    Caption = 'Forwarding Agent';
                 }
                 field("Departure port"; Rec."Departure port")
                 {
-                    Caption = 'Departure port';
                 }
             }
         }

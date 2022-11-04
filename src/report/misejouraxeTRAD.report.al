@@ -1,7 +1,7 @@
 report 50033 "DEL mise à jour axe TRAD"
 {
     DefaultLayout = RDLC;
-    RDLCLayout = './miseàjouraxeTRAD.rdlc';
+    RDLCLayout = './src/report/RDL/miseàjouraxeTRAD.rdlc';
     Permissions = TableData "Dimension Set Entry" = rimd;
 
     dataset

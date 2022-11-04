@@ -43,7 +43,7 @@ page 50140 "DEL JSON Requests logs" //TODO
                     {
                     }
                 }
-                // part(Message; Message)
+                //TODO part(Message; Message)
                 // {
                 //     SubPageLink = "Entry No." = FIELD("Entry No.");
                 // }

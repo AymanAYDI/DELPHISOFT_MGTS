@@ -15,35 +15,27 @@ page 50062 "DEL Fixed deal affected"
             {
                 field(ID; Rec.ID)
                 {
-                    Caption = 'ID';
                 }
                 field(Deal_ID; Rec.Deal_ID)
                 {
-                    Caption = 'Deal_ID';
                 }
                 field("ACO No."; Rec."ACO No.")
                 {
-                    Caption = 'ACO No.';
                 }
                 field("Supplier Name"; Rec."Supplier Name")
                 {
-                    Caption = 'Supplier Name';
                 }
                 field("BL N°"; Rec."BL N°")
                 {
-                    Caption = 'BL N°';
-
 
                 }
                 field("Display record"; Rec."Display record")
                 {
                     Editable = false;
                     Visible = false;
-                    Caption = 'Display record';
                 }
                 field("Affectation manuelle"; Rec."Affectation manuelle")
                 {
-                    Caption = 'Manual assignment';
                 }
             }
         }

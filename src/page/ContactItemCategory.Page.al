@@ -14,11 +14,9 @@ page 50005 "DEL Contact_ItemCategory"
                 field(contactNo; Rec.contactNo)
                 {
                     Visible = false;
-                    Caption = 'contactNo';
                 }
                 field("Groupe de produits"; Rec.ItemCategory)
                 {
-                    Caption = 'Product Group';
                 }
             }
         }

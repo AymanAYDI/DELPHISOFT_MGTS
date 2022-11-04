@@ -9,40 +9,32 @@ table 50053 "DEL Regulation Matrix Text"
     {
         field(1; "Item Category Code"; Code[10])
         {
-            Caption = 'Item Category Code';
             TableRelation = "Item Category".Code;
         }
         field(2; "Product Group Code"; Code[10])
         {
-            Caption = 'Product Group Code';
             TableRelation = "Product Group".Code WHERE("Item Category Code" = FIELD("Item Category Code"));
 
         }
         field(3; "Product Description"; Text[100])
         {
-            Caption = 'Description produit';
         }
         field(4; Mark; enum "DEL Mark")
         {
-            Caption = 'Mark';
 
         }
         field(5; Type; Enum "DEL Marking Type")
         {
-            Caption = 'Type';
         }
         field(6; "Line No."; Integer)
         {
             AutoIncrement = true;
-            Caption = 'Line No.';
         }
         field(7; "Text"; Text[120])
         {
-            Caption = 'Text';
         }
         field(8; "Attached to Line No."; Integer)
         {
-            Caption = 'Attached to Line No.';
         }
     }
 

@@ -21,27 +21,21 @@ page 50072 "DEL Document Sheet liasse"
             {
                 field("Insert Date"; Rec."Insert Date")
                 {
-                    Caption = 'Date';
                 }
                 field("Insert Time"; Rec."Insert Time")
                 {
-                    Caption = 'Time';
                 }
                 field(Path; Rec.Path)
                 {
-                    Caption = 'Path';
                 }
                 field("File Name"; Rec."File Name")
                 {
-                    Caption = 'File Name';
                 }
                 field("Type liasse"; Rec."Type liasse")
                 {
-                    Caption = 'Type of document';
                 }
                 field("User ID"; Rec."User ID")
                 {
-                    Caption = 'User ID';
                 }
             }
         }

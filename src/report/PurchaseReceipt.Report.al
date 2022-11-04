@@ -1,7 +1,7 @@
 report 50082 "DEL Purchase - Receipt" //408
 {
     DefaultLayout = RDLC;
-    RDLCLayout = './PurchaseReceipt.rdlc';
+    RDLCLayout = './src/report/RDL/PurchaseReceipt.rdlc';
     Caption = 'Purchase - Receipt';
 
     dataset

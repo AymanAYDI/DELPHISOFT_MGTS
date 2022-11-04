@@ -13,19 +13,15 @@ page 50024 "DEL Fee"
             {
                 field(ID; Rec.ID)
                 {
-                    Caption = 'ID';
                 }
                 field(Description; Rec.Description)
                 {
-                    Caption = 'Description';
                 }
                 field("No compte"; Rec."No compte")
                 {
-                    Caption = 'Account No';
                 }
                 field("Amount Type"; Rec."Amount Type")
                 {
-                    Caption = 'Amount Type';
 
                     trigger OnValidate()
                     begin
@@ -34,25 +30,20 @@ page 50024 "DEL Fee"
                 }
                 field("Ventilation Element"; Rec."Ventilation Element")
                 {
-                    Caption = 'Ventilation Element';
                 }
                 field("Ventilation Position"; Rec."Ventilation Position")
                 {
-                    Caption = 'Ventilation Position';
                 }
                 field(FormCurrency; Rec.Currency)
                 {
-                    Caption = 'Currency';
                     Enabled = FormCurrencyEnable;
                 }
                 field(FormAmount; Rec.Amount)
                 {
-                    Caption = 'Default Amount';
                     Enabled = FormAmountEnable;
                 }
                 field(FormField; Rec.Field)
                 {
-                    Caption = 'Field';
                     Enabled = FormFieldEnable;
 
                     trigger OnValidate()
@@ -66,21 +57,17 @@ page 50024 "DEL Fee"
                 }
                 field(FormFactor; Rec.Factor)
                 {
-                    Caption = 'Default Factor';
                     Enabled = FormFactorEnable;
                 }
                 field("Factor by date"; Rec."Factor by date")
                 {
                     Editable = false;
-                    Caption = 'factor by period';
                 }
                 field(Destination; Rec.Destination)
                 {
-                    Caption = 'Destination';
                 }
                 field(Axe; Rec.Axe)
                 {
-                    Caption = 'Axe';
                 }
                 field("Used For Import"; Rec."Used For Import")
                 {

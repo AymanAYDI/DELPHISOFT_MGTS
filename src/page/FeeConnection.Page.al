@@ -12,23 +12,18 @@ page 50025 "DEL Fee Connection"
             {
                 field(ID; Rec.ID)
                 {
-                    Caption = 'ID';
                 }
                 field(Type; Rec.Type)
                 {
-                    Caption = 'Type';
                 }
                 field("No."; Rec."No.")
                 {
-                    Caption = 'No.';
                 }
                 field("Deal ID"; Rec."Deal ID")
                 {
-                    Caption = 'Deal ID';
                 }
                 field("Fee ID"; Rec."Fee ID")
                 {
-                    Caption = 'Fee ID';
 
                     trigger OnValidate()
                     var
@@ -42,16 +37,13 @@ page 50025 "DEL Fee Connection"
                 }
                 field("Fee Description"; Rec."Fee Description")
                 {
-                    Caption = 'Désignation';
                 }
                 field(FormAmount; Rec."Default Amount")
                 {
-                    Caption = 'Specific amount';
                     Enabled = FormAmountEnable;
                 }
                 field(FormFactor; Rec."Default Factor")
                 {
-                    Caption = 'Specific factor';
                     Enabled = FormFactorEnable;
                 }
             }

@@ -1,7 +1,7 @@
 report 50076 "DEL Archived Purchase Order"
 {
     DefaultLayout = RDLC;
-    RDLCLayout = './ArchivedPurchaseOrder.rdlc';
+    RDLCLayout = './src/report/RDL/ArchivedPurchaseOrder.rdlc';
     Caption = 'Archived Purchase Order';
 
     dataset

@@ -2,7 +2,7 @@ report 50067 "SR Cust. - Balance to Date2"
 {
     //    Modify Design (Remove Amount LCY and Remove Line not applied)
     DefaultLayout = RDLC;
-    RDLCLayout = './SRCustBalancetoDate2.rdlc';
+    RDLCLayout = './src/report/RDL/SRCustBalancetoDate2.rdlc';
 
     Caption = 'Customer - Balance to Date';
 

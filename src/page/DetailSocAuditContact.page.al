@@ -12,21 +12,17 @@ page 50068 "DEL Detail Soc. Audit Contact"
             {
                 field("No."; Rec."No.")
                 {
-                    Caption = 'No.';
                 }
                 field(Axe; Rec.Axe)
                 {
-                    Caption = 'Dimension';
                 }
                 field(Note; Rec.Note)
                 {
-                    Caption = 'Rating';
 
                 }
                 field("Vendor/Contact No."; Rec."Vendor/Contact No.")
                 {
                     Visible = false;
-                    Caption = 'Vendor/Contact No.';
                 }
             }
         }

@@ -2,7 +2,7 @@ report 50035 "DEL SR Vendor Pay. Advi. Detai"
 {
 
     DefaultLayout = RDLC;
-    RDLCLayout = './SRVendorPaymentAdviceDetai.rdlc';
+    RDLCLayout = './src/report/RDL/SRVendorPaymentAdviceDetai.rdlc';
 
     Caption = 'Vendor Payment Advice detail';
 

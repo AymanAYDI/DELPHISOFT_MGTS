@@ -1,7 +1,7 @@
 report 50020 "DEL MAJ Logis sans Cmde Achat"
 {
     DefaultLayout = RDLC;
-    RDLCLayout = './MAJLogisticsansCmdeAchat.rdlc';
+    RDLCLayout = './src/report/RDL/MAJLogisticsansCmdeAchat.rdlc';
 
     dataset
     {

@@ -1,7 +1,7 @@
 report 50018 "DEL update fact vente/affaires"
 {
     DefaultLayout = RDLC;
-    RDLCLayout = './updatefacturesventeaffaires.rdlc';
+    RDLCLayout = './src/report/RDL/updatefacturesventeaffaires.rdlc';
 
     dataset
     {

@@ -1,7 +1,7 @@
 report 50036 "DEL Vider OLD marque item"
 {
     DefaultLayout = RDLC;
-    RDLCLayout = './ViderOLDmarqueitem.rdlc';
+    RDLCLayout = './src/report/RDL/ViderOLDmarqueitem.rdlc';
 
     dataset
     {

@@ -12,23 +12,18 @@ page 50057 "DEL Affaire non affectée"
             {
                 field(ID; Rec.ID)
                 {
-                    Caption = 'ID';
                 }
                 field(Deal_ID; Rec.Deal_ID)
                 {
-                    Caption = 'Deal_ID';
                 }
                 field("ACO No."; Rec."ACO No.")
                 {
-                    Caption = 'ACO No.';
                 }
                 field("Supplier Name"; Rec."Supplier Name")
                 {
-                    Caption = 'Supplier Name';
                 }
                 field("BL N°"; Rec."BL N°")
                 {
-                    Caption = 'BL N°';
 
                     trigger OnLookup(var Text: Text): Boolean
                     begin
