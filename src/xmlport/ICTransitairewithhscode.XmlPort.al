@@ -80,16 +80,16 @@ xmlport 50002 "DEL IC Transitaire with hscode"
                 fieldelement(CodePaysDestinataire; "Purchase Header"."Ship-to Country/Region Code")
                 {
                 }
-                fieldelement(PortArriveeMagasin; "Purchase Header"."Port d'arrivée")
+                fieldelement(PortArriveeMagasin; "Purchase Header"."DEL Port d'arrivée")
                 {
                 }
                 fieldelement(ShipPer; "Purchase Header"."DEL Ship Per")
                 {
                 }
-                fieldelement(PortDepart; "Purchase Header"."Port de départ")
+                fieldelement(PortDepart; "Purchase Header"."DEL Port de départ")
                 {
                 }
-                fieldelement(CodeEvenement; "Purchase Header"."Code événement")
+                fieldelement(CodeEvenement; "Purchase Header"."DEL Code événement")
                 {
                 }
                 textelement(lignes)
