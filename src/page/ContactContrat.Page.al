@@ -1,11 +1,9 @@
 page 50117 "DEL Contact Contrat"
 {
-
-
     Caption = 'Follow contracts contacts';
     PageType = ListPart;
     SourceTable = Contact;
-
+    UsageCategory = None;
     layout
     {
         area(content)
@@ -14,31 +12,32 @@ page 50117 "DEL Contact Contrat"
             {
                 field("No."; Rec."No.")
                 {
+                    ApplicationArea = All;
                     Editable = false;
                 }
                 field("Type Contact"; Rec."DEL Type Contact")
                 {
+                    ApplicationArea = All;
                 }
                 field("Name Contact"; Rec."DEL Name Contact")
                 {
+                    ApplicationArea = All;
                 }
                 field("First Name Contact"; Rec."DEL First Name Contact")
                 {
+                    ApplicationArea = All;
                 }
                 field("E-Mail"; Rec."E-Mail")
                 {
+                    ApplicationArea = All;
                 }
                 field("Phone No."; Rec."Phone No.")
                 {
+                    ApplicationArea = All;
                 }
             }
         }
     }
-
-    actions
-    {
-    }
-
     trigger OnNewRecord(BelowxRec: Boolean)
     begin
         CodeClient := Rec.GETFILTER("DEL Customer No.");
@@ -56,4 +55,3 @@ page 50117 "DEL Contact Contrat"
         ContactBusinessRelation: Record "Contact Business Relation";
         CodeClient: Text;
 }
-
