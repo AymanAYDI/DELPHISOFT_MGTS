@@ -1,4 +1,4 @@
-pageextension 50057 "DEL SalesOrderList" extends "Sales Order List"
+pageextension 50057 "DEL SalesOrderList" extends "Sales Order List" //9305
 {
     layout
     {

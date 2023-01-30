@@ -20,19 +20,19 @@ tableextension 50028 "DEL PurchaseHeader" extends "Purchase Header" //38
 
             TableRelation = "DEL Forwarding agent 2";
         }
-        field(50003; "Port de départ"; Text[30])
+        field(50003; "DEL Port de départ"; Text[30])
         {
 
             TableRelation = Location.Code;
         }
-        field(50004; "Code événement"; Enum "DEL Code Event")
+        field(50004; "DEL Code événement"; Enum "DEL Code Event")
         {
 
         }
-        field(50005; "Récépissé transitaire"; Text[30])
+        field(50005; "DEL Récépissé transitaire"; Text[30])
         {
         }
-        field(50006; "Port d'arrivée"; Text[30])
+        field(50006; "DEL Port d'arrivée"; Text[30])
         {
             TableRelation = Location.Code;
         }
@@ -61,7 +61,7 @@ tableextension 50028 "DEL PurchaseHeader" extends "Purchase Header" //38
             Caption = 'Requested Delivery Date';
 
         }
-        field(50012; "DEL Relational Exch. Rate Amount"; Decimal)
+        field(50012; "DEL Rel. Exch. Rate Amount"; Decimal)
         {
             Caption = 'Relational Exch. Rate Amount';
             DecimalPlaces = 1 : 6;
@@ -379,7 +379,7 @@ tableextension 50028 "DEL PurchaseHeader" extends "Purchase Header" //38
                     EXIT;
 
         "DEL Forwarding Agent Code" := _ForwardingAgent."Forwarding Agent";
-        "Port de départ" := _ForwardingAgent."Departure port";
+        "DEL Port de départ" := _ForwardingAgent."Departure port";
     end;
 
     procedure NTO_SetPurchDim()

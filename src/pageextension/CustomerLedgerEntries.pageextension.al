@@ -1,6 +1,5 @@
 pageextension 50022 "DEL CustomerLedgerEntries" extends "Customer Ledger Entries"
 {
-
     actions
     {
 
@@ -28,7 +27,6 @@ pageextension 50022 "DEL CustomerLedgerEntries" extends "Customer Ledger Entries
                     lFieldSellToNo: Integer;
                     lRecordVariant: Variant;
                 begin
-                    //DEL/PD/20190226/LOP003.begin
                     lNo := '';
                     CASE Rec."Document Type" OF
                         Rec."Document Type"::Invoice:
@@ -62,7 +60,6 @@ pageextension 50022 "DEL CustomerLedgerEntries" extends "Customer Ledger Entries
                         IF lcuDocumentMatrixMgt.ShowDocMatrixSelection(lNo, ProcessType::Manual, lUsage.AsInteger(), lrecDocMatrixSelection, FALSE) THEN
                             lcuDocumentMatrixMgt.ProcessDocumentMatrix(lUsage.AsInteger(), ProcessType::Manual, lRecordVariant, lFieldSellToNo, lFieldDocNo, lrecDocMatrixSelection, 0);
 
-                    //DEL/PD/20190226/LOP003.end
                 end;
             }
         }
