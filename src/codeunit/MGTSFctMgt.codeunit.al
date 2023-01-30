@@ -697,9 +697,9 @@ codeunit 50101 "DEL MGTS_FctMgt"
         IF SalesHeader.GET(SalesHeader."Document Type"::Order, RequisitionLine."Sales Order No.") THEN BEGIN
             PurchaseOrderHeader."Your Reference" := FORMAT(SalesHeader."DEL Event Code") + '-' + SalesHeader."External Document No.";
 
-            PurchaseOrderHeader."Code événement" := SalesHeader."DEL Event Code";
+            PurchaseOrderHeader."DEL Code événement" := SalesHeader."DEL Event Code";
 
-            PurchaseOrderHeader."Port d'arrivée" := SalesHeader."Location Code";
+            PurchaseOrderHeader."DEL Port d'arrivée" := SalesHeader."Location Code";
 
         END;
 

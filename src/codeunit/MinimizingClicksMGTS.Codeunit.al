@@ -62,33 +62,33 @@ codeunit 50012 "DEL Minimizing Clicks - MGTS"
             //         CduLFileManagement.DeleteServerFile(TxtLServerFilename);
             //         EXIT(TxtLClientFilename);
             //     END;
-            // END;
-        end;
+        END;
+    end;
 
 
-        //TODO procedure FctSendMailPurchOrder(RecPPurchaseHeader: Record "Purchase Header")
+    procedure FctSendMailPurchOrder(RecPPurchaseHeader: Record "Purchase Header")
 
-        // var
-        //     CduLMail: Codeunit Mail;
-        //     CduSMTPMail: Codeunit 400;
-        //     TxtLSenderName: Text;
-        //     TxtLSenderAddress: Text;
-        //     RecLCompanyInformation: Record "Company Information";
-        //     TxtLSubjectMail: Text;
-        //     TxtMailBody: Text;
-        //     RecLPurchaseHeader: Record "Purchase Header";
-        //     RecLReportSelection: Record "Report Selections";
-        //     TxtLServerFileName: Text;
-        //     TxtLClientFileName: Text;
-        //     TxtLRecipientName: Text;
-        //     RecLVendor: Record Vendor;
-        //     CodLEmailTemplate: Code[20];
-        //     TxtLNomTiersDocument: Text;
-        //     TxtLCodeTierDocument: Text;
-        //     CodLNDocument: Code[20];
-        //     Cst001: Label 'We must add a e email template';
-        //     DocumentMailing: Codeunit "Document-Mailing";
-        // begin
+    // var
+    //     CduLMail: Codeunit Mail;
+    //     CduSMTPMail: Codeunit 400;
+    //     TxtLSenderName: Text;
+    //     TxtLSenderAddress: Text;
+    //     RecLCompanyInformation: Record "Company Information";
+    //     TxtLSubjectMail: Text;
+    //     TxtMailBody: Text;
+    //     RecLPurchaseHeader: Record "Purchase Header";
+    //     RecLReportSelection: Record "Report Selections";
+    //     TxtLServerFileName: Text;
+    //     TxtLClientFileName: Text;
+    //     TxtLRecipientName: Text;
+    //     RecLVendor: Record Vendor;
+    //     CodLEmailTemplate: Code[20];
+    //     TxtLNomTiersDocument: Text;
+    //     TxtLCodeTierDocument: Text;
+    //     CodLNDocument: Code[20];
+    //     Cst001: Label 'We must add a e email template';
+    //     DocumentMailing: Codeunit "Document-Mailing";
+    begin
         //     RecLCompanyInformation.GET();
         //     TxtLSenderName := RecLCompanyInformation.Name;
         //     RecLCompanyInformation.TESTFIELD("DEL Purchase E-Mail");
