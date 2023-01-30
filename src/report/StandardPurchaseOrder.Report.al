@@ -31,13 +31,13 @@ report 50080 "DEL Standard Purchase - Order" //1322
             column(PHShipPer; "Purchase Header"."DEL Ship Per")
             {
             }
-            column(PHPortdedepart; "Purchase Header"."Port de départ")
+            column(PHPortdedepart; "Purchase Header"."DEL Port de départ")
             {
             }
-            column(PHPortdarrive; "Purchase Header"."Port d'arrivée")
+            column(PHPortdarrive; "Purchase Header"."DEL Port d'arrivée")
             {
             }
-            column(PHCodeevenement; FORMAT("Purchase Header"."Code événement"))
+            column(PHCodeevenement; FORMAT("Purchase Header"."DEL Code événement"))
             {
             }
             column(PHForwardingAgentCod; "Purchase Header"."DEL Forwarding Agent Code")

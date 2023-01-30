@@ -382,8 +382,8 @@ table 50034 "DEL Logistic"
             Logistic_Re_Par.VALIDATE("Shipment mode", PurchHead_Re."DEL Ship Per");
             Logistic_Re_Par."ETD Requested" := PurchHead_Re."Requested Receipt Date";
 
-            Logistic_Re_Par."Arrival port" := PurchHead_Re."Port d'arrivée";
-            Logistic_Re_Par."Departure Port" := PurchHead_Re."Port de départ";
+            Logistic_Re_Par."Arrival port" := PurchHead_Re."DEL Port d'arrivée";
+            Logistic_Re_Par."Departure Port" := PurchHead_Re."DEL Port de départ";
             Logistic_Re_Par."Payment Terms Code" := PurchHead_Re."Payment Terms Code";
         END;
 

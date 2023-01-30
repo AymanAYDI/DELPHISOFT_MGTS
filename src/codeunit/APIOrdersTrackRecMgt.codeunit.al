@@ -130,9 +130,9 @@ codeunit 50044 "DEL API Orders Track Rec. Mgt."
               (PurchaseHeader."Buy-from Vendor No." <> xPurchaseHeader."Buy-from Vendor No.") OR
               (PurchaseHeader."DEL Ship Per" <> xPurchaseHeader."DEL Ship Per") OR
               (PurchaseHeader."Ship-to Code" <> xPurchaseHeader."Ship-to Code") OR
-              (PurchaseHeader."Port de départ" <> xPurchaseHeader."Port de départ") OR
-              (PurchaseHeader."Port d'arrivée" <> xPurchaseHeader."Port d'arrivée") OR
-              (PurchaseHeader."Code événement" <> xPurchaseHeader."Code événement") OR
+              (PurchaseHeader."DEL Port de départ" <> xPurchaseHeader."DEL Port de départ") OR
+              (PurchaseHeader."DEL Port d'arrivée" <> xPurchaseHeader."DEL Port d'arrivée") OR
+              (PurchaseHeader."DEL Code événement" <> xPurchaseHeader."DEL Code événement") OR
               (PurchaseHeader."Requested Receipt Date" <> xPurchaseHeader."Requested Receipt Date") OR
               (PurchaseHeader."Shipment Method Code" <> xPurchaseHeader."Shipment Method Code") OR
               (PurchaseHeader."Due Date" <> xPurchaseHeader."Due Date") OR
@@ -290,12 +290,12 @@ codeunit 50044 "DEL API Orders Track Rec. Mgt."
         IF (Vendor."DEL Supplier Base ID" <> '') THEN
             OrderAPIRecordTracking."ACO Supplier base code" := Vendor."DEL Supplier Base ID";
         OrderAPIRecordTracking."ACO Transport Mode" := PurchaseHeader."DEL Ship Per";
-        OrderAPIRecordTracking."ACO Departure Port" := PurchaseHeader."Port de départ";
-        OrderAPIRecordTracking."ACO Arrival Port" := PurchaseHeader."Port d'arrivée";
+        OrderAPIRecordTracking."ACO Departure Port" := PurchaseHeader."DEL Port de départ";
+        OrderAPIRecordTracking."ACO Arrival Port" := PurchaseHeader."DEL Port d'arrivée";
         OrderAPIRecordTracking."ACO Warehouse" := PurchaseHeader."Ship-to Code";
 
 
-        OrderAPIRecordTracking."ACO Event" := FORMAT(PurchaseHeader."Code événement");
+        OrderAPIRecordTracking."ACO Event" := FORMAT(PurchaseHeader."DEL Code événement");
 
 
         OrderAPIRecordTracking."ACO ETD" := PurchaseHeader."Requested Receipt Date";
