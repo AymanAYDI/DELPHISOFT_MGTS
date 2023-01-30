@@ -86,10 +86,10 @@ xmlport 50003 "DEL IC Transitaire Old SAV"
                 fieldelement(ShipPer; "Purchase Header"."DEL Ship Per")
                 {
                 }
-                fieldelement(PortDepart; "Purchase Header"."Port de départ")
+                fieldelement(PortDepart; "Purchase Header"."DEL Port de départ")
                 {
                 }
-                fieldelement(CodeEvenement; "Purchase Header"."Code événement")
+                fieldelement(CodeEvenement; "Purchase Header"."DEL Code événement")
                 {
                 }
                 textelement(lignes)

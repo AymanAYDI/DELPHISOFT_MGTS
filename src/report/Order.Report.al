@@ -1475,7 +1475,7 @@ report 50073 "DEL Order" //405
         IF "Purchase Header"."Location Code" <> '' THEN BEGIN
             FooterLabel[4] := ML_Location_code;
 
-            FooterTxt[4] := "Purchase Header"."Port d'arrivée";
+            FooterTxt[4] := "Purchase Header"."DEL Port d'arrivée";
 
         END;
 

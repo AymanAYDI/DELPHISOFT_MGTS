@@ -84,16 +84,16 @@ xmlport 50000 "DEL IC Transitaire"
                 fieldelement(CodePaysDestinataire; "Purchase Header"."Ship-to Country/Region Code")
                 {
                 }
-                fieldelement(PortArriveeMagasin; "Purchase Header"."Port d'arrivée")
+                fieldelement(PortArriveeMagasin; "Purchase Header"."DEL Port d'arrivée")
                 {
                 }
                 fieldelement(ShipPer; "Purchase Header"."DEL Ship Per")
                 {
                 }
-                fieldelement(PortDepart; "Purchase Header"."Port de départ")
+                fieldelement(PortDepart; "Purchase Header"."DEL Port de départ")
                 {
                 }
-                fieldelement(CodeEvenement; "Purchase Header"."Code événement")
+                fieldelement(CodeEvenement; "Purchase Header"."DEL Code événement")
                 {
                 }
                 textelement(lignes)
