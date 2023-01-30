@@ -4,13 +4,13 @@ table 50024 "DEL Fee"
 
     LookupPageID = "DEL Fee";
     Caption = 'Fee';
-
+    DataClassification = CustomerContent;
     fields
     {
         field(1; ID; Code[20])
         {
             Caption = 'ID';
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
 
@@ -22,53 +22,62 @@ table 50024 "DEL Fee"
         field(2; Description; Text[50])
         {
             Caption = 'Description';
+            DataClassification = CustomerContent;
         }
         field(3; "Amount Type"; Enum "DEL Amount Type")
         {
             Caption = 'Amount Type';
-
+            DataClassification = CustomerContent;
         }
         field(4; "Ventilation Element"; Enum "DEL Ventilation Element")
         {
 
             Caption = 'Ventilation Element';
+            DataClassification = CustomerContent;
         }
         field(5; "Ventilation Position"; Enum "DEL Ventilation Position")
         {
 
             Caption = 'Ventilation Position';
+            DataClassification = CustomerContent;
         }
         field(6; Amount; Decimal)
         {
             Caption = 'Amount';
+            DataClassification = CustomerContent;
         }
         field(7; Currency; Code[10])
         {
             TableRelation = Currency.Code;
             Caption = 'Currency';
+            DataClassification = CustomerContent;
         }
         field(8; "Field"; Enum "DEL Field")
         {
             Caption = 'Field';
+            DataClassification = CustomerContent;
         }
         field(9; Factor; Decimal)
         {
             Caption = 'Factor';
+            DataClassification = CustomerContent;
         }
         field(10; Destination; Code[10])
         {
             TableRelation = Location.Code;
             Caption = 'Destination';
+            DataClassification = CustomerContent;
         }
         field(11; Axe; Code[10])
         {
             Caption = 'Axe';
+            DataClassification = CustomerContent;
         }
         field(12; "No compte"; Text[20])
         {
             Caption = 'Account No';
             TableRelation = "G/L Account"."No.";
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
 
@@ -79,7 +88,7 @@ table 50024 "DEL Fee"
         }
         field(13; "Used For Import"; Boolean)
         {
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
 
@@ -93,6 +102,7 @@ table 50024 "DEL Fee"
             BlankZero = true;
             Caption = 'factor by period';
             FieldClass = Normal;
+            DataClassification = CustomerContent;
         }
     }
 

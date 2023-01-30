@@ -1,6 +1,5 @@
 page 50075 "DEL Document Sheet Contrats"
 {
-
     Caption = 'Document Sheet';
     DataCaptionFields = "No.";
     DelayedInsert = true;
@@ -12,6 +11,7 @@ page 50075 "DEL Document Sheet Contrats"
                       ORDER(Ascending)
                       WHERE("Notation Type" = FILTER(' '),
                             "Type liasse" = FILTER(' '));
+    UsageCategory = None;
 
     layout
     {
@@ -21,21 +21,27 @@ page 50075 "DEL Document Sheet Contrats"
             {
                 field("Insert Date"; Rec."Insert Date")
                 {
+                    ApplicationArea = All;
                 }
                 field("Insert Time"; Rec."Insert Time")
                 {
+                    ApplicationArea = All;
                 }
                 field(Path; Rec.Path)
                 {
+                    ApplicationArea = All;
                 }
                 field("File Name"; Rec."File Name")
                 {
+                    ApplicationArea = All;
                 }
                 field("Type contrat"; Rec."Type contrat")
                 {
+                    ApplicationArea = All;
                 }
                 field("User ID"; Rec."User ID")
                 {
+                    ApplicationArea = All;
                 }
             }
         }
@@ -51,8 +57,10 @@ page 50075 "DEL Document Sheet Contrats"
                 Ellipsis = true;
                 Image = Add;
                 Promoted = true;
+                PromotedOnly = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
+                ApplicationArea = All;
 
                 trigger OnAction()
                 begin
@@ -64,9 +72,11 @@ page 50075 "DEL Document Sheet Contrats"
                 Caption = 'Open';
                 Image = View;
                 Promoted = true;
+                PromotedOnly = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 ShortCutKey = 'Return';
+                ApplicationArea = All;
 
                 trigger OnAction()
                 begin
@@ -95,9 +105,8 @@ page 50075 "DEL Document Sheet Contrats"
         TempBlob: Codeunit "Temp Blob";
 
     begin
-        //TODO: Document_CU a été commenté car il contient le Dotnet
-        // IF NOT Document_CU.OpenFile(ImportFileName, ServerFileName) THEN
-        //     EXIT;
+        IF NOT Document_CU.OpenFile(ImportFileName, ServerFileName) THEN
+            EXIT;
 
         IF ServerFileName = '' THEN
             EXIT;
@@ -112,24 +121,18 @@ page 50075 "DEL Document Sheet Contrats"
         // oFile.CREATEINSTREAM(InStr);
         // Rec.Document.CREATEOUTSTREAM(OutStr);
         // COPYSTREAM(OutStr, InStr);
-        //TODO oFile.CLOSE;
+        // oFile.CLOSE;
 
         TempBlob.CREATEINSTREAM(InStr, TEXTENCODING::UTF8);
         Rec.Document.CREATEOUTSTREAM(OutStr);
         COPYSTREAM(OutStr, InStr);
 
-
         Rec."Insert Date" := TODAY;
         Rec."Insert Time" := TIME;
-        //TODO Path := Document_CU.GetDirectoryName(ImportFileName);
-        // "File Name" := Document_CU.GetFileName(ImportFileName);
+        Rec.Path := Document_CU.GetDirectoryName(ImportFileName);
+        Rec."File Name" := Document_CU.GetFileName(ImportFileName);
         Rec.INSERT(TRUE);
         CurrPage.UPDATE(FALSE);
-    end;
-
-    local procedure SaveAs()
-    var
-    begin
     end;
 
     local procedure Open()
@@ -140,7 +143,7 @@ page 50075 "DEL Document Sheet Contrats"
         Directory: Text;
 
     begin
-        //TODO Directory := Document_CU.TempDirectory;
+        Directory := Document_CU.TempDirectory();
 
         // oFile.CREATE(Directory + "File Name");
         // oFile.CREATEOUTSTREAM(OutStr);
@@ -154,4 +157,3 @@ page 50075 "DEL Document Sheet Contrats"
         HYPERLINK(Directory + Rec."File Name");
     end;
 }
-

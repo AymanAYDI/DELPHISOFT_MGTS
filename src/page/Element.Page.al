@@ -3,6 +3,7 @@ page 50021 "DEL Element"
 
     PageType = List;
     SourceTable = "DEL Element";
+    UsageCategory = None;
 
     layout
     {

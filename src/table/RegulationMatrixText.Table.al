@@ -4,37 +4,43 @@ table 50053 "DEL Regulation Matrix Text"
     DrillDownPageID = "DEL Matrix Text";
     LookupPageID = "DEL Matrix Text";
     Caption = 'Regulation Matrix Text';
-
+    DataClassification = CustomerContent;
     fields
     {
         field(1; "Item Category Code"; Code[10])
         {
             TableRelation = "Item Category".Code;
+            DataClassification = CustomerContent;
         }
         field(2; "Product Group Code"; Code[10])
         {
             TableRelation = "Product Group".Code WHERE("Item Category Code" = FIELD("Item Category Code"));
-
+            DataClassification = CustomerContent;
         }
         field(3; "Product Description"; Text[100])
         {
+            DataClassification = CustomerContent;
         }
         field(4; Mark; enum "DEL Mark")
         {
-
+            DataClassification = CustomerContent;
         }
         field(5; Type; Enum "DEL Marking Type")
         {
+            DataClassification = CustomerContent;
         }
         field(6; "Line No."; Integer)
         {
             AutoIncrement = true;
+            DataClassification = CustomerContent;
         }
         field(7; "Text"; Text[120])
         {
+            DataClassification = CustomerContent;
         }
         field(8; "Attached to Line No."; Integer)
         {
+            DataClassification = CustomerContent;
         }
     }
 

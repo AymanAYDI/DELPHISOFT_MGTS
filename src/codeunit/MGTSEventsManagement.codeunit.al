@@ -1,4 +1,4 @@
-codeunit 50100 "DEL MGTS_EventsMgt"
+codeunit 50100 "DEL MGTS_Events Management"
 {
     [EventSubscriber(ObjectType::Table, Database::Customer, 'OnAfterModifyEvent', '', false, false)]
     local procedure T18_OnAfterModifyEvent_Customer(var Rec: Record Customer; RunTrigger: Boolean)
@@ -620,7 +620,7 @@ codeunit 50100 "DEL MGTS_EventsMgt"
         ELSE
             PurchOrderLine."Expected Receipt Date" := RequisitionLine."Due Date";
     end;
-    ///
+    //
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Req. Wksh.-Make Order", 'OnInsertPurchOrderLineOnBeforeTransferReqLine', '', false, false)]
     //check line 535
     local procedure COD333_OnInsertPurchOrderLineOnBeforeTransferReqLine_ReqWeshMOrder(var PurchOrderHeader: Record "Purchase Header"; PurchOrderLine: Record "Purchase Line")

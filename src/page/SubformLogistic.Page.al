@@ -3,6 +3,7 @@ page 50037 "DEL Subform Logistic"
     Editable = false;
     PageType = ListPart;
     SourceTable = "DEL Deal Shipment";
+    UsageCategory = None;
 
     layout
     {
@@ -56,9 +57,7 @@ page 50037 "DEL Subform Logistic"
             action(Create)
             {
                 Caption = 'Create';
-                Promoted = true;
-                PromotedCategory = Process;
-
+                Image = Create;
                 trigger OnAction()
                 begin
                     DealShipment_Cu.FNC_Insert(Deal_ID_Co, 0D, '');
@@ -68,8 +67,6 @@ page 50037 "DEL Subform Logistic"
             {
                 Caption = 'Card';
                 Image = EditLines;
-                Promoted = true;
-                PromotedCategory = Process;
 
                 trigger OnAction()
                 begin

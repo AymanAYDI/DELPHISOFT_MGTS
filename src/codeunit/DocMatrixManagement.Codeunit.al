@@ -153,7 +153,7 @@ codeunit 50015 "DEL DocMatrix Management" //TODO
         lType := GetTypeWithUsage(pUsage);
         lProcessType := lProcessType::Automatic;
         CLEAR(lintLogID);
-        IF lrecDocMatrixSetup.GET THEN BEGIN
+        IF lrecDocMatrixSetup.GET() THEN BEGIN
             IF lrecDocMatrixSetup."Test Active" AND (lrecDocMatrixSetup."Statement Test Date" <> 0D) THEN
                 lDate := lrecDocMatrixSetup."Statement Test Date";
         END;
@@ -1194,8 +1194,6 @@ codeunit 50015 "DEL DocMatrix Management" //TODO
 
     local procedure ManageFilesAfterProcess(ptxClientFile: Text; ptxServerFile: Text)
     begin
-
-
         // CduLFileManagement.DownloadToFile(ptxServerFile, ptxClientFile); TODO:
         // CduLFileManagement.DeleteServerFile(ptxServerFile);  TODO:
     end;

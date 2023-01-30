@@ -3,43 +3,50 @@ table 99200 "DEL Ex_Currency"
 {
     Caption = 'Currency';
     LookupPageID = Currencies;
-
+    DataClassification = CustomerContent;
     fields
     {
         field(1; "Code"; Code[10])
         {
             Caption = 'Code';
             NotBlank = true;
+            DataClassification = CustomerContent;
         }
         field(2; "Last Date Modified"; Date)
         {
             Caption = 'Last Date Modified';
             Editable = false;
+            DataClassification = CustomerContent;
         }
         field(3; "Last Date Adjusted"; Date)
         {
             Caption = 'Last Date Adjusted';
             Editable = false;
+            DataClassification = CustomerContent;
         }
         field(6; "Unrealized Gains Acc."; Code[20])
         {
             Caption = 'Unrealized Gains Acc.';
             TableRelation = "G/L Account";
+            DataClassification = CustomerContent;
         }
         field(7; "Realized Gains Acc."; Code[20])
         {
             Caption = 'Realized Gains Acc.';
             TableRelation = "G/L Account";
+            DataClassification = CustomerContent;
         }
         field(8; "Unrealized Losses Acc."; Code[20])
         {
             Caption = 'Unrealized Losses Acc.';
             TableRelation = "G/L Account";
+            DataClassification = CustomerContent;
         }
         field(9; "Realized Losses Acc."; Code[20])
         {
             Caption = 'Realized Losses Acc.';
             TableRelation = "G/L Account";
+            DataClassification = CustomerContent;
         }
         field(10; "Invoice Rounding Precision"; Decimal)
         {
@@ -47,10 +54,12 @@ table 99200 "DEL Ex_Currency"
             AutoFormatType = 1;
             Caption = 'Invoice Rounding Precision';
             InitValue = 1;
+            DataClassification = CustomerContent;
         }
         field(12; "Invoice Rounding Type"; Enum "DEL Invoice Rounding Type")
         {
             Caption = 'Invoice Rounding Type';
+            DataClassification = CustomerContent;
         }
         field(13; "Amount Rounding Precision"; Decimal)
         {
@@ -58,6 +67,7 @@ table 99200 "DEL Ex_Currency"
             DecimalPlaces = 2 : 5;
             InitValue = 0.01;
             MinValue = 0;
+            DataClassification = CustomerContent;
         }
         field(14; "Unit-Amount Rounding Precision"; Decimal)
         {
@@ -65,22 +75,26 @@ table 99200 "DEL Ex_Currency"
             DecimalPlaces = 0 : 9;
             InitValue = 0.00001;
             MinValue = 0;
+            DataClassification = CustomerContent;
         }
         field(15; Description; Text[30])
         {
             Caption = 'Description';
+            DataClassification = CustomerContent;
         }
         field(17; "Amount Decimal Places"; Text[5])
         {
             Caption = 'Amount Decimal Places';
             InitValue = '2:2';
             NotBlank = true;
+            DataClassification = CustomerContent;
         }
         field(18; "Unit-Amount Decimal Places"; Text[5])
         {
             Caption = 'Unit-Amount Decimal Places';
             InitValue = '2:5';
             NotBlank = true;
+            DataClassification = CustomerContent;
         }
         field(19; "Customer Filter"; Code[20])
         {
@@ -289,6 +303,7 @@ table 99200 "DEL Ex_Currency"
         {
             Caption = 'Realized G/L Gains Account';
             TableRelation = "G/L Account";
+            DataClassification = CustomerContent;
         }
 
         field(41; "Realized G/L Losses Account"; Code[20])
@@ -296,6 +311,7 @@ table 99200 "DEL Ex_Currency"
         {
             Caption = 'Realized G/L Losses Account';
             TableRelation = "G/L Account";
+            DataClassification = CustomerContent;
         }
 
         field(44; "Appln. Rounding Precision"; Decimal)
@@ -305,11 +321,13 @@ table 99200 "DEL Ex_Currency"
             AutoFormatType = 1;
             Caption = 'Appln. Rounding Precision';
             MinValue = 0;
+            DataClassification = CustomerContent;
         }
 
         field(45; "EMU Currency"; Boolean)
         {
             Caption = 'EMU Currency';
+            DataClassification = CustomerContent;
         }
         field(46; "Currency Factor"; Decimal)
 
@@ -317,6 +335,7 @@ table 99200 "DEL Ex_Currency"
             Caption = 'Currency Factor';
             DecimalPlaces = 0 : 5;
             Editable = false;
+            DataClassification = CustomerContent;
         }
 
         field(47; "Residual Gains Account"; Code[20])
@@ -324,6 +343,7 @@ table 99200 "DEL Ex_Currency"
         {
             Caption = 'Residual Gains Account';
             TableRelation = "G/L Account";
+            DataClassification = CustomerContent;
         }
 
         field(48; "Residual Losses Account"; Code[20])
@@ -331,6 +351,7 @@ table 99200 "DEL Ex_Currency"
         {
             Caption = 'Residual Losses Account';
             TableRelation = "G/L Account";
+            DataClassification = CustomerContent;
         }
 
         field(50; "Conv. LCY Rndg. Debit Acc."; Code[20])
@@ -338,6 +359,7 @@ table 99200 "DEL Ex_Currency"
         {
             Caption = 'Conv. LCY Rndg. Debit Acc.';
             TableRelation = "G/L Account";
+            DataClassification = CustomerContent;
         }
 
         field(51; "Conv. LCY Rndg. Credit Acc."; Code[20])
@@ -345,6 +367,7 @@ table 99200 "DEL Ex_Currency"
         {
             Caption = 'Conv. LCY Rndg. Credit Acc.';
             TableRelation = "G/L Account";
+            DataClassification = CustomerContent;
         }
 
         field(52; "Max. VAT Difference Allowed"; Decimal)
@@ -353,12 +376,14 @@ table 99200 "DEL Ex_Currency"
             AutoFormatExpression = Code;
             AutoFormatType = 1;
             Caption = 'Max. VAT Difference Allowed';
+            DataClassification = CustomerContent;
         }
 
         field(53; "VAT Rounding Type"; Enum "DEL VAT Rounding Type")
 
         {
             Caption = 'VAT Rounding Type';
+            DataClassification = CustomerContent;
         }
 
         field(54; "Payment Tolerance %"; Decimal)
@@ -369,6 +394,7 @@ table 99200 "DEL Ex_Currency"
             Editable = false;
             MaxValue = 100;
             MinValue = 0;
+            DataClassification = CustomerContent;
         }
 
         field(55; "Max. Payment Tolerance Amount"; Decimal)
@@ -378,6 +404,7 @@ table 99200 "DEL Ex_Currency"
             Caption = 'Max. Payment Tolerance Amount';
             Editable = false;
             MinValue = 0;
+            DataClassification = CustomerContent;
         }
         //------ spécifique pays suisse---//
 
@@ -386,10 +413,12 @@ table 99200 "DEL Ex_Currency"
         {
             Caption = 'ISO Currency Code';
             CharAllowed = 'AZ';
+            DataClassification = CustomerContent;
         }
 
         field(4006497; Kennzeichen; Text[10])
         {
+            DataClassification = CustomerContent;
         }
 
     }

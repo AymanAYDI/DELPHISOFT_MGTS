@@ -10,6 +10,7 @@ page 50082 "DEL M Deal Cr. Memo Linking"
                    //TODOTableData 359 = rimd;
                    TableData "Dimension Set Entry" = rimd;
     SourceTable = "DEL Manual Deal Cr. Memo Link.";
+    UsageCategory = None;
 
     layout
     {
@@ -18,14 +19,17 @@ page 50082 "DEL M Deal Cr. Memo Linking"
             field("Sales Cr. Memo No."; Rec."Sales Cr. Memo No.")
             {
                 Caption = 'Note de crédit vente';
+                ApplicationArea = All;
             }
             field("Deal ID"; Rec."Deal ID")
             {
                 Caption = 'Deal ID destination';
+                ApplicationArea = All;
             }
             field("Shipment Selection"; Rec."Shipment Selection")
             {
                 Caption = 'Deal ID origine';
+                ApplicationArea = All;
             }
         }
     }
@@ -41,10 +45,12 @@ page 50082 "DEL M Deal Cr. Memo Linking"
                 {
                     Caption = 'Post';
                     Image = Post;
+                    PromotedOnly = true;
                     Promoted = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
                     ShortCutKey = 'F9';
+                    ApplicationArea = All;
 
                     trigger OnAction()
                     var
@@ -81,7 +87,7 @@ page 50082 "DEL M Deal Cr. Memo Linking"
 
                             requestID_Co_Loc := UpdateRequestManager_Cu.FNC_Add_Request(
                               Rec."Deal ID",
-                              urm_Re_Loc.Requested_By_Type::"Sales Cr. Memo",
+                              urm_Re_Loc.Requested_By_Type::"Sales Cr. Memo".AsInteger(),
                               Rec."Sales Cr. Memo No.",
                               CURRENTDATETIME
                             );

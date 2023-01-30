@@ -2,6 +2,7 @@ page 50045 "DEL Subform P&L Logistic"
 {
     PageType = ListPart;
     SourceTable = "DEL P&L Logistic";
+    UsageCategory = None;
 
     layout
     {
@@ -39,9 +40,9 @@ page 50045 "DEL Subform P&L Logistic"
 
     trigger OnFindRecord(Which: Text): Boolean
     begin
-        PLLogistic_Re_Temp.COPY(Rec);
-        IF PLLogistic_Re_Temp.FIND(Which) THEN BEGIN
-            Rec := PLLogistic_Re_Temp;
+        TempPLLogistic_Re.COPY(Rec);
+        IF TempPLLogistic_Re.FIND(Which) THEN BEGIN
+            Rec := TempPLLogistic_Re;
             EXIT(TRUE);
         END ELSE
             EXIT(FALSE);
@@ -57,31 +58,31 @@ page 50045 "DEL Subform P&L Logistic"
     var
         locResultSteps: Integer;
     begin
-        PLLogistic_Re_Temp.COPY(Rec);
-        locResultSteps := PLLogistic_Re_Temp.NEXT(Steps);
+        TempPLLogistic_Re.COPY(Rec);
+        locResultSteps := TempPLLogistic_Re.NEXT(Steps);
         IF locResultSteps <> 0 THEN
-            Rec := PLLogistic_Re_Temp;
+            Rec := TempPLLogistic_Re;
         EXIT(locResultSteps);
     end;
 
     var
-        PLLogistic_Re_Temp: Record "DEL P&L Logistic" temporary;
+        TempPLLogistic_Re: Record "DEL P&L Logistic" temporary;
 
 
     procedure ModifyRec()
     begin
-        PLLogistic_Re_Temp := Rec;
-        PLLogistic_Re_Temp.MODIFY();
+        TempPLLogistic_Re := Rec;
+        TempPLLogistic_Re.MODIFY();
     end;
 
 
     procedure SetTempRecord(var rRecIn: Record "DEL P&L Logistic" temporary)
     begin
-        PLLogistic_Re_Temp.DELETEALL();
+        TempPLLogistic_Re.DELETEALL();
         IF rRecIn.FINDFIRST() THEN
             REPEAT
-                PLLogistic_Re_Temp.COPY(rRecIn);
-                IF PLLogistic_Re_Temp.INSERT() THEN;
+                TempPLLogistic_Re.COPY(rRecIn);
+                IF TempPLLogistic_Re.INSERT() THEN;
             UNTIL rRecIn.NEXT() = 0;
         CurrPage.UPDATE();
     end;

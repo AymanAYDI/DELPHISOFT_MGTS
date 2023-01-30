@@ -6,33 +6,40 @@ tableextension 50027 "DEL SalesLine" extends "Sales Line"
         {
             Caption = 'Kundenreferenz';
             Description = 'Temp400';
+            DataClassification = CustomerContent;
         }
         field(50001; "DEL Qty. Init. Client"; Decimal)
         {
             Description = 'Temp400';
+            DataClassification = CustomerContent;
         }
         field(50002; "DEL Campaign Code"; Code[20])
         {
             Description = 'T-00551-SPEC40';
+            DataClassification = CustomerContent;
         }
         field(50003; "DEL Requested qtity"; Decimal)
         {
             Caption = 'Requested qtity';
+            DataClassification = CustomerContent;
         }
         field(50005; "DEL Estimated Delivery Date"; Date)
         {
             Caption = 'Estimated delivery date';
+            DataClassification = CustomerContent;
         }
         field(50006; "DEL Post With Purch. Order No."; Code[20])
         {
             Caption = 'Post with purchase order No.';
             Description = 'MGTS10.00.003';
+            DataClassification = CustomerContent;
         }
         field(50007; "DEL Shipped With Difference"; Boolean)
         {
             Caption = 'Shipped with difference';
             Description = 'MGTS10.00.003';
             Editable = false;
+            DataClassification = CustomerContent;
         }
         field(50008; "DEL Ship-to Code"; Code[10])
         {
@@ -40,14 +47,14 @@ tableextension 50027 "DEL SalesLine" extends "Sales Line"
             Description = 'MGTS10.014';
             Editable = false;
             TableRelation = "Ship-to Address".Code WHERE("Customer No." = FIELD("Sell-to Customer No."));
-
-
+            DataClassification = CustomerContent;
         }
         field(50009; "DEL Ship-to Name"; Text[100])
         {
             Caption = 'Ship-to Name';
             Description = 'MGTS10.014';
             Editable = false;
+            DataClassification = CustomerContent;
         }
 
     }

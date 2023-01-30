@@ -7,11 +7,12 @@ tableextension 50006 "DEL PurchRcptHeader" extends "Purch. Rcpt. Header" //120
             Caption = 'Type Order EDI';
 
             TableRelation = "DEL Type Order EDI";
-
+            DataClassification = CustomerContent;
         }
         field(50015; "DEL GLN"; Text[30])
         {
             Caption = 'GLN';
+            DataClassification = CustomerContent;
         }
         field(50016; "DEL Type Order EDI Description"; Text[50])
         {

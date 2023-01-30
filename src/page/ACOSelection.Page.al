@@ -2,6 +2,7 @@ page 50036 "DEL ACO Selection"
 {
     PageType = List;
     SourceTable = "Purchase Header";
+    UsageCategory = None;
 
     layout
     {
@@ -18,11 +19,9 @@ page 50036 "DEL ACO Selection"
             }
         }
     }
-
     actions
     {
     }
-
 
     procedure FNC_Get_ACO_No(): Code[20]
     begin

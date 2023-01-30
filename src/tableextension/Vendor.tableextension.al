@@ -9,15 +9,17 @@ tableextension 50023 "DEL Vendor" extends Vendor
             Caption = 'Forwarding Agent Code';
             Description = 'EDI';
             TableRelation = "DEL Forwarding agent 2";
+            DataClassification = CustomerContent;
         }
         field(50010; "DEL Statut CG"; enum "DEL Statut CG")
         {
             Caption = 'General purchasing term';
-
+            DataClassification = CustomerContent;
         }
         field(50011; "DEL Date de maj statut CG"; Date)
         {
             Caption = 'Update date of the statut';
+            DataClassification = CustomerContent;
         }
         field(50012; "DEL URL document CG"; Text[250])
         {
@@ -32,11 +34,12 @@ tableextension 50023 "DEL Vendor" extends Vendor
         field(50013; "DEL Statut CE"; Enum "DEL Statut CE")
         {
             Caption = 'Ethical charter';
-
+            DataClassification = CustomerContent;
         }
         field(50014; "DEL Date de maj statut CE"; Date)
         {
             Caption = 'Updated date CE';
+            DataClassification = CustomerContent;
         }
         field(50015; "DEL URL document CE"; Text[250])
         {
@@ -51,29 +54,30 @@ tableextension 50023 "DEL Vendor" extends Vendor
         field(50016; "DEL Supplier Base ID"; Text[50])
         {
             Caption = 'Supplier Base ID';
+            DataClassification = CustomerContent;
         }
         field(50017; "DEL EDI"; Boolean)
         {
             Caption = 'EDI';
-
+            DataClassification = CustomerContent;
         }
         field(50018; "DEL Ship Per"; enum "DEL Ship Per")
         {
             Caption = 'Ship Per';
-
-
+            DataClassification = CustomerContent;
         }
         field(50151; "DEL Email Payment Advice"; Code[20])
         {
             Caption = 'Sender Email Payment Advice';
 
             TableRelation = "DEL DocMatrix Email Codes".Code;
+            DataClassification = CustomerContent;
         }
         field(60001; "DEL Note Quality"; Code[10])
         {
             Caption = 'Quality rating';
             TableRelation = "DEL Note".Code WHERE("Type audit" = FILTER(Quality));
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 IF "DEL Realisation Date Quality" <> 0D THEN BEGIN
@@ -105,7 +109,7 @@ tableextension 50023 "DEL Vendor" extends Vendor
         field(60002; "DEL Realisation Date Quality"; Date)
         {
             Caption = 'Creation date QA';
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 IF "DEL Realisation Date Quality" > TODAY THEN BEGIN
@@ -134,7 +138,7 @@ tableextension 50023 "DEL Vendor" extends Vendor
         field(60003; "DEL Revision Date quality"; Date)
         {
             Caption = 'Expired date QA';
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 IF ("DEL Revision Date quality" = 0D) OR ("DEL Revision Date quality" < TODAY) THEN BEGIN
@@ -154,7 +158,7 @@ tableextension 50023 "DEL Vendor" extends Vendor
         {
             Caption = 'Social rating';
             TableRelation = "DEL Note".Code WHERE("Type audit" = FILTER(social));
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 IF "DEL Realisation Date Soc" <> 0D THEN BEGIN
@@ -186,7 +190,7 @@ tableextension 50023 "DEL Vendor" extends Vendor
         field(60005; "DEL Realisation Date Soc"; Date)
         {
             Caption = 'Creation date SA';
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 IF "DEL Realisation Date Soc" > TODAY THEN BEGIN
@@ -216,7 +220,7 @@ tableextension 50023 "DEL Vendor" extends Vendor
         field(60006; "DEL Revision Date Soc"; Date)
         {
             Caption = 'Expired date SA';
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 IF ("DEL Revision Date Soc" = 0D) OR ("DEL Revision Date Soc" < TODAY) THEN BEGIN
@@ -236,7 +240,7 @@ tableextension 50023 "DEL Vendor" extends Vendor
         {
             Caption = 'Environmental rating';
             TableRelation = "DEL Note".Code WHERE("Type audit" = FILTER(Environmental));
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 IF "DEL Realisation Date Env" <> 0D THEN BEGIN
@@ -268,7 +272,7 @@ tableextension 50023 "DEL Vendor" extends Vendor
         field(60008; "DEL Realisation Date Env"; Date)
         {
             Caption = 'Creation date EA';
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 IF "DEL Realisation Date Env" > TODAY THEN BEGIN
@@ -298,7 +302,7 @@ tableextension 50023 "DEL Vendor" extends Vendor
         field(60009; "DEL Revision Date env"; Date)
         {
             Caption = 'Expired date EA';
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 IF ("DEL Revision Date env" = 0D) OR ("DEL Revision Date env" < TODAY) THEN BEGIN
@@ -317,7 +321,7 @@ tableextension 50023 "DEL Vendor" extends Vendor
         field(60010; "DEL Qualified vendor"; Boolean)
         {
             Caption = 'Qualified vendor';
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 IF "DEL Revision Date quality" < "DEL Realisation Date Quality" THEN BEGIN
@@ -343,6 +347,7 @@ tableextension 50023 "DEL Vendor" extends Vendor
         field(60011; "DEL Date updated"; Date)
         {
             Caption = 'Date updated';
+            DataClassification = CustomerContent;
         }
         field(60012; "DEL URL Quality"; Text[250])
         {
@@ -373,23 +378,28 @@ tableextension 50023 "DEL Vendor" extends Vendor
         field(60015; "DEL Quality status"; Enum "DEL Impact Status")
         {
             Caption = 'Quality status';
+            DataClassification = CustomerContent;
         }
         field(60016; "DEL Social status"; Enum "DEL Impact Status")
         {
             Caption = 'Social status';
+            DataClassification = CustomerContent;
         }
         field(60017; "DEL Environmental status"; Enum "DEL Impact Status")
         {
             Caption = 'Environmental status';
+            DataClassification = CustomerContent;
         }
         field(60018; "DEL Derogation"; Boolean)
         {
             Caption = 'Dispensation';
+            DataClassification = CustomerContent;
         }
         field(60019; "DEL Lead Time Not Allowed"; Boolean)
         {
             AccessByPermission = TableData "Purch. Rcpt. Header" = R;
             Caption = 'Lead Time Not Allowed';
+            DataClassification = CustomerContent;
         }
     }
     keys

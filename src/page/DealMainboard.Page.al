@@ -7,6 +7,7 @@ page 50030 "DEL Deal Mainboard"
     InsertAllowed = false;
     PageType = Card;
     SourceTable = "DEL Deal";
+    UsageCategory = None;
 
     layout
     {
@@ -256,7 +257,7 @@ page 50030 "DEL Deal Mainboard"
 
                         requestID_Co_Loc := UpdateRequestManager_Cu.FNC_Add_Request(
                           Rec.ID,
-                          urm_Re_Loc.Requested_By_Type::CUSTOM,
+                          urm_Re_Loc.Requested_By_Type::CUSTOM.AsInteger(),
                           USERID,
                           CURRENTDATETIME
                         );
@@ -273,6 +274,7 @@ page 50030 "DEL Deal Mainboard"
                     Caption = 'Recalculer (y compris le prévu)';
                     Image = Forecast;
                     Promoted = true;
+                    PromotedOnly = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
 

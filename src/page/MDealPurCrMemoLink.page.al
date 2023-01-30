@@ -8,6 +8,7 @@ page 50083 "DEL M Deal Pur. Cr. Memo Link"
                   TableData "Purch. Cr. Memo Hdr." = rimd,
                   TableData "Purch. Cr. Memo Line" = rimd;
     SourceTable = "DEL Manual Purch. Cr. Memo L";
+    UsageCategory = None;
 
     layout
     {
@@ -16,20 +17,24 @@ page 50083 "DEL M Deal Pur. Cr. Memo Link"
             field("Purch Cr. Memo No."; Rec."Purch Cr. Memo No.")
             {
                 Caption = 'Note de crédit achat';
+                ApplicationArea = All;
             }
             field("Deal ID"; Rec."Deal ID")
             {
                 Caption = 'Deal ID destination';
+                ApplicationArea = All;
             }
             field("Shipment Selection"; Rec."Shipment Selection")
             {
                 Caption = 'Deal ID origine';
+                ApplicationArea = All;
             }
             label(General)
             {
                 CaptionClass = Text19022230;
                 Style = Standard;
                 StyleExpr = TRUE;
+                ApplicationArea = All;
             }
         }
     }
@@ -49,6 +54,7 @@ page 50083 "DEL M Deal Pur. Cr. Memo Link"
                     PromotedCategory = Process;
                     PromotedIsBig = true;
                     ShortCutKey = 'F9';
+                    ApplicationArea = All;
 
                     trigger OnAction()
                     var
@@ -147,8 +153,6 @@ page 50083 "DEL M Deal Pur. Cr. Memo Link"
             UNTIL PurchCreditMemoLine_Re_Loc.NEXT() = 0;
 
         PostedLine_Re_Loc.RESET();
-        //à voir: j'ai changé "table id" par "dimension set id" 
-        //PostedLine_Re_Loc.SETFILTER("Table ID", '%1|%2', 124, 125);
         PostedLine_Re_Loc.SETFILTER("Dimension Set ID", '%1|%2', 124, 125);
         //TODO PostedLine_Re_Loc.SETRANGE("Document No.", "Purch Cr. Memo No.");
         PostedLine_Re_Loc.SETRANGE("Dimension Code", 'ACHAT');

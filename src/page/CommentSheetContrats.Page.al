@@ -1,7 +1,5 @@
 page 50076 "DEL Comment Sheet Contrats"
 {
-
-
     AutoSplitKey = true;
     Caption = 'Comment Sheet';
     DataCaptionFields = "No.";
@@ -12,6 +10,7 @@ page 50076 "DEL Comment Sheet Contrats"
     SourceTable = "Comment Line";
     SourceTableView = SORTING(Date)
                       ORDER(Descending);
+    UsageCategory = None;
 
     layout
     {
@@ -21,16 +20,20 @@ page 50076 "DEL Comment Sheet Contrats"
             {
                 field("Date"; Rec.Date)
                 {
+                    ApplicationArea = All;
                 }
                 field(Comment; Rec.Comment)
                 {
+                    ApplicationArea = All;
                 }
                 field("Code"; Rec.Code)
                 {
                     Visible = false;
+                    ApplicationArea = All;
                 }
                 field("Type contrat"; Rec."DEL Type contrat")
                 {
+                    ApplicationArea = All;
                 }
             }
         }
@@ -45,5 +48,3 @@ page 50076 "DEL Comment Sheet Contrats"
         Rec.SetUpNewLine();
     end;
 }
-
-

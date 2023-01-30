@@ -19,10 +19,10 @@ codeunit 50007 "DEL Document Sheet" //TODO: Dotnet
     //     EXIT(ShowOpenFileDialog(ClientFileName, DummyFileName, FALSE));
     // end;
 
-    // procedure OpenFile(var ClientFileName: Text; var ServerFileName: Text): Boolean
-    // begin
-    //     EXIT(ShowOpenFileDialog(ClientFileName, ServerFileName, TRUE));
-    // end;
+    procedure OpenFile(var ClientFileName: Text; var ServerFileName: Text): Boolean
+    begin
+        //TODO    // EXIT(ShowOpenFileDialog(ClientFileName, ServerFileName, TRUE));
+    end;
 
 
     // local procedure ShowOpenFileDialog(var ClientFileName: Text; var ServerFileName: Text; UploadToServer: Boolean): Boolean
@@ -109,7 +109,7 @@ codeunit 50007 "DEL Document Sheet" //TODO: Dotnet
     end;
 
 
-    procedure GetFileName(FileName: Text): Text
+    procedure GetFileName(FileName: Text): Text[250]
     var
         i: Integer;
     begin
@@ -120,7 +120,7 @@ codeunit 50007 "DEL Document Sheet" //TODO: Dotnet
         EXIT(FileName);
     end;
 
-    procedure GetDirectoryName(FileName: Text): Text
+    procedure GetDirectoryName(FileName: Text): Text[250]
     var
         i: Integer;
     begin

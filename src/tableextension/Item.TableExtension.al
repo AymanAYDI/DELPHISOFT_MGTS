@@ -54,19 +54,23 @@ tableextension 50020 "DEL Item" extends Item //27
         // }
         field(50000; "DEL Weight net"; Decimal)
         {
+            DataClassification = CustomerContent;
         }
         field(50001; "DEL Weight brut"; Decimal)
         {
+            DataClassification = CustomerContent;
         }
         field(50002; "DEL Code EAN 13"; Code[13])
         {
+            DataClassification = CustomerContent;
         }
         field(50003; "DEL Vol cbm"; Decimal)
         {
+            DataClassification = CustomerContent;
         }
         field(50004; "DEL Vol cbm carton transport"; Decimal)
         {
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
 
@@ -79,7 +83,7 @@ tableextension 50020 "DEL Item" extends Item //27
         }
         field(50005; "DEL PCB"; Integer)
         {
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
 
@@ -92,134 +96,169 @@ tableextension 50020 "DEL Item" extends Item //27
         }
         field(50006; "DEL SPCB"; Integer)
         {
+            DataClassification = CustomerContent;
         }
         field(50007; "DEL Certified by QS"; Boolean)
         {
             Caption = 'Qualität geprüft';
+            DataClassification = CustomerContent;
         }
         field(50008; "DEL Risk Item"; Boolean)
         {
             Caption = 'Risk Item';
+            DataClassification = CustomerContent;
         }
         field(50009; "DEL Code motif de suivi"; Integer)
         {
             TableRelation = "DEL Liste des motifs".No;
+            DataClassification = CustomerContent;
         }
         field(50019; "DEL Date de creation"; Date)
         {
+            DataClassification = CustomerContent;
         }
         field(50020; "DEL Packaging Language FR"; Boolean)
         {
+            DataClassification = CustomerContent;
         }
         field(50021; "DEL Packaging Language IT"; Boolean)
         {
+            DataClassification = CustomerContent;
         }
         field(50022; "DEL Packaging Language ES"; Boolean)
         {
+            DataClassification = CustomerContent;
         }
         field(50023; "DEL Packaging Language NL"; Boolean)
         {
+            DataClassification = CustomerContent;
         }
         field(50024; "DEL Packaging Language PT"; Boolean)
         {
+            DataClassification = CustomerContent;
         }
         field(50025; "DEL Packaging Language PL"; Boolean)
         {
+            DataClassification = CustomerContent;
         }
         field(50026; "DEL Packaging Language HG"; Boolean)
         {
+            DataClassification = CustomerContent;
         }
         field(50027; "DEL Packaging Language RO"; Boolean)
         {
+            DataClassification = CustomerContent;
         }
         field(50028; "DEL Packaging Language RU"; Boolean)
         {
+            DataClassification = CustomerContent;
         }
         field(50029; "DEL OLD marque"; Text[30])
         {
+            DataClassification = CustomerContent;
         }
         field(50030; "DEL Marque"; Text[30])
         {
             TableRelation = Manufacturer.Code;
+            DataClassification = CustomerContent;
         }
         field(50031; "DEL Carac. complementaire"; Text[30])
         {
+            DataClassification = CustomerContent;
         }
         field(50032; "DEL Date prochaine commande"; Date)
         {
-
-
+            DataClassification = CustomerContent;
         }
         field(50033; "DEL Panier type"; Boolean)
         {
-
+            DataClassification = CustomerContent;
         }
         field(50034; "DEL Est. next delivery date"; Date)
         {
             Caption = 'Estimated next delivery date';
-
+            DataClassification = CustomerContent;
         }
         field(50035; "DEL Remaining days"; Integer)
         {
             Caption = 'Remaining days';
-
+            DataClassification = CustomerContent;
         }
         field(50040; "DEL Ampoules: Type"; Text[30])
         {
+            DataClassification = CustomerContent;
         }
         field(50041; "DEL Ampoules: Volt"; Text[30])
         {
+            DataClassification = CustomerContent;
         }
         field(50042; "DEL Ampoules: Puissance"; Text[30])
         {
+            DataClassification = CustomerContent;
         }
         field(50043; "DEL Ampoules: E-mark"; Boolean)
         {
+            DataClassification = CustomerContent;
         }
         field(50050; "DEL Couleur1"; Text[30])
         {
+            DataClassification = CustomerContent;
         }
         field(50060; "DEL BEG: Taille en cm"; Decimal)
         {
+            DataClassification = CustomerContent;
         }
         field(50061; "DEL BEG: Taille en pouce"; Decimal)
         {
+            DataClassification = CustomerContent;
         }
         field(50062; "DEL BEG: Materiau balai"; Text[30])
         {
+            DataClassification = CustomerContent;
         }
         field(50063; "DEL BEG: Ep. mat balai en mm"; Text[30])
         {
+            DataClassification = CustomerContent;
         }
         field(50064; "DEL BEG: Materiau lame"; Text[30])
         {
+            DataClassification = CustomerContent;
         }
         field(50070; "DEL Carac. technique 1"; Text[30])
         {
+            DataClassification = CustomerContent;
         }
         field(50071; "DEL Carac. technique 2"; Text[30])
         {
+            DataClassification = CustomerContent;
         }
         field(50072; "DEL Carac. technique 3"; Text[30])
         {
+            DataClassification = CustomerContent;
         }
         field(50080; "DEL Couleur2"; Text[30])
         {
+            DataClassification = CustomerContent;
         }
         field(50081; "DEL Affectation vehicule"; Text[30])
         {
+            DataClassification = CustomerContent;
         }
         field(50082; "DEL Normes et qualite"; Text[30])
         {
+            DataClassification = CustomerContent;
         }
         field(50083; "DEL Date de peremption"; Date)
         {
+            DataClassification = CustomerContent;
         }
         field(50084; "DEL Code nomenc. douaniere"; Text[30])
         {
+            DataClassification = CustomerContent;
         }
         field(50085; "DEL Droit de douane reduit"; Decimal)
         {
+            DataClassification = CustomerContent;
         }
         field(50090; "DEL Images"; Integer)
         {
@@ -268,10 +307,12 @@ tableextension 50020 "DEL Item" extends Item //27
         field(50100; "DEL Show item as new until"; Date)
         {
             Caption = 'Date affichage article nouveautés';
+            DataClassification = CustomerContent;
         }
         field(50101; "DEL WEB Sale blocked"; Text[30])
         {
             Caption = 'WEB Sale blocked';
+            DataClassification = CustomerContent;
         }
         field(60001; "DEL Item Category Label"; Text[50])
         {
@@ -359,7 +400,7 @@ tableextension 50020 "DEL Item" extends Item //27
         field(60010; "DEL Marque Produit"; Enum "DEL Mark")
         {
             Caption = 'Brand Type';
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
 
@@ -410,8 +451,7 @@ tableextension 50020 "DEL Item" extends Item //27
         field(60025; "DEL Blocking Quality"; Boolean)
         {
             Caption = 'Blocking Quality';
-
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
 
@@ -433,18 +473,17 @@ tableextension 50020 "DEL Item" extends Item //27
         field(60026; "DEL Nom utilisateur"; Code[50])
         {
             Caption = 'Validator User';
-
+            DataClassification = CustomerContent;
         }
         field(60027; "DEL Date Of Update"; Date)
         {
             Caption = 'Date Of Update';
-
+            DataClassification = CustomerContent;
         }
         field(60028; "DEL Dispensation"; Boolean)
         {
             Caption = 'Dispensation';
-
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
 
@@ -461,12 +500,12 @@ tableextension 50020 "DEL Item" extends Item //27
         field(60029; "DEL Nom utlisateur 2"; Code[50])
         {
             Caption = 'User Name Making The Last Update';
-
+            DataClassification = CustomerContent;
         }
         field(60030; "DEL Date Of Update 2"; Date)
         {
             Caption = 'Date Of Update';
-
+            DataClassification = CustomerContent;
         }
         field(60031; "DEL Regl. Plan Control"; Boolean)
         {
@@ -482,6 +521,7 @@ tableextension 50020 "DEL Item" extends Item //27
         field(60032; "DEL Product Description"; Text[100])
         {
             Caption = 'Description produit';
+            DataClassification = CustomerContent;
             //TODO/ 'Product Group Code' is removed.
             // TableRelation = "DEL Regulation Matrix"."Product Description" WHERE ("Item Category Code"=FIELD("Item Category Code"),
             //                                                                  "Product Group Code"=FIELD("Product Group Code"),
@@ -579,6 +619,7 @@ tableextension 50020 "DEL Item" extends Item //27
             Caption = 'Length';
 
             MinValue = 0;
+            DataClassification = CustomerContent;
         }
         field(91034; "DEL Width.old"; Decimal)
         {
@@ -586,6 +627,7 @@ tableextension 50020 "DEL Item" extends Item //27
             Caption = 'Width';
 
             MinValue = 0;
+            DataClassification = CustomerContent;
         }
         field(91036; "DEL Depth.old"; Decimal)
         {
@@ -593,6 +635,7 @@ tableextension 50020 "DEL Item" extends Item //27
             Caption = 'Depth';
 
             MinValue = 0;
+            DataClassification = CustomerContent;
         }
 
     }

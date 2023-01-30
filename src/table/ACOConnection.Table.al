@@ -2,13 +2,14 @@ table 50026 "DEL ACO Connection"
 {
 
     Caption = 'ACO Connection';
-
+    DataClassification = CustomerContent;
     fields
     {
         field(1; Deal_ID; Code[20])
         {
             TableRelation = "DEL Deal".ID;
             Caption = 'Deal_ID';
+            DataClassification = CustomerContent;
         }
         field(2; "ACO No."; Code[20])
         {
@@ -16,6 +17,7 @@ table 50026 "DEL ACO Connection"
             Caption = 'ACO No.';
 
             ValidateTableRelation = false;
+            DataClassification = CustomerContent;
         }
         field(3; "Vendor No."; Code[20])
         {
@@ -23,6 +25,7 @@ table 50026 "DEL ACO Connection"
             Editable = false;
             FieldClass = Normal;
             TableRelation = Vendor;
+            DataClassification = CustomerContent;
         }
         field(4; Status; Enum "DEL Status")
         {

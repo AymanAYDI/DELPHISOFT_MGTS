@@ -3,20 +3,21 @@ table 50056 "DEL Item Quality forms"
 
 
     Caption = 'Quality forms';
-
+    DataClassification = CustomerContent;
     fields
     {
         field(2; "Item No."; Code[20])
         {
             Caption = 'Item No.';
             TableRelation = Item;
+            DataClassification = CustomerContent;
         }
         field(3; "Type / Nature Enregistrement"; Code[20])
         {
             Caption = 'Type of forms';
 
             TableRelation = "DEL Type/Nature Enregistrement";
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 CALCFIELDS(Description);
@@ -34,10 +35,12 @@ table 50056 "DEL Item Quality forms"
         field(5; "Description Supplementaire"; Text[50])
         {
             Caption = 'Additionnal description';
+            DataClassification = CustomerContent;
         }
         field(6; "Date of creation"; Date)
         {
             Caption = 'Date of creation';
+            DataClassification = CustomerContent;
         }
     }
 

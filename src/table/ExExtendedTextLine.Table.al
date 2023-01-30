@@ -3,12 +3,13 @@ table 99209 "DEL Ex_Extended Text Line"
 
 {
     Caption = 'Extended Text Line';
-
+    DataClassification = CustomerContent;
     fields
     {
         field(1; "Table Name"; Enum "Extended Text Table Name")
         {
             Caption = 'Table Name';
+            DataClassification = CustomerContent;
         }
         field(2; "No."; Code[20])
         {
@@ -20,29 +21,34 @@ table 99209 "DEL Ex_Extended Text Line"
             IF ("Table Name" = CONST(Item)) Item
             ELSE
             IF ("Table Name" = CONST(Resource)) Resource;
+            DataClassification = CustomerContent;
         }
         field(3; "Language Code"; Code[10])
         {
             Caption = 'Language Code';
             TableRelation = Language;
+            DataClassification = CustomerContent;
         }
         field(4; "Text No."; Integer)
         {
             Caption = 'Text No.';
+            DataClassification = CustomerContent;
         }
         field(5; "Line No."; Integer)
         {
             Caption = 'Line No.';
+            DataClassification = CustomerContent;
         }
 
         field(6; "Text"; Text[50])
         {
             Caption = 'Text';
+            DataClassification = CustomerContent;
         }
         field(4006496; Vererbt; Boolean)
         {
             Caption = 'Inherited';
-
+            DataClassification = CustomerContent;
         }
         //TODO 
         // field(4006497; Separator; Enum "Separator ")

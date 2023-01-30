@@ -5,25 +5,26 @@ table 99206 "DEL Ex_Unit of Measure"
     DataCaptionFields = "Code", Description;
     DrillDownPageID = "Units of Measure";
     LookupPageID = "Units of Measure";
-
-
+    DataClassification = CustomerContent;
     fields
     {
         field(1; "Code"; Code[10])
         {
             Caption = 'Code';
             NotBlank = true;
+            DataClassification = CustomerContent;
         }
         field(2; Description; Text[10])
         {
             Caption = 'Description';
+            DataClassification = CustomerContent;
         }
 
         field(4006496; "ISO Code"; Code[3])  //---------Spécifique pays Suisse
 
         {
             Caption = 'ISO Code';
-
+            DataClassification = CustomerContent;
         }
     }
 

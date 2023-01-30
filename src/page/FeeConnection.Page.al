@@ -3,7 +3,8 @@ page 50025 "DEL Fee Connection"
     Caption = 'Fee connection';
     PageType = List;
     SourceTable = "DEL Fee Connection";
-
+    UsageCategory = Administration;
+    ApplicationArea = all;
     layout
     {
         area(content)

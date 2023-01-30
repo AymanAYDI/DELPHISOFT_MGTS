@@ -6,7 +6,7 @@ page 50015 "DEL Corr. Facture enregistée"
     PageType = Card;
     RefreshOnActivate = true;
     SourceTable = "Sales Invoice Header";
-
+    UsageCategory = None;
     layout
     {
         area(content)

@@ -1,7 +1,7 @@
 table 50037 "DEL Manual Deal Inv. Linking"
 {
     Caption = 'DEL Manual Deal Inv. Linking';
-
+    DataClassification = CustomerContent;
     fields
     {
         field(1; "Entry No."; Integer)
@@ -10,14 +10,17 @@ table 50037 "DEL Manual Deal Inv. Linking"
                                                            "System-Created Entry" = CONST(false),
                                                            Amount = FILTER(> 0));
             Caption = 'Entry No.';
+            DataClassification = CustomerContent;
         }
         field(10; "Document No."; Code[20])
         {
             Caption = 'Document No.';
+            DataClassification = CustomerContent;
         }
         field(20; "Account No."; Text[20])
         {
             Caption = 'Account No.';
+            DataClassification = CustomerContent;
         }
         field(50; "Shipment Selection"; Integer)
         {
@@ -34,7 +37,7 @@ table 50037 "DEL Manual Deal Inv. Linking"
             CaptionClass = '1,3,1';
             Caption = 'Global Dimension 1 Filter';
             FieldClass = FlowFilter;
-             TableRelation = User;
+            TableRelation = User;
         }
     }
 

@@ -6,6 +6,8 @@ page 50010 "DEL Lignes achat en cours"
     SourceTableView = SORTING("Document Type", "Document No.", "Line No.")
                       ORDER(Ascending)
                       WHERE(Type = CONST(Item));
+    UsageCategory = Lists;
+    ApplicationArea = all;
 
     layout
     {

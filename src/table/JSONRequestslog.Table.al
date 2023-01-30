@@ -4,38 +4,45 @@ table 50073 "DEL JSON Requests log"
 
     DrillDownPageID = "DEL Matrix Subs. reg Card";
     LookupPageID = "DEL Matrix Subs. reg Card";
-
+    DataClassification = CustomerContent;
     fields
     {
         field(1; "Entry No."; BigInteger)
         {
             AutoIncrement = true;
             Caption = 'Entry No.';
+            DataClassification = CustomerContent;
         }
         field(2; "Date"; DateTime)
         {
             Caption = 'Date';
+            DataClassification = CustomerContent;
         }
         field(3; Type; Enum "DEL Type ReqRes")
         {
             Caption = 'Type';
+            DataClassification = CustomerContent;
         }
         field(4; Function; Text[50])
         {
             Caption = 'Function';
+            DataClassification = CustomerContent;
         }
         field(5; "Message"; BLOB)
         {
             Caption = 'Message';
             SubType = Json;
+            DataClassification = CustomerContent;
         }
         field(6; "Error"; Boolean)
         {
             Caption = 'Error';
+            DataClassification = CustomerContent;
         }
         field(7; Filtered; Boolean)
         {
             Caption = 'Filtré';
+            DataClassification = CustomerContent;
         }
     }
 

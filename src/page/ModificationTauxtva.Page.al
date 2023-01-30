@@ -1,9 +1,8 @@
 page 50084 "DEL Modification Taux tva"
 {
-
-
     PageType = Card;
     SourceTable = "Sales Header";
+    UsageCategory = None;
 
     layout
     {
@@ -15,6 +14,7 @@ page 50084 "DEL Modification Taux tva"
                 field(Taux; Taux)
                 {
                     Caption = 'Nouveau Taux TVA';
+                    ApplicationArea = All;
                 }
             }
         }
@@ -28,11 +28,13 @@ page 50084 "DEL Modification Taux tva"
             {
                 Caption = 'Maj TVA';
                 Promoted = true;
+                PromotedOnly = true;
                 PromotedCategory = Process;
+                ApplicationArea = All;
+                Image = VATExemption;
 
                 trigger OnAction()
                 begin
-
 
                     SalesLine2.SETRANGE("Document Type", SalesLine2."Document Type"::Order);
                     SalesLine2.SETRANGE("Document No.", Rec."No.");
@@ -42,7 +44,6 @@ page 50084 "DEL Modification Taux tva"
                             SalesLine2."VAT %" := Taux;
                             SalesLine2.UpdateAmounts();
                             SalesLine2.MODIFY();
-
                         UNTIL SalesLine2.NEXT() = 0;
 
                     MESSAGE('MAJ terminée');
@@ -54,6 +55,4 @@ page 50084 "DEL Modification Taux tva"
     var
         SalesLine2: Record "Sales Line";
         Taux: Decimal;
-
 }
-

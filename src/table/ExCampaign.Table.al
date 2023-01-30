@@ -4,29 +4,34 @@ table 99210 "DEL Ex_Campaign"
     Caption = 'Campaign';
     DataCaptionFields = "No.", Description;
     LookupPageID = "Campaign List";
-
+    DataClassification = CustomerContent;
     fields
     {
         field(1; "No."; Code[20])
         {
             Caption = 'No.';
+            DataClassification = CustomerContent;
         }
         field(2; Description; Text[50])
         {
             Caption = 'Description';
+            DataClassification = CustomerContent;
         }
         field(3; "Starting Date"; Date)
         {
             Caption = 'Starting Date';
+            DataClassification = CustomerContent;
         }
         field(4; "Ending Date"; Date)
         {
             Caption = 'Ending Date';
+            DataClassification = CustomerContent;
         }
         field(5; "Salesperson Code"; Code[10])
         {
             Caption = 'Salesperson Code';
             TableRelation = "Salesperson/Purchaser";
+            DataClassification = CustomerContent;
         }
 
         field(6; Comment; Boolean)
@@ -44,6 +49,7 @@ table 99210 "DEL Ex_Campaign"
         {
             Caption = 'Last Date Modified';
             Editable = false;
+            DataClassification = CustomerContent;
         }
 
         field(8; "No. Series"; Code[10])
@@ -52,6 +58,7 @@ table 99210 "DEL Ex_Campaign"
             Caption = 'No. Series';
             Editable = false;
             TableRelation = "No. Series";
+            DataClassification = CustomerContent;
         }
 
         field(9; "Global Dimension 1 Code"; Code[20])
@@ -60,6 +67,7 @@ table 99210 "DEL Ex_Campaign"
             CaptionClass = '1,1,1';
             Caption = 'Global Dimension 1 Code';
             TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(1));
+            DataClassification = CustomerContent;
         }
 
         field(10; "Global Dimension 2 Code"; Code[20])
@@ -68,6 +76,7 @@ table 99210 "DEL Ex_Campaign"
             CaptionClass = '1,1,2';
             Caption = 'Global Dimension 2 Code';
             TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2));
+            DataClassification = CustomerContent;
         }
 
         field(11; "Status Code"; Code[10])
@@ -75,6 +84,7 @@ table 99210 "DEL Ex_Campaign"
         {
             Caption = 'Status Code';
             TableRelation = "Campaign Status";
+            DataClassification = CustomerContent;
         }
 
 
@@ -331,26 +341,31 @@ table 99210 "DEL Ex_Campaign"
         field(4006496; Hauptkampagne; Boolean)
         {
             Caption = 'Main Campaign';
+            DataClassification = CustomerContent;
         }
         field(4006497; eCommerce; Boolean)
 
         {
             Caption = 'eCommerce';
+            DataClassification = CustomerContent;
         }
 
         field(4006498; Mediacode; Code[5])
         {
             Caption = 'Mediacore';
+            DataClassification = CustomerContent;
         }
 
         field(4006499; "eCommerce Mandant"; Text[30])
         {
             Caption = 'eCommerce Company';
             TableRelation = Company;
+            DataClassification = CustomerContent;
         }
         field(4006500; Kurztext; Text[150])
         {
             Caption = 'Short Text';
+            DataClassification = CustomerContent;
         }
     }
 

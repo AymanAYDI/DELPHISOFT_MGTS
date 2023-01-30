@@ -6,6 +6,7 @@ page 50009 "DEL Lignes vente en cours"
     SourceTableView = SORTING("Document Type", "Document No.", "Line No.")
                       ORDER(Ascending)
                       WHERE(Type = CONST(Item));
+    UsageCategory = None;
 
     layout
     {

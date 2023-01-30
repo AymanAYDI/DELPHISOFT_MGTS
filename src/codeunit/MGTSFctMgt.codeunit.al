@@ -938,14 +938,14 @@ codeunit 50101 "DEL MGTS_FctMgt"
         tempSpecialSHBuffer: Record "Sales Header" TEMPORARY;
     BEGIN
         //MGTS0123
-        pTempSH.RESET;
-        pTempSH.DELETEALL;
-        tempSpecialSHBuffer.RESET;
-        IF tempSpecialSHBuffer.FINDSET THEN
+        pTempSH.RESET();
+        pTempSH.DELETEALL();
+        tempSpecialSHBuffer.RESET();
+        IF tempSpecialSHBuffer.FINDSET() THEN
             REPEAT
                 pTempSH := tempSpecialSHBuffer;
-                pTempSH.INSERT;
-            UNTIL tempSpecialSHBuffer.NEXT = 0;
+                pTempSH.INSERT();
+            UNTIL tempSpecialSHBuffer.NEXT() = 0;
     END;
 
 

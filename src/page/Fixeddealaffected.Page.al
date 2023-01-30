@@ -6,7 +6,8 @@ page 50062 "DEL Fixed deal affected"
     SourceTable = "DEL Logistic";
     SourceTableView = WHERE("Display record" = FILTER('No'),
                             "BL N°" = FILTER(<> ''));
-
+    UsageCategory = Lists;
+    ApplicationArea = all;
     layout
     {
         area(content)
@@ -15,27 +16,33 @@ page 50062 "DEL Fixed deal affected"
             {
                 field(ID; Rec.ID)
                 {
+                    ApplicationArea = All;
                 }
                 field(Deal_ID; Rec.Deal_ID)
                 {
+                    ApplicationArea = All;
                 }
                 field("ACO No."; Rec."ACO No.")
                 {
+                    ApplicationArea = All;
                 }
                 field("Supplier Name"; Rec."Supplier Name")
                 {
+                    ApplicationArea = All;
                 }
                 field("BL N°"; Rec."BL N°")
                 {
-
+                    ApplicationArea = All;
                 }
                 field("Display record"; Rec."Display record")
                 {
                     Editable = false;
                     Visible = false;
+                    ApplicationArea = All;
                 }
                 field("Affectation manuelle"; Rec."Affectation manuelle")
                 {
+                    ApplicationArea = All;
                 }
             }
         }
@@ -52,6 +59,7 @@ page 50062 "DEL Fixed deal affected"
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
+                ApplicationArea = All;
 
                 trigger OnAction()
                 var
@@ -70,7 +78,6 @@ page 50062 "DEL Fixed deal affected"
                         UNTIL TrackingGeneral.NEXT() = 0
                     ELSE
                         ERROR(Text00001);
-
 
                     TrackingDetail.SETRANGE(Booking_no, Booking_Num);
                     TrackingDetail.SETRANGE(Order_no, Rec."ACO No.");
@@ -94,14 +101,10 @@ page 50062 "DEL Fixed deal affected"
                     Rec."Display record" := TRUE;
                     Rec.MODIFY();
                     CurrPage.UPDATE();
-
-
                 end;
             }
         }
     }
-
-
 
     var
         TrackingDetail: Record "DEL Tracking détail";
@@ -110,4 +113,3 @@ page 50062 "DEL Fixed deal affected"
 
         Booking_Num: Text[50];
 }
-

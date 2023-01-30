@@ -14,6 +14,7 @@ tableextension 50035 "DEL ItemReference" extends "Item Reference" //5777
         field(50001; "DEL Entry No."; BigInteger)
         {
             Caption = 'Entry No.';
+            DataClassification = CustomerContent;
         }
     }
     keys

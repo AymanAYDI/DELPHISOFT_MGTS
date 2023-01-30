@@ -5,6 +5,7 @@ page 50011 "DEL Forwarding Agents"
     Caption = 'Forwarding Agents';
     PageType = List;
     SourceTable = "DEL Forwarding Agent";
+    UsageCategory = None;
 
     layout
     {

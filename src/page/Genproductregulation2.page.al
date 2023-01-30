@@ -9,7 +9,7 @@ page 50104 "DEL Gen. product regulation 2"
     SourceTableView = SORTING("No.", Type)
                       ORDER(Ascending)
                       WHERE(Type = FILTER("General product"));
-
+    UsageCategory = None;
     layout
     {
         area(content)

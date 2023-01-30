@@ -8,6 +8,7 @@ page 50097 "DEL General regulation Card"
     SourceTableView = SORTING("No.", Type)
                       ORDER(Ascending)
                       WHERE(Type = FILTER("General product"));
+    UsageCategory = None;
 
     layout
     {

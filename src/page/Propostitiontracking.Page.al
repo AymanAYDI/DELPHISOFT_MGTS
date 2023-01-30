@@ -2,6 +2,7 @@ page 50055 "DEL Propostition tracking"
 {
     PageType = List;
     SourceTable = "DEL Tracking général";
+    UsageCategory = None;
 
     layout
     {
@@ -79,6 +80,3 @@ page 50055 "DEL Propostition tracking"
         Rec.SETRANGE(Statut, '');
     end;
 }
-
-
-

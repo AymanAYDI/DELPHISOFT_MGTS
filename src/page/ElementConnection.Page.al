@@ -2,6 +2,7 @@ page 50027 "DEL Element Connection"
 {
     PageType = List;
     SourceTable = "DEL Element Connection";
+    UsageCategory = None;
 
     layout
     {

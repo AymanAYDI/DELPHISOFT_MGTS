@@ -84,7 +84,6 @@ page 50014 "DEL Corr. facture vente ligne"
                 }
                 field(LineAmountText; LineAmountText)
                 {
-                    //TODO    // BlankZero = true;
                     CaptionClass = Rec.FIELDCAPTION("Line Amount");
                     Editable = false;
                 }
@@ -153,7 +152,7 @@ page 50014 "DEL Corr. facture vente ligne"
     trigger OnAfterGetRecord()
     begin
         DescriptionIndent := 0;
-        DescriptionOnFormat;
+        DescriptionOnFormat();
         LineAmountText := FORMAT(Rec."Line Amount");
         LineAmountTextOnFormat(LineAmountText);
         AmountIncludingVATText := FORMAT(Rec."Amount Including VAT");

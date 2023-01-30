@@ -1,11 +1,11 @@
 page 50048 "DEL Update Request Manager"
 {
-
     InsertAllowed = false;
     ModifyAllowed = true;
     PageType = List;
     SourceTable = "DEL Update Request Manager";
-
+    UsageCategory = Tasks;
+    ApplicationArea = all;
     layout
     {
         area(content)

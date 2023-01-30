@@ -4,6 +4,7 @@ tableextension 50033 "DEL Contact" extends Contact //5050
     {
         field(50000; "DEL Password_webAccess"; Text[30])
         {
+            DataClassification = CustomerContent;
         }
         field(50001; "DEL Categories"; Integer)
         {
@@ -14,19 +15,22 @@ tableextension 50033 "DEL Contact" extends Contact //5050
         }
         field(50002; "DEL Commande_web"; Boolean)
         {
+            DataClassification = CustomerContent;
         }
         field(50003; "DEL adv"; Boolean)
         {
             Caption = 'Administration des vents';
+            DataClassification = CustomerContent;
         }
         field(50004; "N° de TVA"; Text[20])
         {
+            DataClassification = CustomerContent;
         }
         field(50005; "DEL GLN"; Code[13])
         {
             Caption = 'GLN';
             Numeric = true;
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             var
                 GLNCalculator: Codeunit "GLN Calculator";
@@ -39,7 +43,7 @@ tableextension 50033 "DEL Contact" extends Contact //5050
         {
             Caption = 'Quality rating';
             TableRelation = "DEL Note".Code WHERE("Type audit" = FILTER(Quality));
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
 
@@ -48,7 +52,7 @@ tableextension 50033 "DEL Contact" extends Contact //5050
         field(60002; "DEL Realisation Date Quality"; Date)
         {
             Caption = 'Creation Date';
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 IF "DEL Realisation Date Quality" <> 0D THEN BEGIN
@@ -67,12 +71,13 @@ tableextension 50033 "DEL Contact" extends Contact //5050
         field(60003; "DEL Revision Date quality"; Date)
         {
             Caption = 'Expired Date';
+            DataClassification = CustomerContent;
         }
         field(60004; "DEL Note Soc"; Code[10])
         {
             Caption = 'Social rating';
             TableRelation = "DEL Note".Code WHERE("Type audit" = FILTER(social));
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
             end;
@@ -80,7 +85,7 @@ tableextension 50033 "DEL Contact" extends Contact //5050
         field(60005; "DEL Realisation Date Soc"; Date)
         {
             Caption = 'Creation Date Soc';
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 IF "DEL Realisation Date Soc" <> 0D THEN BEGIN
@@ -101,12 +106,13 @@ tableextension 50033 "DEL Contact" extends Contact //5050
         field(60006; "DEL Revision Date Soc"; Date)
         {
             Caption = 'Expired Date Soc';
+            DataClassification = CustomerContent;
         }
         field(60007; "DEL Note Env"; Code[10])
         {
             Caption = 'Environmental rating';
             TableRelation = "DEL Note".Code WHERE("Type audit" = FILTER(Environmental));
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
             end;
@@ -114,7 +120,7 @@ tableextension 50033 "DEL Contact" extends Contact //5050
         field(60008; "DEL Realisation Date Env"; Date)
         {
             Caption = 'Creation Date Env';
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 IF "DEL Realisation Date Env" <> 0D THEN BEGIN
@@ -133,6 +139,7 @@ tableextension 50033 "DEL Contact" extends Contact //5050
         field(60009; "DEL Revision Date env"; Date)
         {
             Caption = 'Expired Date Env';
+            DataClassification = CustomerContent;
         }
         field(60012; "DEL URL Quality"; Text[250])
         {
@@ -163,29 +170,34 @@ tableextension 50033 "DEL Contact" extends Contact //5050
         field(60015; "DEL Quality status"; Enum "DEL Impact Status")
         {
             Caption = 'Quality status';
+            DataClassification = CustomerContent;
             //cette option a été en francais ! à vérifier 
         }
         field(60016; "DEL Social status"; enum "DEL Impact Status")
         {
             Caption = 'Social status';
+            DataClassification = CustomerContent;
         }
         field(60017; "DEL Environmental status"; enum "DEL Impact Status")
         {
             Caption = 'Environmental status';
+            DataClassification = CustomerContent;
         }
         field(70000; "DEL Type Contact"; enum "DEL Type Contact")
         {
             Caption = 'Contact Type';
+            DataClassification = CustomerContent;
         }
         field(70001; "DEL Customer No."; Code[20])
         {
             Caption = 'Customer No.';
             TableRelation = Customer;
+            DataClassification = CustomerContent;
         }
         field(70002; "DEL Name Contact"; Text[20])
         {
             Caption = 'Name';
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 Name := "DEL Name Contact" + ' ' + "DEL First Name Contact";
@@ -194,7 +206,7 @@ tableextension 50033 "DEL Contact" extends Contact //5050
         field(70003; "DEL First Name Contact"; Text[30])
         {
             Caption = 'First Name';
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 Name := "DEL Name Contact" + ' ' + "DEL First Name Contact";

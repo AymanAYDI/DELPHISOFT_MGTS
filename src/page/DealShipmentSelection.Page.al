@@ -6,6 +6,7 @@ page 50038 "DEL Deal Shipment Selection"
     PageType = List;
     RefreshOnActivate = true;
     SourceTable = "DEL Deal Shipment Selection";
+    UsageCategory = None;
 
     layout
     {
@@ -168,7 +169,7 @@ page 50038 "DEL Deal Shipment Selection"
         element_Re_Loc.SETRANGE(Deal_ID, Rec.Deal_ID);
         element_Re_Loc.SETRANGE(Type, element_Re_Loc.Type::Fee);
         element_Re_Loc.SETRANGE(Instance, element_Re_Loc.Instance::planned);
-        IF element_Re_Loc.FINDFIRST() THEN
+        IF element_Re_Loc.FindSet() THEN
             REPEAT
 
                 fee_Re_Loc.RESET();

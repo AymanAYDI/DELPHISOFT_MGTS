@@ -4,6 +4,7 @@ page 50047 "DEL Purchase Price worksheet"
     Caption = 'Purchase Price worksheet';
     PageType = List;
     SourceTable = "DEL Purchase Price Worksheet";
+    UsageCategory = None;
 
     layout
     {

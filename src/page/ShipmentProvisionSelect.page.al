@@ -1,12 +1,11 @@
-
 page 50050 "DEL Shipment Provision Select."
 {
-
     DeleteAllowed = false;
     InsertAllowed = false;
     PageType = List;
     SourceTable = "DEL Shipment Provision Select.";
-
+    UsageCategory = Tasks;
+    ApplicationArea = all;
     layout
     {
         area(content)
@@ -15,7 +14,7 @@ page 50050 "DEL Shipment Provision Select."
             {
                 Caption = 'General';
 
-                // field(lineNumber; "lineNumber") // TODO: these fields are missing in the source table
+                // field(lineNumber; lineNumber) // TODO:
                 // {
                 //     Caption = 'Nombre de lignes';
                 //     Editable = false;
@@ -126,7 +125,6 @@ page 50050 "DEL Shipment Provision Select."
                     begin
                         provision_Report.RUNMODAL();
 
-
                         FNC_SetPeriod();
 
                         FNC_UpdateTotals();
@@ -181,7 +179,7 @@ page 50050 "DEL Shipment Provision Select."
                 action("Purger > 3 mois")
                 {
                     Caption = 'Purger > 3 mois';
-
+                    Image = DueDate;
                     trigger OnAction()
                     begin
                         Provision_Cu.FNC_Prune();
@@ -239,9 +237,7 @@ page 50050 "DEL Shipment Provision Select."
     begin
         FNC_UpdateTotals();
 
-
         Rec.SETRANGE(USER_ID, USERID);
-
 
         FNC_SetPeriod();
 
@@ -267,7 +263,6 @@ page 50050 "DEL Shipment Provision Select."
         color: Integer;
         lineNumber: Integer;
 
-
     procedure FNC_UpdateTotals()
     begin
         FNC_InitVars();
@@ -286,10 +281,7 @@ page 50050 "DEL Shipment Provision Select."
         IF totalProvisionAmount < 0 THEN totalProvisionAmount := 0;
 
         lineNumber := Rec.COUNT;
-
-
     end;
-
 
     procedure FNC_InitVars()
     begin
@@ -299,7 +291,6 @@ page 50050 "DEL Shipment Provision Select."
         lineNumber := 0;
     end;
 
-
     procedure FNC_SetPeriod()
     var
         spsp_Re_Loc: Record "DEL Ship. Prov. Sele. Params";
@@ -308,13 +299,11 @@ page 50050 "DEL Shipment Provision Select."
         isCurrentPeriod_Te := FALSE;
         isCurrentPeriod_Bo := TRUE;
 
-
         IF spsp_Re_Loc.GET(USERID) THEN BEGIN
 
             date_Da := spsp_Re_Loc.period;
 
             IF spsp_Re_Loc.isCurrentPeriod THEN BEGIN
-
 
                 isCurrentPeriod_Te := TRUE;
                 isCurrentPeriod_Bo := TRUE;
@@ -328,15 +317,5 @@ page 50050 "DEL Shipment Provision Select."
         END;
         monthLastWorkingDay := Deal_Cu.FNC_GetMonthLastWorkDay(date_Da);
         monthFirstWorkingDay := Deal_Cu.FNC_GetMonthFirstWorkDay(CALCDATE('<+1M>', date_Da));
-
-    end;
-
-
-    local procedure ProvisionAmountOnFormat()
-    begin
-        "Provision AmountEmphasize" := TRUE;
     end;
 }
-
-
-

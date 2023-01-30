@@ -4,7 +4,8 @@ page 50024 "DEL Fee"
     Caption = 'Fee';
     PageType = List;
     SourceTable = "DEL Fee";
-
+    UsageCategory = Administration;
+    ApplicationArea = all;
     layout
     {
         area(content)
@@ -86,6 +87,7 @@ page 50024 "DEL Fee"
                 Caption = 'Factor';
                 Promoted = true;
                 PromotedCategory = Process;
+                PromotedOnly = true;
                 RunObject = Page "DEL Fee Factor";
                 RunPageLink = Fee_ID = FIELD(ID);
             }
@@ -94,7 +96,7 @@ page 50024 "DEL Fee"
 
     trigger OnAfterGetRecord()
     begin
-        OnAfterGetCurrRecord();
+        OnAfterGettCurrRecord();
     end;
 
     trigger OnInit()
@@ -104,7 +106,7 @@ page 50024 "DEL Fee"
 
     trigger OnNewRecord(BelowxRec: Boolean)
     begin
-        OnAfterGetCurrRecord();
+        OnAfterGettCurrRecord();
     end;
 
     trigger OnOpenPage()
@@ -124,11 +126,6 @@ page 50024 "DEL Fee"
         [InDataSet]
         FormFieldEnable: Boolean;
 
-
-    procedure UpdateForm()
-    begin
-    end;
-
     local procedure AmountTypeOnAfterValidate()
     begin
         IF Rec."Amount Type" = Rec."Amount Type"::fixed THEN BEGIN
@@ -142,7 +139,7 @@ page 50024 "DEL Fee"
         END;
     end;
 
-    local procedure OnAfterGetCurrRecord()
+    local procedure OnAfterGettCurrRecord()
     begin
         xRec := Rec;
         IF Rec."Amount Type" = Rec."Amount Type"::fixed THEN BEGIN

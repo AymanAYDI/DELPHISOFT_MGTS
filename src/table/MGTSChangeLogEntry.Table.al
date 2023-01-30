@@ -3,39 +3,44 @@ table 50076 "DEL MGTS Change Log Entry"
     Caption = 'Change Log Entry';
     DrillDownPageID = "Change Log Entries";
     LookupPageID = "Change Log Entries";
-
+    DataClassification = CustomerContent;
     fields
     {
         field(1; "Entry No."; BigInteger)
         {
             AutoIncrement = true;
             Caption = 'Entry No.';
+            DataClassification = CustomerContent;
         }
         field(2; "Date and Time"; DateTime)
         {
             Caption = 'Date and Time';
+            DataClassification = CustomerContent;
         }
         field(3; "Time"; Time)
         {
             Caption = 'Time';
+            DataClassification = CustomerContent;
         }
         field(4; "User ID"; Code[50])
         {
             Caption = 'User ID';
-            //TODO: à voir le warning // TestTableRelation = false;
+            TestTableRelation = false;
             TableRelation = User."User Security ID";
+            DataClassification = CustomerContent;
 
-            //TODO trigger OnLookup() ==> à supprimer comme le STD 
+            //TODO trigger OnLookup() 
             // var
             //     UserMgt: Codeunit "User Management"; // 418
             // begin
-            //     //  TODO // UserMgt.LookupUserID("User ID"); IS NOT SUPPORTED IN V20
+            // UserMgt.LookupUserID("User ID"); IS NOT SUPPORTED IN V20
             // end;
         }
         field(5; "Table No."; Integer)
         {
             Caption = 'Table No.';
             TableRelation = AllObjWithCaption."Object ID" WHERE("Object Type" = CONST(Table));
+            DataClassification = CustomerContent;
         }
         field(6; "Table Caption"; Text[250])
         {
@@ -47,10 +52,12 @@ table 50076 "DEL MGTS Change Log Entry"
         field(7; "Type of Change"; Enum "Change Log Entry Type")
         {
             Caption = 'Type of Change';
+            DataClassification = CustomerContent;
         }
         field(8; "Record ID"; Text[250])
         {
             Caption = 'Record ID';
+            DataClassification = CustomerContent;
         }
     }
 

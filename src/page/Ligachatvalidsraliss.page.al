@@ -7,6 +7,8 @@ page 50007 "DEL Lig achat validés/réalisés"
     SourceTable = "Sales Invoice Line";
     SourceTableView = ORDER(Ascending)
                       WHERE(Type = CONST(Item));
+    UsageCategory = Lists;
+    ApplicationArea = all;
 
     layout
     {

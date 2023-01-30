@@ -3,27 +3,31 @@ table 99211 "DEL Ex_Item Variant"
     Caption = 'Item Variant';
     DataCaptionFields = "Item No.", "Code", Description;
     LookupPageID = "Item Variants";
-
+    DataClassification = CustomerContent;
     fields
     {
         field(1; "Code"; Code[10])
         {
             Caption = 'Code';
             NotBlank = true;
+            DataClassification = CustomerContent;
         }
         field(2; "Item No."; Code[20])
         {
             Caption = 'Item No.';
             NotBlank = true;
             TableRelation = Item;
+            DataClassification = CustomerContent;
         }
         field(3; Description; Text[50])
         {
             Caption = 'Description';
+            DataClassification = CustomerContent;
         }
         field(4; "Description 2"; Text[50])
         {
             Caption = 'Description 2';
+            DataClassification = CustomerContent;
         }
     }
 
@@ -47,12 +51,8 @@ table 99211 "DEL Ex_Item Variant"
         ItemTranslation: Record "Item Translation";
         SKU: Record "Stockkeeping Unit";
         ItemIdent: Record "Item Identifier";
-#pragma warning disable AL0432
         ItemCrossReference: Record "Item Reference";
-#pragma warning restore AL0432
-#pragma warning disable AL0432
         SalesPrice: Record "Sales Price";
-#pragma warning restore AL0432
         SalesLineDiscount: Record "Sales Line Discount";
         PurchasePrice: Record "Purchase Price";
         PurchaseLineDiscount: Record "Purchase Line Discount";

@@ -2,18 +2,18 @@ table 50070 "DEL DocMatrix Email Codes"
 {
 
     Caption = 'Email Item';
-
+    DataClassification = CustomerContent;
     fields
     {
         field(1; "Code"; Code[20])
         {
             Caption = 'Code';
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
         }
         field(2; "Language Code"; Code[10])
         {
             Caption = 'Language Code';
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
             TableRelation = Language;
 
             trigger OnValidate()
@@ -25,7 +25,7 @@ table 50070 "DEL DocMatrix Email Codes"
         field(3; "All Language Codes"; Boolean)
         {
             Caption = 'All Language Codes';
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
             InitValue = true;
 
             trigger OnValidate()
@@ -37,10 +37,12 @@ table 50070 "DEL DocMatrix Email Codes"
         field(10; Subject; Text[250])
         {
             Caption = 'Subject';
+            DataClassification = CustomerContent;
         }
         field(11; Body; BLOB)
         {
             Caption = 'Body';
+            DataClassification = CustomerContent;
         }
     }
 

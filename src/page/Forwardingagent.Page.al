@@ -3,7 +3,8 @@ page 50013 "DEL Forwarding agent"
     Caption = 'Forwarding agent';
     PageType = List;
     SourceTable = "DEL Forwarding agent 2";
-
+    UsageCategory = Administration;
+    ApplicationArea = all;
     layout
     {
         area(content)

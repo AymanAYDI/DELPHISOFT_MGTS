@@ -1,6 +1,6 @@
 page 50078 "DEL Item Quality List"
 {
-
+    ApplicationArea = all;
     Caption = 'Item Quality List';
     CardPageID = "DEL Item Quality";
     DataCaptionFields = "DEL Regl. Type Filter", "DEL Regl. No. Filter";
@@ -12,7 +12,7 @@ page 50078 "DEL Item Quality List"
     SaveValues = true;
     ShowFilter = true;
     SourceTable = "Item";
-
+    UsageCategory = Lists;
     layout
     {
         area(content)
@@ -22,98 +22,127 @@ page 50078 "DEL Item Quality List"
                 Caption = 'General';
                 field("No."; Rec."No.")
                 {
+                    ApplicationArea = All;
                     Editable = false;
                 }
                 field(Description; Rec.Description)
                 {
+                    ApplicationArea = All;
                     Editable = false;
                 }
                 field("Base Unit of Measure"; Rec."Base Unit of Measure")
                 {
+                    ApplicationArea = All;
                     Editable = false;
                 }
                 field(Blocked; Rec.Blocked)
                 {
+                    ApplicationArea = All;
                     Caption = 'Quality Blocked';
                     Editable = false;
                 }
                 field("Item Category Code"; Rec."Item Category Code")
                 {
+                    ApplicationArea = All;
                 }
                 field("Item Category Label"; Rec."DEL Item Category Label")
                 {
+                    ApplicationArea = All;
                 }
                 // field("Product Group Code"; Rec."Product Group Code") // TODO: Field 'Product Group Code' is removed. Reason: Product Groups became first level children of Item Categories
                 // {
                 // }
                 field("Product Group Label"; Rec."DEL Product Group Label")
                 {
+                    ApplicationArea = All;
                 }
                 field("Risque Securitaire"; Rec."DEL Risque Securitaire")
                 {
+                    ApplicationArea = All;
                 }
                 field("Marque Produit"; Rec."DEL Marque Produit")
                 {
+                    ApplicationArea = All;
                 }
                 field("Product Description"; Rec."DEL Product Description")
                 {
+                    ApplicationArea = All;
                 }
                 field("NGTS Quality Expert"; Rec."DEL NGTS Quality Expert")
                 {
+                    ApplicationArea = All;
                 }
                 field("Regl. Generale"; Rec."DEL Regl. Generale")
                 {
+                    ApplicationArea = All;
                 }
                 field("Regl. Matiere"; Rec."DEL Regl. Matiere")
                 {
+                    ApplicationArea = All;
                 }
                 field("Regl. Plan Control"; Rec."DEL Regl. Plan Control")
                 {
+                    ApplicationArea = All;
                 }
                 field("Marking in the product FR"; Rec."DEL Marking in the product FR")
                 {
+                    ApplicationArea = All;
                 }
                 field("Marking in the pack FR"; Rec."DEL Marking in the pack FR")
                 {
+                    ApplicationArea = All;
                 }
                 field("Marking in the product ENU"; Rec."DEL Marking in the product ENU")
                 {
+                    ApplicationArea = All;
                 }
                 field("Marking in the pack ENU"; Rec."DEL Marking in the pack ENU")
                 {
+                    ApplicationArea = All;
                 }
                 field("Manuel instruction"; Rec."DEL Manuel instruction")
                 {
+                    ApplicationArea = All;
                 }
                 field(Warning; Rec."DEL Warning")
                 {
+                    ApplicationArea = All;
                 }
                 field("Nombre Regl. Generale"; Rec."DEL Nombre Regl. Generale")
                 {
+                    ApplicationArea = All;
                 }
                 field("Nombre Regl. Matiere"; Rec."DEL Nombre Regl. Matiere")
                 {
+                    ApplicationArea = All;
                 }
                 field("Blocking Quality"; Rec."DEL Blocking Quality")
                 {
+                    ApplicationArea = All;
                 }
                 field("Nom utilisateur"; Rec."DEL Nom utilisateur")
                 {
+                    ApplicationArea = All;
                 }
                 field("Date Of Update"; Rec."DEL Date Of Update")
                 {
+                    ApplicationArea = All;
                 }
                 field(Dispensation; Rec."DEL Dispensation")
                 {
+                    ApplicationArea = All;
                 }
                 field("Nom utlisateur 2"; Rec."DEL Nom utlisateur 2")
                 {
+                    ApplicationArea = All;
                 }
                 field("Date Of Update 2"; Rec."DEL Date Of Update 2")
                 {
+                    ApplicationArea = All;
                 }
                 field("Checklist by item"; Rec."DEL Checklist by item")
                 {
+                    ApplicationArea = All;
                     DrillDown = true;
                     DrillDownPageID = "DEL Control list by category 2";
                 }
@@ -129,6 +158,7 @@ page 50078 "DEL Item Quality List"
             {
                 action("Régl. Générale")
                 {
+                    ApplicationArea = All;
                     Caption = 'General product regulation';
                     Image = Register;
                     Promoted = true;
@@ -141,6 +171,7 @@ page 50078 "DEL Item Quality List"
                 }
                 action("Régl. Matière")
                 {
+                    ApplicationArea = All;
                     Caption = 'Substance regulation';
                     Image = ItemRegisters;
                     Promoted = true;
@@ -153,6 +184,7 @@ page 50078 "DEL Item Quality List"
                 }
                 action("Reg. plan of control")
                 {
+                    ApplicationArea = All;
                     Caption = 'Plan of control regulation';
                     Image = FARegisters;
                     Promoted = true;
@@ -168,9 +200,11 @@ page 50078 "DEL Item Quality List"
                 }
                 action("Co&mments")
                 {
+                    ApplicationArea = All;
                     Caption = 'Co&mments';
                     Image = ViewComments;
                     Promoted = true;
+                    PromotedOnly = true;
                     PromotedIsBig = true;
                     RunObject = Page "Comment Sheet";
                     RunPageLink = "Table Name" = CONST(Item), "No." = FIELD("No.");
@@ -198,4 +232,3 @@ page 50078 "DEL Item Quality List"
         RegMat: Boolean;
         RegPlan: Boolean;
 }
-

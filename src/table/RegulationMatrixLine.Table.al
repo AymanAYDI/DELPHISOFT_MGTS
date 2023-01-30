@@ -3,7 +3,7 @@ table 50051 "DEL Regulation Matrix Line"
 {
 
     Caption = 'Regulation Matrix Line';
-
+    DataClassification = CustomerContent;
     fields
     {
         field(1; "Item Category Code"; Code[10])
@@ -11,7 +11,7 @@ table 50051 "DEL Regulation Matrix Line"
             Caption = 'Item Category Code';
             Editable = false;
             TableRelation = "Item Category".Code;
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 CALCFIELDS("Item Category Label");
@@ -22,15 +22,13 @@ table 50051 "DEL Regulation Matrix Line"
             Caption = 'Product Group Code';
             Editable = false;
             TableRelation = "Product Group".Code WHERE("Item Category Code" = FIELD("Item Category Code"));
-
-
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 CALCFIELDS("Product Group Label");
             end;
         }
-        field(3; "Item Category Label"; Text[50])
+        field(3; "Item Category Label"; Text[100])
         {
 
             CalcFormula = Lookup("Item Category".Description WHERE(Code = FIELD("Item Category Code")));
@@ -39,7 +37,7 @@ table 50051 "DEL Regulation Matrix Line"
             FieldClass = FlowField;
             TableRelation = "Item Category".Description WHERE(Code = FIELD("Item Category Code"));
         }
-        field(4; "Product Group Label"; Text[50])
+        field(4; "Product Group Label"; Text[100])
         {
             CalcFormula = Lookup("Product Group".Description WHERE(Code = FIELD("Product Group Code"),
                                                                     "Item Category Code" = FIELD("Item Category Code")));
@@ -52,13 +50,14 @@ table 50051 "DEL Regulation Matrix Line"
         {
             Caption = 'No.';
             Editable = false;
+            DataClassification = CustomerContent;
         }
 
         field(6; Type; Enum "DEL Product Type")
         {
             Caption = 'Type';
             Editable = false;
-
+            DataClassification = CustomerContent;
         }
         field(7; Nature; Enum "DEL Nature de Regulation")
         {
@@ -72,6 +71,7 @@ table 50051 "DEL Regulation Matrix Line"
         field(8; "Title in French"; Text[250])
         {
             Caption = 'Title in French';
+            DataClassification = CustomerContent;
         }
         field(9; Description; Boolean)
         {
@@ -169,7 +169,7 @@ table 50051 "DEL Regulation Matrix Line"
             FieldClass = FlowField;
         }
 
-        field(19; Source; Text[50])
+        field(19; Source; Text[100])
         {
             CalcFormula = Lookup("DEL Regulation".Source WHERE("No." = FIELD("No."),
                                                           Type = FIELD(Type)));
@@ -213,7 +213,7 @@ table 50051 "DEL Regulation Matrix Line"
             FieldClass = FlowField;
         }
 
-        field(38; Pays; Text[50])
+        field(38; Pays; Text[100])
         {
             CalcFormula = Lookup("DEL Regulation".Pays WHERE("No." = FIELD("No."),
                                                         Type = FIELD(Type)));
@@ -226,6 +226,7 @@ table 50051 "DEL Regulation Matrix Line"
         field(41; Checked; Boolean)
         {
             Caption = 'Checked';
+            DataClassification = CustomerContent;
         }
         field(43; "Livrables 1"; Boolean)
         {
@@ -311,12 +312,14 @@ table 50051 "DEL Regulation Matrix Line"
         {
             Caption = 'Description produit';
             Editable = false;
+            DataClassification = CustomerContent;
         }
 
         field(62; Mark; Enum "DEL Mark")
         {
             Caption = 'Mark';
             Editable = false;
+            DataClassification = CustomerContent;
         }
         field(63; "Description pays"; Text[100])
         {
@@ -361,6 +364,7 @@ table 50051 "DEL Regulation Matrix Line"
         field(68; "Title in English"; Text[250])
         {
             Caption = 'Title in English';
+            DataClassification = CustomerContent;
         }
         field(69; "Description Usage in English"; Boolean)
         {

@@ -9,12 +9,12 @@ tableextension 50046 "DEL GeneralLedgerSetup" extends "General Ledger Setup" //9
             Caption = 'Provision Source Code';
 
             TableRelation = "Source Code".Code;
+            DataClassification = CustomerContent;
         }
         field(50001; "DEL Provision Journal Batch"; Text[250])
         {
             Caption = 'Provision Journal Batch';
-
-
+            DataClassification = CustomerContent;
             trigger OnLookup()
             var
                 GenJournalBatch: Record "Gen. Journal Batch";

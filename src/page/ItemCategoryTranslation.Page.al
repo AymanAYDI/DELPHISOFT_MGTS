@@ -4,7 +4,7 @@ page 50006 "DEL Item Category Translation"
     DataCaptionFields = CategoryCode;
     PageType = List;
     SourceTable = "DEL ItemCategory_Translation";
-
+    UsageCategory = None;
     layout
     {
         area(content)
