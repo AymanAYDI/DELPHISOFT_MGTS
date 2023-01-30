@@ -4,7 +4,7 @@ table 50038 "DEL Purchase Price Worksheet"
 
     Caption = 'Purchase Price';
     LookupPageID = "Purchase Prices";
-
+    DataClassification = CustomerContent;
     fields
     {
         field(1; "Item No."; Code[20])
@@ -12,7 +12,7 @@ table 50038 "DEL Purchase Price Worksheet"
             Caption = 'Item No.';
             NotBlank = true;
             TableRelation = Item;
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 IF "Item No." <> xRec."Item No." THEN BEGIN
@@ -26,7 +26,7 @@ table 50038 "DEL Purchase Price Worksheet"
             Caption = 'Vendor No.';
             NotBlank = true;
             TableRelation = Vendor;
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 IF Vend.GET("Vendor No.") THEN
@@ -37,11 +37,12 @@ table 50038 "DEL Purchase Price Worksheet"
         {
             Caption = 'Currency Code';
             TableRelation = Currency;
+            DataClassification = CustomerContent;
         }
         field(4; "Starting Date"; Date)
         {
             Caption = 'Starting Date';
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 IF ("Starting Date" > "Ending Date") AND ("Ending Date" <> 0D) THEN
@@ -54,16 +55,18 @@ table 50038 "DEL Purchase Price Worksheet"
             AutoFormatType = 2;
             Caption = 'Direct Unit Cost';
             MinValue = 0;
+            DataClassification = CustomerContent;
         }
         field(14; "Minimum Quantity"; Decimal)
         {
             Caption = 'Minimum Quantity';
             MinValue = 0;
+            DataClassification = CustomerContent;
         }
         field(15; "Ending Date"; Date)
         {
             Caption = 'Ending Date';
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 VALIDATE("Starting Date");
@@ -73,19 +76,23 @@ table 50038 "DEL Purchase Price Worksheet"
         {
             Caption = 'Unit of Measure Code';
             TableRelation = "Item Unit of Measure".Code WHERE("Item No." = FIELD("Item No."));
+            DataClassification = CustomerContent;
         }
         field(5700; "Variant Code"; Code[10])
         {
             Caption = 'Variant Code';
             TableRelation = "Item Variant".Code WHERE("Item No." = FIELD("Item No."));
+            DataClassification = CustomerContent;
         }
         field(50092; "Qty. optimale"; Decimal)
         {
             Caption = 'Qty. optimale';
+            DataClassification = CustomerContent;
         }
         field(50093; "New Unit Price"; Decimal)
         {
             Caption = 'New Unit Price';
+            DataClassification = CustomerContent;
         }
     }
 

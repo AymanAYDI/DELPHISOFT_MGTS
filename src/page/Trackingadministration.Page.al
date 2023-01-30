@@ -1,11 +1,11 @@
-
 page 50054 "DEL Tracking administration"
 {
     Editable = true;
     InsertAllowed = false;
     PageType = Card;
     SourceTable = "DEL Tracking non traité";
-
+    UsageCategory = Lists;
+    ApplicationArea = all;
     layout
     {
         area(content)
@@ -180,7 +180,6 @@ page 50054 "DEL Tracking administration"
                     trigger OnAction()
                     begin
 
-
                         CODEUNIT.RUN(Codeunit::"DEL Tracking traitement")
                     end;
                 }
@@ -191,7 +190,6 @@ page 50054 "DEL Tracking administration"
 
                     trigger OnAction()
                     begin
-
 
                         CODEUNIT.RUN(Codeunit::"DEL MGT Tracking");
                         CODEUNIT.RUN(Codeunit::"DEL Tracking traitement");
@@ -210,6 +208,3 @@ page 50054 "DEL Tracking administration"
         CuTracking.RUN();
     end;
 }
-
-
-

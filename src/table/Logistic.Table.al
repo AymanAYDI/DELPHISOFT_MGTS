@@ -2,19 +2,20 @@ table 50034 "DEL Logistic"
 {
     DataCaptionFields = ID, "BR No.";
     Caption = 'Logistic';
-
+    DataClassification = CustomerContent;
     fields
     {
         field(1; ID; Code[20])
         {
             Caption = 'ID';
+            DataClassification = CustomerContent;
         }
         field(10; Deal_ID; Code[20])
 
         {
             TableRelation = "DEL Deal".ID;
             Caption = 'Deal_ID';
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
 
@@ -27,121 +28,149 @@ table 50034 "DEL Logistic"
         {
             TableRelation = "Purch. Rcpt. Header"."No.";
             Caption = 'BR No.';
+            DataClassification = CustomerContent;
         }
-        field(40; "Supplier Name"; Text[100]) //Text[50 to 100]
+        field(40; "Supplier Name"; Text[100])
         {
             Caption = 'Supplier Name';
+            DataClassification = CustomerContent;
         }
         field(50; "N° PI"; Code[20])
         {
             Caption = 'No. PI';
+            DataClassification = CustomerContent;
         }
         field(60; "Date PI"; Date)
         {
             Caption = 'Date PI';
+            DataClassification = CustomerContent;
         }
         field(70; "PI approved by"; Text[30])
         {
             Caption = 'PI approved by';
+            DataClassification = CustomerContent;
         }
         field(80; "PI approval date"; Date)
         {
             Caption = 'PI approval date';
+            DataClassification = CustomerContent;
         }
         field(81; "Original Doc Receipt date"; Date)
         {
             Caption = 'Original Doc Receipt date';
+            DataClassification = CustomerContent;
         }
         field(90; "OK UBS date"; Date)
         {
             Caption = 'OK UBS date';
+            DataClassification = CustomerContent;
         }
         field(100; "Doc to Client date"; Date)
         {
             Caption = 'Doc to Client date';
+            DataClassification = CustomerContent;
         }
         field(110; "LC expiry date"; Date)
         {
             Caption = 'LC expiry date';
+            DataClassification = CustomerContent;
         }
         field(119; "Payment Terms Code"; Code[10])
         {
             Caption = 'Payment Terms Code';
             TableRelation = "Payment Terms";
+            DataClassification = CustomerContent;
         }
         field(120; "Bank dossier"; Code[30])
         {
             Caption = 'Bank dossier';
+            DataClassification = CustomerContent;
         }
         field(130; "Forwarder Name"; Text[30])
         {
             Caption = 'Forwarder Name';
+            DataClassification = CustomerContent;
         }
         field(131; "C.Clearance Co.Name"; Text[30])
         {
             Caption = 'C.Clearance Co.Name';
+            DataClassification = CustomerContent;
         }
         field(140; "Company Name"; Text[30])
         {
             Caption = 'Company Name';
+            DataClassification = CustomerContent;
         }
         field(141; Applicable; Text[5])
         {
             Caption = 'Applicable';
+            DataClassification = CustomerContent;
         }
         field(150; "Shipping company"; Text[50])
         {
             Caption = 'Shipping company';
+            DataClassification = CustomerContent;
         }
         field(160; "Booking Done"; Boolean)
         {
             Caption = 'Booking Done';
+            DataClassification = CustomerContent;
         }
         field(161; "Effective Booking date"; Date)
         {
             Caption = 'Effective Booking date';
+            DataClassification = CustomerContent;
         }
-        field(170; "BL N°"; Code[50]) //Code[30 TO 50]
+        field(170; "BL N°"; Code[50])
         {
             Caption = 'BL N°';
+            DataClassification = CustomerContent;
         }
         field(180; "Vessel name"; Text[30])
         {
             Caption = 'Vessel name';
+            DataClassification = CustomerContent;
         }
         field(181; "CTR 20'"; Boolean)
         {
             Caption = 'CTR 20''';
+            DataClassification = CustomerContent;
         }
         field(182; "CTR 40'"; Boolean)
         {
             Caption = 'CTR 40''';
+            DataClassification = CustomerContent;
         }
         field(183; "CTR 40'HQ"; Boolean)
         {
             Caption = 'CTR 40''HQ';
+            DataClassification = CustomerContent;
         }
         field(184; "Loading Mode"; Text[15])
         {
             Caption = 'Loading Mode';
+            DataClassification = CustomerContent;
         }
         field(190; "Quality Company"; Text[30])
         {
             Caption = 'Quality Company';
+            DataClassification = CustomerContent;
         }
         field(191; "Quality inspection date"; Date)
         {
             Caption = 'Quality inspection date';
+            DataClassification = CustomerContent;
         }
         field(200; "Certificate N°"; Text[30])
         {
             Caption = 'Certificate N°';
+            DataClassification = CustomerContent;
         }
         field(210; "Shipment mode"; Enum "DEL Ship Per")
         {
 
             Caption = 'Shipment mode';
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 FNC_DateValidate();
@@ -150,15 +179,17 @@ table 50034 "DEL Logistic"
         field(220; "B/C client"; Boolean)
         {
             Caption = 'B/C client';
+            DataClassification = CustomerContent;
         }
         field(230; "Departure Port"; Text[30])
         {
             Caption = 'Departure Port';
+            DataClassification = CustomerContent;
         }
         field(240; "ETD Requested"; Date)
         {
             Caption = 'ETD Requested';
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 FNC_DateValidate();
@@ -167,7 +198,7 @@ table 50034 "DEL Logistic"
         field(250; "Revised ETD"; Date)
         {
             Caption = 'Revised ETD';
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 FNC_DateValidate();
@@ -176,103 +207,127 @@ table 50034 "DEL Logistic"
         field(260; "Actual departure date"; Date)
         {
             Caption = 'Actual departure date';
+            DataClassification = CustomerContent;
         }
         field(270; "Arrival port"; Text[30])
         {
             Caption = 'Arrival port';
+            DataClassification = CustomerContent;
         }
         field(280; "ETA date"; Date)
         {
             Caption = 'ETA date';
+            DataClassification = CustomerContent;
         }
         field(290; "Actual Arrival date"; Date)
         {
             Caption = 'Actual Arrival date';
+            DataClassification = CustomerContent;
         }
         field(291; "Customer Delivery date"; Date)
         {
             Caption = 'Customer Delivery date';
+            DataClassification = CustomerContent;
         }
         field(300; "C.Clearance date"; Date)
         {
             Caption = 'C.Clearance date';
+            DataClassification = CustomerContent;
         }
         field(310; "Estimated CTNS"; Decimal)
         {
             Editable = false;
             Caption = 'Estimated CTNS';
+            DataClassification = CustomerContent;
         }
         field(320; "Real CTNS"; Decimal)
         {
             Caption = 'Real CTNS';
+            DataClassification = CustomerContent;
         }
         field(330; "Estimated volume"; Decimal)
         {
             Editable = false;
             Caption = 'Estimated volume';
+            DataClassification = CustomerContent;
         }
         field(340; "Actual Volume"; Decimal)
         {
             Caption = 'Actual Volume';
+            DataClassification = CustomerContent;
         }
         field(350; "Estimated Weight"; Decimal)
         {
             Editable = false;
             Caption = 'Estimated Weight';
+            DataClassification = CustomerContent;
         }
         field(360; "Actual Weight"; Decimal)
         {
             Caption = 'Actual Weight';
+            DataClassification = CustomerContent;
         }
         field(400; "N° Container"; Code[30])
         {
             Caption = 'N° Container';
+            DataClassification = CustomerContent;
         }
         field(410; "Fact. VCO émise"; Boolean)
         {
             Caption = 'Fact. VCO émise';
+            DataClassification = CustomerContent;
         }
         field(411; "N° Container 2"; Code[30])
         {
             Caption = 'N° Container 2';
+            DataClassification = CustomerContent;
         }
         field(412; "N° Container 3"; Code[30])
         {
             Caption = 'N° Container 3';
+            DataClassification = CustomerContent;
         }
         field(413; "N° Container 4"; Code[30])
         {
             Caption = 'N° Container 4';
+            DataClassification = CustomerContent;
         }
         field(414; "Requested Cust. Delivery date"; Date)
         {
             Caption = 'Requested Cust. Delivery date';
+            DataClassification = CustomerContent;
         }
         field(415; "qty CTR 20'"; Integer)
         {
             Caption = 'qty CTR 20''';
+            DataClassification = CustomerContent;
         }
         field(416; "qty CTR 40'"; Integer)
         {
             Caption = 'qty CTR 40''';
+            DataClassification = CustomerContent;
         }
         field(417; "qty CTR 40'HQ"; Integer)
         {
             Caption = 'qty CTR 40''HQ';
+            DataClassification = CustomerContent;
         }
         field(418; "Original doc sending date"; Date)
         {
             Caption = 'Original doc sending date';
+            DataClassification = CustomerContent;
         }
         field(500; "ACO No."; Code[20])
         {
             TableRelation = "Purchase Header"."No.";
             ValidateTableRelation = false;
             Caption = 'ACO No.';
+            DataClassification = CustomerContent;
         }
         field(501; "Display record"; Boolean)
         {
             Caption = 'Display record';
+            DataClassification = CustomerContent;
         }
         field(502; "Affectation manuelle"; Boolean)
         {

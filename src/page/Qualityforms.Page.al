@@ -3,6 +3,7 @@ page 50046 "DEL Quality forms"
     Caption = 'Quality forms';
     PageType = ListPart;
     SourceTable = "DEL Item Quality forms";
+    UsageCategory = None;
 
     layout
     {

@@ -12,6 +12,7 @@ tableextension 50016 "DEL ShiptoAddress" extends "Ship-to Address" //222
         {
             Caption = 'Purchase Shipment Method Code';
             TableRelation = "Shipment Method";
+            DataClassification = CustomerContent;
         }
     }
 }

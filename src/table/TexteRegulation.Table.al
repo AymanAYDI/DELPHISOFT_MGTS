@@ -4,35 +4,40 @@ table 50001 "DEL Texte Regulation"
 
     DrillDownPageID = "DEL Regulation Text";
     LookupPageID = "DEL Regulation Text";
-
+    DataClassification = CustomerContent;
     fields
     {
         field(1; "No."; Code[20])
         {
             Caption = 'No.';
+            DataClassification = CustomerContent;
         }
         field(2; Type; enum "DEL Product Type")
         {
             Caption = 'Type';
-
+            DataClassification = CustomerContent;
         }
         field(3; "Line No."; Integer)
         {
             AutoIncrement = true;
             Caption = 'Line No.';
+            DataClassification = CustomerContent;
         }
         field(4; "Text"; Text[120])
         {
             Caption = 'Text';
+            DataClassification = CustomerContent;
         }
         field(5; "Attached to Line No."; Integer)
         {
             Caption = 'Attached to Line No.';
+            DataClassification = CustomerContent;
         }
         field(6; Champs; enum "DEL champs")
         {
 
             Caption = 'Champs';
+            DataClassification = CustomerContent;
         }
     }
 
@@ -43,11 +48,6 @@ table 50001 "DEL Texte Regulation"
             Clustered = true;
         }
     }
-
-    fieldgroups
-    {
-    }
-
 
     procedure GetNextLineNo(RegulationLineSource: Record "DEL Texte Regulation"; BelowxRec: Boolean): Integer
     var

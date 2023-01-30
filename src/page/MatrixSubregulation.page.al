@@ -1,17 +1,15 @@
 page 50091 "DEL Matrix Sub. regulation"
 {
-
-
     Caption = 'Substance regulation';
     InsertAllowed = false;
     ModifyAllowed = false;
     PageType = List;
-
     SourceTable = "DEL Regulation Matrix Line";
     SourceTableView = SORTING("Item Category Code", "Product Group Code", Mark, "Product Description", "No.", Type)
 
                       ORDER(Ascending)
                       WHERE(Type = FILTER(Materials));
+    UsageCategory = None;
 
     layout
     {
@@ -23,30 +21,36 @@ page 50091 "DEL Matrix Sub. regulation"
                 {
                     Visible = false;
                     Caption = 'Item Category Code';
+                    ApplicationArea = All;
                 }
                 field("Product Group Code"; Rec."Product Group Code")
                 {
                     Visible = false;
                     Caption = 'Product Group Code';
+                    ApplicationArea = All;
                 }
                 field("Item Category Label"; Rec."Item Category Label")
                 {
                     Visible = false;
                     Caption = 'Item category description';
+                    ApplicationArea = All;
                 }
                 field("Product Group Label"; Rec."Product Group Label")
                 {
                     Visible = false;
                     Caption = 'Product group description';
+                    ApplicationArea = All;
                 }
                 field(Type; Rec.Type)
                 {
                     Visible = false;
                     Caption = 'Type';
+                    ApplicationArea = All;
                 }
                 field("No."; Rec."No.")
                 {
                     Caption = 'No.';
+                    ApplicationArea = All;
 
                     trigger OnLookup(var Text: Text): Boolean
                     begin
@@ -63,55 +67,68 @@ page 50091 "DEL Matrix Sub. regulation"
                 field("Description pays"; Rec."Description pays")
                 {
                     Caption = 'Country';
+                    ApplicationArea = All;
                 }
                 field("Type of material"; Rec."Type of material")
                 {
                     Caption = 'Type of material';
+                    ApplicationArea = All;
                 }
                 field(Usage; Rec.Usage)
                 {
                     Caption = 'Usage';
+                    ApplicationArea = All;
                 }
                 field("Description Usage in French"; Rec."Description Usage in French")
                 {
                     Caption = 'Description Usage in French';
+                    ApplicationArea = All;
                 }
                 field("Description Usage in English"; Rec."Description Usage in English")
                 {
                     Caption = 'Description Usage in English';
+                    ApplicationArea = All;
                 }
                 field("Substance - CAS / EINECS"; Rec."Substance - CAS / EINECS")
                 {
                     Caption = 'Substance ID';
+                    ApplicationArea = All;
                 }
                 field("Substance - nom"; Rec."Substance - nom")
                 {
                     MultiLine = true;
                     Caption = 'Substance name';
+                    ApplicationArea = All;
                 }
                 field(Source; Rec.Source)
                 {
                     Caption = 'Origine';
+                    ApplicationArea = All;
                 }
                 field("Starting date"; Rec."Starting date")
                 {
                     Caption = 'Starting date';
+                    ApplicationArea = All;
                 }
                 field("Date Fin"; Rec."Date Fin")
                 {
                     Caption = 'End date';
+                    ApplicationArea = All;
                 }
                 field("Norm of testing"; Rec."Norm of testing")
                 {
                     Caption = 'Norm of testing';
+                    ApplicationArea = All;
                 }
                 field(Statut; Rec.Statut)
                 {
                     Caption = 'Status';
+                    ApplicationArea = All;
                 }
                 field("Texte de remplacement"; Rec."Texte de remplacement")
                 {
                     Caption = 'Text of substitution';
+                    ApplicationArea = All;
                 }
             }
         }
@@ -127,6 +144,7 @@ page 50091 "DEL Matrix Sub. regulation"
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
+                ApplicationArea = All;
 
                 trigger OnAction()
                 begin
@@ -192,6 +210,7 @@ page 50091 "DEL Matrix Sub. regulation"
                               Type = FIELD(Type),
                               Mark = FIELD(Mark),
                               "Product Description" = FIELD("Product Description");
+                ApplicationArea = All;
             }
         }
     }
@@ -202,7 +221,6 @@ page 50091 "DEL Matrix Sub. regulation"
         RegMat: Page "DEL Substance regulation 2";
         CategCode: Text; //code[20]
 
-
         ProductCode: Text; //code[20]
         MarkOptionENU: Enum "DEL Mark";
         //àvérifier MarkOptionFRS: Option " ",MDD,"Marque Fournisseur",Licence,"Sans Marque","Marque Prestige",NC,NA,"?","Toutes Marques";
@@ -212,4 +230,3 @@ page 50091 "DEL Matrix Sub. regulation"
         DescProduct: Text;
         Markfilter: Text;
 }
-

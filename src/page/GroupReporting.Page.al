@@ -5,7 +5,8 @@ page 50018 "DEL Group Reporting"
     InsertAllowed = false;
     PageType = Card;
     SourceTable = "G/L Account";
-
+    UsageCategory = Tasks;
+    ApplicationArea = all;
     layout
     {
         area(content)
@@ -190,7 +191,7 @@ page 50018 "DEL Group Reporting"
                 GLAccount.CALCFIELDS("Net Change");
                 ExportData := GLAccount."DEL Reporting Dimension 1 Code" + '$' + GLAccount."DEL Reporting Dimension 2 Code" + '$' + GLAccount."No." + '$' +
                               GLAccount."No. 2" + '$' + GLAccount.Name + '$' + FORMAT(GLAccount."Income/Balance") + '$' + FORMAT(GLAccount."Net Change");
-                //TODO Filename.WRITE(ExportData);
+                //TODO Filename.WRITE(ExportData); replaced 
                 Outs.Write(ExportData);
             UNTIL GLAccount.NEXT() = 0;
     end;

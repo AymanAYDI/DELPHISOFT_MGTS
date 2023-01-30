@@ -1,4 +1,4 @@
-codeunit 50100 "DEL MGTS_EventsMgt"
+codeunit 50100 "DEL MGTS_Events Management"
 {
     [EventSubscriber(ObjectType::Table, Database::Customer, 'OnAfterModifyEvent', '', false, false)]
     local procedure T18_OnAfterModifyEvent_Customer(var Rec: Record Customer; RunTrigger: Boolean)

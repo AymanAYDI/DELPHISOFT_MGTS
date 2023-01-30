@@ -63,12 +63,13 @@ tableextension 50044 "DEL GenJournalLine" extends "Gen. Journal Line" //81
         {
             Caption = 'Customer Provision';
             TableRelation = Customer."No.";
+            DataClassification = CustomerContent;
         }
         field(50010; "DEL Shortcut Dim 3 Code"; Code[20])
         {
             CaptionClass = '1,2,3';
             Caption = 'Shortcut Dimension 3 Code';
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 ValidateShortcutDimCode(3, "DEL Shortcut Dim 3 Code");
@@ -78,7 +79,7 @@ tableextension 50044 "DEL GenJournalLine" extends "Gen. Journal Line" //81
         {
             CaptionClass = '1,2,4';
             Caption = 'Shortcut Dimension 4 Code';
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 ValidateShortcutDimCode(4, "DEL Shortcut Dim 4 Code");
@@ -88,7 +89,7 @@ tableextension 50044 "DEL GenJournalLine" extends "Gen. Journal Line" //81
         {
             CaptionClass = '1,2,5';
             Caption = 'Shortcut Dimension 5 Code';
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 ValidateShortcutDimCode(5, "DEL Shortcut Dim 5 Code");
@@ -98,7 +99,7 @@ tableextension 50044 "DEL GenJournalLine" extends "Gen. Journal Line" //81
         {
             CaptionClass = '1,2,6';
             Caption = 'Shortcut Dimension 6 Code';
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 ValidateShortcutDimCode(6, "DEL Shortcut Dim 6 Code");
@@ -108,7 +109,7 @@ tableextension 50044 "DEL GenJournalLine" extends "Gen. Journal Line" //81
         {
             CaptionClass = '1,2,7';
             Caption = 'Shortcut Dimension 7 Code';
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 ValidateShortcutDimCode(7, "DEL Shortcut Dim 7 Code");
@@ -118,7 +119,7 @@ tableextension 50044 "DEL GenJournalLine" extends "Gen. Journal Line" //81
         {
             CaptionClass = '1,2,8';
             Caption = 'Shortcut Dimension 8 Code';
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 ValidateShortcutDimCode(8, "DEL Shortcut Dim 8 Code");

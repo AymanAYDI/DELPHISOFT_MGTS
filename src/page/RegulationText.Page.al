@@ -1,11 +1,9 @@
 page 50001 "DEL Regulation Text"
 {
-
-
     Caption = 'Matrix Text';
     PageType = Worksheet;
     SourceTable = "DEL Texte Regulation";
-
+    UsageCategory = None;
     layout
     {
         area(content)

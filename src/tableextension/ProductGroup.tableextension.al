@@ -14,12 +14,13 @@ tableextension 50036 "DEL ProductGroup" extends "Product Group"
             Caption = 'Segment Code';
             TableRelation = "Dimension Value".Code WHERE("Dimension Code" = CONST('SEGMENT'),
                                                           "Dimension Value Type" = CONST(Standard));
+            DataClassification = CustomerContent;
         }
         field(50003; "DEL Salesperson Code"; Code[10])
         {
             Caption = 'Salesperson Code';
             TableRelation = "Salesperson/Purchaser";
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 //START THM
@@ -35,7 +36,7 @@ tableextension 50036 "DEL ProductGroup" extends "Product Group"
         {
             Caption = 'Responsible Code';
             TableRelation = "Salesperson/Purchaser";
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 //THM
@@ -61,6 +62,7 @@ tableextension 50036 "DEL ProductGroup" extends "Product Group"
         {
             Caption = 'Sourceur Code';
             TableRelation = "DEL Sourceur";
+            DataClassification = CustomerContent;
         }
         field(50008; "DEL Sourceur"; Text[50])
         {

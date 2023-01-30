@@ -8,6 +8,7 @@ tableextension 50040 "DEL SalesPrice" extends "Sales Price"
             Editable = false;
             TableRelation = Vendor;
             ValidateTableRelation = true;
+            DataClassification = CustomerContent;
         }
         field(50001; "DEL Vendor Name"; Text[50])
         {
@@ -19,6 +20,7 @@ tableextension 50040 "DEL SalesPrice" extends "Sales Price"
         field(50002; "DEL Entry No."; BigInteger)
         {
             Caption = 'Entry No.';
+            DataClassification = CustomerContent;
         }
     }
     keys

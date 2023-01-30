@@ -4,70 +4,79 @@ table 50008 "DEL Document Line"
     DataPerCompany = false;
     DrillDownPageID = "DEL Document Sheet";
     LookupPageID = "DEL Document Sheet";
-
+    DataClassification = CustomerContent;
     fields
     {
         field(1; "Table Name"; Enum "DEL Table Namevend/customer")
         {
             Caption = 'Table Name';
-
+            DataClassification = CustomerContent;
         }
         field(2; "No."; Code[20])
         {
             Caption = 'No.';
+            DataClassification = CustomerContent;
         }
         field(3; "Comment Entry No."; Integer)
         {
             Caption = 'Comment Entry No.';
+            DataClassification = CustomerContent;
             //TODO: TableRelation = Table297728;
         }
         field(4; "Line No."; Integer)
         {
             Caption = 'Line No.';
+            DataClassification = CustomerContent;
         }
         field(5; "Insert Date"; Date)
         {
             Caption = 'Date';
             Editable = false;
+            DataClassification = CustomerContent;
         }
         field(6; "Insert Time"; Time)
         {
             Caption = 'Time';
             Editable = false;
+            DataClassification = CustomerContent;
         }
         field(7; "File Name"; Text[250])
         {
             Caption = 'File Name';
             Editable = false;
+            DataClassification = CustomerContent;
         }
         field(8; Path; Text[250])
         {
             Caption = 'Path';
             Editable = false;
+            DataClassification = CustomerContent;
         }
         field(9; "User ID"; Code[50])
         {
             Caption = 'User ID';
             Editable = false;
+            DataClassification = CustomerContent;
         }
         field(10; "Notation Type"; Enum "DEL Notation Type")
         {
             Caption = 'Rating type';
-
+            DataClassification = CustomerContent;
         }
         field(20; Document; BLOB)
         {
             Caption = 'Document';
+            DataClassification = CustomerContent;
         }
         field(21; "Type liasse"; Enum "DEL Type liasse")
         {
             Caption = 'Type of document';
-
+            DataClassification = CustomerContent;
         }
         field(22; "Type contrat"; Enum "DEL Type contrat")
         {
             Caption = 'Type of contract';
-
+            DataClassification = CustomerContent;
         }
     }
 

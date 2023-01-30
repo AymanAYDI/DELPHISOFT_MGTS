@@ -5,7 +5,7 @@ table 50017 "DEL Note Audit Social"
 
     DrillDownPageID = "DEL Detail Social Audit";
     LookupPageID = "DEL Detail Social Audit";
-
+    DataClassification = CustomerContent;
     fields
     {
         field(1; "No."; Code[20])
@@ -13,7 +13,7 @@ table 50017 "DEL Note Audit Social"
             Caption = 'No.';
 
             TableRelation = "DEL Audit social";
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 CALCFIELDS(Axe);
@@ -30,15 +30,17 @@ table 50017 "DEL Note Audit Social"
         {
             Caption = 'Vendor/Contact No.';
             Editable = false;
+            DataClassification = CustomerContent;
         }
         field(4; Note; Enum "DEL Rating")
         {
             Caption = 'Rating';
-
+            DataClassification = CustomerContent;
         }
         field(5; Type; enum "DEL Type Vend/Cont")
         {
             Caption = 'Type';
+            DataClassification = CustomerContent;
         }
     }
 

@@ -3,6 +3,7 @@ page 50068 "DEL Detail Soc. Audit Contact"
     Caption = 'Detail Social Audit';
     PageType = ListPart;
     SourceTable = "DEL Note Audit Social";
+    UsageCategory = None;
 
     layout
     {
@@ -12,17 +13,20 @@ page 50068 "DEL Detail Soc. Audit Contact"
             {
                 field("No."; Rec."No.")
                 {
+                    ApplicationArea = All;
                 }
                 field(Axe; Rec.Axe)
                 {
+                    ApplicationArea = All;
                 }
                 field(Note; Rec.Note)
                 {
-
+                    ApplicationArea = All;
                 }
                 field("Vendor/Contact No."; Rec."Vendor/Contact No.")
                 {
                     Visible = false;
+                    ApplicationArea = All;
                 }
             }
         }
@@ -34,8 +38,7 @@ page 50068 "DEL Detail Soc. Audit Contact"
         {
             action("Import Audit social")
             {
-                Promoted = true;
-                PromotedIsBig = true;
+                ApplicationArea = All;
 
                 trigger OnAction()
                 begin
@@ -53,4 +56,3 @@ page 50068 "DEL Detail Soc. Audit Contact"
     var
         Auditsocial: Record "DEL Audit social";
 }
-

@@ -4,9 +4,11 @@ tableextension 50043 "DEL Language" extends Language //8
     {
         field(4006496; "DEL Katalogsprache"; Boolean)
         {
+            DataClassification = CustomerContent;
         }
         field(4006497; "DEL ISO Code"; Text[3])
         {
+            DataClassification = CustomerContent;
         }
     }
     keys

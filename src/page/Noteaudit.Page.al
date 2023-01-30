@@ -3,6 +3,7 @@ page 50069 "DEL Note audit"
     Caption = 'Rating Audit';
     PageType = List;
     SourceTable = "DEL Note";
+    UsageCategory = None;
 
     layout
     {

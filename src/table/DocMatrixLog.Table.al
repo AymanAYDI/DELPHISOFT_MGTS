@@ -1,19 +1,19 @@
 table 50068 "DEL DocMatrix Log"
 {
     Caption = 'DocMatrix Log';
-
+    DataClassification = CustomerContent;
     fields
     {
 
 
         field(1; Type; Enum "Credit Transfer Account Type")
-
         {
-
+            Editable = false;
+            DataClassification = CustomerContent;
         }
         field(2; "No."; Code[20])
         {
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
             Editable = false;
 
             TableRelation = IF (Type = CONST(Customer)) Customer."No."
@@ -23,7 +23,7 @@ table 50068 "DEL DocMatrix Log"
         }
         field(3; "Process Type"; Enum "DEL Process Type")
         {
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
             Editable = false;
 
         }
@@ -32,7 +32,7 @@ table 50068 "DEL DocMatrix Log"
             Editable = false;
 
             TableRelation = AllObjWithCaption."Object ID" WHERE("Object Type" = CONST(Report));
-
+            DataClassification = CustomerContent;
         }
         field(5; "Report Caption"; Text[250])
         {
@@ -47,83 +47,84 @@ table 50068 "DEL DocMatrix Log"
         field(6; Usage; Enum "DEL Usage DocMatrix Selection")
         {
             Editable = false;
+            DataClassification = CustomerContent;
         }
         field(7; Name; Text[50])
         {
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
             Editable = false;
         }
         field(8; "UserId"; Code[50])
         {
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
             Editable = false;
         }
         field(9; "Line No."; Integer)
         {
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
             Editable = false;
         }
         field(10; "Send to FTP 1"; Boolean)
         {
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
             Editable = false;
         }
         field(11; "Send to FTP 2"; Boolean)
         {
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
             Editable = false;
         }
         field(20; "E-Mail To 1"; Text[80])
         {
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
             Editable = false;
         }
         field(21; "E-Mail To 2"; Text[80])
         {
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
             Editable = false;
         }
         field(22; "E-Mail To 3"; Text[80])
         {
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
             Editable = false;
         }
         field(23; "E-Mail From"; Text[80])
         {
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
             Editable = false;
         }
         field(30; "Save PDF"; Boolean)
         {
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
             Editable = false;
         }
         field(40; "Print PDF"; Boolean)
         {
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
             Editable = false;
         }
         field(50; "Mail Text Code"; Code[20])
         {
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
             Editable = false;
             TableRelation = "DEL DocMatrix Email Codes";
         }
         field(51; "Mail Text Langauge Code"; Code[10])
         {
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
             Editable = false;
             TableRelation = Language;
         }
         field(70; Post; Enum "DEL Post DocMatrix")
         {
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
             Editable = false;
 
         }
         field(75; "E-Mail from Sales Order"; Boolean)
         {
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
 
@@ -134,42 +135,42 @@ table 50068 "DEL DocMatrix Log"
         field(100; "Action"; Enum "DEL Action100")
         {
             Caption = 'Action';
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
             Editable = false;
         }
         field(101; "Date Time Stamp"; DateTime)
         {
             Caption = 'Date Time Stamp';
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
             Editable = false;
         }
         field(102; "Error"; Boolean)
         {
             Caption = 'Error';
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
             Editable = false;
         }
         field(103; "Document No."; Code[10])
         {
             Caption = 'Document No.';
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
             Editable = false;
         }
         field(104; "Process Result Description"; Text[250])
         {
             Caption = 'Process Result Description';
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
             Editable = false;
         }
         field(105; "Error Solved"; Boolean)
         {
             Caption = 'Error Solved';
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
         }
         field(106; "Solving Description"; Text[250])
         {
             Caption = 'Solving Description';
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
         }
     }
 

@@ -1,19 +1,18 @@
 table 50069 "DEL DocMatrix Setup"
 {
     Caption = 'DocMatrix Setup';
-
-
+    DataClassification = CustomerContent;
     fields
     {
         field(1; "Primary Key"; Code[10])
         {
             Caption = 'Primary Key';
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
         }
         field(10; "Sales File Folder"; Text[250])
         {
             Caption = 'Sales File Folder';
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 //TODO GeneralMgt.CheckFolderName("Sales File Folder");
@@ -22,8 +21,7 @@ table 50069 "DEL DocMatrix Setup"
         field(11; "Purchase File Folder"; Text[250])
         {
             Caption = 'Purchase File Folder';
-            DataClassification = ToBeClassified;
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 //TODO GeneralMgt.CheckFolderName("Purchase File Folder");
@@ -32,22 +30,22 @@ table 50069 "DEL DocMatrix Setup"
         field(20; "Default E-Mail From"; Text[80])
         {
             Caption = 'Default E-Mail From';
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
         }
         field(30; "Show Notifications"; Boolean)
         {
             Caption = 'Show Notifications';
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
         }
         field(40; "Statement Test Date"; Date)
         {
             Caption = 'Statement Test Date';
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
         }
         field(41; "Test Active"; Boolean)
         {
             Caption = 'Test Active';
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
         }
     }
 

@@ -2,19 +2,18 @@ table 50067 "DEL Document Matrix"
 {
 
     Caption = 'Document Matrix';
-
+    DataClassification = CustomerContent;
     fields
     {
         field(1; Type; Enum "Credit Transfer Account Type")
         {
             Caption = 'Type';
-            DataClassification = ToBeClassified;
-
+            DataClassification = CustomerContent;
         }
         field(2; "No."; Code[20])
         {
             Caption = 'No.';
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
             TableRelation = IF (Type = CONST(Customer)) Customer."No."
             ELSE
             IF (Type = CONST(Vendor)) Vendor."No.";
@@ -28,8 +27,7 @@ table 50067 "DEL Document Matrix"
         field(3; "Process Type"; Enum "DEL Process Type")
         {
             Caption = 'Process Type';
-            DataClassification = ToBeClassified;
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 IF "Process Type" = "Process Type"::Automatic THEN
@@ -44,7 +42,7 @@ table 50067 "DEL Document Matrix"
             Caption = 'Report ID';
             Editable = false;
             TableRelation = AllObjWithCaption."Object ID" WHERE("Object Type" = CONST(Report));
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 CALCFIELDS("Report Caption");
@@ -64,7 +62,7 @@ table 50067 "DEL Document Matrix"
         field(6; Usage; Enum "DEL Usage DocMatrix Selection")
         {
             Caption = 'Usage';
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 CheckSetup();
@@ -80,19 +78,17 @@ table 50067 "DEL Document Matrix"
         field(7; Name; Text[50])
         {
             Caption = 'Name';
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
         }
         field(8; "UserId"; Code[50])
         {
             Caption = 'UserId';
-            DataClassification = ToBeClassified;
-
+            DataClassification = CustomerContent;
         }
         field(10; "Send to FTP 1"; Boolean)
         {
             Caption = 'Send to FTP 1';
-            DataClassification = ToBeClassified;
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 IF "Send to FTP 1" THEN
@@ -103,8 +99,7 @@ table 50067 "DEL Document Matrix"
         field(11; "Send to FTP 2"; Boolean)
         {
             Caption = 'Send to FTP 2';
-            DataClassification = ToBeClassified;
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 IF "Send to FTP 2" THEN
@@ -115,8 +110,7 @@ table 50067 "DEL Document Matrix"
         field(20; "E-Mail To 1"; Text[80])
         {
             Caption = 'E-Mail To 1';
-            DataClassification = ToBeClassified;
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 IF (xRec."E-Mail To 1" = '') AND ("E-Mail To 1" <> '') THEN
@@ -129,8 +123,7 @@ table 50067 "DEL Document Matrix"
         field(21; "E-Mail To 2"; Text[80])
         {
             Caption = 'E-Mail To 2';
-            DataClassification = ToBeClassified;
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 IF (xRec."E-Mail To 2" = '') AND ("E-Mail To 2" <> '') THEN
@@ -143,8 +136,7 @@ table 50067 "DEL Document Matrix"
         field(22; "E-Mail To 3"; Text[80])
         {
             Caption = 'E-Mail To 3';
-            DataClassification = ToBeClassified;
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 IF (xRec."E-Mail To 3" = '') AND ("E-Mail To 3" <> '') THEN
@@ -157,8 +149,7 @@ table 50067 "DEL Document Matrix"
         field(23; "E-Mail From"; Text[80])
         {
             Caption = 'E-Mail From';
-            DataClassification = ToBeClassified;
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 IF EMailAddresExists() AND (xRec."E-Mail From" <> '') AND ("E-Mail From" = '') THEN
@@ -168,15 +159,12 @@ table 50067 "DEL Document Matrix"
         field(30; "Save PDF"; Boolean)
         {
             Caption = 'Save PDF';
-            DataClassification = ToBeClassified;
-
-
+            DataClassification = CustomerContent;
         }
         field(40; "Print PDF"; Boolean)
         {
             Caption = 'Print PDF';
-            DataClassification = ToBeClassified;
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 IF "Process Type" = "Process Type"::Automatic THEN
@@ -186,26 +174,24 @@ table 50067 "DEL Document Matrix"
         field(50; "Mail Text Code"; Code[20])
         {
             Caption = 'Mail Text Code';
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
             TableRelation = "DEL DocMatrix Email Codes" WHERE("Language Code" = FILTER('MAIL TEXT LANGAUGE CODE' | ''));
         }
         field(51; "Mail Text Langauge Code"; Code[10])
         {
             Caption = 'Mail Text Language Code';
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
             TableRelation = Language;
         }
         field(60; "Request Page Parameters"; BLOB)
         {
             Caption = 'Request Page Parameters';
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
         }
         field(70; Post; Enum "DEL Post DocMatrix")
         {
             Caption = 'Post';
-            DataClassification = ToBeClassified;
-
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 IF (Post IN [1, 2, 3]) AND (Usage <> Usage::"S.Order") THEN
@@ -221,8 +207,7 @@ table 50067 "DEL Document Matrix"
         field(75; "E-Mail from Sales Order"; Boolean)
         {
             Caption = 'E-Mail from Sales Order';
-
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
 
@@ -454,7 +439,6 @@ table 50067 "DEL Document Matrix"
         // TextFile.CREATEOUTSTREAM(OutStream);
         // pOutputText.WRITE(OutStream);
         // TextFile.CLOSE;
-
         TempBlob.CreateOutStream(Outsr);
         pOutputText.WRITE(Outsr);
     end;

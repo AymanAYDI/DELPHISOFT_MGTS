@@ -4,7 +4,7 @@ page 50005 "DEL Contact_ItemCategory"
     Editable = false;
     PageType = List;
     SourceTable = "DEL Contact_ItemCategory";
-
+    UsageCategory = None;
     layout
     {
         area(content)

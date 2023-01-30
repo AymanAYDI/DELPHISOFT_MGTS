@@ -2,7 +2,8 @@ page 50023 "DEL Deal Item"
 {
     PageType = List;
     SourceTable = "DEL Deal Item";
-
+    UsageCategory = Tasks;
+    ApplicationArea = all;
     layout
     {
         area(content)

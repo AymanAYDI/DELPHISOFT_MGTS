@@ -4,6 +4,7 @@ page 50022 "DEL Position"
     SourceTable = "DEL Position";
 
     Caption = 'DEL Position';
+    UsageCategory = None;
 
 
     layout

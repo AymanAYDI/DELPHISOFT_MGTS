@@ -1,36 +1,42 @@
 table 50028 "DEL Currency Exchange"
 {
     Caption = 'DEL Currency Exchange';
-
+    DataClassification = CustomerContent;
     fields
     {
         field(1; "Currency 1"; Code[10])
         {
             TableRelation = Currency.Code;
             Caption = 'Currency 1';
+            DataClassification = CustomerContent;
         }
         field(2; "Currency 2"; Code[10])
         {
             TableRelation = Currency.Code;
             Caption = 'Currency 2';
+            DataClassification = CustomerContent;
         }
         field(3; "Rate C2/C1"; Decimal)
         {
             DecimalPlaces = 5 : 5;
             Caption = 'Rate C2/C1';
+            DataClassification = CustomerContent;
         }
         field(4; "Valid From"; Date)
         {
             Caption = 'Valid From';
+            DataClassification = CustomerContent;
         }
         field(5; "Valid To"; Date)
         {
             Caption = 'Valid To';
+            DataClassification = CustomerContent;
         }
         field(6; Deal_ID; Code[20])
         {
             TableRelation = "DEL Deal".ID;
             Caption = 'Deal_ID';
+            DataClassification = CustomerContent;
         }
     }
 

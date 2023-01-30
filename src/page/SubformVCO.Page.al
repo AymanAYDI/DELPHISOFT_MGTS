@@ -1,10 +1,8 @@
 page 50032 "DEL Subform VCO"
 {
-
     Editable = false;
     PageType = ListPart;
     SourceTable = "DEL Element";
-
     layout
     {
         area(content)
@@ -69,7 +67,7 @@ page 50032 "DEL Subform VCO"
         SalesHeaderArchive: Record "Sales Header Archive";
         CampaignNo_Co: Code[20];
         ExternalDocNo_Co: Code[35];
-        CustomerName_Te: Text[50];
+        CustomerName_Te: Text[100];
 
 }
 

@@ -4,7 +4,7 @@ page 50002 "DEL Import Commande vente"
     InsertAllowed = false;
     PageType = List;
     SourceTable = "DEL Import Commande vente";
-
+    UsageCategory = None;
     layout
     {
         area(content)
@@ -59,6 +59,7 @@ page 50002 "DEL Import Commande vente"
                 Caption = 'Apply Entry';
                 Image = Apply;
                 Promoted = true;
+                PromotedOnly = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
 

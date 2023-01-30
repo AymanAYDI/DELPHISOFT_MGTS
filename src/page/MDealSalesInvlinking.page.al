@@ -1,12 +1,12 @@
 page 50052 "DEL M Deal Sales Inv. linking"
 {
-
     Caption = 'Manual Deal Cr. Memo Linking';
     PageType = Card;
     Permissions = TableData "Sales Invoice Header" = rimd,
                   TableData "Sales Invoice Line" = rimd,
                   TableData "Dimension Set Entry" = rimd;   //  changement du table 350 --> 480
     SourceTable = "DEL Manual Deal Sales Inv. L";
+    UsageCategory = None;
 
     layout
     {
@@ -39,6 +39,7 @@ page 50052 "DEL M Deal Sales Inv. linking"
                     Caption = 'Post';
                     Image = Post;
                     Promoted = true;
+                    PromotedOnly = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
                     ShortCutKey = 'F9';
@@ -49,7 +50,6 @@ page 50052 "DEL M Deal Sales Inv. linking"
                         salesInvoiceHeader_Re_Loc: Record "Sales Invoice Header";
                         requestID_Co_Loc: Code[20];
                     begin
-
 
                         IF Rec."Shipment Selection" = '' THEN
                             ERROR('Veuillez sélectionner au moins 1 livraison !')
@@ -69,7 +69,7 @@ page 50052 "DEL M Deal Sales Inv. linking"
                             Position_CU.FNC_Add_SalesInvoice_Position(Rec."Deal ID", FALSE);
                             requestID_Co_Loc := UpdateRequestManager_Cu.FNC_Add_Request(
                            Rec."Deal ID",
-                             urm_Re_Loc.Requested_By_Type::Invoice,
+                             urm_Re_Loc.Requested_By_Type::Invoice.AsInteger(),
                              Rec."Sales Invoice No.",
                              CURRENTDATETIME
                            );
@@ -93,13 +93,8 @@ page 50052 "DEL M Deal Sales Inv. linking"
 
     var
         Element_Cu: Codeunit "DEL Element";
-        Deal_Cu: Codeunit "DEL Deal";
         UpdateRequestManager_Cu: Codeunit "DEL Update Request Manager";
-        DealShipment_Cu: Codeunit "DEL Deal Shipment";
-        ShipmentConnection_Cu: Codeunit "DEL Deal Shipment Connection";
         Position_CU: Codeunit "DEL Position";
-        Text19022230: Label 'M A N U A L   L I N K I N G';
-
 
     procedure ChangeCodeAchat_FNC()
     var
@@ -134,8 +129,6 @@ page 50052 "DEL M Deal Sales Inv. linking"
         PostedLine_Re_Loc.SETFILTER("Dimension Set ID", '%1|%2', 112, 113);
         PostedLine_Re_Loc.SetRange("Dimension Code", 'ACHAT');
 
-
-
         IF PostedLine_Re_Loc.FINDFIRST() THEN
             REPEAT
                 PostedLine_Re_Loc."Dimension Value Code" := NewCodeAchatNo_Co_Par;
@@ -143,5 +136,3 @@ page 50052 "DEL M Deal Sales Inv. linking"
             UNTIL PostedLine_Re_Loc.NEXT() = 0;
     end;
 }
-
-

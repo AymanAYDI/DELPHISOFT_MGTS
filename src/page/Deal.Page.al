@@ -10,7 +10,8 @@ page 50020 "DEL Deal"
     SourceTable = "DEL Deal";
     SourceTableView = SORTING(ID)
                       ORDER(Descending);
-
+    UsageCategory = Lists;
+    ApplicationArea = all;
     layout
     {
         area(content)

@@ -1,11 +1,9 @@
-
 page 50080 "DEL Manual Deal Invoice Link."
 {
-
-
     Caption = 'Manual Deal Invoice Linking';
     PageType = Card;
     SourceTable = "DEL Manual Deal Inv. Linking";
+    UsageCategory = None;
 
     layout
     {
@@ -13,6 +11,7 @@ page 50080 "DEL Manual Deal Invoice Link."
         {
             field("Entry No."; Rec."Entry No.")
             {
+                ApplicationArea = All;
 
                 trigger OnValidate()
                 begin
@@ -22,13 +21,16 @@ page 50080 "DEL Manual Deal Invoice Link."
             field("Document No."; Rec."Document No.")
             {
                 Editable = false;
+                ApplicationArea = All;
             }
             field("Account No."; Rec."Account No.")
             {
                 Editable = false;
+                ApplicationArea = All;
             }
             field("Shipment Selection"; Rec."Shipment Selection")
             {
+                ApplicationArea = All;
 
                 trigger OnDrillDown()
                 begin
@@ -55,6 +57,7 @@ page 50080 "DEL Manual Deal Invoice Link."
                     PromotedCategory = Process;
                     PromotedIsBig = true;
                     ShortCutKey = 'F9';
+                    ApplicationArea = All;
 
                     trigger OnAction()
                     var
@@ -73,7 +76,6 @@ page 50080 "DEL Manual Deal Invoice Link."
                         IF Rec."Shipment Selection" = 0 THEN
                             ERROR('Veuillez sélectionner au moins 1 livraison !');
 
-
                         element_Re_Loc.RESET();
                         element_Re_Loc.SETCURRENTKEY("Entry No.", ID);
                         element_Re_Loc.SETRANGE("Entry No.", Rec."Entry No.");
@@ -82,14 +84,12 @@ page 50080 "DEL Manual Deal Invoice Link."
                                 Element_Cu.FNC_Delete_Element(element_Re_Loc.ID);
                             UNTIL (element_Re_Loc.NEXT() = 0);
 
-
                         nextEntry := '';
                         element_ID_Co_Loc := '';
                         i := 1;
                         CLEAR(myTab);
 
                         splittIndex := 1;
-
 
                         dealShipmentSelection_Re_Loc.RESET();
                         dealShipmentSelection_Re_Loc.SETRANGE(USER_ID, USERID);
@@ -107,7 +107,6 @@ page 50080 "DEL Manual Deal Invoice Link."
                                 ELSE
                                     ERROR('element id vide !');
 
-
                                 elementConnectionSplitIndex := 1;
                                 dss_Re_Loc.RESET();
                                 dss_Re_Loc.SETRANGE(USER_ID, USERID);
@@ -119,15 +118,11 @@ page 50080 "DEL Manual Deal Invoice Link."
                                         Element_Cu.FNC_Add_New_Invoice_Connection(
                                           element_ID_Co_Loc, dss_Re_Loc, ConnectionType_Op_Par::Element, elementConnectionSplitIndex);
                                         elementConnectionSplitIndex += 1;
-
-
                                     UNTIL (dss_Re_Loc.NEXT() = 0);
-
 
                                 IF nextEntry <> dealShipmentSelection_Re_Loc.Deal_ID THEN BEGIN
 
                                     myTab[i] := dealShipmentSelection_Re_Loc.Deal_ID;
-
 
                                     myUpdateRequests[i] := UpdateRequestManager_Cu.FNC_Add_Request(
                                       dealShipmentSelection_Re_Loc.Deal_ID,
@@ -140,16 +135,11 @@ page 50080 "DEL Manual Deal Invoice Link."
                                 END;
 
                                 nextEntry := dealShipmentSelection_Re_Loc.Deal_ID;
-
                             UNTIL (dealShipmentSelection_Re_Loc.NEXT() = 0);
-
 
                         dealShipmentSelection_Re_Loc.DELETEALL();
 
-
-
                         Rec.DELETE();
-
                     end;
                 }
             }
@@ -168,7 +158,6 @@ page 50080 "DEL Manual Deal Invoice Link."
         Element_Cu: Codeunit "DEL Element";
         UpdateRequestManager_Cu: Codeunit "DEL Update Request Manager";
 
-
     procedure FNC_ShipmentLookup()
     var
         deal_Re_Loc: Record "DEL Deal";
@@ -177,7 +166,6 @@ page 50080 "DEL Manual Deal Invoice Link."
         dealShipmentSelection_page_Loc: Page "DEL Deal Shipment Selection";
     begin
 
-
         IF Rec."Entry No." = 0 THEN
             ERROR('Choisir un document !');
 
@@ -185,7 +173,6 @@ page 50080 "DEL Manual Deal Invoice Link."
         dealShipmentSelection_Re_Loc.SETRANGE("Account Entry No.", Rec."Entry No.");
         dealShipmentSelection_Re_Loc.SETRANGE(dealShipmentSelection_Re_Loc.USER_ID, USERID);
         dealShipmentSelection_Re_Loc.DELETEALL();
-
 
         deal_Re_Loc.RESET();
         deal_Re_Loc.SETFILTER(Status, '<>%1', deal_Re_Loc.Status::Closed);
@@ -205,21 +192,15 @@ page 50080 "DEL Manual Deal Invoice Link."
                         dealShipmentSelection_Re_Loc."Shipment No." := dealShipment_Re_Loc.ID;
                         dealShipmentSelection_Re_Loc.USER_ID := USERID;
 
-
                         dealShipmentSelection_Re_Loc."BR No." := dealShipment_Re_Loc."BR No.";
-
 
                         dealShipmentSelection_Re_Loc."Purchase Invoice No." := dealShipment_Re_Loc."Purchase Invoice No.";
 
-
                         dealShipmentSelection_Re_Loc."Sales Invoice No." := dealShipment_Re_Loc."Sales Invoice No.";
-
 
                         IF ((dealShipmentSelection_Re_Loc."BR No." <> '') OR (dealShipmentSelection_Re_Loc."Purchase Invoice No." <> '')) THEN
                             dealShipmentSelection_Re_Loc.INSERT();
-
                     UNTIL (dealShipment_Re_Loc.NEXT() = 0);
-
             UNTIL (deal_Re_Loc.NEXT() = 0);
 
         CLEAR(dealShipmentSelection_page_Loc);
@@ -228,7 +209,6 @@ page 50080 "DEL Manual Deal Invoice Link."
         dealShipmentSelection_page_Loc.SETRECORD(dealShipmentSelection_Re_Loc);
 
         dealShipmentSelection_page_Loc.RUN()
-
     end;
 
     local procedure EntryNoOnAfterValidate()
@@ -240,6 +220,3 @@ page 50080 "DEL Manual Deal Invoice Link."
         Rec."Account No." := GLEntry_Re_Loc."G/L Account No.";
     end;
 }
-
-
-

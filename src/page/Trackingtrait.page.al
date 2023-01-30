@@ -4,7 +4,8 @@ page 50059 "DEL Tracking traité"
     Editable = false;
     PageType = List;
     SourceTable = "DEL Tracking général";
-
+    UsageCategory = History;
+    ApplicationArea = all;
     layout
     {
         area(content)
@@ -160,4 +161,3 @@ page 50059 "DEL Tracking traité"
         Rec.SETFILTER(Statut, '<>%1', '');
     end;
 }
-

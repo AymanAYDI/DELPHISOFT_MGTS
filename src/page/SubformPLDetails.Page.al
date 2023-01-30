@@ -71,9 +71,9 @@ page 50035 "DEL Subform P&L Details"
 
     trigger OnFindRecord(Which: Text): Boolean
     begin
-        PositionSummary_Re_Temp.COPY(Rec);
-        IF PositionSummary_Re_Temp.FIND(Which) THEN BEGIN
-            Rec := PositionSummary_Re_Temp;
+        TempPositionSummary_Re.COPY(Rec);
+        IF TempPositionSummary_Re.FIND(Which) THEN BEGIN
+            Rec := TempPositionSummary_Re;
             EXIT(TRUE);
         END ELSE
             EXIT(FALSE);
@@ -89,31 +89,31 @@ page 50035 "DEL Subform P&L Details"
     var
         locResultSteps: Integer;
     begin
-        PositionSummary_Re_Temp.COPY(Rec);
-        locResultSteps := PositionSummary_Re_Temp.NEXT(Steps);
+        TempPositionSummary_Re.COPY(Rec);
+        locResultSteps := TempPositionSummary_Re.NEXT(Steps);
         IF locResultSteps <> 0 THEN
-            Rec := PositionSummary_Re_Temp;
+            Rec := TempPositionSummary_Re;
         EXIT(locResultSteps);
     end;
 
     var
-        PositionSummary_Re_Temp: Record "DEL Position Summary" temporary;
+        TempPositionSummary_Re: Record "DEL Position Summary" temporary;
 
 
     procedure ModifyRec()
     begin
-        PositionSummary_Re_Temp := Rec;
-        PositionSummary_Re_Temp.MODIFY();
+        TempPositionSummary_Re := Rec;
+        TempPositionSummary_Re.MODIFY();
     end;
 
 
     procedure SetTempRecord(var rRecIn: Record "DEL Position Summary" temporary)
     begin
-        PositionSummary_Re_Temp.DELETEALL();
+        TempPositionSummary_Re.DELETEALL();
         IF rRecIn.FINDFIRST() THEN
             REPEAT
-                PositionSummary_Re_Temp.COPY(rRecIn);
-                IF PositionSummary_Re_Temp.INSERT() THEN;
+                TempPositionSummary_Re.COPY(rRecIn);
+                IF TempPositionSummary_Re.INSERT() THEN;
             UNTIL rRecIn.NEXT() = 0;
         CurrPage.UPDATE();
     end;

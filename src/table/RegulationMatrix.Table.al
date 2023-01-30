@@ -4,15 +4,14 @@ table 50050 "DEL Regulation Matrix"
 
     Caption = 'Regulation Matrix';
     LookupPageID = "DEL Regulation Matrix";
-
-
+    DataClassification = CustomerContent;
     fields
     {
         field(1; "Item Category Code"; Code[10])
         {
             Caption = 'Item Category Code';
             TableRelation = "Item Category".Code;
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 CALCFIELDS("Item Category Label");
@@ -23,6 +22,7 @@ table 50050 "DEL Regulation Matrix"
             Caption = 'Product Group Code';
 
             TableRelation = "Product Group".Code WHERE("Item Category Code" = FIELD("Item Category Code"));
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 CALCFIELDS("Product Group Label");
@@ -48,39 +48,43 @@ table 50050 "DEL Regulation Matrix"
         field(5; "Risque Quality"; Enum "DEL Risque Quality")
         {
             Caption = 'Risk Quality';
-
+            DataClassification = CustomerContent;
         }
         field(7; "NGTS Quality Expert"; Enum "DEL NGTS Quality Expert")
         {
             Caption = 'NGTS Quality Expert';
-
-
+            DataClassification = CustomerContent;
         }
         field(8; "Regl. Generale"; Boolean)
         {
             Caption = 'General Product Regulation';
+            DataClassification = CustomerContent;
         }
         field(9; "Regl. Matiere"; Boolean)
         {
             Caption = 'Substance Regulation';
+            DataClassification = CustomerContent;
         }
         field(10; "Plan of control"; Boolean)
         {
             Caption = 'Plan of control';
+            DataClassification = CustomerContent;
         }
         field(12; "Product Description"; Text[100])
         {
             Caption = 'Description produit';
+            DataClassification = CustomerContent;
         }
 
         field(13; Mark; Enum "DEL Mark")
         {
             Caption = 'Mark';
-
+            DataClassification = CustomerContent;
         }
         field(14; "Instruction manual + Warning"; Text[100])
         {
             Caption = 'Instruction manual (Yes/No) + Warning';
+            DataClassification = CustomerContent;
         }
         field(15; "Marking in the product FR"; Boolean)
         {
@@ -111,6 +115,7 @@ table 50050 "DEL Regulation Matrix"
         field(17; Subgroup; Code[20])
         {
             Caption = 'Subgroup';
+            DataClassification = CustomerContent;
         }
         field(18; "Marking in the product ENU"; Boolean)
         {
@@ -144,11 +149,12 @@ table 50050 "DEL Regulation Matrix"
             AutoIncrement = true;
             Caption = 'Line No.';
             NotBlank = true;
+            DataClassification = CustomerContent;
         }
 
         field(21; "Manuel instruction"; Enum "DEL Manuel instruction")
         {
-
+            DataClassification = CustomerContent;
         }
         field(22; "Warning instruction in French"; Boolean)
         {

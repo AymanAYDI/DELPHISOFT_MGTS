@@ -69,9 +69,7 @@ page 50034 "DEL Subform Real"
             action(SeeButton)
             {
                 Caption = 'See Document';
-                Promoted = true;
-                PromotedCategory = Process;
-
+                Image = Document;
                 trigger OnAction()
                 var
                     customerLedgerEntry_Re_Loc: Record "Cust. Ledger Entry";
@@ -139,40 +137,44 @@ page 50034 "DEL Subform Real"
 
                         Rec.Type::Invoice:
 
-                            if Rec."Subject Type" = Rec."Subject Type"::Vendor then begin
+                            case Rec."Subject Type" of
+                                Rec."Subject Type"::Vendor:
+                                    begin
 
 
-                                vendorLedgerEntry_Re_Loc.Reset();
-                                vendorLedgerEntry_Re_Loc.SetFilter("Document Type", '%1|%2|%3',
-                                  vendorLedgerEntry_Re_Loc."Document Type"::Invoice,
-                                  vendorLedgerEntry_Re_Loc."Document Type"::Payment,
-                                  vendorLedgerEntry_Re_Loc."Document Type"::"Credit Memo");
-                                vendorLedgerEntry_Re_Loc.SetRange("Document No.", Rec."Type No.");
-                                vendorLedgerEntry_Re_Loc.SetRange("Vendor No.", Rec."Subject No.");
+                                        vendorLedgerEntry_Re_Loc.Reset();
+                                        vendorLedgerEntry_Re_Loc.SetFilter("Document Type", '%1|%2|%3',
+                                          vendorLedgerEntry_Re_Loc."Document Type"::Invoice,
+                                          vendorLedgerEntry_Re_Loc."Document Type"::Payment,
+                                          vendorLedgerEntry_Re_Loc."Document Type"::"Credit Memo");
+                                        vendorLedgerEntry_Re_Loc.SetRange("Document No.", Rec."Type No.");
+                                        vendorLedgerEntry_Re_Loc.SetRange("Vendor No.", Rec."Subject No.");
 
-                                if vendorLedgerEntry_Re_Loc.Find('-') then begin
-                                    Page.Run(Page::"Vendor Ledger Entries", vendorLedgerEntry_Re_Loc);
-                                    exit
-                                end;
+                                        if vendorLedgerEntry_Re_Loc.Find('-') then begin
+                                            Page.Run(Page::"Vendor Ledger Entries", vendorLedgerEntry_Re_Loc);
+                                            exit
+                                        end;
 
-                            end else
-                                if Rec."Subject Type" = Rec."Subject Type"::Customer then begin
-
-                                    customerLedgerEntry_Re_Loc.Reset();
-                                    customerLedgerEntry_Re_Loc.SetFilter("Document Type", '%1|%2|%3',
-                                      customerLedgerEntry_Re_Loc."Document Type"::Invoice,
-                                      customerLedgerEntry_Re_Loc."Document Type"::Payment,
-                                      customerLedgerEntry_Re_Loc."Document Type"::"Credit Memo");
-                                    customerLedgerEntry_Re_Loc.SetRange("Document No.", Rec."Type No.");
-                                    customerLedgerEntry_Re_Loc.SetRange("Customer No.", Rec."Subject No.");
-
-                                    if customerLedgerEntry_Re_Loc.Find('-') then begin
-                                        Page.Run(Page::"Customer Ledger Entries", customerLedgerEntry_Re_Loc);
-                                        exit
                                     end;
+                                Rec."Subject Type"::Customer:
+                                    begin
 
-                                end else
-                                    if Rec."Subject Type" = Rec."Subject Type"::"G/L Account" then begin
+                                        customerLedgerEntry_Re_Loc.Reset();
+                                        customerLedgerEntry_Re_Loc.SetFilter("Document Type", '%1|%2|%3',
+                                          customerLedgerEntry_Re_Loc."Document Type"::Invoice,
+                                          customerLedgerEntry_Re_Loc."Document Type"::Payment,
+                                          customerLedgerEntry_Re_Loc."Document Type"::"Credit Memo");
+                                        customerLedgerEntry_Re_Loc.SetRange("Document No.", Rec."Type No.");
+                                        customerLedgerEntry_Re_Loc.SetRange("Customer No.", Rec."Subject No.");
+
+                                        if customerLedgerEntry_Re_Loc.Find('-') then begin
+                                            Page.Run(Page::"Customer Ledger Entries", customerLedgerEntry_Re_Loc);
+                                            exit
+                                        end;
+
+                                    end;
+                                Rec."Subject Type"::"G/L Account":
+                                    begin
 
 
 
@@ -200,8 +202,10 @@ page 50034 "DEL Subform Real"
                                             end
                                         end
 
-                                    end else
-                                        Message('Document non trouvé..');
+                                    end;
+                                else
+                                    Message('Document non trouvé..');
+                            end;
 
                     end
 
@@ -318,20 +322,20 @@ page 50034 "DEL Subform Real"
     end;
 
 
-    procedure FNC_Get_Exchange_Currency_Rate(Date: Date; FromCurrencyCode: Code[10]; ToCurrencyCode: Code[10]; Amount: Decimal): Decimal
+    procedure FNC_Get_Exchange_Currency_Rate(DateVar: Date; FromCurrencyCode: Code[10]; ToCurrencyCode: Code[10]; AmountVar: Decimal): Decimal
     var
         CurrExchgRate_Re_Loc: Record "Currency Exchange Rate";
     begin
-        exit(CurrExchgRate_Re_Loc.ExchangeAmtFCYToFCY(Date, FromCurrencyCode, ToCurrencyCode, Amount))
+        exit(CurrExchgRate_Re_Loc.ExchangeAmtFCYToFCY(DateVar, FromCurrencyCode, ToCurrencyCode, AmountVar))
     end;
 
 
-    procedure FNC_Get_DS_Currency_Rate(Date: Date; ToCurrencyCode: Code[10]): Decimal
+    procedure FNC_Get_DS_Currency_Rate(DateVar: Date; ToCurrencyCode: Code[10]): Decimal
     var
         CurrExchgRate_Re_Loc: Record "Currency Exchange Rate";
     begin
         CurrExchgRate_Re_Loc.SetRange("Currency Code", ToCurrencyCode);
-        CurrExchgRate_Re_Loc.SetRange("Starting Date", 0D, Date);
+        CurrExchgRate_Re_Loc.SetRange("Starting Date", 0D, DateVar);
         if CurrExchgRate_Re_Loc.FindLast() then
             exit(CurrExchgRate_Re_Loc."Relational Exch. Rate Amount")
         else

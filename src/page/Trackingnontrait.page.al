@@ -4,7 +4,8 @@ page 50058 "DEL Tracking non traité"
     Editable = false;
     PageType = List;
     SourceTable = "DEL Tracking général";
-
+    UsageCategory = Lists;
+    ApplicationArea = all;
     layout
     {
         area(content)
@@ -160,4 +161,3 @@ page 50058 "DEL Tracking non traité"
         Rec.SETRANGE(Statut, '');
     end;
 }
-

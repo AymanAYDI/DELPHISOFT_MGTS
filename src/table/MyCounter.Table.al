@@ -1,12 +1,13 @@
 table 50004 "DEL MyCounter"
 {
     Caption = 'DEL MyCounter';
-
+    DataClassification = CustomerContent;
     fields
     {
         field(10; Value; Integer)
         {
             Caption = 'Value';
+            DataClassification = CustomerContent;
         }
     }
 
@@ -18,8 +19,5 @@ table 50004 "DEL MyCounter"
         }
     }
 
-    fieldgroups
-    {
-    }
 }
 

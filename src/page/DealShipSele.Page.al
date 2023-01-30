@@ -4,7 +4,7 @@ page 50040 "DEL Deal Ship. Sele."
     Editable = false;
     PageType = List;
     SourceTable = "DEL Deal Shipment";
-
+    UsageCategory = None;
     layout
     {
         area(content)

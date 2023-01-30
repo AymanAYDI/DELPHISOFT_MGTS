@@ -4,6 +4,7 @@ page 50044 "DEL Logistic"
     InsertAllowed = false;
     PageType = Card;
     SourceTable = "DEL Logistic";
+    UsageCategory = None;
 
     layout
     {

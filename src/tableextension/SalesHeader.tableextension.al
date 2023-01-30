@@ -50,30 +50,35 @@ tableextension 50026 "DEL SalesHeader" extends "Sales Header" //36
             Caption = 'Fiscal Repr.';
 
             TableRelation = Contact;
+            DataClassification = CustomerContent;
         }
         field(50001; "DEL Create By"; Text[50])
         {
             Caption = 'Create By';
             Editable = false;
+            DataClassification = CustomerContent;
         }
         field(50002; "DEL Create Date"; Date)
         {
             Caption = 'Create Date';
             Editable = false;
+            DataClassification = CustomerContent;
         }
         field(50003; "DEL Create Time"; Time)
         {
             Caption = 'Create Time';
             Editable = false;
+            DataClassification = CustomerContent;
         }
         field(50004; "DEL Event Code"; enum "DEL Code Event")
         {
             Caption = 'Event Code';
+            DataClassification = CustomerContent;
         }
         field(50005; "DEL Estimated Delivery Date"; Date)
         {
             Caption = 'Estimated delivery date';
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             var
                 SalesLine_Rec: Record "Sales Line";
@@ -93,6 +98,7 @@ tableextension 50026 "DEL SalesHeader" extends "Sales Header" //36
             Caption = 'Type Order EDI';
 
             TableRelation = "DEL Type Order EDI";
+            DataClassification = CustomerContent;
         }
         field(50007; "DEL GLN"; Text[30])
         {
@@ -102,6 +108,7 @@ tableextension 50026 "DEL SalesHeader" extends "Sales Header" //36
             //This property is currently not supported
             //TestTableRelation = false;
             ValidateTableRelation = false;
+            DataClassification = CustomerContent;
         }
         field(50008; "DEL Type Order EDI Description"; Text[50])
         {
@@ -116,42 +123,45 @@ tableextension 50026 "DEL SalesHeader" extends "Sales Header" //36
             Caption = 'Has special purch. order';
 
             Editable = false;
+            DataClassification = CustomerContent;
         }
         field(50010; "DEL Export With EDI"; Boolean)
         {
-
+            DataClassification = CustomerContent;
         }
         field(50011; "DEL Shipment No."; Text[50])
         {
             Caption = 'Shipment No.';
+            DataClassification = CustomerContent;
         }
         field(50020; "DEL To Create Purchase Order"; Boolean)
         {
             Caption = 'Commande d''achat a créer';
-
+            DataClassification = CustomerContent;
         }
         field(50021; "DEL Purchase Order Create Date"; DateTime)
         {
             Caption = 'Date création commande d''achat';
 
             Editable = false;
+            DataClassification = CustomerContent;
         }
         field(50022; "DEL Status Purch. Order Create"; enum "DEL Status Purchase Order")
         {
             Caption = 'Statut création commande achat';
-
+            DataClassification = CustomerContent;
         }
         field(50023; "DEL Err Text Pur. Order Create"; Text[250])
         {
             Caption = 'Texte erreur création commande achat';
 
             Editable = false;
+            DataClassification = CustomerContent;
         }
         field(50024; "DEL Error Purch. Order Create"; Boolean)
         {
             Caption = 'En erreur création commande achat';
-
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             var
                 TextCst001: Label 'This change will reset the purchase order creation status. Do you want to continue?';
@@ -167,12 +177,12 @@ tableextension 50026 "DEL SalesHeader" extends "Sales Header" //36
         field(50050; "DEL Mention Under Total"; Text[250])
         {
             Caption = 'Mention Under Total';
-
+            DataClassification = CustomerContent;
         }
         field(50051; "DEL Amount Mention Under Total"; Text[30])
         {
             Caption = 'Amount Mention Under Total';
-
+            DataClassification = CustomerContent;
         }
     }
 

@@ -7,11 +7,12 @@ tableextension 50009 "DEL PurchCrMemoHdr" extends "Purch. Cr. Memo Hdr." //124
             Caption = 'Type Order EDI';
 
             TableRelation = "DEL Type Order EDI";
+            DataClassification = CustomerContent;
         }
         field(50015; "DEL GLN"; Text[30])
         {
             Caption = 'GLN';
-
+            DataClassification = CustomerContent;
         }
         field(50016; "DEL Type Order EDI Description"; Text[50])
         {
@@ -24,7 +25,7 @@ tableextension 50009 "DEL PurchCrMemoHdr" extends "Purch. Cr. Memo Hdr." //124
         field(50017; "DEL Due Date Calculation"; Date)
         {
             Caption = 'Due Date Calculation';
-
+            DataClassification = CustomerContent;
         }
     }
 }

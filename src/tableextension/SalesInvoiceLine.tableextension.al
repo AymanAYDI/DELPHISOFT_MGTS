@@ -11,22 +11,23 @@ tableextension 50004 "DEL SalesInvoiceLine" extends "Sales Invoice Line"
         field(50000; "DEL Customer line reference2"; Text[30])
         {
             Caption = 'Kundenreferenz';
-
+            DataClassification = CustomerContent;
         }
         field(50001; "DEL Qty. Init. Client"; Decimal)
         {
-
+            DataClassification = CustomerContent;
         }
         field(50008; "DEL Ship-to Code"; Code[10])
         {
             Caption = 'Ship-to Code';
 
             TableRelation = "Ship-to Address".Code WHERE("Customer No." = FIELD("Sell-to Customer No."));
-
+            DataClassification = CustomerContent;
         }
         field(50009; "DEL Ship-to Name"; Text[50])
         {
             Caption = 'Ship-to Name';
+            DataClassification = CustomerContent;
         }
     }
     keys

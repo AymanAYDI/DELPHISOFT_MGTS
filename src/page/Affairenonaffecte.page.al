@@ -3,6 +3,8 @@ page 50057 "DEL Affaire non affectée"
     InsertAllowed = false;
     PageType = List;
     SourceTable = "DEL Logistic";
+    UsageCategory = Lists;
+    ApplicationArea = all;
 
     layout
     {
@@ -12,18 +14,23 @@ page 50057 "DEL Affaire non affectée"
             {
                 field(ID; Rec.ID)
                 {
+                    ApplicationArea = All;
                 }
                 field(Deal_ID; Rec.Deal_ID)
                 {
+                    ApplicationArea = All;
                 }
                 field("ACO No."; Rec."ACO No.")
                 {
+                    ApplicationArea = All;
                 }
                 field("Supplier Name"; Rec."Supplier Name")
                 {
+                    ApplicationArea = All;
                 }
                 field("BL N°"; Rec."BL N°")
                 {
+                    ApplicationArea = All;
 
                     trigger OnLookup(var Text: Text): Boolean
                     begin
@@ -81,6 +88,7 @@ page 50057 "DEL Affaire non affectée"
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
+                ApplicationArea = All;
 
                 trigger OnAction()
                 begin

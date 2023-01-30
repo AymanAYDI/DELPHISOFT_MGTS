@@ -9,6 +9,8 @@ page 50012 "DEL Tracked product follow up"
     SourceTableView = SORTING("Document Type", "Document No.", "Line No.")
                       WHERE("DEL Risk Item" = CONST(true),
                             "DEL Photo Risk Item Taked" = CONST(false));
+    UsageCategory = Lists;
+    ApplicationArea = all;
 
     layout
     {
@@ -90,6 +92,7 @@ page 50012 "DEL Tracked product follow up"
                 Caption = 'Show Document';
                 Image = View;
                 Promoted = true;
+                PromotedOnly = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 ShortCutKey = 'Shift+F7';

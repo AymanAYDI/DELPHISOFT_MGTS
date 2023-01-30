@@ -1,7 +1,5 @@
 page 50033 "DEL Subform Planned"
 {
-
-
     Editable = false;
     PageType = ListPart;
     SourceTable = "DEL Element";
@@ -66,9 +64,7 @@ page 50033 "DEL Subform Planned"
             {
                 Caption = 'See Document';
                 Enabled = SeeButtonEnable;
-                Promoted = true;
-                PromotedCategory = Process;
-
+                Image = Document;
                 trigger OnAction()
                 var
                     purchHeader_Re_Loc: Record "Purchase Header";

@@ -5,6 +5,7 @@ page 50031 "DEL Subform ACO"
     Editable = false;
     PageType = ListPart;
     SourceTable = "DEL Element";
+    UsageCategory = None;
 
     layout
     {
@@ -46,6 +47,6 @@ page 50031 "DEL Subform ACO"
     end;
 
     var
-        VendorName_Te: Text[50];
+        VendorName_Te: Text[100];
 }
 

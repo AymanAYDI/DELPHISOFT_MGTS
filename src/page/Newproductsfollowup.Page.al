@@ -11,6 +11,8 @@ page 50004 "DEL New products follow up"
                       WHERE("DEL First Purch. Order" = CONST(true),
                             Type = CONST(Item),
                             "DEL Photo And DDoc" = CONST(false));
+    UsageCategory = Lists;
+    ApplicationArea = all;
 
     layout
     {
@@ -118,6 +120,7 @@ page 50004 "DEL New products follow up"
                 Caption = 'Show Document';
                 Image = View;
                 Promoted = true;
+                PromotedOnly = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 ShortCutKey = 'Shift+F7';

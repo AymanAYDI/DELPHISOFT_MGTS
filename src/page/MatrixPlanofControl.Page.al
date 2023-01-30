@@ -1,17 +1,15 @@
 page 50092 "DEL Matrix Plan of Control"
 {
-
     Caption = 'Plan of Control';
     CardPageID = "DEL Matrix Plan of Cont. Card";
     InsertAllowed = false;
     ModifyAllowed = false;
     PageType = List;
-
     SourceTable = "DEL Regulation Matrix Line";
-
     SourceTableView = SORTING("Item Category Code", "Product Group Code", Mark, "Product Description", "No.", Type)
                       ORDER(Ascending)
                       WHERE(Type = FILTER("Plan of control"));
+    UsageCategory = None;
 
     layout
     {
@@ -21,33 +19,39 @@ page 50092 "DEL Matrix Plan of Control"
             {
                 field("Item Category Code"; Rec."Item Category Code")
                 {
-                    Visible = false;
+                    ApplicationArea = All;
                     Caption = 'Item Category Code';
+                    Visible = false;
                 }
                 field("Product Group Code"; Rec."Product Group Code")
                 {
-                    Visible = false;
+                    ApplicationArea = All;
                     Caption = 'Product Group Code';
+                    Visible = false;
                 }
                 field("Item Category Label"; Rec."Item Category Label")
                 {
-                    Visible = false;
+                    ApplicationArea = All;
                     Caption = 'Item category description';
+                    Visible = false;
                 }
                 field("Product Group Label"; Rec."Product Group Label")
                 {
-                    Visible = false;
+                    ApplicationArea = All;
                     Caption = 'Product group description';
+                    Visible = false;
                 }
                 field(Type; Rec.Type)
                 {
-                    Visible = false;
+                    ApplicationArea = All;
                     Caption = 'Type';
+                    Visible = false;
                 }
                 field("Test Type"; Rec."Test Type")
                 {
-                    Editable = false;
+                    ApplicationArea = All;
                     Caption = 'Test Type';
+                    Editable = false;
 
                     trigger OnLookup(var Text: Text): Boolean
                     begin
@@ -63,26 +67,32 @@ page 50092 "DEL Matrix Plan of Control"
                 }
                 field(Descriptive; Rec.Descriptive)
                 {
+                    ApplicationArea = All;
                     Caption = 'Descriptive';
                 }
                 field("Support Text"; Rec."Support Text")
                 {
+                    ApplicationArea = All;
                     Caption = 'Support Text';
                 }
                 field("Control Type"; Rec."Control Type")
                 {
+                    ApplicationArea = All;
                     Caption = 'Type de contrôle';
                 }
                 field(Frequency; Rec.Frequency)
                 {
+                    ApplicationArea = All;
                     Caption = 'Frequency';
                 }
                 field("Referent Laboratory"; Rec."Referent Laboratory")
                 {
+                    ApplicationArea = All;
                     Caption = 'Referent Laboratory';
                 }
                 field("Livrables 1"; Rec."Livrables 1")
                 {
+                    ApplicationArea = All;
                     Caption = 'Deliverables 1';
                 }
             }
@@ -95,6 +105,7 @@ page 50092 "DEL Matrix Plan of Control"
         {
             action(Selection)
             {
+                ApplicationArea = All;
                 Image = CheckList;
                 Promoted = true;
                 PromotedCategory = Process;
@@ -154,6 +165,7 @@ page 50092 "DEL Matrix Plan of Control"
             }
             action(Card)
             {
+                ApplicationArea = All;
                 Image = Line;
                 Promoted = true;
                 PromotedCategory = Process;
@@ -182,4 +194,3 @@ page 50092 "DEL Matrix Plan of Control"
         DescProduct: Text;
         Markfilter: Text;
 }
-

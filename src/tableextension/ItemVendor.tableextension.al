@@ -6,6 +6,7 @@ tableextension 50047 "DEL ItemVendor" extends "Item Vendor" //99
         {
             Caption = 'Coubtry/Region Code';
             TableRelation = "Country/Region".Code;
+            DataClassification = CustomerContent;
         }
     }
 }

@@ -3,39 +3,30 @@ table 50059 "DEL Matrise Group Art./Grp Std"
     Caption = 'Standard Item Group / Product Group Matrix';
     DrillDownPageID = "DEL Matrice Grp art./Group std";
     LookupPageID = "DEL Matrice Grp art./Group std";
-
+    DataClassification = CustomerContent;
     fields
     {
         field(1; "Product Group Code"; Code[10])
         {
             Caption = 'Product Group Code';
             TableRelation = "Product Group".Code;
-
-            trigger OnValidate()
-            var
-            //TODO ProductGroup_Rec: Record "Product Group";
-            begin
-            end;
+            DataClassification = CustomerContent;
         }
         field(2; "Standard Item Group Code"; Code[20])
         {
             Caption = 'Standard Item Group Code';
+            DataClassification = CustomerContent;
             //TODO TableRelation = "Artikelgruppe Katalog";
             //WE ARE NOT ALLOWED TO MERGE THESE TABLES
         }
-        field(3; "Product Group Description"; Text[50])
+        field(3; "Product Group Description"; Text[100])
         {
             CalcFormula = Lookup("Product Group".Description WHERE(Code = FIELD("Product Group Code")));
             Caption = 'Product Group Description';
             Editable = false;
             FieldClass = FlowField;
 
-            trigger OnValidate()
-            var
-            //TODO  ProductGroup_Rec: Record "5723";
-            //THIS RECORD HAS BEEN REMOVED
-            begin
-            end;
+
         }
         field(4; "Std Item Group Description"; Text[50])
         {

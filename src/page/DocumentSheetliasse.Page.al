@@ -12,6 +12,7 @@ page 50072 "DEL Document Sheet liasse"
                       ORDER(Ascending)
                       WHERE("Notation Type" = FILTER(' '),
                             "Type contrat" = FILTER(' '));
+    UsageCategory = None;
 
     layout
     {
@@ -21,21 +22,27 @@ page 50072 "DEL Document Sheet liasse"
             {
                 field("Insert Date"; Rec."Insert Date")
                 {
+                    ApplicationArea = All;
                 }
                 field("Insert Time"; Rec."Insert Time")
                 {
+                    ApplicationArea = All;
                 }
                 field(Path; Rec.Path)
                 {
+                    ApplicationArea = All;
                 }
                 field("File Name"; Rec."File Name")
                 {
+                    ApplicationArea = All;
                 }
                 field("Type liasse"; Rec."Type liasse")
                 {
+                    ApplicationArea = All;
                 }
                 field("User ID"; Rec."User ID")
                 {
+                    ApplicationArea = All;
                 }
             }
         }
@@ -53,6 +60,7 @@ page 50072 "DEL Document Sheet liasse"
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
+                ApplicationArea = All;
 
                 trigger OnAction()
                 begin
@@ -67,6 +75,7 @@ page 50072 "DEL Document Sheet liasse"
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 ShortCutKey = 'Return';
+                ApplicationArea = All;
 
                 trigger OnAction()
                 begin

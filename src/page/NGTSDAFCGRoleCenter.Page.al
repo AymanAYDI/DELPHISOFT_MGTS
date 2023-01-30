@@ -2,6 +2,7 @@ page 50098 "DEL NGTS DAF-CG Role Center"
 {
     Caption = 'Role Center';
     PageType = RoleCenter;
+    UsageCategory = None;
 
     layout
     {

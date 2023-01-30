@@ -1,4 +1,4 @@
-enum 50036 "DEL Usage DocMatrix Selection" //n'existe pas dans l'STD 
+enum 50036 "DEL Usage DocMatrix Selection"
 {
     Extensible = false;
 

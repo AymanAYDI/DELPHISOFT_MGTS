@@ -12,6 +12,7 @@ page 50065 "DEL Document Sheet"
     SourceTableView = SORTING("Table Name", "No.", "Comment Entry No.", "Line No.")
                       ORDER(Ascending)
                       WHERE("Type liasse" = FILTER(' '));
+    UsageCategory = None;
 
     layout
     {
@@ -21,21 +22,27 @@ page 50065 "DEL Document Sheet"
             {
                 field("Insert Date"; Rec."Insert Date")
                 {
+                    ApplicationArea = all;
                 }
                 field("Insert Time"; Rec."Insert Time")
                 {
+                    ApplicationArea = all;
                 }
                 field(Path; Rec.Path)
                 {
+                    ApplicationArea = all;
                 }
                 field("File Name"; Rec."File Name")
                 {
+                    ApplicationArea = all;
                 }
                 field("Notation Type"; Rec."Notation Type")
                 {
+                    ApplicationArea = all;
                 }
                 field("User ID"; Rec."User ID")
                 {
+                    ApplicationArea = all;
                 }
             }
         }
@@ -44,10 +51,12 @@ page 50065 "DEL Document Sheet"
             systempart(Links; Links)
             {
                 Visible = false;
+                ApplicationArea = all;
             }
             systempart(Notes; Notes)
             {
                 Visible = false;
+                ApplicationArea = all;
             }
         }
     }
@@ -62,8 +71,10 @@ page 50065 "DEL Document Sheet"
                 Ellipsis = true;
                 Image = Add;
                 Promoted = true;
+                PromotedOnly = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
+                ApplicationArea = all;
 
                 trigger OnAction()
                 begin
@@ -78,6 +89,7 @@ page 50065 "DEL Document Sheet"
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 ShortCutKey = 'Return';
+                ApplicationArea = all;
 
                 trigger OnAction()
                 begin
@@ -99,21 +111,17 @@ page 50065 "DEL Document Sheet"
     var
         DocumentLine: Record "DEL Document Line";
         InStr: InStream;
-        //oFile: file;
         LastLineNo: Integer;
         OutStr: OutStream;
         ImportFileName: Text;
         ServerFileName: Text;
-        ////////---------
         TempBlob: Codeunit "Temp Blob";
     begin
-        //TODO: Document_CU a été commenté car il contient le Dotnet
-        // IF NOT Document_CU.OpenFile(ImportFileName, ServerFileName) THEN
-        //     EXIT;
+        IF NOT Document_CU.OpenFile(ImportFileName, ServerFileName) THEN
+            EXIT;
 
         IF ServerFileName = '' THEN
             EXIT;
-        //TODO 
         DocumentLine.SETRANGE("Table Name", Rec."Table Name");
         DocumentLine.SETRANGE("No.", Rec."No.");
 
@@ -135,17 +143,11 @@ page 50065 "DEL Document Sheet"
         Rec."Insert Date" := TODAY;
         Rec."Insert Time" := TIME;
 
-        //TODO: Document_CU a été commenté car il contient le Dotnet
-        // Rec.Path := Document_CU.GetDirectoryName(ImportFileName);
-        // Rec."File Name" := Document_CU.GetFileName(ImportFileName);
+        Rec.Path := Document_CU.GetDirectoryName(ImportFileName);
+        Rec."File Name" := Document_CU.GetFileName(ImportFileName);
 
         Rec.INSERT(TRUE);
         CurrPage.UPDATE(FALSE);
-    end;
-
-    local procedure SaveAs()
-    var
-    begin
     end;
 
     local procedure Open()
@@ -154,12 +156,10 @@ page 50065 "DEL Document Sheet"
         InStr: InStream;
         OutStr: OutStream;
         Directory: Text;
-        //oFile: File;
         ExportFileName: text;
 
     begin
-        //TODO: Document_CU a été commenté car il contient le Dotnet
-        // Directory := Document_CU.TempDirectory();
+        Directory := Document_CU.TempDirectory();
 
         //TODO: Cannot be used for a cloud dev: à vérifier le create 
         // oFile.CREATE(Directory + Rec."File Name");

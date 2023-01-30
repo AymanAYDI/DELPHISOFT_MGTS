@@ -2,55 +2,61 @@ table 50082 "DEL D365FM Mail Template"
 {
 
     Caption = 'Modèle e-mail';
-
+    DataClassification = CustomerContent;
     fields
     {
         field(1; "Parameter String"; Text[250])
         {
             Caption = 'Paramètre';
+            DataClassification = CustomerContent;
         }
         field(2; "Language Code"; Code[20])
         {
             Caption = 'Code langue';
             TableRelation = Language;
+            DataClassification = CustomerContent;
         }
         field(3; "Template mail"; BLOB)
         {
             Caption = 'Template';
+            DataClassification = CustomerContent;
         }
         field(4; Title; Text[250])
         {
             Caption = 'Objet';
+            DataClassification = CustomerContent;
         }
         field(5; Default; Boolean)
         {
             Caption = 'Par défaut';
+            DataClassification = CustomerContent;
         }
         field(6; "Sender Address"; Text[250])
         {
             Caption = 'Emetteur email';
+            DataClassification = CustomerContent;
         }
         field(7; Cci; Text[250])
         {
             Caption = 'Cci';
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
         }
         field(8; "Reminder Terms Code"; Code[10])
         {
             Caption = 'Reminder Terms Code';
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
             TableRelation = "Reminder Terms";
         }
         field(9; "Reminder Level"; Integer)
         {
             Caption = 'Reminder Level';
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
             TableRelation = "Reminder Level"."No." WHERE("Reminder Terms Code" = FIELD("Reminder Terms Code"));
         }
         field(10; "Document Type"; Enum "DEL DoC Facture Type")
         {
             Caption = 'Type document';
-            DataClassification = ToBeClassified;
+            DataClassification = CustomerContent;
         }
     }
 

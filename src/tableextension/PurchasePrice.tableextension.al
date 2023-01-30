@@ -7,11 +7,12 @@ tableextension 50041 "DEL PurchasePrice" extends "Purchase Price" //7012
         field(50000; "DEL Entry No."; BigInteger)
         {
             Caption = 'Entry No.';
-
+            DataClassification = CustomerContent;
         }
         field(50092; "DEL Qty. optimale"; Decimal)
         {
             Caption = 'Qty. optimale';
+            DataClassification = CustomerContent;
         }
     }
     keys

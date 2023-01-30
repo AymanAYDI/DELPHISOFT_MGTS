@@ -34,20 +34,23 @@ tableextension 50029 "DEL PurchaseLine" extends "Purchase Line" //39
         {
             Caption = 'Total volume';
             DecimalPlaces = 2 : 5;
+            DataClassification = CustomerContent;
         }
         field(50002; "DEL External reference NGTS"; Text[50])
         {
             Caption = 'External reference NGTS';
+            DataClassification = CustomerContent;
         }
         field(50003; "DEL First Purch. Order"; Boolean)
         {
             Caption = 'New product';
             Editable = false;
+            DataClassification = CustomerContent;
         }
         field(50004; "DEL Sample Collected"; Boolean)
         {
             Caption = 'Sample picked';
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 IF ("DEL Sample Collected" = TRUE) AND (Type = Type::Item) THEN BEGIN
@@ -65,16 +68,18 @@ tableextension 50029 "DEL PurchaseLine" extends "Purchase Line" //39
         {
             Caption = 'Collected Date';
             Editable = false;
+            DataClassification = CustomerContent;
         }
         field(50006; "DEL Sample Collected by"; Code[50])
         {
             Caption = 'Sample Collected by';
             Editable = false;
+            DataClassification = CustomerContent;
         }
         field(50007; "DEL Photo Taked"; Boolean)
         {
             Caption = 'Picture Taken';
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 IF ("DEL Photo Taked" = TRUE) AND (Type = Type::Item) THEN BEGIN
@@ -92,21 +97,24 @@ tableextension 50029 "DEL PurchaseLine" extends "Purchase Line" //39
         {
             Caption = 'Photo Date';
             Editable = false;
+            DataClassification = CustomerContent;
         }
         field(50009; "DEL Photo Taked By"; Code[50])
         {
             Caption = 'Photo Taked By';
             Editable = false;
+            DataClassification = CustomerContent;
         }
         field(50010; "DEL Risk Item"; Boolean)
         {
             Caption = 'Traked item';
             Editable = false;
+            DataClassification = CustomerContent;
         }
         field(50011; "DEL Photo Risk Item Taked"; Boolean)
         {
             Caption = 'Follow-up effect';
-
+            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 IF ("DEL Photo Risk Item Taked" = TRUE) AND (Type = Type::Item) THEN BEGIN
@@ -124,14 +132,17 @@ tableextension 50029 "DEL PurchaseLine" extends "Purchase Line" //39
         {
             Caption = 'Traked item Date';
             Editable = false;
+            DataClassification = CustomerContent;
         }
         field(50013; "DEL Photo Risk Item Taked By"; Code[50])
         {
             Caption = 'Traked item Taked By';
             Editable = false;
+            DataClassification = CustomerContent;
         }
         field(50014; "DEL Photo And DDoc"; Boolean)
         {
+            DataClassification = CustomerContent;
         }
     }
     keys

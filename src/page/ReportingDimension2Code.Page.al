@@ -3,6 +3,7 @@ page 50017 "DEL Reporting Dimension 2 Code"
     Caption = 'Reporting Dimension 2 Code';
     PageType = List;
     SourceTable = "DEL Reporting Dimension 2 Code";
+    UsageCategory = None;
 
     layout
     {

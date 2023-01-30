@@ -1,7 +1,5 @@
 page 50113 "DEL Matrix Plan of Cont. List"
 {
-
-
     Caption = 'Plan of Control';
     DeleteAllowed = false;
     InsertAllowed = false;
@@ -11,7 +9,7 @@ page 50113 "DEL Matrix Plan of Cont. List"
     SourceTableView = SORTING("Item Category Code", "Product Group Code", Mark, "Product Description", "No.", Type)
                       ORDER(Ascending)
                       WHERE(Type = FILTER("Plan of control"));
-
+    UsageCategory = None;
     layout
     {
         area(content)
@@ -20,55 +18,67 @@ page 50113 "DEL Matrix Plan of Cont. List"
             {
                 field("Item Category Code"; Rec."Item Category Code")
                 {
-                    Visible = false;
+                    ApplicationArea = All;
                     Caption = 'Item Category Code';
+                    Visible = false;
                 }
                 field("Product Group Code"; Rec."Product Group Code")
                 {
-                    Visible = false;
+                    ApplicationArea = All;
                     Caption = 'Product Group Code';
+                    Visible = false;
                 }
                 field("Item Category Label"; Rec."Item Category Label")
                 {
-                    Visible = false;
+                    ApplicationArea = All;
                     Caption = 'Item category description';
+                    Visible = false;
                 }
                 field("Product Group Label"; Rec."Product Group Label")
                 {
-                    Visible = false;
+                    ApplicationArea = All;
                     Caption = 'Product group description';
+                    Visible = false;
                 }
                 field(Type; Rec.Type)
                 {
-                    Visible = false;
+                    ApplicationArea = All;
                     Caption = 'Type';
+                    Visible = false;
                 }
                 field("Test Type"; Rec."Test Type")
                 {
+                    ApplicationArea = All;
                     Caption = 'Test Type';
                 }
                 field(Descriptive; Rec.Descriptive)
                 {
+                    ApplicationArea = All;
                     Caption = 'Descriptive';
                 }
                 field("Support Text"; Rec."Support Text")
                 {
+                    ApplicationArea = All;
                     Caption = 'Support Text';
                 }
                 field("Control Type"; Rec."Control Type")
                 {
+                    ApplicationArea = All;
                     Caption = 'Type de contrôle';
                 }
                 field(Frequency; Rec.Frequency)
                 {
+                    ApplicationArea = All;
                     Caption = 'Frequency';
                 }
                 field("Referent Laboratory"; Rec."Referent Laboratory")
                 {
+                    ApplicationArea = All;
                     Caption = 'Referent Laboratory';
                 }
                 field("Livrables 1"; Rec."Livrables 1")
                 {
+                    ApplicationArea = All;
                     Caption = 'Deliverables 1';
                 }
             }
@@ -81,8 +91,10 @@ page 50113 "DEL Matrix Plan of Cont. List"
         {
             action(Card)
             {
+                ApplicationArea = All;
                 Image = Line;
                 Promoted = true;
+                PromotedOnly = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 RunObject = Page "DEL Matrix Plan of Cont. Card";
@@ -96,4 +108,3 @@ page 50113 "DEL Matrix Plan of Cont. List"
         }
     }
 }
-
