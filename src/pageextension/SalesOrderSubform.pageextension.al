@@ -2,30 +2,6 @@ pageextension 50043 "DEL SalesOrderSubform" extends "Sales Order Subform"
 {
     layout
     {
-        //TODO: the property 'table relation' cannot be customized
-        //Unsupported feature: Property Modification (TableRelation) on "Control 300".
-
-
-        //Unsupported feature: Property Modification (TableRelation) on "Control 302".
-
-
-        //Unsupported feature: Property Modification (TableRelation) on "Control 304".
-
-
-        //Unsupported feature: Property Modification (TableRelation) on "Control 306".
-
-
-        //Unsupported feature: Property Modification (TableRelation) on "Control 308".
-
-
-        //Unsupported feature: Property Modification (TableRelation) on "Control 310".
-
-
-        //Unsupported feature: Property Deletion (IndentationColumnName) on "Control 1".
-
-
-        //Unsupported feature: Property Deletion (IndentationControls) on "Control 1".
-
         addafter("Control1")
         {
             field("DEL Requested qtity"; Rec."DEL Requested qtity")

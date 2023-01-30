@@ -68,7 +68,7 @@ tableextension 50028 "DEL PurchaseHeader" extends "Purchase Header" //38
             Caption = 'Requested Delivery Date';
             DataClassification = CustomerContent;
         }
-        field(50012; "DEL Relational Exch. Rate Amount"; Decimal)
+        field(50012; "DEL Rel. Exch. Rate Amount"; Decimal)
         {
             Caption = 'Relational Exch. Rate Amount';
             DecimalPlaces = 1 : 6;

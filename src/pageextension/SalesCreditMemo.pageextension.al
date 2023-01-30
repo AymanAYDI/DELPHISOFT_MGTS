@@ -53,7 +53,6 @@ pageextension 50040 "DEL SalesCreditMemo" extends "Sales Credit Memo"
                     dealShipmentSelection_Form_Loc: Page "DEL Deal Shipment Selection";
                 begin
 
-                    // T-00551-DEAL -
 
                     //on cherche si des lignes ont d‚j… ‚t‚ g‚n‚r‚e pour cette facture
                     dealShipmentSelection_Re_Loc.RESET();
@@ -97,7 +96,6 @@ pageextension 50040 "DEL SalesCreditMemo" extends "Sales Credit Memo"
                     dealShipmentSelection_Form_Loc.SETTABLEVIEW(dealShipmentSelection_Re_Loc);
                     dealShipmentSelection_Form_Loc.SETRECORD(dealShipmentSelection_Re_Loc);
                     dealShipmentSelection_Form_Loc.RUN();
-                    // T-00551-DEAL +
                 end;
             }
         }
@@ -141,14 +139,12 @@ pageextension 50040 "DEL SalesCreditMemo" extends "Sales Credit Memo"
                     lFieldCustNo: Integer;
                     lFieldNo: Integer;
                 begin
-                    //DEL/PD/20190207/LOP003.begin
-                    // init
                     lNo := Rec."No.";
                     lCustNo := Rec."Sell-to Customer No.";
                     lFieldNo := lrecSalesCrMemoHeader.FIELDNO("No.");
                     lFieldCustNo := lrecSalesCrMemoHeader.FIELDNO("Sell-to Customer No.");
 
-                    IF lcuDocumentMatrixMgt.ShowDocMatrixSelection(Rec."Sell-to Customer No.", ProcessType::Manual, lUsage::"S.Cr.Memo", lrecDocMatrixSelection, FALSE) THEN BEGIN
+                    IF lcuDocumentMatrixMgt.ShowDocMatrixSelection(Rec."Sell-to Customer No.", ProcessType::Manual, lUsage::"S.Cr.Memo", lrecDocMatrixSelection, FALSE) THEN
 
                         // check if post is configured in DocMatrixSelection
                         IF lrecDocMatrixSelection.Post = lrecDocMatrixSelection.Post::Yes THEN
@@ -159,9 +155,6 @@ pageextension 50040 "DEL SalesCreditMemo" extends "Sales Credit Memo"
                             // if the CrMemo was posted, then we should find the "Posted Sales Credit Memo" to be further processed
                             IF lcuDocumentMatrixMgt.GetPostedSalesCreditMemo(lNo, lCustNo, lrecSalesCrMemoHeader) THEN
                                 lcuDocumentMatrixMgt.ProcessDocumentMatrix(lUsage::"S.Cr.Memo", ProcessType::Manual, lrecSalesCrMemoHeader, lFieldCustNo, lFieldNo, lrecDocMatrixSelection, 0);
-
-                    END;
-                    //DEL/PD/20190207/LOP003.end
                 end;
             }
         }

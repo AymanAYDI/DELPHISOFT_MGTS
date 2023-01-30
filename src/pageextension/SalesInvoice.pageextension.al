@@ -1,4 +1,4 @@
-pageextension 50039 "DEL SalesInvoice" extends "Sales Invoice"
+pageextension 50039 "DEL SalesInvoice" extends "Sales Invoice" //43
 {
     layout
     {
@@ -44,7 +44,6 @@ pageextension 50039 "DEL SalesInvoice" extends "Sales Invoice"
                     dealShipmentSelection_Form_Loc: Page "DEL Deal Shipment Selection";
                 begin
 
-                    // T-00551-DEAL -
 
                     //on cherche si des lignes ont d‚j… ‚t‚ g‚n‚r‚e pour cette facture
                     dealShipmentSelection_Re_Loc.RESET();
@@ -89,14 +88,12 @@ pageextension 50039 "DEL SalesInvoice" extends "Sales Invoice"
                     dealShipmentSelection_Form_Loc.SETTABLEVIEW(dealShipmentSelection_Re_Loc);
                     dealShipmentSelection_Form_Loc.SETRECORD(dealShipmentSelection_Re_Loc);
                     dealShipmentSelection_Form_Loc.RUN()
-                    // T-00551-DEAL +
                 end;
 
 
 
             }
         }
-
         addafter(Post)
         {
             action("DEL PostAndPrint")
@@ -107,10 +104,12 @@ pageextension 50039 "DEL SalesInvoice" extends "Sales Invoice"
                 PromotedIsBig = true;
                 Image = PostPrint;
                 PromotedCategory = Category5;
+                Caption = 'Post and &Print';
 
                 trigger OnAction()
                 var
                 begin
+
                     // PostDocument(CODEUNIT::"Sales-Post + Print", NavigateAfterPost::Nowhere); TODO: procedure local 'PostDocument'
                 end;
             }

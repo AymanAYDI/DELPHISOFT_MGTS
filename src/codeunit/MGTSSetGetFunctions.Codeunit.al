@@ -6,10 +6,44 @@ codeunit 50011 "DEL MGTS Set/Get Functions"
 
         tempSpecialSHBuffer: Record "Sales Header";
         SpecOrderPosting: Boolean;
+        Qty: Decimal;
+        PrevLocationCode: Code[10];
+        PrevReqDeliveryDate: Date;
+
+
+    //COD 333--------------
+    procedure SetQty(pQty: Decimal)
+    begin
+        Qty := pQty;
+    end;
+
+    procedure GetQty(): Decimal
+    begin
+        exit(Qty);
+    end;
+////
+    procedure SetPrevLocationCode(pPrevLocationCode: Code[10])
+    begin
+        PrevLocationCode := pPrevLocationCode;
+    end;
+
+    procedure GetPrevLocationCode(): Code[10]
+    begin
+        exit(PrevLocationCode);
+    end;
+////
+            procedure SetPrevReqDeliveryDate(pPrevReqDeliveryDate: Date)
+    begin
+        PrevReqDeliveryDate := pPrevReqDeliveryDate;
+    end;
+
+    procedure GetPrevReqDeliveryDate(): Date
+    begin
+        exit(PrevReqDeliveryDate);
+    end;
+
 
     procedure SetSpecOrderPosting(NewSpecOrderPost: Boolean)
-
-
     begin
         SpecOrderPosting := NewSpecOrderPost;
 
@@ -21,8 +55,6 @@ codeunit 50011 "DEL MGTS Set/Get Functions"
 
 
     procedure GetSpecialOrderBuffer(VAR pTempSH: Record "Sales Header" TEMPORARY)
-
-
     begin
 
         pTempSH.RESET();

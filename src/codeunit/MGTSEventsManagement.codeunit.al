@@ -270,7 +270,7 @@ codeunit 50100 "DEL MGTS_Events Management"
     local procedure T38_OnAfterUpdateCurrencyFactor_PurchaseHeader(var PurchaseHeader: Record "Purchase Header"; HideValidationDialog: Boolean)
     begin
         IF PurchaseHeader."Currency Factor" <> 0 THEN
-            PurchaseHeader.VALIDATE(PurchaseHeader."DEL Relational Exch. Rate Amount", 1 / PurchaseHeader."Currency Factor");
+            PurchaseHeader.VALIDATE(PurchaseHeader."DEL Rel. Exch. Rate Amount", 1 / PurchaseHeader."Currency Factor");
     end;
     ////
     [EventSubscriber(ObjectType::Table, Database::"Purchase Header", 'OnValidatePaymentTermsCodeOnBeforeValidateDueDate', '', false, false)]
@@ -313,7 +313,7 @@ codeunit 50100 "DEL MGTS_Events Management"
     local procedure T38_OnAfterValidateEvent_PurchaseHeader(var Rec: Record "Purchase Header"; var xRec: Record "Purchase Header"; CurrFieldNo: Integer)
     begin
         IF Rec."Currency Factor" <> 0 THEN begin
-            Rec.VALIDATE(Rec."DEL Relational Exch. Rate Amount", 1 / Rec."Currency Factor");
+            Rec.VALIDATE(Rec."DEL Rel. Exch. Rate Amount", 1 / Rec."Currency Factor");
             Rec.Modify();
         end;
     end;
@@ -531,8 +531,6 @@ codeunit 50100 "DEL MGTS_Events Management"
         MGTSFactMgt.OnGenJnlLineSetFilter_Fct(GenJournalLine);
     end;
 
-
-
     ////COD 232 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post+Print", 'OnBeforePostJournalBatch', '', false, false)]
     local procedure COD232_OnBeforePostJournalBatch_GenJnlPostPrint(var GenJournalLine: Record "Gen. Journal Line"; var HideDialog: Boolean)
@@ -581,10 +579,11 @@ codeunit 50100 "DEL MGTS_Events Management"
     local procedure COD333_OnBeforeInitPurchOrderLineUpdateQuantity_ReqWeshMOrder(var PurchOrderLine: Record "Purchase Line"; var RequisitionLine: Record "Requisition Line"; var IsHandled: Boolean)
     var
         ReqLineTEMP: Record "Requisition Line";
-        Qty: Decimal;
+        // Qty: Decimal;
+        GlobalFunction: Codeunit "DEL MGTS Set/Get Functions";
     begin
         IsHandled := true;
-        Qty := RequisitionLine.Quantity;
+        GlobalFunction.SetQty(RequisitionLine.Quantity);
         ReqLineTEMP.RESET();
         ReqLineTEMP.SETCURRENTKEY("Worksheet Template Name", "Journal Batch Name", Type, "No.", "Due Date");
         ReqLineTEMP.SETRANGE("Worksheet Template Name", RequisitionLine."Worksheet Template Name");
@@ -596,23 +595,46 @@ codeunit 50100 "DEL MGTS_Events Management"
         ReqLineTEMP.SETFILTER("Line No.", '<>%1', RequisitionLine."Line No.");
         IF ReqLineTEMP.FIND('-') THEN
             REPEAT
-                Qty := Qty + ReqLineTEMP.Quantity;
+                GlobalFunction.SetQty(GlobalFunction.GetQty() + ReqLineTEMP.Quantity);
+            // Qty := Qty + ReqLineTEMP.Quantity;
             UNTIL ReqLineTEMP.NEXT() = 0;
-        PurchOrderLine.Validate(Quantity, Qty);
+        PurchOrderLine.Validate(Quantity, GlobalFunction.GetQty());
     end;
 
-    ////// 
-    //TODO VAR GLOBAL 
-    // [EventSubscriber(ObjectType::Codeunit, Codeunit::"Req. Wksh.-Make Order", 'OnInsertPurchOrderLineOnAfterCheckInsertFinalizePurchaseOrderHeader', '', false, false)]
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Req. Wksh.-Make Order", 'OnInsertPurchOrderLineOnAfterCheckInsertFinalizePurchaseOrderHeader', '', false, false)]
+    local procedure COD333_OnInsertPurchOrderLineOnAfterCheckInsertFinalizePurchOrderHeader_ReqWeshMOrder(var RequisitionLine: Record "Requisition Line"; var PurchaseHeader: Record "Purchase Header"; var NextLineNo: Integer)
+    var
+        GlobalFunction: Codeunit "DEL MGTS Set/Get Functions";
 
-    // local procedure COD333_OnInsertPurchOrderLineOnAfterCheckInsertFinalizePurchOrderHeader_ReqWeshMOrder(var RequisitionLine: Record "Requisition Line"; var PurchaseHeader: Record "Purchase Header"; var NextLineNo: Integer)
-    // begin
-    //     PrevReqDeliveryDate := RequisitionLine."DEL Requested Delivery Date";
-    // end;
+    begin
+        GlobalFunction.SetPrevLocationCode(RequisitionLine."Location Code");
+        GlobalFunction.SetPrevReqDeliveryDate(RequisitionLine."DEL Requested Delivery Date");
+    end;
 
-    /////
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Req. Wksh.-Make Order", 'OnInsertPurchOrderLineOnAfterTransferFromReqLineToPurchLine', '', false, false)]
+    local procedure OnInsertPurchOrderLineOnAfterTransferFromReqLineToPurchLine(var PurchOrderLine: Record "Purchase Line"; RequisitionLine: Record "Requisition Line")
+    var
+        GlobalFunction: Codeunit "DEL MGTS Set/Get Functions";
+    begin
+        RequisitionLine.RESET;
+        RequisitionLine.SETCURRENTKEY("Worksheet Template Name", "Journal Batch Name", Type, "No.", "Due Date");
+        RequisitionLine.SETRANGE("Worksheet Template Name", RequisitionLine."Worksheet Template Name");
+        RequisitionLine.SETRANGE("Journal Batch Name", RequisitionLine."Journal Batch Name");
+        RequisitionLine.SETRANGE(Type, RequisitionLine.Type::Item);
+        RequisitionLine.SETRANGE("No.", RequisitionLine."No.");
+        RequisitionLine.SETRANGE("Location Code", RequisitionLine."Location Code");
+        RequisitionLine.SETRANGE("DEL Requested Delivery Date", RequisitionLine."DEL Requested Delivery Date");
+        RequisitionLine.SETFILTER("Line No.", '<>%1', RequisitionLine."Line No.");
+        IF RequisitionLine.FIND('-') THEN BEGIN
+            REPEAT
+            // GlobalFunction.SetQty();
+            //                 Qty := Qty + RequisitionLine.Quantity;
+            UNTIL RequisitionLine.NEXT = 0;
+        END;
+
+    end;
+
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Req. Wksh.-Make Order", 'OnInitPurchOrderLineOnAfterValidateLineDiscount', '', false, false)]
-
     local procedure COD333_OnInitPurchOrderLineOnAfterValidateLineDiscount_ReqWeshMOrder(var PurchOrderLine: Record "Purchase Line"; PurchOrderHeader: Record "Purchase Header"; RequisitionLine: Record "Requisition Line")
     begin
         IF PurchOrderHeader."Expected Receipt Date" <> 0D THEN
@@ -620,7 +642,7 @@ codeunit 50100 "DEL MGTS_Events Management"
         ELSE
             PurchOrderLine."Expected Receipt Date" := RequisitionLine."Due Date";
     end;
-    //
+
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Req. Wksh.-Make Order", 'OnInsertPurchOrderLineOnBeforeTransferReqLine', '', false, false)]
     //check line 535
     local procedure COD333_OnInsertPurchOrderLineOnBeforeTransferReqLine_ReqWeshMOrder(var PurchOrderHeader: Record "Purchase Header"; PurchOrderLine: Record "Purchase Line")
@@ -924,7 +946,7 @@ codeunit 50100 "DEL MGTS_Events Management"
         ConfirmManagement: Codeunit "Confirm Management";
         Deal_Cu: Codeunit "DEL Deal";
         MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
-        PostConfirmQst: Label 'Do you want to post the %1?', Comment = '%1 = Document Type';
+        PostConfirmQst: Label 'Do you want to post the %1?';
 
     begin
         IsHandled := true;
@@ -1329,7 +1351,26 @@ codeunit 50100 "DEL MGTS_Events Management"
     //     ColoredPurchDueDate := ReqLine."DEL Purchase Order Due Date" < TODAY;
     // end;
 
+    [EventSubscriber(ObjectType::page, page::"Sales Invoice", 'OnPostOnAfterSetDocumentIsPosted', '', false, false)]
+    local procedure P43_OnPostOnAfterSetDocumentIsPosted(SalesHeader: Record "Sales Header"; var IsScheduledPosting: Boolean; var DocumentIsPosted: Boolean)
+    var
+        NoSeries: Record 308;
+        GLEntry: Record 17;
+        Text50000: Label 'Please note that there is no related provision. Do you want to continue?;FRS=Attention il n''a pas de provision li‚e. Voulez-vous continuer ?';
 
+    begin
+        IF NOT NoSeries.GET(SalesHeader."No. Series") THEN
+            NoSeries.INIT;
+
+        IF NoSeries."DEL Check Entry For Reverse" THEN BEGIN
+            GLEntry.RESET;
+            GLEntry.SETRANGE("DEL Reverse With Doc. No.", SalesHeader."No.");
+            IF NOT GLEntry.FINDSET THEN
+                IF NOT CONFIRM(Text50000) THEN
+                    EXIT;
+        END;
+
+    end;
 
 
 }
