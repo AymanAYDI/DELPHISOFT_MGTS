@@ -1,4 +1,4 @@
-pageextension 50048 "DEL ContactCard" extends "Contact Card"
+pageextension 50048 "DEL ContactCard" extends "Contact Card" //5050
 {
     layout
     {

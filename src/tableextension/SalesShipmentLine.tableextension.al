@@ -1,4 +1,4 @@
-tableextension 50002 "DEL SalesShipmentLine" extends "Sales Shipment Line"
+tableextension 50002 "DEL SalesShipmentLine" extends "Sales Shipment Line" //111
 {
 
     fields

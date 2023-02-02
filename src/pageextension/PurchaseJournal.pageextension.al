@@ -108,12 +108,10 @@ pageextension 50024 "DEL PurchaseJournal" extends "Purchase Journal"
 
         //on cherche si des lignes ont déjà été générées pour cette facture et on les efface !
         dealShipmentSelection_Re_Loc.RESET();
-        //START CHG01
         dealShipmentSelection_Re_Loc.SETCURRENTKEY("Journal Template Name", "Journal Batch Name", "Line No.");
         dealShipmentSelection_Re_Loc.SETRANGE("Journal Template Name", Rec."Journal Template Name");
         dealShipmentSelection_Re_Loc.SETRANGE("Journal Batch Name", Rec."Journal Batch Name");
         dealShipmentSelection_Re_Loc.SETRANGE("Line No.", Rec."Line No.");
-        //STOP CHG01
         dealShipmentSelection_Re_Loc.DELETEALL();
 
         //Lister les deal, puis les livraisons qui y sont rattachées
@@ -139,18 +137,13 @@ pageextension 50024 "DEL PurchaseJournal" extends "Purchase Journal"
                         dealShipmentSelection_Re_Loc."Line No." := Rec."Line No.";
                         dealShipmentSelection_Re_Loc.USER_ID := USERID;
 
-                        //dealShipmentSelection_Re_Loc."BR No."              := DealShipment_Cu.FNC_GetBRNo(dealShipment_Re_Loc.ID);
                         dealShipmentSelection_Re_Loc."BR No." := dealShipment_Re_Loc."BR No.";
 
-                        //dealShipmentSelection_Re_Loc."Purchase Invoice No."  := DealShipment_Cu.FNC_GetPurchaseInvoiceNo(dealShipment_Re_Loc.ID);
                         dealShipmentSelection_Re_Loc."Purchase Invoice No." := dealShipment_Re_Loc."Purchase Invoice No.";
 
-                        //dealShipmentSelection_Re_Loc."Sales Invoice No."   := DealShipment_Cu.FNC_GetSalesInvoiceNo(dealShipment_Re_Loc.ID);
                         dealShipmentSelection_Re_Loc."Sales Invoice No." := dealShipment_Re_Loc."Sales Invoice No.";
 
-                        //START GRC01
                         IF ((dealShipmentSelection_Re_Loc."BR No." <> '') OR (dealShipmentSelection_Re_Loc."Purchase Invoice No." <> '')) THEN
-                            //STOP GRC01
                             dealShipmentSelection_Re_Loc.INSERT();
 
                     UNTIL (dealShipment_Re_Loc.NEXT() = 0);
@@ -158,11 +151,9 @@ pageextension 50024 "DEL PurchaseJournal" extends "Purchase Journal"
             UNTIL (deal_Re_Loc.NEXT() = 0);
 
         CLEAR(dealShipmentSelection_Page_Loc);
-        //dealShipmentSelection_Page_Loc.FNC_SetGenJnlLine(Rec);
         dealShipmentSelection_Page_Loc.SETTABLEVIEW(dealShipmentSelection_Re_Loc);
         dealShipmentSelection_Page_Loc.SETRECORD(dealShipmentSelection_Re_Loc);
 
-        //dealShipmentSelection_Page_Loc.RUN
         PAGE.RUN(Page::"DEL Deal Shipment Selection", dealShipmentSelection_Re_Loc);
 
     end;

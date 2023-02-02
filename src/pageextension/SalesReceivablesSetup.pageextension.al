@@ -1,10 +1,10 @@
-pageextension 50042 "DEL SalesReceivablesSetup" extends "Sales & Receivables Setup"
+pageextension 50042 "DEL SalesReceivablesSetup" extends "Sales & Receivables Setup" //456
 {
     layout
     {
         addafter(General)
         {
-            field("DEL Def. Req. Worksheet Template"; Rec."DEL Def. Req. Worksheet Template")
+            field("DEL Def. Req. Worksheet Template"; Rec."DEL Def.Req.Worksheet Temp")
             {
             }
             field("DEL Def. Req. Worksheet Batch"; Rec."DEL Def. Req. Worksheet Batch")
@@ -13,7 +13,7 @@ pageextension 50042 "DEL SalesReceivablesSetup" extends "Sales & Receivables Set
         }
         addafter("Archive Return Orders")
         {
-            field("DEL PDF Registration Customer Path"; Rec."DEL PDF Registration Customer Path")
+            field("DEL PDF Registration Customer Path"; Rec."DEL PDF Reg. Cust. Path")
             {
 
                 trigger OnLookup(var Text: Text): Boolean
@@ -21,7 +21,7 @@ pageextension 50042 "DEL SalesReceivablesSetup" extends "Sales & Receivables Set
                     // Rec."DEL PDF Registration Customer Path" := FileManagement.BrowseForFolderDialog(Cst001, Cst002, TRUE); //TODO: 'Codeunit "File Management"' does not contain a definition for 'BrowseForFolderDialog'
                 end;
             }
-            field("DEL PDF Registration Sales C.Memo"; Rec."DEL PDF Registration Sales C.Memo")
+            field("DEL PDF Registration Sales C.Memo"; Rec."DEL PDF Reg. Sales C.Memo")
             {
 
                 trigger OnLookup(var Text: Text): Boolean
@@ -29,7 +29,7 @@ pageextension 50042 "DEL SalesReceivablesSetup" extends "Sales & Receivables Set
                     // Rec."DEL PDF Registration Sales C.Memo" := RecLFileManagement.BrowseForFolderDialog(Cst001, Cst002, TRUE); //TODO: 'Codeunit "File Management"' does not contain a definition for 'BrowseForFolderDialog'
                 end;
             }
-            field("DEL PDF Registration PostedSalesIn"; Rec."DEL PDF Registration PostedSalesIn")
+            field("DEL PDF Registration PostedSalesIn"; Rec."DEL PDF Reg. PostedSalesIn")
             {
 
                 trigger OnLookup(var Text: Text): Boolean
@@ -52,7 +52,7 @@ pageextension 50042 "DEL SalesReceivablesSetup" extends "Sales & Receivables Set
                 field("DEL Kiriba SFTP Server Login"; Rec."DEL Kiriba SFTP Server Login")
                 {
                 }
-                field("DEL Kiriba SFTP Server Password"; Rec."DEL Kiriba SFTP Server Password")
+                field("DEL Kiriba SFTP Server Password"; Rec."DEL KiribaSFTPServerPassword")
                 {
                 }
                 field("DEL Kiriba Local File Path"; Rec."DEL Kiriba Local File Path")

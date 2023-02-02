@@ -22,7 +22,6 @@ pageextension 50025 "DEL CashReceiptJournal" extends "Cash Receipt Journal" //25
     actions
     {
 
-        //Unsupported feature: Property Modification (RunPageLink) on "Action 1000014".
 
         addafter(Dimensions)
         {
@@ -44,7 +43,6 @@ pageextension 50025 "DEL CashReceiptJournal" extends "Cash Receipt Journal" //25
                     IF Rec."Document Type" <> Rec."Document Type"::Invoice THEN
                         ERROR('Document Type doit etre Invoice');
 
-                    // DealShipmentSelection_Form_Loc.FNC_OpenedBy("Document No.");
                     DealShipmentSelection_Page_Loc.RUNMODAL()
                 end;
             }

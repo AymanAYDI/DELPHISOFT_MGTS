@@ -11,11 +11,5 @@ pageextension 50010 "DEL PostedPurchaseCreditMemo" extends "Posted Purchase Cred
             }
         }
     }
-    actions
-    {
-
-        //Unsupported feature: Property Modification (RunPageLink) on "Action 47".
-
-    }
 }
 

@@ -2,8 +2,6 @@ tableextension 50046 "DEL GeneralLedgerSetup" extends "General Ledger Setup" //9
 {
     fields
     {
-
-
         field(50000; "DEL Provision Source Code"; Code[20])
         {
             Caption = 'Provision Source Code';

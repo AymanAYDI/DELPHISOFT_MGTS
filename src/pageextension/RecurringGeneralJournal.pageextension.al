@@ -1,4 +1,4 @@
-pageextension 50029 "DEL RecurringGeneralJournal" extends "Recurring General Journal"
+pageextension 50029 "DEL RecurringGeneralJournal" extends "Recurring General Journal" //283
 {
     layout
     {

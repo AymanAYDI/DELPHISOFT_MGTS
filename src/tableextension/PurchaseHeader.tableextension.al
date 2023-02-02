@@ -492,7 +492,7 @@ tableextension 50028 "DEL PurchaseHeader" extends "Purchase Header" //38
                             BEGIN
 
                                 IF "DEL Requested Delivery Date" <> 0D THEN BEGIN
-                                    "Expected Receipt Date" := CALCDATE(PurchSetup1."DEL Sales Ship Time By Air Flight", "DEL Requested Delivery Date");
+                                    "Expected Receipt Date" := CALCDATE(PurchSetup1."DEL SalesShipTimeByAirFlight", "DEL Requested Delivery Date");
                                     MODIFY();
 
                                     PurchLine."Expected Receipt Date" := "Expected Receipt Date";
@@ -500,7 +500,7 @@ tableextension 50028 "DEL PurchaseHeader" extends "Purchase Header" //38
                                 END;
 
                                 IF NOT (PurchLine."Expected Receipt Date" = 0D) THEN BEGIN
-                                    SalesLine."DEL Estimated Delivery Date" := CALCDATE(PurchSetup1."DEL Sales Ship Time By Air Flight", PurchLine."Expected Receipt Date");
+                                    SalesLine."DEL Estimated Delivery Date" := CALCDATE(PurchSetup1."DEL SalesShipTimeByAirFlight", PurchLine."Expected Receipt Date");
                                     SalesLine.MODIFY();
                                 END;
                             END;
@@ -509,7 +509,7 @@ tableextension 50028 "DEL PurchaseHeader" extends "Purchase Header" //38
                             BEGIN
 
                                 IF "DEL Requested Delivery Date" <> 0D THEN BEGIN
-                                    "Expected Receipt Date" := CALCDATE(PurchSetup1."DEL Sales Ship Time By Sea Vessel", "DEL Requested Delivery Date");
+                                    "Expected Receipt Date" := CALCDATE(PurchSetup1."DEL SalesShipTimeBySeaVessel", "DEL Requested Delivery Date");
                                     MODIFY();
 
                                     PurchLine."Expected Receipt Date" := "Expected Receipt Date";
@@ -517,7 +517,7 @@ tableextension 50028 "DEL PurchaseHeader" extends "Purchase Header" //38
                                 END;
 
                                 IF NOT (PurchLine."Expected Receipt Date" = 0D) THEN BEGIN
-                                    SalesLine."DEL Estimated Delivery Date" := CALCDATE(PurchSetup1."DEL Sales Ship Time By Sea Vessel", PurchLine."Expected Receipt Date");
+                                    SalesLine."DEL Estimated Delivery Date" := CALCDATE(PurchSetup1."DEL SalesShipTimeBySeaVessel", PurchLine."Expected Receipt Date");
                                     SalesLine.MODIFY();
                                 END;
                             END;

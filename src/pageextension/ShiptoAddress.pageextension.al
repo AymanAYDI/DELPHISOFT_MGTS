@@ -1,4 +1,4 @@
-pageextension 50032 "DEL ShiptoAddress" extends "Ship-to Address"
+pageextension 50032 "DEL ShiptoAddress" extends "Ship-to Address" //300
 {
 
     layout

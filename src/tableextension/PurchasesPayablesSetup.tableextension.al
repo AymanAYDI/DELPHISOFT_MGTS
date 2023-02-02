@@ -13,12 +13,12 @@ tableextension 50025 "DEL PurchasesPayablesSetup" extends "Purchases & Payables 
             Caption = 'Do Not Print Invoice When Posting';
             DataClassification = CustomerContent;
         }
-        field(50002; "DEL Sales Ship Time By Air Flight"; DateFormula)
+        field(50002; "DEL SalesShipTimeByAirFlight"; DateFormula)
         {
             Caption = 'Sales shipping time by air flight';
             DataClassification = CustomerContent;
         }
-        field(50003; "DEL Sales Ship Time By Sea Vessel"; DateFormula)
+        field(50003; "DEL SalesShipTimeBySeaVessel"; DateFormula)
         {
             Caption = 'Sales shipping time by sea vessel';
             DataClassification = CustomerContent;

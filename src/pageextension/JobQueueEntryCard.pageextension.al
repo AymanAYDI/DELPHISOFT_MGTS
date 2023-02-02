@@ -1,4 +1,4 @@
-pageextension 50054 "DEL JobQueueEntryCard" extends "Job Queue Entry Card"
+pageextension 50054 "DEL JobQueueEntryCard" extends "Job Queue Entry Card" //673
 {
     layout
     {

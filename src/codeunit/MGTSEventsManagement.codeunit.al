@@ -29,7 +29,7 @@ codeunit 50100 "DEL MGTS_Events Management"
     var
         SalesShipHead: Record "Sales Shipment Header";
         Text50000: Label 'Order NGTS N %1, y/reference %2';
-        Text50001: Label 'ENU=%1 - %2 %3';
+        Text50001: Label '%1 - %2 %3';
     begin
         Handled := true;
         SalesLine.INSERT();
@@ -70,7 +70,7 @@ codeunit 50100 "DEL MGTS_Events Management"
         end;
     end;
 
-
+    //T81
     [EventSubscriber(ObjectType::Table, Database::"Gen. Journal Line", 'OnAfterDeleteEvent', '', false, false)]
     local procedure T81_OnAfterDeleteEvent_GenJournalLine(var Rec: Record "Gen. Journal Line"; RunTrigger: Boolean)
     var

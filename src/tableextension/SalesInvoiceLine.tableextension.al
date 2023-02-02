@@ -1,4 +1,4 @@
-tableextension 50004 "DEL SalesInvoiceLine" extends "Sales Invoice Line"
+tableextension 50004 "DEL SalesInvoiceLine" extends "Sales Invoice Line" //113
 {
 
     fields

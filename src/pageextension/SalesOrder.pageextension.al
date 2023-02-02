@@ -264,11 +264,11 @@ pageextension 50051 "DEL SalesOrder" extends "Sales Order" //42
                     IF NOT SalesSetup.GET() THEN
                         SalesSetup.INIT();
 
-                    SalesSetup.TESTFIELD("DEL Def. Req. Worksheet Template");
+                    SalesSetup.TESTFIELD("DEL Def.Req.Worksheet Temp");
                     SalesSetup.TESTFIELD("DEL Def. Req. Worksheet Batch");
 
                     RequisitionLine.RESET();
-                    RequisitionLine.SETRANGE("Worksheet Template Name", SalesSetup."DEL Def. Req. Worksheet Template");
+                    RequisitionLine.SETRANGE("Worksheet Template Name", SalesSetup."DEL Def.Req.Worksheet Temp");
                     RequisitionLine.SETRANGE("Journal Batch Name", SalesSetup."DEL Def. Req. Worksheet Batch");
                     IF RequisitionLine.FINDLAST() THEN
                         NextWorksheetLineNo := RequisitionLine."Line No."
@@ -276,7 +276,7 @@ pageextension 50051 "DEL SalesOrder" extends "Sales Order" //42
                         NextWorksheetLineNo := 0;
 
                     RequisitionLine.INIT();
-                    RequisitionLine."Worksheet Template Name" := SalesSetup."DEL Def. Req. Worksheet Template";
+                    RequisitionLine."Worksheet Template Name" := SalesSetup."DEL Def.Req.Worksheet Temp";
                     RequisitionLine."Journal Batch Name" := SalesSetup."DEL Def. Req. Worksheet Batch";
                     RequisitionLine."Line No." := NextWorksheetLineNo + 10000;
                     RequisitionLine.INSERT();
@@ -293,7 +293,7 @@ pageextension 50051 "DEL SalesOrder" extends "Sales Order" //42
                     CLEAR(GetSalesOrders);
 
                     RequisitionLine.RESET();
-                    RequisitionLine.SETRANGE("Worksheet Template Name", SalesSetup."DEL Def. Req. Worksheet Template");
+                    RequisitionLine.SETRANGE("Worksheet Template Name", SalesSetup."DEL Def.Req.Worksheet Temp");
                     RequisitionLine.SETRANGE("Journal Batch Name", SalesSetup."DEL Def. Req. Worksheet Batch");
                     RequisitionLine.SETRANGE("Line No.", NextWorksheetLineNo + 10000);
                     RequisitionLine.DELETE();

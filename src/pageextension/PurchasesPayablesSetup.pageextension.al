@@ -1,4 +1,4 @@
-pageextension 50044 "DEL PurchasesPayablesSetup" extends "Purchases & Payables Setup"
+pageextension 50044 "DEL PurchasesPayablesSetup" extends "Purchases & Payables Setup" //460
 {
     layout
     {
@@ -14,8 +14,14 @@ pageextension 50044 "DEL PurchasesPayablesSetup" extends "Purchases & Payables S
             {
 
                 trigger OnLookup(var Text: Text): Boolean
+                var
+                    FileManagement: Codeunit "File Management";
+                    Cst001: Label 'PDF Registration Customer Path;FRA=Chemin client enregistrement PDF';
+                    Cst002: Label 'MGTS PDF';
+
                 begin
-                    // Rec."DEL PDF Registr. Vendor Path" := FileManagement.BrowseForFolderDialog(Cst001, Cst002, TRUE); TODO: Codeunit "File Management"' ne contient pas de définition pour 'BrowseForFolderDialog
+                    // Rec."DEL PDF Registr. Vendor Path" := FileManagement.BrowseForFolderDialog(Cst001, Cst002, TRUE);
+                    // TODO: Codeunit "File Management"' ne contient pas de définition pour 'BrowseForFolderDialog
                 end;
             }
         }
@@ -24,11 +30,11 @@ pageextension 50044 "DEL PurchasesPayablesSetup" extends "Purchases & Payables S
             group("DEL Sales Shipping Time")
             {
                 Caption = 'Sales Shipping Time';
-                field("DEL Sales Ship Time By Air Flight"; Rec."DEL Sales Ship Time By Air Flight")
+                field("DEL Sales Ship Time By Air Flight"; Rec."DEL SalesShipTimeByAirFlight")
                 {
                     Caption = 'Sales shipping time by air flight';
                 }
-                field("DEL Sales Ship Time By Sea Vessel"; Rec."DEL Sales Ship Time By Sea Vessel")
+                field("DEL Sales Ship Time By Sea Vessel"; Rec."DEL SalesShipTimeBySeaVessel")
                 {
                     Caption = 'Sales shipping time by sea vessel';
                 }

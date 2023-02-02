@@ -1,4 +1,4 @@
-pageextension 50038 "DEL PaymentMethods" extends "Payment Methods"
+pageextension 50038 "DEL PaymentMethods" extends "Payment Methods" //427
 {
     layout
     {

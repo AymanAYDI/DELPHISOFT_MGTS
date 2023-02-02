@@ -195,13 +195,13 @@ tableextension 50029 "DEL PurchaseLine" extends "Purchase Line" //39
             CASE PurchHeader."DEL Ship Per" OF
                 PurchHeader."DEL Ship Per"::"Air Flight":
                     BEGIN
-                        SalesLine."DEL Estimated Delivery Date" := CALCDATE(PurchSetup."DEL Sales Ship Time By Air Flight", "Expected Receipt Date");
+                        SalesLine."DEL Estimated Delivery Date" := CALCDATE(PurchSetup."DEL SalesShipTimeByAirFlight", "Expected Receipt Date");
                         SalesLine.MODIFY();
                     END;
 
                 PurchHeader."DEL Ship Per"::"Sea Vessel":
                     BEGIN
-                        SalesLine."DEL Estimated Delivery Date" := CALCDATE(PurchSetup."DEL Sales Ship Time By Sea Vessel", "Expected Receipt Date");
+                        SalesLine."DEL Estimated Delivery Date" := CALCDATE(PurchSetup."DEL SalesShipTimeBySeaVessel", "Expected Receipt Date");
                         SalesLine.MODIFY();
                     END;
 
