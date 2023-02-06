@@ -979,7 +979,7 @@ report 50080 "DEL Standard Purchase - Order" //1322
         DocumentDateCaptionLbl: Label 'Document Date';
         DocumentTitleLbl: Label 'Purchase Order';
         EmailIDCaptionLbl: Label 'Email';
-        ExchangeRateLbl: Label 'Exchange rate: %1/%2', Comment = '%1 = CurrExchRate."Relational Exch. Rate Amount", %2 = CurrExchRate."Exchange Rate Amount"';
+        ExchangeRateLbl: Label 'Exchange rate: %1/%2';
         GreetingLbl: Label 'Hello';
         HomePageCaptionLbl: Label 'Home Page';
         InvDiscCaptionLbl: Label 'Invoice Discount:';
@@ -994,7 +994,7 @@ report 50080 "DEL Standard Purchase - Order" //1322
         OrderDateLbl: Label 'Order Date';
         OrderNoCaptionLbl: Label 'Order No.';
         PageCaptionLbl: Label 'Page';
-        PageLbl: Label 'Page %1', Comment = '%1 = Page No.';
+        PageLbl: Label 'Page %1';
         PaymentDetailsCaptionLbl: Label 'Payment Details';
         PaymentTermsDescCaptionLbl: Label 'Payment Terms';
         PrepaymentSpecCaptionLbl: Label 'Prepayment Specification';

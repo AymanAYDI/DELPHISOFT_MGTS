@@ -814,7 +814,7 @@ report 50071 "DEL Sales - Shipment"  //208
         PhoneNoCaptionLbl: Label 'Phone No.';
         QuantityCaptionLbl: Label 'Quantity';
         SerialNoCaptionLbl: Label 'Serial No.';
-        Text002: Label 'Sales - Shipment %1', Comment = '%1 = Document No.';
+        Text002: Label 'Sales - Shipment %1';
         VATRegNoCaptionLbl: Label 'VAT Reg. No.';
         BilAdr: array[5] of Text;
         BilAdr2: array[5] of Text;

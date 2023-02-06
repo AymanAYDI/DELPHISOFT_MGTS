@@ -205,41 +205,41 @@ codeunit 50101 "DEL MGTS_FctMgt"
     var
 
         fee_Re_Loc: Record "DEL Fee";
-        genJournalLine_Re_Temp: Record "Gen. Journal Line" TEMPORARY;
+        TempgenJournalLine_Re: Record "Gen. Journal Line" TEMPORARY;
         Provision_Cu: Codeunit "DEL Provision";
     begin
 
-        IF GenJournalLine.FIND('-') THEN
+        IF GenJournalLine.FindSet() THEN
             REPEAT
-                genJournalLine_Re_Temp.INIT();
-                genJournalLine_Re_Temp.COPY(GenJournalLine);
-                genJournalLine_Re_Temp.INSERT();
+                TempgenJournalLine_Re.INIT();
+                TempgenJournalLine_Re.COPY(GenJournalLine);
+                TempgenJournalLine_Re.INSERT();
             UNTIL (GenJournalLine.NEXT() = 0);
 
-        GenJournalLine_Re_Temp.RESET();
-        genJournalLine_Re_Temp.SETRANGE("Account Type", genJournalLine_Re_Temp."Account Type"::"G/L Account");
-        IF genJournalLine_Re_Temp.FIND('-') THEN BEGIN
+        TempgenJournalLine_Re.RESET();
+        TempgenJournalLine_Re.SETRANGE("Account Type", TempgenJournalLine_Re."Account Type"::"G/L Account");
+        IF TempgenJournalLine_Re.FindSet() THEN BEGIN
             REPEAT
 
                 //pour les provisions, on a pas besoin de controler parce que le lien est g‚r‚ autrement..
-                IF genJournalLine_Re_Temp."Journal Batch Name" <> 'PROVISION' THEN BEGIN
+                IF TempgenJournalLine_Re."Journal Batch Name" <> 'PROVISION' THEN BEGIN
 
                     //on regarde si aucune liaison n'a ‚t‚ s‚lectionn‚e
-                    genJournalLine_Re_Temp.CALCFIELDS("DEL Shipment Selection");
+                    TempgenJournalLine_Re.CALCFIELDS("DEL Shipment Selection");
 
-                    IF (genJournalLine_Re_Temp."DEL Shipment Selection" <= 0) THEN BEGIN
+                    IF (TempgenJournalLine_Re."DEL Shipment Selection" <= 0) THEN BEGIN
 
                         //Les No. de compte qui requiŠrent un deal shipment = ceux qui ont la case "Used for import" = true dans la table 50024 (Fee)
                         fee_Re_Loc.RESET();
-                        fee_Re_Loc.SETRANGE("No compte", genJournalLine_Re_Temp."Account No.");
+                        fee_Re_Loc.SETRANGE("No compte", TempgenJournalLine_Re."Account No.");
                         fee_Re_Loc.SETRANGE("Used For Import", TRUE);
                         //si on trouve un compte qui exige une liaison
-                        IF fee_Re_Loc.FIND('-') THEN
+                        IF fee_Re_Loc.FindSet() THEN
 
                             //on affiche un warning : si on accepte, on continue, si on annule, alors error
-                            IF (NOT DIALOG.CONFIRM('La ligne %1 (compte de frais %2) n''a pas de livraison li‚e ! Continuer ?', FALSE,
-                              genJournalLine_Re_Temp."Line No.",
-                              genJournalLine_Re_Temp."Account No.")) THEN
+                            IF (NOT DIALOG.CONFIRM('La ligne %1 (compte de frais %2) n''a pas de livraison liée ! Continuer ?', FALSE,
+                              TempgenJournalLine_Re."Line No.",
+                              TempgenJournalLine_Re."Account No.")) THEN
                                 EXIT;
 
 
@@ -248,12 +248,12 @@ codeunit 50101 "DEL MGTS_FctMgt"
 
                 END;
 
-            UNTIL (genJournalLine_Re_Temp.NEXT() = 0);
+            UNTIL (TempgenJournalLine_Re.NEXT() = 0);
 
             //si des ‚critures provisions sont … valider
-            genJournalLine_Re_Temp.RESET();
-            genJournalLine_Re_Temp.SETRANGE("Journal Batch Name", 'PROVISION');
-            IF genJournalLine_Re_Temp.FIND('-') THEN
+            TempgenJournalLine_Re.RESET();
+            TempgenJournalLine_Re.SETRANGE("Journal Batch Name", 'PROVISION');
+            IF TempgenJournalLine_Re.FIND('-') THEN
                 Provision_Cu.FNC_RunTest();
 
         END;
@@ -263,7 +263,7 @@ codeunit 50101 "DEL MGTS_FctMgt"
     var
         dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
         dss_Re_Loc: Record "DEL Deal Shipment Selection";
-        genJournalLine_Re_Temp: Record "Gen. Journal Line" TEMPORARY;
+        TempgenJournalLine_Re: Record "Gen. Journal Line" TEMPORARY;
         Deal_Cu: Codeunit "DEL Deal";
         Element_Cu: Codeunit "DEL Element";
         UpdateRequestManager_Cu: Codeunit "DEL Update Request Manager";
@@ -277,23 +277,23 @@ codeunit 50101 "DEL MGTS_FctMgt"
         ConnectionType_Op_Par: Enum "Element/Shipment";
 
     begin
-        genJournalLine_Re_Temp.RESET();
-        IF genJournalLine_Re_Temp.FIND('-') THEN BEGIN
+        TempgenJournalLine_Re.RESET();
+        IF TempgenJournalLine_Re.FindSet() THEN BEGIN
             REPEAT
 
-                IF ((genJournalLine_Re_Temp."Source Code" = 'ACHATOD') OR (genJournalLine_Re_Temp."Source Code" = 'COMPTA')
-                OR (genJournalLine_Re_Temp."Source Code" = 'VTEREGLT') OR (genJournalLine_Re_Temp."Source Code" = 'ACHPAIEMT')) THEN BEGIN
+                IF ((TempgenJournalLine_Re."Source Code" = 'ACHATOD') OR (TempgenJournalLine_Re."Source Code" = 'COMPTA')
+                OR (TempgenJournalLine_Re."Source Code" = 'VTEREGLT') OR (TempgenJournalLine_Re."Source Code" = 'ACHPAIEMT')) THEN BEGIN
 
                     //si c'est une ligne de type invoice, payment ou Credit Memo
-                    IF ((genJournalLine_Re_Temp."Document Type" = GenJnlLine."Document Type"::Invoice)
-                      OR (genJournalLine_Re_Temp."Document Type" = GenJnlLine."Document Type"::Payment)
-                      OR (genJournalLine_Re_Temp."Document Type" = GenJnlLine."Document Type"::"Credit Memo")) THEN BEGIN
+                    IF ((TempgenJournalLine_Re."Document Type" = GenJnlLine."Document Type"::Invoice)
+                      OR (TempgenJournalLine_Re."Document Type" = GenJnlLine."Document Type"::Payment)
+                      OR (TempgenJournalLine_Re."Document Type" = GenJnlLine."Document Type"::"Credit Memo")) THEN BEGIN
 
                         dealShipmentSelection_Re_Loc.RESET();
-                        dealShipmentSelection_Re_Loc.SETRANGE("Journal Template Name", genJournalLine_Re_Temp."Journal Template Name");
-                        dealShipmentSelection_Re_Loc.SETRANGE("Journal Batch Name", genJournalLine_Re_Temp."Journal Batch Name");
-                        dealShipmentSelection_Re_Loc.SETRANGE("Document No.", genJournalLine_Re_Temp."Document No.");
-                        dealShipmentSelection_Re_Loc.SETRANGE("Line No.", genJournalLine_Re_Temp."Line No.");
+                        dealShipmentSelection_Re_Loc.SETRANGE("Journal Template Name", TempgenJournalLine_Re."Journal Template Name");
+                        dealShipmentSelection_Re_Loc.SETRANGE("Journal Batch Name", TempgenJournalLine_Re."Journal Batch Name");
+                        dealShipmentSelection_Re_Loc.SETRANGE("Document No.", TempgenJournalLine_Re."Document No.");
+                        dealShipmentSelection_Re_Loc.SETRANGE("Line No.", TempgenJournalLine_Re."Line No.");
                         dealShipmentSelection_Re_Loc.SETRANGE(Checked, TRUE);
 
                         nextEntry := '';
@@ -302,7 +302,7 @@ codeunit 50101 "DEL MGTS_FctMgt"
                         CLEAR(myTab);
                         splittIndex := 1;
 
-                        IF dealShipmentSelection_Re_Loc.FIND('-') THEN
+                        IF dealShipmentSelection_Re_Loc.FindSet() THEN
                             REPEAT
 
                                 element_ID_Co_Loc := Element_Cu.FNC_Add_New_Invoice(dealShipmentSelection_Re_Loc, splittIndex);
@@ -321,17 +321,16 @@ codeunit 50101 "DEL MGTS_FctMgt"
                                 //ajouter les elements connections
                                 elementConnectionSplitIndex := 1;
                                 dss_Re_Loc.RESET();
-                                dss_Re_Loc.SETRANGE("Journal Template Name", genJournalLine_Re_Temp."Journal Template Name");
-                                dss_Re_Loc.SETRANGE("Journal Batch Name", genJournalLine_Re_Temp."Journal Batch Name");
-                                dss_Re_Loc.SETRANGE("Document No.", genJournalLine_Re_Temp."Document No.");
-                                dss_Re_Loc.SETRANGE("Line No.", genJournalLine_Re_Temp."Line No.");
+                                dss_Re_Loc.SETRANGE("Journal Template Name", TempgenJournalLine_Re."Journal Template Name");
+                                dss_Re_Loc.SETRANGE("Journal Batch Name", TempgenJournalLine_Re."Journal Batch Name");
+                                dss_Re_Loc.SETRANGE("Document No.", TempgenJournalLine_Re."Document No.");
+                                dss_Re_Loc.SETRANGE("Line No.", TempgenJournalLine_Re."Line No.");
                                 dss_Re_Loc.SETRANGE(Checked, TRUE);
-                                IF dss_Re_Loc.FIND('-') THEN
+                                IF dss_Re_Loc.FindSet() THEN
                                     REPEAT
                                         Element_Cu.FNC_Add_New_Invoice_Connection(
                                           element_ID_Co_Loc, dss_Re_Loc, ConnectionType_Op_Par::Element, elementConnectionSplitIndex);
                                         elementConnectionSplitIndex += 1;
-                                    //MESSAGE('insert invoice connection ok');
 
                                     UNTIL (dss_Re_Loc.NEXT() = 0);
 
@@ -347,7 +346,6 @@ codeunit 50101 "DEL MGTS_FctMgt"
                                       CURRENTDATETIME
                                     );
 
-                                    //MESSAGE('update for ' + myTab[i]);
                                     i += 1;
 
                                 END;
@@ -361,20 +359,17 @@ codeunit 50101 "DEL MGTS_FctMgt"
 
                         i := 1;
                         WHILE i <= 300 DO BEGIN
-                            //CHG03
                             IF myTab[i] <> '' THEN
                                 Deal_Cu.FNC_Reinit_Deal(myTab[i], FALSE, FALSE);
 
-                            //START CHG02
                             IF myUpdateRequests[i] <> '' THEN
                                 UpdateRequestManager_Cu.FNC_Validate_Request(myUpdateRequests[i]);
-                            //STOP CHG02
 
                             i += 1;
                         END;
                     END;
                 END;
-            UNTIL (genJournalLine_Re_Temp.NEXT() = 0);
+            UNTIL (TempgenJournalLine_Re.NEXT() = 0);
         END;
     end;
     //----------------- CDU81
@@ -532,11 +527,11 @@ codeunit 50101 "DEL MGTS_FctMgt"
         GLAccount_Re_Loc: Record "G/L Account";
         salesLine_Re_Loc: Record "Sales Line";
         updateRequestManager_Cu: Codeunit "DEL Update Request Manager";
-        shipmentSelected_Bo_Loc: Boolean;
+        GlobalFunction: Codeunit "DEL MGTS Set/Get Functions";
         updateRequestID_Co_Loc: Code[20];
     begin
-        shipmentSelected_Bo_Loc := FALSE;
-
+        // shipmentSelected_Bo_Loc := FALSE;
+        GlobalFunction.SetshipmentSelected_Bo_Loc(FALSE);
         IF
         (
           (SalesHeader."Document Type" = SalesHeader."Document Type"::Order)
@@ -552,24 +547,24 @@ codeunit 50101 "DEL MGTS_FctMgt"
             dealShipmentSelection_Re_Loc.SETRANGE(USER_ID, USERID);
             IF dealShipmentSelection_Re_Loc.FIND('-') THEN BEGIN
 
-                shipmentSelected_Bo_Loc := TRUE;
-
+                // shipmentSelected_Bo_Loc := TRUE;
+                GlobalFunction.SetshipmentSelected_Bo_Loc(true);
                 IF SalesHeader."Document Type" = SalesHeader."Document Type"::Invoice THEN BEGIN
                     IF dealShipmentSelection_Re_Loc.COUNT() > 1 THEN
-                        ERROR('Il faut choisir au maximum 1 livraison li‚e !');
+                        ERROR('Il faut choisir au maximum 1 livraison liée !');
 
                 END ELSE
                     IF (SalesHeader."Document Type" = SalesHeader."Document Type"::Order) THEN BEGIN
                         IF dealShipmentSelection_Re_Loc.COUNT() > 1 THEN
-                            ERROR('Il faut choisir exactement 1 livraison li‚e !');
+                            ERROR('Il faut choisir exactement 1 livraison liée !');
 
                     END ELSE
                         IF (SalesHeader."Document Type" = SalesHeader."Document Type"::"Credit Memo") THEN BEGIN
                             IF dealShipmentSelection_Re_Loc.COUNT() > 1 THEN
-                                ERROR('Il faut choisir exactement 1 livraison li‚e !');
+                                ERROR('Il faut choisir exactement 1 livraison liée !');
 
                             IF dealShipmentSelection_Re_Loc."Sales Invoice No." = '' THEN
-                                ERROR('La livraison li‚e n''a pas de Sales Invoice sur laquelle elle doit ˆtre li‚e !');
+                                ERROR('La livraison liée n''a pas de Sales Invoice sur laquelle elle doit étre liée !');
 
                         END;
                 updateRequestID_Co_Loc := updateRequestManager_Cu.FNC_Add_Request(
@@ -583,7 +578,7 @@ codeunit 50101 "DEL MGTS_FctMgt"
 
                 IF SalesHeader."Document Type" = SalesHeader."Document Type"::Order THEN BEGIN
 
-                    ERROR('Il faut choisir exactement 1 livraison li‚e !');
+                    ERROR('Il faut choisir exactement 1 livraison liée !');
 
                 END ELSE
                     IF SalesHeader."Document Type" = SalesHeader."Document Type"::"Credit Memo" THEN BEGIN
@@ -591,14 +586,14 @@ codeunit 50101 "DEL MGTS_FctMgt"
                         salesLine_Re_Loc.RESET();
                         salesLine_Re_Loc.SETRANGE("Document Type", salesLine_Re_Loc."Document Type"::"Credit Memo");
                         salesLine_Re_Loc.SETRANGE("Document No.", SalesHeader."No.");
-                        IF salesLine_Re_Loc.FIND('-') THEN BEGIN
+                        IF salesLine_Re_Loc.FindSet() THEN BEGIN
                             REPEAT
                                 IF (salesLine_Re_Loc.Type <> salesLine_Re_Loc.Type::"G/L Account") THEN
-                                    ERROR('Il faut choisir exactement 1 livraison li‚e !')
+                                    ERROR('Il faut choisir exactement 1 livraison liée !')
                                 ELSE
                                     IF (GLAccount_Re_Loc.GET(salesLine_Re_Loc."No.")) THEN
                                         IF NOT (GLAccount_Re_Loc."DEL Shipment Binding Control") THEN
-                                            ERROR('Il faut choisir exactement 1 livraison li‚e !')
+                                            ERROR('Il faut choisir exactement 1 livraison liée !')
 
                             UNTIL (salesLine_Re_Loc.NEXT() = 0);
                         END;
@@ -609,14 +604,14 @@ codeunit 50101 "DEL MGTS_FctMgt"
                             salesLine_Re_Loc.RESET();
                             salesLine_Re_Loc.SETRANGE("Document Type", salesLine_Re_Loc."Document Type"::Invoice);
                             salesLine_Re_Loc.SETRANGE("Document No.", SalesHeader."No.");
-                            IF salesLine_Re_Loc.FIND('-') THEN BEGIN
+                            IF salesLine_Re_Loc.FindSet() THEN BEGIN
                                 REPEAT
                                     IF (salesLine_Re_Loc.Type <> salesLine_Re_Loc.Type::"G/L Account") THEN
-                                        ERROR('Il faut choisir exactement 1 livraison li‚e !')
+                                        ERROR('Il faut choisir exactement 1 livraison liée !')
                                     ELSE
                                         IF (GLAccount_Re_Loc.GET(salesLine_Re_Loc."No.")) THEN
                                             IF NOT (GLAccount_Re_Loc."DEL Shipment Binding Control") THEN
-                                                ERROR('Il faut choisir exactement 1 livraison li‚e !')
+                                                ERROR('Il faut choisir exactement 1 livraison liée !')
                                 UNTIL (salesLine_Re_Loc.NEXT() = 0);
 
                             END;
@@ -753,7 +748,7 @@ codeunit 50101 "DEL MGTS_FctMgt"
     var
         HandledICOutboxTrans: Record "Handled IC Outbox Trans.";
         ConfirmManagement: Codeunit "Confirm Management";
-        TransactionAlreadyExistsInOutboxHandledQst: Label '%1 %2 has already been sent to intercompany partner %3. Resending it will create a duplicate %1 for them. Do you want to send it again?', Comment = '%1 - Document Type, %2 - Document No, %3 - IC parthner code';
+        TransactionAlreadyExistsInOutboxHandledQst: Label '%1 %2 has already been sent to intercompany partner %3. Resending it will create a duplicate %1 for them. Do you want to send it again?';
 
     begin
         HandledICOutboxTrans.SetRange("Source Type", HandledICOutboxTrans."Source Type"::"Purchase Document");
@@ -805,14 +800,11 @@ codeunit 50101 "DEL MGTS_FctMgt"
         GLAccount_Re_Loc: Record "G/L Account";
         PurchaseLine_Re_Loc: Record "Purchase Line";
         updateRequestManager_Cu: Codeunit "DEL Update Request Manager";
-        shipmentSelected_Bo_Loc: Boolean;
-        updateRequestID_Co_Loc: Code[20];
+        GlobalFunction: Codeunit "DEL MGTS Set/Get Functions";
+    // updateRequestID_Co_Loc: Code[20];
 
 
     begin
-
-        //MIG2017 START
-        //On gŠre les "Document Type" commandes, notes de cr‚dit et les factures
         IF
         (
           (PurchaseHeader."Document Type" = PurchaseHeader."Document Type"::Order)
@@ -827,53 +819,54 @@ codeunit 50101 "DEL MGTS_FctMgt"
             dealShipmentSelection_Re_Loc.SETRANGE("Document No.", PurchaseHeader."No.");
             dealShipmentSelection_Re_Loc.SETRANGE(Checked, TRUE);
             dealShipmentSelection_Re_Loc.SETRANGE(USER_ID, USERID);
-            IF dealShipmentSelection_Re_Loc.FIND('-') THEN BEGIN
+            IF dealShipmentSelection_Re_Loc.FindSet() THEN BEGIN
 
-                shipmentSelected_Bo_Loc := TRUE;
-
+                //shipmentSelected_Bo_Loc := TRUE;
+                GlobalFunction.SetshipmentSelected_Bo_Loc(true);
                 IF PurchaseHeader."Document Type" = PurchaseHeader."Document Type"::Invoice THEN BEGIN
 
                     //pour les factures achat, on veut 0 ou 1 livraison li‚e
                     IF dealShipmentSelection_Re_Loc.COUNT() > 1 THEN
-                        ERROR('Il faut choisir au maximum 1 livraison li‚e !');
+                        ERROR('Il faut choisir au maximum 1 livraison liée !');
 
                 END ELSE
                     IF (PurchaseHeader."Document Type" = PurchaseHeader."Document Type"::Order) THEN BEGIN
 
                         //pour les commandes il faut exactement 1 livraison li‚e
                         IF dealShipmentSelection_Re_Loc.COUNT() > 1 THEN
-                            ERROR('Il faut choisir exactement 1 livraison li‚e !');
+                            ERROR('Il faut choisir exactement 1 livraison liée !');
 
                     END ELSE
                         IF (PurchaseHeader."Document Type" = PurchaseHeader."Document Type"::"Credit Memo") THEN BEGIN
 
                             //pour les notes de cr‚dit, il faut exactement 1 livraison li‚e
                             IF dealShipmentSelection_Re_Loc.COUNT() > 1 THEN
-                                ERROR('Il faut choisir exactement 1 livraison li‚e !');
+                                ERROR('Il faut choisir exactement 1 livraison liée !');
 
                             //il faut aussi imp‚rativement avoir une facture li‚e … cette note de cr‚dit
-                            //CHG06 START
-                            //orig
-                            //IF dealShipmentSelection_Re_Loc."Sales Invoice No." = '' THEN
                             IF dealShipmentSelection_Re_Loc."Purchase Invoice No." = '' THEN
-                                //CHG06 STOP
-                                ERROR('La livraison li‚e n''a pas de Purchase Invoice sur laquelle elle doit ˆtre li‚e !');
+                                ERROR('La livraison liée n''a pas de Purchase Invoice sur laquelle elle doit étre liée !');
 
                         END;
 
 
                 //On cr‚e une updateRequest, comme ca, si NAV plante plus loin, on sait ce qui n'a pas ‚t‚ updat‚ comme il faut
-                updateRequestID_Co_Loc := updateRequestManager_Cu.FNC_Add_Request(
-                  dealShipmentSelection_Re_Loc.Deal_ID,
-                  dealShipmentSelection_Re_Loc."Document Type",
-                  dealShipmentSelection_Re_Loc."Document No.",
-                  CURRENTDATETIME);
+                // updateRequestID_Co_Loc := updateRequestManager_Cu.FNC_Add_Request(
+                //   dealShipmentSelection_Re_Loc.Deal_ID,
+                //   dealShipmentSelection_Re_Loc."Document Type",
+                //   dealShipmentSelection_Re_Loc."Document No.",
+                //   CURRENTDATETIME);
 
+                GlobalFunction.SetupdateRequestID_Co_Loc(updateRequestManager_Cu.FNC_Add_Request(
+                                  dealShipmentSelection_Re_Loc.Deal_ID,
+                                  dealShipmentSelection_Re_Loc."Document Type",
+                                  dealShipmentSelection_Re_Loc."Document No.",
+                                  CURRENTDATETIME));
 
             END ELSE BEGIN
                 //Si aucune livraison n'est s‚lectionn‚e
                 IF PurchaseHeader."Document Type" = PurchaseHeader."Document Type"::Order THEN BEGIN
-                    ERROR('Il faut choisir exactement 1 livraison li‚e !');
+                    ERROR('Il faut choisir exactement 1 livraison liée !');
                 END
 
 
@@ -885,20 +878,19 @@ codeunit 50101 "DEL MGTS_FctMgt"
                         PurchaseLine_Re_Loc.RESET();
                         PurchaseLine_Re_Loc.SETRANGE("Document Type", PurchaseLine_Re_Loc."Document Type"::"Credit Memo");
                         PurchaseLine_Re_Loc.SETRANGE("Document No.", PurchaseHeader."No.");
-                        IF PurchaseLine_Re_Loc.FIND('-') THEN BEGIN
+                        IF PurchaseLine_Re_Loc.FindSet() THEN BEGIN
                             REPEAT
                                 //si c'est pas un compte alors c'est d‚j… grill‚ -> erreur
                                 IF (PurchaseLine_Re_Loc.Type <> PurchaseLine_Re_Loc.Type::"G/L Account") THEN
-                                    ERROR('Il faut choisir exactement 1 livraison li‚e !')
+                                    ERROR('Il faut choisir exactement 1 livraison liée !')
                                 ELSE
                                     IF (GLAccount_Re_Loc.GET(PurchaseLine_Re_Loc."No.")) THEN
                                         // si coch‚, exclure du contr“le de liaison
                                         IF NOT (GLAccount_Re_Loc."DEL Shipment Binding Control") THEN
-                                            ERROR('Il faut choisir exactement 1 livraison li‚e !')
+                                            ERROR('Il faut choisir exactement 1 livraison liée !')
                             UNTIL (PurchaseLine_Re_Loc.NEXT() = 0);
                         END;
                     END
-                    // THM
                     ELSE
                         IF PurchaseHeader."Document Type" = PurchaseHeader."Document Type"::Invoice THEN BEGIN
 
@@ -906,16 +898,16 @@ codeunit 50101 "DEL MGTS_FctMgt"
                             PurchaseLine_Re_Loc.RESET();
                             PurchaseLine_Re_Loc.SETRANGE("Document Type", PurchaseLine_Re_Loc."Document Type"::Invoice);
                             PurchaseLine_Re_Loc.SETRANGE("Document No.", PurchaseHeader."No.");
-                            IF PurchaseLine_Re_Loc.FIND('-') THEN BEGIN
+                            IF PurchaseLine_Re_Loc.FindSet() THEN BEGIN
                                 REPEAT
                                     //si c'est pas un compte alors c'est d‚j… grill‚ -> erreur
                                     IF (PurchaseLine_Re_Loc.Type <> PurchaseLine_Re_Loc.Type::"G/L Account") THEN
-                                        ERROR('Il faut choisir exactement 1 livraison li‚e !')
+                                        ERROR('Il faut choisir exactement 1 livraison liée !')
                                     ELSE
                                         IF (GLAccount_Re_Loc.GET(PurchaseLine_Re_Loc."No.")) THEN
                                             // si coch‚, exclure du contr“le de liaison
                                             IF NOT (GLAccount_Re_Loc."DEL Shipment Binding Control") THEN
-                                                ERROR('Il faut choisir exactement 1 livraison li‚e !')
+                                                ERROR('Il faut choisir exactement 1 livraison liée !')
                                 UNTIL (PurchaseLine_Re_Loc.NEXT() = 0);
 
                             END;
@@ -992,7 +984,6 @@ codeunit 50101 "DEL MGTS_FctMgt"
 
     end;
     //////COD 90
-
     PROCEDURE UpdateAssosSpecialOrderPostingNos(PurchHeader: Record "Purchase Header"; var PreviewMode: Boolean) SpecialOrder: Boolean;
     VAR
         TempPurchLine: Record "Purchase Line" TEMPORARY;
