@@ -1273,7 +1273,7 @@ report 50076 "DEL Archived Purchase Order"
 
             trigger OnAfterGetRecord()
             begin
-                CurrReport.LANGUAGE := Language.GetLanguageID("Language Code");
+                CurrReport.LANGUAGE := LanguageCdu.GetLanguageID("Language Code");
 
                 FormatAddressFields("Purchase Header Archive");
                 FormatDocumentFields("Purchase Header Archive");
@@ -1347,6 +1347,7 @@ report 50076 "DEL Archived Purchase Order"
         VATAmountLine: Record "VAT Amount Line" temporary;
         FormatAddr: Codeunit "Format Address";
         FormatDocument: Codeunit "Format Document";
+        LanguageCdu: Codeunit Language;
         Continue: Boolean;
         MoreLines: Boolean;
         ShowInternalInfo: Boolean;

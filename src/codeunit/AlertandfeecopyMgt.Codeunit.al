@@ -23,7 +23,7 @@ codeunit 50028 "DEL Alert and fee copy Mgt"
             UNTIL Logistic_Re_Loc.NEXT() = 0;
 
         DealShip_Re_Loc.SETFILTER(Deal_ID, Deal_ID);
-        IF DealShip_Re_Loc.FINDFIRST() THEN
+        IF DealShip_Re_Loc.FindSet() THEN
             REPEAT
                 IF DealShip2_Re_Loc.GET(DealShip_Re_Loc.ID) THEN BEGIN
                     temp_LogisticTmp_Re.SETFILTER(ID, DealShip2_Re_Loc.ID);

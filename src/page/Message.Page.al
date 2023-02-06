@@ -1,14 +1,11 @@
 page 50141 "DEL Message"
 {
-
-
-
     Caption = 'Message';
     Editable = false;
     PageType = CardPart;
     ShowFilter = false;
     SourceTable = "DEL JSON Requests log";
-
+    UsageCategory = None;
     layout
     {
         area(content)
@@ -22,8 +19,6 @@ page 50141 "DEL Message"
             }
         }
     }
-
-
 
     //TODO dotnet is not used on cloud trigger OnAfterGetRecord()
 
@@ -43,4 +38,3 @@ page 50141 "DEL Message"
     var
         JsonMessage: Text;
 }
-

@@ -637,7 +637,7 @@ report 50071 "DEL Sales - Shipment"  //208
 
             trigger OnAfterGetRecord()
             begin
-                CurrReport.LANGUAGE := Language.GetLanguageID("Language Code");
+                CurrReport.LANGUAGE := LanguageCdu.GetLanguageID("Language Code");
 
                 PrepareHeader();
                 PrepareFooter();
@@ -760,6 +760,8 @@ report 50071 "DEL Sales - Shipment"  //208
         RespCenter: Record "Responsibility Center";
         ItemTrackingAppendix: Report "Item Tracking Appendix";
         FormatAddr: Codeunit "Format Address";
+        LanguageCdu: Codeunit Language;
+
         FormatDocument: Codeunit "Format Document";
         SegManagement: Codeunit SegManagement;
         ItemTrackingDocMgt: Codeunit "Item Tracking Doc. Management";

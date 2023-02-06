@@ -1,12 +1,10 @@
 page 50135 "DEL DocMatrix Email Body"
 {
-
-
     Caption = 'Email Text';
     PageType = StandardDialog;
     SaveValues = true;
     SourceTable = "DEL DocMatrix Email Codes";
-
+    UsageCategory = None;
     layout
     {
         area(content)
@@ -14,14 +12,17 @@ page 50135 "DEL DocMatrix Email Body"
             field("Code"; Rec.Code)
             {
                 Editable = false;
+                ApplicationArea = All;
             }
             field("Language Code"; Rec."Language Code")
             {
                 Editable = false;
+                ApplicationArea = All;
             }
             field("All Language Codes"; Rec."All Language Codes")
             {
                 Editable = false;
+                ApplicationArea = All;
             }
             group(group)
             {
@@ -78,5 +79,3 @@ page 50135 "DEL DocMatrix Email Body"
         BodyText: Text;
         PreviousBodyText: Text;
 }
-
-

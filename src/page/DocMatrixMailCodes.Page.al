@@ -3,7 +3,7 @@ page 50134 "DEL DocMatrix Mail Codes"
     Caption = 'Email Code';
     PageType = List;
     SourceTable = "DEL DocMatrix Email Codes";
-
+    UsageCategory = None;
     layout
     {
         area(content)
@@ -12,15 +12,19 @@ page 50134 "DEL DocMatrix Mail Codes"
             {
                 field("Code"; Rec.Code)
                 {
+                    ApplicationArea = All;
                 }
                 field("Language Code"; Rec."Language Code")
                 {
+                    ApplicationArea = All;
                 }
                 field("All Language Codes"; Rec."All Language Codes")
                 {
+                    ApplicationArea = All;
                 }
                 field(Subject; Rec.Subject)
                 {
+                    ApplicationArea = All;
                 }
             }
         }
@@ -43,6 +47,7 @@ page 50134 "DEL DocMatrix Mail Codes"
                     PromotedIsBig = true;
                     PromotedOnly = true;
                     RunPageMode = Edit;
+                    ApplicationArea = All;
 
                     trigger OnAction()
                     var
@@ -60,6 +65,7 @@ page 50134 "DEL DocMatrix Mail Codes"
                     PromotedCategory = Process;
                     PromotedIsBig = true;
                     PromotedOnly = true;
+                    ApplicationArea = All;
 
                     trigger OnAction()
                     begin
@@ -74,30 +80,4 @@ page 50134 "DEL DocMatrix Mail Codes"
             }
         }
     }
-
-
-    procedure ReadBLOB(pCode: Code[20]; pLanguage: Code[10])
-    var
-
-    begin
-
-
-    end;
-
-
-    procedure WriteBLOB(pCode: Code[20]; pLanguage: Code[10])
-    var
-
-    begin
-
-
-    end;
-
-
-    procedure SetBodyText(pbtxBigText: BigText)
-    begin
-
-
-    end;
 }
-

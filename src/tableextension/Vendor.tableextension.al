@@ -1,9 +1,7 @@
-tableextension 50023 "DEL Vendor" extends Vendor
+tableextension 50023 "DEL Vendor" extends Vendor //23
 {
-
     fields
     {
-
         field(50000; "DEL Forwarding Agent Code"; Code[20])
         {
             Caption = 'Forwarding Agent Code';
@@ -69,7 +67,6 @@ tableextension 50023 "DEL Vendor" extends Vendor
         field(50151; "DEL Email Payment Advice"; Code[20])
         {
             Caption = 'Sender Email Payment Advice';
-
             TableRelation = "DEL DocMatrix Email Codes".Code;
             DataClassification = CustomerContent;
         }
@@ -93,8 +90,6 @@ tableextension 50023 "DEL Vendor" extends Vendor
                             ELSE BEGIN
                                 "DEL Revision Date quality" := CALCDATE(Note_Rec."Revision Calculation", "DEL Realisation Date Quality");
                                 VALIDATE("DEL Revision Date quality");
-
-
                             END;
                     Note_Rec.RESET();
                     IF Note_Rec.GET("DEL Note Quality", Note_Rec."Type audit"::Quality) THEN
@@ -129,9 +124,7 @@ tableextension 50023 "DEL Vendor" extends Vendor
                             ELSE BEGIN
                                 "DEL Revision Date quality" := CALCDATE(Note_Rec."Revision Calculation", "DEL Realisation Date Quality");
                                 VALIDATE("DEL Revision Date quality");
-
                             END;
-
                 END;
             end;
         }
@@ -150,7 +143,6 @@ tableextension 50023 "DEL Vendor" extends Vendor
                 ELSE BEGIN
                     "DEL Quality status" := "DEL Quality status"::Active;
                     MODIFY(TRUE);
-
                 END;
             end;
         }
@@ -175,7 +167,6 @@ tableextension 50023 "DEL Vendor" extends Vendor
                                 VALIDATE("DEL Revision Date Soc");
                             END;
 
-
                     Note_Rec.RESET();
                     IF Note_Rec.GET("DEL Note Soc", Note_Rec."Type audit"::social) THEN
                         "DEL Social status" := Note_Rec."Impact statut"
@@ -185,7 +176,6 @@ tableextension 50023 "DEL Vendor" extends Vendor
                     MODIFY(TRUE);
                 end;
             end;
-
         }
         field(60005; "DEL Realisation Date Soc"; Date)
         {
@@ -197,7 +187,6 @@ tableextension 50023 "DEL Vendor" extends Vendor
                     TextVar := FIELDCAPTION("DEL Realisation Date Soc") + ' ' + Text50002 + ' ' + FORMAT(TODAY);
                     ERROR(TextVar);
                 END;
-
 
                 IF "DEL Realisation Date Soc" <> 0D THEN BEGIN
                     TESTFIELD("DEL Note Soc");
@@ -232,7 +221,6 @@ tableextension 50023 "DEL Vendor" extends Vendor
                 ELSE BEGIN
                     "DEL Social status" := "DEL Social status"::Active;
                     MODIFY(TRUE);
-
                 END;
             end;
         }
@@ -280,7 +268,6 @@ tableextension 50023 "DEL Vendor" extends Vendor
                     ERROR(TextVar);
                 END;
 
-
                 IF "DEL Realisation Date Env" <> 0D THEN BEGIN
                     TESTFIELD("DEL Note Env");
                     Note_Rec.RESET();
@@ -295,7 +282,6 @@ tableextension 50023 "DEL Vendor" extends Vendor
                                 VALIDATE("DEL Revision Date env");
                             END;
                         END;
-
                 END;
             end;
         }
@@ -314,7 +300,6 @@ tableextension 50023 "DEL Vendor" extends Vendor
                 ELSE BEGIN
                     "DEL Environmental status" := "DEL Environmental status"::Active;
                     MODIFY(TRUE);
-
                 END;
             end;
         }
@@ -339,9 +324,7 @@ tableextension 50023 "DEL Vendor" extends Vendor
                     ERROR(TextVar);
                 END;
 
-
                 "DEL Date updated" := TODAY;
-
             end;
         }
         field(60011; "DEL Date updated"; Date)
@@ -410,12 +393,8 @@ tableextension 50023 "DEL Vendor" extends Vendor
     }
     var
 
-
         Note_Rec: Record "DEL Note";
         Text50001: Label 'must be greater than';
         Text50002: Label 'must be less than';
         TextVar: Text;
-
-
 }
-

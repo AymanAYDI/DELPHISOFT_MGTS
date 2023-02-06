@@ -2,7 +2,7 @@ page 50137 "DEL DocMatrix Selection Card"
 {
     PageType = Worksheet;
     SourceTable = "DEL DocMatrix Selection";
-
+    UsageCategory = None;
     layout
     {
         area(content)
@@ -12,6 +12,7 @@ page 50137 "DEL DocMatrix Selection Card"
                 Visible = boPostVisible;
                 field(Post; Rec.Post)
                 {
+                    ApplicationArea = All;
 
                     trigger OnValidate()
                     var
@@ -26,33 +27,43 @@ page 50137 "DEL DocMatrix Selection Card"
             {
                 field("Send to FTP 1"; Rec."Send to FTP 1")
                 {
+                    ApplicationArea = All;
                 }
                 field("Send to FTP 2"; Rec."Send to FTP 2")
                 {
+                    ApplicationArea = All;
                 }
                 field("E-Mail from Sales Order"; Rec."E-Mail from Sales Order")
                 {
+                    ApplicationArea = All;
                 }
                 field("E-Mail To 1"; Rec."E-Mail To 1")
                 {
+                    ApplicationArea = All;
                 }
                 field("E-Mail To 2"; Rec."E-Mail To 2")
                 {
+                    ApplicationArea = All;
                 }
                 field("E-Mail To 3"; Rec."E-Mail To 3")
                 {
+                    ApplicationArea = All;
                 }
                 field("E-Mail From"; Rec."E-Mail From")
                 {
+                    ApplicationArea = All;
                 }
                 field("Save PDF"; Rec."Save PDF")
                 {
+                    ApplicationArea = All;
                 }
                 field("Print PDF"; Rec."Print PDF")
                 {
+                    ApplicationArea = All;
                 }
                 field("Mail Text Code"; Rec."Mail Text Code")
                 {
+                    ApplicationArea = All;
 
                     trigger OnLookup(var Text: Text): Boolean
                     var
@@ -74,6 +85,7 @@ page 50137 "DEL DocMatrix Selection Card"
                 }
                 field("Mail Text Langauge Code"; Rec."Mail Text Langauge Code")
                 {
+                    ApplicationArea = All;
                 }
             }
         }
@@ -86,10 +98,8 @@ page 50137 "DEL DocMatrix Selection Card"
     var
         boPostVisible: Boolean;
 
-
     procedure SetPostVisible(pboVisible: Boolean)
     begin
         boPostVisible := pboVisible;
     end;
 }
-

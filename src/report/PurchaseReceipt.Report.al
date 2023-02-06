@@ -494,7 +494,7 @@ report 50082 "DEL Purchase - Receipt" //408
 
             trigger OnAfterGetRecord()
             begin
-                CurrReport.LANGUAGE := Language.GetLanguageID("Language Code");
+                CurrReport.LANGUAGE := LanguageCdu.GetLanguageID("Language Code");
 
                 LCO_Element.SETRANGE("Type No.", "Purch. Rcpt. Header"."Order No.");
                 LCO_Element.SETRANGE(Type, LCO_Element.Type::ACO);
@@ -611,6 +611,7 @@ report 50082 "DEL Purchase - Receipt" //408
         SalesPurchPerson: Record "Salesperson/Purchaser";
         FormatAddr: Codeunit "Format Address";
 
+        LanguageCdu: Codeunit Language;
 
         RcptCountPrinted: Codeunit "Purch.Rcpt.-Printed";
         SegManagement: Codeunit SegManagement;

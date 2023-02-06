@@ -8,7 +8,7 @@ page 50127 "DEL Gen. Ledger Entr. Reverse"
     SourceTable = "G/L Entry";
     SourceTableView = SORTING("Document No.", "Posting Date")
                       ORDER(Descending);
-
+    UsageCategory = None;
     layout
     {
         area(content)

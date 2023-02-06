@@ -4,23 +4,31 @@ pageextension 50049 "DEL ItemCard" extends "Item Card" //30
     {
         addafter("Item Category Code")
         {
-            field("DEL Item Category Description"; ItemCategoryDesc) { }
+            field("DEL Item Category Description"; ItemCategoryDesc)
+            {
+                ApplicationArea = All;
+            }
         }
         addbefore("Service Item Group")
         {
-            field("DEL ProductGroupDesc"; ProductGroupDesc) { }
+            field("DEL ProductGroupDesc"; ProductGroupDesc)
+            {
+                ApplicationArea = All;
+            }
             // field("DEL Standardartikelgruppe"; Rec."Standardartikelgruppe") { }
             field("DEL Segment Code"; Rec."DEL Segment Code")
             {
                 Enabled = True;
                 Editable = false;
                 Caption = 'Segment Code';
+                ApplicationArea = All;
             }
             field("DEL DimensionValueDesc"; DimensionValueDesc)
             {
                 Enabled = True;
                 Editable = false;
                 Caption = 'Dimension Value Description';
+                ApplicationArea = All;
             }
         }
         addafter("Automatic Ext. Texts")
@@ -29,58 +37,154 @@ pageextension 50049 "DEL ItemCard" extends "Item Card" //30
             {
                 Editable = False;
                 Caption = 'Date de creation';
+                ApplicationArea = All;
             }
         }
         addafter("Gross Weight")
         {
-            field("DEL Risk Item"; Rec."DEL Risk Item") { }
-            field("DEL Code motif de suivi"; Rec."DEL Code motif de suivi") { }
+            field("DEL Risk Item"; Rec."DEL Risk Item")
+            {
+                ApplicationArea = All;
+            }
+            field("DEL Code motif de suivi"; Rec."DEL Code motif de suivi")
+            {
+                ApplicationArea = All;
+            }
         }
         addafter("Use Cross-Docking")
         {
             group("DEL NGTS")
             {
                 Caption = 'NGTS';
-                field("DEL Marque"; Rec."DEL Marque") { }
-                field("DEL MarqueDesc"; "MarqueDesc") { }
-                field("DEL OLD marque"; Rec."DEL OLD marque") { }
-                field("DEL Affectation vehicule"; Rec."DEL Affectation vehicule") { }
-                field("DEL Couleur1"; Rec."DEL Couleur1") { }
-                field("DEL Carac. complementaire"; Rec."DEL Carac. complementaire") { }
-                field("DEL Caracteristique technique 1"; Rec."DEL Carac. technique 1") { }
-                field("DEL Carac. technique 2"; Rec."DEL Carac. technique 2") { }
-                field("DEL Carac. technique 3"; Rec."DEL Carac. technique 3") { }
-                field("DEL Code EAN 13"; Rec."DEL Code EAN 13") { }
-                field("DEL PCB"; Rec."DEL PCB") { }
-                field("DEL SPCB"; Rec."DEL SPCB") { }
-                field("DEL Droit de douane reduit"; Rec."DEL Droit de douane reduit") { }
-                field("DEL Code nomenclature douaniere"; Rec."DEL Code nomenc. douaniere") { }
-                field("DEL Certified by QS"; Rec."DEL Certified by QS") { }
-                field("DEL Weight net"; Rec."DEL Weight net") { }
-                field("DEL Weight brut"; Rec."DEL Weight brut") { }
+                field("DEL Marque"; Rec."DEL Marque")
+                {
+                    ApplicationArea = All;
+                }
+                field("DEL MarqueDesc"; "MarqueDesc")
+                {
+                    ApplicationArea = All;
+                }
+                field("DEL OLD marque"; Rec."DEL OLD marque")
+                {
+                    ApplicationArea = All;
+                }
+                field("DEL Affectation vehicule"; Rec."DEL Affectation vehicule")
+                {
+                    ApplicationArea = All;
+                }
+                field("DEL Couleur1"; Rec."DEL Couleur1")
+                {
+                    ApplicationArea = All;
+                }
+                field("DEL Carac. complementaire"; Rec."DEL Carac. complementaire")
+                {
+                    ApplicationArea = All;
+                }
+                field("DEL Caracteristique technique 1"; Rec."DEL Carac. technique 1")
+                {
+                    ApplicationArea = All;
+                }
+                field("DEL Carac. technique 2"; Rec."DEL Carac. technique 2")
+                {
+                    ApplicationArea = All;
+                }
+                field("DEL Carac. technique 3"; Rec."DEL Carac. technique 3")
+                {
+                    ApplicationArea = All;
+                }
+                field("DEL Code EAN 13"; Rec."DEL Code EAN 13")
+                {
+                    ApplicationArea = All;
+                }
+                field("DEL PCB"; Rec."DEL PCB")
+                {
+                    ApplicationArea = All;
+                }
+                field("DEL SPCB"; Rec."DEL SPCB")
+                {
+                    ApplicationArea = All;
+                }
+                field("DEL Droit de douane reduit"; Rec."DEL Droit de douane reduit")
+                {
+                    ApplicationArea = All;
+                }
+                field("DEL Code nomenclature douaniere"; Rec."DEL Code nomenc. douaniere")
+                {
+                    ApplicationArea = All;
+                }
+                field("DEL Certified by QS"; Rec."DEL Certified by QS")
+                {
+                    ApplicationArea = All;
+                }
+                field("DEL Weight net"; Rec."DEL Weight net")
+                {
+                    ApplicationArea = All;
+                }
+                field("DEL Weight brut"; Rec."DEL Weight brut")
+                {
+                    ApplicationArea = All;
+                }
                 field("DEL Vol cbm"; Rec."DEL Vol cbm")
                 {
                     Editable = false;
                     DecimalPlaces = 2 : 4;
+                    ApplicationArea = All;
                 }
                 field("DEL Vol cbm carton transport"; Rec."DEL Vol cbm carton transport")
                 {
                     DecimalPlaces = 2 : 4;
+                    ApplicationArea = All;
                 }
-                field("DEL Length.old"; Rec."DEL Length.old") { }
-                field("DEL Width.old"; Rec."DEL Width.old") { }
-                field("DEL Depth.old"; Rec."DEL Depth.old") { }
+                field("DEL Length.old"; Rec."DEL Length.old")
+                {
+                    ApplicationArea = All;
+                }
+                field("DEL Width.old"; Rec."DEL Width.old")
+                {
+                    ApplicationArea = All;
+                }
+                field("DEL Depth.old"; Rec."DEL Depth.old")
+                {
+                    ApplicationArea = All;
+                }
                 group("DEL Packaging")
                 {
-                    field("DEL Packaging Language FR"; Rec."DEL Packaging Language FR") { }
-                    field("DEL Packaging Language IT"; Rec."DEL Packaging Language IT") { }
-                    field("DEL Packaging Language ES"; Rec."DEL Packaging Language ES") { }
-                    field("DEL Packaging Language NL"; Rec."DEL Packaging Language NL") { }
-                    field("DEL Packaging Language PT"; Rec."DEL Packaging Language PT") { }
-                    field("DEL Packaging Language PL"; Rec."DEL Packaging Language PL") { }
-                    field("DEL Packaging Language HG"; Rec."DEL Packaging Language HG") { }
-                    field("DEL Packaging Language RO"; Rec."DEL Packaging Language RO") { }
-                    field("DEL Packaging Language RU"; Rec."DEL Packaging Language RU") { }
+                    field("DEL Packaging Language FR"; Rec."DEL Packaging Language FR")
+                    {
+                        ApplicationArea = All;
+                    }
+                    field("DEL Packaging Language IT"; Rec."DEL Packaging Language IT")
+                    {
+                        ApplicationArea = All;
+                    }
+                    field("DEL Packaging Language ES"; Rec."DEL Packaging Language ES")
+                    {
+                        ApplicationArea = All;
+                    }
+                    field("DEL Packaging Language NL"; Rec."DEL Packaging Language NL")
+                    {
+                        ApplicationArea = All;
+                    }
+                    field("DEL Packaging Language PT"; Rec."DEL Packaging Language PT")
+                    {
+                        ApplicationArea = All;
+                    }
+                    field("DEL Packaging Language PL"; Rec."DEL Packaging Language PL")
+                    {
+                        ApplicationArea = All;
+                    }
+                    field("DEL Packaging Language HG"; Rec."DEL Packaging Language HG")
+                    {
+                        ApplicationArea = All;
+                    }
+                    field("DEL Packaging Language RO"; Rec."DEL Packaging Language RO")
+                    {
+                        ApplicationArea = All;
+                    }
+                    field("DEL Packaging Language RU"; Rec."DEL Packaging Language RU")
+                    {
+                        ApplicationArea = All;
+                    }
 
                 }
             }
@@ -99,6 +203,7 @@ pageextension 50049 "DEL ItemCard" extends "Item Card" //30
                 PromotedIsBig = true;
                 Image = Worksheet;
                 PromotedCategory = New;
+                ApplicationArea = All;
             }
             action("DEL Item Quality")
             {
@@ -108,6 +213,7 @@ pageextension 50049 "DEL ItemCard" extends "Item Card" //30
                 PromotedIsBig = true;
                 Image = Agreement;
                 PromotedCategory = Process;
+                ApplicationArea = All;
             }
             action("DEL Prices")
             {
@@ -115,6 +221,7 @@ pageextension 50049 "DEL ItemCard" extends "Item Card" //30
                 RunPageView = SORTING("Item No.");
                 RunPageLink = "Item No." = FIELD("No.");
                 Image = Price;
+                ApplicationArea = All;
             }
             action("DEL Sales_Prices")
             {
@@ -122,6 +229,7 @@ pageextension 50049 "DEL ItemCard" extends "Item Card" //30
                 RunPageView = SORTING("Item No.");
                 RunPageLink = "Item No." = FIELD("No.");
                 Image = Price;
+                ApplicationArea = All;
             }
         }
     }

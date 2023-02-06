@@ -1108,7 +1108,7 @@ report 50073 "DEL Order" //405
             var
                 PurchaseLine_Rec: Record "Purchase Line";
             begin
-                CurrReport.LANGUAGE := Language.GetLanguageID("Language Code");
+                CurrReport.LANGUAGE := LanguageCdu.GetLanguageID("Language Code");
 
                 CompanyInfo.GET();
                 CompanyInfo.CALCFIELDS(CompanyInfo.Picture);
@@ -1300,6 +1300,8 @@ report 50073 "DEL Order" //405
 
         PurchCountPrinted: Codeunit "Purch.Header-Printed";
         PurchPostPrepmt: Codeunit "Purchase-Post Prepayments";
+        LanguageCdu: Codeunit Language;
+
         SegManagement: Codeunit SegManagement;
         ArchiveDocument: Boolean;
         [InDataSet]

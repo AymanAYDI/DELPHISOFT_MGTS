@@ -2,6 +2,22 @@ pageextension 50019 "DEL CustomerCard" extends "Customer Card" //21
 {
     layout
     {
+        modify("Customer Price Group")
+        {
+            trigger OnLookup(var Text: Text): Boolean
+            var
+                CustPriceGroup: Record 6;
+                Text50000: Label '%1|%2';
+
+            begin
+                CustPriceGroup.RESET();
+                IF PAGE.RUNMODAL(0, CustPriceGroup) = ACTION::LookupOK THEN
+                    IF Rec."Customer Price Group" = '' THEN
+                        Rec."Customer Price Group" := CustPriceGroup.Code
+                    ELSE
+                        Rec."Customer Price Group" := STRSUBSTNO(Text50000, Rec."Customer Price Group", CustPriceGroup.Code);
+            end;
+        }
         addafter("AdjProfitPct") //69
         {
             field("DEL No TVA intracomm. NGTS"; Rec."DEL No TVA intracomm. NGTS")
@@ -116,4 +132,5 @@ pageextension 50019 "DEL CustomerCard" extends "Customer Card" //21
         }
     }
 }
+
 

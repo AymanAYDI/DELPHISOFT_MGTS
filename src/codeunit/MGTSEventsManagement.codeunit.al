@@ -1,5 +1,6 @@
 codeunit 50100 "DEL MGTS_Events Management"
 {
+    //tab18
     [EventSubscriber(ObjectType::Table, Database::Customer, 'OnAfterModifyEvent', '', false, false)]
     local procedure T18_OnAfterModifyEvent_Customer(var Rec: Record Customer; RunTrigger: Boolean)
 
@@ -70,6 +71,14 @@ codeunit 50100 "DEL MGTS_Events Management"
         end;
     end;
 
+    [EventSubscriber(ObjectType::Table, Database::"Sales Header", 'OnValidatePostingDateOnBeforeResetInvoiceDiscountValue', '', false, false)]
+    local procedure OnValidatePostingDateOnBeforeResetInvoiceDiscountValue(var SalesHeader: Record "Sales Header"; xSalesHeader: Record "Sales Header")
+    var
+        GlobalsFunction: codeunit "DEL Globals Function Mgt";
+    begin
+        IF SalesHeader."Currency Code" <> '' THEN
+            GlobalsFunction.SetHideValidationDialog(true);
+    end;
 
     [EventSubscriber(ObjectType::Table, Database::"Gen. Journal Line", 'OnAfterDeleteEvent', '', false, false)]
     local procedure T81_OnAfterDeleteEvent_GenJournalLine(var Rec: Record "Gen. Journal Line"; RunTrigger: Boolean)
@@ -164,7 +173,9 @@ codeunit 50100 "DEL MGTS_Events Management"
             SalesHeader.SetHideValidationDialog(true);
 
     end;
+
     ///////
+
     [EventSubscriber(ObjectType::Table, DataBase::"Sales Header", 'OnAfterValidateEvent', 'Campaign No.', false, false)]
     local procedure T36_OnAfterValidateEvent_SalesHeader_CompaignNo(var Rec: Record "Sales Header"; var xRec: Record "Sales Header"; CurrFieldNo: Integer)
     begin
@@ -172,17 +183,18 @@ codeunit 50100 "DEL MGTS_Events Management"
         IF Rec."Campaign No." <> xRec."Campaign No." THEN
             Rec.UpdateSalesLines(Rec.FIELDCAPTION(Rec."Campaign No."), CurrFieldNo <> 0);
     end;
+
     ///////
-    /// 
+
     [EventSubscriber(ObjectType::Table, DataBase::"Sales Header", 'OnAfterOnInsert', '', false, false)]
-    local procedure OnAfterOnInsert(var SalesHeader: Record "Sales Header")
+    local procedure T36_OnAfterOnInsert(var SalesHeader: Record "Sales Header")
     begin
         SalesHeader."DEL Create By" := USERID;
         SalesHeader."DEL Create Date" := TODAY;
         SalesHeader."DEL Create Time" := TIME;
     end;
     //////
-    ///////
+
     [EventSubscriber(ObjectType::Table, DataBase::"Sales Header", 'OnAfterValidateEvent', 'Requested Delivery Date', false, false)]
     local procedure T36_OnAfterValidateEvent_SalesHeader_rqstDelivDate(var Rec: Record "Sales Header"; var xRec: Record "Sales Header"; CurrFieldNo: Integer)
     begin
@@ -190,16 +202,24 @@ codeunit 50100 "DEL MGTS_Events Management"
     end;
 
 
-    ////// tab 97
+    //tab 97
     [EventSubscriber(ObjectType::Table, Database::"Comment Line", 'OnAfterSetUpNewLine', '', false, false)]
 
     local procedure OnAfterSetUpNewLine(var CommentLineRec: Record "Comment Line"; var CommentLineFilter: Record "Comment Line")
     begin
         CommentLineRec."DEL User ID" := USERID;
-
     end;
 
     //// tab 27 
+    //TODO 
+    // [EventSubscriber(ObjectType::Table, database::Item, 'OnAfterDeleteRelatedData', '', false, false)]
+    // local procedure OnAfterDeleteRelatedData(Item: Record Item)
+    // var
+    //     gcouStammVerw: Codeunit 4006496;
+    // begin
+    //     gcouStammVerw.ArtikelOnDelete(Item);
+
+    // end;
 
     [EventSubscriber(ObjectType::Table, database::Item, 'OnBeforeValidateEvent', 'Item Category Code', false, false)]
     local procedure T27_OnBeforeValidateEvent_Item_ItemCategoryCode(var Rec: Record Item; var xRec: Record Item; CurrFieldNo: Integer)

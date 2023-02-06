@@ -1,12 +1,9 @@
 page 50146 "D365FM Mail Template Notif."
 {
-
-
     Caption = 'D365FM Mail Template Notif.';
     PageType = List;
     SourceTable = "DEL D365FM Mail Template";
-    UsageCategory = Lists; // a verifier
-    ApplicationArea = All;
+    UsageCategory = None;
 
     layout
     {
@@ -16,18 +13,23 @@ page 50146 "D365FM Mail Template Notif."
             {
                 field("Parameter String"; Rec."Parameter String")
                 {
+                    ApplicationArea = All;
                 }
-                field("Template mail"; Rec."Template mail")
+                field("Template mail"; Rec."Template mail") //TODO: A Blob cannot be used as a source expression for a page field.
                 {
+                    ApplicationArea = All;
                 }
                 field(Title; Rec.Title)
                 {
+                    ApplicationArea = All;
                 }
                 field("Sender Address"; Rec."Sender Address")
                 {
+                    ApplicationArea = All;
                 }
                 field(Cci; Rec.Cci)
                 {
+                    ApplicationArea = All;
                 }
             }
         }
@@ -45,6 +47,7 @@ page 50146 "D365FM Mail Template Notif."
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 PromotedOnly = true;
+                ApplicationArea = All;
 
                 trigger OnAction()
                 begin
@@ -59,6 +62,7 @@ page 50146 "D365FM Mail Template Notif."
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 PromotedOnly = true;
+                ApplicationArea = All;
 
                 trigger OnAction()
                 begin
@@ -73,6 +77,7 @@ page 50146 "D365FM Mail Template Notif."
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 PromotedOnly = true;
+                ApplicationArea = All;
 
                 trigger OnAction()
                 begin
@@ -82,4 +87,3 @@ page 50146 "D365FM Mail Template Notif."
         }
     }
 }
-

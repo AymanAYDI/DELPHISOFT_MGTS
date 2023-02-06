@@ -1,57 +1,7 @@
 tableextension 50020 "DEL Item" extends Item //27
 {
-
-
     fields
     {
-
-        // TODO:table product group code has been removed modify("Product Group Code"){
-        //      ProductGroup_Rec@1000000000 : Record 5723;
-        //                                                           BEGIN
-        //                                                             //MIG2017
-        //                                                              //T-00712
-        //                                                              IF ProductGroup_Rec.GET("Item Category Code","Product Group Code") THEN
-        //                                                                 IF ProductGroup_Rec."Code Segment" = '' THEN ERROR(Text0027,"Product Group Code");
-        //                                                              //END T-00712
-
-        //                                                              //START THM220817
-        //                                                              IF Rec."Product Group Code"<> '' THEN
-        //                                                              BEGIN
-        //                                                                RecMatriseGroupArtGroup.RESET;
-        //                                                                RecMatriseGroupArtGroup.SETRANGE(RecMatriseGroupArtGroup."Product Group Code",Rec."Product Group Code");
-        //                                                                IF RecMatriseGroupArtGroup.FINDFIRST THEN
-        //                                                                BEGIN
-        //                                                                 IF RecMatriseGroupArtGroup.COUNT=1 THEN
-        //                                                                   Standardartikelgruppe:=RecMatriseGroupArtGroup."Standard Item Group Code"
-        //                                                                   ELSE
-        //                                                                   BEGIN
-        //                                                                     CLEAR(PageMatriseGroupArtGroup);
-        //                                                                     PageMatriseGroupArtGroup.SETTABLEVIEW(RecMatriseGroupArtGroup);
-        //                                                                     PageMatriseGroupArtGroup.LOOKUPMODE:=TRUE;
-        //                                                                     //PageMatriseGroupArtGroup.EDITABLE(FALSE);
-        //                                                                     PageMatriseGroupArtGroup.SETRECORD(RecMatriseGroupArtGroup);
-        //                                                                     IF PageMatriseGroupArtGroup.RUNMODAL=ACTION::LookupOK THEN
-        //                                                                     BEGIN
-        //                                                                       PageMatriseGroupArtGroup.GETRECORD(RecMatriseGroupArtGroup);
-        //                                                                       Standardartikelgruppe:=RecMatriseGroupArtGroup."Standard Item Group Code";
-        //                                                                     END;
-        //                                                                   END;
-        //                                                                END
-        //                                                                 ELSE
-        //                                                                   Standardartikelgruppe:='';
-        //                                                              END
-        //                                                              ELSE
-        //                                                              BEGIN
-        //                                                                Standardartikelgruppe:='';
-        //                                                              END;
-        //                                                              //END THM220817
-        //                                                              //MIG2017 END
-
-        //                                                             //>>DELSupport
-        //                                                             ModifSegment("Product Group Code","Item Category Code");
-        //                                                             //<<DELSupport
-        //                                                           END;
-        // }
         field(50000; "DEL Weight net"; Decimal)
         {
             DataClassification = CustomerContent;
@@ -263,7 +213,7 @@ tableextension 50020 "DEL Item" extends Item //27
         field(50090; "DEL Images"; Integer)
         {
             FieldClass = FlowField;
-            //TODO  // CalcFormula = Count("DEL Texte Regulation" WHERE("Attached to Line No." = FIELD("No.")));
+            //TODO // CalcFormula = Count("DEL Texte Regulation" WHERE("Attached to Line No."= field("No.")));
 
             Editable = false;
 
@@ -297,7 +247,7 @@ tableextension 50020 "DEL Item" extends Item //27
         field(50096; "DEL Segment Code"; Code[20])
         {
             FieldClass = FlowField;
-            //    CalcFormula = Lookup("DEL Product Group"."Code Segment" 
+            //    CalcFormula = Lookup("Product Group"."Code Segment" 
             //     WHERE ("Item Category Code"=FIELD("DEL Item Category Code"),
             //             Code=FIELD("Product Group Code"))); TODO: product grp
             Caption = 'Segment Code';
@@ -325,10 +275,10 @@ tableextension 50020 "DEL Item" extends Item //27
         }
         field(60002; "DEL Product Group Label"; Text[50])
         {
-            //TODO:Product group is no longer here
-            // CalcFormula = Lookup("Product Group".Description 
-            // WHERE(Code = FIELD("Product Group Code"),
-            // "Item Category Code" = FIELD("Item Category Code")));
+            CalcFormula = Lookup("Product Group".Description
+            WHERE(
+            //TODO // Code = FIELD("Product Group Code"),
+            "Item Category Code" = FIELD("Item Category Code")));
             Caption = 'Product Group Description';
 
             Editable = false;
@@ -336,11 +286,12 @@ tableextension 50020 "DEL Item" extends Item //27
         }
         field(60003; "DEL Risque Securitaire"; Enum "DEL Risque Quality")
         {
-            //TODO CalcFormula = Lookup("DEL Regulation Matrix"."Risque Quality"
-            //  WHERE ("Item Category Code"=FIELD("Item Category Code"),
-            //                         // "Product Group Code"=FIELD("Product Group Code"),
-            //                         // Mark=FIELD("Marque Produit"),
-            //                         "Product Description"=FIELD("Product Description")));
+
+            CalcFormula = Lookup("DEL Regulation Matrix"."Risque Quality"
+             WHERE("Item Category Code" = FIELD("Item Category Code"),
+                                    //TODO // "Product Group Code"=FIELD("Product Group Code"),
+                                    Mark = FIELD("DEL Marque Produit"),
+                                    "Product Description" = FIELD("DEL Product Description")));
             Caption = 'Security Level Of Risk';
 
             Editable = false;
@@ -350,12 +301,11 @@ tableextension 50020 "DEL Item" extends Item //27
 
         {
             FieldClass = FlowField;
-            //TODO:Product group is no longer here
-            // CalcFormula = Lookup("DEL Regulation Matrix"."NGTS Quality Expert"
-            //  WHERE("Item Category Code" = FIELD("Item Category Code"),
-            //                  "Product Group Code" = FIELD("Product Group Code"),
-            //                  Mark = FIELD("Marque Produi"t),
-            //              "Product Description"=FIELD("Product Description")));
+            CalcFormula = Lookup("DEL Regulation Matrix"."NGTS Quality Expert"
+             WHERE("Item Category Code" = FIELD("Item Category Code"),
+            //TODO:Product group is no longer here  // "Product Group Code" = FIELD("Product Group Code"),
+                          Mark = FIELD("DEL Marque Produit"),
+                         "Product Description" = FIELD("DEL Product Description")));
             Caption = 'NGTS Quality Expert';
 
             Editable = false;
@@ -363,11 +313,12 @@ tableextension 50020 "DEL Item" extends Item //27
         field(60006; "DEL Regl. Generale"; Boolean)
         {
             FieldClass = FlowField;
-            //TODO: CalcFormula = Lookup("DEL Regulation Matrix"."Regl. Generale" 
-            // WHERE ("Item Category Code"=FIELD("Item Category Code"),
 
-            //        "DEL Mark"=FIELD("Marque Produit"),
-            //        "Product Description"=FIELD("Product Description")));
+            CalcFormula = Lookup("DEL Regulation Matrix"."Regl. Generale"
+            WHERE("Item Category Code" = FIELD("Item Category Code"),
+
+                   Mark = FIELD("DEL Marque Produit"),
+                   "Product Description" = FIELD("DEL Product Description")));
             Caption = 'General Product Regulation';
 
             Editable = false;
@@ -375,10 +326,10 @@ tableextension 50020 "DEL Item" extends Item //27
         }
         field(60007; "DEL Regl. Matiere"; Boolean)
         {
-            //TODO CalcFormula = Lookup("Regulation Matrix"."Regl. Matiere" WHERE (Item Category Code=FIELD(Item Category Code),
-            //  Product Group Code=FIELD(Product Group Code),
-            //   Mark=FIELD(Marque Produit),
-            //          Product Description=FIELD(Product Description)));
+            CalcFormula = Lookup("DEL Regulation Matrix"."Regl. Matiere" WHERE("Item Category Code" = FIELD("Item Category Code"),
+              //TODO  //  "Product Group Code" = FIELD("Product Group Code"),
+              Mark = FIELD("DEL Marque Produit"),
+                     "Product Description" = FIELD("DEL Product Description")));
             Caption = 'Subtance Regulation';
 
             Editable = false;
@@ -386,14 +337,14 @@ tableextension 50020 "DEL Item" extends Item //27
         }
         field(60008; "DEL Checklist by item"; Integer)
         {
-            //TODO CalcFormula = Count("Regulation Matrix Line" WHERE (Item Category Code=FIELD(Item Category Code),
-            //                                                     Product Group Code=FIELD(Product Group Code),
-            //                                                     Product Description=FIELD(Product Description),
-            //                                                     Mark=FIELD(Marque Produit),
-            //                                                     Type=FIELD(Regl. Type Filter),
-            //                                                     No.=FIELD(Regl. No. Filter)));
+            //TODO
+            CalcFormula = Count("DEL Regulation Matrix Line" WHERE("Item Category Code" = FIELD("Item Category Code"),
+                                                                //TODO   // "Product Group Code"=FIELD("Product Group Code"),
+                                                                "Product Description" = FIELD("DEL Product Description"),
+                                                                Mark = FIELD("DEL Marque Produit"),
+                                                                Type = FIELD("DEL Regl. Type Filter"),
+                                                                "No." = FIELD("DEL Regl. No. Filter")));
             Caption = 'Checklist by item';
-
             Editable = false;
             FieldClass = FlowField;
         }
@@ -413,24 +364,24 @@ tableextension 50020 "DEL Item" extends Item //27
             end;
         }
         field(60014; "DEL Nombre Regl. Generale"; Integer)
-        { //TODO
-            // CalcFormula = Count("DEL Regulation Matrix Line" WHERE("Item Category Code" = FIELD("Item Category Code"),
-            //                                                    "Product Group Code" = FIELD("Product Group Code"),
-            //                                                     Type = FILTER("General product"),
-            //                                                     Mark = FIELD("Marque Produit"),
-            //                                                     "Product Description" = FIELD("Product Description")));
+        {
+            CalcFormula = Count("DEL Regulation Matrix Line" WHERE("Item Category Code" = FIELD("Item Category Code"),
+                                                                //TODO             //    "Product Group Code" = FIELD("Product Group Code"),
+                                                                Type = FILTER("General product"),
+                                                                Mark = FIELD("DEL Marque Produit"),
+                                                                "Product Description" = FIELD("DEL Product Description")));
             Caption = 'General Product Regulation';
 
             Editable = false;
             FieldClass = FlowField;
         }
         field(60015; "DEL Nombre Regl. Matiere"; Integer)
-        { //TODO
-            // CalcFormula = Count("DEL Regulation Matrix Line" WHERE("Item Category Code="FIELD("Item Category Code"),
-            //                                                     "Product Group Code" = FIELD("Product Group Code"),
-            //                                                     Type = FILTER(Materials),
-            //                                                     Mark = FIELD("Marque Produit"),
-            //                                                     "Product Description" = FIELD("Product Description")));
+        {
+            CalcFormula = Count("DEL Regulation Matrix Line" WHERE("Item Category Code" = FIELD("Item Category Code"),
+                                                                //TODO           // "Product Group Code" = FIELD("Product Group Code"),
+                                                                Type = FILTER(Materials),
+                                                                Mark = FIELD("DEL Marque Produit"),
+                                                                "Product Description" = FIELD("DEL Product Description")));
             Caption = 'Substance regulation';
 
             Editable = false;
@@ -456,15 +407,11 @@ tableextension 50020 "DEL Item" extends Item //27
             begin
 
                 IF "DEL Blocking Quality" THEN BEGIN
-
                     TESTFIELD("DEL Dispensation", FALSE);
-
                     Blocked := TRUE;
-
                 END
                 ELSE
                     Blocked := FALSE;
-
                 "DEL Nom utilisateur" := USERID;
                 "DEL Date Of Update" := WORKDATE();
 
@@ -509,10 +456,11 @@ tableextension 50020 "DEL Item" extends Item //27
         }
         field(60031; "DEL Regl. Plan Control"; Boolean)
         {
-            //TODO CalcFormula = Lookup("Regulation Matrix"."Plan of control" WHERE(Item Category Code=FIELD(Item Category Code),
-            //                                                                   Product Group Code=FIELD(Product Group Code),
-            //                                                                   Mark=FIELD(Marque Produit),
-            //                                                                   Product Description=FIELD(Product Description)));
+
+            CalcFormula = Lookup("DEL Regulation Matrix"."Plan of control" WHERE("Item Category Code" = FIELD("Item Category Code"),
+                                                                              //TODO             //   "Product Group Code"=FIELD("Product Group Code"),
+                                                                              Mark = FIELD("DEL Marque Produit"),
+                                                                              "Product Description" = FIELD("DEL Product Description")));
             Caption = 'Plan of control Regulation';
 
             Editable = false;
@@ -522,10 +470,10 @@ tableextension 50020 "DEL Item" extends Item //27
         {
             Caption = 'Description produit';
             DataClassification = CustomerContent;
-            //TODO/ 'Product Group Code' is removed.
-            // TableRelation = "DEL Regulation Matrix"."Product Description" WHERE ("Item Category Code"=FIELD("Item Category Code"),
-            //                                                                  "Product Group Code"=FIELD("Product Group Code"),
-            //                                                                  Mark=FIELD("Marque Produit"));
+
+            TableRelation = "DEL Regulation Matrix"."Product Description" WHERE("Item Category Code" = FIELD("Item Category Code"),
+                                                                             //TODO/ 'Product Group Code' is removed.  //  "Product Group Code"=FIELD("Product Group Code"),
+                                                                             Mark = FIELD("DEL Marque Produit"));
 
             trigger OnValidate()
             begin
@@ -536,67 +484,67 @@ tableextension 50020 "DEL Item" extends Item //27
         field(60033; "DEL Nbre Regl. Plan control"; Integer)
         {
             FieldClass = FlowField;
-            // TODO: 'Product Group Code' is removed.
-            //CalcFormula = Count("DEL Regulation Matrix Line" WHERE ("Item Category Code"=FIELD("Item Category Code"),
-            //                                                     "Product Group Code"=FIELD("Product Group Code"),
-            //                                                     Type=FILTER("Plan of control"),
-            //                                                     Mark=FIELD("Marque Produit"),
-            //                                                     "Product Description"=FIELD("Product Description")));
+
+            CalcFormula = Count("DEL Regulation Matrix Line" WHERE("Item Category Code" = FIELD("Item Category Code"),
+                                                                // TODO: 'Product Group Code' is removed.  // "Product Group Code"=FIELD("Product Group Code"),
+                                                                Type = FILTER("Plan of control"),
+                                                                Mark = FIELD("DEL Marque Produit"),
+                                                                "Product Description" = FIELD("DEL Product Description")));
             Caption = 'Plan of control regulation';
 
             Editable = false;
 
         }
         field(60034; "DEL Marking in the product FR"; Boolean)
-        {// TODO:'Product Group Code' is removed.
-            // CalcFormula = Exist("DEL Regulation Matrix Text" WHERE ("Item Category Code"=FIELD("Item Category Code"),
-            //                                                     "Product Group Code"=FIELD("Product Group Code"),
-            //                                                     "Product Description"=FIELD("Product Description"),
-            //                                                     Mark=FIELD("Marque Produit"),
-            //                                                     Type=FILTER("Marking in the product FR")));
+        {
+            CalcFormula = Exist("DEL Regulation Matrix Text" WHERE("Item Category Code" = FIELD("Item Category Code"),
+                                                                // TODO:'Product Group Code' is removed.                            // "Product Group Code"=FIELD("Product Group Code"),
+                                                                "Product Description" = FIELD("DEL Product Description"),
+                                                                Mark = FIELD("DEL Marque Produit"),
+                                                                Type = FILTER("Marking in the product FR")));
             Caption = 'Marking in the product (warning) + Pictogram type in French';
             Editable = false;
             FieldClass = FlowField;
         }
         field(60035; "DEL Marking in the pack FR"; Boolean)
-        {//TODO:'Product Group Code' is removed.
-            // CalcFormula = Exist("DEL Regulation Matrix Text" WHERE ("Item Category Code"=FIELD("Item Category Code"),
-            //                                                     "Product Group Code"=FIELD("Product Group Code"),
-            //                                                     "Product Description"=FIELD("Product Description"),
-            //                                                     Mark=FIELD("Marque Produit"),
-            //                                                     Type=FILTER("Marking in the pack FR")));
+        {
+            CalcFormula = Exist("DEL Regulation Matrix Text" WHERE("Item Category Code" = FIELD("Item Category Code"),
+                                                                //TODO:'Product Group Code' is removed.                   "Product Group Code"=FIELD("Product Group Code"),
+                                                                "Product Description" = FIELD("DEL Product Description"),
+                                                                Mark = FIELD("DEL Marque Produit"),
+                                                                Type = FILTER("Marking in the pack FR")));
             Caption = 'Marking in the pack (warning + Pictogram) in French';
             Editable = false;
             FieldClass = FlowField;
         }
         field(60036; "DEL Marking in the product ENU"; Boolean)
-        {  //TODO:'Product Group Code' is removed.
-            // CalcFormula = Exist("DEL Regulation Matrix Text" WHERE ("Item Category Code"=FIELD("Item Category Code"),
-            //                                                     "Product Group Code"=FIELD("Product Group Code"),
-            //                                                     "Product Description"=FIELD("Product Description"),
-            //                                                     Mark=FIELD("Marque Produit"),
-            //                                                     Type=FILTER("Marking in the product ENU")));
+        {
+            CalcFormula = Exist("DEL Regulation Matrix Text" WHERE("Item Category Code" = FIELD("Item Category Code"),
+                                                                //TODO:'Product Group Code' is removed.                "Product Group Code"=FIELD("Product Group Code"),
+                                                                "Product Description" = FIELD("DEL Product Description"),
+                                                                Mark = FIELD("DEL Marque Produit"),
+                                                                Type = FILTER("Marking in the product ENU")));
             Caption = 'Marking in the product (warning) + Pictogram type in English';
             Editable = false;
             FieldClass = FlowField;
         }
         field(60037; "DEL Marking in the pack ENU"; Boolean)
-        { //TODO:'Product Group Code' is removed.
-            // CalcFormula = Exist("Regulation Matrix Text" WHERE (Item Category Code=FIELD(Item Category Code),
-            //                                                     Product Group Code=FIELD(Product Group Code),
-            //                                                     Product Description=FIELD(Product Description),
-            //                                                     Mark=FIELD(Marque Produit),
-            //                                                     Type=FILTER(Marking in the pack ENU)));
+        {
+            CalcFormula = Exist("DEL Regulation Matrix Text" WHERE("Item Category Code" = FIELD("Item Category Code"),
+                                                                //TODO:'Product Group Code' is removed.         // "Product Group Code"=FIELD("Product Group Code"),
+                                                                "Product Description" = FIELD("DEL Product Description"),
+                                                                Mark = FIELD("DEL Marque Produit"),
+                                                                Type = FILTER("Marking in the pack ENU")));
             Caption = 'Marking in the pack (warning + Pictogram) in English';
             Editable = false;
             FieldClass = FlowField;
         }
         field(60038; "DEL Manuel instruction"; Enum "DEL Manuel instruction")
-        { //TODO
-            // CalcFormula = Lookup("DEL Regulation Matrix"."Manuel instruction" WHERE ("Item Category Code"=FIELD("Item Category Code"),
-            //                                                                      "Product Group Code"=FIELD("Product Group Code"),
-            //                                                                      Mark=FIELD("Marque Produit"),
-            //                                                                      "Product Description"=FIELD("Product Description")));
+        {
+            CalcFormula = Lookup("DEL Regulation Matrix"."Manuel instruction" WHERE("Item Category Code" = FIELD("Item Category Code"),
+                                                                                 //TODO      //"Product Group Code"=FIELD("Product Group Code"),
+                                                                                 Mark = FIELD("DEL Marque Produit"),
+                                                                                 "Product Description" = FIELD("DEL Product Description")));
             Editable = false;
             FieldClass = FlowField;
 
@@ -604,12 +552,12 @@ tableextension 50020 "DEL Item" extends Item //27
         field(60039; "DEL Warning"; Boolean)
         {
             FieldClass = FlowField;
-            //TODO:'Product Group Code' is removed.
-            // CalcFormula = Exist("DEL Regulation Matrix Text" WHERE ("Item Category Code"=FIELD("Item Category Code"),
-            //                                                     "Product Group Code"=FIELD("Product Group Code"),
-            //                                                     "Product Description"=FIELD("Product Description"),
-            //                                                     Mark=FIELD("Marque Produit"),
-            //                                                     Type=FILTER("Warning in French")));
+
+            CalcFormula = Exist("DEL Regulation Matrix Text" WHERE("Item Category Code" = FIELD("Item Category Code"),
+                                                                //TODO:'Product Group Code' is removed.   //"Product Group Code"=FIELD("Product Group Code"),
+                                                                "Product Description" = FIELD("DEL Product Description"),
+                                                                Mark = FIELD("DEL Marque Produit"),
+                                                                Type = FILTER("Warning in French")));
             Editable = false;
 
         }
@@ -648,12 +596,11 @@ tableextension 50020 "DEL Item" extends Item //27
         // {
         // }
     }
-
-    //TODO
-
+    // 
+    //TODO product grp
     // procedure ModifSegment(var ProductCode: Code[20]; var CategCode: Code[20])
     // var
-    //     // //TODO ProductGroup_Rec: Record "Product Group";
+    //    ProductGroup_Rec: Record "Product Group";
     //     DefaultDimension_Rec: Record "Default Dimension";
     //     ItemCategory_Rec: Record "Item Category";
     // begin
@@ -674,7 +621,6 @@ tableextension 50020 "DEL Item" extends Item //27
     //             DefaultDimension_Rec.INSERT;
     //         END;
     //     END;
-    //     //END MIG2017
     // end;
 
     procedure ModifCategory(var CategCode: Code[20])

@@ -9,7 +9,8 @@ page 50140 "DEL JSON Requests logs" //TODO
     SourceTable = "DEL JSON Requests log";
     SourceTableView = SORTING(Date)
                       ORDER(Descending);
-
+    UsageCategory = tasks;
+    ApplicationArea = all;
     layout
     {
         area(content)
@@ -43,10 +44,10 @@ page 50140 "DEL JSON Requests logs" //TODO
                     {
                     }
                 }
-                //TODO part(Message; Message)
-                // {
-                //     SubPageLink = "Entry No." = FIELD("Entry No.");
-                // }
+                part(Message; "DEL Message")
+                {
+                    SubPageLink = "Entry No." = FIELD("Entry No.");
+                }
             }
         }
     }

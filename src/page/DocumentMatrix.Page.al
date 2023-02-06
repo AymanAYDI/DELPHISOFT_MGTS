@@ -4,7 +4,7 @@ page 50130 "DEL Document Matrix"
     DelayedInsert = true;
     PageType = List;
     SourceTable = "DEL Document Matrix";
-
+    UsageCategory = None;
     layout
     {
         area(content)
@@ -14,70 +14,87 @@ page 50130 "DEL Document Matrix"
                 field(Type; Rec.Type)
                 {
                     Caption = 'Type';
+                    ApplicationArea = All;
                 }
                 field("No."; Rec."No.")
                 {
                     Caption = 'No.';
+                    ApplicationArea = All;
                 }
                 field(Name; Rec.Name)
                 {
                     Caption = 'Name';
+                    ApplicationArea = All;
                 }
                 field("Process Type"; Rec."Process Type")
                 {
                     Caption = 'Process Type';
+                    ApplicationArea = All;
                 }
                 field(Usage; Rec.Usage)
                 {
                     Caption = 'Usage';
+                    ApplicationArea = All;
                 }
                 field("Report ID"; Rec."Report ID")
                 {
                     Caption = 'Report ID';
+                    ApplicationArea = All;
                 }
                 field("Report Caption"; Rec."Report Caption")
                 {
                     Caption = 'Report Caption';
+                    ApplicationArea = All;
                 }
                 field(Post; Rec.Post)
                 {
                     Caption = 'Post';
+                    ApplicationArea = All;
                 }
                 field("Send to FTP 1"; Rec."Send to FTP 1")
                 {
                     Caption = 'Send to FTP 1';
+                    ApplicationArea = All;
                 }
                 field("Send to FTP 2"; Rec."Send to FTP 2")
                 {
                     Caption = 'Send to FTP 2';
+                    ApplicationArea = All;
                 }
                 field("E-Mail from Sales Order"; Rec."E-Mail from Sales Order")
                 {
                     Caption = 'E-Mail from Sales Order';
+                    ApplicationArea = All;
                 }
                 field("E-Mail To 1"; Rec."E-Mail To 1")
                 {
                     Caption = 'E-Mail To 1';
+                    ApplicationArea = All;
                 }
                 field("E-Mail To 2"; Rec."E-Mail To 2")
                 {
                     Caption = 'E-Mail To 2';
+                    ApplicationArea = All;
                 }
                 field("E-Mail To 3"; Rec."E-Mail To 3")
                 {
                     Caption = 'E-Mail To 3';
+                    ApplicationArea = All;
                 }
                 field("E-Mail From"; Rec."E-Mail From")
                 {
                     Caption = 'E-Mail From';
+                    ApplicationArea = All;
                 }
                 field("Save PDF"; Rec."Save PDF")
                 {
                     Caption = 'Save PDF';
+                    ApplicationArea = All;
                 }
                 field("Print PDF"; Rec."Print PDF")
                 {
                     Caption = 'Print PDF';
+                    ApplicationArea = All;
                 }
                 field("Mail Text Code"; Rec."Mail Text Code")
                 {
@@ -85,6 +102,7 @@ page 50130 "DEL Document Matrix"
                     DrillDown = false;
                     Lookup = true;
                     Caption = 'Mail Text Code';
+                    ApplicationArea = All;
                     //TODO DrillDownPageID = 50132;  //50132 n'existe pas 
 
                     trigger OnLookup(var Text: Text): Boolean
@@ -108,6 +126,7 @@ page 50130 "DEL Document Matrix"
                 field("Mail Text Langauge Code"; Rec."Mail Text Langauge Code")
                 {
                     Caption = 'Mail Text Language Code';
+                    ApplicationArea = All;
                 }
             }
         }
@@ -130,6 +149,7 @@ page 50130 "DEL Document Matrix"
                     PromotedIsBig = true;
                     PromotedOnly = true;
                     RunPageMode = Create;
+                    ApplicationArea = All;
 
                     trigger OnAction()
                     var
@@ -148,6 +168,7 @@ page 50130 "DEL Document Matrix"
                     PromotedOnly = true;
                     RunObject = Page "DEL DocMatrix Setup";
                     RunPageMode = Edit;
+                    ApplicationArea = All;
                 }
                 action("Customer FTP Settings")
                 {
@@ -160,6 +181,7 @@ page 50130 "DEL Document Matrix"
                     RunObject = Page "DEL DocMatrix FTP Custom. Card";
                     RunPageLink = "Customer No." = FIELD("No.");
                     RunPageMode = Edit;
+                    ApplicationArea = All;
                 }
                 action("Create Request Page Parameters")
                 {
@@ -169,6 +191,7 @@ page 50130 "DEL Document Matrix"
                     PromotedCategory = Process;
                     PromotedIsBig = true;
                     PromotedOnly = true;
+                    ApplicationArea = All;
 
                     trigger OnAction()
                     var
@@ -186,6 +209,7 @@ page 50130 "DEL Document Matrix"
                     PromotedCategory = Process;
                     PromotedIsBig = true;
                     PromotedOnly = true;
+                    ApplicationArea = All;
 
                     trigger OnAction()
                     var
@@ -211,6 +235,7 @@ page 50130 "DEL Document Matrix"
                                   Usage = FIELD(Usage);
                     RunPageView = SORTING("Date Time Stamp")
                                   ORDER(Descending);
+                    ApplicationArea = All;
                 }
                 action("Show Error Log")
                 {
@@ -225,6 +250,7 @@ page 50130 "DEL Document Matrix"
                                   ORDER(Descending)
                                   WHERE(Error = CONST(true),
                                         "Error Solved" = CONST(false));
+                    ApplicationArea = All;
                 }
             }
         }

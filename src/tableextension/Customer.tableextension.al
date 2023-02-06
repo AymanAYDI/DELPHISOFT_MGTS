@@ -1,30 +1,7 @@
 tableextension 50013 "DEL Customer" extends Customer //18
 {
-
-
-
     fields
     {
-        // TODO    
-        // modify("Customer Price Group")
-        //     {
-
-        // //Unsupported feature: Property Modification (Data type) on ""Customer Price Group"(Field 23)".
-
-        //         Description = 'MGTS0124';
-        // Customer Price Group;Code20        ;OnLookup=BEGIN
-
-        //                                                         //MGTS0124; MHH; begin
-        //                                                         CustPriceGroup.RESET;
-        //                                                         IF PAGE.RUNMODAL(0, CustPriceGroup) = ACTION::LookupOK THEN BEGIN
-        //                                                           IF "Customer Price Group" = '' THEN
-        //                                                             "Customer Price Group" := CustPriceGroup.Code
-        //                                                           ELSE
-        //                                                             "Customer Price Group" := STRSUBSTNO(Text50000, "Customer Price Group", CustPriceGroup.Code);
-        //                                                         END;
-        //                                                         //MGTS0124; MHH; end
-        //                                                     END;
-        //     }
 
         field(50000; "DEL No TVA intracomm. NGTS"; Code[30])
         {
@@ -79,7 +56,6 @@ tableextension 50013 "DEL Customer" extends Customer //18
             DataClassification = CustomerContent;
             trigger OnValidate()
             begin
-
                 TESTFIELD("DEL Partnership agreement", TRUE);
             end;
         }
@@ -620,7 +596,7 @@ tableextension 50013 "DEL Customer" extends Customer //18
             Caption = 'Presentation MOBIVIA strategy';
             DataClassification = CustomerContent;
         }
-        field(60127; "DEL Adv on the adapt.of the offer"; Boolean)
+        field(60127; "DEL Adv on the adapt the offer"; Boolean)
 
         {
             Caption = 'Advising on the adaptation of the offer';

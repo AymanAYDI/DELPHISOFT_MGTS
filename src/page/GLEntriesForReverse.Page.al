@@ -1,4 +1,3 @@
-
 page 50126 "DEL GL Entries For Reverse"
 {
     Caption = 'General Ledger Entries';
@@ -9,7 +8,7 @@ page 50126 "DEL GL Entries For Reverse"
     SourceTable = "G/L Entry";
     SourceTableView = SORTING("G/L Account No.", "Posting Date")
                       ORDER(Descending);
-
+    UsageCategory = None;
     layout
     {
         area(content)
@@ -28,6 +27,7 @@ page 50126 "DEL GL Entries For Reverse"
                 }
                 field("External Document No."; Rec."External Document No.")
                 {
+                    ApplicationArea = All;
                 }
                 field("Document No."; Rec."Document No.")
                 {
@@ -41,6 +41,7 @@ page 50126 "DEL GL Entries For Reverse"
                 }
                 field("G/L Account Name"; Rec."G/L Account Name")
                 {
+                    ApplicationArea = All;
                     DrillDown = false;
                     ToolTip = 'Specifies the name of the account that the entry has been posted to.';
                     Visible = false;
@@ -52,21 +53,25 @@ page 50126 "DEL GL Entries For Reverse"
                 }
                 field("Job No."; Rec."Job No.")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the Job No. corresponding the to G/L entry.';
                     Visible = false;
                 }
                 field("Global Dimension 1 Code"; Rec."Global Dimension 1 Code")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the dimension value code that the entry is linked to.';
                     Visible = false;
                 }
                 field("Global Dimension 2 Code"; Rec."Global Dimension 2 Code")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the dimension value code that the entry is linked to.';
                     Visible = false;
                 }
                 field("IC Partner Code"; Rec."IC Partner Code")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the code of the intercompany partner that the transaction is with if the entry was posted from an intercompany transaction.';
                     Visible = false;
                 }
@@ -87,6 +92,7 @@ page 50126 "DEL GL Entries For Reverse"
                 }
                 field(Quantity; Rec.Quantity)
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the quantity that was posted on the entry.';
                     Visible = false;
                 }
@@ -102,11 +108,13 @@ page 50126 "DEL GL Entries For Reverse"
                 }
                 field("Additional-Currency Amount"; Rec."Additional-Currency Amount")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the general ledger entry that is posted if you post in an additional reporting currency.';
                     Visible = false;
                 }
                 field("VAT Amount"; Rec."VAT Amount")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the VAT Amount that was posted as a result of the entry.';
                     Visible = false;
                 }
@@ -122,41 +130,49 @@ page 50126 "DEL GL Entries For Reverse"
                 }
                 field("User ID"; Rec."User ID")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the ID of the user that is associated with the entry.';
                     Visible = false;
                 }
                 field("Source Code"; Rec."Source Code")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the Source Code that is linked to the entry.';
                     Visible = false;
                 }
                 field("Reason Code"; Rec."Reason Code")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the reason code on the entry.';
                     Visible = false;
                 }
                 field(Reversed; Rec.Reversed)
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies if the entry has been part of a reverse transaction (correction) made by the Reverse function.';
                     Visible = false;
                 }
                 field("Reversed by Entry No."; Rec."Reversed by Entry No.")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the number of the correcting entry. If the field Specifies a number, the entry cannot be reversed again.';
                     Visible = false;
                 }
                 field("Reversed Entry No."; Rec."Reversed Entry No.")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the number of the original entry that was undone by the reverse transaction.';
                     Visible = false;
                 }
                 field("FA Entry Type"; Rec."FA Entry Type")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'This field is automatically updated.';
                     Visible = false;
                 }
                 field("FA Entry No."; Rec."FA Entry No.")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'This field is automatically updated.';
                     Visible = false;
                 }
@@ -167,12 +183,15 @@ page 50126 "DEL GL Entries For Reverse"
                 }
                 field("Initial Currency (FCY)"; Rec."DEL Initial Currency (FCY)")
                 {
+                    ApplicationArea = All;
                 }
                 field("Initial Amount (FCY)"; Rec."DEL Initial Amount (FCY)")
                 {
+                    ApplicationArea = All;
                 }
                 field("Customer Provision"; Rec."DEL Customer Provision")
                 {
+                    ApplicationArea = All;
                 }
             }
         }
@@ -185,10 +204,12 @@ page 50126 "DEL GL Entries For Reverse"
             }
             systempart(Links; Links)
             {
+                ApplicationArea = All;
                 Visible = false;
             }
             systempart(Notes; Notes)
             {
+                ApplicationArea = All;
                 Visible = false;
             }
         }
@@ -261,6 +282,7 @@ page 50126 "DEL GL Entries For Reverse"
                 Image = "Action";
                 action("Apply more entires for reverse")
                 {
+                    ApplicationArea = All;
                     Caption = 'Apply more entires for reverse';
                     Image = ApplyEntries;
                     Promoted = true;
@@ -278,9 +300,11 @@ page 50126 "DEL GL Entries For Reverse"
                 }
                 action("Unmark the enry")
                 {
+                    ApplicationArea = All;
                     Caption = 'Unmark the enry';
                     Image = RemoveLine;
                     Promoted = true;
+                    PromotedOnly = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
 
@@ -319,14 +343,15 @@ page 50126 "DEL GL Entries For Reverse"
         Text50001: Label '''''';
 
     local procedure GetCaption(): Text[250]
+    var
+        "txtLbl12": Label '%1 %2';
     begin
         IF GLAcc."No." <> Rec."G/L Account No." THEN
             IF NOT GLAcc.GET(Rec."G/L Account No.") THEN
                 IF Rec.GETFILTER("G/L Account No.") <> '' THEN
                     IF GLAcc.GET(Rec.GETRANGEMIN("G/L Account No.")) THEN;
-        EXIT(STRSUBSTNO('%1 %2', GLAcc."No.", GLAcc.Name))
+        EXIT(STRSUBSTNO("txtLbl12", GLAcc."No.", GLAcc.Name))
     end;
-
 
     procedure SetRelatedOrder(NewRelatedOrder: Record "Sales Header")
     begin
@@ -335,7 +360,6 @@ page 50126 "DEL GL Entries For Reverse"
         RelatedOrder := NewRelatedOrder;
     end;
 
-
     procedure SelectGLEntryForReverse()
     var
         GLEntry: Record "G/L Entry";
@@ -343,7 +367,6 @@ page 50126 "DEL GL Entries For Reverse"
         GLSetup: Record "General Ledger Setup";
         GLEntries: Page "DEL Gen. Ledger Entr. Reverse";
     begin
-
 
         IF NOT GLSetup.GET() THEN
             GLSetup.INIT();
@@ -375,6 +398,3 @@ page 50126 "DEL GL Entries For Reverse"
         END;
     end;
 }
-
-
-

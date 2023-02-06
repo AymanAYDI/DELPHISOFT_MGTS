@@ -843,7 +843,7 @@ report 50080 "DEL Standard Purchase - Order" //1322
             trigger OnAfterGetRecord()
             begin
                 TotalAmount := 0;
-                CurrReport.LANGUAGE := Language.GetLanguageID("Language Code");
+                CurrReport.LANGUAGE := LanguageCdu.GetLanguageID("Language Code");
 
                 FormatAddressFields("Purchase Header");
                 FormatDocumentFields("Purchase Header");
@@ -927,7 +927,6 @@ report 50080 "DEL Standard Purchase - Order" //1322
         CompanyInfo: Record "Company Information";
         CurrExchRate: Record "Currency Exchange Rate";
         GLSetup: Record "General Ledger Setup";
-        Language: Record Language;
         PaymentTerms: Record "Payment Terms";
         PrepmtPaymentTerms: Record "Payment Terms";
         TempPrepaymentInvLineBuffer: Record "Prepayment Inv. Line Buffer" temporary;
@@ -940,6 +939,8 @@ report 50080 "DEL Standard Purchase - Order" //1322
         TempPrePmtVATAmountLineDeduct: Record "VAT Amount Line" temporary;
         TempVATAmountLine: Record "VAT Amount Line" temporary;
         ArchiveManagement: Codeunit ArchiveManagement;
+        LanguageCdu: Codeunit Language;
+
         FormatAddr: Codeunit "Format Address";
         FormatDocument: Codeunit "Format Document";
         PurchPost: Codeunit "Purch.-Post";

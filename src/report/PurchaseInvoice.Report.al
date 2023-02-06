@@ -829,7 +829,7 @@ report 50074 "DEL Purchase - Invoice" //406
 
             trigger OnAfterGetRecord()
             begin
-                CurrReport.LANGUAGE := Language.GetLanguageID("Language Code");
+                CurrReport.LANGUAGE := LanguageCdu.GetLanguageID("Language Code");
 
                 FormatAddressFields("Purch. Inv. Header");
                 FormatDocumentFields("Purch. Inv. Header");
@@ -914,7 +914,8 @@ report 50074 "DEL Purchase - Invoice" //406
         DimSetEntry1: Record "Dimension Set Entry"; //480
         DimSetEntry2: Record "Dimension Set Entry";
         GLSetup: Record "General Ledger Setup";
-        Language: Record Language;
+        LanguageCdu: Codeunit Language;
+
         PaymentTerms: Record "Payment Terms";
         RespCenter: Record "Responsibility Center";
         SalesPurchPerson: Record "Salesperson/Purchaser";

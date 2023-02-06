@@ -892,7 +892,7 @@ report 50081 "DEL Archived Sales Order" //216
 
             trigger OnAfterGetRecord()
             begin
-                CurrReport.LANGUAGE := Language.GetLanguageID("Language Code");
+                CurrReport.LANGUAGE := LanguageCdu.GetLanguageID("Language Code");
 
                 FormatAddressFields("Sales Header Archive");
                 FormatDocumentFields("Sales Header Archive");
@@ -976,6 +976,8 @@ report 50081 "DEL Archived Sales Order" //216
         TempSalesLineArchive: Record "Sales Line Archive" temporary;
         SalesPurchPerson: Record "Salesperson/Purchaser";
         ShipmentMethod: Record "Shipment Method";
+        LanguageCdu: Codeunit Language;
+
         VATAmountLine: Record "VAT Amount Line" temporary;
         FormatAddr: Codeunit "Format Address";
         FormatDocument: Codeunit "Format Document";

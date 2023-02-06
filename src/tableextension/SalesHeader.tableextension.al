@@ -5,46 +5,7 @@ tableextension 50026 "DEL SalesHeader" extends "Sales Header" //36
 
     fields
     {
-        //TODO //Modify 
-        // modify("Customer Price Group")
-        // {
-
-        //     //Unsupported feature: Property Modification (Data type) on ""Customer Price Group"(Field 34)".
-
-        // }
-
-        //TODO //unsupprted   modifs On lookup 
-        // modify("Customer Price Group")
-        // {
-        //     trigger OnAfterValidate()
-
-        //     begin
-        //         CustPriceGroup.RESET();
-        //         IF PAGE.RUNMODAL(0, CustPriceGroup) = ACTION::LookupOK THEN
-        //             IF "Customer Price Group" = '' THEN
-        //                 "Customer Price Group" := CustPriceGroup.Code
-        //             ELSE
-        //                 "Customer Price Group" := STRSUBSTNO(Text50000, "Customer Price Group", CustPriceGroup.Code);
-        //     end;
-
-        // }
-        //------à vérifier ! 
-        modify("Customer Price Group")
-        {
-            trigger OnAfterValidate()
-            var
-                CustPriceGroup: Record "Customer Price Group";
-                Text50000: Label 'ENU=%1|%2';
-            begin
-                CustPriceGroup.RESET();
-                IF PAGE.RUNMODAL(0, CustPriceGroup) = ACTION::LookupOK THEN
-                    IF "Customer Price Group" = '' THEN
-                        "Customer Price Group" := CustPriceGroup.Code
-                    ELSE
-                        "Customer Price Group" := STRSUBSTNO(Text50000, "Customer Price Group", CustPriceGroup.Code);
-            end;
-        }
-        //Unsupported feature: Property Deletion (TableRelation) on ""Customer Price Group"(Field 34)".
+        //Unsupported feature: Property Deletion (TableRelation) on ""Customer Price Group"(Field 34)". -> code dans le onlookup trigger 
         field(50000; "DEL Fiscal Repr."; Code[10])
         {
             Caption = 'Fiscal Repr.';

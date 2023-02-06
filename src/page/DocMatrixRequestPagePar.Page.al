@@ -1,12 +1,11 @@
 page 50136 "DEL DocMatrix Request Page Par"
 {
-
     Caption = 'Request Page Parameters';
     Editable = false;
     PageType = StandardDialog;
     SaveValues = true;
     SourceTable = "DEL Document Matrix";
-
+    UsageCategory = None;
     layout
     {
         area(content)
@@ -45,6 +44,4 @@ page 50136 "DEL DocMatrix Request Page Par"
     var
         DocMatrixSet: Record "DEL DocMatrix Setup";
         txParameters: Text;
-
 }
-

@@ -753,8 +753,8 @@ report 50004 "DEL NTO - Purchase Order"
             var
                 PurchHeader: Record "Purchase Header";
             begin
-                //TODO 
-                CurrReport.LANGUAGE := Language.GetLanguageID("Language Code");
+
+                CurrReport.LANGUAGE := LanguageCdu.GetLanguageID("Language Code");
 
                 CompanyInfo.GET();
                 PrepareHeader();
@@ -870,6 +870,8 @@ report 50004 "DEL NTO - Purchase Order"
         ShipmentMethod: Record "Shipment Method";
         VATAmountLine: Record "VAT Amount Line" temporary;
         ArchiveManagement: Codeunit ArchiveManagement;
+        LanguageCdu: Codeunit Language;
+
         DimMgt: Codeunit DimensionManagement; //408
         FormatAddr: Codeunit "Format Address";
         PurchPost: Codeunit "Purch.-Post";

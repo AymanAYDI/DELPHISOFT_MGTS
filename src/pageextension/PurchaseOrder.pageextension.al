@@ -429,6 +429,9 @@ pageextension 50053 "DEL PurchaseOrder" extends "Purchase Order" //50
         Deal_Cu: Codeunit "DEL Deal";
         gSpecialPosting: Boolean;
         Affaire_Co: Code[20];
+        OpenPostedPurchaseOrderQstSpecial: label 'The order has been posted and moved to the Posted Purchase Invoices window. (Purchase Invoice: %1 / Sales Invoice: %2)\\Do you want to open the posted purchase invoice?';
+        SpecialSalesInvoiceNo: Label 'Created Purchase Invoice No.: %1 / Sales Invoice No.: %2';
+
     //TODO SwissQRBillPurchases: Codeunit 11502;
 
     //Dupliquée

@@ -7,6 +7,7 @@ pageextension 50014 "DEL PostedPurchaseInvoices" extends "Posted Purchase Invoic
         {
             field("DEL Vendor Shipment Date"; Rec."DEL Vendor Shipment Date")
             {
+                ApplicationArea = All;
             }
         }
     }
