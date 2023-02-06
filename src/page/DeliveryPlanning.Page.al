@@ -1,12 +1,11 @@
-page 50148 "Delivery Planning"
+page 50148 "DEL Delivery Planning"
 {
-    // MGTS10.042  | 02.01.2022 | Container/DESADV Management
 
     Caption = 'Delivery Planning';
     PageType = Worksheet;
-    SourceTable = Table50085;
-    SourceTableView = SORTING (Container No., Order No., Level)
-                      WHERE (Invoice Status=FILTER(Awaiting Invoicing));
+    SourceTable = "DEL Posted Container List";
+    SourceTableView = SORTING("Container No.", "Order No.", Level)
+                      WHERE("Invoice Status" = FILTER("Awaiting Invoicing"));
 
     layout
     {
@@ -15,74 +14,74 @@ page 50148 "Delivery Planning"
             repeater(Group)
             {
                 FreezeColumn = "Order No.";
-                IndentationColumn = Level;
-                IndentationControls = "Container No.","Order No.";
+                IndentationColumn = Rec.Level;
+                IndentationControls = "Container No.", "Order No.";
                 ShowAsTree = true;
-                field("Container No.";"Container No.")
+                field("Container No."; Rec."Container No.")
                 {
                     Editable = false;
                     StyleExpr = ContainerNoStyle;
                 }
-                field("Order No.";"Order No.")
+                field("Order No."; Rec."Order No.")
                 {
                     Editable = false;
                     Style = Strong;
                     StyleExpr = TRUE;
                 }
-                field("Receipt No.";"Receipt No.")
+                field("Receipt No."; Rec."Receipt No.")
                 {
                     Editable = false;
                 }
-                field("Purchase Invoice No.";"Purchase Invoice No.")
+                field("Purchase Invoice No."; Rec."Purchase Invoice No.")
                 {
                     Editable = false;
                 }
-                field("Buy-from Vendor No.";"Buy-from Vendor No.")
+                field("Buy-from Vendor No."; Rec."Buy-from Vendor No.")
                 {
                     Style = Subordinate;
                     StyleExpr = TRUE;
                 }
-                field("Buy-from Vendor Name";"Buy-from Vendor Name")
+                field("Buy-from Vendor Name"; Rec."Buy-from Vendor Name")
                 {
                     Style = Subordinate;
                     StyleExpr = TRUE;
                 }
-                field("Item No.";"Item No.")
+                field("Item No."; Rec."Item No.")
                 {
                     Editable = false;
                     StyleExpr = ItemNoStyle;
                 }
-                field(Description;Description)
+                field(Description; Rec.Description)
                 {
                     Editable = false;
                     Style = Subordinate;
                     StyleExpr = TRUE;
                 }
-                field(Pieces;Pieces)
+                field(Pieces; Rec.Pieces)
                 {
                     Editable = false;
                     Style = Strong;
                     StyleExpr = TRUE;
                 }
-                field("Meeting Date";"Meeting Date")
+                field("Meeting Date"; Rec."Meeting Date")
                 {
                     Editable = DeliveryDateEditable;
                 }
-                field("Entry No.";"Entry No.")
+                field("Entry No."; Rec."Entry No.")
                 {
                     Editable = false;
                     Visible = false;
                 }
-                field("Special Order Sales No.";"Special Order Sales No.")
+                field("Special Order Sales No."; Rec."Special Order Sales No.")
                 {
                     Editable = false;
                 }
-                field("Special Order Sales Line No.";"Special Order Sales Line No.")
+                field("Special Order Sales Line No."; Rec."Special Order Sales Line No.")
                 {
                     Editable = false;
                     Visible = false;
                 }
-                field("Shipment No.";"Shipment No.")
+                field("Shipment No."; Rec."Shipment No.")
                 {
                     Editable = false;
                 }
@@ -103,14 +102,8 @@ page 50148 "Delivery Planning"
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 PromotedOnly = true;
-                RunObject = Report 50057;
+                RunObject = Report "Import Meeting Date From Excel";
 
-    trigger OnAction()
-    var
-        Text50000: Label 'There are unposted prepayment amounts on the document of type %1 with the number %2.';
-        Text50001: Label 'There are unpaid prepayment invoices that are related to the document of type %1 with the number %2.';
-    begin
-    end;
             }
             action(Invoice)
             {
@@ -125,9 +118,7 @@ page 50148 "Delivery Planning"
 
                 trigger OnAction()
                 var
-                    Text50000: Label 'There are unposted prepayment amounts on the document of type %1 with the number %2.';
-                    Text50001: Label 'There are unpaid prepayment invoices that are related to the document of type %1 with the number %2.';
-                    ContainerMgt: Codeunit "50060";
+                    ContainerMgt: Codeunit "DEL Container Mgt";
                 begin
                     ContainerMgt.Invoice(Rec);
                 end;
@@ -143,8 +134,8 @@ page 50148 "Delivery Planning"
 
                 trigger OnAction()
                 var
-                    PurchaseHeader: Record "38";
-                    PageManagement: Codeunit "700";
+                    PurchaseHeader: Record "Purchase Header";
+                    PageManagement: Codeunit "Page Management";
                 begin
                     PurchaseHeader.GET(PurchaseHeader."Document Type"::Order, Rec."Order No.");
                     PageManagement.PageRunModal(PurchaseHeader);
@@ -161,8 +152,8 @@ page 50148 "Delivery Planning"
 
                 trigger OnAction()
                 var
-                    PurchRcptHeader: Record "120";
-                    PageManagement: Codeunit "700";
+                    PurchRcptHeader: Record "Purch. Rcpt. Header";
+                    PageManagement: Codeunit "Page Management";
                 begin
                     PurchRcptHeader.GET(Rec."Receipt No.");
                     PageManagement.PageRunModal(PurchRcptHeader);
@@ -179,8 +170,8 @@ page 50148 "Delivery Planning"
 
                 trigger OnAction()
                 var
-                    PurchInvHeader: Record "122";
-                    PageManagement: Codeunit "700";
+                    PurchInvHeader: Record "Purch. Inv. Header";
+                    PageManagement: Codeunit "Page Management";
                 begin
                     PurchInvHeader.GET(Rec."Purchase Invoice No.");
                     PageManagement.PageRunModal(PurchInvHeader);
@@ -197,8 +188,8 @@ page 50148 "Delivery Planning"
 
                 trigger OnAction()
                 var
-                    SalesHeader: Record "36";
-                    PageManagement: Codeunit "700";
+                    SalesHeader: Record "Sales Header";
+                    PageManagement: Codeunit "Page Management";
                 begin
                     SalesHeader.GET(SalesHeader."Document Type"::Order, Rec."Special Order Sales No.");
                     PageManagement.PageRunModal(SalesHeader);
@@ -215,8 +206,8 @@ page 50148 "Delivery Planning"
 
                 trigger OnAction()
                 var
-                    SalesShipmentHeader: Record "110";
-                    PageManagement: Codeunit "700";
+                    SalesShipmentHeader: Record "Sales Shipment Header";
+                    PageManagement: Codeunit "Page Management";
                 begin
                     SalesShipmentHeader.GET(Rec."Shipment No.");
                     PageManagement.PageRunModal(SalesShipmentHeader);
@@ -227,21 +218,19 @@ page 50148 "Delivery Planning"
 
     trigger OnAfterGetRecord()
     begin
-        IF Level = 1 THEN
-        BEGIN
-          ContainerNoStyle := 'Strong';
-          DeliveryDateEditable := TRUE;
+        IF Rec.Level = 1 THEN BEGIN
+            ContainerNoStyle := 'Strong';
+            DeliveryDateEditable := TRUE;
         END
-        ELSE
-        BEGIN
-          ContainerNoStyle := 'Subordinate';
-          DeliveryDateEditable := FALSE;
+        ELSE BEGIN
+            ContainerNoStyle := 'Subordinate';
+            DeliveryDateEditable := FALSE;
         END;
 
-        IF Warnning = '' THEN
-          ItemNoStyle := 'Strong'
+        IF Rec.Warnning = '' THEN
+            ItemNoStyle := 'Strong'
         ELSE
-          ItemNoStyle := 'Ambiguous';
+            ItemNoStyle := 'Ambiguous';
     end;
 
     var

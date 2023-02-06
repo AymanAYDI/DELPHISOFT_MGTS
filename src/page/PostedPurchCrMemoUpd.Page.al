@@ -1,15 +1,14 @@
-page 50154 "Posted Purch. Cr. Memo-Upd"
+page 50154 "DEL Posted Purch. Cr. Memo-Upd"
 {
-    // MGTS10.043  | 24.01.2023 | Create new object : Dispute Reason
 
     Caption = 'Posted Purchase Credit Memo - Update';
     DeleteAllowed = false;
     InsertAllowed = false;
     ModifyAllowed = true;
     PageType = Card;
-    Permissions = TableData 124 = rm;
+    Permissions = TableData "Purch. Cr. Memo Hdr." = rm;
     ShowFilter = false;
-    SourceTable = Table124;
+    SourceTable = "Purch. Cr. Memo Hdr.";
     SourceTableTemporary = true;
 
     layout
@@ -19,15 +18,15 @@ page 50154 "Posted Purch. Cr. Memo-Upd"
             group("Général")
             {
                 Editable = false;
-                field("No."; "No.")
+                field("No."; Rec."No.")
                 {
                     Editable = false;
                 }
-                field("Sell-to Customer No."; "Sell-to Customer No.")
+                field("Sell-to Customer No."; Rec."Sell-to Customer No.")
                 {
                     Editable = false;
                 }
-                field("Posting Date"; "Posting Date")
+                field("Posting Date"; Rec."Posting Date")
                 {
                     Editable = false;
                 }
@@ -35,10 +34,10 @@ page 50154 "Posted Purch. Cr. Memo-Upd"
             group(Dispute)
             {
                 Caption = 'Dispute';
-                field("Dispute Reason"; "Dispute Reason")
+                field("Dispute Reason"; "DEL Dispute Reason")
                 {
                 }
-                field("Dispute Date"; "Dispute Date")
+                field("Dispute Date"; "DEL Dispute Date")
                 {
                 }
             }
@@ -62,17 +61,16 @@ page 50154 "Posted Purch. Cr. Memo-Upd"
     end;
 
     var
-        xPurchCrMemoHdr: Record "124";
+        xPurchCrMemoHdr: Record "Purch. Cr. Memo Hdr.";
 
     local procedure RecordChanged(): Boolean
     begin
         EXIT(
-          ("Dispute Reason" <> xPurchCrMemoHdr."Dispute Reason") OR
-          ("Dispute Date" <> xPurchCrMemoHdr."Dispute Date"))
+          ("DEL Dispute Reason" <> xPurchCrMemoHdr."DEL Dispute Reason") OR
+          ("DEL Dispute Date" <> xPurchCrMemoHdr."DEL Dispute Date"))
     end;
 
-    [Scope('Internal')]
-    procedure SetRec(PurchCrMemoHdr: Record "124")
+    procedure SetRec(PurchCrMemoHdr: Record "Purch. Cr. Memo Hdr.")
     begin
         Rec := PurchCrMemoHdr;
         INSERT;
@@ -80,14 +78,14 @@ page 50154 "Posted Purch. Cr. Memo-Upd"
 
     local procedure PurchaseCrMemoUpdate()
     var
-        PurchCrMemoHdr: Record "124";
+        PurchCrMemoHdr: Record "Purch. Cr. Memo Hdr.";
     begin
         PurchCrMemoHdr := Rec;
         PurchCrMemoHdr.LOCKTABLE;
         PurchCrMemoHdr.FIND;
-        PurchCrMemoHdr."Dispute Reason" := "Dispute Reason";
-        PurchCrMemoHdr."Dispute Date" := "Dispute Date";
-        PurchCrMemoHdr.TESTFIELD("No.", "No.");
+        PurchCrMemoHdr."DEL Dispute Reason" := "DEL Dispute Reason";
+        PurchCrMemoHdr."DEL Dispute Date" := "DEL Dispute Date";
+        PurchCrMemoHdr.TESTFIELD("No.", Rec."No.");
         PurchCrMemoHdr.MODIFY;
         Rec := PurchCrMemoHdr;
     end;

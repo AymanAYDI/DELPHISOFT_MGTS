@@ -1,6 +1,5 @@
-page 50151 "DESADV Export Shipment Line"
+page 50151 "DEL DESADV ExportShipment Line"
 {
-    // MGTS10.042  | 02.01.2022 | Container/DESADV Management
 
     Caption = 'Lines';
     DeleteAllowed = false;
@@ -8,7 +7,7 @@ page 50151 "DESADV Export Shipment Line"
     InsertAllowed = false;
     ModifyAllowed = false;
     PageType = ListPart;
-    SourceTable = Table50087;
+    SourceTable = 50087;
 
     layout
     {
@@ -16,39 +15,39 @@ page 50151 "DESADV Export Shipment Line"
         {
             repeater(Group)
             {
-                field("Line No."; "Line No.")
+                field("Line No."; Rec."Line No.")
                 {
                 }
-                field("Document No."; "Document No.")
-                {
-                    Visible = false;
-                }
-                field("Document Line No."; "Document Line No.")
+                field("Document No."; Rec."Document No.")
                 {
                     Visible = false;
                 }
-                field("Item No."; "Item No.")
+                field("Document Line No."; Rec."Document Line No.")
+                {
+                    Visible = false;
+                }
+                field("Item No."; Rec."Item No.")
                 {
                 }
-                field(Description; Description)
+                field(Description; Rec.Description)
                 {
                 }
-                field(EAN; EAN)
+                field(EAN; Rec.EAN)
                 {
                 }
-                field("Unit of Measure"; "Unit of Measure")
+                field("Unit of Measure"; Rec."Unit of Measure")
                 {
                 }
-                field("Ordered Quantity"; "Ordered Quantity")
+                field("Ordered Quantity"; Rec."Ordered Quantity")
                 {
                 }
-                field(Quantity; Quantity)
+                field(Quantity; Rec.Quantity)
                 {
                 }
-                field("Delivery Quantity"; "Delivery Quantity")
+                field("Delivery Quantity"; Rec."Delivery Quantity")
                 {
                 }
-                field("Delivery Date"; "Delivery Date")
+                field("Delivery Date"; Rec."Delivery Date")
                 {
                 }
             }

@@ -1,23 +1,22 @@
-page 50152 "Disputes Reasons"
+page 50152 "DEL Disputes Reasons"
 {
-    // MGTS10.043  | 24.01.2023 | Create new object : Dispute Reason
 
     Caption = 'Disputes Reasons';
     PageType = List;
-    SourceTable = Table50088;
+    SourceTable = "DEL Dispute Reason";
 
     layout
     {
         area(content)
         {
-            repeater()
+            repeater(SP)
             {
-                field(Code; Code)
+                field("Code"; Rec.Code)
                 {
                     ApplicationArea = Basic, Suite;
                     ToolTip = 'Specifies a reason code to attach to the entry.';
                 }
-                field(Description; Description)
+                field(Description; Rec.Description)
                 {
                     ApplicationArea = Basic, Suite;
                     ToolTip = 'Specifies a description of what the code stands for.';
@@ -26,11 +25,11 @@ page 50152 "Disputes Reasons"
         }
         area(factboxes)
         {
-            systempart(; Links)
+            systempart(Links; Links)
             {
                 Visible = false;
             }
-            systempart(; Notes)
+            systempart(Notes; Notes)
             {
                 Visible = false;
             }

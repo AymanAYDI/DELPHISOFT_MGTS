@@ -1,15 +1,14 @@
-page 50153 "Posted Sales Cr. Memo-Upd"
+page 50153 "DEL Posted Sales Cr. Memo-Upd"
 {
-    // MGTS10.043  | 24.01.2023 | Create new object : Dispute Reason
 
     Caption = 'Posted Sales Credit Memo - Update';
     DeleteAllowed = false;
     InsertAllowed = false;
     ModifyAllowed = true;
     PageType = Card;
-    Permissions = TableData 114 = rm;
+    Permissions = TableData "Sales Cr.Memo Header" = rm;
     ShowFilter = false;
-    SourceTable = Table114;
+    SourceTable = "Sales Cr.Memo Header";
     SourceTableTemporary = true;
 
     layout
@@ -19,15 +18,15 @@ page 50153 "Posted Sales Cr. Memo-Upd"
             group("Général")
             {
                 Editable = false;
-                field("No."; "No.")
+                field("No."; Rec."No.")
                 {
                     Editable = false;
                 }
-                field("Sell-to Customer No."; "Sell-to Customer No.")
+                field("Sell-to Customer No."; Rec."Sell-to Customer No.")
                 {
                     Editable = false;
                 }
-                field("Posting Date"; "Posting Date")
+                field("Posting Date"; Rec."Posting Date")
                 {
                     Editable = false;
                 }
@@ -35,10 +34,10 @@ page 50153 "Posted Sales Cr. Memo-Upd"
             group(Dispute)
             {
                 Caption = 'Dispute';
-                field("Dispute Reason"; "Dispute Reason")
+                field("Dispute Reason"; "DEL Dispute Reason")
                 {
                 }
-                field("Dispute Date"; "Dispute Date")
+                field("Dispute Date"; "DEL Dispute Date")
                 {
                 }
             }
@@ -57,38 +56,37 @@ page 50153 "Posted Sales Cr. Memo-Upd"
     trigger OnQueryClosePage(CloseAction: Action): Boolean
     begin
         IF CloseAction = ACTION::LookupOK THEN
-            IF RecordChanged THEN
-                SalesCrMemoUpdate;
+            IF RecordChanged() THEN
+                SalesCrMemoUpdate();
     end;
 
     var
-        xSalesCrMemoHeader: Record "114";
+        xSalesCrMemoHeader: Record "Sales Cr.Memo Header";
 
     local procedure RecordChanged(): Boolean
     begin
         EXIT(
-          ("Dispute Reason" <> xSalesCrMemoHeader."Dispute Reason") OR
-          ("Dispute Date" <> xSalesCrMemoHeader."Dispute Date"))
+          ("DEL Dispute Reason" <> xSalesCrMemoHeader."DEL Dispute Reason") OR
+          ("DEL Dispute Date" <> xSalesCrMemoHeader."DEL Dispute Date"))
     end;
 
-    [Scope('Internal')]
-    procedure SetRec(SalesCrMemoHeader: Record "114")
+    procedure SetRec(SalesCrMemoHeader: Record "Sales Cr.Memo Header")
     begin
         Rec := SalesCrMemoHeader;
-        INSERT;
+        INSERT();
     end;
 
     local procedure SalesCrMemoUpdate()
     var
-        SalesCrMemoHeader: Record "114";
+        SalesCrMemoHeader: Record "Sales Cr.Memo Header";
     begin
         SalesCrMemoHeader := Rec;
-        SalesCrMemoHeader.LOCKTABLE;
-        SalesCrMemoHeader.FIND;
-        SalesCrMemoHeader."Dispute Reason" := "Dispute Reason";
-        SalesCrMemoHeader."Dispute Date" := "Dispute Date";
-        SalesCrMemoHeader.TESTFIELD("No.", "No.");
-        SalesCrMemoHeader.MODIFY;
+        SalesCrMemoHeader.LOCKTABLE();
+        SalesCrMemoHeader.FIND();
+        SalesCrMemoHeader."DEL Dispute Reason" := "DEL Dispute Reason";
+        SalesCrMemoHeader."DEL Dispute Date" := "DEL Dispute Date";
+        SalesCrMemoHeader.TESTFIELD("No.", Rec."No.");
+        SalesCrMemoHeader.MODIFY();
         Rec := SalesCrMemoHeader;
     end;
 }

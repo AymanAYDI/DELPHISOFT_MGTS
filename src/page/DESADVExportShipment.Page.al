@@ -1,16 +1,15 @@
-page 50150 "DESADV Export Shipment"
+page 50150 "DEL DESADV Export Shipment"
 {
-    // MGTS10.042  | 02.01.2022 | Container/DESADV Management
 
     Caption = 'DESADV Export Shipment';
-    DataCaptionExpression = "Delivery No.";
+    DataCaptionExpression = Rec."Delivery No.";
     DataCaptionFields = "Delivery No.";
     DeleteAllowed = false;
     Editable = false;
     InsertAllowed = false;
     ModifyAllowed = false;
     PageType = ListPlus;
-    SourceTable = Table50086;
+    SourceTable = "DEL DESADV Export Buffer";
 
     layout
     {
@@ -18,47 +17,47 @@ page 50150 "DESADV Export Shipment"
         {
             repeater(Group)
             {
-                field("Delivery No."; "Delivery No.")
+                field("Delivery No."; Rec."Delivery No.")
                 {
                 }
-                field("Order No."; "Order No.")
+                field("Order No."; Rec."Order No.")
                 {
                 }
-                field("Your Reference"; "Your Reference")
+                field("Your Reference"; Rec."Your Reference")
                 {
                 }
-                field("Container No."; "Container No.")
+                field("Container No."; Rec."Container No.")
                 {
                 }
-                field("Supplier Name"; "Supplier Name")
+                field("Supplier Name"; Rec."Supplier Name")
                 {
                 }
-                field("Delivery Date"; "Delivery Date")
+                field("Delivery Date"; Rec."Delivery Date")
                 {
                 }
-                field(Exported; Exported)
+                field(Exported; Rec.Exported)
                 {
                     Style = Favorable;
                     StyleExpr = TRUE;
                 }
-                field("Export Date"; "Export Date")
+                field("Export Date"; Rec."Export Date")
                 {
                     Style = Favorable;
                     StyleExpr = TRUE;
                 }
             }
-            part(; 50151)
+            part("DESADV Export Shipment Line"; "DEL DESADV ExportShipment Line")
             {
-                SubPageLink = Document Enty No.=FIELD(Entry No.);
+                SubPageLink = "Document Enty No." = FIELD("Entry No.");
             }
         }
         area(factboxes)
         {
-            systempart(; Links)
+            systempart(Links; Links)
             {
                 Visible = true;
             }
-            systempart(; Notes)
+            systempart(Notes; Notes)
             {
                 Visible = true;
             }
@@ -80,8 +79,8 @@ page 50150 "DESADV Export Shipment"
 
                 trigger OnAction()
                 var
-                    SalesHeader: Record "36";
-                    PageManagement: Codeunit "700";
+                    SalesHeader: Record "Sales Header";
+                    PageManagement: Codeunit "Page Management";
                 begin
                     SalesHeader.GET(SalesHeader."Document Type"::Order, Rec."Order No.");
                     PageManagement.PageRunModal(SalesHeader);
@@ -98,8 +97,8 @@ page 50150 "DESADV Export Shipment"
 
                 trigger OnAction()
                 var
-                    SalesShipmentHeader: Record "110";
-                    PageManagement: Codeunit "700";
+                    SalesShipmentHeader: Record "Sales Shipment Header";
+                    PageManagement: Codeunit "Page Management";
                 begin
                     SalesShipmentHeader.GET(Rec."Delivery No.");
                     PageManagement.PageRunModal(SalesShipmentHeader);
@@ -116,10 +115,10 @@ page 50150 "DESADV Export Shipment"
 
                 trigger OnAction()
                 var
-                    DESADEVMgt: Codeunit "50061";
+                    DESADEVMgt: Codeunit "DEL ESADEV Mgt";
                 begin
                     DESADEVMgt.ResendDocument(Rec);
-                    CurrPage.UPDATE;
+                    CurrPage.UPDATE();
                 end;
             }
         }

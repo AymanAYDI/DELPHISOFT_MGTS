@@ -1,12 +1,11 @@
-page 50147 "Container List"
+page 50147 "DEL Container List"
 {
-    // MGTS10.042  | 02.01.2022 | Container/DESADV Management
 
     Caption = 'Container List';
     Editable = false;
     PageType = Worksheet;
-    SourceTable = Table50084;
-    SourceTableView = SORTING (Container No., Order No., Level);
+    SourceTable = "DEL Container List";
+    SourceTableView = SORTING("Container No.", "Order No.", Level);
 
     layout
     {
@@ -15,83 +14,83 @@ page 50147 "Container List"
             repeater(Group)
             {
                 FreezeColumn = "Order No.";
-                IndentationColumn = Level;
+                IndentationColumn = Rec.Level;
                 IndentationControls = "Container No.", "Order No.";
                 ShowAsTree = true;
-                field("Container No."; "Container No.")
+                field("Container No."; Rec."Container No.")
                 {
                     StyleExpr = ContainerNoStyle;
                 }
-                field("Order No."; "Order No.")
+                field("Order No."; Rec."Order No.")
                 {
                     Style = Strong;
                     StyleExpr = TRUE;
                 }
-                field("Buy-from Vendor No."; "Buy-from Vendor No.")
+                field("Buy-from Vendor No."; Rec."Buy-from Vendor No.")
                 {
                     Style = Subordinate;
                     StyleExpr = TRUE;
                 }
-                field("Buy-from Vendor Name"; "Buy-from Vendor Name")
+                field("Buy-from Vendor Name"; Rec."Buy-from Vendor Name")
                 {
                     Style = Subordinate;
                     StyleExpr = TRUE;
                 }
-                field("Item No."; "Item No.")
+                field("Item No."; Rec."Item No.")
                 {
                     StyleExpr = ItemNoStyle;
                 }
-                field(Description; Description)
+                field(Description; Rec.Description)
                 {
                     Style = Subordinate;
                     StyleExpr = TRUE;
                 }
-                field("Order Quantity"; "Order Quantity")
+                field("Order Quantity"; Rec."Order Quantity")
                 {
                     Style = Subordinate;
                     StyleExpr = TRUE;
                 }
-                field("Quantity Received"; "Quantity Received")
+                field("Quantity Received"; Rec."Quantity Received")
                 {
                     Style = Subordinate;
                     StyleExpr = TRUE;
                 }
-                field("Outstanding Quantity"; "Outstanding Quantity")
+                field("Outstanding Quantity"; Rec."Outstanding Quantity")
                 {
                     Style = Subordinate;
                     StyleExpr = TRUE;
                 }
-                field(Pieces; Pieces)
+                field(Pieces; Rec.Pieces)
                 {
                     Style = Strong;
                     StyleExpr = TRUE;
                 }
-                field(CTNS; CTNS)
+                field(CTNS; Rec.CTNS)
                 {
                     Style = Subordinate;
                     StyleExpr = TRUE;
                 }
-                field(Volume; Volume)
+                field(Volume; Rec.Volume)
                 {
                     Style = Subordinate;
                     StyleExpr = TRUE;
                 }
-                field(Weight; Weight)
+                field(Weight; Rec.Weight)
                 {
                     Style = Subordinate;
                     StyleExpr = TRUE;
                 }
-                field("Entry No."; "Entry No.")
+                field("Entry No."; Rec."Entry No.")
                 {
                     Visible = false;
                 }
-                field("Special Order Sales No."; "Special Order Sales No.")
+                field("Special Order Sales No."; Rec."Special Order Sales No.")
                 {
                 }
-                field("Special Order Sales Line No."; "Special Order Sales Line No.")
+                field("Special Order Sales Line No."; Rec."Special Order Sales Line No.")
                 {
                 }
-                field(Warnning; Warnning)
+                field(Warnning; Rec.Warnning)
                 {
                     Style = Ambiguous;
                     StyleExpr = TRUE;
@@ -115,8 +114,8 @@ page 50147 "Container List"
 
                 trigger OnAction()
                 var
-                    PurchaseHeader: Record "38";
-                    PageManagement: Codeunit "700";
+                    PurchaseHeader: Record "Purchase Header";
+                    PageManagement: Codeunit "Page Management";
                 begin
                     PurchaseHeader.GET(PurchaseHeader."Document Type"::Order, Rec."Order No.");
                     PageManagement.PageRunModal(PurchaseHeader);
@@ -133,8 +132,8 @@ page 50147 "Container List"
 
                 trigger OnAction()
                 var
-                    SalesHeader: Record "36";
-                    PageManagement: Codeunit "700";
+                    SalesHeader: Record "Sales Header";
+                    PageManagement: Codeunit "Page Management";
                 begin
                     SalesHeader.GET(SalesHeader."Document Type"::Order, Rec."Special Order Sales No.");
                     PageManagement.PageRunModal(SalesHeader);
@@ -155,7 +154,7 @@ page 50147 "Container List"
                 var
                     Text50000: Label 'There are unposted prepayment amounts on the document of type %1 with the number %2.';
                     Text50001: Label 'There are unpaid prepayment invoices that are related to the document of type %1 with the number %2.';
-                    ContainerMgt: Codeunit "50060";
+                    ContainerMgt: Codeunit "DEL Container Mgt";
                 begin
                     ContainerMgt.RUN(Rec);
                 end;
@@ -165,12 +164,12 @@ page 50147 "Container List"
 
     trigger OnAfterGetRecord()
     begin
-        IF Level = 1 THEN
+        IF Rec.Level = 1 THEN
             ContainerNoStyle := 'Strong'
         ELSE
             ContainerNoStyle := 'Subordinate';
 
-        IF Warnning = '' THEN
+        IF Rec.Warnning = '' THEN
             ItemNoStyle := 'Strong'
         ELSE
             ItemNoStyle := 'Ambiguous';
