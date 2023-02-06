@@ -1149,7 +1149,7 @@ report 50068 "DEL Stand. Sales - Order Conf." //TODO ID=205
         CompanyInfoPhoneNoLbl: Label 'Phone No.';
         CopyLbl: Label 'Copy';
         EMailLbl: Label 'Email';
-        ExchangeRateTxt: Label 'Exchange rate: %1/%2', Comment = '%1 and %2 are both amounts.';
+        ExchangeRateTxt: Label 'Exchange rate: %1/%2';
         GreetingLbl: Label 'Hello';
         HomePageLbl: Label 'Home Page';
         InvDiscBaseAmtLbl: Label 'Invoice Discount Base Amount';
@@ -1161,7 +1161,7 @@ report 50068 "DEL Stand. Sales - Order Conf." //TODO ID=205
         PageLbl: Label 'Page';
         PaymentMethodDescLbl: Label 'Payment Method';
         PaymentTermsDescLbl: Label 'Payment Terms';
-        PmtDiscTxt: Label 'If we receive the payment before %1, you are eligible for a %2% payment discount.', Comment = '%1 Discount Due Date %2 = value of Payment Discount % ';
+        PmtDiscTxt: Label 'If we receive the payment before %1, you are eligible for a %2% payment discount.';
         PostedShipmentDateLbl: Label 'Shipment Date';
         SalesConfirmationLbl: Label 'Order Confirmation';
         SalesInvLineDiscLbl: Label 'Discount %';

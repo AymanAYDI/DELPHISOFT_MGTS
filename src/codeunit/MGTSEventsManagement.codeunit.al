@@ -539,7 +539,7 @@ codeunit 50100 "DEL MGTS_Events Management"
     begin
         MGTSFactMgt.OnBeforeCodeFct(GenJournalLine, HideDialog);
     end;
-    ////COD 232
+
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post+Print", 'OnAfterPostJournalBatch', '', false, false)]
     local procedure COD232_OnAfterPostJournalBatch_GenJnlPostPrint(var GenJournalLine: Record "Gen. Journal Line");
     var
@@ -699,7 +699,7 @@ codeunit 50100 "DEL MGTS_Events Management"
         SalesHeader_Rec: Record "Sales Header";
     begin
         PurchLine.Get();
-        IF Item_Rec.GET(Item_Rec."No.") THEN
+        IF Item_Rec.GET(PurchLine."No.") THEN
             PurchLine.VALIDATE("DEL Total volume", (Item_Rec."DEL Vol cbm carton transport" * PurchLine.Quantity / Item_Rec."DEL PCB")
             );
 
@@ -774,7 +774,7 @@ codeunit 50100 "DEL MGTS_Events Management"
     var
         Cust: Record Customer;
         MGTSEDIManagement: Codeunit "DEL MGTS EDI Management";
-        Text50050: Label 'Do you want to export the invoice %2 from document No. %1 with EDI', Comment = 'FRA="Voulez-vous exporter la facture %2 du document n° %1 avec EDI?"';
+        Text50050: Label 'Do you want to export the invoice %2 from document No. %1 with EDI';
 
     begin
         IF SalesHeader.Invoice THEN BEGIN
@@ -869,11 +869,12 @@ codeunit 50100 "DEL MGTS_Events Management"
         dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
         Deal_Cu: Codeunit "DEL Deal";
         updateRequestManager_Cu: Codeunit "DEL Update Request Manager";
-        shipmentSelected_Bo_Loc: Boolean;
+        GlobalFunction: Codeunit "DEL MGTS Set/Get Functions";
         updateRequestID_Co_Loc: Code[20];
 
     begin
-        IF shipmentSelected_Bo_Loc THEN BEGIN
+        // IF shipmentSelected_Bo_Loc THEN BEGIN
+        IF GlobalFunction.GetshipmentSelected_Bo_Loc() THEN BEGIN
             Deal_Cu.FNC_Reinit_Deal(dealShipmentSelection_Re_Loc.Deal_ID, FALSE, FALSE);
             updateRequestManager_Cu.FNC_Validate_Request(updateRequestID_Co_Loc);
             dealShipmentSelection_Re_Loc.RESET();
@@ -924,14 +925,13 @@ codeunit 50100 "DEL MGTS_Events Management"
         dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
         Deal_Cu: Codeunit "DEL Deal";
         updateRequestManager_Cu: Codeunit "DEL Update Request Manager";
-        shipmentSelected_Bo_Loc: Boolean;
-        updateRequestID_Co_Loc: Code[20];
-
+        GlobalFunction: Codeunit "DEL MGTS Set/Get Functions";
+    //updateRequestID_Co_Loc: Code[20];
     begin
 
-        IF shipmentSelected_Bo_Loc THEN BEGIN
+        IF GlobalFunction.GetshipmentSelected_Bo_CDU90() THEN BEGIN
             Deal_Cu.FNC_Reinit_Deal(dealShipmentSelection_Re_Loc.Deal_ID, FALSE, FALSE);
-            updateRequestManager_Cu.FNC_Validate_Request(updateRequestID_Co_Loc);
+            updateRequestManager_Cu.FNC_Validate_Request(GlobalFunction.GetupdateRequestID_Co_Loc());
             dealShipmentSelection_Re_Loc.RESET();
             dealShipmentSelection_Re_Loc.SETRANGE("Document No.", PurchaseHeader."No.");
             dealShipmentSelection_Re_Loc.SETRANGE(USER_ID, USERID);
@@ -972,31 +972,31 @@ codeunit 50100 "DEL MGTS_Events Management"
             ACOConnection_Re_Loc.RESET();
             ACOConnection_Re_Loc.SETCURRENTKEY("ACO No.");
             ACOConnection_Re_Loc.SETRANGE("ACO No.", PurchaseHeader."No.");
-            IF ACOConnection_Re_Loc.FIND('-') THEN
+            IF ACOConnection_Re_Loc.FindFirst() THEN
                 Deal_Cu.FNC_Reinit_Deal(ACOConnection_Re_Loc.Deal_ID, FALSE, FALSE);
+            PurchaseHeader."Print Posted Documents" := false;
+
         END;
     end;
 
-    //TODO: les variables "tempSpecialSHBuffer" et "SpecOrderPost"sont globales.---///
-    // [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post (Yes/No)", 'OnBeforeRunPurchPost', '', false, false)]
-    // local procedure COD91_OnBeforeRunPurchPost(var PurchaseHeader: Record "Purchase Header")
-    // VAR
-    //     MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
-    //     PostPurchCU: Codeunit "Purch.-Post";
-    // begin
-    //     //TODO 
-    //     //MGTS0123; MHH; begin
-    //     IF SpecOrderPost THEN BEGIN
-    //       CLEAR(PostPurchCU);
-    //       PostPurchCU.SetSpecOrderPosting(TRUE);
-    //       PostPurchCU.RUN(PurchaseHeader);
-    //     //MGTS0123; MHH; end
-    //       //MGTS0123
-    //       PostPurchCU.GetSpecialOrderBuffer(tempSpecialSHBuffer);
-    //     END ELSE
-
-    // end;
-
+    //TODO: the record is temporary "tempSpecialSHBuffer"///
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post (Yes/No)", 'OnBeforeRunPurchPost', '', false, false)]
+    local procedure COD91_OnBeforeRunPurchPost(var PurchaseHeader: Record "Purchase Header")
+    VAR
+        MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
+        GlobalFunction: Codeunit "DEL MGTS Set/Get Functions";
+        PostPurchCU: Codeunit 90;
+    begin
+        //TODO 
+        //MGTS0123; MHH; begin
+        IF not GlobalFunction.GetSpecOrderPosting() THEN BEGIN
+            CLEAR(PostPurchCU);
+            GlobalFunction.SetSpecOrderPosting(TRUE);
+            PostPurchCU.RUN(PurchaseHeader);
+            //MGTS0123
+            // PostPurchCU.GetSpecialOrderBuffer(tempSpecialSHBuffer);
+        END;
+    end;
 
     //----------CDU 92
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post + Print", 'OnBeforeConfirmPost', '', false, false)]
@@ -1016,10 +1016,11 @@ codeunit 50100 "DEL MGTS_Events Management"
         dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
         Deal_Cu: Codeunit "DEL Deal";
         updateRequestManager_Cu: Codeunit "DEL Update Request Manager";
-        shipmentSelected_Bo_Loc: Boolean;
-        updateRequestID_Co_Loc: Code[20];
+       // shipmentSelected_Bo_Loc: Boolean;
+        GlobalFunction: Codeunit "DEL MGTS Set/Get Functions";
+        //updateRequestID_Co_Loc: Code[20];
     begin
-        IF shipmentSelected_Bo_Loc THEN BEGIN
+        IF GlobalFunction.GetshipmentSelected_Bo_Loc2() THEN BEGIN
             Deal_Cu.FNC_Reinit_Deal(dealShipmentSelection_Re_Loc.Deal_ID, FALSE, FALSE);
             updateRequestManager_Cu.FNC_Validate_Request(updateRequestID_Co_Loc);
             dealShipmentSelection_Re_Loc.RESET();
@@ -1037,7 +1038,7 @@ codeunit 50100 "DEL MGTS_Events Management"
         ConfirmManagement: Codeunit "Confirm Management";
         Deal_Cu: Codeunit "DEL Deal";
         MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
-        PostAndPrintQst: Label 'Do you want to post and print the %1?', Comment = '%1 = Document Type';
+        PostAndPrintQst: Label 'Do you want to post and print the %1?';
 
     begin
         IsHandled := true;
@@ -1058,7 +1059,7 @@ codeunit 50100 "DEL MGTS_Events Management"
                     ACOConnection_Re_Loc.RESET();
                     ACOConnection_Re_Loc.SETCURRENTKEY("ACO No.");
                     ACOConnection_Re_Loc.SETRANGE("ACO No.", PurchHeader."No.");
-                    IF ACOConnection_Re_Loc.FIND('-') THEN
+                    IF ACOConnection_Re_Loc.FindFirst() THEN
                         Deal_Cu.FNC_Reinit_Deal(ACOConnection_Re_Loc.Deal_ID, FALSE, FALSE);
                 END;
         end;
