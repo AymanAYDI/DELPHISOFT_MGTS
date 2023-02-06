@@ -1,14 +1,7 @@
 tableextension 50005 "DEL SalesCrMemoHeader" extends "Sales Cr.Memo Header" //114
 {
     fields
-    { //TODO
-        // modify("Customer Price Group")
-        // {
-
-        //     //Unsupported feature: Property Modification (Data type) on ""Customer Price Group"(Field 34)".
-
-        //     Description = 'MGTS0124';
-        // }
+    {
         field(50000; "DEL Fiscal Repr."; Code[10])
         {
             Caption = 'Fiscal Repr.';
@@ -58,7 +51,7 @@ tableextension 50005 "DEL SalesCrMemoHeader" extends "Sales Cr.Memo Header" //11
             Caption = 'Statut création commande achat';
             DataClassification = CustomerContent;
         }
-        field(50023; "DEL Error Text Purch. Order Create"; Text[250])
+        field(50023; "DEL Err.Txt Purch.Ord.Create"; Text[250])
         {
             Caption = 'Texte erreur création commande achat';
 

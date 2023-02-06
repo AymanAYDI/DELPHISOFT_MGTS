@@ -1,4 +1,4 @@
-tableextension 50001 "DEL SalesShipmentHeader" extends "Sales Shipment Header"
+tableextension 50001 "DEL SalesShipmentHeader" extends "Sales Shipment Header" //110
 {
 
     fields
@@ -28,16 +28,12 @@ tableextension 50001 "DEL SalesShipmentHeader" extends "Sales Shipment Header"
                 SalesShipmentLine.SETRANGE(SalesShipmentLine."Document No.", "No.");
                 SalesShipmentLine.SETFILTER(SalesShipmentLine."Shortcut Dimension 1 Code", '<>%1', '');
 
-                //containerid
 
                 IF SalesShipmentLine.FINDFIRST() THEN BEGIN
                     Trackinggeneral.SETRANGE(Trackinggeneral.Order_no, SalesShipmentLine."Shortcut Dimension 1 Code");
                     Trackinggeneral.SETFILTER(Trackinggeneral.Container_no, '<>%1', '');
-                    //Trackinggeneral_Page.SETTABLEVIEW(Trackinggeneral);
                     IF PAGE.RUNMODAL(Page::"DEL JSON Requests logs", Trackinggeneral) = ACTION::LookupOK THEN
-                        //VALIDATE("Primary Contact No.",Cont."No.");
-                        //MESSAGE(Trackinggeneral.Container_no);
-            VALIDATE("DEL Container_no", Trackinggeneral.Container_no);
+                        VALIDATE("DEL Container_no", Trackinggeneral.Container_no);
                     MODIFY();
                 END;
             end;
@@ -84,7 +80,7 @@ tableextension 50001 "DEL SalesShipmentHeader" extends "Sales Shipment Header"
             Caption = 'Statut création commande achat';
             DataClassification = CustomerContent;
         }
-        field(50023; "DEL Error Text Purch. Order Create"; Text[250])
+        field(50023; "DEL Err.TxtPurch.Order Create"; Text[250])
         {
             Caption = 'Texte erreur création commande achat';
 

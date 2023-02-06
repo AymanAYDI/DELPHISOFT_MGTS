@@ -1,4 +1,4 @@
-tableextension 50003 "DEL SalesInvoiceHeader" extends "Sales Invoice Header"
+tableextension 50003 "DEL SalesInvoiceHeader" extends "Sales Invoice Header" //112
 {
 
     fields
@@ -59,7 +59,7 @@ tableextension 50003 "DEL SalesInvoiceHeader" extends "Sales Invoice Header"
             Caption = 'Statut création commande achat';
             DataClassification = CustomerContent;
         }
-        field(50023; "DEL Error Text Purch. Order Create"; Text[250])
+        field(50023; "DEL Err.Txt Purch.Ord.Create"; Text[250])
         {
             Caption = 'Texte erreur création commande achat';
 

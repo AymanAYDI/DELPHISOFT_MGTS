@@ -1,4 +1,4 @@
-pageextension 50030 "DEL ReqWorksheet" extends "Req. Worksheet"
+pageextension 50030 "DEL ReqWorksheet" extends "Req. Worksheet" //291
 {
     layout
     {
@@ -36,6 +36,40 @@ pageextension 50030 "DEL ReqWorksheet" extends "Req. Worksheet"
     var
         ColoredPurchDueDate: Boolean;
         NTO_VolLigne: Decimal;
+
+    trigger OnAfterGetRecord()
+    var
+        Item: Record Item;
+    begin
+        NTO_VolLigne := 0;
+        IF Item.GET(Rec."No.") THEN
+            NTO_VolLigne := Rec.Quantity * Item.GetVolCBM(TRUE)
+        ELSE
+            NTO_VolLigne := 0;
+
+        ColoredPurchDueDate := Rec."DEL Purchase Order Due Date" < TODAY;
+    end;
+
+    trigger OnNewRecord(BelowxRec: Boolean)
+    var
+    begin
+        ColoredPurchDueDate := Rec."DEL Purchase Order Due Date" < TODAY;
+    end;
+
+    trigger OnInsertRecord(BelowxRec: Boolean): Boolean
+    begin
+        ColoredPurchDueDate := Rec."DEL Purchase Order Due Date" < TODAY;
+    end;
+
+    trigger OnModifyRecord(): Boolean
+    begin
+        ColoredPurchDueDate := Rec."DEL Purchase Order Due Date" < TODAY;
+    end;
+
+    trigger OnAfterGetCurrRecord()
+    begin
+        ColoredPurchDueDate := Rec."DEL Purchase Order Due Date" < TODAY;
+    end;
 
     //TODO 
     //Unsupported feature: Code Modification on "OnAfterGetCurrRecord".

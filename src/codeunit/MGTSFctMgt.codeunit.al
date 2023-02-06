@@ -651,17 +651,17 @@ codeunit 50101 "DEL MGTS_FctMgt"
             CASE PurchaseOrderHeader."DEL Ship Per" OF
                 PurchaseOrderHeader."DEL Ship Per"::"Air Flight":
                     BEGIN
-                        PurchaseOrderHeader."Expected Receipt Date" := CALCDATE('-' + DELCHR(FORMAT(PurchSetup."DEL Sales Ship Time By Air Flight"), '=', '+'),
+                        PurchaseOrderHeader."Expected Receipt Date" := CALCDATE('-' + DELCHR(FORMAT(PurchSetup."DEL SalesShipTimeByAirFlight"), '=', '+'),
                           PurchaseOrderHeader."DEL Requested Delivery Date");
-                        PurchaseOrderHeader."Requested Receipt Date" := CALCDATE('-' + DELCHR(FORMAT(PurchSetup."DEL Sales Ship Time By Air Flight"), '=', '+'),
+                        PurchaseOrderHeader."Requested Receipt Date" := CALCDATE('-' + DELCHR(FORMAT(PurchSetup."DEL SalesShipTimeByAirFlight"), '=', '+'),
                           PurchaseOrderHeader."DEL Requested Delivery Date");
                     END;
 
                 PurchaseOrderHeader."DEL Ship Per"::"Sea Vessel":
                     BEGIN
-                        PurchaseOrderHeader."Expected Receipt Date" := CALCDATE('-' + DELCHR(FORMAT(PurchSetup."DEL Sales Ship Time By Sea Vessel"), '=', '+'),
+                        PurchaseOrderHeader."Expected Receipt Date" := CALCDATE('-' + DELCHR(FORMAT(PurchSetup."DEL SalesShipTimeBySeaVessel"), '=', '+'),
                           PurchaseOrderHeader."DEL Requested Delivery Date");
-                        PurchaseOrderHeader."Requested Receipt Date" := CALCDATE('-' + DELCHR(FORMAT(PurchSetup."DEL Sales Ship Time By Sea Vessel"), '=', '+'),
+                        PurchaseOrderHeader."Requested Receipt Date" := CALCDATE('-' + DELCHR(FORMAT(PurchSetup."DEL SalesShipTimeBySeaVessel"), '=', '+'),
                           PurchaseOrderHeader."DEL Requested Delivery Date");
                     END;
 

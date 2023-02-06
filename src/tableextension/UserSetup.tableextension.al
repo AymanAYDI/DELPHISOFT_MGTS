@@ -7,6 +7,7 @@ tableextension 50045 "DEL UserSetup" extends "User Setup"
             Caption = 'Resend EDI Document';
             DataClassification = CustomerContent;
         }
+        //Spécifique suisse
         field(4006496; "DEL Katalog ID"; Code[20])
         {
             Caption = 'Catalogue ID';

@@ -11,7 +11,7 @@ codeunit 50012 "DEL Minimizing Clicks - MGTS"
         RecLSalesHeader: Record "Sales Header";
     begin
         RecLSalesSetup.GET();
-        RecLSalesSetup.TESTFIELD("DEL PDF Registration Customer Path");
+        RecLSalesSetup.TESTFIELD("DEL PDF Reg. Cust. Path");
         RecLSalesHeader.SETRANGE("No.", RecPSalesHeader."No.");
         //TODO IF RecLSalesHeader.FINDFIRST() THEN BEGIN
         //     TxtLClientPath := RecLSalesSetup."DEL PDF Registration Customer Path" + '\' + RecLSalesHeader."Bill-to Customer No.";
@@ -155,10 +155,10 @@ codeunit 50012 "DEL Minimizing Clicks - MGTS"
         TxtLClientPath: Text;
     begin
         RecLSalesSetup.GET();
-        RecLSalesSetup.TESTFIELD("DEL PDF Registration PostedSalesIn");
+        RecLSalesSetup.TESTFIELD("DEL PDF Reg. PostedSalesIn");
         RecLSalesInvoiceHeader.SETRANGE("No.", RecPSalesInvoiceHeader."No.");
         IF RecLSalesInvoiceHeader.FINDFIRST() THEN BEGIN
-            TxtLClientPath := RecLSalesSetup."DEL PDF Registration PostedSalesIn" + '\' + RecLSalesInvoiceHeader."Bill-to Customer No.";
+            TxtLClientPath := RecLSalesSetup."DEL PDF Reg. PostedSalesIn" + '\' + RecLSalesInvoiceHeader."Bill-to Customer No.";
             //TODOTxtLServerFilename := TEMPORARYPATH + RecLSalesInvoiceHeader."No." + '-' + RecLSalesInvoiceHeader."Bill-to Customer No." + '.pdf';
             TxtLClientFilename := TxtLClientPath + '\' + RecLSalesInvoiceHeader."No." + '-' + RecLSalesInvoiceHeader."Bill-to Customer No." + '.pdf';
             //TODO     IF EXISTS(TxtLServerFilename) THEN
@@ -232,7 +232,7 @@ codeunit 50012 "DEL Minimizing Clicks - MGTS"
         TxtLServerFilename: Text;
     begin
         RecLSalesSetup.GET();
-        RecLSalesSetup.TESTFIELD("DEL PDF Registration Sales C.Memo");
+        RecLSalesSetup.TESTFIELD("DEL PDF Reg. Sales C.Memo");
         RecLSalesCrMemoHeader.SETRANGE("No.", RecPSalesCrMemoHeader."No.");
         //TODO IF RecLSalesCrMemoHeader.FINDFIRST() THEN BEGIN
         //     TxtLClientPath := RecLSalesSetup."DEL PDF Registration Sales C.Memo" + '\' + RecLSalesCrMemoHeader."Bill-to Customer No.";

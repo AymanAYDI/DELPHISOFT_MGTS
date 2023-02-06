@@ -23,13 +23,11 @@ tableextension 50036 "DEL ProductGroup" extends "Product Group"
             DataClassification = CustomerContent;
             trigger OnValidate()
             begin
-                //START THM
                 IF VendeurRec.GET("DEL Salesperson Code") THEN
                     "DEL Responsible Code" := VendeurRec."DEL Responsible Code"
                 ELSE
                     "DEL Responsible Code" := '';
                 CALCFIELDS("DEL Salesperson Code", "DEL Responsible Code");
-                //END THM
             end;
         }
         field(50004; "DEL Responsible Code"; Code[10])
@@ -39,9 +37,7 @@ tableextension 50036 "DEL ProductGroup" extends "Product Group"
             DataClassification = CustomerContent;
             trigger OnValidate()
             begin
-                //THM
                 CALCFIELDS("DEL Responsible Code");
-                //END THM
             end;
         }
         field(50005; "DEL Salesperson"; Text[50])
