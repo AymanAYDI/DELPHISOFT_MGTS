@@ -14,7 +14,7 @@ report 50056 "DEL ImportContainers FromExcel"
 
             trigger OnPreDataItem()
             var
-                ContainerListBufferPage: Page "Container List";
+                ContainerListBufferPage: Page "DEL Container List";
             begin
                 ContainerListBuffer.RESET();
                 IF NOT ContainerListBuffer.ISEMPTY THEN
@@ -24,7 +24,10 @@ report 50056 "DEL ImportContainers FromExcel"
                         ERROR('');
 
                 ExcelBuffer.LOCKTABLE();
-                ExcelBuffer.OpenBook(FileName, sheetName);
+                //TODO ExcelBuffer.OpenBook(FileName, sheetName);
+                ExcelBuffer.OpenBookStream(FileName, SheetName);
+
+
                 ExcelBuffer.ReadSheet();
                 GetLastRowandColumns();
                 IF Totalrows < 2 THEN
@@ -66,9 +69,6 @@ report 50056 "DEL ImportContainers FromExcel"
             //     IF sheetName = '' THEN
             //         EXIT(FALSE);
             // END;
-            TempCsvBuffer.SaveDataToBlob(TempBlob, ';');
-            TempBlob.CreateInStream(IStream, TextEncoding::UTF8);
-            DownloadFromStream(IStream, '', '', '', FileName)
 
         end;
     }
@@ -94,7 +94,7 @@ report 50056 "DEL ImportContainers FromExcel"
         FileEmpty: Label 'Le fichier est vide. ';
         ImportCompleted: Label 'Import completed!';
         ImportFile: Label 'Import Excel worksheet...\\', Comment = '{Locked="Excel"}';
-        FileName: Text;
+        FileName: InStream;
         sheetName: Text;
 
     local procedure GetLastRowandColumns()
@@ -108,7 +108,7 @@ report 50056 "DEL ImportContainers FromExcel"
 
     local procedure Insertdata(RowNo: Integer)
     var
-        ContainerMgt: Codeunit "Container Mgt";
+        ContainerMgt: Codeunit "DEL Container Mgt";
         ContainerNo: Code[20];
         OrderNo: Code[20];
     begin

@@ -29,7 +29,7 @@ tableextension 50005 "DEL SalesCrMemoHeader" extends "Sales Cr.Memo Header" //11
             Editable = false;
             FieldClass = FlowField;
         }
-        field(50011; "DEL Shipment No."; Text[50])
+        field(50011; "DEL Shipment No."; Text[150])
         {
             Caption = 'Shipment No.';
             DataClassification = CustomerContent;
@@ -71,6 +71,21 @@ tableextension 50005 "DEL SalesCrMemoHeader" extends "Sales Cr.Memo Header" //11
         field(50051; "DEL Amount Mention Under Total"; Text[30])
         {
             Caption = 'Amount Mention Under Total';
+            DataClassification = CustomerContent;
+        }
+        field(50052; "DEL Container No."; Code[30])
+        {
+            Caption = 'Container Number';
+            DataClassification = CustomerContent;
+        }
+        field(50053; "DEL Dispute Reason"; Code[20])
+        {
+            Caption = 'Dispute Reason';
+            DataClassification = CustomerContent;
+        }
+        field(50054; "DEL Dispute Date"; Date)
+        {
+            Caption = 'Dispute Date';
             DataClassification = CustomerContent;
         }
     }
