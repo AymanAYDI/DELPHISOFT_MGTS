@@ -31,4 +31,5 @@
         "TODO",
         "XXX"
     ],
+    "al-test-runner.sendDebugTelemetry": false,
 }

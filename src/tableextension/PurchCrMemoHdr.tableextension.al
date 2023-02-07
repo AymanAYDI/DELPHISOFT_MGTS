@@ -27,6 +27,21 @@ tableextension 50009 "DEL PurchCrMemoHdr" extends "Purch. Cr. Memo Hdr." //124
             Caption = 'Due Date Calculation';
             DataClassification = CustomerContent;
         }
+        field(50052; "DEL Container No."; Code[30])
+        {
+            Caption = 'Container Number';
+            DataClassification = CustomerContent;
+        }
+        field(50053; "DEL Dispute Reason"; Code[20])
+        {
+            Caption = 'Dispute Reason';
+            DataClassification = CustomerContent;
+        }
+        field(50054; "DEL Dispute Date"; Date)
+        {
+            Caption = 'Dispute Date';
+            DataClassification = CustomerContent;
+        }
     }
 }
 

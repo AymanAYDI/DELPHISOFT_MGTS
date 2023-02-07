@@ -34,10 +34,10 @@ page 50153 "DEL Posted Sales Cr. Memo-Upd"
             group(Dispute)
             {
                 Caption = 'Dispute';
-                field("Dispute Reason"; "DEL Dispute Reason")
+                field("Dispute Reason"; Rec."DEL Dispute Reason")
                 {
                 }
-                field("Dispute Date"; "DEL Dispute Date")
+                field("Dispute Date"; Rec."DEL Dispute Date")
                 {
                 }
             }
@@ -66,14 +66,14 @@ page 50153 "DEL Posted Sales Cr. Memo-Upd"
     local procedure RecordChanged(): Boolean
     begin
         EXIT(
-          ("DEL Dispute Reason" <> xSalesCrMemoHeader."DEL Dispute Reason") OR
-          ("DEL Dispute Date" <> xSalesCrMemoHeader."DEL Dispute Date"))
+          (Rec."DEL Dispute Reason" <> xSalesCrMemoHeader."DEL Dispute Reason") OR
+          (Rec."DEL Dispute Date" <> xSalesCrMemoHeader."DEL Dispute Date"))
     end;
 
     procedure SetRec(SalesCrMemoHeader: Record "Sales Cr.Memo Header")
     begin
         Rec := SalesCrMemoHeader;
-        INSERT();
+        Rec.INSERT();
     end;
 
     local procedure SalesCrMemoUpdate()
@@ -83,8 +83,8 @@ page 50153 "DEL Posted Sales Cr. Memo-Upd"
         SalesCrMemoHeader := Rec;
         SalesCrMemoHeader.LOCKTABLE();
         SalesCrMemoHeader.FIND();
-        SalesCrMemoHeader."DEL Dispute Reason" := "DEL Dispute Reason";
-        SalesCrMemoHeader."DEL Dispute Date" := "DEL Dispute Date";
+        SalesCrMemoHeader."DEL Dispute Reason" := Rec."DEL Dispute Reason";
+        SalesCrMemoHeader."DEL Dispute Date" := Rec."DEL Dispute Date";
         SalesCrMemoHeader.TESTFIELD("No.", Rec."No.");
         SalesCrMemoHeader.MODIFY();
         Rec := SalesCrMemoHeader;

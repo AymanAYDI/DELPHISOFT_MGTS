@@ -3,7 +3,7 @@ codeunit 50011 "DEL MGTS Set/Get Functions"
     SingleInstance = true;
 
     var
-
+        HideValidationDialog: Boolean;
         tempSpecialSHBuffer: Record "Sales Header";
         SpecOrderPosting: Boolean;
         Qty: Decimal;
@@ -142,4 +142,16 @@ codeunit 50011 "DEL MGTS Set/Get Functions"
             UNTIL tempSpecialSHBuffer.NEXT() = 0;
 
     end;
+
+    procedure SetHideValidationDialog(pHideValidationDialog: Boolean)
+    begin
+        HideValidationDialog := pHideValidationDialog;
+    end;
+
+    procedure GetVATAmount(): Boolean
+    begin
+        exit(HideValidationDialog);
+    end;
+
+
 }

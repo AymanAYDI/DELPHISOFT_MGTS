@@ -7,18 +7,19 @@ report 50057 "Import Meeting Date From Excel"
 
     dataset
     {
-        dataitem(DataItem1000000000; Table2000000026)
+        dataitem(DataItem1000000000; Integer)
         {
-            DataItemTableView = SORTING (Number)
+            DataItemTableView = SORTING(Number)
                                 ORDER(Ascending)
-                                WHERE (Number = FILTER (1));
+                                WHERE(Number = FILTER(1));
 
             trigger OnPreDataItem()
             begin
-                ExcelBuffer.LOCKTABLE;
-                ExcelBuffer.OpenBook(FileName, sheetName);
-                ExcelBuffer.ReadSheet;
-                GetLastRowandColumns;
+                ExcelBuffer.LOCKTABLE();
+                ExcelBuffer.OpenBookStream(Istream, sheetName);
+                // ExcelBuffer.OpenBook(FileName, sheetName);
+                ExcelBuffer.ReadSheet();
+                GetLastRowandColumns();
                 IF Totalrows < 2 THEN
                     ERROR(FileEmpty);
 
@@ -27,8 +28,8 @@ report 50057 "Import Meeting Date From Excel"
                     ExcelBufferDialogMgt.SetProgress(ROUND(i / Totalrows * 10000, 1));
                     UpdateData(i);
                 END;
-                ExcelBufferDialogMgt.Close;
-                ExcelBuffer.DELETEALL;
+                ExcelBufferDialogMgt.Close();
+                ExcelBuffer.DELETEALL();
                 MESSAGE(ImportCompleted);
             end;
         }
@@ -36,7 +37,6 @@ report 50057 "Import Meeting Date From Excel"
 
     requestpage
     {
-
         layout
         {
         }
@@ -46,12 +46,17 @@ report 50057 "Import Meeting Date From Excel"
         }
 
         trigger OnQueryClosePage(CloseAction: Action): Boolean
+        var
+            FromFile: Text;
         begin
             IF CloseAction = ACTION::OK THEN BEGIN
-                FileName := FileManagement.UploadFile('Import Excel', ExcelExtension);
-                IF FileName = '' THEN
-                    EXIT(FALSE);
-                sheetName := ExcelBuffer.SelectSheetsName(FileName);
+                UploadIntoStream(UploadExcelMsg, '', ExcelExtension, FromFile, Istream);
+                IF FromFile = '' THEN
+                    EXIT(FALSE)
+                else begin
+                    FileName := FileManagement.GetFileName(FromFile);
+                    sheetName := ExcelBuffer.SelectSheetsNameStream(Istream);
+                end;
                 IF sheetName = '' THEN
                     EXIT(FALSE);
             END;
@@ -63,48 +68,47 @@ report 50057 "Import Meeting Date From Excel"
     }
 
     var
-        ExcelBuffer: Record "370";
+        ExcelBuffer: Record "Excel Buffer";
+        PostedContainerList: Record "DEL Posted Container List";
+        FileManagement: Codeunit "File Management";
+        ExcelBufferDialogMgt: Codeunit "Excel Buffer Dialog Management";
+        Istream: InStream;
+        i: Integer;
         TotalColumns: Integer;
         Totalrows: Integer;
-        PostedContainerList: Record "50085";
-        FileName: Text;
-        sheetName: Text;
-        FileManagement: Codeunit "419";
         ExcelExtension: Label '*.xlsx;*.xls';
-        i: Integer;
         FileEmpty: Label 'Le fichier est vide. ';
         ImportCompleted: Label 'Import completed!';
-        ExcelBufferDialogMgt: Codeunit "5370";
         ImportFile: Label 'Import Excel worksheet...\\', Comment = '{Locked="Excel"}';
+        UploadExcelMsg: Label 'Please Choose the Excel file.';
+        FileName: Text;
+        sheetName: Text;
 
     local procedure GetLastRowandColumns()
     begin
         ExcelBuffer.SETRANGE("Row No.", 1);
         TotalColumns := ExcelBuffer.COUNT;
-        ExcelBuffer.RESET;
-        IF ExcelBuffer.FINDLAST THEN
+        ExcelBuffer.RESET();
+        IF ExcelBuffer.FINDLAST() THEN
             Totalrows := ExcelBuffer."Row No.";
     end;
 
     local procedure UpdateData(RowNo: Integer)
     var
-        PurchaseLine: Record "39";
         ContainerNo: Code[20];
         MeetingDate: Date;
-        ContainerMgt: Codeunit "50060";
     begin
         ContainerNo := GetValueAtCell(RowNo, 1, '');
         EVALUATE(MeetingDate, GetValueAtCell(RowNo, 2, ''));
-
         PostedContainerList.SETCURRENTKEY("Container No.", "Order No.");
         PostedContainerList.SETRANGE("Container No.", ContainerNo);
         PostedContainerList.SETRANGE(Level, 1);
         PostedContainerList.MODIFYALL("Meeting Date", MeetingDate);
     end;
 
-    local procedure GetValueAtCell(RowNo: Integer; ColNo: Integer; DefaultValue: Text[10]): Text
+    local procedure GetValueAtCell(RowNo: Integer; ColNo: Integer; DefaultValue: Text[10]): Code[20]
     var
-        ExcelBuffer1: Record "370";
+        ExcelBuffer1: Record "Excel Buffer";
     begin
         IF ExcelBuffer1.GET(RowNo, ColNo) THEN
             EXIT(ExcelBuffer1."Cell Value as Text")
@@ -112,4 +116,3 @@ report 50057 "Import Meeting Date From Excel"
             EXIT(DefaultValue);
     end;
 }
-

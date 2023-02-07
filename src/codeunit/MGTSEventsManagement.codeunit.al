@@ -74,7 +74,7 @@ codeunit 50100 "DEL MGTS_Events Management"
     [EventSubscriber(ObjectType::Table, Database::"Sales Header", 'OnValidatePostingDateOnBeforeResetInvoiceDiscountValue', '', false, false)]
     local procedure OnValidatePostingDateOnBeforeResetInvoiceDiscountValue(var SalesHeader: Record "Sales Header"; xSalesHeader: Record "Sales Header")
     var
-        GlobalsFunction: codeunit "DEL Globals Function Mgt";
+        GlobalsFunction: codeunit "DEL MGTS Set/Get Functions";
     begin
         IF SalesHeader."Currency Code" <> '' THEN
             GlobalsFunction.SetHideValidationDialog(true);
@@ -1037,9 +1037,9 @@ codeunit 50100 "DEL MGTS_Events Management"
         dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
         Deal_Cu: Codeunit "DEL Deal";
         updateRequestManager_Cu: Codeunit "DEL Update Request Manager";
-       // shipmentSelected_Bo_Loc: Boolean;
+        // shipmentSelected_Bo_Loc: Boolean;
         GlobalFunction: Codeunit "DEL MGTS Set/Get Functions";
-        //updateRequestID_Co_Loc: Code[20];
+        updateRequestID_Co_Loc: Code[20];
     begin
         IF GlobalFunction.GetshipmentSelected_Bo_Loc2() THEN BEGIN
             Deal_Cu.FNC_Reinit_Deal(dealShipmentSelection_Re_Loc.Deal_ID, FALSE, FALSE);

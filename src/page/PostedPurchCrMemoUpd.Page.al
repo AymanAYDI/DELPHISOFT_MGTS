@@ -34,10 +34,10 @@ page 50154 "DEL Posted Purch. Cr. Memo-Upd"
             group(Dispute)
             {
                 Caption = 'Dispute';
-                field("Dispute Reason"; "DEL Dispute Reason")
+                field("Dispute Reason"; Rec."DEL Dispute Reason")
                 {
                 }
-                field("Dispute Date"; "DEL Dispute Date")
+                field("Dispute Date"; Rec."DEL Dispute Date")
                 {
                 }
             }
@@ -56,8 +56,8 @@ page 50154 "DEL Posted Purch. Cr. Memo-Upd"
     trigger OnQueryClosePage(CloseAction: Action): Boolean
     begin
         IF CloseAction = ACTION::LookupOK THEN
-            IF RecordChanged THEN
-                PurchaseCrMemoUpdate;
+            IF RecordChanged() THEN
+                PurchaseCrMemoUpdate();
     end;
 
     var
@@ -66,14 +66,14 @@ page 50154 "DEL Posted Purch. Cr. Memo-Upd"
     local procedure RecordChanged(): Boolean
     begin
         EXIT(
-          ("DEL Dispute Reason" <> xPurchCrMemoHdr."DEL Dispute Reason") OR
-          ("DEL Dispute Date" <> xPurchCrMemoHdr."DEL Dispute Date"))
+          (Rec."DEL Dispute Reason" <> xPurchCrMemoHdr."DEL Dispute Reason") OR
+          (Rec."DEL Dispute Date" <> xPurchCrMemoHdr."DEL Dispute Date"))
     end;
 
     procedure SetRec(PurchCrMemoHdr: Record "Purch. Cr. Memo Hdr.")
     begin
         Rec := PurchCrMemoHdr;
-        INSERT;
+        Rec.INSERT();
     end;
 
     local procedure PurchaseCrMemoUpdate()
@@ -81,12 +81,12 @@ page 50154 "DEL Posted Purch. Cr. Memo-Upd"
         PurchCrMemoHdr: Record "Purch. Cr. Memo Hdr.";
     begin
         PurchCrMemoHdr := Rec;
-        PurchCrMemoHdr.LOCKTABLE;
-        PurchCrMemoHdr.FIND;
-        PurchCrMemoHdr."DEL Dispute Reason" := "DEL Dispute Reason";
-        PurchCrMemoHdr."DEL Dispute Date" := "DEL Dispute Date";
+        PurchCrMemoHdr.LOCKTABLE();
+        PurchCrMemoHdr.FIND();
+        PurchCrMemoHdr."DEL Dispute Reason" := Rec."DEL Dispute Reason";
+        PurchCrMemoHdr."DEL Dispute Date" := Rec."DEL Dispute Date";
         PurchCrMemoHdr.TESTFIELD("No.", Rec."No.");
-        PurchCrMemoHdr.MODIFY;
+        PurchCrMemoHdr.MODIFY();
         Rec := PurchCrMemoHdr;
     end;
 }

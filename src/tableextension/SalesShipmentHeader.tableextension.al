@@ -18,32 +18,18 @@ tableextension 50001 "DEL SalesShipmentHeader" extends "Sales Shipment Header" /
             TableRelation = Contact;
             DataClassification = CustomerContent;
         }
-        field(50001; "DEL Container_no"; Text[30])
+        field(50001; "DEL Create By"; Text[50])
         {
-            Caption = 'N. Conteneur';
+            Caption = 'Create by';
             DataClassification = CustomerContent;
-            trigger OnLookup()
-            begin
 
-                SalesShipmentLine.SETRANGE(SalesShipmentLine."Document No.", "No.");
-                SalesShipmentLine.SETFILTER(SalesShipmentLine."Shortcut Dimension 1 Code", '<>%1', '');
-
-
-                IF SalesShipmentLine.FINDFIRST() THEN BEGIN
-                    Trackinggeneral.SETRANGE(Trackinggeneral.Order_no, SalesShipmentLine."Shortcut Dimension 1 Code");
-                    Trackinggeneral.SETFILTER(Trackinggeneral.Container_no, '<>%1', '');
-                    IF PAGE.RUNMODAL(Page::"DEL JSON Requests logs", Trackinggeneral) = ACTION::LookupOK THEN
-                        VALIDATE("DEL Container_no", Trackinggeneral.Container_no);
-                    MODIFY();
-                END;
-            end;
         }
         field(50006; "DEL Type Order EDI"; Code[20])
         {
             Caption = 'Type Order EDI';
             DataClassification = CustomerContent;
 
-            //TODO //  TableRelation = "Type Order EDI";
+            TableRelation = "DEL Type Order EDI";
         }
         field(50007; "DEL GLN"; Text[30])
         {
@@ -58,7 +44,7 @@ tableextension 50001 "DEL SalesShipmentHeader" extends "Sales Shipment Header" /
             Editable = false;
             FieldClass = FlowField;
         }
-        field(50011; "DEL Shipment No."; Text[50])
+        field(50011; "DEL Shipment No."; Text[150])
         {
             Caption = 'Shipment No.';
             DataClassification = CustomerContent;
@@ -100,6 +86,21 @@ tableextension 50001 "DEL SalesShipmentHeader" extends "Sales Shipment Header" /
         field(50051; "DEL Amount Mention Under Total"; Text[30])
         {
             Caption = 'Amount Mention Under Total';
+            DataClassification = CustomerContent;
+        }
+        field(50052; "DEL Container No."; Code[30])
+        {
+            Caption = 'Container Number';
+            DataClassification = CustomerContent;
+        }
+        field(50053; "DEL Dispute Reason"; Code[20])
+        {
+            Caption = 'Dispute Reason';
+            DataClassification = CustomerContent;
+        }
+        field(50054; "DEL Dispute Date"; Date)
+        {
+            Caption = 'Dispute Date';
             DataClassification = CustomerContent;
         }
     }
