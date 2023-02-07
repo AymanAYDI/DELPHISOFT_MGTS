@@ -37,7 +37,7 @@ tableextension 50003 "DEL SalesInvoiceHeader" extends "Sales Invoice Header" //1
         {
             DataClassification = CustomerContent;
         }
-        field(50011; "DEL Shipment No."; Text[50])
+        field(50011; "DEL Shipment No."; Text[150])
         {
             Caption = 'Shipment No.';
             DataClassification = CustomerContent;
@@ -81,6 +81,22 @@ tableextension 50003 "DEL SalesInvoiceHeader" extends "Sales Invoice Header" //1
             Caption = 'Amount Mention Under Total';
             DataClassification = CustomerContent;
         }
+        field(50052; "DEL Container No."; Code[30])
+        {
+            Caption = 'Container Number';
+            DataClassification = CustomerContent;
+        }
+        field(50053; "DEL Dispute Reason"; Code[20])
+        {
+            Caption = 'Dispute Reason';
+            DataClassification = CustomerContent;
+        }
+        field(50054; "DEL Dispute Date"; Date)
+        {
+            Caption = 'Dispute Date';
+            DataClassification = CustomerContent;
+        }
+
         field(50200; "DEL Sent To Customer"; Boolean)
         {
             DataClassification = CustomerContent;

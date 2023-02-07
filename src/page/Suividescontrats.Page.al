@@ -682,7 +682,8 @@ page 50073 "DEL Suivi des contrats"
                     Caption = 'Invoicing Frequency';
                     ApplicationArea = All;
                 }
-                field("Adv on the adapt. of the offer"; Rec."DEL Adv on the adapt the offer")
+
+                field("Adv on the adapt. of the offer"; Rec."DEL AdvOntheAdapt.OfTheOffer")
                 {
                     Caption = 'Advising on the adaptation of the offer';
                     ApplicationArea = All;

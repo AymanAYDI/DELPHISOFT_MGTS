@@ -22,7 +22,6 @@ tableextension 50001 "DEL SalesShipmentHeader" extends "Sales Shipment Header" /
         {
             Caption = 'Create by';
             DataClassification = CustomerContent;
-
         }
         field(50006; "DEL Type Order EDI"; Code[20])
         {

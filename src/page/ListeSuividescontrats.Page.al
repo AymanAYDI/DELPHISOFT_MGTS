@@ -374,7 +374,8 @@ page 50074 "DEL Liste Suivi des contrats"
                     Visible = false;
                     ApplicationArea = All;
                 }
-                field("Adv on the adapt. of the offer"; Rec."DEL Adv on the adapt the offer")
+
+                field("Adv on the adapt. of the offer"; Rec."DEL AdvOntheAdapt.OfTheOffer")
                 {
                     Visible = false;
                     ApplicationArea = All;

@@ -2,15 +2,12 @@ codeunit 50061 "DEL ESADEV Mgt"
 {
 
 
-    trigger OnRun()
-    begin
-    end;
 
     procedure GenerateSalesShipmentDESADVBuffer(ShipmentNo: Code[20]; Force: Boolean)
     var
+        Customer: Record Customer;
         TempDESADVExportBufferLine: Record "DEL DESADV Export Buffer Line" temporary;
         SalesShipmentHeader: Record "Sales Shipment Header";
-        Customer: Record Customer;
     begin
         IF (ShipmentNo = '') THEN
             EXIT;
@@ -35,13 +32,13 @@ codeunit 50061 "DEL ESADEV Mgt"
 
     local procedure GetSalesShipmentDESADVExportBufferLines(SalesShipmentHeader: Record "Sales Shipment Header"; var TempDESADVExportBufferLine: Record "DEL DESADV Export Buffer Line" temporary; Force: Boolean)
     var
-        SalesShipmentLine: Record "Sales Shipment Line";
         Item: Record Item;
-        LineNo: Integer;
         SalesLine: Record "Sales Line";
+        SalesShipmentLine: Record "Sales Shipment Line";
+        LineNo: Integer;
     begin
-        TempDESADVExportBufferLine.RESET;
-        TempDESADVExportBufferLine.DELETEALL;
+        TempDESADVExportBufferLine.RESET();
+        TempDESADVExportBufferLine.DELETEALL();
 
         SalesShipmentLine.SETRANGE("Document No.", SalesShipmentHeader."No.");
         SalesShipmentLine.SETRANGE(Type, SalesShipmentLine.Type::Item);
@@ -49,14 +46,14 @@ codeunit 50061 "DEL ESADEV Mgt"
         SalesShipmentLine.SETFILTER("No.", '<>%1', '');
         IF SalesShipmentLine.ISEMPTY THEN
             EXIT;
-        SalesShipmentLine.FINDSET;
+        SalesShipmentLine.FINDSET();
         REPEAT
             IF NOT DESADVExportSalesShipmentExist(SalesShipmentLine) OR Force THEN BEGIN
                 LineNo += 1;
                 Item.GET(SalesShipmentLine."No.");
                 Item.TESTFIELD("DEL Code EAN 13");
 
-                TempDESADVExportBufferLine.INIT;
+                TempDESADVExportBufferLine.INIT();
                 TempDESADVExportBufferLine."Line No." := LineNo;
                 TempDESADVExportBufferLine."Source No." := DATABASE::"Sales Shipment Header";
                 TempDESADVExportBufferLine."Document No." := SalesShipmentHeader."No.";
@@ -66,7 +63,7 @@ codeunit 50061 "DEL ESADEV Mgt"
                 TempDESADVExportBufferLine.Description := SalesShipmentLine.Description;
                 TempDESADVExportBufferLine.EAN := Item."DEL Code EAN 13";
                 TempDESADVExportBufferLine."Supplier Item No." := SalesShipmentLine."No.";
-                TempDESADVExportBufferLine."Customer Item No." := SalesShipmentLine."Cross-Reference No.";
+                TempDESADVExportBufferLine."Customer Item No." := SalesShipmentLine."Item Reference No.";
                 TempDESADVExportBufferLine."Unit of Measure" := 'PCE';//SalesShipmentLine."Unit of Measure Code";
 
                 IF SalesLine.GET(SalesLine."Document Type"::Order, SalesShipmentLine."Order No.", SalesShipmentLine."Order Line No.") THEN BEGIN
@@ -75,9 +72,9 @@ codeunit 50061 "DEL ESADEV Mgt"
                 END;
 
                 TempDESADVExportBufferLine.Quantity := SalesShipmentLine.Quantity;
-                TempDESADVExportBufferLine.INSERT;
+                TempDESADVExportBufferLine.INSERT();
             END;
-        UNTIL SalesShipmentLine.NEXT = 0;
+        UNTIL SalesShipmentLine.NEXT() = 0;
     end;
 
     local procedure DESADVExportSalesShipmentExist(SalesShipmentLine: Record "Sales Shipment Line"): Boolean
@@ -92,13 +89,10 @@ codeunit 50061 "DEL ESADEV Mgt"
 
     local procedure InsertSalesShipmentDESADVBuffer(SalesShipmentHeader: Record "Sales Shipment Header"; var TempDESADVExportBufferLine: Record "DEL DESADV Export Buffer Line" temporary)
     var
-        DESADVExportBuffer: Record "DEL DESADV Export Buffer";
-        DESADVExportBufferLine: Record "DEL DESADV Export Buffer Line";
         CompanyInformation: Record "Company Information";
         Customer: Record Customer;
-        Customer2: Record Customer;
-        Contact: Record Contact;
-        LSalesShipmentHeader: Record "Sales Shipment Header";
+        DESADVExportBuffer: Record "DEL DESADV Export Buffer";
+        DESADVExportBufferLine: Record "DEL DESADV Export Buffer Line";
     begin
         IF (SalesShipmentHeader."Order No." = '') THEN
             EXIT;
@@ -107,9 +101,9 @@ codeunit 50061 "DEL ESADEV Mgt"
         IF NOT Customer."DEL EDI" THEN
             EXIT;
 
-        CompanyInformation.GET;
+        CompanyInformation.GET();
 
-        DESADVExportBuffer.INIT;
+        DESADVExportBuffer.INIT();
         DESADVExportBuffer."Source No." := DATABASE::"Sales Shipment Header";
         DESADVExportBuffer."Delivery No." := SalesShipmentHeader."No.";
         DESADVExportBuffer."Your Reference" := SalesShipmentHeader."External Document No.";
@@ -142,17 +136,17 @@ codeunit 50061 "DEL ESADEV Mgt"
         DESADVExportBuffer."Delivery Country" := SalesShipmentHeader."Ship-to Country/Region Code";
         DESADVExportBuffer."Delivery Street" := SalesShipmentHeader."Ship-to Address";
         DESADVExportBuffer."Delivery Post Code" := SalesShipmentHeader."Ship-to Post Code";
-        DESADVExportBuffer.INSERT;
+        DESADVExportBuffer.INSERT();
 
-        TempDESADVExportBufferLine.FINDSET;
+        TempDESADVExportBufferLine.FINDSET();
         REPEAT
-            DESADVExportBufferLine.INIT;
+            DESADVExportBufferLine.INIT();
             DESADVExportBufferLine := TempDESADVExportBufferLine;
             DESADVExportBufferLine."Document Enty No." := DESADVExportBuffer."Entry No.";
             DESADVExportBufferLine."Delivery GLN" := DESADVExportBuffer."Delivery GLN";
             DESADVExportBufferLine."Delivery Date Text" := DESADVExportBuffer."Delivery Date Text";
-            DESADVExportBufferLine.INSERT;
-        UNTIL TempDESADVExportBufferLine.NEXT = 0;
+            DESADVExportBufferLine.INSERT();
+        UNTIL TempDESADVExportBufferLine.NEXT() = 0;
     end;
 
     local procedure GetSalesShipToGLN(SalesShipmentHeader: Record "Sales Shipment Header"): Text[13]
@@ -183,9 +177,8 @@ codeunit 50061 "DEL ESADEV Mgt"
 
     procedure ResendSalesShipmentDESADV(SalesShipmentHeader: Record "Sales Shipment Header")
     var
-        MsgResend: Label 'Resend in progress';
         ConfirmEDISend: Label 'Are you sure you want to send expedition %1 via EDI?';
-        DocMatrixManagement: Codeunit "DEL DocMatrix Management";
+        MsgResend: Label 'Resend in progress';
     begin
         IF NOT CONFIRM(STRSUBSTNO(ConfirmEDISend, SalesShipmentHeader."No.")) THEN
             EXIT;
@@ -200,7 +193,7 @@ codeunit 50061 "DEL ESADEV Mgt"
         ErrResendEDIDoc: Label 'You are not authorized to resend EDI documents.';
     begin
         IF NOT UserSetup.GET(USERID) THEN
-            UserSetup.INIT;
+            UserSetup.INIT();
         IF NOT UserSetup."DEL Resend EDI Document" THEN
             ERROR(ErrResendEDIDoc);
     end;
@@ -209,12 +202,12 @@ codeunit 50061 "DEL ESADEV Mgt"
     local procedure OnAfterPostSalesDoc(var SalesHeader: Record "Sales Header"; var GenJnlPostLine: Codeunit "Gen. Jnl.-Post Line"; SalesShptHdrNo: Code[20]; RetRcpHdrNo: Code[20]; SalesInvHdrNo: Code[20]; SalesCrMemoHdrNo: Code[20])
     var
         Cust: Record Customer;
-        ExportQst: Label 'Do you want to export the shipment %1 from document No. %2 with EDI?';
         DESADEVMgt: Codeunit "DEL ESADEV Mgt";
+        ExportQst: Label 'Do you want to export the shipment %1 from document No. %2 with EDI?';
     begin
         IF SalesHeader.Ship AND (SalesShptHdrNo <> '') THEN BEGIN
             IF NOT Cust.GET(SalesHeader."Sell-to Customer No.") THEN
-                Cust.INIT;
+                Cust.INIT();
 
             IF Cust."DEL EDI" THEN
                 IF CONFIRM(STRSUBSTNO(ExportQst, SalesShptHdrNo, SalesHeader."No.")) THEN
@@ -234,7 +227,7 @@ codeunit 50061 "DEL ESADEV Mgt"
         ELSE BEGIN
             DESADVExportBuffer.Exported := FALSE;
             DESADVExportBuffer."Export Date" := 0DT;
-            DESADVExportBuffer.MODIFY;
+            DESADVExportBuffer.MODIFY();
         END;
         MESSAGE(MsgResend);
     end;

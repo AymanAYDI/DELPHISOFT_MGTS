@@ -109,6 +109,21 @@ tableextension 50028 "DEL PurchaseHeader" extends "Purchase Header" //38
                 VALIDATE("Prepmt. Payment Terms Code");
             end;
         }
+        field(50052; "DEL Container No."; Code[30])
+        {
+            Caption = 'Container Number';
+            DataClassification = CustomerContent;
+        }
+        field(50053; "DEL Dispute Reason"; Code[20])
+        {
+            Caption = 'Dispute Reason';
+            DataClassification = CustomerContent;
+        }
+        field(50054; "DEL Dispute Date"; Date)
+        {
+            Caption = 'Dispute Date';
+            DataClassification = CustomerContent;
+        }
     }
 
 

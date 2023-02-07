@@ -596,7 +596,7 @@ tableextension 50013 "DEL Customer" extends Customer //18
             Caption = 'Presentation MOBIVIA strategy';
             DataClassification = CustomerContent;
         }
-        field(60127; "DEL Adv on the adapt the offer"; Boolean)
+        field(60127; "DEL AdvOntheAdapt.OfTheOffer"; Boolean)
 
         {
             Caption = 'Advising on the adaptation of the offer';
@@ -714,6 +714,156 @@ tableextension 50013 "DEL Customer" extends Customer //18
             DataClassification = CustomerContent;
         }
     }
+    var
+        Window: Dialog;
+        PreparationMsg: Label 'EPreparation in progress ...';
+        FinishedMsg: Label 'Processing completed.';
+
+    PROCEDURE ShowSelectedEntriesForReverse();
+    VAR
+        GLEntry: Record "G/L Entry";
+        GLReverseForCustomer: Page "DEL G/L Reverse For Customer";
+        GLSetup: Record "General Ledger Setup";
+        ReverseGLEntry: Record "G/L Entry";
+        ReverseConfirmMsg: Label 'Do you want to reverse the selected entries;FRS=Voulez-vous extourner les ‚critures s‚lectionn‚es';
+        PostingDate: Date;
+        PostingDatePage: Page "DEL Posting Date";
+        Text001: Label 'You must fill in the Posting Date field.;FRS=Vous devez renseigner le champ Date comptabilisation.';
+    BEGIN
+        GLSetup.GET();
+        GLSetup.TESTFIELD("DEL Provision Source Code");
+        GLSetup.TESTFIELD("DEL Provision Journal Batch");
+
+        GLEntry.RESET;
+        GLEntry.SETCURRENTKEY("DEL Customer Provision");
+        GLEntry.FILTERGROUP(2);
+        GLEntry.SETRANGE("Source Code", GLSetup."DEL Provision Source Code");
+        GLEntry.SETFILTER("Journal Batch Name", GLSetup."DEL Provision Journal Batch");
+        GLEntry.SETRANGE("DEL Customer Provision", "No.");
+        GLEntry.SETRANGE(Reversed, FALSE);
+        GLEntry.FILTERGROUP(4);
+
+        CLEAR(GLReverseForCustomer);
+        COMMIT();
+        GLReverseForCustomer.SETTABLEVIEW(GLEntry);
+        GLReverseForCustomer.LOOKUPMODE(TRUE);
+        IF GLReverseForCustomer.RUNMODAL = ACTION::LookupOK THEN BEGIN
+            GLReverseForCustomer.GetGLEntry(ReverseGLEntry);
+            IF CONFIRM(ReverseConfirmMsg) THEN BEGIN
+                COMMIT();
+                IF PostingDatePage.RUNMODAL = ACTION::OK THEN
+                    PostingDate := PostingDatePage.GetPostingDate()
+                ELSE
+                    EXIT;
+                IF PostingDate = 0D THEN
+                    ERROR(Text001);
+                IF ReverseGLEntry.FINDSET THEN BEGIN
+                    Window.OPEN(PreparationMsg);
+                    REPEAT
+                        ReverseProvisionEntries(ReverseGLEntry, PostingDate);
+                    UNTIL ReverseGLEntry.NEXT = 0;
+                    Window.CLOSE();
+                    MESSAGE(FinishedMsg);
+                END;
+            END;
+        END;
+    END;
+
+    PROCEDURE ReverseProvisionEntries(VAR ReverseGLEntry: Record "G/L Entry"; PostingDate: Date);
+    VAR
+        GLEntryProvision: Record "G/L Entry";
+        BalGLEntry: Record "G/L Entry";
+        GLEntry: Record "G/L Entry";
+        GLEntryVATEntryLink: Record "G/L Entry - VAT Entry Link";
+        GlobalVATEntry: Record "VAT Entry";
+        GlobalGLEntry: Record "G/L Entry";
+        VATEntryProvision: Record "VAT Entry";
+        GLSetup: Record "General Ledger Setup";
+        NextGLEntryNo: Integer;
+        NextTransactionNo: Integer;
+        NextVATEntryNo: Integer;
+    BEGIN
+        GlobalGLEntry.LOCKTABLE;
+        GlobalVATEntry.LOCKTABLE;
+
+        GlobalGLEntry.RESET;
+        IF GlobalGLEntry.FINDLAST THEN BEGIN
+            NextGLEntryNo := GlobalGLEntry."Entry No." + 1;
+            NextTransactionNo := GlobalGLEntry."Transaction No." + 1;
+        END ELSE BEGIN
+            NextGLEntryNo := 1;
+            NextTransactionNo := 1;
+        END;
+
+        GlobalVATEntry.RESET;
+        IF GlobalVATEntry.FINDLAST THEN
+            NextVATEntryNo := GlobalVATEntry."Entry No." + 1
+        ELSE
+            NextVATEntryNo := 1;
+
+        GLEntryProvision.INIT;
+        GLEntryProvision := ReverseGLEntry;
+        GLEntryProvision."Entry No." := NextGLEntryNo;
+        GLEntryProvision."Transaction No." := NextTransactionNo;
+        GLEntryProvision."Posting Date" := PostingDate;
+        GLEntryProvision."Document Date" := PostingDate;
+        GLEntryProvision.Reversed := TRUE;
+        GLEntryProvision."Reversed Entry No." := ReverseGLEntry."Entry No.";
+        GLEntryProvision.Amount := -ReverseGLEntry.Amount;
+        GLEntryProvision.Quantity := -ReverseGLEntry.Quantity;
+        GLEntryProvision."VAT Amount" := -ReverseGLEntry."VAT Amount";
+        GLEntryProvision."Debit Amount" := -ReverseGLEntry."Debit Amount";
+        GLEntryProvision."Credit Amount" := -ReverseGLEntry."Credit Amount";
+        GLEntryProvision."Additional-Currency Amount" := -ReverseGLEntry."Additional-Currency Amount";
+        GLEntryProvision."Add.-Currency Debit Amount" := -ReverseGLEntry."Add.-Currency Debit Amount";
+        GLEntryProvision."Add.-Currency Credit Amount" := -ReverseGLEntry."Add.-Currency Credit Amount";
+        GLEntryProvision."DEL Initial Amount (FCY)" := -ReverseGLEntry."DEL Initial Amount (FCY)";
+        GLEntryProvision."Amount (FCY)" := -ReverseGLEntry."Amount (FCY)";
+        GLEntryProvision.INSERT(FALSE);
+
+        ReverseGLEntry.Reversed := TRUE;
+        ReverseGLEntry."Reversed by Entry No." := GLEntryProvision."Entry No.";
+        ReverseGLEntry.MODIFY;
+
+        GLEntryVATEntryLink.RESET;
+        GLEntryVATEntryLink.SETRANGE("G/L Entry No.", ReverseGLEntry."Entry No.");
+        IF GLEntryVATEntryLink.FINDFIRST THEN BEGIN
+            IF GlobalVATEntry.GET(GLEntryVATEntryLink."VAT Entry No.") THEN BEGIN
+                VATEntryProvision.INIT;
+                VATEntryProvision := GlobalVATEntry;
+                VATEntryProvision."Entry No." := NextVATEntryNo;
+                ;
+                VATEntryProvision."Transaction No." := NextTransactionNo;
+                VATEntryProvision."Posting Date" := PostingDate;
+                VATEntryProvision."Document Date" := PostingDate;
+                VATEntryProvision.Reversed := TRUE;
+                VATEntryProvision."Reversed Entry No." := GlobalVATEntry."Entry No.";
+                VATEntryProvision.Amount := -GlobalVATEntry.Amount;
+                VATEntryProvision."Amount (FCY)" := -GlobalVATEntry."Amount (FCY)";
+                VATEntryProvision.Base := -GlobalVATEntry.Base;
+                VATEntryProvision."Base (FCY)" := -GlobalVATEntry."Base (FCY)";
+                VATEntryProvision."Unrealized Amount" := -GlobalVATEntry."Unrealized Amount";
+                VATEntryProvision."Unrealized Base" := -GlobalVATEntry."Unrealized Base";
+                VATEntryProvision."Remaining Unrealized Amount" := -GlobalVATEntry."Remaining Unrealized Amount";
+                VATEntryProvision."Remaining Unrealized Base" := -GlobalVATEntry."Remaining Unrealized Base";
+                VATEntryProvision."Add.-Curr. Rem. Unreal. Amount" := -GlobalVATEntry."Add.-Curr. Rem. Unreal. Amount";
+                VATEntryProvision."Add.-Curr. Rem. Unreal. Base" := -GlobalVATEntry."Add.-Curr. Rem. Unreal. Base";
+                VATEntryProvision."Add.-Curr. VAT Difference" := -GlobalVATEntry."Add.-Curr. VAT Difference";
+                VATEntryProvision."Add.-Currency Unrealized Amt." := -GlobalVATEntry."Add.-Currency Unrealized Amt.";
+                VATEntryProvision."Add.-Currency Unrealized Base" := -GlobalVATEntry."Add.-Currency Unrealized Base";
+                VATEntryProvision."Additional-Currency Amount" := -GlobalVATEntry."Additional-Currency Amount";
+                VATEntryProvision."Additional-Currency Base" := -GlobalVATEntry."Additional-Currency Base";
+                VATEntryProvision.INSERT(FALSE);
+
+                GlobalVATEntry.Reversed := TRUE;
+                GlobalVATEntry."Reversed by Entry No." := NextVATEntryNo;
+                GlobalVATEntry.MODIFY;
+
+                NextVATEntryNo += 1;
+            END;
+        END;
+    END;
+
 
 }
 

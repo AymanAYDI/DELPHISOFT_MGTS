@@ -34,6 +34,9 @@ tableextension 50012 "DEL GLEntry" extends "G/L Entry" //17
         key(Key14; "DEL Reverse With Doc. No.")
         {
         }
+        key(key15; "DEL Customer Provision")
+        {
+        }
     }
 
 
