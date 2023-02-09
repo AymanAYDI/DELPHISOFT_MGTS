@@ -20,9 +20,9 @@ tableextension 50004 "DEL SalesInvoiceLine" extends "Sales Invoice Line" //113
         field(50008; "DEL Ship-to Code"; Code[10])
         {
             Caption = 'Ship-to Code';
+            DataClassification = CustomerContent;
 
             TableRelation = "Ship-to Address".Code WHERE("Customer No." = FIELD("Sell-to Customer No."));
-            DataClassification = CustomerContent;
         }
         field(50009; "DEL Ship-to Name"; Text[50])
         {

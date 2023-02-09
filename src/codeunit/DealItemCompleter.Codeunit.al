@@ -21,7 +21,7 @@ codeunit 50038 "DEL Deal Item Completer"
     begin
         element_Re_Loc.RESET();
         element_Re_Loc.SETRANGE(Deal_ID, DealID_Co_Par);
-        IF element_Re_Loc.FINDFIRST() THEN
+        IF element_Re_Loc.FindSet() THEN
             REPEAT
                 CompleteElement_FNC(element_Re_Loc.ID);
             UNTIL (element_Re_Loc.NEXT() = 0);
@@ -100,7 +100,7 @@ codeunit 50038 "DEL Deal Item Completer"
         SalesLine_Re_Loc.SETRANGE("Special Order Purchase No.", ACOElement_Re_Loc."Type No.");
         SalesLine_Re_Loc.SETRANGE(Type, SalesLine_Re_Loc.Type::Item);
         SalesLine_Re_Loc.SETFILTER(Quantity, '>%1', 0);
-        IF SalesLine_Re_Loc.FINDFIRST() THEN
+        IF SalesLine_Re_Loc.FindSet() THEN
             REPEAT
 
                 IF NOT DealItem_Re_Loc.GET(DealID_Co_Par, SalesLine_Re_Loc."No.") THEN
@@ -130,7 +130,7 @@ codeunit 50038 "DEL Deal Item Completer"
         purchRcptLine_Re_Loc.SETRANGE("Document No.", DocumentNo_Co_Par);
         purchRcptLine_Re_Loc.SETRANGE(Type, purchRcptLine_Re_Loc.Type::Item);
         purchRcptLine_Re_Loc.SETFILTER(Quantity, '>%1', 0);
-        IF purchRcptLine_Re_Loc.FINDFIRST() THEN
+        IF purchRcptLine_Re_Loc.FindSet() THEN
             REPEAT
 
                 IF NOT DealItem_Re_Loc.GET(DealID_Co_Par, purchRcptLine_Re_Loc."No.") THEN
@@ -156,7 +156,7 @@ codeunit 50038 "DEL Deal Item Completer"
         purchInvLine_Re_Loc.SETRANGE("Document No.", DocumentNo_Co_Par);
         purchInvLine_Re_Loc.SETRANGE(Type, purchInvLine_Re_Loc.Type::Item);
         purchInvLine_Re_Loc.SETFILTER(Quantity, '>%1', 0);
-        IF purchInvLine_Re_Loc.FINDFIRST() THEN
+        IF purchInvLine_Re_Loc.FindSet() THEN
             REPEAT
 
                 IF NOT DealItem_Re_Loc.GET(DealID_Co_Par, purchInvLine_Re_Loc."No.") THEN
@@ -184,7 +184,7 @@ codeunit 50038 "DEL Deal Item Completer"
         salesInvLine_Re_Loc.SETRANGE(Type, salesInvLine_Re_Loc.Type::Item);
         salesInvLine_Re_Loc.SETRANGE("Document No.", DocumentNo_Co_Par);
         salesInvLine_Re_Loc.SETFILTER(Quantity, '>%1', 0);
-        IF salesInvLine_Re_Loc.FINDFIRST() THEN
+        IF salesInvLine_Re_Loc.FindSet() THEN
             REPEAT
 
                 IF NOT DealItem_Re_Loc.GET(DealID_Co_Par, salesInvLine_Re_Loc."No.") THEN

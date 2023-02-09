@@ -12,27 +12,27 @@ page 50001 "DEL Regulation Text"
             {
                 field("No."; Rec."No.")
                 {
+                    Caption = 'No.';
                     Editable = false;
                     Visible = false;
-                    Caption = 'No.';
                 }
                 field(Type; Rec.Type)
                 {
+                    Caption = 'Type';
                     Editable = false;
                     Visible = false;
-                    Caption = 'Type';
                 }
                 field(Champs; Rec.Champs)
                 {
+                    Caption = 'Champs';
                     Editable = false;
                     Visible = false;
-                    Caption = 'Champs';
                 }
                 field("Line No."; Rec."Line No.")
                 {
+                    Caption = 'Line No.';
                     Editable = false;
                     Visible = false;
-                    Caption = 'Line No.';
                 }
                 field("Text"; Rec.Text)
                 {
@@ -70,8 +70,8 @@ page 50001 "DEL Regulation Text"
 
     procedure EditText()
     var
-        RecRef: RecordRef;
         TextEdit: Codeunit "Export Mail Prod Nouv Et Suiv";
+        RecRef: RecordRef;
         Text00001: Label 'Edit Document Text';
     begin
 

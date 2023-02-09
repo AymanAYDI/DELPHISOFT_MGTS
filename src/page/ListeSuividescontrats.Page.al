@@ -1,6 +1,7 @@
 page 50074 "DEL Liste Suivi des contrats"
 {
 
+    ApplicationArea = all;
     Caption = 'Follow contract List';
     CardPageID = "DEL Suivi des contrats";
     Editable = false;
@@ -10,7 +11,6 @@ page 50074 "DEL Liste Suivi des contrats"
                       ORDER(Ascending)
                       WHERE("Customer Posting Group" = FILTER('SERVICES'));
     UsageCategory = Lists;
-    ApplicationArea = all;
     layout
     {
         area(content)
@@ -195,8 +195,8 @@ page 50074 "DEL Liste Suivi des contrats"
                 }
                 field("Amount YTD"; Rec."DEL Amount YTD")
                 {
-                    CaptionClass = '3,' + CustDateFilter[1];
                     ApplicationArea = All;
+                    CaptionClass = '3,' + CustDateFilter[1];
 
                     trigger OnLookup(var Text: Text): Boolean
                     begin
@@ -211,8 +211,8 @@ page 50074 "DEL Liste Suivi des contrats"
                 }
                 field("Amount YTD-1"; Rec."DEL Amount YTD-1")
                 {
-                    CaptionClass = '3,' + CustDateFilter[2];
                     ApplicationArea = All;
+                    CaptionClass = '3,' + CustDateFilter[2];
 
                     trigger OnLookup(var Text: Text): Boolean
                     begin
@@ -226,8 +226,8 @@ page 50074 "DEL Liste Suivi des contrats"
                 }
                 field("Amount YTD-2"; Rec."DEL Amount YTD-2")
                 {
-                    CaptionClass = '3,' + CustDateFilter[3];
                     ApplicationArea = All;
+                    CaptionClass = '3,' + CustDateFilter[3];
 
                     trigger OnLookup(var Text: Text): Boolean
                     begin
@@ -257,8 +257,8 @@ page 50074 "DEL Liste Suivi des contrats"
                 }
                 field("Segmentation Description"; Rec."DEL Segmentation Description")
                 {
-                    Editable = false;
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field("National Mark"; Rec."DEL National Mark")
                 {
@@ -341,154 +341,154 @@ page 50074 "DEL Liste Suivi des contrats"
                 }
                 field("Central trading"; Rec."DEL Central trading")
                 {
-                    Visible = false;
                     ApplicationArea = All;
+                    Visible = false;
                 }
                 field("Sales data report"; Rec."DEL Sales data report")
                 {
-                    Visible = false;
                     ApplicationArea = All;
+                    Visible = false;
                 }
                 field("Assist in relat. with the BU"; Rec."DEL Ass. in relat. with the BU")
                 {
-                    Visible = false;
                     ApplicationArea = All;
+                    Visible = false;
                 }
                 field("Organization of visits"; Rec."DEL Organization of visits")
                 {
-                    Visible = false;
                     ApplicationArea = All;
+                    Visible = false;
                 }
                 field("Vision and Market Analysis"; Rec."DEL Vision and Market Analysis")
                 {
-                    Visible = false;
                     ApplicationArea = All;
+                    Visible = false;
                 }
                 field("Presentation provider strategy"; Rec."DEL Pres. provider strategy")
                 {
-                    Visible = false;
                     ApplicationArea = All;
+                    Visible = false;
                 }
                 field("Presentation MOBIVIA strategy"; Rec."DEL Pres. MOBIVIA strategy")
                 {
-                    Visible = false;
                     ApplicationArea = All;
+                    Visible = false;
                 }
 
                 field("Adv on the adapt. of the offer"; Rec."DEL AdvOntheAdapt.OfTheOffer")
                 {
-                    Visible = false;
                     ApplicationArea = All;
+                    Visible = false;
                 }
                 field("Favorite referencing by BU"; Rec."DEL Favorite referencing by BU")
                 {
-                    Visible = false;
                     ApplicationArea = All;
+                    Visible = false;
                 }
                 field(Forecast; Rec."DEL Forecast")
                 {
-                    Visible = false;
                     ApplicationArea = All;
+                    Visible = false;
                 }
                 field("Frequency of delivery 1"; Rec."DEL Frequency of delivery 1")
                 {
-                    Visible = false;
                     ApplicationArea = All;
+                    Visible = false;
                 }
                 field("Invoicing Frequency 1"; Rec."DEL Invoicing Frequency 1")
                 {
-                    Visible = false;
                     ApplicationArea = All;
+                    Visible = false;
                 }
                 field("Frequency of delivery 2"; Rec."DEL Frequency of delivery 2")
                 {
-                    Visible = false;
                     ApplicationArea = All;
+                    Visible = false;
                 }
                 field("Invoicing Frequency 2"; Rec."DEL Invoicing Frequency 2")
                 {
-                    Visible = false;
                     ApplicationArea = All;
+                    Visible = false;
                 }
                 field("Frequency of delivery 3"; Rec."DEL Frequency of delivery 3")
                 {
-                    Visible = false;
                     ApplicationArea = All;
+                    Visible = false;
                 }
                 field("Invoicing Frequency 3"; Rec."DEL Invoicing Frequency 3")
                 {
-                    Visible = false;
                     ApplicationArea = All;
+                    Visible = false;
                 }
                 field("Frequency of delivery 4"; Rec."DEL Frequency of delivery 4")
                 {
-                    Visible = false;
                     ApplicationArea = All;
+                    Visible = false;
                 }
                 field("Invoicing Frequency 4"; Rec."DEL Invoicing Frequency 4")
                 {
-                    Visible = false;
                     ApplicationArea = All;
+                    Visible = false;
                 }
                 field("Frequency of delivery 5"; Rec."DEL Frequency of delivery 5")
                 {
-                    Visible = false;
                     ApplicationArea = All;
+                    Visible = false;
                 }
                 field("Invoicing Frequency 5"; Rec."DEL Invoicing Frequency 5")
                 {
-                    Visible = false;
                     ApplicationArea = All;
+                    Visible = false;
                 }
                 field("Frequency of delivery 6"; Rec."DEL Frequency of delivery 6")
                 {
-                    Visible = false;
                     ApplicationArea = All;
+                    Visible = false;
                 }
                 field("Invoicing Frequency 6"; Rec."DEL Invoicing Frequency 6")
                 {
-                    Visible = false;
                     ApplicationArea = All;
+                    Visible = false;
                 }
                 field("Frequency of delivery 7"; Rec."DEL Frequency of delivery 7")
                 {
-                    Visible = false;
                     ApplicationArea = All;
+                    Visible = false;
                 }
                 field("Invoicing Frequency 7"; Rec."DEL Invoicing Frequency 7")
                 {
-                    Visible = false;
                     ApplicationArea = All;
+                    Visible = false;
                 }
                 field("Frequency of delivery 8"; Rec."DEL Frequency of delivery 8")
                 {
-                    Visible = false;
                     ApplicationArea = All;
+                    Visible = false;
                 }
                 field("Invoicing Frequency 8"; Rec."DEL Invoicing Frequency 8")
                 {
-                    Visible = false;
                     ApplicationArea = All;
+                    Visible = false;
                 }
                 field("Frequency of delivery 9"; Rec."DEL Frequency of delivery 9")
                 {
-                    Visible = false;
                     ApplicationArea = All;
+                    Visible = false;
                 }
                 field("Invoicing Frequency 9"; Rec."DEL Invoicing Frequency 9")
                 {
-                    Visible = false;
                     ApplicationArea = All;
+                    Visible = false;
                 }
                 field("Frequency of delivery 10"; Rec."DEL Frequency of delivery 10")
                 {
-                    Visible = false;
                     ApplicationArea = All;
+                    Visible = false;
                 }
                 field("Invoicing Frequency 10"; Rec."DEL Invoicing Frequency 10")
                 {
-                    Visible = false;
                     ApplicationArea = All;
+                    Visible = false;
                 }
             }
         }
@@ -496,9 +496,9 @@ page 50074 "DEL Liste Suivi des contrats"
         {
             part("DEL Contract comment"; "DEL Contract comment")
             {
+                ApplicationArea = All;
                 SubPageLink = "No." = FIELD("No.");
                 SubPageView = SORTING("No.", "Line No.");
-                ApplicationArea = All;
             }
         }
     }
@@ -513,6 +513,7 @@ page 50074 "DEL Liste Suivi des contrats"
                 Image = Customer;
                 action("Contract Comments")
                 {
+                    ApplicationArea = All;
                     Caption = 'Contract Comments';
                     Image = TaskList;
                     Promoted = true;
@@ -521,7 +522,6 @@ page 50074 "DEL Liste Suivi des contrats"
                     RunObject = Page "DEL Contract comment";
                     RunPageLink = "No." = FIELD("No.");
                     RunPageView = SORTING("No.", "Line No.");
-                    ApplicationArea = All;
                 }
             }
         }

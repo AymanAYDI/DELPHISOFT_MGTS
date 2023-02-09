@@ -53,14 +53,14 @@ page 50075 "DEL Document Sheet Contrats"
         {
             action(MgtsAdd)
             {
+                ApplicationArea = All;
                 Caption = 'Add';
                 Ellipsis = true;
                 Image = Add;
                 Promoted = true;
-                PromotedOnly = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
-                ApplicationArea = All;
+                PromotedOnly = true;
 
                 trigger OnAction()
                 begin
@@ -69,14 +69,14 @@ page 50075 "DEL Document Sheet Contrats"
             }
             action(MgtsOpen)
             {
+                ApplicationArea = All;
                 Caption = 'Open';
                 Image = View;
                 Promoted = true;
-                PromotedOnly = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
+                PromotedOnly = true;
                 ShortCutKey = 'Return';
-                ApplicationArea = All;
 
                 trigger OnAction()
                 begin
@@ -97,12 +97,12 @@ page 50075 "DEL Document Sheet Contrats"
     local procedure Add()
     var
         DocumentLine: Record "DEL Document Line";
+        TempBlob: Codeunit "Temp Blob";
         InStr: InStream;
         LastLineNo: Integer;
         OutStr: OutStream;
         ImportFileName: Text;
         ServerFileName: Text;
-        TempBlob: Codeunit "Temp Blob";
 
     begin
         IF NOT Document_CU.OpenFile(ImportFileName, ServerFileName) THEN
@@ -138,8 +138,8 @@ page 50075 "DEL Document Sheet Contrats"
     local procedure Open()
     var
         TempBlob: Codeunit "Temp Blob";
-        OutStr: OutStream;
         InStr: InStream;
+        OutStr: OutStream;
         Directory: Text;
 
     begin

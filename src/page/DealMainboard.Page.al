@@ -274,9 +274,9 @@ page 50030 "DEL Deal Mainboard"
                     Caption = 'Recalculer (y compris le prévu)';
                     Image = Forecast;
                     Promoted = true;
-                    PromotedOnly = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
+                    PromotedOnly = true;
 
                     trigger OnAction()
                     var
@@ -286,7 +286,7 @@ page 50030 "DEL Deal Mainboard"
 
                         requestID_Co_Loc := UpdateRequestManager_Cu.FNC_Add_Request(
                           Rec.ID,
-                          urm_Re_Loc.Requested_By_Type::CUSTOM,
+                          urm_Re_Loc.Requested_By_Type::CUSTOM.AsInteger(),
                           USERID,
                           CURRENTDATETIME
                         );
@@ -322,7 +322,7 @@ page 50030 "DEL Deal Mainboard"
         IF ItemDetailShipmentNo_Co = '' THEN
             CurrPage.ShipmentSubpage.PAGE.FNC_SetFilters(Rec.ID, '');
 
-        PLLogistic_Re_Temp.DELETEALL();
+        TempPLLogistic_Re.DELETEALL();
         IF PLLogisticShipmentNo_Co = '' THEN BEGIN
 
             plannedElement_Re_Loc.RESET();
@@ -334,11 +334,11 @@ page 50030 "DEL Deal Mainboard"
             IF plannedElement_Re_Loc.FINDFIRST() THEN
                 REPEAT
 
-                    PLLogistic_Re_Temp.INIT();
+                    TempPLLogistic_Re.INIT();
 
-                    PLLogistic_Re_Temp."Planned Element ID" := plannedElement_Re_Loc.ID;
-                    PLLogistic_Re_Temp."Planned Element Type No." := plannedElement_Re_Loc.Fee_ID;
-                    PLLogistic_Re_Temp."Planned Amount" := Element_Cu.FNC_Get_Amount_From_Positions(plannedElement_Re_Loc.ID);
+                    TempPLLogistic_Re."Planned Element ID" := plannedElement_Re_Loc.ID;
+                    TempPLLogistic_Re."Planned Element Type No." := plannedElement_Re_Loc.Fee_ID;
+                    TempPLLogistic_Re."Planned Amount" := Element_Cu.FNC_Get_Amount_From_Positions(plannedElement_Re_Loc.ID);
 
                     realElement_Re_Loc.RESET();
                     realElement_Re_Loc.SETCURRENTKEY(Deal_ID, Type);
@@ -351,22 +351,22 @@ page 50030 "DEL Deal Mainboard"
                     IF realElement_Re_Loc.FINDFIRST() THEN BEGIN
                         REPEAT
 
-                            IF NOT PLLogistic_Re_Temp.GET(plannedElement_Re_Loc.ID, realElement_Re_Loc.ID) THEN BEGIN
+                            IF NOT TempPLLogistic_Re.GET(plannedElement_Re_Loc.ID, realElement_Re_Loc.ID) THEN BEGIN
 
-                                PLLogistic_Re_Temp."Real Element ID" := realElement_Re_Loc.ID;
+                                TempPLLogistic_Re."Real Element ID" := realElement_Re_Loc.ID;
 
-                                PLLogistic_Re_Temp."Real Amount" += Element_Cu.FNC_Get_Amount_From_Positions(realElement_Re_Loc.ID);
+                                TempPLLogistic_Re."Real Amount" += Element_Cu.FNC_Get_Amount_From_Positions(realElement_Re_Loc.ID);
                             END;
 
                         UNTIL (realElement_Re_Loc.NEXT() = 0);
 
-                        PLLogistic_Re_Temp.Delta := PLLogistic_Re_Temp."Real Amount" - PLLogistic_Re_Temp."Planned Amount";
-                        IF NOT PLLogistic_Re_Temp.INSERT(FALSE) THEN;
+                        TempPLLogistic_Re.Delta := TempPLLogistic_Re."Real Amount" - TempPLLogistic_Re."Planned Amount";
+                        IF NOT TempPLLogistic_Re.INSERT(FALSE) THEN;
 
                     END ELSE BEGIN
 
-                        PLLogistic_Re_Temp.Delta := PLLogistic_Re_Temp."Real Amount" - PLLogistic_Re_Temp."Planned Amount";
-                        IF NOT PLLogistic_Re_Temp.INSERT(FALSE) THEN;
+                        TempPLLogistic_Re.Delta := TempPLLogistic_Re."Real Amount" - TempPLLogistic_Re."Planned Amount";
+                        IF NOT TempPLLogistic_Re.INSERT(FALSE) THEN;
 
                     END;
 
@@ -383,7 +383,7 @@ page 50030 "DEL Deal Mainboard"
             IF plannedElement_Re_Loc.FINDFIRST() THEN
                 REPEAT
 
-                    PLLogistic_Re_Temp.INIT();
+                    TempPLLogistic_Re.INIT();
                     amount_Dec_Loc := 0;
                     purchRcptLine_Re_Loc.RESET();
                     purchRcptLine_Re_Loc.SETRANGE("Document No.", DealShipment_Cu.FNC_GetBRNo(PLLogisticShipmentNo_Co));
@@ -403,9 +403,9 @@ page 50030 "DEL Deal Mainboard"
                         UNTIL (purchRcptLine_Re_Loc.NEXT() = 0);
 
 
-                    PLLogistic_Re_Temp."Planned Element ID" := plannedElement_Re_Loc.ID;
-                    PLLogistic_Re_Temp."Planned Element Type No." := plannedElement_Re_Loc.Fee_ID;
-                    PLLogistic_Re_Temp."Planned Amount" := amount_Dec_Loc;
+                    TempPLLogistic_Re."Planned Element ID" := plannedElement_Re_Loc.ID;
+                    TempPLLogistic_Re."Planned Element Type No." := plannedElement_Re_Loc.Fee_ID;
+                    TempPLLogistic_Re."Planned Amount" := amount_Dec_Loc;
 
 
                     realElement_Re_Loc.RESET();
@@ -426,25 +426,25 @@ page 50030 "DEL Deal Mainboard"
                                 REPEAT
 
                                     IF dealShipCon_Re_Loc.GET(Rec.ID, PLLogisticShipmentNo_Co, position_Re_Loc."Sub Element_ID") THEN
-                                        PLLogistic_Re_Temp."Real Amount" += position_Re_Loc."Line Amount (EUR)";
+                                        TempPLLogistic_Re."Real Amount" += position_Re_Loc."Line Amount (EUR)";
 
                                 UNTIL (position_Re_Loc.NEXT() = 0);
 
                         UNTIL (realElement_Re_Loc.NEXT() = 0);
 
-                        PLLogistic_Re_Temp.Delta := PLLogistic_Re_Temp."Real Amount" - PLLogistic_Re_Temp."Planned Amount";
-                        IF NOT PLLogistic_Re_Temp.INSERT(FALSE) THEN;
+                        TempPLLogistic_Re.Delta := TempPLLogistic_Re."Real Amount" - TempPLLogistic_Re."Planned Amount";
+                        IF NOT TempPLLogistic_Re.INSERT(FALSE) THEN;
 
                     END ELSE BEGIN
 
-                        PLLogistic_Re_Temp.Delta := PLLogistic_Re_Temp."Real Amount" - PLLogistic_Re_Temp."Planned Amount";
-                        IF NOT PLLogistic_Re_Temp.INSERT(FALSE) THEN;
+                        TempPLLogistic_Re.Delta := TempPLLogistic_Re."Real Amount" - TempPLLogistic_Re."Planned Amount";
+                        IF NOT TempPLLogistic_Re.INSERT(FALSE) THEN;
 
                     END;
 
 
 
-                    PositionSummary_Re_Temp.DELETEALL();
+                    Temp_PositionSummary_Re.DELETEALL();
 
 
                     position_Re_Loc.RESET();
@@ -453,77 +453,77 @@ page 50030 "DEL Deal Mainboard"
                     IF position_Re_Loc.FINDFIRST() THEN
                         REPEAT
 
-                            IF NOT PositionSummary_Re_Temp.GET(position_Re_Loc."Deal Item No.") THEN BEGIN
+                            IF NOT Temp_PositionSummary_Re.GET(position_Re_Loc."Deal Item No.") THEN BEGIN
 
 
 
-                                PositionSummary_Re_Temp.INIT();
+                                Temp_PositionSummary_Re.INIT();
 
-                                PositionSummary_Re_Temp.VALIDATE("Item No.", position_Re_Loc."Deal Item No.");
+                                Temp_PositionSummary_Re.VALIDATE("Item No.", position_Re_Loc."Deal Item No.");
 
                                 IF item_Re_Loc.GET(position_Re_Loc."Deal Item No.") THEN
-                                    PositionSummary_Re_Temp.Description := item_Re_Loc.Description;
+                                    Temp_PositionSummary_Re.Description := item_Re_Loc.Description;
 
-                                PositionSummary_Re_Temp."Planned Sales" :=
+                                Temp_PositionSummary_Re."Planned Sales" :=
                                   Deal_Item_Cu.FNC_Get_Sales_Amount(
                                     Rec.ID, PLDetailShipmentNo_Co, position_Re_Loc."Deal Item No.", position_Re_Loc.Instance::Planned);
 
-                                PositionSummary_Re_Temp."Planned Purchases" :=
+                                Temp_PositionSummary_Re."Planned Purchases" :=
                                   Deal_Item_Cu.FNC_Get_Purchases_Amount(
                                     Rec.ID, PLDetailShipmentNo_Co, position_Re_Loc."Deal Item No.", position_Re_Loc.Instance::Planned);
 
-                                PositionSummary_Re_Temp."Planned Fees" :=
+                                Temp_PositionSummary_Re."Planned Fees" :=
                                   Deal_Item_Cu.FNC_Get_Fees_Amount(
                                     Rec.ID, PLDetailShipmentNo_Co, position_Re_Loc."Deal Item No.", position_Re_Loc.Instance::Planned);
 
-                                PositionSummary_Re_Temp."Planned Gross Margin" :=
-                                  PositionSummary_Re_Temp."Planned Sales" + PositionSummary_Re_Temp."Planned Purchases";
+                                Temp_PositionSummary_Re."Planned Gross Margin" :=
+                                  Temp_PositionSummary_Re."Planned Sales" + Temp_PositionSummary_Re."Planned Purchases";
 
-                                PositionSummary_Re_Temp."Planned Final Margin" :=
-                                  PositionSummary_Re_Temp."Planned Gross Margin" + PositionSummary_Re_Temp."Planned Fees";
+                                Temp_PositionSummary_Re."Planned Final Margin" :=
+                                  Temp_PositionSummary_Re."Planned Gross Margin" + Temp_PositionSummary_Re."Planned Fees";
 
-                                IF PositionSummary_Re_Temp."Planned Sales" <> 0 THEN BEGIN
-                                    PositionSummary_Re_Temp."Planned % Of Gross Margin" :=
-                                      ((PositionSummary_Re_Temp."Planned Gross Margin" * 100) / PositionSummary_Re_Temp."Planned Sales") / 100;
+                                IF Temp_PositionSummary_Re."Planned Sales" <> 0 THEN BEGIN
+                                    Temp_PositionSummary_Re."Planned % Of Gross Margin" :=
+                                      ((Temp_PositionSummary_Re."Planned Gross Margin" * 100) / Temp_PositionSummary_Re."Planned Sales") / 100;
 
-                                    PositionSummary_Re_Temp."Planned % Of Final Margin" :=
-                                      ((PositionSummary_Re_Temp."Planned Final Margin" * 100) / PositionSummary_Re_Temp."Planned Sales") / 100;
+                                    Temp_PositionSummary_Re."Planned % Of Final Margin" :=
+                                      ((Temp_PositionSummary_Re."Planned Final Margin" * 100) / Temp_PositionSummary_Re."Planned Sales") / 100;
                                 END;
 
 
-                                PositionSummary_Re_Temp."Real Sales" :=
+                                Temp_PositionSummary_Re."Real Sales" :=
                                   Deal_Item_Cu.FNC_Get_Sales_Amount(
                                    Rec.ID, PLDetailShipmentNo_Co, position_Re_Loc."Deal Item No.", position_Re_Loc.Instance::Real);
 
-                                PositionSummary_Re_Temp."Real Purchases" :=
+                                Temp_PositionSummary_Re."Real Purchases" :=
                                   Deal_Item_Cu.FNC_Get_Purchases_Amount(
                                    Rec.ID, PLDetailShipmentNo_Co, position_Re_Loc."Deal Item No.", position_Re_Loc.Instance::Real);
 
-                                PositionSummary_Re_Temp."Real Fees" :=
+                                Temp_PositionSummary_Re."Real Fees" :=
                                   Deal_Item_Cu.FNC_Get_Fees_Amount(
                                     Rec.ID, PLDetailShipmentNo_Co, position_Re_Loc."Deal Item No.", position_Re_Loc.Instance::Real);
 
-                                PositionSummary_Re_Temp."Real Gross Margin" :=
-                                  PositionSummary_Re_Temp."Real Sales" + PositionSummary_Re_Temp."Real Purchases";
+                                Temp_PositionSummary_Re."Real Gross Margin" :=
+                                  Temp_PositionSummary_Re."Real Sales" + Temp_PositionSummary_Re."Real Purchases";
 
-                                PositionSummary_Re_Temp."Real Final Margin" :=
-                                  PositionSummary_Re_Temp."Real Gross Margin" + PositionSummary_Re_Temp."Real Fees";
+                                Temp_PositionSummary_Re."Real Final Margin" :=
+                                  Temp_PositionSummary_Re."Real Gross Margin" + Temp_PositionSummary_Re."Real Fees";
 
-                                IF PositionSummary_Re_Temp."Real Sales" <> 0 THEN BEGIN
-                                    PositionSummary_Re_Temp."Real % Of Gross Margin" :=
-                                      ((PositionSummary_Re_Temp."Real Gross Margin" * 100) / PositionSummary_Re_Temp."Real Sales") / 100;
+                                IF Temp_PositionSummary_Re."Real Sales" <> 0 THEN BEGIN
+                                    Temp_PositionSummary_Re."Real % Of Gross Margin" :=
+                                      ((Temp_PositionSummary_Re."Real Gross Margin" * 100) / Temp_PositionSummary_Re."Real Sales") / 100;
 
-                                    PositionSummary_Re_Temp."Real % Of Final Margin" :=
-                                      ((PositionSummary_Re_Temp."Real Final Margin" * 100) / PositionSummary_Re_Temp."Real Sales") / 100;
+                                    Temp_PositionSummary_Re."Real % Of Final Margin" :=
+                                      ((Temp_PositionSummary_Re."Real Final Margin" * 100) / Temp_PositionSummary_Re."Real Sales") / 100;
                                 END;
 
-                                IF NOT PositionSummary_Re_Temp.INSERT(FALSE) THEN;
+                                IF NOT Temp_PositionSummary_Re.INSERT(FALSE) THEN;
 
                             END;
                         UNTIL (position_Re_Loc.NEXT() = 0);
 
 
-                    CurrPage.PositionDetails.PAGE.SetTempRecord(PositionSummary_Re_Temp);
+                    CurrPage.PositionDetails.PAGE.SetTempRecord(Temp_PositionSummary_Re);
                 until (plannedElement_Re_Loc.Next() = 0);
 
         end;
@@ -537,8 +537,8 @@ page 50030 "DEL Deal Mainboard"
 
     var
 
-        PLLogistic_Re_Temp: Record "DEL P&L Logistic" temporary;
-        PositionSummary_Re_Temp: Record "DEL Position Summary" temporary;
+        TempPLLogistic_Re: Record "DEL P&L Logistic" temporary;
+        Temp_PositionSummary_Re: Record "DEL Position Summary" temporary;
         Deal_Item_Cu: Codeunit "DEL Deal Item";
         DealShipment_Cu: Codeunit "DEL Deal Shipment";
         Element_Cu: Codeunit "DEL Element";

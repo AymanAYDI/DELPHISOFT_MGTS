@@ -1,10 +1,10 @@
 table 50024 "DEL Fee"
 {
 
-
-    LookupPageID = "DEL Fee";
     Caption = 'Fee';
     DataClassification = CustomerContent;
+
+    LookupPageID = "DEL Fee";
     fields
     {
         field(1; ID; Code[20])
@@ -48,9 +48,9 @@ table 50024 "DEL Fee"
         }
         field(7; Currency; Code[10])
         {
-            TableRelation = Currency.Code;
             Caption = 'Currency';
             DataClassification = CustomerContent;
+            TableRelation = Currency.Code;
         }
         field(8; "Field"; Enum "DEL Field")
         {
@@ -64,9 +64,9 @@ table 50024 "DEL Fee"
         }
         field(10; Destination; Code[10])
         {
-            TableRelation = Location.Code;
             Caption = 'Destination';
             DataClassification = CustomerContent;
+            TableRelation = Location.Code;
         }
         field(11; Axe; Code[10])
         {
@@ -76,8 +76,8 @@ table 50024 "DEL Fee"
         field(12; "No compte"; Text[20])
         {
             Caption = 'Account No';
-            TableRelation = "G/L Account"."No.";
             DataClassification = CustomerContent;
+            TableRelation = "G/L Account"."No.";
             trigger OnValidate()
             begin
 
@@ -101,8 +101,8 @@ table 50024 "DEL Fee"
         {
             BlankZero = true;
             Caption = 'factor by period';
-            FieldClass = Normal;
             DataClassification = CustomerContent;
+            FieldClass = Normal;
         }
     }
 

@@ -1,9 +1,9 @@
 report 50001 "DEL DTA Payment Journal detail"
 {
-    DefaultLayout = RDLC;
-    RDLCLayout = './src/report/RDL/DTAPaymentJournaldetail.rdlc';
 
     Caption = 'DTA Payment Journal Detail';
+    DefaultLayout = RDLC;
+    RDLCLayout = './src/report/RDL/DTAPaymentJournaldetail.rdlc';
 
     dataset
     {

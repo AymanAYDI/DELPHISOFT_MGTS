@@ -175,15 +175,15 @@ report 50021 "DEL Exp. Hyperion Insert Lines"
         EndDate_Da: Date;
         StartDate_Da: Date;
         StartPeriodeDate_Da: Date;
+        XmlStream_Is: InStream;
         LOGITEXT0001: Label 'The batch is runing...';
+        XmlStream_Os: OutStream;
         CODEENSEIGNE_TE: Text;
+        CustXmlFile_Fi: Text;
         DateNow_Te: Text;
         EndDate_Loc_Te: Text;
         StartDate_Loc_Te: Text;
         TimeNow_Te: Text;
-        CustXmlFile_Fi: Text;
-        XmlStream_Os: OutStream;
-        XmlStream_Is: InStream;
 
 }
 

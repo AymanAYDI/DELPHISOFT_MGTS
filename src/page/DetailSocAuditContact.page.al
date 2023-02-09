@@ -25,8 +25,8 @@ page 50068 "DEL Detail Soc. Audit Contact"
                 }
                 field("Vendor/Contact No."; Rec."Vendor/Contact No.")
                 {
-                    Visible = false;
                     ApplicationArea = All;
+                    Visible = false;
                 }
             }
         }

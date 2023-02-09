@@ -1,8 +1,8 @@
 table 50009 "DEL Forwarding agent 2"
 {
     Caption = 'Forwarding agent';
-    LookupPageID = "DEL Forwarding agent";
     DataClassification = CustomerContent;
+    LookupPageID = "DEL Forwarding agent";
     fields
     {
         field(1; "Forwarding Agent Code"; Code[20])

@@ -14,9 +14,9 @@ tableextension 50001 "DEL SalesShipmentHeader" extends "Sales Shipment Header" /
         field(50000; "DEL Fiscal Repr."; Code[10])
         {
             Caption = 'Fiscal Repr.';
+            DataClassification = CustomerContent;
 
             TableRelation = Contact;
-            DataClassification = CustomerContent;
         }
         field(50001; "DEL Create By"; Text[50])
         {
@@ -56,9 +56,9 @@ tableextension 50001 "DEL SalesShipmentHeader" extends "Sales Shipment Header" /
         field(50021; "DEL Purchase Order Create Date"; DateTime)
         {
             Caption = 'Date création commande d''achat';
+            DataClassification = CustomerContent;
 
             Editable = false;
-            DataClassification = CustomerContent;
         }
         field(50022; "DEL Status Purch. Order Create"; Enum "DEL Status Purchase Order")
         {
@@ -68,9 +68,9 @@ tableextension 50001 "DEL SalesShipmentHeader" extends "Sales Shipment Header" /
         field(50023; "DEL Err.TxtPurch.Order Create"; Text[250])
         {
             Caption = 'Texte erreur création commande achat';
+            DataClassification = CustomerContent;
 
             Editable = false;
-            DataClassification = CustomerContent;
         }
         field(50024; "DEL Error Purch. Order Create"; Boolean)
         {

@@ -14,10 +14,10 @@ xmlport 50014 "DEL Hyperion Export"
         {
             tableelement(Header; Integer)
             {
-                XmlName = 'Header';
                 SourceTableView = SORTING(Number)
                                   ORDER(Ascending)
                                   WHERE(Number = CONST(1));
+                XmlName = 'Header';
                 textelement(YearCpt)
                 {
                 }
@@ -106,9 +106,9 @@ xmlport 50014 "DEL Hyperion Export"
             }
             tableelement("DEL Export Hyperion Datas"; "DEL Export Hyperion Datas")
             {
-                XmlName = 'ExportHyperionDatas';
                 SourceTableView = SORTING("Line No.", "Company Code", "No.", "Dimension ENSEIGNE")
                                   ORDER(Ascending);
+                XmlName = 'ExportHyperionDatas';
                 textelement(YearValue)
                 {
                 }

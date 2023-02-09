@@ -1,10 +1,10 @@
 page 50081 "DEL Manual Deal Item Update"
 {
+    ApplicationArea = all;
     Editable = false;
     PageType = Card;
     SourceTable = Item;
     UsageCategory = Tasks;
-    ApplicationArea = all;
     layout
     {
         area(content)
@@ -15,19 +15,19 @@ page 50081 "DEL Manual Deal Item Update"
             }
             field(Description; Rec.Description)
             {
+                ApplicationArea = All;
                 Editable = false;
                 Enabled = true;
-                ApplicationArea = All;
             }
             field("Weight net"; Rec."DEL Weight net")
             {
-                Editable = false;
                 ApplicationArea = All;
+                Editable = false;
             }
             field("Weight brut"; Rec."DEL Weight brut")
             {
-                Editable = false;
                 ApplicationArea = All;
+                Editable = false;
             }
             field("Vol cbm"; Rec.GetVolCBM(TRUE))
             {
@@ -35,13 +35,13 @@ page 50081 "DEL Manual Deal Item Update"
             }
             field("Vol cbm carton transport"; Rec."DEL Vol cbm carton transport")
             {
-                Editable = false;
                 ApplicationArea = All;
+                Editable = false;
             }
             field(PCB; Rec."DEL PCB")
             {
-                Editable = false;
                 ApplicationArea = All;
+                Editable = false;
             }
         }
     }
@@ -52,12 +52,12 @@ page 50081 "DEL Manual Deal Item Update"
         {
             action("Deal(s) update")
             {
+                ApplicationArea = All;
                 Caption = 'Deal(s) update';
                 Image = Approve;
                 Promoted = true;
-                PromotedOnly = true;
                 PromotedCategory = Process;
-                ApplicationArea = All;
+                PromotedOnly = true;
 
                 trigger OnAction()
                 begin
@@ -66,12 +66,12 @@ page 50081 "DEL Manual Deal Item Update"
             }
             action("Update Batch")
             {
+                ApplicationArea = All;
                 Caption = 'Update Batch';
                 Image = UpdateDescription;
                 Promoted = true;
-                PromotedOnly = true;
                 PromotedCategory = Process;
-                ApplicationArea = All;
+                PromotedOnly = true;
 
                 trigger OnAction()
                 begin

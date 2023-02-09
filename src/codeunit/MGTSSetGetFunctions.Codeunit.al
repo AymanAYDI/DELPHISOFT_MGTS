@@ -3,19 +3,19 @@ codeunit 50011 "DEL MGTS Set/Get Functions"
     SingleInstance = true;
 
     var
+        TempSpecialSHBuffer: Record "Sales Header";
         HideValidationDialog: Boolean;
-        tempSpecialSHBuffer: Record "Sales Header";
-        SpecOrderPosting: Boolean;
-        Qty: Decimal;
-        PrevLocationCode: Code[10];
-        PrevReqDeliveryDate: Date;
-        shipmentSelected_Bo_Loc: Boolean;
-        shipmentSelected_Bo_CDU90: Boolean;
-        updateRequestID_Co_Loc: Code[20];
-        SpecOrderPost: Boolean;
-        shipmentSelected_Bo_Loc2: Boolean;
-        updateRequestID_Co_Loc2: Boolean;
         NotInvoiceSpecOrderPost: boolean;
+        shipmentSelected_Bo_CDU90: Boolean;
+        shipmentSelected_Bo_Loc: Boolean;
+        shipmentSelected_Bo_Loc2: Boolean;
+        SpecOrderPost: Boolean;
+        SpecOrderPosting: Boolean;
+        updateRequestID_Co_Loc2: Boolean;
+        PrevLocationCode: Code[10];
+        updateRequestID_Co_Loc: Code[20];
+        PrevReqDeliveryDate: Date;
+        Qty: Decimal;
     //COD 92------------
 
     procedure SetshipmentSelected_Bo_Loc2(pshipmentSelected_Bo_Loc2: Boolean)
@@ -122,8 +122,8 @@ codeunit 50011 "DEL MGTS Set/Get Functions"
     begin
         SpecOrderPosting := NewSpecOrderPost;
 
-        tempSpecialSHBuffer.RESET();
-        tempSpecialSHBuffer.DELETEALL();
+        TempSpecialSHBuffer.RESET();
+        TempSpecialSHBuffer.DELETEALL();
 
     end;
 
@@ -134,12 +134,12 @@ codeunit 50011 "DEL MGTS Set/Get Functions"
 
         pTempSH.RESET();
         pTempSH.DELETEALL();
-        tempSpecialSHBuffer.RESET();
-        IF tempSpecialSHBuffer.FINDSET() THEN
+        TempSpecialSHBuffer.RESET();
+        IF TempSpecialSHBuffer.FINDSET() THEN
             REPEAT
-                pTempSH := tempSpecialSHBuffer;
+                pTempSH := TempSpecialSHBuffer;
                 pTempSH.INSERT();
-            UNTIL tempSpecialSHBuffer.NEXT() = 0;
+            UNTIL TempSpecialSHBuffer.NEXT() = 0;
 
     end;
 

@@ -60,19 +60,19 @@ pageextension 50058 "DEL PurchaseInvoice" extends "Purchase Invoice" //51
             action("DEL Shipment Selection link")
             {
                 Caption = 'Shipment Selection link';
-                Promoted = true;
-                PromotedIsBig = true;
                 Image = Links;
+                Promoted = true;
                 PromotedCategory = Process;
+                PromotedIsBig = true;
                 trigger OnAction()
                 var
-                    dealShipmentSelection_Re_Loc: Record 50031;
-                    element_Re_Loc: Record 50021;
-                    deal_ID_Co_Loc: Code[20];
                     deal_Re_Loc: Record 50020;
+                    element_Re_Loc: Record 50021;
                     dealShipment_Re_Loc: Record 50030;
+                    dealShipmentSelection_Re_Loc: Record 50031;
                     dealShipmentConnection_Re_Loc: Record 50032;
                     dealShipmentSelection_Page_Loc: Page 50038;
+                    deal_ID_Co_Loc: Code[20];
                 begin
                     //on cherche si des lignes ont d‚j… ‚t‚ g‚n‚r‚e pour cette facture
                     dealShipmentSelection_Re_Loc.RESET();
@@ -125,8 +125,8 @@ pageextension 50058 "DEL PurchaseInvoice" extends "Purchase Invoice" //51
                 action("DEL Swiss QR-Bill Scan")
                 {
                     ApplicationArea = Basic, Suite;
-                    Promoted = true;
                     Image = Import;
+                    Promoted = true;
                     PromotedCategory = Process;
                     trigger OnAction()
                     begin
@@ -137,10 +137,10 @@ pageextension 50058 "DEL PurchaseInvoice" extends "Purchase Invoice" //51
                 {
                     ApplicationArea = Basic, Suite;
                     Caption = 'Import Scanned QR-Bill File';
+                    Image = Import;
                     Promoted = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
-                    Image = Import;
 
                     trigger OnAction()
                     begin
@@ -150,8 +150,8 @@ pageextension 50058 "DEL PurchaseInvoice" extends "Purchase Invoice" //51
                 action("DEL Swiss QR-Bill Void")
                 {
                     ApplicationArea = Basic, Suite;
-                    Promoted = true;
                     Image = VoidCheck;
+                    Promoted = true;
                     PromotedCategory = Process;
                     trigger OnAction()
                     begin

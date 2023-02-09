@@ -29,13 +29,13 @@ table 50057 "DEL Regulation"
         field(9; Description; Boolean)
         {
 
-            FieldClass = FlowField;
 
             CalcFormula = Exist("DEL Texte Regulation" WHERE("No." = FIELD("No."),
                                                           Type = FIELD(Type),
                                                           Champs = FILTER(Description)));
             Caption = 'Description';
             Editable = false;
+            FieldClass = FlowField;
 
         }
         field(10; "Starting date"; Date)
@@ -66,8 +66,8 @@ table 50057 "DEL Regulation"
         field(15; "Type of material"; Text[100])
         {
             Caption = 'Type of material';
-            Description = 'Materials';
             DataClassification = CustomerContent;
+            Description = 'Materials';
         }
         field(16; Usage; Text[100])
         {
@@ -112,9 +112,9 @@ table 50057 "DEL Regulation"
         field(38; Pays; Text[50])
         {
             Caption = 'Country code';
+            DataClassification = CustomerContent;
 
             TableRelation = "DEL Pays";
-            DataClassification = CustomerContent;
         }
         field(41; Checked; Boolean)
         {
@@ -139,10 +139,10 @@ table 50057 "DEL Regulation"
         field(54; "Test Type"; Text[100])
         {
             Caption = 'Test Type';
+            DataClassification = CustomerContent;
 
             TableRelation = "DEL Test Type".Description;
             ValidateTableRelation = false;
-            DataClassification = CustomerContent;
         }
         field(55; Descriptive; Boolean)
         {
@@ -179,8 +179,8 @@ table 50057 "DEL Regulation"
         field(61; "Description pays"; Text[100])
         {
             Caption = 'Country';
-            TableRelation = "DEL Pays";
             DataClassification = CustomerContent;
+            TableRelation = "DEL Pays";
         }
         field(65; "Publication date"; Date)
         {
@@ -195,12 +195,12 @@ table 50057 "DEL Regulation"
         field(67; "Description Plan of control"; Text[100])
         {
             Caption = 'Description';
+            DataClassification = CustomerContent;
             Description = 'Plan Of control';
 
             TableRelation = "DEL Desc Plan of control".Description;
 
             ValidateTableRelation = false;
-            DataClassification = CustomerContent;
         }
         field(68; "Title in English"; Text[250])
         {

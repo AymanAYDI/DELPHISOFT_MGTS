@@ -1,10 +1,10 @@
 report 50055 "SR Cust. Balance to Date MGTS"
 {
+
+    Caption = 'Customer - Balance to Date';
     //    Modify Design (Remove Amount LCY and Remove Line not applied)
     DefaultLayout = RDLC;
     RDLCLayout = './src/report/RDL/SRCustBalancetoDateMGTS.rdlc';
-
-    Caption = 'Customer - Balance to Date';
 
     dataset
     {
@@ -222,7 +222,7 @@ report 50055 "SR Cust. Balance to Date MGTS"
                     IF CurrencyCode = '' THEN
                         CurrencyCode := GLSetup."LCY Code";
 
-                    CurrencyTotalBuffer.UpdateTotal(CurrencyCode, RemainingAmt, RemainingAmtLCY, Counter1);
+                    TempCurrencyTotalBuffer.UpdateTotal(CurrencyCode, RemainingAmt, RemainingAmtLCY, Counter1);
 
                     AgeDays := FixedDay - "Posting Date";
                     IF ("Due Date" <> 0D) AND (FixedDay > "Due Date") THEN
@@ -275,17 +275,17 @@ report 50055 "SR Cust. Balance to Date MGTS"
                 column(TotalCustName; Text002 + ' ' + Customer.Name)
                 {
                 }
-                column(CurrencyTotalBuffTotalAmt; CurrencyTotalBuffer."Total Amount")
+                column(CurrencyTotalBuffTotalAmt; TempCurrencyTotalBuffer."Total Amount")
                 {
-                    AutoFormatExpression = CurrencyTotalBuffer."Currency Code";
+                    AutoFormatExpression = TempCurrencyTotalBuffer."Currency Code";
                     AutoFormatType = 1;
                 }
-                column(CurrencyTotalBuffCurrCode; CurrencyTotalBuffer."Currency Code")
+                column(CurrencyTotalBuffCurrCode; TempCurrencyTotalBuffer."Currency Code")
                 {
                 }
-                column(CurrencyTotalBuffTotalAmtLCY; CurrencyTotalBuffer."Total Amount (LCY)")
+                column(CurrencyTotalBuffTotalAmtLCY; TempCurrencyTotalBuffer."Total Amount (LCY)")
                 {
-                    AutoFormatExpression = CurrencyTotalBuffer."Currency Code";
+                    AutoFormatExpression = TempCurrencyTotalBuffer."Currency Code";
                     AutoFormatType = 1;
                 }
                 column(GLSetupLCYCode; GLSetup."LCY Code")
@@ -298,34 +298,34 @@ report 50055 "SR Cust. Balance to Date MGTS"
                 trigger OnAfterGetRecord()
                 begin
                     IF Number = 1 THEN
-                        OK := CurrencyTotalBuffer.FINDSET()
+                        OK := TempCurrencyTotalBuffer.FINDSET()
                     ELSE
-                        OK := CurrencyTotalBuffer.NEXT() <> 0;
+                        OK := TempCurrencyTotalBuffer.NEXT() <> 0;
                     IF NOT OK THEN
                         CurrReport.BREAK();
 
-                    CurrencyTotalBuffer2.UpdateTotal(
-                      CurrencyTotalBuffer."Currency Code",
-                      CurrencyTotalBuffer."Total Amount",
-                      CurrencyTotalBuffer."Total Amount (LCY)",
+                    TempCurrencyTotalBuffer2.UpdateTotal(
+                      TempCurrencyTotalBuffer."Currency Code",
+                      TempCurrencyTotalBuffer."Total Amount",
+                      TempCurrencyTotalBuffer."Total Amount (LCY)",
                       Counter1);
 
-                    CustomerTotalLCY += CurrencyTotalBuffer."Total Amount (LCY)";
+                    CustomerTotalLCY += TempCurrencyTotalBuffer."Total Amount (LCY)";
 
-                    IF (CurrencyTotalBuffer."Total Amount" = 0) AND
-                       (CurrencyTotalBuffer."Total Amount (LCY)" = 0)
+                    IF (TempCurrencyTotalBuffer."Total Amount" = 0) AND
+                       (TempCurrencyTotalBuffer."Total Amount (LCY)" = 0)
                     THEN
                         CurrReport.SKIP();
                 end;
 
                 trigger OnPostDataItem()
                 begin
-                    CurrencyTotalBuffer.DELETEALL();
+                    TempCurrencyTotalBuffer.DELETEALL();
                 end;
 
                 trigger OnPreDataItem()
                 begin
-                    CurrReport.CREATETOTALS(CurrencyTotalBuffer."Total Amount (LCY)");
+                    CurrReport.CREATETOTALS(TempCurrencyTotalBuffer."Total Amount (LCY)");
                 end;
             }
 
@@ -349,12 +349,12 @@ report 50055 "SR Cust. Balance to Date MGTS"
         {
             DataItemTableView = SORTING(Number)
                                 WHERE(Number = FILTER(1 ..));
-            column(CurrencyTotalBuff2CurrCode; CurrencyTotalBuffer2."Currency Code")
+            column(CurrencyTotalBuff2CurrCode; TempCurrencyTotalBuffer2."Currency Code")
             {
             }
-            column(CurrencyTotalBuff2TotalAmt; CurrencyTotalBuffer2."Total Amount")
+            column(CurrencyTotalBuff2TotalAmt; TempCurrencyTotalBuffer2."Total Amount")
             {
-                AutoFormatExpression = CurrencyTotalBuffer2."Currency Code";
+                AutoFormatExpression = TempCurrencyTotalBuffer2."Currency Code";
                 AutoFormatType = 1;
             }
             column(TotalReportLCY; TotalReportLCY)
@@ -374,23 +374,23 @@ report 50055 "SR Cust. Balance to Date MGTS"
             trigger OnAfterGetRecord()
             begin
                 IF Number = 1 THEN
-                    OK := CurrencyTotalBuffer2.FINDSET()
+                    OK := TempCurrencyTotalBuffer2.FINDSET()
                 ELSE
-                    OK := CurrencyTotalBuffer2.NEXT() <> 0;
+                    OK := TempCurrencyTotalBuffer2.NEXT() <> 0;
                 IF NOT OK THEN
                     CurrReport.BREAK();
 
-                TotalReportLCY := TotalReportLCY + CurrencyTotalBuffer2."Total Amount (LCY)";
+                TotalReportLCY := TotalReportLCY + TempCurrencyTotalBuffer2."Total Amount (LCY)";
 
-                IF (CurrencyTotalBuffer2."Total Amount" = 0) AND
-                   (CurrencyTotalBuffer2."Total Amount (LCY)" = 0)
+                IF (TempCurrencyTotalBuffer2."Total Amount" = 0) AND
+                   (TempCurrencyTotalBuffer2."Total Amount (LCY)" = 0)
                 THEN
                     CurrReport.SKIP();
             end;
 
             trigger OnPostDataItem()
             begin
-                CurrencyTotalBuffer2.DELETEALL();
+                TempCurrencyTotalBuffer2.DELETEALL();
 
                 Customer.SETRANGE("Date Filter");
                 IF CheckGLReceivables AND (Customer.GETFILTERS = '') THEN
@@ -459,8 +459,8 @@ report 50055 "SR Cust. Balance to Date MGTS"
     end;
 
     var
-        CurrencyTotalBuffer: Record "Currency Total Buffer" temporary;
-        CurrencyTotalBuffer2: Record "Currency Total Buffer" temporary;
+        TempCurrencyTotalBuffer: Record "Currency Total Buffer" temporary;
+        TempCurrencyTotalBuffer2: Record "Currency Total Buffer" temporary;
         DtldCustLedgEntry: Record "Detailed Cust. Ledg. Entry";
         GLSetup: Record "General Ledger Setup";
         CheckGLReceivables: Boolean;
@@ -511,28 +511,28 @@ report 50055 "SR Cust. Balance to Date MGTS"
     var
         CustPostGroup: Record "Customer Posting Group";
         GLAcc: Record "G/L Account";
-        TmpGLAcc: Record "G/L Account" temporary;
+        TempGLAcc: Record "G/L Account" temporary;
         TotalReceivables: Decimal;
     begin
         IF CustPostGroup.FINDSET() THEN BEGIN
             // Insert Receivabels Accounts in temp. table because the same account can be in
             // more than one posting groups
             REPEAT
-                IF (NOT TmpGLAcc.GET(CustPostGroup."Receivables Account")) AND
+                IF (NOT TempGLAcc.GET(CustPostGroup."Receivables Account")) AND
                    (CustPostGroup."Receivables Account" <> '')
                 THEN BEGIN
-                    TmpGLAcc."No." := CustPostGroup."Receivables Account";
-                    TmpGLAcc.INSERT();
+                    TempGLAcc."No." := CustPostGroup."Receivables Account";
+                    TempGLAcc.INSERT();
                 END;
             UNTIL CustPostGroup.NEXT() = 0;
 
-            IF TmpGLAcc.FINDSET() THEN
+            IF TempGLAcc.FINDSET() THEN
                 REPEAT
-                    GLAcc.GET(TmpGLAcc."No.");
+                    GLAcc.GET(TempGLAcc."No.");
                     GLAcc.SETFILTER("Date Filter", '..%1', FixedDay);
                     GLAcc.CALCFIELDS("Balance at Date");
                     TotalReceivables := TotalReceivables + GLAcc."Balance at Date";
-                UNTIL TmpGLAcc.NEXT() = 0;
+                UNTIL TempGLAcc.NEXT() = 0;
 
             IF TotalReportLCY <> TotalReceivables THEN
                 MESSAGE(Text003, GLSetup."LCY Code", ABS(TotalReportLCY - TotalReceivables));

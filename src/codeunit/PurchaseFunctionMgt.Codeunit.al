@@ -6,11 +6,11 @@ codeunit 50089 "DEL PurchaseFunction Mgt"
     var
         PurchaseLine: Record "Purchase Line";
         PriceCalcMgt: Codeunit "Purch. Price Calc. Mgt.";
+        Win: Dialog;
+        CofirmMessage: Label 'Are you sure you want to update the order prices?';
 
         NothingToHandleErr: Label 'There is nothing to handle.';
         UpdatedPriceMess: Label 'Update completed.';
-        Win: Dialog;
-        CofirmMessage: Label 'Are you sure you want to update the order prices?';
         UpdatePricesInProgress: Label 'Updating prices...';
     begin
         IF NOT CONFIRM(CofirmMessage) THEN

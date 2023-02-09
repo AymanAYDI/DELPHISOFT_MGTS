@@ -34,8 +34,8 @@ table 50080 "DEL EDI Exp. Buffer Add. Infos"
         field(6; "Document No."; Code[20])
         {
             Caption = 'Document No.';
-            TableRelation = "Purchase Header"."No." WHERE("Document Type" = FIELD("Document Type"));
             DataClassification = CustomerContent;
+            TableRelation = "Purchase Header"."No." WHERE("Document Type" = FIELD("Document Type"));
         }
         field(7; "Document Line No."; Integer)
         {

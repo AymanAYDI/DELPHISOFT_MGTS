@@ -1,8 +1,8 @@
 page 50119 "DEL Contract comment"
 {
+    ApplicationArea = All;
     PageType = ListPart;
     SourceTable = "DEL Contrat Comment";
-    ApplicationArea = All;
     UsageCategory = Administration;
 
     layout
@@ -13,8 +13,8 @@ page 50119 "DEL Contract comment"
             {
                 field("Line No."; Rec."Line No.")
                 {
-                    Editable = false;
                     Caption = 'Line No.';
+                    Editable = false;
                 }
                 field(Comment; Rec.Comment)
                 {

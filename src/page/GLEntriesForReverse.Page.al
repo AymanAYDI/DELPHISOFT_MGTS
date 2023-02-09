@@ -304,9 +304,9 @@ page 50126 "DEL GL Entries For Reverse"
                     Caption = 'Unmark the enry';
                     Image = RemoveLine;
                     Promoted = true;
-                    PromotedOnly = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
+                    PromotedOnly = true;
 
                     trigger OnAction()
                     begin
@@ -362,7 +362,7 @@ page 50126 "DEL GL Entries For Reverse"
 
     procedure SelectGLEntryForReverse()
     var
-        GLEntry: Record "G/L Entry";
+        GLEntryL: Record "G/L Entry";
         ReverseGLEntry: Record "G/L Entry";
         GLSetup: Record "General Ledger Setup";
         GLEntries: Page "DEL Gen. Ledger Entr. Reverse";
@@ -374,19 +374,19 @@ page 50126 "DEL GL Entries For Reverse"
         GLSetup.TESTFIELD("DEL Provision Source Code");
         GLSetup.TESTFIELD("DEL Provision Journal Batch");
 
-        GLEntry.RESET();
-        GLEntry.SETCURRENTKEY("Document No.", "Posting Date");
-        GLEntry.FILTERGROUP(2);
-        GLEntry.SETRANGE("Source Code", GLSetup."DEL Provision Source Code");
-        GLEntry.SETFILTER("Journal Batch Name", GLSetup."DEL Provision Journal Batch");
-        GLEntry.SETRANGE("DEL Customer Provision", RelatedOrder."Bill-to Customer No.");
-        GLEntry.SETRANGE("DEL Reverse With Doc. No.", Text50001);
-        GLEntry.FILTERGROUP(0);
+        GLEntryL.RESET();
+        GLEntryL.SETCURRENTKEY("Document No.", "Posting Date");
+        GLEntryL.FILTERGROUP(2);
+        GLEntryL.SETRANGE("Source Code", GLSetup."DEL Provision Source Code");
+        GLEntryL.SETFILTER("Journal Batch Name", GLSetup."DEL Provision Journal Batch");
+        GLEntryL.SETRANGE("DEL Customer Provision", RelatedOrder."Bill-to Customer No.");
+        GLEntryL.SETRANGE("DEL Reverse With Doc. No.", Text50001);
+        GLEntryL.FILTERGROUP(0);
 
-        GLEntry.SETCURRENTKEY("Document No.", "Posting Date");
+        GLEntryL.SETCURRENTKEY("Document No.", "Posting Date");
 
         CLEAR(GLEntries);
-        GLEntries.SETTABLEVIEW(GLEntry);
+        GLEntries.SETTABLEVIEW(GLEntryL);
         GLEntries.LOOKUPMODE(TRUE);
         IF GLEntries.RUNMODAL() = ACTION::LookupOK THEN BEGIN
             GLEntries.SetGLEntry(ReverseGLEntry);

@@ -11,8 +11,8 @@ xmlport 50016 "DEL Update Supplier Base ID"
             tableelement(supplier; Vendor)
             {
                 AutoReplace = true;
-                XmlName = 'Supplier';
                 UseTemporary = true;
+                XmlName = 'Supplier';
                 fieldelement(SupplierBaseID; Supplier."DEL Supplier Base ID")
                 {
                 }

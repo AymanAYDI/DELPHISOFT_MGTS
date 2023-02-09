@@ -72,7 +72,7 @@ codeunit 50009 "Update FCY On G/L Entry Auto"
         GLAccount_Re_Loc.RESET();
         GLEntry2_Re_Loc.RESET();
         GLAccount_Re_Loc.SETFILTER("Currency Code", '<>%1', '');
-        IF GLAccount_Re_Loc.FINDFIRST() THEN
+        IF GLAccount_Re_Loc.FindSet() THEN
             REPEAT
                 Currency2_Co_Loc := GLAccount_Re_Loc."Currency Code";
                 GLEntry2_Re_Loc.SETFILTER("G/L Account No.", GLAccount_Re_Loc."No.");

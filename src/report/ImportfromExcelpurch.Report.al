@@ -55,8 +55,6 @@ report 50013 "DEL Import from Excel purch"
 
     local procedure ReadExcelSheet()
     begin
-        //TODO:CLOUD ExcelBuf.OpenBook(FileName, SheetName);
-
         ExcelBuf.OpenBookStream(FileName, SheetName);
         ExcelBuf.ReadSheet();
     end;

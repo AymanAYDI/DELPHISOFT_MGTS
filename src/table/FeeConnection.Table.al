@@ -14,23 +14,23 @@ table 50025 "DEL Fee Connection"
         }
         field(2; "No."; Code[20])
         {
+            Caption = 'No.';
+            DataClassification = CustomerContent;
             TableRelation = IF (Type = CONST(Customer)) Customer."No."
             ELSE
             IF (Type = CONST(Vendor)) Vendor."No.";
-            Caption = 'No.';
-            DataClassification = CustomerContent;
         }
         field(3; "Deal ID"; Code[20])
         {
-            TableRelation = "DEL Deal".ID;
             Caption = 'Deal ID';
             DataClassification = CustomerContent;
+            TableRelation = "DEL Deal".ID;
         }
         field(4; "Fee ID"; Code[20])
         {
-            TableRelation = "DEL Fee".ID;
             Caption = 'Fee ID';
             DataClassification = CustomerContent;
+            TableRelation = "DEL Fee".ID;
         }
         field(5; "Default Amount"; Decimal)
         {
@@ -55,9 +55,9 @@ table 50025 "DEL Fee Connection"
         field(20; "Related Account No."; Text[20])
         {
             CalcFormula = Lookup("DEL Fee"."No compte" WHERE(ID = FIELD("Fee ID")));
+            Caption = 'Related Account No.';
             Editable = false;
             FieldClass = FlowField;
-            Caption = 'Related Account No.';
         }
     }
 

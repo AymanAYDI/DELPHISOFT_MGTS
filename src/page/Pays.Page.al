@@ -13,13 +13,13 @@ page 50088 "DEL Pays"
             {
                 field("Code"; Rec.Code)
                 {
-                    Caption = 'Code';
                     ApplicationArea = All;
+                    Caption = 'Code';
                 }
                 field(Description; Rec.Description)
                 {
-                    Caption = 'Description';
                     ApplicationArea = All;
+                    Caption = 'Description';
                 }
             }
         }

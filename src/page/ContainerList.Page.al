@@ -152,9 +152,9 @@ page 50147 "DEL Container List"
 
                 trigger OnAction()
                 var
+                    ContainerMgt: Codeunit "DEL Container Mgt";
                     Text50000: Label 'There are unposted prepayment amounts on the document of type %1 with the number %2.';
                     Text50001: Label 'There are unpaid prepayment invoices that are related to the document of type %1 with the number %2.';
-                    ContainerMgt: Codeunit "DEL Container Mgt";
                 begin
                     ContainerMgt.RUN(Rec);
                 end;

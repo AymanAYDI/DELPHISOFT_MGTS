@@ -1,8 +1,8 @@
 table 50041 "DEL Element Update"
 {
     Caption = 'DEL Element Update';
-    LookupPageID = "DEL Element";
     DataClassification = CustomerContent;
+    LookupPageID = "DEL Element";
     fields
     {
         field(1; ID; Code[20])
@@ -12,9 +12,9 @@ table 50041 "DEL Element Update"
         }
         field(2; Deal_ID; Code[20])
         {
-            TableRelation = "DEL Deal".ID;
             Caption = 'Deal_ID';
             DataClassification = CustomerContent;
+            TableRelation = "DEL Deal".ID;
         }
         field(3; Instance; enum "DEL Instance")
         {
@@ -30,6 +30,8 @@ table 50041 "DEL Element Update"
         }
         field(5; "Type No."; Code[20])
         {
+            Caption = 'Type No.';
+            DataClassification = CustomerContent;
             TableRelation = IF (Type = CONST(ACO)) "Purchase Header"."No." WHERE("Document Type" = CONST(Order))
             ELSE
             IF (Type = CONST(VCO)) "Sales Header"."No." WHERE("Document Type" = CONST(Order))
@@ -46,16 +48,14 @@ table 50041 "DEL Element Update"
             ELSE
             IF (Type = CONST("Purch. Cr. Memo")) "Purch. Cr. Memo Hdr."."No.";
             ValidateTableRelation = false;
-            Caption = 'Type No.';
-            DataClassification = CustomerContent;
         }
         field(6; "Subject No."; Code[20])
         {
+            Caption = 'Subject No.';
+            DataClassification = CustomerContent;
             TableRelation = IF (Type = CONST(ACO)) Vendor."No."
             ELSE
             IF (Type = CONST(VCO)) Customer."No.";
-            Caption = 'Subject No.';
-            DataClassification = CustomerContent;
         }
         field(7; "Date"; Date)
         {
@@ -64,15 +64,15 @@ table 50041 "DEL Element Update"
         }
         field(8; Fee_ID; Code[20])
         {
-            TableRelation = "DEL Fee".ID;
             Caption = 'Fee_ID';
             DataClassification = CustomerContent;
+            TableRelation = "DEL Fee".ID;
         }
         field(9; Fee_Connection_ID; Code[20])
         {
             Caption = 'Fee_Connection_ID';
-            TableRelation = "DEL Fee Connection".ID;
             DataClassification = CustomerContent;
+            TableRelation = "DEL Fee Connection".ID;
         }
         field(10; "Subject Type"; Enum "DEL Subject Type")
         {
@@ -87,9 +87,9 @@ table 50041 "DEL Element Update"
         field(20; "Bill-to Customer No."; Code[20])
         {
             Caption = 'Bill-to Customer No.';
+            DataClassification = CustomerContent;
             NotBlank = true;
             TableRelation = Customer;
-            DataClassification = CustomerContent;
         }
         field(30; "Add DateTime"; DateTime)
         {
@@ -99,14 +99,14 @@ table 50041 "DEL Element Update"
         field(31; "User ID"; Code[50])
         {
             Caption = 'User ID';
-            TableRelation = User."User Name";
             DataClassification = CustomerContent;
+            TableRelation = User."User Name";
         }
         field(32; Shipment_ID; Code[20])
         {
-            TableRelation = "DEL Deal Shipment".ID;
             Caption = 'Shipment_ID';
             DataClassification = CustomerContent;
+            TableRelation = "DEL Deal Shipment".ID;
         }
     }
 

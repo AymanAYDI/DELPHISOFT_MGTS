@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Report xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:cl="http://schemas.microsoft.com/sqlserver/reporting/2010/01/componentdefinition" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2010/01/reportdefinition">
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -11,285 +11,6 @@
       <rd:DataSourceID>5218ffa6-055a-4341-97ae-84d17f6aba00</rd:DataSourceID>
     </DataSource>
   </DataSources>
-  <DataSets>
-    <DataSet Name="DataSet_Result">
-      <Query>
-        <DataSourceName>DataSource</DataSourceName>
-        <CommandText />
-      </Query>
-      <Fields>
-        <Field Name="CompanyInfoCityTodayFormatted">
-          <DataField>CompanyInfoCityTodayFormatted</DataField>
-        </Field>
-        <Field Name="VendorAdr1">
-          <DataField>VendorAdr1</DataField>
-        </Field>
-        <Field Name="CompanyAdr1">
-          <DataField>CompanyAdr1</DataField>
-        </Field>
-        <Field Name="VendorAdr2">
-          <DataField>VendorAdr2</DataField>
-        </Field>
-        <Field Name="CompanyAdr2">
-          <DataField>CompanyAdr2</DataField>
-        </Field>
-        <Field Name="VendorAdr3">
-          <DataField>VendorAdr3</DataField>
-        </Field>
-        <Field Name="CompanyAdr3">
-          <DataField>CompanyAdr3</DataField>
-        </Field>
-        <Field Name="VendorAdr4">
-          <DataField>VendorAdr4</DataField>
-        </Field>
-        <Field Name="CompanyAdr4">
-          <DataField>CompanyAdr4</DataField>
-        </Field>
-        <Field Name="VendorAdr5">
-          <DataField>VendorAdr5</DataField>
-        </Field>
-        <Field Name="CompanyAdr5">
-          <DataField>CompanyAdr5</DataField>
-        </Field>
-        <Field Name="VendorAdr6">
-          <DataField>VendorAdr6</DataField>
-        </Field>
-        <Field Name="CompanyAdr6">
-          <DataField>CompanyAdr6</DataField>
-        </Field>
-        <Field Name="VendorAdr7">
-          <DataField>VendorAdr7</DataField>
-        </Field>
-        <Field Name="VendorAdr8">
-          <DataField>VendorAdr8</DataField>
-        </Field>
-        <Field Name="MsgTxt">
-          <DataField>MsgTxt</DataField>
-        </Field>
-        <Field Name="PaymentCaption">
-          <DataField>PaymentCaption</DataField>
-        </Field>
-        <Field Name="PaymentAdviceCaption">
-          <DataField>PaymentAdviceCaption</DataField>
-        </Field>
-        <Field Name="PosCaption">
-          <DataField>PosCaption</DataField>
-        </Field>
-        <Field Name="DescCaption_GenJnlLine">
-          <DataField>DescCaption_GenJnlLine</DataField>
-        </Field>
-        <Field Name="OurDocNoCaption">
-          <DataField>OurDocNoCaption</DataField>
-        </Field>
-        <Field Name="YrDocNoCaption">
-          <DataField>YrDocNoCaption</DataField>
-        </Field>
-        <Field Name="InvoiceCaption">
-          <DataField>InvoiceCaption</DataField>
-        </Field>
-        <Field Name="InvDateCaption">
-          <DataField>InvDateCaption</DataField>
-        </Field>
-        <Field Name="CurrCaption">
-          <DataField>CurrCaption</DataField>
-        </Field>
-        <Field Name="PmtDiscPmtTolCaption">
-          <DataField>PmtDiscPmtTolCaption</DataField>
-        </Field>
-        <Field Name="No_Vendor">
-          <DataField>No_Vendor</DataField>
-        </Field>
-        <Field Name="Amount_GenJnlLine">
-          <DataField>Amount_GenJnlLine</DataField>
-        </Field>
-        <Field Name="Amount_GenJnlLineFormat">
-          <DataField>Amount_GenJnlLineFormat</DataField>
-        </Field>
-        <Field Name="Desc_GenJnlLine">
-          <DataField>Desc_GenJnlLine</DataField>
-        </Field>
-        <Field Name="VendEntryExternalDocNo">
-          <DataField>VendEntryExternalDocNo</DataField>
-        </Field>
-        <Field Name="VendEntryDocDate">
-          <DataField>VendEntryDocDate</DataField>
-        </Field>
-        <Field Name="VendEntryDocNo">
-          <DataField>VendEntryDocNo</DataField>
-        </Field>
-        <Field Name="VendEntryAmount">
-          <DataField>VendEntryAmount</DataField>
-        </Field>
-        <Field Name="VendEntryAmountFormat">
-          <DataField>VendEntryAmountFormat</DataField>
-        </Field>
-        <Field Name="Pos">
-          <DataField>Pos</DataField>
-        </Field>
-        <Field Name="CurrencyCode_GenJnlLine">
-          <DataField>CurrencyCode_GenJnlLine</DataField>
-        </Field>
-        <Field Name="PmtDiscAmtPmtTolerance">
-          <DataField>PmtDiscAmtPmtTolerance</DataField>
-        </Field>
-        <Field Name="PmtDiscAmtPmtToleranceFormat">
-          <DataField>PmtDiscAmtPmtToleranceFormat</DataField>
-        </Field>
-        <Field Name="iCurr1">
-          <DataField>iCurr1</DataField>
-        </Field>
-        <Field Name="iCurr2">
-          <DataField>iCurr2</DataField>
-        </Field>
-        <Field Name="iCurr3">
-          <DataField>iCurr3</DataField>
-        </Field>
-        <Field Name="iAmt3">
-          <DataField>iAmt3</DataField>
-        </Field>
-        <Field Name="iAmt3Format">
-          <DataField>iAmt3Format</DataField>
-        </Field>
-        <Field Name="iAmt2">
-          <DataField>iAmt2</DataField>
-        </Field>
-        <Field Name="iAmt2Format">
-          <DataField>iAmt2Format</DataField>
-        </Field>
-        <Field Name="iCurr4">
-          <DataField>iCurr4</DataField>
-        </Field>
-        <Field Name="iAmt4">
-          <DataField>iAmt4</DataField>
-        </Field>
-        <Field Name="iAmt4Format">
-          <DataField>iAmt4Format</DataField>
-        </Field>
-        <Field Name="iAmt1">
-          <DataField>iAmt1</DataField>
-        </Field>
-        <Field Name="iAmt1Format">
-          <DataField>iAmt1Format</DataField>
-        </Field>
-        <Field Name="CompanyInfName">
-          <DataField>CompanyInfName</DataField>
-        </Field>
-        <Field Name="RespPerson">
-          <DataField>RespPerson</DataField>
-        </Field>
-        <Field Name="TransferCaption">
-          <DataField>TransferCaption</DataField>
-        </Field>
-        <Field Name="TotalpaymentCaption">
-          <DataField>TotalpaymentCaption</DataField>
-        </Field>
-        <Field Name="YourssincerelyCaption">
-          <DataField>YourssincerelyCaption</DataField>
-        </Field>
-        <Field Name="TempName_GenJnlLine">
-          <DataField>TempName_GenJnlLine</DataField>
-        </Field>
-        <Field Name="JnlBatchName_GenJnlLine">
-          <DataField>JnlBatchName_GenJnlLine</DataField>
-        </Field>
-        <Field Name="LineNo_GenJnlLine">
-          <DataField>LineNo_GenJnlLine</DataField>
-        </Field>
-        <Field Name="PostingDate_PartPmtVendorEntry">
-          <DataField>PostingDate_PartPmtVendorEntry</DataField>
-        </Field>
-        <Field Name="DocType_PartPmtVendorEntry">
-          <DataField>DocType_PartPmtVendorEntry</DataField>
-        </Field>
-        <Field Name="DocNo_PartPmtVendorEntry">
-          <DataField>DocNo_PartPmtVendorEntry</DataField>
-        </Field>
-        <Field Name="CurrCode_PartPmtVendorEntry">
-          <DataField>CurrCode_PartPmtVendorEntry</DataField>
-        </Field>
-        <Field Name="Amount">
-          <DataField>Amount</DataField>
-        </Field>
-        <Field Name="AmountFormat">
-          <DataField>AmountFormat</DataField>
-        </Field>
-        <Field Name="ExternalDocNo_PartPmtVendorEntry">
-          <DataField>ExternalDocNo_PartPmtVendorEntry</DataField>
-        </Field>
-        <Field Name="EntryNo_PartPmtVendorEntry">
-          <DataField>EntryNo_PartPmtVendorEntry</DataField>
-        </Field>
-        <Field Name="DocNo_PartPmtVendorEntry2">
-          <DataField>DocNo_PartPmtVendorEntry2</DataField>
-        </Field>
-        <Field Name="CurrCode_PartPmtVendorEntry2">
-          <DataField>CurrCode_PartPmtVendorEntry2</DataField>
-        </Field>
-        <Field Name="Amount_PartPmtVendorEntry2">
-          <DataField>Amount_PartPmtVendorEntry2</DataField>
-        </Field>
-        <Field Name="Amount_PartPmtVendorEntry2Format">
-          <DataField>Amount_PartPmtVendorEntry2Format</DataField>
-        </Field>
-        <Field Name="ExternalDocNo_PartPmtVendorEntry2">
-          <DataField>ExternalDocNo_PartPmtVendorEntry2</DataField>
-        </Field>
-        <Field Name="PostingDate_PartPmtVendorEntry2">
-          <DataField>PostingDate_PartPmtVendorEntry2</DataField>
-        </Field>
-        <Field Name="DocType_PartPmtVendorEntry2">
-          <DataField>DocType_PartPmtVendorEntry2</DataField>
-        </Field>
-        <Field Name="EntryNo_PartPmtVendorEntry2">
-          <DataField>EntryNo_PartPmtVendorEntry2</DataField>
-        </Field>
-        <Field Name="ClosedbyEntryNo_PartPmtVendorEntry2">
-          <DataField>ClosedbyEntryNo_PartPmtVendorEntry2</DataField>
-        </Field>
-        <Field Name="DocumentNo">
-          <DataField>DocumentNo</DataField>
-        </Field>
-        <Field Name="RemainingAmount">
-          <DataField>RemainingAmount</DataField>
-        </Field>
-        <Field Name="RemainingAmountFormat">
-          <DataField>RemainingAmountFormat</DataField>
-        </Field>
-        <Field Name="DocNo_PartPmtVendorEntry3">
-          <DataField>DocNo_PartPmtVendorEntry3</DataField>
-        </Field>
-        <Field Name="CurrCode_PartPmtVendorEntry3">
-          <DataField>CurrCode_PartPmtVendorEntry3</DataField>
-        </Field>
-        <Field Name="ExternalDocNo_PartPmtVendorEntry3">
-          <DataField>ExternalDocNo_PartPmtVendorEntry3</DataField>
-        </Field>
-        <Field Name="PostingDate_PartPmtVendorEntry3">
-          <DataField>PostingDate_PartPmtVendorEntry3</DataField>
-        </Field>
-        <Field Name="DocType_PartPmtVendorEntry3">
-          <DataField>DocType_PartPmtVendorEntry3</DataField>
-        </Field>
-        <Field Name="EntryNo_PartPmtVendorEntry3">
-          <DataField>EntryNo_PartPmtVendorEntry3</DataField>
-        </Field>
-        <Field Name="ClosedbyEntryNo_PartPmtVendorEntry3">
-          <DataField>ClosedbyEntryNo_PartPmtVendorEntry3</DataField>
-        </Field>
-        <Field Name="Amount_PartPmtVendorEntry3">
-          <DataField>Amount_PartPmtVendorEntry3</DataField>
-        </Field>
-        <Field Name="Amount_PartPmtVendorEntry3Format">
-          <DataField>Amount_PartPmtVendorEntry3Format</DataField>
-        </Field>
-      </Fields>
-      <rd:DataSetInfo>
-        <rd:DataSetName>DataSet</rd:DataSetName>
-        <rd:SchemaPath>Report.xsd</rd:SchemaPath>
-        <rd:TableName>Result</rd:TableName>
-      </rd:DataSetInfo>
-    </DataSet>
-  </DataSets>
   <ReportSections>
     <ReportSection>
       <Body>
@@ -4461,4 +4182,278 @@ End Function
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Cm</rd:ReportUnitType>
   <rd:ReportID>a3e4e26d-fc85-4183-87ab-45659dc85157</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="CompanyInfoCityTodayFormatted">
+          <DataField>CompanyInfoCityTodayFormatted</DataField>
+        </Field>
+        <Field Name="VendorAdr1">
+          <DataField>VendorAdr1</DataField>
+        </Field>
+        <Field Name="CompanyAdr1">
+          <DataField>CompanyAdr1</DataField>
+        </Field>
+        <Field Name="VendorAdr2">
+          <DataField>VendorAdr2</DataField>
+        </Field>
+        <Field Name="CompanyAdr2">
+          <DataField>CompanyAdr2</DataField>
+        </Field>
+        <Field Name="VendorAdr3">
+          <DataField>VendorAdr3</DataField>
+        </Field>
+        <Field Name="CompanyAdr3">
+          <DataField>CompanyAdr3</DataField>
+        </Field>
+        <Field Name="VendorAdr4">
+          <DataField>VendorAdr4</DataField>
+        </Field>
+        <Field Name="CompanyAdr4">
+          <DataField>CompanyAdr4</DataField>
+        </Field>
+        <Field Name="VendorAdr5">
+          <DataField>VendorAdr5</DataField>
+        </Field>
+        <Field Name="CompanyAdr5">
+          <DataField>CompanyAdr5</DataField>
+        </Field>
+        <Field Name="VendorAdr6">
+          <DataField>VendorAdr6</DataField>
+        </Field>
+        <Field Name="CompanyAdr6">
+          <DataField>CompanyAdr6</DataField>
+        </Field>
+        <Field Name="VendorAdr7">
+          <DataField>VendorAdr7</DataField>
+        </Field>
+        <Field Name="VendorAdr8">
+          <DataField>VendorAdr8</DataField>
+        </Field>
+        <Field Name="MsgTxt">
+          <DataField>MsgTxt</DataField>
+        </Field>
+        <Field Name="PaymentCaption">
+          <DataField>PaymentCaption</DataField>
+        </Field>
+        <Field Name="PaymentAdviceCaption">
+          <DataField>PaymentAdviceCaption</DataField>
+        </Field>
+        <Field Name="PosCaption">
+          <DataField>PosCaption</DataField>
+        </Field>
+        <Field Name="DescCaption_GenJnlLine">
+          <DataField>DescCaption_GenJnlLine</DataField>
+        </Field>
+        <Field Name="OurDocNoCaption">
+          <DataField>OurDocNoCaption</DataField>
+        </Field>
+        <Field Name="YrDocNoCaption">
+          <DataField>YrDocNoCaption</DataField>
+        </Field>
+        <Field Name="InvoiceCaption">
+          <DataField>InvoiceCaption</DataField>
+        </Field>
+        <Field Name="InvDateCaption">
+          <DataField>InvDateCaption</DataField>
+        </Field>
+        <Field Name="CurrCaption">
+          <DataField>CurrCaption</DataField>
+        </Field>
+        <Field Name="PmtDiscPmtTolCaption">
+          <DataField>PmtDiscPmtTolCaption</DataField>
+        </Field>
+        <Field Name="No_Vendor">
+          <DataField>No_Vendor</DataField>
+        </Field>
+        <Field Name="Amount_GenJnlLine">
+          <DataField>Amount_GenJnlLine</DataField>
+        </Field>
+        <Field Name="Amount_GenJnlLineFormat">
+          <DataField>Amount_GenJnlLineFormat</DataField>
+        </Field>
+        <Field Name="Desc_GenJnlLine">
+          <DataField>Desc_GenJnlLine</DataField>
+        </Field>
+        <Field Name="VendEntryExternalDocNo">
+          <DataField>VendEntryExternalDocNo</DataField>
+        </Field>
+        <Field Name="VendEntryDocDate">
+          <DataField>VendEntryDocDate</DataField>
+        </Field>
+        <Field Name="VendEntryDocNo">
+          <DataField>VendEntryDocNo</DataField>
+        </Field>
+        <Field Name="VendEntryAmount">
+          <DataField>VendEntryAmount</DataField>
+        </Field>
+        <Field Name="VendEntryAmountFormat">
+          <DataField>VendEntryAmountFormat</DataField>
+        </Field>
+        <Field Name="Pos">
+          <DataField>Pos</DataField>
+        </Field>
+        <Field Name="CurrencyCode_GenJnlLine">
+          <DataField>CurrencyCode_GenJnlLine</DataField>
+        </Field>
+        <Field Name="PmtDiscAmtPmtTolerance">
+          <DataField>PmtDiscAmtPmtTolerance</DataField>
+        </Field>
+        <Field Name="PmtDiscAmtPmtToleranceFormat">
+          <DataField>PmtDiscAmtPmtToleranceFormat</DataField>
+        </Field>
+        <Field Name="iCurr1">
+          <DataField>iCurr1</DataField>
+        </Field>
+        <Field Name="iCurr2">
+          <DataField>iCurr2</DataField>
+        </Field>
+        <Field Name="iCurr3">
+          <DataField>iCurr3</DataField>
+        </Field>
+        <Field Name="iAmt3">
+          <DataField>iAmt3</DataField>
+        </Field>
+        <Field Name="iAmt3Format">
+          <DataField>iAmt3Format</DataField>
+        </Field>
+        <Field Name="iAmt2">
+          <DataField>iAmt2</DataField>
+        </Field>
+        <Field Name="iAmt2Format">
+          <DataField>iAmt2Format</DataField>
+        </Field>
+        <Field Name="iCurr4">
+          <DataField>iCurr4</DataField>
+        </Field>
+        <Field Name="iAmt4">
+          <DataField>iAmt4</DataField>
+        </Field>
+        <Field Name="iAmt4Format">
+          <DataField>iAmt4Format</DataField>
+        </Field>
+        <Field Name="iAmt1">
+          <DataField>iAmt1</DataField>
+        </Field>
+        <Field Name="iAmt1Format">
+          <DataField>iAmt1Format</DataField>
+        </Field>
+        <Field Name="CompanyInfName">
+          <DataField>CompanyInfName</DataField>
+        </Field>
+        <Field Name="RespPerson">
+          <DataField>RespPerson</DataField>
+        </Field>
+        <Field Name="TransferCaption">
+          <DataField>TransferCaption</DataField>
+        </Field>
+        <Field Name="TotalpaymentCaption">
+          <DataField>TotalpaymentCaption</DataField>
+        </Field>
+        <Field Name="YourssincerelyCaption">
+          <DataField>YourssincerelyCaption</DataField>
+        </Field>
+        <Field Name="TempName_GenJnlLine">
+          <DataField>TempName_GenJnlLine</DataField>
+        </Field>
+        <Field Name="JnlBatchName_GenJnlLine">
+          <DataField>JnlBatchName_GenJnlLine</DataField>
+        </Field>
+        <Field Name="LineNo_GenJnlLine">
+          <DataField>LineNo_GenJnlLine</DataField>
+        </Field>
+        <Field Name="PostingDate_PartPmtVendorEntry">
+          <DataField>PostingDate_PartPmtVendorEntry</DataField>
+        </Field>
+        <Field Name="DocType_PartPmtVendorEntry">
+          <DataField>DocType_PartPmtVendorEntry</DataField>
+        </Field>
+        <Field Name="DocNo_PartPmtVendorEntry">
+          <DataField>DocNo_PartPmtVendorEntry</DataField>
+        </Field>
+        <Field Name="CurrCode_PartPmtVendorEntry">
+          <DataField>CurrCode_PartPmtVendorEntry</DataField>
+        </Field>
+        <Field Name="Amount">
+          <DataField>Amount</DataField>
+        </Field>
+        <Field Name="AmountFormat">
+          <DataField>AmountFormat</DataField>
+        </Field>
+        <Field Name="ExternalDocNo_PartPmtVendorEntry">
+          <DataField>ExternalDocNo_PartPmtVendorEntry</DataField>
+        </Field>
+        <Field Name="EntryNo_PartPmtVendorEntry">
+          <DataField>EntryNo_PartPmtVendorEntry</DataField>
+        </Field>
+        <Field Name="DocNo_PartPmtVendorEntry2">
+          <DataField>DocNo_PartPmtVendorEntry2</DataField>
+        </Field>
+        <Field Name="CurrCode_PartPmtVendorEntry2">
+          <DataField>CurrCode_PartPmtVendorEntry2</DataField>
+        </Field>
+        <Field Name="Amount_PartPmtVendorEntry2">
+          <DataField>Amount_PartPmtVendorEntry2</DataField>
+        </Field>
+        <Field Name="Amount_PartPmtVendorEntry2Format">
+          <DataField>Amount_PartPmtVendorEntry2Format</DataField>
+        </Field>
+        <Field Name="ExternalDocNo_PartPmtVendorEntry2">
+          <DataField>ExternalDocNo_PartPmtVendorEntry2</DataField>
+        </Field>
+        <Field Name="PostingDate_PartPmtVendorEntry2">
+          <DataField>PostingDate_PartPmtVendorEntry2</DataField>
+        </Field>
+        <Field Name="DocType_PartPmtVendorEntry2">
+          <DataField>DocType_PartPmtVendorEntry2</DataField>
+        </Field>
+        <Field Name="EntryNo_PartPmtVendorEntry2">
+          <DataField>EntryNo_PartPmtVendorEntry2</DataField>
+        </Field>
+        <Field Name="ClosedbyEntryNo_PartPmtVendorEntry2">
+          <DataField>ClosedbyEntryNo_PartPmtVendorEntry2</DataField>
+        </Field>
+        <Field Name="DocumentNo">
+          <DataField>DocumentNo</DataField>
+        </Field>
+        <Field Name="RemainingAmount">
+          <DataField>RemainingAmount</DataField>
+        </Field>
+        <Field Name="RemainingAmountFormat">
+          <DataField>RemainingAmountFormat</DataField>
+        </Field>
+        <Field Name="DocNo_PartPmtVendorEntry3">
+          <DataField>DocNo_PartPmtVendorEntry3</DataField>
+        </Field>
+        <Field Name="CurrCode_PartPmtVendorEntry3">
+          <DataField>CurrCode_PartPmtVendorEntry3</DataField>
+        </Field>
+        <Field Name="ExternalDocNo_PartPmtVendorEntry3">
+          <DataField>ExternalDocNo_PartPmtVendorEntry3</DataField>
+        </Field>
+        <Field Name="PostingDate_PartPmtVendorEntry3">
+          <DataField>PostingDate_PartPmtVendorEntry3</DataField>
+        </Field>
+        <Field Name="DocType_PartPmtVendorEntry3">
+          <DataField>DocType_PartPmtVendorEntry3</DataField>
+        </Field>
+        <Field Name="EntryNo_PartPmtVendorEntry3">
+          <DataField>EntryNo_PartPmtVendorEntry3</DataField>
+        </Field>
+        <Field Name="ClosedbyEntryNo_PartPmtVendorEntry3">
+          <DataField>ClosedbyEntryNo_PartPmtVendorEntry3</DataField>
+        </Field>
+        <Field Name="Amount_PartPmtVendorEntry3">
+          <DataField>Amount_PartPmtVendorEntry3</DataField>
+        </Field>
+        <Field Name="Amount_PartPmtVendorEntry3Format">
+          <DataField>Amount_PartPmtVendorEntry3Format</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
 </Report>

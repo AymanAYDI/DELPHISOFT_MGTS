@@ -1,7 +1,5 @@
 report 50057 "Import Meeting Date From Excel"
 {
-    // MGTS10.042  | 02.01.2022 | Container/DESADV Management
-
     Caption = 'Import Metting Date From Excel';
     ProcessingOnly = true;
 
@@ -9,25 +7,24 @@ report 50057 "Import Meeting Date From Excel"
     {
         dataitem(DataItem1000000000; Integer)
         {
-            DataItemTableView = SORTING(Number)
-                                ORDER(Ascending)
-                                WHERE(Number = FILTER(1));
+            DataItemTableView = sorting(Number)
+                                order(ascending)
+                                where(Number = filter(1));
 
             trigger OnPreDataItem()
             begin
                 ExcelBuffer.LOCKTABLE();
                 ExcelBuffer.OpenBookStream(Istream, sheetName);
-                // ExcelBuffer.OpenBook(FileName, sheetName);
                 ExcelBuffer.ReadSheet();
                 GetLastRowandColumns();
-                IF Totalrows < 2 THEN
+                if Totalrows < 2 then
                     ERROR(FileEmpty);
 
                 ExcelBufferDialogMgt.Open(ImportFile);
-                FOR i := 2 TO Totalrows DO BEGIN
+                for i := 2 to Totalrows do begin
                     ExcelBufferDialogMgt.SetProgress(ROUND(i / Totalrows * 10000, 1));
                     UpdateData(i);
-                END;
+                end;
                 ExcelBufferDialogMgt.Close();
                 ExcelBuffer.DELETEALL();
                 MESSAGE(ImportCompleted);
@@ -49,17 +46,15 @@ report 50057 "Import Meeting Date From Excel"
         var
             FromFile: Text;
         begin
-            IF CloseAction = ACTION::OK THEN BEGIN
+            if CloseAction = ACTION::OK then begin
                 UploadIntoStream(UploadExcelMsg, '', ExcelExtension, FromFile, Istream);
-                IF FromFile = '' THEN
-                    EXIT(FALSE)
-                else begin
-                    FileName := FileManagement.GetFileName(FromFile);
-                    sheetName := ExcelBuffer.SelectSheetsNameStream(Istream);
-                end;
-                IF sheetName = '' THEN
-                    EXIT(FALSE);
-            END;
+                if FromFile = '' then
+                    exit(false);
+                FileName := FileManagement.GetFileName(FromFile);
+                sheetName := ExcelBuffer.SelectSheetsNameStream(Istream);
+                if sheetName = '' then
+                    exit(false);
+            end;
         end;
     }
 
@@ -68,10 +63,10 @@ report 50057 "Import Meeting Date From Excel"
     }
 
     var
-        ExcelBuffer: Record "Excel Buffer";
         PostedContainerList: Record "DEL Posted Container List";
-        FileManagement: Codeunit "File Management";
+        ExcelBuffer: Record "Excel Buffer";
         ExcelBufferDialogMgt: Codeunit "Excel Buffer Dialog Management";
+        FileManagement: Codeunit "File Management";
         Istream: InStream;
         i: Integer;
         TotalColumns: Integer;
@@ -89,7 +84,7 @@ report 50057 "Import Meeting Date From Excel"
         ExcelBuffer.SETRANGE("Row No.", 1);
         TotalColumns := ExcelBuffer.COUNT;
         ExcelBuffer.RESET();
-        IF ExcelBuffer.FINDLAST() THEN
+        if ExcelBuffer.FINDLAST() then
             Totalrows := ExcelBuffer."Row No.";
     end;
 
@@ -106,13 +101,13 @@ report 50057 "Import Meeting Date From Excel"
         PostedContainerList.MODIFYALL("Meeting Date", MeetingDate);
     end;
 
-    local procedure GetValueAtCell(RowNo: Integer; ColNo: Integer; DefaultValue: Text[10]): Code[20]
+    local procedure GetValueAtCell(RowNo: Integer; ColNo: Integer; DefaultValue: Text[10]): text
     var
         ExcelBuffer1: Record "Excel Buffer";
     begin
-        IF ExcelBuffer1.GET(RowNo, ColNo) THEN
-            EXIT(ExcelBuffer1."Cell Value as Text")
-        ELSE
-            EXIT(DefaultValue);
+        if ExcelBuffer1.GET(RowNo, ColNo) then
+            exit(ExcelBuffer1."Cell Value as Text")
+        else
+            exit(DefaultValue);
     end;
 }

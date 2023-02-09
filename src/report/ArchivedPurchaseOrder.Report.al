@@ -1,8 +1,8 @@
 report 50076 "DEL Archived Purchase Order"
 {
+    Caption = 'Archived Purchase Order';
     DefaultLayout = RDLC;
     RDLCLayout = './src/report/RDL/ArchivedPurchaseOrder.rdlc';
-    Caption = 'Archived Purchase Order';
 
     dataset
     {
@@ -247,7 +247,7 @@ report 50076 "DEL Archived Purchase Order"
                     dataitem(RoundLoop; Integer)
                     {
                         DataItemTableView = SORTING(Number);
-                        column(PurchLineArch__Line_Amount_; PurchLineArch."Line Amount")
+                        column(PurchLineArch__Line_Amount_; TempPurchLineArch."Line Amount")
                         {
                             AutoFormatExpression = "Purchase Line Archive"."Currency Code";
                             AutoFormatType = 1;
@@ -295,17 +295,17 @@ report 50076 "DEL Archived Purchase Order"
                         column(Purchase_Line_Archive___VAT_Identifier_; "Purchase Line Archive"."VAT Identifier")
                         {
                         }
-                        column(PurchLineArch__Line_Amount__Control77; PurchLineArch."Line Amount")
+                        column(PurchLineArch__Line_Amount__Control77; TempPurchLineArch."Line Amount")
                         {
                             AutoFormatExpression = "Purchase Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(PurchLineArch__Inv__Discount_Amount_; -PurchLineArch."Inv. Discount Amount")
+                        column(PurchLineArch__Inv__Discount_Amount_; -TempPurchLineArch."Inv. Discount Amount")
                         {
                             AutoFormatExpression = "Purchase Line Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(PurchLineArch__Line_Amount__Control109; PurchLineArch."Line Amount")
+                        column(PurchLineArch__Line_Amount__Control109; TempPurchLineArch."Line Amount")
                         {
                             AutoFormatExpression = "Purchase Header Archive"."Currency Code";
                             AutoFormatType = 1;
@@ -313,7 +313,7 @@ report 50076 "DEL Archived Purchase Order"
                         column(TotalText; TotalText)
                         {
                         }
-                        column(PurchLineArch__Line_Amount__PurchLineArch__Inv__Discount_Amount_; PurchLineArch."Line Amount" - PurchLineArch."Inv. Discount Amount")
+                        column(PurchLineArch__Line_Amount__PurchLineArch__Inv__Discount_Amount_; TempPurchLineArch."Line Amount" - TempPurchLineArch."Inv. Discount Amount")
                         {
                             AutoFormatExpression = "Purchase Header Archive"."Currency Code";
                             AutoFormatType = 1;
@@ -321,7 +321,7 @@ report 50076 "DEL Archived Purchase Order"
                         column(TotalInclVATText; TotalInclVATText)
                         {
                         }
-                        column(VATAmountLine_VATAmountText; VATAmountLine.VATAmountText())
+                        column(VATAmountLine_VATAmountText; TempVATAmountLine.VATAmountText())
                         {
                         }
                         column(VATAmount; VATAmount)
@@ -329,7 +329,7 @@ report 50076 "DEL Archived Purchase Order"
                             AutoFormatExpression = "Purchase Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(PurchLineArch__Line_Amount__PurchLineArch__Inv__Discount_Amount____VATAmount; PurchLineArch."Line Amount" - PurchLineArch."Inv. Discount Amount" + VATAmount)
+                        column(PurchLineArch__Line_Amount__PurchLineArch__Inv__Discount_Amount____VATAmount; TempPurchLineArch."Line Amount" - TempPurchLineArch."Inv. Discount Amount" + VATAmount)
                         {
                             AutoFormatExpression = "Purchase Header Archive"."Currency Code";
                             AutoFormatType = 1;
@@ -337,7 +337,7 @@ report 50076 "DEL Archived Purchase Order"
                         column(TotalExclVATText; TotalExclVATText)
                         {
                         }
-                        column(PurchLineArch__Line_Amount__PurchLineArch__Inv__Discount_Amount__Control147; PurchLineArch."Line Amount" - PurchLineArch."Inv. Discount Amount")
+                        column(PurchLineArch__Line_Amount__PurchLineArch__Inv__Discount_Amount__Control147; TempPurchLineArch."Line Amount" - TempPurchLineArch."Inv. Discount Amount")
                         {
                             AutoFormatExpression = "Purchase Header Archive"."Currency Code";
                             AutoFormatType = 1;
@@ -347,7 +347,7 @@ report 50076 "DEL Archived Purchase Order"
                             AutoFormatExpression = "Purchase Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine_VATAmountText_Control32; VATAmountLine.VATAmountText())
+                        column(VATAmountLine_VATAmountText_Control32; TempVATAmountLine.VATAmountText())
                         {
                         }
                         column(TotalExclVATText_Control51; TotalExclVATText)
@@ -485,17 +485,17 @@ report 50076 "DEL Archived Purchase Order"
                         trigger OnAfterGetRecord()
                         begin
                             IF Number = 1 THEN
-                                PurchLineArch.FIND('-')
+                                TempPurchLineArch.FIND('-')
                             ELSE
-                                PurchLineArch.NEXT();
-                            "Purchase Line Archive" := PurchLineArch;
+                                TempPurchLineArch.NEXT();
+                            "Purchase Line Archive" := TempPurchLineArch;
 
                             IF NOT "Purchase Header Archive"."Prices Including VAT" AND
-                               (PurchLineArch."VAT Calculation Type" = PurchLineArch."VAT Calculation Type"::"Full VAT")
+                               (TempPurchLineArch."VAT Calculation Type" = TempPurchLineArch."VAT Calculation Type"::"Full VAT")
                             THEN
-                                PurchLineArch."Line Amount" := 0;
+                                TempPurchLineArch."Line Amount" := 0;
 
-                            IF (PurchLineArch.Type = PurchLineArch.Type::"G/L Account") AND (NOT ShowInternalInfo) THEN
+                            IF (TempPurchLineArch.Type = TempPurchLineArch.Type::"G/L Account") AND (NOT ShowInternalInfo) THEN
                                 "Purchase Line Archive"."No." := '';
                             AllowInvDisctxt := FORMAT("Purchase Line Archive"."Allow Invoice Disc.");
                             PurchaseLineArchiveType := "Purchase Line Archive".Type.AsInteger();
@@ -507,133 +507,133 @@ report 50076 "DEL Archived Purchase Order"
 
                         trigger OnPostDataItem()
                         begin
-                            PurchLineArch.DELETEALL();
+                            TempPurchLineArch.DELETEALL();
                         end;
 
                         trigger OnPreDataItem()
                         begin
-                            MoreLines := PurchLineArch.FIND('+');
+                            MoreLines := TempPurchLineArch.FIND('+');
 
-                            WHILE MoreLines AND (PurchLineArch.Description = '') AND (PurchLineArch."Description 2" = '') AND
-                                  (PurchLineArch."No." = '') AND (PurchLineArch.Quantity = 0) AND
-                                  (PurchLineArch.Amount = 0)
+                            WHILE MoreLines AND (TempPurchLineArch.Description = '') AND (TempPurchLineArch."Description 2" = '') AND
+                                  (TempPurchLineArch."No." = '') AND (TempPurchLineArch.Quantity = 0) AND
+                                  (TempPurchLineArch.Amount = 0)
                             DO
-                                MoreLines := PurchLineArch.NEXT(-1) <> 0;
+                                MoreLines := TempPurchLineArch.NEXT(-1) <> 0;
 
                             IF NOT MoreLines THEN
                                 CurrReport.BREAK();
 
-                            PurchLineArch.SETRANGE("Line No.", 0, PurchLineArch."Line No.");
-                            SETRANGE(Number, 1, PurchLineArch.COUNT);
-                            CurrReport.CREATETOTALS(PurchLineArch."Line Amount", PurchLineArch."Inv. Discount Amount");
+                            TempPurchLineArch.SETRANGE("Line No.", 0, TempPurchLineArch."Line No.");
+                            SETRANGE(Number, 1, TempPurchLineArch.COUNT);
+                            CurrReport.CREATETOTALS(TempPurchLineArch."Line Amount", TempPurchLineArch."Inv. Discount Amount");
                         end;
                     }
                     dataitem(VATCounter; Integer)
                     {
                         DataItemTableView = SORTING(Number);
-                        column(VATAmountLine__VAT_Base_; VATAmountLine."VAT Base")
+                        column(VATAmountLine__VAT_Base_; TempVATAmountLine."VAT Base")
                         {
                             AutoFormatExpression = "Purchase Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__VAT_Amount_; VATAmountLine."VAT Amount")
+                        column(VATAmountLine__VAT_Amount_; TempVATAmountLine."VAT Amount")
                         {
                             AutoFormatExpression = "Purchase Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__Line_Amount_; VATAmountLine."Line Amount")
+                        column(VATAmountLine__Line_Amount_; TempVATAmountLine."Line Amount")
                         {
                             AutoFormatExpression = "Purchase Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__Inv__Disc__Base_Amount_; VATAmountLine."Inv. Disc. Base Amount")
+                        column(VATAmountLine__Inv__Disc__Base_Amount_; TempVATAmountLine."Inv. Disc. Base Amount")
                         {
                             AutoFormatExpression = "Purchase Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__Invoice_Discount_Amount_; VATAmountLine."Invoice Discount Amount")
+                        column(VATAmountLine__Invoice_Discount_Amount_; TempVATAmountLine."Invoice Discount Amount")
                         {
                             AutoFormatExpression = "Purchase Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__VAT___; VATAmountLine."VAT %")
+                        column(VATAmountLine__VAT___; TempVATAmountLine."VAT %")
                         {
                             DecimalPlaces = 0 : 5;
                         }
-                        column(VATAmountLine__VAT_Base__Control99; VATAmountLine."VAT Base")
+                        column(VATAmountLine__VAT_Base__Control99; TempVATAmountLine."VAT Base")
                         {
                             AutoFormatExpression = "Purchase Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__VAT_Amount__Control100; VATAmountLine."VAT Amount")
+                        column(VATAmountLine__VAT_Amount__Control100; TempVATAmountLine."VAT Amount")
                         {
                             AutoFormatExpression = "Purchase Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__VAT_Identifier_; VATAmountLine."VAT Identifier")
+                        column(VATAmountLine__VAT_Identifier_; TempVATAmountLine."VAT Identifier")
                         {
                         }
-                        column(VATAmountLine__Line_Amount__Control131; VATAmountLine."Line Amount")
-                        {
-                            AutoFormatExpression = "Purchase Header Archive"."Currency Code";
-                            AutoFormatType = 1;
-                        }
-                        column(VATAmountLine__Inv__Disc__Base_Amount__Control132; VATAmountLine."Inv. Disc. Base Amount")
+                        column(VATAmountLine__Line_Amount__Control131; TempVATAmountLine."Line Amount")
                         {
                             AutoFormatExpression = "Purchase Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__Invoice_Discount_Amount__Control133; VATAmountLine."Invoice Discount Amount")
+                        column(VATAmountLine__Inv__Disc__Base_Amount__Control132; TempVATAmountLine."Inv. Disc. Base Amount")
                         {
                             AutoFormatExpression = "Purchase Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__VAT_Base__Control103; VATAmountLine."VAT Base")
+                        column(VATAmountLine__Invoice_Discount_Amount__Control133; TempVATAmountLine."Invoice Discount Amount")
                         {
                             AutoFormatExpression = "Purchase Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__VAT_Amount__Control104; VATAmountLine."VAT Amount")
+                        column(VATAmountLine__VAT_Base__Control103; TempVATAmountLine."VAT Base")
                         {
                             AutoFormatExpression = "Purchase Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__Line_Amount__Control56; VATAmountLine."Line Amount")
+                        column(VATAmountLine__VAT_Amount__Control104; TempVATAmountLine."VAT Amount")
                         {
                             AutoFormatExpression = "Purchase Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__Inv__Disc__Base_Amount__Control57; VATAmountLine."Inv. Disc. Base Amount")
+                        column(VATAmountLine__Line_Amount__Control56; TempVATAmountLine."Line Amount")
                         {
                             AutoFormatExpression = "Purchase Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__Invoice_Discount_Amount__Control58; VATAmountLine."Invoice Discount Amount")
+                        column(VATAmountLine__Inv__Disc__Base_Amount__Control57; TempVATAmountLine."Inv. Disc. Base Amount")
                         {
                             AutoFormatExpression = "Purchase Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__VAT_Base__Control107; VATAmountLine."VAT Base")
+                        column(VATAmountLine__Invoice_Discount_Amount__Control58; TempVATAmountLine."Invoice Discount Amount")
                         {
                             AutoFormatExpression = "Purchase Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__VAT_Amount__Control108; VATAmountLine."VAT Amount")
+                        column(VATAmountLine__VAT_Base__Control107; TempVATAmountLine."VAT Base")
                         {
                             AutoFormatExpression = "Purchase Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__Line_Amount__Control59; VATAmountLine."Line Amount")
+                        column(VATAmountLine__VAT_Amount__Control108; TempVATAmountLine."VAT Amount")
                         {
                             AutoFormatExpression = "Purchase Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__Inv__Disc__Base_Amount__Control60; VATAmountLine."Inv. Disc. Base Amount")
+                        column(VATAmountLine__Line_Amount__Control59; TempVATAmountLine."Line Amount")
                         {
                             AutoFormatExpression = "Purchase Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__Invoice_Discount_Amount__Control61; VATAmountLine."Invoice Discount Amount")
+                        column(VATAmountLine__Inv__Disc__Base_Amount__Control60; TempVATAmountLine."Inv. Disc. Base Amount")
+                        {
+                            AutoFormatExpression = "Purchase Header Archive"."Currency Code";
+                            AutoFormatType = 1;
+                        }
+                        column(VATAmountLine__Invoice_Discount_Amount__Control61; TempVATAmountLine."Invoice Discount Amount")
                         {
                             AutoFormatExpression = "Purchase Header Archive"."Currency Code";
                             AutoFormatType = 1;
@@ -677,17 +677,17 @@ report 50076 "DEL Archived Purchase Order"
 
                         trigger OnAfterGetRecord()
                         begin
-                            VATAmountLine.GetLine(Number);
+                            TempVATAmountLine.GetLine(Number);
                         end;
 
                         trigger OnPreDataItem()
                         begin
                             IF VATAmount = 0 THEN
                                 CurrReport.BREAK();
-                            SETRANGE(Number, 1, VATAmountLine.COUNT);
+                            SETRANGE(Number, 1, TempVATAmountLine.COUNT);
                             CurrReport.CREATETOTALS(
-                              VATAmountLine."Line Amount", VATAmountLine."Inv. Disc. Base Amount",
-                              VATAmountLine."Invoice Discount Amount", VATAmountLine."VAT Base", VATAmountLine."VAT Amount");
+                              TempVATAmountLine."Line Amount", TempVATAmountLine."Inv. Disc. Base Amount",
+                              TempVATAmountLine."Invoice Discount Amount", TempVATAmountLine."VAT Base", TempVATAmountLine."VAT Amount");
                         end;
                     }
                     dataitem(VATCounterLCY; Integer)
@@ -715,11 +715,11 @@ report 50076 "DEL Archived Purchase Order"
                         {
                             AutoFormatType = 1;
                         }
-                        column(VATAmountLine__VAT____Control160; VATAmountLine."VAT %")
+                        column(VATAmountLine__VAT____Control160; TempVATAmountLine."VAT %")
                         {
                             DecimalPlaces = 0 : 5;
                         }
-                        column(VATAmountLine__VAT_Identifier__Control161; VATAmountLine."VAT Identifier")
+                        column(VATAmountLine__VAT_Identifier__Control161; TempVATAmountLine."VAT Identifier")
                         {
                         }
                         column(VALVATAmountLCY_Control162; VALVATAmountLCY)
@@ -765,13 +765,13 @@ report 50076 "DEL Archived Purchase Order"
 
                         trigger OnAfterGetRecord()
                         begin
-                            VATAmountLine.GetLine(Number);
+                            TempVATAmountLine.GetLine(Number);
                             VALVATBaseLCY :=
-                              VATAmountLine.GetBaseLCY(
+                              TempVATAmountLine.GetBaseLCY(
                                 "Purchase Header Archive"."Posting Date", "Purchase Header Archive"."Currency Code",
                                 "Purchase Header Archive"."Currency Factor");
                             VALVATAmountLCY :=
-                              VATAmountLine.GetAmountLCY(
+                              TempVATAmountLine.GetAmountLCY(
                                 "Purchase Header Archive"."Posting Date", "Purchase Header Archive"."Currency Code",
                                 "Purchase Header Archive"."Currency Factor");
                         end;
@@ -780,11 +780,11 @@ report 50076 "DEL Archived Purchase Order"
                         begin
                             IF (NOT GLSetup."Print VAT specification in LCY") OR
                                ("Purchase Header Archive"."Currency Code" = '') OR
-                               (VATAmountLine.GetTotalVATAmount() = 0)
+                               (TempVATAmountLine.GetTotalVATAmount() = 0)
                             THEN
                                 CurrReport.BREAK();
 
-                            SETRANGE(Number, 1, VATAmountLine.COUNT);
+                            SETRANGE(Number, 1, TempVATAmountLine.COUNT);
                             CurrReport.CREATETOTALS(VALVATBaseLCY, VALVATAmountLCY);
 
                             IF GLSetup."LCY Code" = '' THEN
@@ -919,14 +919,14 @@ report 50076 "DEL Archived Purchase Order"
                             AutoFormatExpression = "Purchase Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(PrepmtInvBuf__G_L_Account_No__; PrepmtInvBuf."G/L Account No.")
+                        column(PrepmtInvBuf__G_L_Account_No__; TempPrepmtInvBuf."G/L Account No.")
                         {
                         }
                         column(PrepmtLineAmount_Control173; PrepmtLineAmount)
                         {
                             AutoFormatExpression = "Purchase Header Archive"."Currency Code";
                         }
-                        column(PrepmtInvBuf_Description; PrepmtInvBuf.Description)
+                        column(PrepmtInvBuf_Description; TempPrepmtInvBuf.Description)
                         {
                         }
                         column(PrepmtLineAmount_Control177; PrepmtLineAmount)
@@ -937,12 +937,12 @@ report 50076 "DEL Archived Purchase Order"
                         column(TotalExclVATText_Control182; TotalExclVATText)
                         {
                         }
-                        column(PrepmtInvBuf_Amount; PrepmtInvBuf.Amount)
+                        column(PrepmtInvBuf_Amount; TempPrepmtInvBuf.Amount)
                         {
                             AutoFormatExpression = "Purchase Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(PrepmtVATAmountLine_VATAmountText; PrepmtVATAmountLine.VATAmountText())
+                        column(PrepmtVATAmountLine_VATAmountText; TempPrepmtVATAmountLine.VATAmountText())
                         {
                         }
                         column(PrepmtVATAmount; PrepmtVATAmount)
@@ -953,7 +953,7 @@ report 50076 "DEL Archived Purchase Order"
                         column(TotalInclVATText_Control186; TotalInclVATText)
                         {
                         }
-                        column(PrepmtInvBuf_Amount___PrepmtVATAmount; PrepmtInvBuf.Amount + PrepmtVATAmount)
+                        column(PrepmtInvBuf_Amount___PrepmtVATAmount; TempPrepmtInvBuf.Amount + PrepmtVATAmount)
                         {
                             AutoFormatExpression = "Purchase Header Archive"."Currency Code";
                             AutoFormatType = 1;
@@ -961,7 +961,7 @@ report 50076 "DEL Archived Purchase Order"
                         column(TotalInclVATText_Control188; TotalInclVATText)
                         {
                         }
-                        column(VATAmountLine_VATAmountText_Control189; VATAmountLine.VATAmountText())
+                        column(VATAmountLine_VATAmountText_Control189; TempVATAmountLine.VATAmountText())
                         {
                         }
                         column(PrepmtVATAmount_Control190; PrepmtVATAmount)
@@ -1052,104 +1052,104 @@ report 50076 "DEL Archived Purchase Order"
                         trigger OnAfterGetRecord()
                         begin
                             IF Number = 1 THEN BEGIN
-                                IF NOT PrepmtInvBuf.FIND('-') THEN
+                                IF NOT TempPrepmtInvBuf.FIND('-') THEN
                                     CurrReport.BREAK();
                             END ELSE
-                                IF PrepmtInvBuf.NEXT() = 0 THEN
+                                IF TempPrepmtInvBuf.NEXT() = 0 THEN
                                     CurrReport.BREAK();
 
                             IF ShowInternalInfo THEN
-                                PrepmtDimSetEntry.SETRANGE("Dimension Set ID", PrepmtInvBuf."Dimension Set ID");
+                                PrepmtDimSetEntry.SETRANGE("Dimension Set ID", TempPrepmtInvBuf."Dimension Set ID");
 
                             IF "Purchase Header Archive"."Prices Including VAT" THEN
-                                PrepmtLineAmount := PrepmtInvBuf."Amount Incl. VAT"
+                                PrepmtLineAmount := TempPrepmtInvBuf."Amount Incl. VAT"
                             ELSE
-                                PrepmtLineAmount := PrepmtInvBuf.Amount;
+                                PrepmtLineAmount := TempPrepmtInvBuf.Amount;
                         end;
 
                         trigger OnPreDataItem()
                         begin
                             CurrReport.CREATETOTALS(
-                              PrepmtInvBuf.Amount, PrepmtInvBuf."Amount Incl. VAT",
-                              PrepmtVATAmountLine."Line Amount", PrepmtVATAmountLine."VAT Base",
-                              PrepmtVATAmountLine."VAT Amount",
+                              TempPrepmtInvBuf.Amount, TempPrepmtInvBuf."Amount Incl. VAT",
+                              TempPrepmtVATAmountLine."Line Amount", TempPrepmtVATAmountLine."VAT Base",
+                              TempPrepmtVATAmountLine."VAT Amount",
                               PrepmtLineAmount);
                         end;
                     }
                     dataitem(PrepmtVATCounter; Integer)
                     {
                         DataItemTableView = SORTING(Number);
-                        column(PrepmtVATAmountLine__VAT_Amount_; PrepmtVATAmountLine."VAT Amount")
+                        column(PrepmtVATAmountLine__VAT_Amount_; TempPrepmtVATAmountLine."VAT Amount")
                         {
                             AutoFormatExpression = "Purchase Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(PrepmtVATAmountLine__VAT_Base_; PrepmtVATAmountLine."VAT Base")
+                        column(PrepmtVATAmountLine__VAT_Base_; TempPrepmtVATAmountLine."VAT Base")
                         {
                             AutoFormatExpression = "Purchase Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(PrepmtVATAmountLine__Line_Amount_; PrepmtVATAmountLine."Line Amount")
+                        column(PrepmtVATAmountLine__Line_Amount_; TempPrepmtVATAmountLine."Line Amount")
                         {
                             AutoFormatExpression = "Purchase Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(PrepmtVATAmountLine__VAT___; PrepmtVATAmountLine."VAT %")
+                        column(PrepmtVATAmountLine__VAT___; TempPrepmtVATAmountLine."VAT %")
                         {
                             DecimalPlaces = 0 : 5;
                         }
-                        column(PrepmtVATAmountLine__VAT_Amount__Control194; PrepmtVATAmountLine."VAT Amount")
+                        column(PrepmtVATAmountLine__VAT_Amount__Control194; TempPrepmtVATAmountLine."VAT Amount")
                         {
                             AutoFormatExpression = "Purchase Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(PrepmtVATAmountLine__VAT_Base__Control195; PrepmtVATAmountLine."VAT Base")
+                        column(PrepmtVATAmountLine__VAT_Base__Control195; TempPrepmtVATAmountLine."VAT Base")
                         {
                             AutoFormatExpression = "Purchase Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(PrepmtVATAmountLine__Line_Amount__Control196; PrepmtVATAmountLine."Line Amount")
+                        column(PrepmtVATAmountLine__Line_Amount__Control196; TempPrepmtVATAmountLine."Line Amount")
                         {
                             AutoFormatExpression = "Purchase Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(PrepmtVATAmountLine__VAT____Control197; PrepmtVATAmountLine."VAT %")
+                        column(PrepmtVATAmountLine__VAT____Control197; TempPrepmtVATAmountLine."VAT %")
                         {
                             DecimalPlaces = 0 : 5;
                         }
-                        column(PrepmtVATAmountLine__VAT_Identifier_; PrepmtVATAmountLine."VAT Identifier")
+                        column(PrepmtVATAmountLine__VAT_Identifier_; TempPrepmtVATAmountLine."VAT Identifier")
                         {
                         }
-                        column(PrepmtVATAmountLine__VAT_Amount__Control210; PrepmtVATAmountLine."VAT Amount")
-                        {
-                            AutoFormatExpression = "Purchase Header Archive"."Currency Code";
-                            AutoFormatType = 1;
-                        }
-                        column(PrepmtVATAmountLine__VAT_Base__Control211; PrepmtVATAmountLine."VAT Base")
+                        column(PrepmtVATAmountLine__VAT_Amount__Control210; TempPrepmtVATAmountLine."VAT Amount")
                         {
                             AutoFormatExpression = "Purchase Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(PrepmtVATAmountLine__Line_Amount__Control212; PrepmtVATAmountLine."Line Amount")
+                        column(PrepmtVATAmountLine__VAT_Base__Control211; TempPrepmtVATAmountLine."VAT Base")
                         {
                             AutoFormatExpression = "Purchase Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(PrepmtVATAmountLine__VAT____Control213; PrepmtVATAmountLine."VAT %")
+                        column(PrepmtVATAmountLine__Line_Amount__Control212; TempPrepmtVATAmountLine."Line Amount")
+                        {
+                            AutoFormatExpression = "Purchase Header Archive"."Currency Code";
+                            AutoFormatType = 1;
+                        }
+                        column(PrepmtVATAmountLine__VAT____Control213; TempPrepmtVATAmountLine."VAT %")
                         {
                             DecimalPlaces = 0 : 5;
                         }
-                        column(PrepmtVATAmountLine__VAT_Amount__Control215; PrepmtVATAmountLine."VAT Amount")
+                        column(PrepmtVATAmountLine__VAT_Amount__Control215; TempPrepmtVATAmountLine."VAT Amount")
                         {
                             AutoFormatExpression = "Purchase Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(PrepmtVATAmountLine__VAT_Base__Control216; PrepmtVATAmountLine."VAT Base")
+                        column(PrepmtVATAmountLine__VAT_Base__Control216; TempPrepmtVATAmountLine."VAT Base")
                         {
                             AutoFormatExpression = "Purchase Header Archive"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(PrepmtVATAmountLine__Line_Amount__Control217; PrepmtVATAmountLine."Line Amount")
+                        column(PrepmtVATAmountLine__Line_Amount__Control217; TempPrepmtVATAmountLine."Line Amount")
                         {
                             AutoFormatExpression = "Purchase Header Archive"."Currency Code";
                             AutoFormatType = 1;
@@ -1187,12 +1187,12 @@ report 50076 "DEL Archived Purchase Order"
 
                         trigger OnAfterGetRecord()
                         begin
-                            PrepmtVATAmountLine.GetLine(Number);
+                            TempPrepmtVATAmountLine.GetLine(Number);
                         end;
 
                         trigger OnPreDataItem()
                         begin
-                            SETRANGE(Number, 1, PrepmtVATAmountLine.COUNT);
+                            SETRANGE(Number, 1, TempPrepmtVATAmountLine.COUNT);
                         end;
                     }
                     dataitem(PrepmtTotal; Integer)
@@ -1211,7 +1211,7 @@ report 50076 "DEL Archived Purchase Order"
 
                         trigger OnPreDataItem()
                         begin
-                            IF NOT PrepmtInvBuf.FIND('-') THEN
+                            IF NOT TempPrepmtInvBuf.FIND('-') THEN
                                 CurrReport.BREAK();
                         end;
                     }
@@ -1223,29 +1223,29 @@ report 50076 "DEL Archived Purchase Order"
                     TempPurchLine: Record "Purchase Line" temporary;
                     PurchLineArchive: Record "Purchase Line Archive";
                 begin
-                    CLEAR(PurchLineArch);
-                    PurchLineArch.DELETEALL();
+                    CLEAR(TempPurchLineArch);
+                    TempPurchLineArch.DELETEALL();
                     PurchLineArchive.SETRANGE("Document Type", "Purchase Header Archive"."Document Type");
                     PurchLineArchive.SETRANGE("Document No.", "Purchase Header Archive"."No.");
                     PurchLineArchive.SETRANGE("Version No.", "Purchase Header Archive"."Version No.");
                     IF PurchLineArchive.FINDSET() THEN
                         REPEAT
-                            PurchLineArch := PurchLineArchive;
-                            PurchLineArch.INSERT();
+                            TempPurchLineArch := PurchLineArchive;
+                            TempPurchLineArch.INSERT();
                             TempPurchLine.TRANSFERFIELDS(PurchLineArchive);
                             TempPurchLine.INSERT();
                         UNTIL PurchLineArchive.NEXT() = 0;
 
-                    VATAmountLine.DELETEALL();
+                    TempVATAmountLine.DELETEALL();
 
                     TempPurchHeader.TRANSFERFIELDS("Purchase Header Archive");
                     TempPurchLine."Prepayment Line" := TRUE;  // used as flag in CalcVATAmountLines -> not invoice rounding
-                    TempPurchLine.CalcVATAmountLines(0, TempPurchHeader, TempPurchLine, VATAmountLine);
-                    VATAmount := VATAmountLine.GetTotalVATAmount();
-                    VATBaseAmount := VATAmountLine.GetTotalVATBase();
+                    TempPurchLine.CalcVATAmountLines(0, TempPurchHeader, TempPurchLine, TempVATAmountLine);
+                    VATAmount := TempVATAmountLine.GetTotalVATAmount();
+                    VATBaseAmount := TempVATAmountLine.GetTotalVATBase();
                     VATDiscountAmount :=
-                      VATAmountLine.GetTotalVATDiscount(TempPurchHeader."Currency Code", TempPurchHeader."Prices Including VAT");
-                    TotalAmountInclVAT := VATAmountLine.GetTotalAmountInclVAT();
+                      TempVATAmountLine.GetTotalVATDiscount(TempPurchHeader."Currency Code", TempPurchHeader."Prices Including VAT");
+                    TotalAmountInclVAT := TempVATAmountLine.GetTotalAmountInclVAT();
 
                     IF Number > 1 THEN
                         CopyText := FormatDocument.GetCOPYText();
@@ -1338,13 +1338,13 @@ report 50076 "DEL Archived Purchase Order"
         Language: Record Language;
         PaymentTerms: Record "Payment Terms";
         PrepmtPaymentTerms: Record "Payment Terms";
-        PrepmtInvBuf: Record "Prepayment Inv. Line Buffer" temporary;
-        PurchLineArch: Record "Purchase Line Archive" temporary;
+        TempPrepmtInvBuf: Record "Prepayment Inv. Line Buffer" temporary;
+        TempPurchLineArch: Record "Purchase Line Archive" temporary;
         RespCenter: Record "Responsibility Center";
         SalesPurchPerson: Record "Salesperson/Purchaser";
         ShipmentMethod: Record "Shipment Method";
-        PrepmtVATAmountLine: Record "VAT Amount Line" temporary;
-        VATAmountLine: Record "VAT Amount Line" temporary;
+        TempPrepmtVATAmountLine: Record "VAT Amount Line" temporary;
+        TempVATAmountLine: Record "VAT Amount Line" temporary;
         FormatAddr: Codeunit "Format Address";
         FormatDocument: Codeunit "Format Document";
         LanguageCdu: Codeunit Language;

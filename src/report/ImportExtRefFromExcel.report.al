@@ -15,9 +15,7 @@ report 50058 "DEL Import Ext. Ref From Excel"
             trigger OnPreDataItem()
             begin
                 ExcelBuffer.LOCKTABLE();
-                //TODO ExcelBuffer.OpenBook(FileName, sheetName);
-
-                ExcelBuffer.OpenBookStream(FileName, SheetName);
+                ExcelBuffer.OpenBookStream(Istream, SheetName);
                 ExcelBuffer.ReadSheet();
 
                 ExcelBuffer.ReadSheet();
@@ -49,16 +47,20 @@ report 50058 "DEL Import Ext. Ref From Excel"
         }
 
         trigger OnQueryClosePage(CloseAction: Action): Boolean
+        var
+            FromFile: Text;
         begin
-            //TODO IF CloseAction = ACTION::OK THEN BEGIN
-            //     FileName := FileManagement.UploadFile('Import Excel', ExcelExtension);
-            //     IF FileName = '' THEN
-            //         EXIT(FALSE);
-            //     sheetName := ExcelBuffer.SelectSheetsName(FileName);
-            //     IF sheetName = '' THEN
-            //         EXIT(FALSE);
-            // END;
+            IF CloseAction = ACTION::OK THEN BEGIN
+                UploadIntoStream(UploadExcelMsg, '', ExcelExtension, FromFile, Istream);
+                IF FromFile = '' THEN
+                    EXIT(FALSE);
+                FileName := FileManagement.GetFileName(FromFile);
+                sheetName := ExcelBuffer.SelectSheetsNameStream(Istream);
+                IF sheetName = '' THEN
+                    EXIT(FALSE);
+            END;
         end;
+
     }
 
     labels
@@ -66,18 +68,21 @@ report 50058 "DEL Import Ext. Ref From Excel"
     }
 
     var
+
         ExcelBuffer: Record "Excel Buffer";
+        ExcelBufferDialogMgt: Codeunit "Excel Buffer Dialog Management";
+        FileManagement: Codeunit "File Management";
+        Istream: InStream;
+        i: Integer;
         TotalColumns: Integer;
         Totalrows: Integer;
-        FileName: InStream;
-        sheetName: Text;
-        FileManagement: Codeunit "File Management";
         ExcelExtension: Label '*.xlsx;*.xls';
-        i: Integer;
         FileEmpty: Label 'Le fichier est vide. ';
         ImportCompleted: Label 'Import completed!';
-        ExcelBufferDialogMgt: Codeunit "Excel Buffer Dialog Management";
         ImportFile: Label 'Import Excel worksheet...\\', Comment = '{Locked="Excel"}';
+        UploadExcelMsg: Label 'Please Choose the Excel file.';
+        FileName: Text;
+        sheetName: Text;
 
     local procedure GetLastRowandColumns()
     begin
@@ -90,14 +95,14 @@ report 50058 "DEL Import Ext. Ref From Excel"
 
     local procedure UpdateData(RowNo: Integer)
     var
+        Item: Record Item;
+        ItemCrossReference: Record "Item Reference";
         SalesHeader: Record "Sales Header";
         SalesLine: Record "Sales Line";
-        ItemCrossReference: Record "Item Reference";
-        Item: Record Item;
-        OrderNo: Code[20];
-        ItemNo: Code[20];
-        CrossRef: Code[20];
         DistIntegration: Codeunit "Dist. Integration";
+        CrossRef: Code[20];
+        ItemNo: Code[20];
+        OrderNo: Code[20];
     begin
         OrderNo := GetValueAtCell(RowNo, 1, '');
         IF NOT SalesHeader.GET(SalesHeader."Document Type"::Order, OrderNo) THEN

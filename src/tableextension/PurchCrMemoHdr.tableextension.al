@@ -5,9 +5,9 @@ tableextension 50009 "DEL PurchCrMemoHdr" extends "Purch. Cr. Memo Hdr." //124
         field(50014; "DEL Type Order EDI"; Code[20])
         {
             Caption = 'Type Order EDI';
+            DataClassification = CustomerContent;
 
             TableRelation = "DEL Type Order EDI";
-            DataClassification = CustomerContent;
         }
         field(50015; "DEL GLN"; Text[30])
         {

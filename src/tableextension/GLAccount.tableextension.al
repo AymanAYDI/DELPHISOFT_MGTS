@@ -6,14 +6,14 @@ tableextension 50011 "DEL GLAccount" extends "G/L Account" //15
         field(50000; "DEL Reporting Dimension 1 Code"; Code[20])
         {
             Caption = 'Reporting Dimension 1 Code';
-            TableRelation = "DEL Reporting Dimension 1 Code";
             DataClassification = CustomerContent;
+            TableRelation = "DEL Reporting Dimension 1 Code";
         }
         field(50001; "DEL Reporting Dimension 2 Code"; Code[20])
         {
             Caption = 'Reporting Dimension 2 Code';
-            TableRelation = "DEL Reporting Dimension 2 Code";
             DataClassification = CustomerContent;
+            TableRelation = "DEL Reporting Dimension 2 Code";
         }
         field(50002; "DEL Shipment Binding Control"; Boolean)
         {
@@ -22,9 +22,9 @@ tableextension 50011 "DEL GLAccount" extends "G/L Account" //15
         }
         field(50003; "DEL Company Code"; Text[50]) //Text[30==>50]
         {
-            FieldClass = Normal;
             Caption = 'Company Code';
             DataClassification = CustomerContent;
+            FieldClass = Normal;
         }
         field(50004; "DEL Customer Posting Group"; Boolean)
         {

@@ -19,11 +19,11 @@ pageextension 50065 "DEL PurchaseOrderList" extends "Purchase Order List" //9307
             field("DEL FirstPurchItem"; FirstPurchItem)
             {
                 Caption = 'New Product';
-                Enabled = False;
                 Editable = false;
+                Enabled = False;
+                ShowCaption = true;
                 Style = Standard;
                 StyleExpr = FirstPurchStyle;
-                ShowCaption = true;
             }
             field("DEL Expected Receipt Date"; Rec."Expected Receipt Date")
             {
@@ -42,11 +42,11 @@ pageextension 50065 "DEL PurchaseOrderList" extends "Purchase Order List" //9307
         {
             action("DEL Print MGTS")
             {
-                Ellipsis = true;
-                Caption = '&Print MGTS';
                 ApplicationArea = Suite;
-                Promoted = true;
+                Caption = '&Print MGTS';
+                Ellipsis = true;
                 Image = Print;
+                Promoted = true;
                 PromotedCategory = Category5;
 
                 trigger OnAction()
@@ -64,18 +64,18 @@ pageextension 50065 "DEL PurchaseOrderList" extends "Purchase Order List" //9307
             action("DEL ActionName")
             {
                 ApplicationArea = Suite;
-                RunPageOnRec = false;
-                Promoted = true;
-                Image = Print;
-                PromotedCategory = Category5;
-                Ellipsis = true;
                 Caption = '&Print Dossier';
+                Ellipsis = true;
+                Image = Print;
+                Promoted = true;
+                PromotedCategory = Category5;
+                RunPageOnRec = false;
                 trigger OnAction()
                 var
                     PurchaseHeader: Record 38;
-                    CduLMinimizingClicksNGTS: Codeunit 50012;
                     ReportSelection: Record 77;
                     StandardPurchaseOrder: Report 1322;
+                    CduLMinimizingClicksNGTS: Codeunit 50012;
                 begin
                     PurchaseHeader := Rec;
                     PurchaseHeader.SETRECFILTER();
@@ -88,8 +88,8 @@ pageextension 50065 "DEL PurchaseOrderList" extends "Purchase Order List" //9307
     VAR
         FirstPurchItem: Boolean;
         RiskItem: Boolean;
-        RiskStyle: Text;
         FirstPurchStyle: Text;
+        RiskStyle: Text;
 
     LOCAL PROCEDURE FirstAndRiskItem();
     VAR

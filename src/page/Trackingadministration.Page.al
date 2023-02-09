@@ -1,11 +1,11 @@
 page 50054 "DEL Tracking administration"
 {
+    ApplicationArea = all;
     Editable = true;
     InsertAllowed = false;
     PageType = Card;
     SourceTable = "DEL Tracking non traité";
     UsageCategory = Lists;
-    ApplicationArea = all;
     layout
     {
         area(content)

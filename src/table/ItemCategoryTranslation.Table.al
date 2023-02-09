@@ -1,24 +1,24 @@
 table 50006 "DEL ItemCategory_Translation"
 {
-    DataCaptionFields = CategoryCode;
     Caption = 'DEL ItemCategory_Translation';
-    LookupPageID = "DEL Item Category Translation";
+    DataCaptionFields = CategoryCode;
     DataClassification = CustomerContent;
+    LookupPageID = "DEL Item Category Translation";
     fields
     {
         field(10; CategoryCode; Code[10])
         {
-            TableRelation = "Item Category";
 
             Caption = 'CategoryCode';
             DataClassification = CustomerContent;
+            TableRelation = "Item Category";
         }
         field(20; Language_Code; Code[10])
         {
             Caption = 'Language Code';
+            DataClassification = CustomerContent;
             NotBlank = true;
             TableRelation = Language;
-            DataClassification = CustomerContent;
         }
         field(30; Translation; Text[50])
         {

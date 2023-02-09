@@ -2,22 +2,22 @@ table 99211 "DEL Ex_Item Variant"
 {
     Caption = 'Item Variant';
     DataCaptionFields = "Item No.", "Code", Description;
-    LookupPageID = "Item Variants";
     DataClassification = CustomerContent;
+    LookupPageID = "Item Variants";
     fields
     {
         field(1; "Code"; Code[10])
         {
             Caption = 'Code';
-            NotBlank = true;
             DataClassification = CustomerContent;
+            NotBlank = true;
         }
         field(2; "Item No."; Code[20])
         {
             Caption = 'Item No.';
+            DataClassification = CustomerContent;
             NotBlank = true;
             TableRelation = Item;
-            DataClassification = CustomerContent;
         }
         field(3; Description; Text[50])
         {
@@ -48,34 +48,34 @@ table 99211 "DEL Ex_Item Variant"
 
     trigger OnDelete()
     var
-        ItemTranslation: Record "Item Translation";
-        SKU: Record "Stockkeeping Unit";
-        ItemIdent: Record "Item Identifier";
-        ItemCrossReference: Record "Item Reference";
-        SalesPrice: Record "Sales Price";
-        SalesLineDiscount: Record "Sales Line Discount";
-        PurchasePrice: Record "Purchase Price";
-        PurchaseLineDiscount: Record "Purchase Line Discount";
-        BOMComp: Record "BOM Component";
-        ItemJnlLine: Record "Item Journal Line";
-        RequisitionLine: Record "Requisition Line";
-        PurchOrderLine: Record "Purchase Line";
-        SalesOrderLine: Record "Sales Line";
-        ProdOrderComp: Record "Prod. Order Component";
-        TransLine: Record "Transfer Line";
-        ServiceLine: Record "Service Line";
-        ProdBOMLine: Record "Production BOM Line";
-        ServiceContractLine: Record "Service Contract Line";
-        ServiceItem: Record "Service Item";
         AssemblyHeader: Record "Assembly Header";
+        AssemblyLine: Record "Assembly Line";
+        BinContent: Record "Bin Content";
+        BOMComp: Record "BOM Component";
+        ItemIdent: Record "Item Identifier";
+        ItemJnlLine: Record "Item Journal Line";
+        ItemLedgerEntry: Record "Item Ledger Entry";
+        ItemCrossReference: Record "Item Reference";
         ItemSubstitution: Record "Item Substitution";
+        ItemTranslation: Record "Item Translation";
         ItemVend: Record "Item Vendor";
         PlanningAssignment: Record "Planning Assignment";
+        ProdOrderComp: Record "Prod. Order Component";
+        ProdBOMLine: Record "Production BOM Line";
+        PurchOrderLine: Record "Purchase Line";
+        PurchaseLineDiscount: Record "Purchase Line Discount";
+        PurchasePrice: Record "Purchase Price";
+        RequisitionLine: Record "Requisition Line";
+        SalesOrderLine: Record "Sales Line";
+        SalesLineDiscount: Record "Sales Line Discount";
+        SalesPrice: Record "Sales Price";
+        ServiceContractLine: Record "Service Contract Line";
+        ServiceItem: Record "Service Item";
         ServiceItemComponent: Record "Service Item Component";
-        BinContent: Record "Bin Content";
-        ItemLedgerEntry: Record "Item Ledger Entry";
+        ServiceLine: Record "Service Line";
+        SKU: Record "Stockkeeping Unit";
+        TransLine: Record "Transfer Line";
         ValueEntry: Record "Value Entry";
-        AssemblyLine: Record "Assembly Line";
     begin
         BOMComp.RESET();
         BOMComp.SETCURRENTKEY(Type, "No.");

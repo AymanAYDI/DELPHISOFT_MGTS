@@ -6,21 +6,21 @@ table 50028 "DEL Currency Exchange"
     {
         field(1; "Currency 1"; Code[10])
         {
-            TableRelation = Currency.Code;
             Caption = 'Currency 1';
             DataClassification = CustomerContent;
+            TableRelation = Currency.Code;
         }
         field(2; "Currency 2"; Code[10])
         {
-            TableRelation = Currency.Code;
             Caption = 'Currency 2';
             DataClassification = CustomerContent;
+            TableRelation = Currency.Code;
         }
         field(3; "Rate C2/C1"; Decimal)
         {
-            DecimalPlaces = 5 : 5;
             Caption = 'Rate C2/C1';
             DataClassification = CustomerContent;
+            DecimalPlaces = 5 : 5;
         }
         field(4; "Valid From"; Date)
         {
@@ -34,9 +34,9 @@ table 50028 "DEL Currency Exchange"
         }
         field(6; Deal_ID; Code[20])
         {
-            TableRelation = "DEL Deal".ID;
             Caption = 'Deal_ID';
             DataClassification = CustomerContent;
+            TableRelation = "DEL Deal".ID;
         }
     }
 

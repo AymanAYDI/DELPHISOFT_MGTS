@@ -18,39 +18,39 @@ page 50095 "DEL Matrix Subs. reg Card"
                 Caption = 'Record details';
                 field("Item Category Code"; Rec."Item Category Code")
                 {
-                    Caption = 'Item Category Code';
                     ApplicationArea = All;
+                    Caption = 'Item Category Code';
                 }
                 field("Product Group Code"; Rec."Product Group Code")
                 {
-                    Caption = 'Product Group Code';
                     ApplicationArea = All;
+                    Caption = 'Product Group Code';
                 }
                 field("Item Category Label"; Rec."Item Category Label")
                 {
-                    Caption = 'Item category description';
                     ApplicationArea = All;
+                    Caption = 'Item category description';
                 }
                 field("Product Group Label"; Rec."Product Group Label")
                 {
-                    Caption = 'Product group description';
                     ApplicationArea = All;
+                    Caption = 'Product group description';
                 }
                 field(Type; Rec.Type)
                 {
-                    Editable = false;
-                    Caption = 'Type';
                     ApplicationArea = All;
+                    Caption = 'Type';
+                    Editable = false;
                 }
                 field("No."; Rec."No.")
                 {
-                    Caption = 'No.';
                     ApplicationArea = All;
+                    Caption = 'No.';
                 }
                 field("Description pays"; Rec."Description pays")
                 {
-                    Caption = 'Country';
                     ApplicationArea = All;
+                    Caption = 'Country';
 
                     trigger OnLookup(var Text: Text): Boolean
                     begin
@@ -69,64 +69,64 @@ page 50095 "DEL Matrix Subs. reg Card"
                 }
                 field("Type of material"; Rec."Type of material")
                 {
-                    Caption = 'Type of material';
                     ApplicationArea = All;
+                    Caption = 'Type of material';
                 }
                 field(Usage; Rec.Usage)
                 {
-                    Caption = 'Usage';
                     ApplicationArea = All;
+                    Caption = 'Usage';
                 }
                 field("Description Usage in French"; Rec."Description Usage in French")
                 {
-                    Caption = 'Description Usage in French';
                     ApplicationArea = All;
+                    Caption = 'Description Usage in French';
                 }
                 field("Description Usage in English"; Rec."Description Usage in English")
                 {
-                    Caption = 'Description Usage in English';
                     ApplicationArea = All;
+                    Caption = 'Description Usage in English';
                 }
                 field("Substance - CAS / EINECS"; Rec."Substance - CAS / EINECS")
                 {
-                    Caption = 'Substance ID';
                     ApplicationArea = All;
+                    Caption = 'Substance ID';
                 }
                 field("Substance - nom"; Rec."Substance - nom")
                 {
-                    Caption = 'Substance name';
                     ApplicationArea = All;
+                    Caption = 'Substance name';
                 }
                 field(Source; Rec.Source)
                 {
-                    Caption = 'Origine';
                     ApplicationArea = All;
+                    Caption = 'Origine';
                 }
                 field("Starting date"; Rec."Starting date")
                 {
-                    Caption = 'Starting date';
                     ApplicationArea = All;
+                    Caption = 'Starting date';
                 }
                 field("Date Fin"; Rec."Date Fin")
                 {
-                    Caption = 'End date';
                     ApplicationArea = All;
+                    Caption = 'End date';
                 }
                 field("Norm of testing"; Rec."Norm of testing")
                 {
-                    MultiLine = true;
-                    Caption = 'Norm of testing';
                     ApplicationArea = All;
+                    Caption = 'Norm of testing';
+                    MultiLine = true;
                 }
                 field(Statut; Rec.Statut)
                 {
-                    Caption = 'Status';
                     ApplicationArea = All;
+                    Caption = 'Status';
                 }
                 field("Texte de remplacement"; Rec."Texte de remplacement")
                 {
-                    Caption = 'Text of substitution';
                     ApplicationArea = All;
+                    Caption = 'Text of substitution';
                 }
             }
         }

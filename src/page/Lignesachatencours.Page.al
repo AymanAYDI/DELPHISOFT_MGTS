@@ -1,5 +1,6 @@
 page 50010 "DEL Lignes achat en cours"
 {
+    ApplicationArea = all;
     Editable = false;
     PageType = List;
     SourceTable = "Purchase Line";
@@ -7,7 +8,6 @@ page 50010 "DEL Lignes achat en cours"
                       ORDER(Ascending)
                       WHERE(Type = CONST(Item));
     UsageCategory = Lists;
-    ApplicationArea = all;
 
     layout
     {

@@ -20,13 +20,13 @@ page 50080 "DEL Manual Deal Invoice Link."
             }
             field("Document No."; Rec."Document No.")
             {
-                Editable = false;
                 ApplicationArea = All;
+                Editable = false;
             }
             field("Account No."; Rec."Account No.")
             {
-                Editable = false;
                 ApplicationArea = All;
+                Editable = false;
             }
             field("Shipment Selection"; Rec."Shipment Selection")
             {
@@ -51,13 +51,13 @@ page 50080 "DEL Manual Deal Invoice Link."
                 Caption = 'Post';
                 action(Post1)
                 {
+                    ApplicationArea = All;
                     Caption = 'Post';
                     Image = Post;
                     Promoted = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
                     ShortCutKey = 'F9';
-                    ApplicationArea = All;
 
                     trigger OnAction()
                     var
@@ -68,10 +68,10 @@ page 50080 "DEL Manual Deal Invoice Link."
                         myTab: array[100] of Code[20];
                         myUpdateRequests: array[100] of Code[20];
                         nextEntry: Code[20];
+                        ConnectionType_Op_Par: Enum "Element/Shipment";
                         elementConnectionSplitIndex: Integer;
                         i: Integer;
                         splittIndex: Integer;
-                        ConnectionType_Op_Par: Enum "Element/Shipment";
                     begin
                         IF Rec."Shipment Selection" = 0 THEN
                             ERROR('Veuillez sélectionner au moins 1 livraison !');
@@ -126,7 +126,7 @@ page 50080 "DEL Manual Deal Invoice Link."
 
                                     myUpdateRequests[i] := UpdateRequestManager_Cu.FNC_Add_Request(
                                       dealShipmentSelection_Re_Loc.Deal_ID,
-                                      dealShipmentSelection_Re_Loc."Document Type",
+                                      dealShipmentSelection_Re_Loc."Document Type".AsInteger(),
                                       dealShipmentSelection_Re_Loc."Document No.",
                                       CURRENTDATETIME
                                     );
@@ -176,11 +176,11 @@ page 50080 "DEL Manual Deal Invoice Link."
 
         deal_Re_Loc.RESET();
         deal_Re_Loc.SETFILTER(Status, '<>%1', deal_Re_Loc.Status::Closed);
-        IF deal_Re_Loc.FINDFIRST() THEN
+        IF deal_Re_Loc.FindSet() THEN
             REPEAT
                 dealShipment_Re_Loc.RESET();
                 dealShipment_Re_Loc.SETRANGE(Deal_ID, deal_Re_Loc.ID);
-                IF dealShipment_Re_Loc.FINDFIRST() THEN
+                IF dealShipment_Re_Loc.FindSet() THEN
                     REPEAT
 
                         dealShipmentSelection_Re_Loc.INIT();

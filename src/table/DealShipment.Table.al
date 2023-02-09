@@ -1,10 +1,10 @@
 table 50030 "DEL Deal Shipment"
 {
     Caption = 'DEL Deal Shipment';
+    DataClassification = CustomerContent;
 
 
     LookupPageID = "DEL Deal Ship. Sele.";
-    DataClassification = CustomerContent;
     fields
     {
         field(1; ID; Code[20])
@@ -19,15 +19,15 @@ table 50030 "DEL Deal Shipment"
         }
         field(3; Fournisseur; Code[20])
         {
-            TableRelation = Vendor."No.";
             Caption = 'Fournisseur';
             DataClassification = CustomerContent;
+            TableRelation = Vendor."No.";
         }
         field(10; Deal_ID; Code[20])
         {
-            TableRelation = "DEL Deal".ID;
             Caption = 'Deal_ID';
             DataClassification = CustomerContent;
+            TableRelation = "DEL Deal".ID;
         }
 
         field(20; "Date"; Date)
@@ -38,9 +38,9 @@ table 50030 "DEL Deal Shipment"
         }
         field(30; "BR No."; Code[20])
         {
-            TableRelation = "Purch. Rcpt. Header"."No.";
             Caption = 'BR No.';
             DataClassification = CustomerContent;
+            TableRelation = "Purch. Rcpt. Header"."No.";
         }
         field(40; "Purchase Invoice No."; Code[20])
         {
@@ -54,23 +54,23 @@ table 50030 "DEL Deal Shipment"
         }
         field(100; PI; Enum "DEL PI")
         {
-            Editable = false;
 
             Caption = 'PI';
             DataClassification = CustomerContent;
+            Editable = false;
         }
         field(101; "A facturer"; Enum "DEL afacturer")
         {
-            Editable = false;
 
             Caption = 'A facturer';
             DataClassification = CustomerContent;
+            Editable = false;
         }
         field(102; "Depart shipment"; Boolean)
         {
-            Editable = false;
             Caption = 'Depart shipment';
             DataClassification = CustomerContent;
+            Editable = false;
         }
         field(103; "Arrival ship"; Boolean)
         {

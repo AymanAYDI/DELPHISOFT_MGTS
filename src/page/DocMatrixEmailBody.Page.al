@@ -11,18 +11,18 @@ page 50135 "DEL DocMatrix Email Body"
         {
             field("Code"; Rec.Code)
             {
-                Editable = false;
                 ApplicationArea = All;
+                Editable = false;
             }
             field("Language Code"; Rec."Language Code")
             {
-                Editable = false;
                 ApplicationArea = All;
+                Editable = false;
             }
             field("All Language Codes"; Rec."All Language Codes")
             {
-                Editable = false;
                 ApplicationArea = All;
+                Editable = false;
             }
             group(group)
             {

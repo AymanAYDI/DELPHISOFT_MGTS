@@ -6,8 +6,8 @@ tableextension 50003 "DEL SalesInvoiceHeader" extends "Sales Invoice Header" //1
         field(50000; "DEL Fiscal Repr."; Code[10])
         {
             Caption = 'Fiscal Repr.';
-            TableRelation = Contact;
             DataClassification = CustomerContent;
+            TableRelation = Contact;
         }
         field(50004; "DEL Event Code"; Enum "DEL Code Event")
         {
@@ -17,8 +17,8 @@ tableextension 50003 "DEL SalesInvoiceHeader" extends "Sales Invoice Header" //1
         field(50006; "DEL Type Order EDI"; Code[20])
         {
             Caption = 'Type Order EDI';
-            TableRelation = "DEL Type Order EDI";
             DataClassification = CustomerContent;
+            TableRelation = "DEL Type Order EDI";
         }
         field(50007; "DEL GLN"; Text[30])
         {
@@ -50,9 +50,9 @@ tableextension 50003 "DEL SalesInvoiceHeader" extends "Sales Invoice Header" //1
         field(50021; "DEL Purchase Order Create Date"; DateTime)
         {
             Caption = 'Date création commande d''achat';
+            DataClassification = CustomerContent;
 
             Editable = false;
-            DataClassification = CustomerContent;
         }
         field(50022; "DEL Status Purch. Order Create"; Enum "DEL Status Purchase Order")
         {
@@ -62,9 +62,9 @@ tableextension 50003 "DEL SalesInvoiceHeader" extends "Sales Invoice Header" //1
         field(50023; "DEL Err.Txt Purch.Ord.Create"; Text[250])
         {
             Caption = 'Texte erreur création commande achat';
+            DataClassification = CustomerContent;
 
             Editable = false;
-            DataClassification = CustomerContent;
         }
         field(50024; "DEL Error Purch. Order Create"; Boolean)
         {

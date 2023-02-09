@@ -7,20 +7,20 @@ table 50042 "DEL Shipment Provision Select."
         field(10; Deal_ID; Code[20])
         {
             Caption = 'Deal';
-            TableRelation = "DEL Deal".ID;
             DataClassification = CustomerContent;
+            TableRelation = "DEL Deal".ID;
         }
         field(20; Deal_Shipment_ID; Code[20])
         {
             Caption = 'Deal Shipment';
-            TableRelation = "DEL Deal Shipment".ID WHERE(Deal_ID = FIELD(Deal_ID));
             DataClassification = CustomerContent;
+            TableRelation = "DEL Deal Shipment".ID WHERE(Deal_ID = FIELD(Deal_ID));
         }
         field(30; Fee_Connection_ID; Code[20])
         {
             Caption = 'Fee_Connection_ID';
-            TableRelation = "DEL Fee Connection".ID;
             DataClassification = CustomerContent;
+            TableRelation = "DEL Fee Connection".ID;
             trigger OnValidate()
             var
                 feeConnection_Re_Loc: Record "DEL Fee Connection";
@@ -32,8 +32,8 @@ table 50042 "DEL Shipment Provision Select."
         field(35; Fee_ID; Code[20])
         {
             Caption = 'Fee';
-            TableRelation = "DEL Fee".ID;
             DataClassification = CustomerContent;
+            TableRelation = "DEL Fee".ID;
             trigger OnValidate()
             var
                 fee_Re_Loc: Record "DEL Fee";
@@ -93,8 +93,8 @@ table 50042 "DEL Shipment Provision Select."
         field(80; Currency; Code[10])
         {
             Caption = 'Currency';
-            TableRelation = Currency.Code;
             DataClassification = CustomerContent;
+            TableRelation = Currency.Code;
         }
         field(90; Period; Date)
         {

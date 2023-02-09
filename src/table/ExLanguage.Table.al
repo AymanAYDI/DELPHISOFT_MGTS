@@ -1,15 +1,15 @@
 table 99201 "DEL Ex_Language"
 {
     Caption = 'Language';
-    LookupPageID = Languages;
     DataClassification = CustomerContent;
+    LookupPageID = Languages;
     fields
     {
         field(1; "Code"; Code[10])
         {
             Caption = 'Code';
-            NotBlank = true;
             DataClassification = CustomerContent;
+            NotBlank = true;
         }
         field(2; Name; Text[50])
         {
@@ -20,8 +20,8 @@ table 99201 "DEL Ex_Language"
         {
             BlankZero = true;
             Caption = 'Windows Language ID';
-            TableRelation = "Windows Language";
             DataClassification = CustomerContent;
+            TableRelation = "Windows Language";
         }
         field(7; "Windows Language Name"; Text[80])
         {

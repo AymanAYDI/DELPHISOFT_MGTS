@@ -7,32 +7,32 @@ table 50026 "DEL ACO Connection"
     {
         field(1; Deal_ID; Code[20])
         {
-            TableRelation = "DEL Deal".ID;
             Caption = 'Deal_ID';
             DataClassification = CustomerContent;
+            TableRelation = "DEL Deal".ID;
         }
         field(2; "ACO No."; Code[20])
         {
-            TableRelation = "Purchase Header"."No.";
             Caption = 'ACO No.';
+            DataClassification = CustomerContent;
+            TableRelation = "Purchase Header"."No.";
 
             ValidateTableRelation = false;
-            DataClassification = CustomerContent;
         }
         field(3; "Vendor No."; Code[20])
         {
             Caption = 'Vendor No.';
+            DataClassification = CustomerContent;
             Editable = false;
             FieldClass = Normal;
             TableRelation = Vendor;
-            DataClassification = CustomerContent;
         }
         field(4; Status; Enum "DEL Status")
         {
             CalcFormula = Lookup("DEL Deal".Status WHERE(ID = FIELD(Deal_ID)));
+            Caption = 'Status';
             Editable = false;
             FieldClass = FlowField;
-            Caption = 'Status';
 
         }
     }

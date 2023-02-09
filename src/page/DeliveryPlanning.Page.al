@@ -234,8 +234,8 @@ page 50148 "DEL Delivery Planning"
     end;
 
     var
+        DeliveryDateEditable: Boolean;
         ContainerNoStyle: Text;
         ItemNoStyle: Text;
-        DeliveryDateEditable: Boolean;
 }
 

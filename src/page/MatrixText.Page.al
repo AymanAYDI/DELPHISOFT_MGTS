@@ -12,50 +12,50 @@ page 50114 "DEL Matrix Text"
             {
                 field("Item Category Code"; Rec."Item Category Code")
                 {
+                    ApplicationArea = All;
+                    Caption = 'Item Category Code';
                     Editable = false;
                     Visible = false;
-                    Caption = 'Item Category Code';
-                    ApplicationArea = All;
                 }
                 field("Product Group Code"; Rec."Product Group Code")
                 {
+                    ApplicationArea = All;
+                    Caption = 'Product Group Code';
                     Editable = false;
                     Visible = false;
-                    Caption = 'Product Group Code';
-                    ApplicationArea = All;
                 }
                 field("Product Description"; Rec."Product Description")
                 {
+                    ApplicationArea = All;
+                    Caption = 'Description produit';
                     Editable = false;
                     Visible = false;
-                    Caption = 'Description produit';
-                    ApplicationArea = All;
                 }
                 field(Mark; Rec.Mark)
                 {
+                    ApplicationArea = All;
+                    Caption = 'Mark';
                     Editable = false;
                     Visible = false;
-                    Caption = 'Mark';
-                    ApplicationArea = All;
                 }
                 field(Type; Rec.Type)
                 {
+                    ApplicationArea = All;
+                    Caption = 'Type';
                     Editable = false;
                     Visible = false;
-                    Caption = 'Type';
-                    ApplicationArea = All;
                 }
                 field("Line No."; Rec."Line No.")
                 {
+                    ApplicationArea = All;
+                    Caption = 'Line No.';
                     Editable = false;
                     Visible = false;
-                    Caption = 'Line No.';
-                    ApplicationArea = All;
                 }
                 field("Text"; Rec.Text)
                 {
-                    Caption = 'Text';
                     ApplicationArea = All;
+                    Caption = 'Text';
                 }
             }
         }
@@ -67,12 +67,12 @@ page 50114 "DEL Matrix Text"
         {
             action(TextEdit)
             {
+                ApplicationArea = All;
                 Caption = '&Edit text';
                 Image = Edit;
                 Promoted = true;
                 PromotedCategory = Process;
                 ShortCutKey = 'Ctrl+D';
-                ApplicationArea = All;
 
                 trigger OnAction()
                 begin

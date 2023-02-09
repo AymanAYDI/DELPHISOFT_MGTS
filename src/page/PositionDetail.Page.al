@@ -15,8 +15,8 @@ page 50043 "DEL Position Detail"
             {
                 field(ID; Rec.ID)
                 {
-                    Visible = false;
                     Caption = 'ID';
+                    Visible = false;
                 }
                 field(Type; Rec.Type)
                 {
@@ -24,8 +24,8 @@ page 50043 "DEL Position Detail"
                 }
                 field("Type No."; Rec."Type No.")
                 {
-                    Visible = "Type No.Visible";
                     Caption = 'Type No.';
+                    Visible = "Type No.Visible";
                 }
                 field(Fee_ID; Rec.Fee_ID)
                 {

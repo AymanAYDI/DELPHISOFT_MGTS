@@ -1,11 +1,11 @@
 report 50041 "DEL MAJ code devise"
 {
     DefaultLayout = RDLC;
-    RDLCLayout = './src/report/RDL/MAJcodedevise.rdlc';
     Permissions = TableData "Sales Invoice Header" = rimd,
                   TableData "Sales Cr.Memo Header" = rimd,
                   TableData "VAT Entry" = rimd,
                   TableData "Detailed Cust. Ledg. Entry" = rimd;
+    RDLCLayout = './src/report/RDL/MAJcodedevise.rdlc';
 
     dataset
     {

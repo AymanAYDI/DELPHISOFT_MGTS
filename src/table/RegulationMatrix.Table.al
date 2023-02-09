@@ -3,15 +3,15 @@ table 50050 "DEL Regulation Matrix"
 {
 
     Caption = 'Regulation Matrix';
-    LookupPageID = "DEL Regulation Matrix";
     DataClassification = CustomerContent;
+    LookupPageID = "DEL Regulation Matrix";
     fields
     {
         field(1; "Item Category Code"; Code[10])
         {
             Caption = 'Item Category Code';
-            TableRelation = "Item Category".Code;
             DataClassification = CustomerContent;
+            TableRelation = "Item Category".Code;
             trigger OnValidate()
             begin
                 CALCFIELDS("Item Category Label");
@@ -20,9 +20,9 @@ table 50050 "DEL Regulation Matrix"
         field(2; "Product Group Code"; Code[10])
         {
             Caption = 'Product Group Code';
+            DataClassification = CustomerContent;
 
             TableRelation = "Product Group".Code WHERE("Item Category Code" = FIELD("Item Category Code"));
-            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 CALCFIELDS("Product Group Label");
@@ -148,8 +148,8 @@ table 50050 "DEL Regulation Matrix"
         {
             AutoIncrement = true;
             Caption = 'Line No.';
-            NotBlank = true;
             DataClassification = CustomerContent;
+            NotBlank = true;
         }
 
         field(21; "Manuel instruction"; Enum "DEL Manuel instruction")

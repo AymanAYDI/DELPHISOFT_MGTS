@@ -49,10 +49,10 @@ xmlport 50013 "DEL Import ligne vente"
                             ELSE
                                 Num += 10000;
 
-                            "Sales Line"."Document Type" := 1;
+                            "Sales Line"."Document Type" := "Sales Document Type"::Order;
                             "Sales Line"."Line No." := Num;
                             "Sales Line"."Document No." := DocCmd;
-                            "Sales Line".Type := 2;
+                            "Sales Line".Type := "Sales Line Type"::Item;
                             "Sales Line".VALIDATE("No.", Article);
 
                             CLEAR(Article);

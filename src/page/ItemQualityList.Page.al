@@ -204,8 +204,8 @@ page 50078 "DEL Item Quality List"
                     Caption = 'Co&mments';
                     Image = ViewComments;
                     Promoted = true;
-                    PromotedOnly = true;
                     PromotedIsBig = true;
+                    PromotedOnly = true;
                     RunObject = Page "Comment Sheet";
                     RunPageLink = "Table Name" = CONST(Item), "No." = FIELD("No.");
                 }

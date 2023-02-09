@@ -13,8 +13,8 @@ table 50082 "DEL D365FM Mail Template"
         field(2; "Language Code"; Code[20])
         {
             Caption = 'Code langue';
-            TableRelation = Language;
             DataClassification = CustomerContent;
+            TableRelation = Language;
         }
         field(3; "Template mail"; BLOB)
         {

@@ -2,19 +2,19 @@
 table 99205 "DEL Ex_User Setup"
 {
     Caption = 'User Setup';
+    DataClassification = CustomerContent;
     DrillDownPageID = "User Setup";
     LookupPageID = "User Setup";
-    DataClassification = CustomerContent;
     fields
     {
         field(1; "User ID"; Code[50])
         {
             Caption = 'User ID';
+            DataClassification = CustomerContent;
             NotBlank = true;
             TableRelation = User."User Name";
 
             ValidateTableRelation = false;
-            DataClassification = CustomerContent;
 
             // trigger OnLookup() 
             // begin
@@ -55,10 +55,10 @@ table 99205 "DEL Ex_User Setup"
         field(10; "Salespers./Purch. Code"; Code[10])
         {
             Caption = 'Salespers./Purch. Code';
+            DataClassification = CustomerContent;
             TableRelation = "Salesperson/Purchaser".Code;
 
             ValidateTableRelation = false;
-            DataClassification = CustomerContent;
             trigger OnValidate()
             var
                 UserSetup: Record "User Setup";
@@ -76,10 +76,10 @@ table 99205 "DEL Ex_User Setup"
 
         {
             Caption = 'Approver ID';
+            DataClassification = CustomerContent;
             TableRelation = "User Setup"."User ID";
 
             ValidateTableRelation = false;
-            DataClassification = CustomerContent;
         }
 
         field(12; "Sales Amount Approval Limit"; Integer)
@@ -139,16 +139,16 @@ table 99205 "DEL Ex_User Setup"
 
         {
             Caption = 'Substitute';
-            TableRelation = "User Setup";
             DataClassification = CustomerContent;
+            TableRelation = "User Setup";
         }
 
         field(17; "E-Mail"; Text[100])
 
         {
             Caption = 'E-Mail';
-            ExtendedDatatype = EMail;
             DataClassification = CustomerContent;
+            ExtendedDatatype = EMail;
         }
 
         field(19; "Request Amount Approval Limit"; Integer)
@@ -197,24 +197,24 @@ table 99205 "DEL Ex_User Setup"
 
         {
             Caption = 'Sales Resp. Ctr. Filter';
-            TableRelation = "Responsibility Center".Code;
             DataClassification = CustomerContent;
+            TableRelation = "Responsibility Center".Code;
         }
 
         field(5701; "Purchase Resp. Ctr. Filter"; Code[10])
 
         {
             Caption = 'Purchase Resp. Ctr. Filter';
-            TableRelation = "Responsibility Center";
             DataClassification = CustomerContent;
+            TableRelation = "Responsibility Center";
         }
 
         field(5900; "Service Resp. Ctr. Filter"; Code[10])
 
         {
             Caption = 'Service Resp. Ctr. Filter';
-            TableRelation = "Responsibility Center";
             DataClassification = CustomerContent;
+            TableRelation = "Responsibility Center";
         }
         //---------Spécifique pays Suisse
 

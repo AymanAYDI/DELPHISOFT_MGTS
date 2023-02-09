@@ -15,9 +15,9 @@ page 50064 "DEL Vendor Card Notation"
                 Caption = 'General';
                 field("No."; Rec."No.")
                 {
+                    ApplicationArea = All;
                     Editable = false;
                     Importance = Promoted;
-                    ApplicationArea = All;
 
                     trigger OnAssistEdit()
                     begin
@@ -27,45 +27,45 @@ page 50064 "DEL Vendor Card Notation"
                 }
                 field(Name; Rec.Name)
                 {
+                    ApplicationArea = All;
                     Editable = false;
                     Importance = Promoted;
-                    ApplicationArea = All;
                 }
                 field(Address; Rec.Address)
                 {
-                    Editable = false;
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field("Address 2"; Rec."Address 2")
                 {
-                    Editable = false;
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field("Post Code"; Rec."Post Code")
                 {
+                    ApplicationArea = All;
                     Editable = false;
                     Importance = Promoted;
-                    ApplicationArea = All;
                 }
                 field("Country/Region Code"; Rec."Country/Region Code")
                 {
-                    Editable = false;
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field(City; Rec.City)
                 {
-                    Editable = false;
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field(Blocked; Rec.Blocked)
                 {
-                    Editable = false;
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field("Purchaser Code"; Rec."Purchaser Code")
                 {
-                    Editable = false;
                     ApplicationArea = All;
+                    Editable = false;
                 }
             }
             group("Audit Quality")
@@ -78,8 +78,8 @@ page 50064 "DEL Vendor Card Notation"
                 }
                 field("Note Quality"; Rec."DEL Note Quality")
                 {
-                    Importance = Promoted;
                     ApplicationArea = All;
+                    Importance = Promoted;
                 }
                 field("Realisation Date Quality"; Rec."DEL Realisation Date Quality")
                 {
@@ -100,9 +100,9 @@ page 50064 "DEL Vendor Card Notation"
                 }
                 field("Note Soc"; Rec."DEL Note Soc")
                 {
+                    ApplicationArea = All;
                     Caption = 'Social rating';
                     Importance = Promoted;
-                    ApplicationArea = All;
                 }
                 field("Realisation Date Soc"; Rec."DEL Realisation Date Soc")
                 {
@@ -114,9 +114,9 @@ page 50064 "DEL Vendor Card Notation"
                 }
                 part(Control1; "DEL Detail Social Audit")
                 {
+                    ApplicationArea = All;
                     SubPageLink = "Vendor/Contact No." = FIELD("No."),
                                   Type = FILTER(Vendor);
-                    ApplicationArea = All;
                 }
             }
             group("Environmental Audit")
@@ -129,8 +129,8 @@ page 50064 "DEL Vendor Card Notation"
                 }
                 field("Note Env"; Rec."DEL Note Env")
                 {
-                    Importance = Promoted;
                     ApplicationArea = All;
+                    Importance = Promoted;
                 }
                 field("Realisation Date Env"; Rec."DEL Realisation Date Env")
                 {
@@ -147,13 +147,13 @@ page 50064 "DEL Vendor Card Notation"
 
                 field("Qualified vendor"; Rec."DEL Qualified vendor")
                 {
-                    Importance = Promoted;
                     ApplicationArea = All;
+                    Importance = Promoted;
                 }
                 field("Date updated"; Rec."DEL Date updated")
                 {
-                    Importance = Promoted;
                     ApplicationArea = All;
+                    Importance = Promoted;
                 }
                 field(Derogation; Rec."DEL Derogation")
                 {
@@ -162,52 +162,52 @@ page 50064 "DEL Vendor Card Notation"
             }
             part(Comment; "Comment Sheet")
             {
+                ApplicationArea = All;
                 SubPageLink = "Table Name" = FILTER(Vendor),
                               "No." = FIELD("No.");
-                ApplicationArea = All;
             }
         }
         area(factboxes)
         {
             part("Vendor Statistics FactBox"; "Vendor Statistics FactBox")
             {
+                ApplicationArea = All;
                 SubPageLink = "No." = FIELD("No."),
                               "Currency Filter" = FIELD("Currency Filter"),
                               "Date Filter" = FIELD("Date Filter"),
                               "Global Dimension 1 Filter" = FIELD("Global Dimension 1 Filter"),
                               "Global Dimension 2 Filter" = FIELD("Global Dimension 2 Filter");
                 Visible = true;
-                ApplicationArea = All;
             }
             part("Vendor Hist. Buy-from FactBox"; "Vendor Hist. Buy-from FactBox")
             {
+                ApplicationArea = All;
                 SubPageLink = "No." = FIELD("No."),
                               "Currency Filter" = FIELD("Currency Filter"),
                               "Date Filter" = FIELD("Date Filter"),
                               "Global Dimension 1 Filter" = FIELD("Global Dimension 1 Filter"),
                               "Global Dimension 2 Filter" = FIELD("Global Dimension 2 Filter");
                 Visible = true;
-                ApplicationArea = All;
             }
             part("Vendor Hist. Pay-to FactBox"; "Vendor Hist. Pay-to FactBox")
             {
+                ApplicationArea = All;
                 SubPageLink = "No." = FIELD("No."),
                               "Currency Filter" = FIELD("Currency Filter"),
                               "Date Filter" = FIELD("Date Filter"),
                               "Global Dimension 1 Filter" = FIELD("Global Dimension 1 Filter"),
                               "Global Dimension 2 Filter" = FIELD("Global Dimension 2 Filter");
                 Visible = false;
-                ApplicationArea = All;
             }
             systempart(Links; Links)
             {
-                Visible = true;
                 ApplicationArea = All;
+                Visible = true;
             }
             systempart(Notes; Notes)
             {
-                Visible = true;
                 ApplicationArea = All;
+                Visible = true;
             }
         }
     }
@@ -222,6 +222,7 @@ page 50064 "DEL Vendor Card Notation"
                 Image = Vendor;
                 action("Co&mments")
                 {
+                    ApplicationArea = All;
                     Caption = 'Co&mments';
                     Image = ViewComments;
                     Promoted = true;
@@ -229,13 +230,12 @@ page 50064 "DEL Vendor Card Notation"
                     RunObject = Page "Comment Sheet";
                     RunPageLink = "Table Name" = CONST(Vendor),
                                   "No." = FIELD("No.");
-                    ApplicationArea = All;
                 }
                 action("Online Map")
                 {
+                    ApplicationArea = All;
                     Caption = 'Online Map';
                     Image = Map;
-                    ApplicationArea = All;
 
                     trigger OnAction()
                     begin
@@ -244,6 +244,7 @@ page 50064 "DEL Vendor Card Notation"
                 }
                 action("Doc&uments")
                 {
+                    ApplicationArea = All;
                     Caption = 'Audit Report';
                     Image = Documents;
                     Promoted = true;
@@ -253,7 +254,6 @@ page 50064 "DEL Vendor Card Notation"
                     RunPageLink = "No." = FIELD("No.");
                     RunPageView = SORTING("Table Name", "No.", "Comment Entry No.", "Line No.")
                                   WHERE("Table Name" = CONST(Vendor));
-                    ApplicationArea = All;
                 }
             }
             group(History)
@@ -262,6 +262,7 @@ page 50064 "DEL Vendor Card Notation"
                 Image = History;
                 action("Ledger E&ntries")
                 {
+                    ApplicationArea = All;
                     Caption = 'Ledger E&ntries';
                     Image = VendorLedger;
                     Promoted = false;
@@ -269,10 +270,10 @@ page 50064 "DEL Vendor Card Notation"
                     RunPageLink = "Vendor No." = FIELD("No.");
                     RunPageView = SORTING("Vendor No.");
                     ShortCutKey = 'Ctrl+F7';
-                    ApplicationArea = All;
                 }
                 action(Statistics)
                 {
+                    ApplicationArea = All;
                     Caption = 'Statistics';
                     Image = PayrollStatistics;
                     Promoted = true;
@@ -282,20 +283,20 @@ page 50064 "DEL Vendor Card Notation"
                                   "Global Dimension 1 Filter" = FIELD("Global Dimension 1 Filter"),
                                   "Global Dimension 2 Filter" = FIELD("Global Dimension 2 Filter");
                     ShortCutKey = 'F7';
-                    ApplicationArea = All;
                 }
                 action(Purchases)
                 {
+                    ApplicationArea = All;
                     Caption = 'Purchases';
                     Image = Purchase;
                     RunObject = Page "Vendor Purchases";
                     RunPageLink = "No." = FIELD("No."),
                                   "Global Dimension 1 Filter" = FIELD("Global Dimension 1 Filter"),
                                  "Global Dimension 2 Filter" = FIELD("Global Dimension 2 Filter");
-                    ApplicationArea = All;
                 }
                 action("Entry Statistics")
                 {
+                    ApplicationArea = All;
                     Caption = 'Entry Statistics';
                     Image = EntryStatistics;
                     RunObject = Page "Vendor Entry Statistics";
@@ -303,7 +304,6 @@ page 50064 "DEL Vendor Card Notation"
                                   "Date Filter" = FIELD("Date Filter"),
                                   "Global Dimension 1 Filter" = FIELD("Global Dimension 1 Filter"),
                                   "Global Dimension 2 Filter" = FIELD("Global Dimension 2 Filter");
-                    ApplicationArea = All;
                 }
             }
         }
@@ -359,7 +359,7 @@ page 50064 "DEL Vendor Card Notation"
         Vendor_Fo_Loc.LOOKUPMODE(TRUE);
         IF Vendor_Fo_Loc.RUNMODAL() = ACTION::LookupOK THEN BEGIN
             Vendor_Fo_Loc.GETRECORD(Vendor_Re_Loc);
-            FeeMgt_Cu_Loc.FNC_FeeCopy(1, Vendor_Re_Loc."No.", Rec."No.");
+            FeeMgt_Cu_Loc.FNC_FeeCopy("Credit Transfer Account Type"::Vendor, Vendor_Re_Loc."No.", Rec."No.");
         END;
     end;
 }

@@ -33,8 +33,8 @@ pageextension 50008 "DEL PostedSalesCreditMemo" extends "Posted Sales Credit Mem
                     lUsage: Enum "DEL Usage DocMatrix Selection";
 
                 begin
-                    IF lcuDocumentMatrixMgt.ShowDocMatrixSelection(Rec."Sell-to Customer No.", ProcessType::Manual, lUsage::"S.Cr.Memo", lrecDocMatrixSelection, TRUE) THEN
-                        lcuDocumentMatrixMgt.ProcessDocumentMatrix(lUsage::"S.Cr.Memo", ProcessType::Manual, Rec, Rec.FIELDNO("Sell-to Customer No."), Rec.FIELDNO("No."), lrecDocMatrixSelection, 0);
+                    IF lcuDocumentMatrixMgt.ShowDocMatrixSelection(Rec."Sell-to Customer No.", ProcessType::Manual, lUsage::"S.Cr.Memo".AsInteger(), lrecDocMatrixSelection, TRUE) THEN
+                        lcuDocumentMatrixMgt.ProcessDocumentMatrix(lUsage::"S.Cr.Memo".AsInteger(), ProcessType::Manual, Rec, Rec.FIELDNO("Sell-to Customer No."), Rec.FIELDNO("No."), lrecDocMatrixSelection, 0);
                 end;
             }
         }

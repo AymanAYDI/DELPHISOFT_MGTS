@@ -3,8 +3,8 @@ table 50081 "DEL EDI Delivery GLN Customer"
 
 {
     Caption = 'EDI Delivery GLN Customer';
-    LookupPageID = "DEL EDI Delivery GLN Customer";
     DataClassification = CustomerContent;
+    LookupPageID = "DEL EDI Delivery GLN Customer";
     fields
     {
         field(1; GLN; Text[30])
@@ -15,9 +15,9 @@ table 50081 "DEL EDI Delivery GLN Customer"
         field(2; "Bill-to Customer No."; Code[20])
         {
             Caption = 'Bill-to Customer No.';
+            DataClassification = CustomerContent;
             NotBlank = true;
             TableRelation = Customer;
-            DataClassification = CustomerContent;
         }
     }
 

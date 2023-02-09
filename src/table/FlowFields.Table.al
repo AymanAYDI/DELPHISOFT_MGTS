@@ -15,20 +15,20 @@ table 50044 "DEL FlowFields"
         field(10; "Provision Planned Amount"; Decimal)
         {
             CalcFormula = Sum("DEL Shipment Provision Select."."Planned Amount" WHERE(USER_ID = FIELD(USER_ID)));
-            FieldClass = FlowField;
             Caption = 'Provision Planned Amount';
+            FieldClass = FlowField;
         }
         field(20; "Provision Real Amount"; Decimal)
         {
             CalcFormula = Sum("DEL Shipment Provision Select."."Real Amount" WHERE(USER_ID = FIELD(USER_ID)));
-            FieldClass = FlowField;
             Caption = 'Provision Real Amount';
+            FieldClass = FlowField;
         }
         field(30; "Provision Amount"; Decimal)
         {
             CalcFormula = Sum("DEL Shipment Provision Select."."Provision Amount" WHERE(USER_ID = FIELD(USER_ID)));
-            FieldClass = FlowField;
             Caption = 'Provision Amount';
+            FieldClass = FlowField;
         }
         field(100; USER_ID; Code[20])
         {

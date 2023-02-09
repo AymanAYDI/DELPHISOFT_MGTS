@@ -1,28 +1,28 @@
 table 50027 "DEL Element Connection"
 {
-    LookupPageID = "DEL ACO Connection";
     Caption = 'Element Connection';
     DataClassification = CustomerContent;
+    LookupPageID = "DEL ACO Connection";
     fields
     {
         field(1; Deal_ID; Code[20])
         {
 
-            TableRelation = "DEL Deal".ID;
             Caption = 'Deal_ID';
             DataClassification = CustomerContent;
+            TableRelation = "DEL Deal".ID;
         }
         field(2; Element_ID; Code[20])
         {
-            TableRelation = "DEL Element".ID;
             Caption = 'Element_ID';
             DataClassification = CustomerContent;
+            TableRelation = "DEL Element".ID;
         }
         field(3; "Apply To"; Code[20])
         {
-            TableRelation = "DEL Element".ID;
             Caption = 'Apply To';
             DataClassification = CustomerContent;
+            TableRelation = "DEL Element".ID;
         }
         field(4; Instance; Enum "DEL Instance")
         {

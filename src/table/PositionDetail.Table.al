@@ -2,8 +2,8 @@
 table 50033 "DEL Position Detail"
 {
     Caption = 'DEL Position Detail';
-    LookupPageID = "DEL Position Detail";
     DataClassification = CustomerContent;
+    LookupPageID = "DEL Position Detail";
     fields
     {
         field(1; ID; Code[20])
@@ -30,6 +30,8 @@ table 50033 "DEL Position Detail"
         }
         field(20; "Type No."; Code[20])
         {
+            Caption = 'Type No.';
+            DataClassification = CustomerContent;
             TableRelation = IF (Type = CONST(ACO)) "Purchase Header"."No."
             ELSE
             IF (Type = CONST(VCO)) "Sales Header"."No."
@@ -41,8 +43,6 @@ table 50033 "DEL Position Detail"
             IF (Type = CONST("Purchase Invoice")) "Purch. Inv. Header"."No."
             ELSE
             IF (Type = CONST("Sales Invoice")) "Sales Invoice Header"."No.";
-            Caption = 'Type No.';
-            DataClassification = CustomerContent;
         }
         field(21; Fee_ID; Code[20])
         {
@@ -61,15 +61,15 @@ table 50033 "DEL Position Detail"
         }
         field(50; Amount; Decimal)
         {
-            DecimalPlaces = 2 : 3;
             Caption = 'Amount';
             DataClassification = CustomerContent;
+            DecimalPlaces = 2 : 3;
         }
         field(60; Currency; Code[10])
         {
-            TableRelation = Currency.Code;
             Caption = 'Currency';
             DataClassification = CustomerContent;
+            TableRelation = Currency.Code;
         }
         field(70; "Line Amount"; Decimal)
         {

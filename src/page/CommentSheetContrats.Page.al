@@ -28,8 +28,8 @@ page 50076 "DEL Comment Sheet Contrats"
                 }
                 field("Code"; Rec.Code)
                 {
-                    Visible = false;
                     ApplicationArea = All;
+                    Visible = false;
                 }
                 field("Type contrat"; Rec."DEL Type contrat")
                 {

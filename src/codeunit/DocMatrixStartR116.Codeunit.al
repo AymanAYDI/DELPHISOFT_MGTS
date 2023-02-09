@@ -4,7 +4,7 @@ codeunit 50017 "DEL DocMatrix Start R116"
     var
         lUsage: Enum "DEL Usage DocMatrix Selection";
     begin
-        cuDocumentMatrixMgt.ProcessDocumentMatrixAutomatic(lUsage::"C.Statement");
+        cuDocumentMatrixMgt.ProcessDocumentMatrixAutomatic(lUsage::"C.Statement".AsInteger());
     end;
 
     var

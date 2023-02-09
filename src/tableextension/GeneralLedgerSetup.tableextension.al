@@ -5,9 +5,9 @@ tableextension 50046 "DEL GeneralLedgerSetup" extends "General Ledger Setup" //9
         field(50000; "DEL Provision Source Code"; Code[20])
         {
             Caption = 'Provision Source Code';
+            DataClassification = CustomerContent;
 
             TableRelation = "Source Code".Code;
-            DataClassification = CustomerContent;
         }
         field(50001; "DEL Provision Journal Batch"; Text[250])
         {

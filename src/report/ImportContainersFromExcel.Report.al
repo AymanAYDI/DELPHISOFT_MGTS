@@ -1,6 +1,5 @@
 report 50056 "DEL ImportContainers FromExcel"
 {
-
     Caption = 'Import Containers From Excel';
     ProcessingOnly = true;
 
@@ -24,10 +23,7 @@ report 50056 "DEL ImportContainers FromExcel"
                         ERROR('');
 
                 ExcelBuffer.LOCKTABLE();
-                //TODO ExcelBuffer.OpenBook(FileName, sheetName);
-                ExcelBuffer.OpenBookStream(FileName, SheetName);
-
-
+                ExcelBuffer.OpenBookStream(IStream, SheetName);
                 ExcelBuffer.ReadSheet();
                 GetLastRowandColumns();
                 IF Totalrows < 2 THEN
@@ -50,7 +46,6 @@ report 50056 "DEL ImportContainers FromExcel"
 
     requestpage
     {
-
         layout
         {
         }
@@ -60,16 +55,16 @@ report 50056 "DEL ImportContainers FromExcel"
         }
 
         trigger OnQueryClosePage(CloseAction: Action): Boolean
+        var
+            FromFile: Text;
         begin
-            //TODO IF CloseAction = ACTION::OK THEN BEGIN
-            //     FileName := FileManagement.UploadFile('Import Excel', ExcelExtension);
-            //     IF FileName = '' THEN
-            //         EXIT(FALSE);
-            //     sheetName := ExcelBuffer.SelectSheetsName(FileName);
-            //     IF sheetName = '' THEN
-            //         EXIT(FALSE);
-            // END;
-
+            IF CloseAction = ACTION::OK THEN BEGIN
+                UploadIntoStream(UploadExcelMsg, '', ExcelExtension, FromFile, Istream);
+                IF FromFile = '' THEN
+                    EXIT(FALSE);
+                FileName := FileManagement.GetFileName(FromFile);
+                sheetName := ExcelBuffer.SelectSheetsNameStream(Istream);
+            END;
         end;
     }
 
@@ -78,23 +73,24 @@ report 50056 "DEL ImportContainers FromExcel"
     }
 
     var
+        TempCsvBuffer: Record "CSV Buffer" temporary;
         ContainerListBuffer: Record "DEL Container List";
         ExcelBuffer: Record "Excel Buffer";
-        TempCsvBuffer: Record "CSV Buffer" temporary;
-        TempBlob: Codeunit "Temp Blob";
         ExcelBufferDialogMgt: Codeunit "Excel Buffer Dialog Management";
         FileManagement: Codeunit "File Management";
+        TempBlob: Codeunit "Temp Blob";
+        IStream: InStream;
         EntryNo: Integer;
         i: Integer;
         TotalColumns: Integer;
         Totalrows: Integer;
-        IStream: InStream;
         AlreadyExistLbl: Label 'Lines already exist in container list. Do you want to continue ?';
         ExcelExtension: Label '*.xlsx;*.xls';
         FileEmpty: Label 'Le fichier est vide. ';
         ImportCompleted: Label 'Import completed!';
         ImportFile: Label 'Import Excel worksheet...\\', Comment = '{Locked="Excel"}';
-        FileName: InStream;
+        UploadExcelMsg: Label 'Please Choose the Excel file.';
+        FileName: Text;
         sheetName: Text;
 
     local procedure GetLastRowandColumns()
@@ -185,4 +181,3 @@ report 50056 "DEL ImportContainers FromExcel"
         END;
     end;
 }
-

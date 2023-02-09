@@ -154,12 +154,12 @@ pageextension 50051 "DEL SalesOrder" extends "Sales Order" //42
         {
             action("Post + Matrix Print")
             {
-                Promoted = true;
-                PromotedIsBig = true;
-                Image = Post;
-                PromotedCategory = Process;
-                PromotedOnly = true;
                 Caption = 'Post + Matrix Print';
+                Image = Post;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                PromotedOnly = true;
                 trigger onaction()
                 var
                     ApplicationAreaSetup: Record "Application Area Setup";
@@ -188,7 +188,7 @@ pageextension 50051 "DEL SalesOrder" extends "Sales Order" //42
                     lcuDocumentMatrixMgt.TestShipmentSelectionBeforeUptdateRequest(Rec, precDealShipmentSelection, pcdUpdateRequestID, pboShipmentSelected);
 
                     lboSalesOrderConfirmation := FALSE;
-                    IF lcuDocumentMatrixMgt.ShowDocMatrixSelection(lCustNo, ProcessType::Manual, lUsage::"S.Order", lrecDocMatrixSelection, lboSalesOrderConfirmation) THEN
+                    IF lcuDocumentMatrixMgt.ShowDocMatrixSelection(lCustNo, ProcessType::Manual, lUsage::"S.Order".AsInteger(), lrecDocMatrixSelection, lboSalesOrderConfirmation) THEN
 
                         // check if posted is configured
                         IF lrecDocMatrixSelection.Post <> lrecDocMatrixSelection.Post::" " THEN BEGIN
@@ -202,15 +202,15 @@ pageextension 50051 "DEL SalesOrder" extends "Sales Order" //42
                                 EXIT;
 
                             // post the Sales Order acording user DocMatrixSelection
-                            Rec.Invoice := lrecDocMatrixSelection.Post IN [2, 3];
-                            Rec.Ship := lrecDocMatrixSelection.Post IN [1, 3];
+                            Rec.Invoice := lrecDocMatrixSelection.Post IN ["DEL Post DocMatrix"::Invoice, "DEL Post DocMatrix"::"Ship and Invoice"];
+                            Rec.Ship := lrecDocMatrixSelection.Post IN ["DEL Post DocMatrix"::Ship, "DEL Post DocMatrix"::"Ship and Invoice"];
                             CODEUNIT.RUN(CODEUNIT::"Sales-Post", Rec);
 
                             lcuDocumentMatrixMgt.ManageRequestAfterPosting(lNo, pboShipmentSelected, pcdUpdateRequestID);
 
                             // check if the Sales Header is still available, if NOT, then it is posted and can be further processed as a "Posted Sales Invoice"
                             IF lcuDocumentMatrixMgt.GetPostedSalesInvoice(lNo, lCustNo, lrecSalesInvoiceHeader) THEN
-                                lcuDocumentMatrixMgt.ProcessDocumentMatrix(lUsage::"S.Invoice", ProcessType::Manual, lrecSalesInvoiceHeader, lFieldCustNo, lFieldNo, lrecDocMatrixSelection, 0);
+                                lcuDocumentMatrixMgt.ProcessDocumentMatrix(lUsage::"S.Invoice".AsInteger(), ProcessType::Manual, lrecSalesInvoiceHeader, lFieldCustNo, lFieldNo, lrecDocMatrixSelection, 0);
 
                         END;
                 end;
@@ -234,10 +234,10 @@ pageextension 50051 "DEL SalesOrder" extends "Sales Order" //42
             }
             action("DEL Set to 0 Qty to Ship")
             {
-                Promoted = true;
-                PromotedIsBig = true;
                 Image = UpdateShipment;
+                Promoted = true;
                 PromotedCategory = Process;
+                PromotedIsBig = true;
                 trigger OnAction()
                 var
                     UpdateSalesLinePurchaseLine: Codeunit "Update SalesLine/PurchaseLine";
@@ -248,10 +248,10 @@ pageextension 50051 "DEL SalesOrder" extends "Sales Order" //42
             action("DEL CreateSpecPurchaseOrder")
             {
                 Caption = 'Create Special Purchase Order';
-                Promoted = true;
-                PromotedIsBig = true;
                 Image = New;
+                Promoted = true;
                 PromotedCategory = Process;
+                PromotedIsBig = true;
                 trigger OnAction()
                 var
                     RequisitionLine: Record "Requisition Line";
@@ -310,21 +310,22 @@ pageextension 50051 "DEL SalesOrder" extends "Sales Order" //42
             action("DEL PostAndPrint")
             {
                 Caption = 'Post and &Print';
-                Promoted = true;
-                PromotedIsBig = true;
                 Image = PostPrint;
+                Promoted = true;
                 PromotedCategory = Process;
-                trigger OnAction()
-                begin
-                    Codeunit.Run(CODEUNIT::"Sales-Post + Print", NavigateAfterPost::Nowhere); //POST
-                end;
+                PromotedIsBig = true;
+                //TODO : NavigateAfterPost doesn't exist 
+                // trigger OnAction()
+                // begin
+                //     Codeunit.Run(CODEUNIT::"Sales-Post + Print", NavigateAfterPost::Nowhere); //POST
+                // end;
             }
             action("DEL Facture Proforma")
             {
-                Promoted = true;
-                PromotedIsBig = true;
                 Image = PrintReport;
+                Promoted = true;
                 PromotedCategory = Report;
+                PromotedIsBig = true;
                 trigger OnAction()
                 begin
                     SalesHead.RESET();
@@ -335,8 +336,8 @@ pageextension 50051 "DEL SalesOrder" extends "Sales Order" //42
             action("DEL Print Confirmation MGTS")
             {
                 ApplicationArea = Basic, Suite;
-                Promoted = true;
                 Image = Print;
+                Promoted = true;
                 PromotedCategory = Process;
                 PromotedOnly = true;
                 trigger OnAction()

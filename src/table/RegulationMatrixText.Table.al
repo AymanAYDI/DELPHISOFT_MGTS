@@ -1,21 +1,21 @@
 table 50053 "DEL Regulation Matrix Text"
 {
 
-    DrillDownPageID = "DEL Matrix Text";
-    LookupPageID = "DEL Matrix Text";
     Caption = 'Regulation Matrix Text';
     DataClassification = CustomerContent;
+    DrillDownPageID = "DEL Matrix Text";
+    LookupPageID = "DEL Matrix Text";
     fields
     {
         field(1; "Item Category Code"; Code[10])
         {
-            TableRelation = "Item Category".Code;
             DataClassification = CustomerContent;
+            TableRelation = "Item Category".Code;
         }
         field(2; "Product Group Code"; Code[10])
         {
-            TableRelation = "Product Group".Code WHERE("Item Category Code" = FIELD("Item Category Code"));
             DataClassification = CustomerContent;
+            TableRelation = "Product Group".Code WHERE("Item Category Code" = FIELD("Item Category Code"));
         }
         field(3; "Product Description"; Text[100])
         {

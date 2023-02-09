@@ -1,10 +1,10 @@
 table 50001 "DEL Texte Regulation"
 {
     Caption = 'DEL Texte Regulation';
+    DataClassification = CustomerContent;
 
     DrillDownPageID = "DEL Regulation Text";
     LookupPageID = "DEL Regulation Text";
-    DataClassification = CustomerContent;
     fields
     {
         field(1; "No."; Code[20])

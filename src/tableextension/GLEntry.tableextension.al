@@ -16,16 +16,16 @@ tableextension 50012 "DEL GLEntry" extends "G/L Entry" //17
         field(50002; "DEL Customer Provision"; Code[20])
         {
             Caption = 'Customer Provision';
+            DataClassification = CustomerContent;
 
             TableRelation = Customer."No.";
-            DataClassification = CustomerContent;
         }
         field(50003; "DEL Reverse With Doc. No."; Code[20])
         {
             Caption = 'Reverse With Doc. No.';
+            DataClassification = CustomerContent;
 
             Editable = false;
-            DataClassification = CustomerContent;
         }
     }
     keys

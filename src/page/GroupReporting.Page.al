@@ -1,12 +1,12 @@
 page 50018 "DEL Group Reporting"
 {
+    ApplicationArea = all;
     Caption = 'Group Reporting';
     DeleteAllowed = false;
     InsertAllowed = false;
     PageType = Card;
     SourceTable = "G/L Account";
     UsageCategory = Tasks;
-    ApplicationArea = all;
     layout
     {
         area(content)
@@ -95,16 +95,16 @@ page 50018 "DEL Group Reporting"
     end;
 
     var
-        TempBlob: Codeunit "Temp Blob";
         FileManagement: Codeunit "File Management";
-
-        Outsr: OutStream;
+        TempBlob: Codeunit "Temp Blob";
 
         TotalAmount: Decimal;
         Text000: Label 'File %1 Written.';
+
+        Outsr: OutStream;
+        Filename: Text;
         DateFilterBalance: Text[250];
         DateFilterIncome: Text[250];
-        Filename: Text;
 
 
     procedure CalcBalance(): Decimal
@@ -173,8 +173,8 @@ page 50018 "DEL Group Reporting"
     procedure WriteData()
     var
         GLAccount: Record "G/L Account";
-        ExportData: Text[250];
         Outs: OutStream;
+        ExportData: Text[250];
     begin
         GLAccount.SETRANGE("Account Type", Rec."Account Type"::Posting);
         GLAccount.SETFILTER("DEL Reporting Dimension 1 Code", '<>%1', '');

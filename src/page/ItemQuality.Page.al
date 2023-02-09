@@ -17,30 +17,30 @@ page 50077 "DEL Item Quality"
                 Caption = 'General';
                 field("No."; Rec."No.")
                 {
-                    Editable = false;
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field(Description; Rec.Description)
                 {
-                    Editable = false;
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field("Base Unit of Measure"; Rec."Base Unit of Measure")
                 {
-                    Editable = false;
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field(Blocked; Rec.Blocked)
                 {
+                    ApplicationArea = All;
                     Caption = 'Quality Blocked';
                     Editable = false;
-                    ApplicationArea = All;
                 }
                 field("Checklist by item"; Rec."DEL Checklist by item")
                 {
+                    ApplicationArea = All;
                     DrillDown = true;
                     DrillDownPageID = "DEL Control list by category";
-                    ApplicationArea = All;
                 }
             }
             group("General quality product ID")
@@ -48,8 +48,8 @@ page 50077 "DEL Item Quality"
                 Caption = 'General quality product ID';
                 field("Item Category Code"; Rec."Item Category Code")
                 {
-                    Editable = false;
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field("Item Category Label"; Rec."DEL Item Category Label")
                 {
@@ -131,27 +131,27 @@ page 50077 "DEL Item Quality"
                 Caption = 'Regulation identification of the product';
                 field("Nombre Regl. Generale"; Rec."DEL Nombre Regl. Generale")
                 {
+                    ApplicationArea = All;
                     DrillDown = true;
                     DrillDownPageID = "Matrix General regulation List";
-                    ApplicationArea = All;
                 }
                 field("Nombre Regl. Matiere"; Rec."DEL Nombre Regl. Matiere")
                 {
+                    ApplicationArea = All;
                     DrillDown = true;
                     DrillDownPageID = "DEL Matrix Sub. regul List";
-                    ApplicationArea = All;
                 }
                 field("Nbre Regl. Plan control"; Rec."DEL Nbre Regl. Plan control")
                 {
+                    ApplicationArea = All;
                     DrillDown = true;
                     DrillDownPageID = "DEL Matrix Plan of Cont. List";
-                    ApplicationArea = All;
                 }
             }
             part(Quality_status; "DEL Quality forms")
             {
-                SubPageLink = "Item No." = FIELD("No.");
                 ApplicationArea = All;
+                SubPageLink = "Item No." = FIELD("No.");
             }
             group("Quality status")
             {
@@ -162,13 +162,13 @@ page 50077 "DEL Item Quality"
                 }
                 field("Nom utilisateur"; Rec."DEL Nom utilisateur")
                 {
-                    Editable = false;
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field("Date Of Update"; Rec."DEL Date Of Update")
                 {
-                    Editable = false;
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field(Dispensation; Rec."DEL Dispensation")
                 {
@@ -176,21 +176,21 @@ page 50077 "DEL Item Quality"
                 }
                 field("Nom utlisateur 2"; Rec."DEL Nom utlisateur 2")
                 {
-                    Editable = false;
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field("Date Of Update 2"; Rec."DEL Date Of Update 2")
                 {
-                    Editable = false;
                     ApplicationArea = All;
+                    Editable = false;
                 }
             }
             part("Comment Sheet"; "Comment Sheet")
             {
+                ApplicationArea = All;
                 Editable = false;
                 SubPageLink = "Table Name" = FILTER(Item), "No." = FIELD("No.");
                 SubPageView = SORTING("Table Name", "No.", "Line No.") ORDER(Descending);
-                ApplicationArea = All;
             }
         }
     }
@@ -203,40 +203,41 @@ page 50077 "DEL Item Quality"
             {
                 action("Régl. Générale")
                 {
+                    ApplicationArea = All;
                     Caption = 'General product regulation';
                     Image = Register;
                     Promoted = true;
-                    PromotedOnly = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
+                    PromotedOnly = true;
                     RunObject = Page "Matrix General regulation List";
                     // RunPageLink = "Item Category Code" = FIELD("Item Category Code"), "Product Group Code" = FIELD("Product Group Code"), Mark = FIELD("Marque Produit"), "Product Description" = FIELD("Product Description"); // TODO: Field 'Product Group Code' is removed. Reason: Product Groups became first level children of Item Categories
                     RunPageView = SORTING("Item Category Code", "Product Group Code", Mark, "Product Description", "No.", Type) ORDER(Ascending) WHERE(Type = FILTER("General product"));
                     Visible = RegGenerale;
-                    ApplicationArea = All;
                 }
                 action("Régl. Matière")
                 {
+                    ApplicationArea = All;
                     Caption = 'Substance regulation';
                     Image = ItemRegisters;
                     Promoted = true;
-                    PromotedOnly = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
+                    PromotedOnly = true;
                     RunObject = Page "DEL Matrix Sub. regul List";
                     // RunPageLink = "Item Category Code" = FIELD("Item Category Code"), "Product Group Code" = FIELD("Product Group Code"), Mark = FIELD("Marque Produit"), "Product Description" = FIELD("Product Description"); // TODO: Field 'Product Group Code' is removed. Reason: Product Groups became first level children of Item Categories
                     RunPageView = SORTING("Item Category Code", "Product Group Code", Mark, "Product Description", "No.", Type) ORDER(Ascending) WHERE(Type = FILTER(Materials));
                     Visible = RegMat;
-                    ApplicationArea = All;
                 }
                 action("Reg. plan of control")
                 {
+                    ApplicationArea = All;
                     Caption = 'Plan of control regulation';
                     Image = FARegisters;
                     Promoted = true;
-                    PromotedOnly = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
+                    PromotedOnly = true;
                     RunObject = Page "DEL Matrix Plan of Cont. List";
                     //RunPageLink = "Item Category Code" = FIELD("Item Category Code"), "Product Group Code" = FIELD("Product Group Code"), Mark = FIELD("Marque Produit"), "Product Description" = FIELD("Product Description"); // TODO: Field 'Product Group Code' is removed. Reason: Product Groups became first level children of Item Categories
                     RunPageMode = View;
@@ -244,18 +245,17 @@ page 50077 "DEL Item Quality"
                                   ORDER(Ascending)
                                   WHERE(Type = FILTER("Plan of control"));
                     Visible = RegPlan;
-                    ApplicationArea = All;
                 }
                 action("Co&mments")
                 {
+                    ApplicationArea = All;
                     Caption = 'Co&mments';
                     Image = ViewComments;
                     Promoted = true;
-                    PromotedOnly = true;
                     PromotedIsBig = true;
+                    PromotedOnly = true;
                     RunObject = Page "Comment Sheet";
                     RunPageLink = "Table Name" = CONST(Item), "No." = FIELD("No.");
-                    ApplicationArea = All;
                 }
             }
         }

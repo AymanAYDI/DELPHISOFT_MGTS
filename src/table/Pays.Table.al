@@ -2,9 +2,9 @@
 table 50052 "DEL Pays"
 {
     Caption = 'Country';
+    DataClassification = CustomerContent;
     DrillDownPageID = "DEL Pays";
     LookupPageID = "DEL Pays";
-    DataClassification = CustomerContent;
     fields
     {
         field(1; "Code"; Code[10])

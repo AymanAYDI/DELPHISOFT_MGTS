@@ -338,7 +338,7 @@ codeunit 50021 "DEL Element"
                  '',
 
                  '',
-                 0,
+                 "DEL Subject Type"::" ",
                  '',
                  '',
                  '',
@@ -1347,8 +1347,8 @@ codeunit 50021 "DEL Element"
         PurchInvHeader_Re_Loc: Record "Purch. Inv. Header";
         BR_Header_Re_Loc: Record "Purch. Rcpt. Header";
         SalesInvHeader_Re_Loc: Record "Sales Invoice Header";
-        option: Option;
         option_Re_Loc: Enum "New/Existing";
+        option: Option;
     begin
         FNC_Add_BR(deal_ID_Co_Par, BR_Header_Re_Loc, '', option_Re_Loc::Existing);
         FNC_Add_Purchase_Invoice(deal_ID_Co_Par, PurchInvHeader_Re_Loc, '', option_Re_Loc::Existing);

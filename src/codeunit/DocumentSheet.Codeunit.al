@@ -109,7 +109,7 @@ codeunit 50007 "DEL Document Sheet" //TODO: Dotnet
     end;
 
 
-    procedure GetFileName(FileName: Text): Text[250]
+    procedure GetFileName(FileName: Text): Text
     var
         i: Integer;
     begin
@@ -120,7 +120,7 @@ codeunit 50007 "DEL Document Sheet" //TODO: Dotnet
         EXIT(FileName);
     end;
 
-    procedure GetDirectoryName(FileName: Text): Text[250]
+    procedure GetDirectoryName(FileName: Text): Text
     var
         i: Integer;
     begin

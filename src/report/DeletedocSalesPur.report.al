@@ -1,8 +1,8 @@
 report 50019 "DEL Delete doc Sales/Pur"
 {
+    Caption = 'Delete documents Sales/Purchase';
     DefaultLayout = RDLC;
     RDLCLayout = './src/report/RDL/DeletedocumentSalesPurchase.rdlc';
-    Caption = 'Delete documents Sales/Purchase';
 
     dataset
     {

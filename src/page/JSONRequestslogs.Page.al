@@ -1,6 +1,7 @@
 page 50140 "DEL JSON Requests logs" //TODO
 {
 
+    ApplicationArea = all;
 
     Caption = 'JSON Requests logs';
     InsertAllowed = false;
@@ -10,7 +11,6 @@ page 50140 "DEL JSON Requests logs" //TODO
     SourceTableView = SORTING(Date)
                       ORDER(Descending);
     UsageCategory = tasks;
-    ApplicationArea = all;
     layout
     {
         area(content)
@@ -20,8 +20,8 @@ page 50140 "DEL JSON Requests logs" //TODO
                 Visible = TextToFilter <> '';
                 label(TextToFilter)
                 {
-                    CaptionClass = TextToFilter;
                     Caption = 'Text To Filter';
+                    CaptionClass = TextToFilter;
                     Editable = false;
                     Style = Attention;
                     StyleExpr = TRUE;

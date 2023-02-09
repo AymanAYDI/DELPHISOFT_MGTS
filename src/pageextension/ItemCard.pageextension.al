@@ -18,26 +18,26 @@ pageextension 50049 "DEL ItemCard" extends "Item Card" //30
             // field("DEL Standardartikelgruppe"; Rec."Standardartikelgruppe") { }
             field("DEL Segment Code"; Rec."DEL Segment Code")
             {
-                Enabled = True;
-                Editable = false;
-                Caption = 'Segment Code';
                 ApplicationArea = All;
+                Caption = 'Segment Code';
+                Editable = false;
+                Enabled = True;
             }
             field("DEL DimensionValueDesc"; DimensionValueDesc)
             {
-                Enabled = True;
-                Editable = false;
-                Caption = 'Dimension Value Description';
                 ApplicationArea = All;
+                Caption = 'Dimension Value Description';
+                Editable = false;
+                Enabled = True;
             }
         }
         addafter("Automatic Ext. Texts")
         {
             field("DEL Date de creation"; Rec."DEL Date de creation")
             {
-                Editable = False;
-                Caption = 'Date de creation';
                 ApplicationArea = All;
+                Caption = 'Date de creation';
+                Editable = False;
             }
         }
         addafter("Gross Weight")
@@ -126,14 +126,14 @@ pageextension 50049 "DEL ItemCard" extends "Item Card" //30
                 }
                 field("DEL Vol cbm"; Rec."DEL Vol cbm")
                 {
-                    Editable = false;
-                    DecimalPlaces = 2 : 4;
                     ApplicationArea = All;
+                    DecimalPlaces = 2 : 4;
+                    Editable = false;
                 }
                 field("DEL Vol cbm carton transport"; Rec."DEL Vol cbm carton transport")
                 {
-                    DecimalPlaces = 2 : 4;
                     ApplicationArea = All;
+                    DecimalPlaces = 2 : 4;
                 }
                 field("DEL Length.old"; Rec."DEL Length.old")
                 {
@@ -196,52 +196,52 @@ pageextension 50049 "DEL ItemCard" extends "Item Card" //30
         {
             action("DEL Catalog Item Card NGTS")
             {
+                ApplicationArea = All;
                 Ellipsis = true;
+                Image = Worksheet;
                 //TODO RunObject=Page 50121;
                 //RunPageLink="No."=FIELD("No.");
                 Promoted = true;
-                PromotedIsBig = true;
-                Image = Worksheet;
                 PromotedCategory = New;
-                ApplicationArea = All;
+                PromotedIsBig = true;
             }
             action("DEL Item Quality")
             {
+                ApplicationArea = All;
+                Image = Agreement;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
                 RunObject = Page "DEL Item Quality";
                 RunPageLink = "No." = FIELD("No.");
-                Promoted = true;
-                PromotedIsBig = true;
-                Image = Agreement;
-                PromotedCategory = Process;
-                ApplicationArea = All;
             }
             action("DEL Prices")
             {
-                RunObject = Page "Purchase Prices";
-                RunPageView = SORTING("Item No.");
-                RunPageLink = "Item No." = FIELD("No.");
-                Image = Price;
                 ApplicationArea = All;
+                Image = Price;
+                RunObject = Page "Purchase Prices";
+                RunPageLink = "Item No." = FIELD("No.");
+                RunPageView = SORTING("Item No.");
             }
             action("DEL Sales_Prices")
             {
-                RunObject = Page "Sales Prices";
-                RunPageView = SORTING("Item No.");
-                RunPageLink = "Item No." = FIELD("No.");
-                Image = Price;
                 ApplicationArea = All;
+                Image = Price;
+                RunObject = Page "Sales Prices";
+                RunPageLink = "Item No." = FIELD("No.");
+                RunPageView = SORTING("Item No.");
             }
         }
     }
     var
+        DimensionValue: Record 349;
+        Marque_Rec: Record 5720;
         ItemCategory: Record 5722;
+        DimensionValueDesc: Text[50];
         ItemCategoryDesc: Text[50];
+        MarqueDesc: Text[50];
         //TODO ProductGroup : Record 5723;
         ProductGroupDesc: Text[50];
-        DimensionValue: Record 349;
-        DimensionValueDesc: Text[50];
-        Marque_Rec: Record 5720;
-        MarqueDesc: Text[50];
 
     trigger OnAfterGetRecord()
     begin

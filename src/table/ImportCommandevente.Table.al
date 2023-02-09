@@ -1,9 +1,9 @@
 table 50002 "DEL Import Commande vente"
 {
     Caption = 'DEL Import Commande vente';
+    DataClassification = CustomerContent;
     DrillDownPageID = "DEL Import Commande vente";
     LookupPageID = "DEL Import Commande vente";
-    DataClassification = CustomerContent;
     fields
     {
         field(1; "Document No."; Code[20])
@@ -57,8 +57,8 @@ table 50002 "DEL Import Commande vente"
 
         {
             Caption = 'Error';
-            Editable = false;
             DataClassification = CustomerContent;
+            Editable = false;
         }
     }
 

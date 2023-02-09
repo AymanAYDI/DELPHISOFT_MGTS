@@ -96,7 +96,7 @@ pageextension 50019 "DEL CustomerCard" extends "Customer Card" //21
                     CustomerList_Fo_Loc.LOOKUPMODE(TRUE);
                     IF CustomerList_Fo_Loc.RUNMODAL() = ACTION::LookupOK THEN BEGIN
                         CustomerList_Fo_Loc.GETRECORD(Customer_Re_Loc);
-                        FeeMgt_Cu_Loc.FNC_FeeCopy(0, Customer_Re_Loc."No.", Rec."No.");
+                        FeeMgt_Cu_Loc.FNC_FeeCopy("Credit Transfer Account Type"::Customer, Customer_Re_Loc."No.", Rec."No.");
                     END;
                 end;
             }

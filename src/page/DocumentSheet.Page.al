@@ -50,13 +50,13 @@ page 50065 "DEL Document Sheet"
         {
             systempart(Links; Links)
             {
-                Visible = false;
                 ApplicationArea = all;
+                Visible = false;
             }
             systempart(Notes; Notes)
             {
-                Visible = false;
                 ApplicationArea = all;
+                Visible = false;
             }
         }
     }
@@ -67,14 +67,14 @@ page 50065 "DEL Document Sheet"
         {
             action(MgtsAdd)
             {
+                ApplicationArea = all;
                 Caption = 'Add';
                 Ellipsis = true;
                 Image = Add;
                 Promoted = true;
-                PromotedOnly = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
-                ApplicationArea = all;
+                PromotedOnly = true;
 
                 trigger OnAction()
                 begin
@@ -83,13 +83,13 @@ page 50065 "DEL Document Sheet"
             }
             action(MgtsOpen)
             {
+                ApplicationArea = all;
                 Caption = 'Open';
                 Image = View;
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 ShortCutKey = 'Return';
-                ApplicationArea = all;
 
                 trigger OnAction()
                 begin
@@ -110,12 +110,12 @@ page 50065 "DEL Document Sheet"
     local procedure Add()
     var
         DocumentLine: Record "DEL Document Line";
+        TempBlob: Codeunit "Temp Blob";
         InStr: InStream;
         LastLineNo: Integer;
         OutStr: OutStream;
         ImportFileName: Text;
         ServerFileName: Text;
-        TempBlob: Codeunit "Temp Blob";
     begin
         IF NOT Document_CU.OpenFile(ImportFileName, ServerFileName) THEN
             EXIT;

@@ -71,12 +71,12 @@ report 50006 "DEL Import Excel"
         StartDate: Date;
         CurrentUnitPrice: Decimal;
         NewPrice: Decimal;
+        SalesTypeOption: Enum "Sales Price Type";
         FileName: InStream;
         i: Integer;
 
         TotalColumns: Integer;
         Totalrows: Integer;
-        SalesTypeOption: Enum "Sales Price Type";
         SalesType: Text;
         sheetName: Text;
 

@@ -1,16 +1,16 @@
 table 50005 "DEL Contact_ItemCategory"
 {
     Caption = 'DEL Contact_ItemCategory';
+    DataClassification = CustomerContent;
     DrillDownPageID = "DEL Contact_ItemCategory";
     LookupPageID = "DEL Contact_ItemCategory";
-    DataClassification = CustomerContent;
     fields
     {
         field(10; contactNo; Code[10])
         {
-            TableRelation = Contact;
             Caption = 'contactNo';
             DataClassification = CustomerContent;
+            TableRelation = Contact;
         }
         field(20; ItemCategory; Code[10])
         {

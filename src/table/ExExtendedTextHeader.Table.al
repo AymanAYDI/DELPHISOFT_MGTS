@@ -2,8 +2,8 @@ table 99208 "DEL Ex_Extended Text Header"
 {
     Caption = 'Extended Text Header';
     DataCaptionFields = "No.", "Language Code", "Text No.";
-    LookupPageID = "Extended Text List";
     DataClassification = CustomerContent;
+    LookupPageID = "Extended Text List";
     fields
     {
         field(1; "Table Name"; Enum "Extended Text Table Name")
@@ -14,6 +14,7 @@ table 99208 "DEL Ex_Extended Text Header"
         field(2; "No."; Code[20])
         {
             Caption = 'No.';
+            DataClassification = CustomerContent;
             TableRelation = IF ("Table Name" = CONST("Standard Text")) "Standard Text"
             ELSE
             IF ("Table Name" = CONST("G/L Account")) "G/L Account"
@@ -21,13 +22,12 @@ table 99208 "DEL Ex_Extended Text Header"
             IF ("Table Name" = CONST("Item")) Item
             ELSE
             IF ("Table Name" = CONST("Resource")) Resource;
-            DataClassification = CustomerContent;
         }
         field(3; "Language Code"; Code[10])
         {
             Caption = 'Language Code';
-            TableRelation = Language;
             DataClassification = CustomerContent;
+            TableRelation = Language;
             trigger OnValidate()
             begin
                 IF "Language Code" <> '' THEN
@@ -37,8 +37,8 @@ table 99208 "DEL Ex_Extended Text Header"
         field(4; "Text No."; Integer)
         {
             Caption = 'Text No.';
-            Editable = false;
             DataClassification = CustomerContent;
+            Editable = false;
         }
         field(5; "Starting Date"; Date)
         {
@@ -63,32 +63,32 @@ table 99208 "DEL Ex_Extended Text Header"
         field(11; "Sales Quote"; Boolean)
         {
             Caption = 'Sales Quote';
-            InitValue = true;
             DataClassification = CustomerContent;
+            InitValue = true;
         }
         field(12; "Sales Invoice"; Boolean)
         {
             Caption = 'Sales Invoice';
-            InitValue = true;
             DataClassification = CustomerContent;
+            InitValue = true;
         }
         field(13; "Sales Order"; Boolean)
         {
             Caption = 'Sales Order';
-            InitValue = true;
             DataClassification = CustomerContent;
+            InitValue = true;
         }
         field(14; "Sales Credit Memo"; Boolean)
         {
             Caption = 'Sales Credit Memo';
-            InitValue = true;
             DataClassification = CustomerContent;
+            InitValue = true;
         }
         field(15; "Purchase Quote"; Boolean)
         {
             Caption = 'Purchase Quote';
-            InitValue = true;
             DataClassification = CustomerContent;
+            InitValue = true;
             trigger OnValidate()
             begin
                 IF "Purchase Quote" THEN
@@ -98,8 +98,8 @@ table 99208 "DEL Ex_Extended Text Header"
         field(16; "Purchase Invoice"; Boolean)
         {
             Caption = 'Purchase Invoice';
-            InitValue = true;
             DataClassification = CustomerContent;
+            InitValue = true;
             trigger OnValidate()
             begin
                 IF "Purchase Invoice" THEN
@@ -109,8 +109,8 @@ table 99208 "DEL Ex_Extended Text Header"
         field(17; "Purchase Order"; Boolean)
         {
             Caption = 'Purchase Order';
-            InitValue = true;
             DataClassification = CustomerContent;
+            InitValue = true;
             trigger OnValidate()
             begin
                 IF "Purchase Order" THEN
@@ -120,8 +120,8 @@ table 99208 "DEL Ex_Extended Text Header"
         field(18; "Purchase Credit Memo"; Boolean)
         {
             Caption = 'Purchase Credit Memo';
-            InitValue = true;
             DataClassification = CustomerContent;
+            InitValue = true;
             trigger OnValidate()
             begin
                 IF "Purchase Credit Memo" THEN
@@ -131,26 +131,26 @@ table 99208 "DEL Ex_Extended Text Header"
         field(19; Reminder; Boolean)
         {
             Caption = 'Reminder';
-            InitValue = true;
             DataClassification = CustomerContent;
+            InitValue = true;
         }
         field(20; "Finance Charge Memo"; Boolean)
         {
             Caption = 'Finance Charge Memo';
-            InitValue = true;
             DataClassification = CustomerContent;
+            InitValue = true;
         }
         field(21; "Sales Blanket Order"; Boolean)
         {
             Caption = 'Sales Blanket Order';
-            InitValue = true;
             DataClassification = CustomerContent;
+            InitValue = true;
         }
         field(22; "Purchase Blanket Order"; Boolean)
         {
             Caption = 'Purchase Blanket Order';
-            InitValue = true;
             DataClassification = CustomerContent;
+            InitValue = true;
             trigger OnValidate()
             begin
                 IF "Purchase Blanket Order" THEN
@@ -160,62 +160,62 @@ table 99208 "DEL Ex_Extended Text Header"
         field(23; "Prepmt. Sales Invoice"; Boolean)
         {
             Caption = 'Prepmt. Sales Invoice';
-            InitValue = true;
             DataClassification = CustomerContent;
+            InitValue = true;
         }
         field(24; "Prepmt. Sales Credit Memo"; Boolean)
         {
             Caption = 'Prepmt. Sales Credit Memo';
-            InitValue = true;
             DataClassification = CustomerContent;
+            InitValue = true;
         }
         field(25; "Prepmt. Purchase Invoice"; Boolean)
         {
             Caption = 'Prepmt. Purchase Invoice';
-            InitValue = true;
             DataClassification = CustomerContent;
+            InitValue = true;
         }
         field(26; "Prepmt. Purchase Credit Memo"; Boolean)
         {
             Caption = 'Prepmt. Purchase Credit Memo';
-            InitValue = true;
             DataClassification = CustomerContent;
+            InitValue = true;
         }
         field(5900; "Service Order"; Boolean)
         {
             Caption = 'Service Order';
-            InitValue = true;
             DataClassification = CustomerContent;
+            InitValue = true;
         }
         field(5901; "Service Quote"; Boolean)
         {
             Caption = 'Service Quote';
-            InitValue = true;
             DataClassification = CustomerContent;
+            InitValue = true;
         }
         field(5902; "Service Invoice"; Boolean)
         {
             Caption = 'Service Invoice';
-            InitValue = true;
             DataClassification = CustomerContent;
+            InitValue = true;
         }
         field(5903; "Service Credit Memo"; Boolean)
         {
             Caption = 'Service Credit Memo';
-            InitValue = true;
             DataClassification = CustomerContent;
+            InitValue = true;
         }
         field(6600; "Sales Return Order"; Boolean)
         {
             Caption = 'Sales Return Order';
-            InitValue = true;
             DataClassification = CustomerContent;
+            InitValue = true;
         }
         field(6605; "Purchase Return Order"; Boolean)
         {
             Caption = 'Purchase Return Order';
-            InitValue = true;
             DataClassification = CustomerContent;
+            InitValue = true;
         }
         //---------Spécifique pays Suisse: à voir avec Ayman
         field(4006496; Lieferantext; Boolean)
@@ -237,8 +237,8 @@ table 99208 "DEL Ex_Extended Text Header"
         {
             Caption = 'Description';
             Compressed = false;
-            SubType = Memo;
             DataClassification = CustomerContent;
+            SubType = Memo;
         }
         field(5005270; "Delivery Reminder"; Boolean)
         {

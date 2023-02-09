@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Report xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:cl="http://schemas.microsoft.com/sqlserver/reporting/2010/01/componentdefinition" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2010/01/reportdefinition">
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -11,243 +11,6 @@
       <rd:DataSourceID>9c9779e5-3f05-4461-a011-ab8a81788e64</rd:DataSourceID>
     </DataSource>
   </DataSources>
-  <DataSets>
-    <DataSet Name="DataSet_Result">
-      <Query>
-        <DataSourceName>DataSource</DataSourceName>
-        <CommandText />
-      </Query>
-      <Fields>
-        <Field Name="TodayFormatted">
-          <DataField>TodayFormatted</DataField>
-        </Field>
-        <Field Name="CustGetRangeMaxDateFilter">
-          <DataField>CustGetRangeMaxDateFilter</DataField>
-        </Field>
-        <Field Name="CompanyName">
-          <DataField>CompanyName</DataField>
-        </Field>
-        <Field Name="CustTableCaptionCustFilter">
-          <DataField>CustTableCaptionCustFilter</DataField>
-        </Field>
-        <Field Name="PrintOnePerPage">
-          <DataField>PrintOnePerPage</DataField>
-        </Field>
-        <Field Name="OutputNo">
-          <DataField>OutputNo</DataField>
-        </Field>
-        <Field Name="No_Cust">
-          <DataField>No_Cust</DataField>
-        </Field>
-        <Field Name="Address">
-          <DataField>Address</DataField>
-        </Field>
-        <Field Name="TransferAmt">
-          <DataField>TransferAmt</DataField>
-        </Field>
-        <Field Name="TransferAmtFormat">
-          <DataField>TransferAmtFormat</DataField>
-        </Field>
-        <Field Name="CustBalancetoDateCaption">
-          <DataField>CustBalancetoDateCaption</DataField>
-        </Field>
-        <Field Name="PageNoCaption">
-          <DataField>PageNoCaption</DataField>
-        </Field>
-        <Field Name="DueDateCaption">
-          <DataField>DueDateCaption</DataField>
-        </Field>
-        <Field Name="AgeCaption">
-          <DataField>AgeCaption</DataField>
-        </Field>
-        <Field Name="DateCaption">
-          <DataField>DateCaption</DataField>
-        </Field>
-        <Field Name="DaysCaption">
-          <DataField>DaysCaption</DataField>
-        </Field>
-        <Field Name="ReferenceCaption">
-          <DataField>ReferenceCaption</DataField>
-        </Field>
-        <Field Name="EntryNoCaption">
-          <DataField>EntryNoCaption</DataField>
-        </Field>
-        <Field Name="NoCaption">
-          <DataField>NoCaption</DataField>
-        </Field>
-        <Field Name="DocumentCaption">
-          <DataField>DocumentCaption</DataField>
-        </Field>
-        <Field Name="DescriptionCaption">
-          <DataField>DescriptionCaption</DataField>
-        </Field>
-        <Field Name="AmountCaption">
-          <DataField>AmountCaption</DataField>
-        </Field>
-        <Field Name="AmountLCYCaption">
-          <DataField>AmountLCYCaption</DataField>
-        </Field>
-        <Field Name="TransferCaption">
-          <DataField>TransferCaption</DataField>
-        </Field>
-        <Field Name="PostingDate_CustLedgEntry">
-          <DataField>PostingDate_CustLedgEntry</DataField>
-        </Field>
-        <Field Name="DocType_CustLedgEntry">
-          <DataField>DocType_CustLedgEntry</DataField>
-        </Field>
-        <Field Name="DocNo_CustLedgEntry">
-          <DataField>DocNo_CustLedgEntry</DataField>
-        </Field>
-        <Field Name="Desc_CustLedgEntry">
-          <DataField>Desc_CustLedgEntry</DataField>
-        </Field>
-        <Field Name="OriginalAmt">
-          <DataField>OriginalAmt</DataField>
-        </Field>
-        <Field Name="OriginalAmtFormat">
-          <DataField>OriginalAmtFormat</DataField>
-        </Field>
-        <Field Name="EntryNo_CustLedgEntry">
-          <DataField>EntryNo_CustLedgEntry</DataField>
-        </Field>
-        <Field Name="CurrencyCode">
-          <DataField>CurrencyCode</DataField>
-        </Field>
-        <Field Name="AgeDays">
-          <DataField>AgeDays</DataField>
-        </Field>
-        <Field Name="DueDays">
-          <DataField>DueDays</DataField>
-        </Field>
-        <Field Name="DueDate_CustLedgEntry">
-          <DataField>DueDate_CustLedgEntry</DataField>
-        </Field>
-        <Field Name="NoOpenEntries">
-          <DataField>NoOpenEntries</DataField>
-        </Field>
-        <Field Name="OriginalAmtLCY">
-          <DataField>OriginalAmtLCY</DataField>
-        </Field>
-        <Field Name="OriginalAmtLCYFormat">
-          <DataField>OriginalAmtLCYFormat</DataField>
-        </Field>
-        <Field Name="DateFilter_CustLedgEntry">
-          <DataField>DateFilter_CustLedgEntry</DataField>
-        </Field>
-        <Field Name="EntryType_Integer">
-          <DataField>EntryType_Integer</DataField>
-        </Field>
-        <Field Name="EntryType_DtldCustLedgEntry">
-          <DataField>EntryType_DtldCustLedgEntry</DataField>
-        </Field>
-        <Field Name="PostingDate_DtldCustLedgEntry">
-          <DataField>PostingDate_DtldCustLedgEntry</DataField>
-        </Field>
-        <Field Name="DocType_DtldCustLedgEntry">
-          <DataField>DocType_DtldCustLedgEntry</DataField>
-        </Field>
-        <Field Name="DocNo_DtldCustLedgEntry">
-          <DataField>DocNo_DtldCustLedgEntry</DataField>
-        </Field>
-        <Field Name="Amt">
-          <DataField>Amt</DataField>
-        </Field>
-        <Field Name="AmtFormat">
-          <DataField>AmtFormat</DataField>
-        </Field>
-        <Field Name="CurrencyCode_DtldCustLedgEntry">
-          <DataField>CurrencyCode_DtldCustLedgEntry</DataField>
-        </Field>
-        <Field Name="AmtLCY">
-          <DataField>AmtLCY</DataField>
-        </Field>
-        <Field Name="AmtLCYFormat">
-          <DataField>AmtLCYFormat</DataField>
-        </Field>
-        <Field Name="RemainingAmt">
-          <DataField>RemainingAmt</DataField>
-        </Field>
-        <Field Name="RemainingAmtFormat">
-          <DataField>RemainingAmtFormat</DataField>
-        </Field>
-        <Field Name="CustLedgEntry3DocNo">
-          <DataField>CustLedgEntry3DocNo</DataField>
-        </Field>
-        <Field Name="RemainingAmtLCY">
-          <DataField>RemainingAmtLCY</DataField>
-        </Field>
-        <Field Name="RemainingAmtLCYFormat">
-          <DataField>RemainingAmtLCYFormat</DataField>
-        </Field>
-        <Field Name="EntryNo_DtldCustLedgEntry">
-          <DataField>EntryNo_DtldCustLedgEntry</DataField>
-        </Field>
-        <Field Name="ConsNo_DtldCustLedgEntry">
-          <DataField>ConsNo_DtldCustLedgEntry</DataField>
-        </Field>
-        <Field Name="CustLedgEntryNo_DtldCustLedgEntry">
-          <DataField>CustLedgEntryNo_DtldCustLedgEntry</DataField>
-        </Field>
-        <Field Name="TotalCustName">
-          <DataField>TotalCustName</DataField>
-        </Field>
-        <Field Name="CurrencyTotalBuffTotalAmt">
-          <DataField>CurrencyTotalBuffTotalAmt</DataField>
-        </Field>
-        <Field Name="CurrencyTotalBuffTotalAmtFormat">
-          <DataField>CurrencyTotalBuffTotalAmtFormat</DataField>
-        </Field>
-        <Field Name="CurrencyTotalBuffCurrCode">
-          <DataField>CurrencyTotalBuffCurrCode</DataField>
-        </Field>
-        <Field Name="CurrencyTotalBuffTotalAmtLCY">
-          <DataField>CurrencyTotalBuffTotalAmtLCY</DataField>
-        </Field>
-        <Field Name="CurrencyTotalBuffTotalAmtLCYFormat">
-          <DataField>CurrencyTotalBuffTotalAmtLCYFormat</DataField>
-        </Field>
-        <Field Name="GLSetupLCYCode">
-          <DataField>GLSetupLCYCode</DataField>
-        </Field>
-        <Field Name="CustomerTotalLCY">
-          <DataField>CustomerTotalLCY</DataField>
-        </Field>
-        <Field Name="CustomerTotalLCYFormat">
-          <DataField>CustomerTotalLCYFormat</DataField>
-        </Field>
-        <Field Name="CurrencyTotalBuff2CurrCode">
-          <DataField>CurrencyTotalBuff2CurrCode</DataField>
-        </Field>
-        <Field Name="CurrencyTotalBuff2TotalAmt">
-          <DataField>CurrencyTotalBuff2TotalAmt</DataField>
-        </Field>
-        <Field Name="CurrencyTotalBuff2TotalAmtFormat">
-          <DataField>CurrencyTotalBuff2TotalAmtFormat</DataField>
-        </Field>
-        <Field Name="TotalReportLCY">
-          <DataField>TotalReportLCY</DataField>
-        </Field>
-        <Field Name="TotalReportLCYFormat">
-          <DataField>TotalReportLCYFormat</DataField>
-        </Field>
-        <Field Name="TotalCaption">
-          <DataField>TotalCaption</DataField>
-        </Field>
-        <Field Name="TotalBalancetoDateCaption">
-          <DataField>TotalBalancetoDateCaption</DataField>
-        </Field>
-        <Field Name="GLSetupLCYCode_Integer3">
-          <DataField>GLSetupLCYCode_Integer3</DataField>
-        </Field>
-      </Fields>
-      <rd:DataSetInfo>
-        <rd:DataSetName>DataSet</rd:DataSetName>
-        <rd:SchemaPath>Report.xsd</rd:SchemaPath>
-        <rd:TableName>Result</rd:TableName>
-      </rd:DataSetInfo>
-    </DataSet>
-  </DataSets>
   <ReportSections>
     <ReportSection>
       <Body>
@@ -3980,4 +3743,236 @@ End function
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Cm</rd:ReportUnitType>
   <rd:ReportID>3d1940eb-f79b-44e9-a628-ffe781269b07</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="TodayFormatted">
+          <DataField>TodayFormatted</DataField>
+        </Field>
+        <Field Name="CustGetRangeMaxDateFilter">
+          <DataField>CustGetRangeMaxDateFilter</DataField>
+        </Field>
+        <Field Name="CompanyName">
+          <DataField>CompanyName</DataField>
+        </Field>
+        <Field Name="CustTableCaptionCustFilter">
+          <DataField>CustTableCaptionCustFilter</DataField>
+        </Field>
+        <Field Name="PrintOnePerPage">
+          <DataField>PrintOnePerPage</DataField>
+        </Field>
+        <Field Name="OutputNo">
+          <DataField>OutputNo</DataField>
+        </Field>
+        <Field Name="No_Cust">
+          <DataField>No_Cust</DataField>
+        </Field>
+        <Field Name="Address">
+          <DataField>Address</DataField>
+        </Field>
+        <Field Name="TransferAmt">
+          <DataField>TransferAmt</DataField>
+        </Field>
+        <Field Name="TransferAmtFormat">
+          <DataField>TransferAmtFormat</DataField>
+        </Field>
+        <Field Name="CustBalancetoDateCaption">
+          <DataField>CustBalancetoDateCaption</DataField>
+        </Field>
+        <Field Name="PageNoCaption">
+          <DataField>PageNoCaption</DataField>
+        </Field>
+        <Field Name="DueDateCaption">
+          <DataField>DueDateCaption</DataField>
+        </Field>
+        <Field Name="AgeCaption">
+          <DataField>AgeCaption</DataField>
+        </Field>
+        <Field Name="DateCaption">
+          <DataField>DateCaption</DataField>
+        </Field>
+        <Field Name="DaysCaption">
+          <DataField>DaysCaption</DataField>
+        </Field>
+        <Field Name="ReferenceCaption">
+          <DataField>ReferenceCaption</DataField>
+        </Field>
+        <Field Name="EntryNoCaption">
+          <DataField>EntryNoCaption</DataField>
+        </Field>
+        <Field Name="NoCaption">
+          <DataField>NoCaption</DataField>
+        </Field>
+        <Field Name="DocumentCaption">
+          <DataField>DocumentCaption</DataField>
+        </Field>
+        <Field Name="DescriptionCaption">
+          <DataField>DescriptionCaption</DataField>
+        </Field>
+        <Field Name="AmountCaption">
+          <DataField>AmountCaption</DataField>
+        </Field>
+        <Field Name="AmountLCYCaption">
+          <DataField>AmountLCYCaption</DataField>
+        </Field>
+        <Field Name="TransferCaption">
+          <DataField>TransferCaption</DataField>
+        </Field>
+        <Field Name="PostingDate_CustLedgEntry">
+          <DataField>PostingDate_CustLedgEntry</DataField>
+        </Field>
+        <Field Name="DocType_CustLedgEntry">
+          <DataField>DocType_CustLedgEntry</DataField>
+        </Field>
+        <Field Name="DocNo_CustLedgEntry">
+          <DataField>DocNo_CustLedgEntry</DataField>
+        </Field>
+        <Field Name="Desc_CustLedgEntry">
+          <DataField>Desc_CustLedgEntry</DataField>
+        </Field>
+        <Field Name="OriginalAmt">
+          <DataField>OriginalAmt</DataField>
+        </Field>
+        <Field Name="OriginalAmtFormat">
+          <DataField>OriginalAmtFormat</DataField>
+        </Field>
+        <Field Name="EntryNo_CustLedgEntry">
+          <DataField>EntryNo_CustLedgEntry</DataField>
+        </Field>
+        <Field Name="CurrencyCode">
+          <DataField>CurrencyCode</DataField>
+        </Field>
+        <Field Name="AgeDays">
+          <DataField>AgeDays</DataField>
+        </Field>
+        <Field Name="DueDays">
+          <DataField>DueDays</DataField>
+        </Field>
+        <Field Name="DueDate_CustLedgEntry">
+          <DataField>DueDate_CustLedgEntry</DataField>
+        </Field>
+        <Field Name="NoOpenEntries">
+          <DataField>NoOpenEntries</DataField>
+        </Field>
+        <Field Name="OriginalAmtLCY">
+          <DataField>OriginalAmtLCY</DataField>
+        </Field>
+        <Field Name="OriginalAmtLCYFormat">
+          <DataField>OriginalAmtLCYFormat</DataField>
+        </Field>
+        <Field Name="DateFilter_CustLedgEntry">
+          <DataField>DateFilter_CustLedgEntry</DataField>
+        </Field>
+        <Field Name="EntryType_Integer">
+          <DataField>EntryType_Integer</DataField>
+        </Field>
+        <Field Name="EntryType_DtldCustLedgEntry">
+          <DataField>EntryType_DtldCustLedgEntry</DataField>
+        </Field>
+        <Field Name="PostingDate_DtldCustLedgEntry">
+          <DataField>PostingDate_DtldCustLedgEntry</DataField>
+        </Field>
+        <Field Name="DocType_DtldCustLedgEntry">
+          <DataField>DocType_DtldCustLedgEntry</DataField>
+        </Field>
+        <Field Name="DocNo_DtldCustLedgEntry">
+          <DataField>DocNo_DtldCustLedgEntry</DataField>
+        </Field>
+        <Field Name="Amt">
+          <DataField>Amt</DataField>
+        </Field>
+        <Field Name="AmtFormat">
+          <DataField>AmtFormat</DataField>
+        </Field>
+        <Field Name="CurrencyCode_DtldCustLedgEntry">
+          <DataField>CurrencyCode_DtldCustLedgEntry</DataField>
+        </Field>
+        <Field Name="AmtLCY">
+          <DataField>AmtLCY</DataField>
+        </Field>
+        <Field Name="AmtLCYFormat">
+          <DataField>AmtLCYFormat</DataField>
+        </Field>
+        <Field Name="RemainingAmt">
+          <DataField>RemainingAmt</DataField>
+        </Field>
+        <Field Name="RemainingAmtFormat">
+          <DataField>RemainingAmtFormat</DataField>
+        </Field>
+        <Field Name="CustLedgEntry3DocNo">
+          <DataField>CustLedgEntry3DocNo</DataField>
+        </Field>
+        <Field Name="RemainingAmtLCY">
+          <DataField>RemainingAmtLCY</DataField>
+        </Field>
+        <Field Name="RemainingAmtLCYFormat">
+          <DataField>RemainingAmtLCYFormat</DataField>
+        </Field>
+        <Field Name="EntryNo_DtldCustLedgEntry">
+          <DataField>EntryNo_DtldCustLedgEntry</DataField>
+        </Field>
+        <Field Name="ConsNo_DtldCustLedgEntry">
+          <DataField>ConsNo_DtldCustLedgEntry</DataField>
+        </Field>
+        <Field Name="CustLedgEntryNo_DtldCustLedgEntry">
+          <DataField>CustLedgEntryNo_DtldCustLedgEntry</DataField>
+        </Field>
+        <Field Name="TotalCustName">
+          <DataField>TotalCustName</DataField>
+        </Field>
+        <Field Name="CurrencyTotalBuffTotalAmt">
+          <DataField>CurrencyTotalBuffTotalAmt</DataField>
+        </Field>
+        <Field Name="CurrencyTotalBuffTotalAmtFormat">
+          <DataField>CurrencyTotalBuffTotalAmtFormat</DataField>
+        </Field>
+        <Field Name="CurrencyTotalBuffCurrCode">
+          <DataField>CurrencyTotalBuffCurrCode</DataField>
+        </Field>
+        <Field Name="CurrencyTotalBuffTotalAmtLCY">
+          <DataField>CurrencyTotalBuffTotalAmtLCY</DataField>
+        </Field>
+        <Field Name="CurrencyTotalBuffTotalAmtLCYFormat">
+          <DataField>CurrencyTotalBuffTotalAmtLCYFormat</DataField>
+        </Field>
+        <Field Name="GLSetupLCYCode">
+          <DataField>GLSetupLCYCode</DataField>
+        </Field>
+        <Field Name="CustomerTotalLCY">
+          <DataField>CustomerTotalLCY</DataField>
+        </Field>
+        <Field Name="CustomerTotalLCYFormat">
+          <DataField>CustomerTotalLCYFormat</DataField>
+        </Field>
+        <Field Name="CurrencyTotalBuff2CurrCode">
+          <DataField>CurrencyTotalBuff2CurrCode</DataField>
+        </Field>
+        <Field Name="CurrencyTotalBuff2TotalAmt">
+          <DataField>CurrencyTotalBuff2TotalAmt</DataField>
+        </Field>
+        <Field Name="CurrencyTotalBuff2TotalAmtFormat">
+          <DataField>CurrencyTotalBuff2TotalAmtFormat</DataField>
+        </Field>
+        <Field Name="TotalReportLCY">
+          <DataField>TotalReportLCY</DataField>
+        </Field>
+        <Field Name="TotalReportLCYFormat">
+          <DataField>TotalReportLCYFormat</DataField>
+        </Field>
+        <Field Name="TotalCaption">
+          <DataField>TotalCaption</DataField>
+        </Field>
+        <Field Name="TotalBalancetoDateCaption">
+          <DataField>TotalBalancetoDateCaption</DataField>
+        </Field>
+        <Field Name="GLSetupLCYCode_Integer3">
+          <DataField>GLSetupLCYCode_Integer3</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
 </Report>

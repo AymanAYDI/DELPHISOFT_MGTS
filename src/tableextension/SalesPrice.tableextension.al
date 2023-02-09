@@ -5,10 +5,10 @@ tableextension 50040 "DEL SalesPrice" extends "Sales Price"
         field(50000; "DEL Vendor No."; Code[20])
         {
             Caption = 'Vendor No.';
+            DataClassification = CustomerContent;
             Editable = false;
             TableRelation = Vendor;
             ValidateTableRelation = true;
-            DataClassification = CustomerContent;
         }
         field(50001; "DEL Vendor Name"; Text[50])
         {

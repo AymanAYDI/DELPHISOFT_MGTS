@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Report xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:cl="http://schemas.microsoft.com/sqlserver/reporting/2010/01/componentdefinition" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2010/01/reportdefinition">
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -11,246 +11,6 @@
       <rd:DataSourceID>235bdf14-017d-41bd-bf35-d40ddf4087c4</rd:DataSourceID>
     </DataSource>
   </DataSources>
-  <DataSets>
-    <DataSet Name="DataSet_Result">
-      <Query>
-        <DataSourceName>DataSource</DataSourceName>
-        <CommandText />
-      </Query>
-      <Fields>
-        <Field Name="JournalBatchName_GenJournalLine">
-          <DataField>JournalBatchName_GenJournalLine</DataField>
-        </Field>
-        <Field Name="PageNumber">
-          <DataField>PageNumber</DataField>
-        </Field>
-        <Field Name="TodayFormatted">
-          <DataField>TodayFormatted</DataField>
-        </Field>
-        <Field Name="CompanyName">
-          <DataField>CompanyName</DataField>
-        </Field>
-        <Field Name="intLayout">
-          <DataField>intLayout</DataField>
-        </Field>
-        <Field Name="AccountNo_GenJournalLine">
-          <DataField>AccountNo_GenJournalLine</DataField>
-        </Field>
-        <Field Name="VendorLedgerEntryDueDate">
-          <DataField>VendorLedgerEntryDueDate</DataField>
-        </Field>
-        <Field Name="AppliestoDocNo_GenJournalLine">
-          <DataField>AppliestoDocNo_GenJournalLine</DataField>
-        </Field>
-        <Field Name="CurrencyCode_GenJournalLine">
-          <DataField>CurrencyCode_GenJournalLine</DataField>
-        </Field>
-        <Field Name="Amount_GenJournalLine">
-          <DataField>Amount_GenJournalLine</DataField>
-        </Field>
-        <Field Name="Amount_GenJournalLineFormat">
-          <DataField>Amount_GenJournalLineFormat</DataField>
-        </Field>
-        <Field Name="CashDiscAmtFC">
-          <DataField>CashDiscAmtFC</DataField>
-        </Field>
-        <Field Name="CashDiscAmtFCFormat">
-          <DataField>CashDiscAmtFCFormat</DataField>
-        </Field>
-        <Field Name="CashDeductAmt">
-          <DataField>CashDeductAmt</DataField>
-        </Field>
-        <Field Name="CashDeductAmtFormat">
-          <DataField>CashDeductAmtFormat</DataField>
-        </Field>
-        <Field Name="AgeDays">
-          <DataField>AgeDays</DataField>
-        </Field>
-        <Field Name="CashDiscDays">
-          <DataField>CashDiscDays</DataField>
-        </Field>
-        <Field Name="DueDays">
-          <DataField>DueDays</DataField>
-        </Field>
-        <Field Name="OpenRemAmtFC">
-          <DataField>OpenRemAmtFC</DataField>
-        </Field>
-        <Field Name="OpenRemAmtFCFormat">
-          <DataField>OpenRemAmtFCFormat</DataField>
-        </Field>
-        <Field Name="RestAfterPmt">
-          <DataField>RestAfterPmt</DataField>
-        </Field>
-        <Field Name="RestAfterPmtFormat">
-          <DataField>RestAfterPmtFormat</DataField>
-        </Field>
-        <Field Name="VendorName">
-          <DataField>VendorName</DataField>
-        </Field>
-        <Field Name="PmtToleranceAmount">
-          <DataField>PmtToleranceAmount</DataField>
-        </Field>
-        <Field Name="PmtToleranceAmountFormat">
-          <DataField>PmtToleranceAmountFormat</DataField>
-        </Field>
-        <Field Name="VendorBankAccountPaymentForm">
-          <DataField>VendorBankAccountPaymentForm</DataField>
-        </Field>
-        <Field Name="xAcc">
-          <DataField>xAcc</DataField>
-        </Field>
-        <Field Name="xTxt">
-          <DataField>xTxt</DataField>
-        </Field>
-        <Field Name="BankCode_GenJournalLine">
-          <DataField>BankCode_GenJournalLine</DataField>
-        </Field>
-        <Field Name="DebitBank_GenJournalLine">
-          <DataField>DebitBank_GenJournalLine</DataField>
-        </Field>
-        <Field Name="VendorLedgerEntryExternalDocumentNo">
-          <DataField>VendorLedgerEntryExternalDocumentNo</DataField>
-        </Field>
-        <Field Name="TotalVendorTxt">
-          <DataField>TotalVendorTxt</DataField>
-        </Field>
-        <Field Name="AmountLCY_GenJournalLine">
-          <DataField>AmountLCY_GenJournalLine</DataField>
-        </Field>
-        <Field Name="AmountLCY_GenJournalLineFormat">
-          <DataField>AmountLCY_GenJournalLineFormat</DataField>
-        </Field>
-        <Field Name="GenJournalLineTotalBankDebitBank">
-          <DataField>GenJournalLineTotalBankDebitBank</DataField>
-        </Field>
-        <Field Name="GlSetupLCYCode">
-          <DataField>GlSetupLCYCode</DataField>
-        </Field>
-        <Field Name="n">
-          <DataField>n</DataField>
-        </Field>
-        <Field Name="LargestAmt">
-          <DataField>LargestAmt</DataField>
-        </Field>
-        <Field Name="LargestAmtFormat">
-          <DataField>LargestAmtFormat</DataField>
-        </Field>
-        <Field Name="PostingDate_GenJournalLine">
-          <DataField>PostingDate_GenJournalLine</DataField>
-        </Field>
-        <Field Name="TotalPaymentGlSetupLCYCode">
-          <DataField>TotalPaymentGlSetupLCYCode</DataField>
-        </Field>
-        <Field Name="LargestAmtGlSetupLCYCode">
-          <DataField>LargestAmtGlSetupLCYCode</DataField>
-        </Field>
-        <Field Name="BatchNameCaption">
-          <DataField>BatchNameCaption</DataField>
-        </Field>
-        <Field Name="PageCaption">
-          <DataField>PageCaption</DataField>
-        </Field>
-        <Field Name="DTAPaymentJournalCaption">
-          <DataField>DTAPaymentJournalCaption</DataField>
-        </Field>
-        <Field Name="PaymentCaption">
-          <DataField>PaymentCaption</DataField>
-        </Field>
-        <Field Name="AgeCaption">
-          <DataField>AgeCaption</DataField>
-        </Field>
-        <Field Name="PossCaption">
-          <DataField>PossCaption</DataField>
-        </Field>
-        <Field Name="DeduCaption">
-          <DataField>DeduCaption</DataField>
-        </Field>
-        <Field Name="VendorCaption">
-          <DataField>VendorCaption</DataField>
-        </Field>
-        <Field Name="CashDiscCaption">
-          <DataField>CashDiscCaption</DataField>
-        </Field>
-        <Field Name="BeforePmtCaption">
-          <DataField>BeforePmtCaption</DataField>
-        </Field>
-        <Field Name="RestAfterPmtCaption">
-          <DataField>RestAfterPmtCaption</DataField>
-        </Field>
-        <Field Name="OpenRemAmountCaption">
-          <DataField>OpenRemAmountCaption</DataField>
-        </Field>
-        <Field Name="ApplicationCaption">
-          <DataField>ApplicationCaption</DataField>
-        </Field>
-        <Field Name="DateDaysCaption">
-          <DataField>DateDaysCaption</DataField>
-        </Field>
-        <Field Name="DueCaption">
-          <DataField>DueCaption</DataField>
-        </Field>
-        <Field Name="CashDiscDaysCaption">
-          <DataField>CashDiscDaysCaption</DataField>
-        </Field>
-        <Field Name="ToleranceCaption">
-          <DataField>ToleranceCaption</DataField>
-        </Field>
-        <Field Name="CurrencyCodeCaption_GenJournalLine">
-          <DataField>CurrencyCodeCaption_GenJournalLine</DataField>
-        </Field>
-        <Field Name="BankCaption">
-          <DataField>BankCaption</DataField>
-        </Field>
-        <Field Name="ReferenceCommentCaption">
-          <DataField>ReferenceCommentCaption</DataField>
-        </Field>
-        <Field Name="PaymentTypeCaption">
-          <DataField>PaymentTypeCaption</DataField>
-        </Field>
-        <Field Name="AccountCaption">
-          <DataField>AccountCaption</DataField>
-        </Field>
-        <Field Name="DebitBankCaption">
-          <DataField>DebitBankCaption</DataField>
-        </Field>
-        <Field Name="ExternalDocumentCaption">
-          <DataField>ExternalDocumentCaption</DataField>
-        </Field>
-        <Field Name="VendorBankCaption">
-          <DataField>VendorBankCaption</DataField>
-        </Field>
-        <Field Name="NoOfPaymentsCaption">
-          <DataField>NoOfPaymentsCaption</DataField>
-        </Field>
-        <Field Name="PostingDateCaption">
-          <DataField>PostingDateCaption</DataField>
-        </Field>
-        <Field Name="LineNo_GenJournalLine">
-          <DataField>LineNo_GenJournalLine</DataField>
-        </Field>
-        <Field Name="Clearing_GenJournalLine">
-          <DataField>Clearing_GenJournalLine</DataField>
-        </Field>
-        <Field Name="TotalText">
-          <DataField>TotalText</DataField>
-        </Field>
-        <Field Name="DocumentNo">
-          <DataField>DocumentNo</DataField>
-        </Field>
-        <Field Name="RemainingAmount">
-          <DataField>RemainingAmount</DataField>
-        </Field>
-        <Field Name="RemainingAmountFormat">
-          <DataField>RemainingAmountFormat</DataField>
-        </Field>
-      </Fields>
-      <rd:DataSetInfo>
-        <rd:DataSetName>DataSet</rd:DataSetName>
-        <rd:SchemaPath>Report.xsd</rd:SchemaPath>
-        <rd:TableName>Result</rd:TableName>
-      </rd:DataSetInfo>
-    </DataSet>
-  </DataSets>
   <ReportSections>
     <ReportSection>
       <Body>
@@ -3315,4 +3075,239 @@ End Function
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Cm</rd:ReportUnitType>
   <rd:ReportID>8974445a-bbdd-4df3-9e74-b13fd2851bce</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="JournalBatchName_GenJournalLine">
+          <DataField>JournalBatchName_GenJournalLine</DataField>
+        </Field>
+        <Field Name="PageNumber">
+          <DataField>PageNumber</DataField>
+        </Field>
+        <Field Name="TodayFormatted">
+          <DataField>TodayFormatted</DataField>
+        </Field>
+        <Field Name="CompanyName">
+          <DataField>CompanyName</DataField>
+        </Field>
+        <Field Name="intLayout">
+          <DataField>intLayout</DataField>
+        </Field>
+        <Field Name="AccountNo_GenJournalLine">
+          <DataField>AccountNo_GenJournalLine</DataField>
+        </Field>
+        <Field Name="VendorLedgerEntryDueDate">
+          <DataField>VendorLedgerEntryDueDate</DataField>
+        </Field>
+        <Field Name="AppliestoDocNo_GenJournalLine">
+          <DataField>AppliestoDocNo_GenJournalLine</DataField>
+        </Field>
+        <Field Name="CurrencyCode_GenJournalLine">
+          <DataField>CurrencyCode_GenJournalLine</DataField>
+        </Field>
+        <Field Name="Amount_GenJournalLine">
+          <DataField>Amount_GenJournalLine</DataField>
+        </Field>
+        <Field Name="Amount_GenJournalLineFormat">
+          <DataField>Amount_GenJournalLineFormat</DataField>
+        </Field>
+        <Field Name="CashDiscAmtFC">
+          <DataField>CashDiscAmtFC</DataField>
+        </Field>
+        <Field Name="CashDiscAmtFCFormat">
+          <DataField>CashDiscAmtFCFormat</DataField>
+        </Field>
+        <Field Name="CashDeductAmt">
+          <DataField>CashDeductAmt</DataField>
+        </Field>
+        <Field Name="CashDeductAmtFormat">
+          <DataField>CashDeductAmtFormat</DataField>
+        </Field>
+        <Field Name="AgeDays">
+          <DataField>AgeDays</DataField>
+        </Field>
+        <Field Name="CashDiscDays">
+          <DataField>CashDiscDays</DataField>
+        </Field>
+        <Field Name="DueDays">
+          <DataField>DueDays</DataField>
+        </Field>
+        <Field Name="OpenRemAmtFC">
+          <DataField>OpenRemAmtFC</DataField>
+        </Field>
+        <Field Name="OpenRemAmtFCFormat">
+          <DataField>OpenRemAmtFCFormat</DataField>
+        </Field>
+        <Field Name="RestAfterPmt">
+          <DataField>RestAfterPmt</DataField>
+        </Field>
+        <Field Name="RestAfterPmtFormat">
+          <DataField>RestAfterPmtFormat</DataField>
+        </Field>
+        <Field Name="VendorName">
+          <DataField>VendorName</DataField>
+        </Field>
+        <Field Name="PmtToleranceAmount">
+          <DataField>PmtToleranceAmount</DataField>
+        </Field>
+        <Field Name="PmtToleranceAmountFormat">
+          <DataField>PmtToleranceAmountFormat</DataField>
+        </Field>
+        <Field Name="VendorBankAccountPaymentForm">
+          <DataField>VendorBankAccountPaymentForm</DataField>
+        </Field>
+        <Field Name="xAcc">
+          <DataField>xAcc</DataField>
+        </Field>
+        <Field Name="xTxt">
+          <DataField>xTxt</DataField>
+        </Field>
+        <Field Name="BankCode_GenJournalLine">
+          <DataField>BankCode_GenJournalLine</DataField>
+        </Field>
+        <Field Name="DebitBank_GenJournalLine">
+          <DataField>DebitBank_GenJournalLine</DataField>
+        </Field>
+        <Field Name="VendorLedgerEntryExternalDocumentNo">
+          <DataField>VendorLedgerEntryExternalDocumentNo</DataField>
+        </Field>
+        <Field Name="TotalVendorTxt">
+          <DataField>TotalVendorTxt</DataField>
+        </Field>
+        <Field Name="AmountLCY_GenJournalLine">
+          <DataField>AmountLCY_GenJournalLine</DataField>
+        </Field>
+        <Field Name="AmountLCY_GenJournalLineFormat">
+          <DataField>AmountLCY_GenJournalLineFormat</DataField>
+        </Field>
+        <Field Name="GenJournalLineTotalBankDebitBank">
+          <DataField>GenJournalLineTotalBankDebitBank</DataField>
+        </Field>
+        <Field Name="GlSetupLCYCode">
+          <DataField>GlSetupLCYCode</DataField>
+        </Field>
+        <Field Name="n">
+          <DataField>n</DataField>
+        </Field>
+        <Field Name="LargestAmt">
+          <DataField>LargestAmt</DataField>
+        </Field>
+        <Field Name="LargestAmtFormat">
+          <DataField>LargestAmtFormat</DataField>
+        </Field>
+        <Field Name="PostingDate_GenJournalLine">
+          <DataField>PostingDate_GenJournalLine</DataField>
+        </Field>
+        <Field Name="TotalPaymentGlSetupLCYCode">
+          <DataField>TotalPaymentGlSetupLCYCode</DataField>
+        </Field>
+        <Field Name="LargestAmtGlSetupLCYCode">
+          <DataField>LargestAmtGlSetupLCYCode</DataField>
+        </Field>
+        <Field Name="BatchNameCaption">
+          <DataField>BatchNameCaption</DataField>
+        </Field>
+        <Field Name="PageCaption">
+          <DataField>PageCaption</DataField>
+        </Field>
+        <Field Name="DTAPaymentJournalCaption">
+          <DataField>DTAPaymentJournalCaption</DataField>
+        </Field>
+        <Field Name="PaymentCaption">
+          <DataField>PaymentCaption</DataField>
+        </Field>
+        <Field Name="AgeCaption">
+          <DataField>AgeCaption</DataField>
+        </Field>
+        <Field Name="PossCaption">
+          <DataField>PossCaption</DataField>
+        </Field>
+        <Field Name="DeduCaption">
+          <DataField>DeduCaption</DataField>
+        </Field>
+        <Field Name="VendorCaption">
+          <DataField>VendorCaption</DataField>
+        </Field>
+        <Field Name="CashDiscCaption">
+          <DataField>CashDiscCaption</DataField>
+        </Field>
+        <Field Name="BeforePmtCaption">
+          <DataField>BeforePmtCaption</DataField>
+        </Field>
+        <Field Name="RestAfterPmtCaption">
+          <DataField>RestAfterPmtCaption</DataField>
+        </Field>
+        <Field Name="OpenRemAmountCaption">
+          <DataField>OpenRemAmountCaption</DataField>
+        </Field>
+        <Field Name="ApplicationCaption">
+          <DataField>ApplicationCaption</DataField>
+        </Field>
+        <Field Name="DateDaysCaption">
+          <DataField>DateDaysCaption</DataField>
+        </Field>
+        <Field Name="DueCaption">
+          <DataField>DueCaption</DataField>
+        </Field>
+        <Field Name="CashDiscDaysCaption">
+          <DataField>CashDiscDaysCaption</DataField>
+        </Field>
+        <Field Name="ToleranceCaption">
+          <DataField>ToleranceCaption</DataField>
+        </Field>
+        <Field Name="CurrencyCodeCaption_GenJournalLine">
+          <DataField>CurrencyCodeCaption_GenJournalLine</DataField>
+        </Field>
+        <Field Name="BankCaption">
+          <DataField>BankCaption</DataField>
+        </Field>
+        <Field Name="ReferenceCommentCaption">
+          <DataField>ReferenceCommentCaption</DataField>
+        </Field>
+        <Field Name="PaymentTypeCaption">
+          <DataField>PaymentTypeCaption</DataField>
+        </Field>
+        <Field Name="AccountCaption">
+          <DataField>AccountCaption</DataField>
+        </Field>
+        <Field Name="DebitBankCaption">
+          <DataField>DebitBankCaption</DataField>
+        </Field>
+        <Field Name="ExternalDocumentCaption">
+          <DataField>ExternalDocumentCaption</DataField>
+        </Field>
+        <Field Name="VendorBankCaption">
+          <DataField>VendorBankCaption</DataField>
+        </Field>
+        <Field Name="NoOfPaymentsCaption">
+          <DataField>NoOfPaymentsCaption</DataField>
+        </Field>
+        <Field Name="PostingDateCaption">
+          <DataField>PostingDateCaption</DataField>
+        </Field>
+        <Field Name="LineNo_GenJournalLine">
+          <DataField>LineNo_GenJournalLine</DataField>
+        </Field>
+        <Field Name="Clearing_GenJournalLine">
+          <DataField>Clearing_GenJournalLine</DataField>
+        </Field>
+        <Field Name="TotalText">
+          <DataField>TotalText</DataField>
+        </Field>
+        <Field Name="DocumentNo">
+          <DataField>DocumentNo</DataField>
+        </Field>
+        <Field Name="RemainingAmount">
+          <DataField>RemainingAmount</DataField>
+        </Field>
+        <Field Name="RemainingAmountFormat">
+          <DataField>RemainingAmountFormat</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
 </Report>

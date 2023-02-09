@@ -1,5 +1,6 @@
 page 50020 "DEL Deal"
 {
+    ApplicationArea = all;
     Caption = 'Shipment/Deal list';
     CardPageID = "DEL Deal Mainboard";
     DeleteAllowed = false;
@@ -11,7 +12,6 @@ page 50020 "DEL Deal"
     SourceTableView = SORTING(ID)
                       ORDER(Descending);
     UsageCategory = Lists;
-    ApplicationArea = all;
     layout
     {
         area(content)

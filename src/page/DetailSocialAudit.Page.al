@@ -1,10 +1,10 @@
 page 50019 "DEL Detail Social Audit"
 {
+    ApplicationArea = all;
     Caption = 'Detail Social Audit';
     PageType = ListPart;
     SourceTable = "DEL Note Audit Social";
     UsageCategory = Administration;
-    ApplicationArea = all;
     layout
     {
         area(content)
@@ -34,10 +34,10 @@ page 50019 "DEL Detail Social Audit"
         {
             action("Import Audit social")
             {
-                Promoted = true;
-                PromotedOnly = true;
-                PromotedIsBig = true;
                 Image = Import;
+                Promoted = true;
+                PromotedIsBig = true;
+                PromotedOnly = true;
                 trigger OnAction()
                 begin
                     IF Auditsocial.FINDFIRST() THEN

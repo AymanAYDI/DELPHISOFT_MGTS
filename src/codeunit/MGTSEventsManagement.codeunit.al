@@ -484,7 +484,7 @@ codeunit 50100 "DEL MGTS_Events Management"
 
             requestID_Co_Loc := UpdateRequestManager_Cu.FNC_Add_Request(
               ACOConnection_Re_Loc.Deal_ID,
-              urm_Re_Loc.Requested_By_Type::"Purchase Header",
+              urm_Re_Loc.Requested_By_Type::"Purchase Header".AsInteger(),
               Rec."Document No.",
               CURRENTDATETIME
             );
@@ -700,7 +700,7 @@ codeunit 50100 "DEL MGTS_Events Management"
 
             requestID_Co_Loc := UpdateRequestManager_Cu.FNC_Add_Request(
               ACOConnection_Re_Loc.Deal_ID,
-              urm_Re_Loc.Requested_By_Type::"Purchase Header",
+              urm_Re_Loc.Requested_By_Type::"Purchase Header".AsInteger(),
               PurchaseLine."Document No.",
               CURRENTDATETIME
             );
@@ -889,8 +889,8 @@ codeunit 50100 "DEL MGTS_Events Management"
     var
         dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
         Deal_Cu: Codeunit "DEL Deal";
-        updateRequestManager_Cu: Codeunit "DEL Update Request Manager";
         GlobalFunction: Codeunit "DEL MGTS Set/Get Functions";
+        updateRequestManager_Cu: Codeunit "DEL Update Request Manager";
         updateRequestID_Co_Loc: Code[20];
 
     begin
@@ -945,8 +945,8 @@ codeunit 50100 "DEL MGTS_Events Management"
     var
         dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
         Deal_Cu: Codeunit "DEL Deal";
-        updateRequestManager_Cu: Codeunit "DEL Update Request Manager";
         GlobalFunction: Codeunit "DEL MGTS Set/Get Functions";
+        updateRequestManager_Cu: Codeunit "DEL Update Request Manager";
     //updateRequestID_Co_Loc: Code[20];
     begin
 
@@ -1004,9 +1004,9 @@ codeunit 50100 "DEL MGTS_Events Management"
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post (Yes/No)", 'OnBeforeRunPurchPost', '', false, false)]
     local procedure COD91_OnBeforeRunPurchPost(var PurchaseHeader: Record "Purchase Header")
     VAR
+        PostPurchCU: Codeunit 90;
         MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
         GlobalFunction: Codeunit "DEL MGTS Set/Get Functions";
-        PostPurchCU: Codeunit 90;
     begin
         //TODO 
         //MGTS0123; MHH; begin
@@ -1036,9 +1036,9 @@ codeunit 50100 "DEL MGTS_Events Management"
     var
         dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
         Deal_Cu: Codeunit "DEL Deal";
-        updateRequestManager_Cu: Codeunit "DEL Update Request Manager";
         // shipmentSelected_Bo_Loc: Boolean;
         GlobalFunction: Codeunit "DEL MGTS Set/Get Functions";
+        updateRequestManager_Cu: Codeunit "DEL Update Request Manager";
         updateRequestID_Co_Loc: Code[20];
     begin
         IF GlobalFunction.GetshipmentSelected_Bo_Loc2() THEN BEGIN
@@ -1376,8 +1376,8 @@ codeunit 50100 "DEL MGTS_Events Management"
     [EventSubscriber(ObjectType::page, page::"Sales Invoice", 'OnPostOnAfterSetDocumentIsPosted', '', false, false)]
     local procedure P43_OnPostOnAfterSetDocumentIsPosted(SalesHeader: Record "Sales Header"; var IsScheduledPosting: Boolean; var DocumentIsPosted: Boolean)
     var
-        NoSeries: Record 308;
         GLEntry: Record 17;
+        NoSeries: Record 308;
         Text50000: Label 'Please note that there is no related provision. Do you want to continue?;FRS=Attention il n''a pas de provision li‚e. Voulez-vous continuer ?';
 
     begin

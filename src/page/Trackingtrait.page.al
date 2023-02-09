@@ -1,11 +1,11 @@
 page 50059 "DEL Tracking traité"
 {
+    ApplicationArea = all;
     Caption = 'Tracking Recu XML et déjà traité';
     Editable = false;
     PageType = List;
     SourceTable = "DEL Tracking général";
     UsageCategory = History;
-    ApplicationArea = all;
     layout
     {
         area(content)

@@ -1,12 +1,12 @@
 page 50066 "DEL Liste Notation contact"
 {
+    ApplicationArea = all;
     Caption = 'Rating contracts List';
     CardPageID = "DEL Contact Notation Card";
     Editable = false;
     PageType = List;
     SourceTable = Contact;
     UsageCategory = Lists;
-    ApplicationArea = all;
     layout
     {
         area(content)
@@ -80,27 +80,27 @@ page 50066 "DEL Liste Notation contact"
                     Image = Company;
                     action("Business Relations")
                     {
+                        ApplicationArea = All;
                         Caption = 'Business Relations';
                         Image = BusinessRelation;
                         RunObject = Page "Contact Business Relations";
                         RunPageLink = "Contact No." = FIELD("Company No.");
-                        ApplicationArea = All;
                     }
                     action("Industry Groups")
                     {
+                        ApplicationArea = All;
                         Caption = 'Industry Groups';
                         Image = IndustryGroups;
                         RunObject = Page "Contact Industry Groups";
                         RunPageLink = "Contact No." = FIELD("Company No.");
-                        ApplicationArea = All;
                     }
                     action("Web Sources")
                     {
+                        ApplicationArea = All;
                         Caption = 'Web Sources';
                         Image = Web;
                         RunObject = Page "Contact Web Sources";
                         RunPageLink = "Contact No." = FIELD("Company No.");
-                        ApplicationArea = All;
                     }
                 }
                 group("P&erson")
@@ -110,9 +110,9 @@ page 50066 "DEL Liste Notation contact"
                     Image = User;
                     action("Job Responsibilities")
                     {
+                        ApplicationArea = All;
                         Caption = 'Job Responsibilities';
                         Image = Job;
-                        ApplicationArea = All;
 
                         trigger OnAction()
                         var
@@ -126,9 +126,9 @@ page 50066 "DEL Liste Notation contact"
                 }
                 action("Pro&files")
                 {
+                    ApplicationArea = All;
                     Caption = 'Pro&files';
                     Image = Answers;
-                    ApplicationArea = All;
 
                     trigger OnAction()
                     var
@@ -139,21 +139,21 @@ page 50066 "DEL Liste Notation contact"
                 }
                 action("&Picture")
                 {
+                    ApplicationArea = All;
                     Caption = '&Picture';
                     Image = Picture;
                     RunObject = Page "Contact Picture";
                     RunPageLink = "No." = FIELD("No.");
-                    ApplicationArea = All;
                 }
                 action("Co&mments")
                 {
+                    ApplicationArea = All;
                     Caption = 'Co&mments';
                     Image = ViewComments;
                     RunObject = Page "Rlshp. Mgt. Comment Sheet";
                     RunPageLink = "Table Name" = CONST(Contact),
                                   "No." = FIELD("No."),
                                   "Sub No." = CONST(0);
-                    ApplicationArea = All;
                 }
                 group("Alternati&ve Address")
                 {
@@ -161,19 +161,19 @@ page 50066 "DEL Liste Notation contact"
                     Image = Addresses;
                     action(Card)
                     {
+                        ApplicationArea = All;
                         Caption = 'Card';
                         Image = EditLines;
                         RunObject = Page "Contact Alt. Address List";
                         RunPageLink = "Contact No." = FIELD("No.");
-                        ApplicationArea = All;
                     }
                     action("Date Ranges")
                     {
+                        ApplicationArea = All;
                         Caption = 'Date Ranges';
                         Image = DateRange;
                         RunObject = Page "Contact Alt. Addr. Date Ranges";
                         RunPageLink = "Contact No." = FIELD("No.");
-                        ApplicationArea = All;
                     }
                 }
             }
@@ -183,14 +183,15 @@ page 50066 "DEL Liste Notation contact"
                 Image = Users;
                 action("Relate&d Contacts")
                 {
+                    ApplicationArea = All;
                     Caption = 'Relate&d Contacts';
                     Image = Users;
                     RunObject = Page "Contact List";
                     RunPageLink = "Company No." = FIELD("Company No.");
-                    ApplicationArea = All;
                 }
                 action("Segmen&ts")
                 {
+                    ApplicationArea = All;
                     Caption = 'Segmen&ts';
                     Image = Segment;
                     RunObject = Page "Contact Segment List";
@@ -198,21 +199,20 @@ page 50066 "DEL Liste Notation contact"
                                   "Contact No." = FILTER(<> ''),
                                   "Contact No." = FIELD(FILTER("Lookup Contact No."));
                     RunPageView = SORTING("Contact No.", "Segment No.");
-                    ApplicationArea = All;
                 }
                 action("Mailing &Groups")
                 {
+                    ApplicationArea = All;
                     Caption = 'Mailing &Groups';
                     Image = DistributionGroup;
                     RunObject = Page "Contact Mailing Groups";
                     RunPageLink = "Contact No." = FIELD("No.");
-                    ApplicationArea = All;
                 }
                 action("C&ustomer/Vendor/Bank Acc.")
                 {
+                    ApplicationArea = All;
                     Caption = 'C&ustomer/Vendor/Bank Acc.';
                     Image = ContactReference;
-                    ApplicationArea = All;
 
                     trigger OnAction()
                     begin
@@ -226,6 +226,7 @@ page 50066 "DEL Liste Notation contact"
                 Image = Task;
                 action("T&o-dos")
                 {
+                    ApplicationArea = All;
                     Caption = 'T&o-dos';
                     Image = TaskList;
                     RunObject = Page "Task List";
@@ -233,10 +234,10 @@ page 50066 "DEL Liste Notation contact"
                                   "Contact No." = FIELD(FILTER("Lookup Contact No.")),
                                   "System To-do Type" = FILTER("Contact Attendee");
                     RunPageView = SORTING("Contact Company No.", "Contact No.");
-                    ApplicationArea = All;
                 }
                 action("Oppo&rtunities")
                 {
+                    ApplicationArea = All;
                     Caption = 'Oppo&rtunities';
                     Image = OpportunityList;
                     RunObject = Page "Opportunity List";
@@ -244,7 +245,6 @@ page 50066 "DEL Liste Notation contact"
                                   "Contact No." = FILTER(<> ''),
                                   "Contact No." = FIELD(FILTER("Lookup Contact No."));
                     RunPageView = SORTING("Contact Company No.", "Contact No.");
-                    ApplicationArea = All;
                 }
             }
             group(Documents)
@@ -253,12 +253,12 @@ page 50066 "DEL Liste Notation contact"
                 Image = Documents;
                 action("Sales &Quotes")
                 {
+                    ApplicationArea = All;
                     Caption = 'Sales &Quotes';
                     Image = Quote;
                     RunObject = Page "Sales Quotes";
                     RunPageLink = "Sell-to Contact No." = FIELD("No.");
                     RunPageView = SORTING("Document Type", "Sell-to Contact No.");
-                    ApplicationArea = All;
                 }
             }
             group(History)
@@ -267,6 +267,7 @@ page 50066 "DEL Liste Notation contact"
                 Image = History;
                 action("Postponed &Interactions")
                 {
+                    ApplicationArea = All;
                     Caption = 'Postponed &Interactions';
                     Image = PostponedInteractions;
                     RunObject = Page "Postponed Interactions";
@@ -274,10 +275,10 @@ page 50066 "DEL Liste Notation contact"
                                   "Contact No." = FILTER(<> ''),
                                   "Contact No." = FIELD(FILTER("Lookup Contact No."));
                     RunPageView = SORTING("Contact Company No.", "Contact No.");
-                    ApplicationArea = All;
                 }
                 action("Interaction Log E&ntries")
                 {
+                    ApplicationArea = All;
                     Caption = 'Interaction Log E&ntries';
                     Image = InteractionLog;
                     RunObject = Page "Interaction Log Entries";
@@ -286,10 +287,10 @@ page 50066 "DEL Liste Notation contact"
                                   "Contact No." = FIELD(FILTER("Lookup Contact No."));
                     RunPageView = SORTING("Contact Company No.", "Contact No.");
                     ShortCutKey = 'Ctrl+F7';
-                    ApplicationArea = All;
                 }
                 action(Statistics)
                 {
+                    ApplicationArea = All;
                     Caption = 'Statistics';
                     Image = Statistics;
                     Promoted = true;
@@ -297,7 +298,6 @@ page 50066 "DEL Liste Notation contact"
                     RunObject = Page "Contact Statistics";
                     RunPageLink = "No." = FIELD("No.");
                     ShortCutKey = 'F7';
-                    ApplicationArea = All;
                 }
             }
         }
@@ -309,9 +309,9 @@ page 50066 "DEL Liste Notation contact"
                 Image = "Action";
                 action("Make &Phone Call")
                 {
+                    ApplicationArea = All;
                     Caption = 'Make &Phone Call';
                     Image = Calls;
-                    ApplicationArea = All;
 
                     trigger OnAction()
                     var
@@ -322,9 +322,9 @@ page 50066 "DEL Liste Notation contact"
                 }
                 action("Launch &Web Source")
                 {
+                    ApplicationArea = All;
                     Caption = 'Launch &Web Source';
                     Image = LaunchWeb;
-                    ApplicationArea = All;
 
                     trigger OnAction()
                     var
@@ -337,9 +337,9 @@ page 50066 "DEL Liste Notation contact"
                 }
                 action("Print Cover &Sheet")
                 {
+                    ApplicationArea = All;
                     Caption = 'Print Cover &Sheet';
                     Image = PrintCover;
-                    ApplicationArea = All;
 
                     trigger OnAction()
                     var
@@ -356,9 +356,9 @@ page 50066 "DEL Liste Notation contact"
                     Image = CustomerContact;
                     action(MgtsCustomer)
                     {
+                        ApplicationArea = All;
                         Caption = 'Customer';
                         Image = Customer;
-                        ApplicationArea = All;
 
                         trigger OnAction()
                         begin
@@ -367,9 +367,9 @@ page 50066 "DEL Liste Notation contact"
                     }
                     action(MgtsVendor)
                     {
+                        ApplicationArea = All;
                         Caption = 'Vendor';
                         Image = Vendor;
-                        ApplicationArea = All;
 
                         trigger OnAction()
                         begin
@@ -378,9 +378,9 @@ page 50066 "DEL Liste Notation contact"
                     }
                     action(MgtsBank)
                     {
+                        ApplicationArea = All;
                         Caption = 'Bank';
                         Image = Bank;
-                        ApplicationArea = All;
 
                         trigger OnAction()
                         begin
@@ -394,9 +394,9 @@ page 50066 "DEL Liste Notation contact"
                     Image = Links;
                     action(Customer)
                     {
+                        ApplicationArea = All;
                         Caption = 'Customer';
                         Image = Customer;
-                        ApplicationArea = All;
 
                         trigger OnAction()
                         begin
@@ -405,9 +405,9 @@ page 50066 "DEL Liste Notation contact"
                     }
                     action(Vendor)
                     {
+                        ApplicationArea = All;
                         Caption = 'Vendor';
                         Image = Vendor;
-                        ApplicationArea = All;
 
                         trigger OnAction()
                         begin
@@ -416,9 +416,9 @@ page 50066 "DEL Liste Notation contact"
                     }
                     action(Bank)
                     {
+                        ApplicationArea = All;
                         Caption = 'Bank';
                         Image = Bank;
-                        ApplicationArea = All;
 
                         trigger OnAction()
                         begin
@@ -429,12 +429,12 @@ page 50066 "DEL Liste Notation contact"
             }
             action("Create &Interact")
             {
+                ApplicationArea = All;
                 Caption = 'Create &Interact';
                 Image = CreateInteraction;
                 Promoted = true;
-                PromotedOnly = true;
                 PromotedCategory = Process;
-                ApplicationArea = All;
+                PromotedOnly = true;
 
                 trigger OnAction()
                 begin
@@ -446,6 +446,7 @@ page 50066 "DEL Liste Notation contact"
         {
             action("New Sales Quote")
             {
+                ApplicationArea = All;
                 Caption = 'New Sales Quote';
                 Image = Quote;
                 Promoted = true;
@@ -453,17 +454,16 @@ page 50066 "DEL Liste Notation contact"
                 RunObject = Page "Sales Quote";
                 RunPageLink = "Sell-to Contact No." = FIELD("No.");
                 RunPageMode = Create;
-                ApplicationArea = All;
             }
         }
         area(reporting)
         {
             action("Contact Cover Sheet")
             {
+                ApplicationArea = All;
                 Caption = 'Contact Cover Sheet';
                 Image = "Report";
                 Promoted = false;
-                ApplicationArea = All;
 
                 trigger OnAction()
                 begin
@@ -474,38 +474,38 @@ page 50066 "DEL Liste Notation contact"
             }
             action("Contact Company Summary")
             {
+                ApplicationArea = All;
                 Caption = 'Contact Company Summary';
                 Image = "Report";
                 Promoted = true;
                 PromotedCategory = "Report";
                 RunObject = Report "Contact - Company Summary";
-                ApplicationArea = All;
             }
             action("Contact Labels")
             {
+                ApplicationArea = All;
                 Caption = 'Contact Labels';
                 Image = "Report";
                 Promoted = false;
-                ;
                 RunObject = Report "Contact - Labels";
-                ApplicationArea = All;
+                ;
             }
             action("Questionnaire Handout")
             {
+                ApplicationArea = All;
                 Caption = 'Questionnaire Handout';
                 Image = "Report";
                 Promoted = false;
                 RunObject = Report "Questionnaire - Handouts";
-                ApplicationArea = All;
             }
             action("Sales Cycle Analysis")
             {
+                ApplicationArea = All;
                 Caption = 'Sales Cycle Analysis';
                 Image = "Report";
                 Promoted = true;
                 PromotedCategory = "Report";
                 RunObject = Report "Sales Cycle - Analysis";
-                ApplicationArea = All;
             }
         }
     }

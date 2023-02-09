@@ -7,8 +7,8 @@ table 50010 "DEL Export vente"
         field(1; "Item No."; Code[20])
         {
             Caption = 'Item No.';
-            TableRelation = Item;
             DataClassification = CustomerContent;
+            TableRelation = Item;
         }
         field(2; Mois; Text[6])
         {

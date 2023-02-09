@@ -1,5 +1,6 @@
 page 50004 "DEL New products follow up"
 {
+    ApplicationArea = all;
     Caption = 'New products follow up';
     DeleteAllowed = false;
     InsertAllowed = false;
@@ -12,7 +13,6 @@ page 50004 "DEL New products follow up"
                             Type = CONST(Item),
                             "DEL Photo And DDoc" = CONST(false));
     UsageCategory = Lists;
-    ApplicationArea = all;
 
     layout
     {
@@ -32,23 +32,23 @@ page 50004 "DEL New products follow up"
                 }
                 field("Document No."; Rec."Document No.")
                 {
-                    Editable = false;
                     Caption = 'Document No.';
+                    Editable = false;
                 }
                 field("No."; Rec."No.")
                 {
-                    Editable = false;
                     Caption = 'No.';
+                    Editable = false;
                 }
                 field(Description; Rec.Description)
                 {
-                    Editable = false;
                     Caption = 'Description';
+                    Editable = false;
                 }
                 field("Order Date"; Rec."Order Date")
                 {
-                    Editable = false;
                     Caption = 'Order Date';
+                    Editable = false;
                 }
                 field("Expected Receipt Date"; Rec."Expected Receipt Date")
                 {
@@ -56,8 +56,8 @@ page 50004 "DEL New products follow up"
                 }
                 field(Quantity; Rec.Quantity)
                 {
-                    Editable = false;
                     Caption = 'Quantity';
+                    Editable = false;
                 }
 
                 field("Sample Collected"; Rec."DEL Sample Collected")
@@ -120,9 +120,9 @@ page 50004 "DEL New products follow up"
                 Caption = 'Show Document';
                 Image = View;
                 Promoted = true;
-                PromotedOnly = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
+                PromotedOnly = true;
                 ShortCutKey = 'Shift+F7';
                 ToolTip = 'Open the document that the selected line exists on.';
 

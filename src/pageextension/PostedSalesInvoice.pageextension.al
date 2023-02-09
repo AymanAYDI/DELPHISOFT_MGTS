@@ -90,8 +90,8 @@ pageextension 50006 "DEL PostedSalesInvoice" extends "Posted Sales Invoice" //13
 
                     lrecSalesInvoiceHeader := Rec;
                     CurrPage.SETSELECTIONFILTER(lrecSalesInvoiceHeader);
-                    IF lcuDocumentMatrixMgt.ShowDocMatrixSelection(Rec."Sell-to Customer No.", ProcessType::Manual, lUsage::"S.Invoice", lrecDocMatrixSelection, FALSE) THEN BEGIN
-                        lcuDocumentMatrixMgt.ProcessDocumentMatrix(lUsage::"S.Invoice", ProcessType::Manual, lrecSalesInvoiceHeader, Rec.FIELDNO("Sell-to Customer No."), Rec.FIELDNO("No."), lrecDocMatrixSelection, 0);
+                    IF lcuDocumentMatrixMgt.ShowDocMatrixSelection(Rec."Sell-to Customer No.", ProcessType::Manual, lUsage::"S.Invoice".AsInteger(), lrecDocMatrixSelection, FALSE) THEN BEGIN
+                        lcuDocumentMatrixMgt.ProcessDocumentMatrix(lUsage::"S.Invoice".AsInteger(), ProcessType::Manual, lrecSalesInvoiceHeader, Rec.FIELDNO("Sell-to Customer No."), Rec.FIELDNO("No."), lrecDocMatrixSelection, 0);
                         SalesInvoiceHeader2.GET(Rec."No.");
                         SalesInvoiceHeader2."DEL Sent To Customer" := TRUE;
                         SalesInvoiceHeader2.MODIFY();

@@ -9,8 +9,8 @@ tableextension 50029 "DEL PurchaseLine" extends "Purchase Line" //39
         {
             trigger OnAfterValidate()
             var
-                Item_Rec: Record Item;
                 Item: Record Item;
+                Item_Rec: Record Item;
             begin
                 IF Item_Rec.GET("No.") THEN
                     VALIDATE("DEL Total volume", (Item."DEL Vol cbm carton transport" * Quantity
@@ -33,8 +33,8 @@ tableextension 50029 "DEL PurchaseLine" extends "Purchase Line" //39
         field(50001; "DEL Total volume"; Decimal)
         {
             Caption = 'Total volume';
-            DecimalPlaces = 2 : 5;
             DataClassification = CustomerContent;
+            DecimalPlaces = 2 : 5;
         }
         field(50002; "DEL External reference NGTS"; Text[50])
         {
@@ -44,8 +44,8 @@ tableextension 50029 "DEL PurchaseLine" extends "Purchase Line" //39
         field(50003; "DEL First Purch. Order"; Boolean)
         {
             Caption = 'New product';
-            Editable = false;
             DataClassification = CustomerContent;
+            Editable = false;
         }
         field(50004; "DEL Sample Collected"; Boolean)
         {
@@ -67,14 +67,14 @@ tableextension 50029 "DEL PurchaseLine" extends "Purchase Line" //39
         field(50005; "DEL Collected Date"; Date)
         {
             Caption = 'Collected Date';
-            Editable = false;
             DataClassification = CustomerContent;
+            Editable = false;
         }
         field(50006; "DEL Sample Collected by"; Code[50])
         {
             Caption = 'Sample Collected by';
-            Editable = false;
             DataClassification = CustomerContent;
+            Editable = false;
         }
         field(50007; "DEL Photo Taked"; Boolean)
         {
@@ -96,20 +96,20 @@ tableextension 50029 "DEL PurchaseLine" extends "Purchase Line" //39
         field(50008; "DEL Photo Date"; Date)
         {
             Caption = 'Photo Date';
-            Editable = false;
             DataClassification = CustomerContent;
+            Editable = false;
         }
         field(50009; "DEL Photo Taked By"; Code[50])
         {
             Caption = 'Photo Taked By';
-            Editable = false;
             DataClassification = CustomerContent;
+            Editable = false;
         }
         field(50010; "DEL Risk Item"; Boolean)
         {
             Caption = 'Traked item';
-            Editable = false;
             DataClassification = CustomerContent;
+            Editable = false;
         }
         field(50011; "DEL Photo Risk Item Taked"; Boolean)
         {
@@ -131,14 +131,14 @@ tableextension 50029 "DEL PurchaseLine" extends "Purchase Line" //39
         field(50012; "DEL Photo Risk Item Date"; Date)
         {
             Caption = 'Traked item Date';
-            Editable = false;
             DataClassification = CustomerContent;
+            Editable = false;
         }
         field(50013; "DEL Photo Risk Item Taked By"; Code[50])
         {
             Caption = 'Traked item Taked By';
-            Editable = false;
             DataClassification = CustomerContent;
+            Editable = false;
         }
         field(50014; "DEL Photo And DDoc"; Boolean)
         {

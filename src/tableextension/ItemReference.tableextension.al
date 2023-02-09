@@ -5,10 +5,10 @@ tableextension 50035 "DEL ItemReference" extends "Item Reference" //5777
     {
         field(50000; "DEL Sale blocked"; Boolean)
         {
-            FieldClass = FlowField;
             CalcFormula = Lookup(Item."Sales Blocked" WHERE("No." = FIELD("Item No.")));
             Caption = 'Sale blocked';
             Editable = false;
+            FieldClass = FlowField;
 
         }
         field(50001; "DEL Entry No."; BigInteger)

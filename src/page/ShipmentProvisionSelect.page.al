@@ -1,11 +1,11 @@
 page 50050 "DEL Shipment Provision Select."
 {
+    ApplicationArea = all;
     DeleteAllowed = false;
     InsertAllowed = false;
     PageType = List;
     SourceTable = "DEL Shipment Provision Select.";
     UsageCategory = Tasks;
-    ApplicationArea = all;
     layout
     {
         area(content)

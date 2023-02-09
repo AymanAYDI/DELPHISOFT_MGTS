@@ -3,8 +3,8 @@ table 99210 "DEL Ex_Campaign"
 {
     Caption = 'Campaign';
     DataCaptionFields = "No.", Description;
-    LookupPageID = "Campaign List";
     DataClassification = CustomerContent;
+    LookupPageID = "Campaign List";
     fields
     {
         field(1; "No."; Code[20])
@@ -30,8 +30,8 @@ table 99210 "DEL Ex_Campaign"
         field(5; "Salesperson Code"; Code[10])
         {
             Caption = 'Salesperson Code';
-            TableRelation = "Salesperson/Purchaser";
             DataClassification = CustomerContent;
+            TableRelation = "Salesperson/Purchaser";
         }
 
         field(6; Comment; Boolean)
@@ -48,43 +48,43 @@ table 99210 "DEL Ex_Campaign"
 
         {
             Caption = 'Last Date Modified';
-            Editable = false;
             DataClassification = CustomerContent;
+            Editable = false;
         }
 
         field(8; "No. Series"; Code[10])
 
         {
             Caption = 'No. Series';
+            DataClassification = CustomerContent;
             Editable = false;
             TableRelation = "No. Series";
-            DataClassification = CustomerContent;
         }
 
         field(9; "Global Dimension 1 Code"; Code[20])
 
         {
-            CaptionClass = '1,1,1';
             Caption = 'Global Dimension 1 Code';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(1));
+            CaptionClass = '1,1,1';
             DataClassification = CustomerContent;
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(1));
         }
 
         field(10; "Global Dimension 2 Code"; Code[20])
 
         {
-            CaptionClass = '1,1,2';
             Caption = 'Global Dimension 2 Code';
-            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2));
+            CaptionClass = '1,1,2';
             DataClassification = CustomerContent;
+            TableRelation = "Dimension Value".Code WHERE("Global Dimension No." = CONST(2));
         }
 
         field(11; "Status Code"; Code[10])
 
         {
             Caption = 'Status Code';
-            TableRelation = "Campaign Status";
             DataClassification = CustomerContent;
+            TableRelation = "Campaign Status";
         }
 
 
@@ -359,8 +359,8 @@ table 99210 "DEL Ex_Campaign"
         field(4006499; "eCommerce Mandant"; Text[30])
         {
             Caption = 'eCommerce Company';
-            TableRelation = Company;
             DataClassification = CustomerContent;
+            TableRelation = Company;
         }
         field(4006500; Kurztext; Text[150])
         {

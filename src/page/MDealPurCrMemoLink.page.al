@@ -16,25 +16,25 @@ page 50083 "DEL M Deal Pur. Cr. Memo Link"
         {
             field("Purch Cr. Memo No."; Rec."Purch Cr. Memo No.")
             {
-                Caption = 'Note de crédit achat';
                 ApplicationArea = All;
+                Caption = 'Note de crédit achat';
             }
             field("Deal ID"; Rec."Deal ID")
             {
-                Caption = 'Deal ID destination';
                 ApplicationArea = All;
+                Caption = 'Deal ID destination';
             }
             field("Shipment Selection"; Rec."Shipment Selection")
             {
-                Caption = 'Deal ID origine';
                 ApplicationArea = All;
+                Caption = 'Deal ID origine';
             }
             label(General)
             {
+                ApplicationArea = All;
                 CaptionClass = Text19022230;
                 Style = Standard;
                 StyleExpr = TRUE;
-                ApplicationArea = All;
             }
         }
     }
@@ -48,13 +48,13 @@ page 50083 "DEL M Deal Pur. Cr. Memo Link"
                 Caption = 'Post';
                 action(Post)
                 {
+                    ApplicationArea = All;
                     Caption = 'Post';
                     Image = Post;
                     Promoted = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
                     ShortCutKey = 'F9';
-                    ApplicationArea = All;
 
                     trigger OnAction()
                     var
@@ -88,7 +88,7 @@ page 50083 "DEL M Deal Pur. Cr. Memo Link"
 
                             requestID_Co_Loc := UpdateRequestManager_Cu.FNC_Add_Request(
                               Rec."Deal ID",
-                              urm_Re_Loc.Requested_By_Type::"Purch. Cr. Memo",
+                              urm_Re_Loc.Requested_By_Type::"Purch. Cr. Memo".AsInteger(),
                               Rec."Purch Cr. Memo No.",
                               CURRENTDATETIME
                             );

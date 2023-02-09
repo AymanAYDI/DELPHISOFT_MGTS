@@ -6,10 +6,10 @@ table 50046 "DEL Manual DealCredit M Link.2"
     {
         field(1; "Entry No."; Integer)
         {
-            TableRelation = "G/L Entry"."Entry No." WHERE("Document Type" = CONST("Credit Memo"),
-                                                           "Credit Amount" = FILTER(> 0));
             Caption = 'Entry No.';
             DataClassification = CustomerContent;
+            TableRelation = "G/L Entry"."Entry No." WHERE("Document Type" = CONST("Credit Memo"),
+                                                           "Credit Amount" = FILTER(> 0));
         }
         field(10; "Document No."; Code[20])
         {
@@ -26,23 +26,23 @@ table 50046 "DEL Manual DealCredit M Link.2"
             CalcFormula = Count("DEL Deal Shipment Selection" WHERE(Checked = CONST(true),
                                                                  "Account Entry No." = FIELD("Entry No."),
                                                                  USER_ID = FIELD("User ID Filter")));
+            Caption = 'Shipment Selection';
             Editable = false;
             FieldClass = FlowField;
-            Caption = 'Shipment Selection';
         }
         field(51; "User ID Filter"; Code[20])
         {
-            CaptionClass = '1,3,1';
             Caption = 'Global Dimension 1 Filter';
+            CaptionClass = '1,3,1';
             FieldClass = FlowFilter;
             TableRelation = User;
         }
         field(52; "ACO No."; Code[20])
         {
-            TableRelation = "Purchase Header"."No.";
-            ValidateTableRelation = false;
             Caption = 'ACO No.';
             DataClassification = CustomerContent;
+            TableRelation = "Purchase Header"."No.";
+            ValidateTableRelation = false;
         }
     }
 
