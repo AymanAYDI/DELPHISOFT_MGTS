@@ -13,96 +13,96 @@ page 50130 "DEL Document Matrix"
             {
                 field(Type; Rec.Type)
                 {
-                    Caption = 'Type';
                     ApplicationArea = All;
+                    Caption = 'Type';
                 }
                 field("No."; Rec."No.")
                 {
-                    Caption = 'No.';
                     ApplicationArea = All;
+                    Caption = 'No.';
                 }
                 field(Name; Rec.Name)
                 {
-                    Caption = 'Name';
                     ApplicationArea = All;
+                    Caption = 'Name';
                 }
                 field("Process Type"; Rec."Process Type")
                 {
-                    Caption = 'Process Type';
                     ApplicationArea = All;
+                    Caption = 'Process Type';
                 }
                 field(Usage; Rec.Usage)
                 {
-                    Caption = 'Usage';
                     ApplicationArea = All;
+                    Caption = 'Usage';
                 }
                 field("Report ID"; Rec."Report ID")
                 {
-                    Caption = 'Report ID';
                     ApplicationArea = All;
+                    Caption = 'Report ID';
                 }
                 field("Report Caption"; Rec."Report Caption")
                 {
-                    Caption = 'Report Caption';
                     ApplicationArea = All;
+                    Caption = 'Report Caption';
                 }
                 field(Post; Rec.Post)
                 {
-                    Caption = 'Post';
                     ApplicationArea = All;
+                    Caption = 'Post';
                 }
                 field("Send to FTP 1"; Rec."Send to FTP 1")
                 {
-                    Caption = 'Send to FTP 1';
                     ApplicationArea = All;
+                    Caption = 'Send to FTP 1';
                 }
                 field("Send to FTP 2"; Rec."Send to FTP 2")
                 {
-                    Caption = 'Send to FTP 2';
                     ApplicationArea = All;
+                    Caption = 'Send to FTP 2';
                 }
                 field("E-Mail from Sales Order"; Rec."E-Mail from Sales Order")
                 {
-                    Caption = 'E-Mail from Sales Order';
                     ApplicationArea = All;
+                    Caption = 'E-Mail from Sales Order';
                 }
                 field("E-Mail To 1"; Rec."E-Mail To 1")
                 {
-                    Caption = 'E-Mail To 1';
                     ApplicationArea = All;
+                    Caption = 'E-Mail To 1';
                 }
                 field("E-Mail To 2"; Rec."E-Mail To 2")
                 {
-                    Caption = 'E-Mail To 2';
                     ApplicationArea = All;
+                    Caption = 'E-Mail To 2';
                 }
                 field("E-Mail To 3"; Rec."E-Mail To 3")
                 {
-                    Caption = 'E-Mail To 3';
                     ApplicationArea = All;
+                    Caption = 'E-Mail To 3';
                 }
                 field("E-Mail From"; Rec."E-Mail From")
                 {
-                    Caption = 'E-Mail From';
                     ApplicationArea = All;
+                    Caption = 'E-Mail From';
                 }
                 field("Save PDF"; Rec."Save PDF")
                 {
-                    Caption = 'Save PDF';
                     ApplicationArea = All;
+                    Caption = 'Save PDF';
                 }
                 field("Print PDF"; Rec."Print PDF")
                 {
-                    Caption = 'Print PDF';
                     ApplicationArea = All;
+                    Caption = 'Print PDF';
                 }
                 field("Mail Text Code"; Rec."Mail Text Code")
                 {
+                    ApplicationArea = All;
                     AssistEdit = false;
+                    Caption = 'Mail Text Code';
                     DrillDown = false;
                     Lookup = true;
-                    Caption = 'Mail Text Code';
-                    ApplicationArea = All;
                     //TODO DrillDownPageID = 50132;  //50132 n'existe pas 
 
                     trigger OnLookup(var Text: Text): Boolean
@@ -125,8 +125,8 @@ page 50130 "DEL Document Matrix"
                 }
                 field("Mail Text Langauge Code"; Rec."Mail Text Langauge Code")
                 {
-                    Caption = 'Mail Text Language Code';
                     ApplicationArea = All;
+                    Caption = 'Mail Text Language Code';
                 }
             }
         }
@@ -142,6 +142,7 @@ page 50130 "DEL Document Matrix"
                 Image = Text;
                 action("Mail Codes")
                 {
+                    ApplicationArea = All;
                     Caption = 'Mail Codes';
                     Image = Text;
                     Promoted = true;
@@ -149,7 +150,6 @@ page 50130 "DEL Document Matrix"
                     PromotedIsBig = true;
                     PromotedOnly = true;
                     RunPageMode = Create;
-                    ApplicationArea = All;
 
                     trigger OnAction()
                     var
@@ -160,6 +160,7 @@ page 50130 "DEL Document Matrix"
                 }
                 action(Setup)
                 {
+                    ApplicationArea = All;
                     Caption = 'Setup';
                     Image = Setup;
                     Promoted = true;
@@ -168,10 +169,10 @@ page 50130 "DEL Document Matrix"
                     PromotedOnly = true;
                     RunObject = Page "DEL DocMatrix Setup";
                     RunPageMode = Edit;
-                    ApplicationArea = All;
                 }
                 action("Customer FTP Settings")
                 {
+                    ApplicationArea = All;
                     Caption = 'Customer FTP Settings';
                     Image = InteractionTemplateSetup;
                     Promoted = true;
@@ -181,17 +182,16 @@ page 50130 "DEL Document Matrix"
                     RunObject = Page "DEL DocMatrix FTP Custom. Card";
                     RunPageLink = "Customer No." = FIELD("No.");
                     RunPageMode = Edit;
-                    ApplicationArea = All;
                 }
                 action("Create Request Page Parameters")
                 {
+                    ApplicationArea = All;
                     Caption = 'Create Request Page Parameters';
                     Image = CreateForm;
                     Promoted = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
                     PromotedOnly = true;
-                    ApplicationArea = All;
 
                     trigger OnAction()
                     var
@@ -203,13 +203,13 @@ page 50130 "DEL Document Matrix"
                 }
                 action("Show Request Page Parameters")
                 {
+                    ApplicationArea = All;
                     Caption = 'Show Request Page Parameters';
                     Image = XMLFile;
                     Promoted = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
                     PromotedOnly = true;
-                    ApplicationArea = All;
 
                     trigger OnAction()
                     var
@@ -222,6 +222,7 @@ page 50130 "DEL Document Matrix"
                 }
                 action("Show Log")
                 {
+                    ApplicationArea = All;
                     Caption = 'Show Log';
                     Image = Log;
                     Promoted = true;
@@ -235,10 +236,10 @@ page 50130 "DEL Document Matrix"
                                   Usage = FIELD(Usage);
                     RunPageView = SORTING("Date Time Stamp")
                                   ORDER(Descending);
-                    ApplicationArea = All;
                 }
                 action("Show Error Log")
                 {
+                    ApplicationArea = All;
                     Caption = 'Show Error Log';
                     Image = ErrorLog;
                     Promoted = true;
@@ -250,7 +251,6 @@ page 50130 "DEL Document Matrix"
                                   ORDER(Descending)
                                   WHERE(Error = CONST(true),
                                         "Error Solved" = CONST(false));
-                    ApplicationArea = All;
                 }
             }
         }

@@ -102,10 +102,10 @@ xmlport 50000 "DEL IC Transitaire"
                     {
                         LinkFields = "Document No." = FIELD("No.");
                         LinkTable = "Purchase Header";
-                        XmlName = 'position';
                         SourceTableView = SORTING("Document Type", "Document No.", "No.")
                                           ORDER(Ascending)
                                           WHERE(Type = CONST(2));
+                        XmlName = 'position';
                         fieldelement(CodeArticleNav; "Purchase Line"."No.")
                         {
                         }

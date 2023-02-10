@@ -171,9 +171,9 @@ page 50086 "DEL Regulation matrix Card"
                     Caption = 'General product regulation';
                     Image = Register;
                     Promoted = true;
-                    PromotedOnly = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
+                    PromotedOnly = true;
                     RunObject = Page "DEL Matrix General regulation";
                     RunPageLink = "Item Category Code" = FIELD("Item Category Code"),
                                   "Product Group Code" = FIELD("Product Group Code"),
@@ -187,9 +187,9 @@ page 50086 "DEL Regulation matrix Card"
                     Caption = 'Substance regulation';
                     Image = ItemRegisters;
                     Promoted = true;
-                    PromotedOnly = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
+                    PromotedOnly = true;
                     RunObject = Page "DEL Matrix Sub. regulation";
                     RunPageLink = "Item Category Code" = FIELD("Item Category Code"),
                                   "Product Group Code" = FIELD("Product Group Code"),
@@ -203,9 +203,9 @@ page 50086 "DEL Regulation matrix Card"
                     Caption = 'Plan of control';
                     Image = Planning;
                     Promoted = true;
-                    PromotedOnly = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
+                    PromotedOnly = true;
                     RunObject = Page "DEL Matrix Plan of Control";
                     RunPageLink = "Item Category Code" = FIELD("Item Category Code"),
                                   "Product Group Code" = FIELD("Product Group Code"),

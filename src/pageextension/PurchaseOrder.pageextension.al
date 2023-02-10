@@ -59,8 +59,8 @@ pageextension 50053 "DEL PurchaseOrder" extends "Purchase Order" //50
         {
             field("DEL PI delivery date"; Rec."Expected Receipt Date")
             {
-                Caption = 'PI delivery date';
                 ApplicationArea = Suite;
+                Caption = 'PI delivery date';
             }
             field("DEL Requested Receipt Date"; Rec."Requested Receipt Date")
             {
@@ -144,10 +144,10 @@ pageextension 50053 "DEL PurchaseOrder" extends "Purchase Order" //50
             action("DEL UpdateOrderPrices")
             {
                 Caption = 'Update Prices';
-                Promoted = true;
-                PromotedIsBig = true;
                 Image = UpdateUnitCost;
+                Promoted = true;
                 PromotedCategory = Process;
+                PromotedIsBig = true;
                 PromotedOnly = true;
                 trigger OnAction()
                 var
@@ -162,10 +162,10 @@ pageextension 50053 "DEL PurchaseOrder" extends "Purchase Order" //50
         {
             action("DEL Create Deal")
             {
-                Promoted = true;
-                PromotedIsBig = true;
                 Image = CreateWhseLoc;
+                Promoted = true;
                 PromotedCategory = Process;
+                PromotedIsBig = true;
                 trigger OnAction()
                 var
                     affaireNo_Co_Loc: Code[20];
@@ -180,10 +180,10 @@ pageextension 50053 "DEL PurchaseOrder" extends "Purchase Order" //50
         {
             action("DEL Set to 0 Qty to Receive")
             {
-                Promoted = true;
-                PromotedIsBig = true;
                 Image = UpdateShipment;
+                Promoted = true;
                 PromotedCategory = Process;
+                PromotedIsBig = true;
                 trigger OnAction()
                 var
                     UpdateSalesLinePurchaseLine: Codeunit "Update SalesLine/PurchaseLine";
@@ -193,11 +193,11 @@ pageextension 50053 "DEL PurchaseOrder" extends "Purchase Order" //50
             }
             action("DEL Export excel MGTS")
             {
-                RunPageOnRec = true;
-                Promoted = true;
-                PromotedIsBig = true;
                 Image = Export;
+                Promoted = true;
                 PromotedCategory = Process;
+                PromotedIsBig = true;
+                RunPageOnRec = true;
                 trigger OnAction()
                 var
                     PurchaseHeader: Record "Purchase Header";
@@ -217,20 +217,20 @@ pageextension 50053 "DEL PurchaseOrder" extends "Purchase Order" //50
         {
             action("DEL PostSpecOrder")
             {
-                ShortCutKey = F9;
-                Ellipsis = true;
-                Caption = 'Post special order';
                 ApplicationArea = Suite;
-                Promoted = true;
-                PromotedIsBig = true;
+                Caption = 'Post special order';
+                Ellipsis = true;
                 Image = PostOrder;
+                Promoted = true;
                 PromotedCategory = Process;
+                PromotedIsBig = true;
+                ShortCutKey = F9;
                 trigger OnAction()
                 var
                     ApprovalsMgmt: Codeunit "Approvals Mgmt.";
+                    MGTSFCT: Codeunit "DEL MGTS_FctMgt";
                     InstructionMgt: Codeunit "Instruction Mgt.";
                     PrepaymentMgt: Codeunit "Prepayment Mgt.";
-                    MGTSFCT: Codeunit "DEL MGTS_FctMgt";
                     PurchPost: Codeunit "Purch.-Post (Yes/No)";
                     Text50000: Label 'There are unposted prepayment amounts on the document of type %1 with the number %2.;DES=Fr den Beleg vom Typ ''%1'' mit der Nummer %2 sind ungebuchte Vorauszahlungsbetr„ge vorhanden.;ITS=Sono presenti importi di pagamenti anticipati non registrati nel documento di tipo %1 con il numero %2.;FRS=Il existe des montants acompte non valid‚s sur le document de type %1 portant le num‚ro %2.';
                     Text50001: Label 'There are unpaid prepayment invoices that are related to the document of type %1 with the number %2.;DES=Fr den Beleg vom Typ %1 mit der Nummer %2 sind unbezahlte Vorauszahlungsrechnungen vorhanden.;ITS=Sono presenti fatture pagamenti anticipati non pagate correlate al documento di tipo %1 con il numero %2.;FRS=Il existe des factures d''acompte impay‚es li‚es au document de type %1 portant le num‚ro %2.';
@@ -268,21 +268,21 @@ pageextension 50053 "DEL PurchaseOrder" extends "Purchase Order" //50
         {
             action("DEL PostPrintSpecOrder")
             {
-                ShortCutKey = 'Shift+F9';
-                Ellipsis = true;
-                Caption = 'Post and Print special order';
                 ApplicationArea = Suite;
-                Promoted = true;
-                PromotedIsBig = true;
+                Caption = 'Post and Print special order';
+                Ellipsis = true;
                 Image = PostPrint;
+                Promoted = true;
                 PromotedCategory = Process;
+                PromotedIsBig = true;
+                ShortCutKey = 'Shift+F9';
                 trigger OnAction()
                 var
                     ApprovalsMgmt: Codeunit "Approvals Mgmt.";
+                    MGTSFCT: Codeunit "DEL MGTS_FctMgt";
                     InstructionMgt: Codeunit "Instruction Mgt.";
                     PrepaymentMgt: Codeunit "Prepayment Mgt.";
                     PurchPostPrint: Codeunit "Purch.-Post + Print";
-                    MGTSFCT: Codeunit "DEL MGTS_FctMgt";
                     Text50000: Label 'There are unposted prepayment amounts on the document of type %1 with the number %2.;DES=Fr den Beleg vom Typ ''%1'' mit der Nummer %2 sind ungebuchte Vorauszahlungsbetr„ge vorhanden.;ITS=Sono presenti importi di pagamenti anticipati non registrati nel documento di tipo %1 con il numero %2.;FRS=Il existe des montants acompte non valid‚s sur le document de type %1 portant le num‚ro %2.';
                     Text50001: Label 'There are unpaid prepayment invoices that are related to the document of type %1 with the number %2.;DES=Fr den Beleg vom Typ %1 mit der Nummer %2 sind unbezahlte Vorauszahlungsrechnungen vorhanden.;ITS=Sono presenti fatture pagamenti anticipati non pagate correlate al documento di tipo %1 con il numero %2.;FRS=Il existe des factures d''acompte impay‚es li‚es au document de type %1 portant le num‚ro %2.';
                 begin
@@ -319,10 +319,10 @@ pageextension 50053 "DEL PurchaseOrder" extends "Purchase Order" //50
         {
             action("DEL Matrix Print")
             {
-                Caption = 'Matrix Print';
                 ApplicationArea = Suite;
-                Promoted = true;
+                Caption = 'Matrix Print';
                 Image = Print;
+                Promoted = true;
                 PromotedCategory = Category10;
                 PromotedOnly = true;
 
@@ -333,8 +333,8 @@ pageextension 50053 "DEL PurchaseOrder" extends "Purchase Order" //50
                     ProcessType: Enum "DEL Process Type";
                     lUsage: Enum "DEL Usage DocMatrix Selection";
                 begin
-                    IF lcuDocumentMatrixMgt.ShowDocMatrixSelection(Rec."Buy-from Vendor No.", ProcessType::Manual, lUsage::"P.Order", lrecDocMatrixSelection, FALSE) THEN
-                        lcuDocumentMatrixMgt.ProcessDocumentMatrix(lUsage::"P.Order", ProcessType::Manual, Rec, Rec.FIELDNO("Buy-from Vendor No."), Rec.FIELDNO("No."), lrecDocMatrixSelection, Rec.FIELDNO("Purchaser Code"));
+                    IF lcuDocumentMatrixMgt.ShowDocMatrixSelection(Rec."Buy-from Vendor No.", ProcessType::Manual, lUsage::"P.Order".AsInteger(), lrecDocMatrixSelection, FALSE) THEN
+                        lcuDocumentMatrixMgt.ProcessDocumentMatrix(lUsage::"P.Order".AsInteger(), ProcessType::Manual, Rec, Rec.FIELDNO("Buy-from Vendor No."), Rec.FIELDNO("No."), lrecDocMatrixSelection, Rec.FIELDNO("Purchaser Code"));
                 end;
             }
         }
@@ -346,10 +346,10 @@ pageextension 50053 "DEL PurchaseOrder" extends "Purchase Order" //50
             }
             action("DEL Swiss QR-Bill Scan")
             {
-                Caption = 'Scan QR-Bill';
                 ApplicationArea = Basic, Suite;
-                Promoted = true;
+                Caption = 'Scan QR-Bill';
                 Image = Import;
+                Promoted = true;
                 PromotedCategory = Process;
                 trigger OnAction()
                 var
@@ -359,10 +359,10 @@ pageextension 50053 "DEL PurchaseOrder" extends "Purchase Order" //50
             }
             action("DEL Swiss QR-Bill Import")
             {
-                Caption = 'Import Scanned QR-Bill File';
                 ApplicationArea = Basic, Suite;
-                Promoted = true;
+                Caption = 'Import Scanned QR-Bill File';
                 Image = Import;
+                Promoted = true;
                 PromotedCategory = Process;
                 trigger OnAction()
                 begin
@@ -371,11 +371,11 @@ pageextension 50053 "DEL PurchaseOrder" extends "Purchase Order" //50
             }
             action("DEL Swiss QR-Bill Void")
             {
-                Caption = 'Void the imported QR-Bill';
                 ApplicationArea = Basic, Suite;
-                Promoted = true;
+                Caption = 'Void the imported QR-Bill';
                 //TODOVisible="Swiss QRBill";
                 Image = VoidCheck;
+                Promoted = true;
                 PromotedCategory = Process;
                 trigger OnAction()
                 begin
@@ -384,10 +384,10 @@ pageextension 50053 "DEL PurchaseOrder" extends "Purchase Order" //50
             }
             action("DEL Print MGTS")
             {
-                Caption = '&Print MGTS';
                 ApplicationArea = Suite;
-                Promoted = true;
+                Caption = '&Print MGTS';
                 Image = Print;
+                Promoted = true;
                 PromotedCategory = Category5;
                 trigger OnAction()
                 var
@@ -402,12 +402,12 @@ pageextension 50053 "DEL PurchaseOrder" extends "Purchase Order" //50
             }
             action("DEL Print Dossier")
             {
-                Caption = '&Print Dossier';
                 ApplicationArea = Suite;
-                RunPageOnRec = false;
-                Promoted = true;
+                Caption = '&Print Dossier';
                 Image = Print;
+                Promoted = true;
                 PromotedCategory = Category5;
+                RunPageOnRec = false;
                 trigger OnAction()
                 var
                     PurchaseHeader: Record "Purchase Header";

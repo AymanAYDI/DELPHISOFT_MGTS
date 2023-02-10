@@ -42,7 +42,6 @@ tableextension 50044 "DEL GenJournalLine" extends "Gen. Journal Line" //81
 
         field(50001; "DEL Shipment Selection"; Integer)
         {
-            FieldClass = FlowField;
             CalcFormula = Count("DEL Deal Shipment Selection" WHERE(Checked = FILTER('Yes'),
                                                                  "Document No." = FIELD(FILTER("Document No.")),
                                                                  "Journal Template Name" = FIELD(FILTER("Journal Template Name")),
@@ -50,25 +49,26 @@ tableextension 50044 "DEL GenJournalLine" extends "Gen. Journal Line" //81
                                                                  "Line No." = FIELD("Line No."),
                                                                  USER_ID = FIELD("DEL User ID Filter")));
             Editable = false;
+            FieldClass = FlowField;
 
         }
         field(50002; "DEL User ID Filter"; Code[20])
         {
-            CaptionClass = '1,3,1';
             Caption = 'Global Dimension 1 Filter';
+            CaptionClass = '1,3,1';
             FieldClass = FlowFilter;
             TableRelation = User;
         }
         field(50003; "DEL Customer Provision"; Code[20])
         {
             Caption = 'Customer Provision';
-            TableRelation = Customer."No.";
             DataClassification = CustomerContent;
+            TableRelation = Customer."No.";
         }
         field(50010; "DEL Shortcut Dim 3 Code"; Code[20])
         {
-            CaptionClass = '1,2,3';
             Caption = 'Shortcut Dimension 3 Code';
+            CaptionClass = '1,2,3';
             DataClassification = CustomerContent;
             trigger OnValidate()
             begin
@@ -77,8 +77,8 @@ tableextension 50044 "DEL GenJournalLine" extends "Gen. Journal Line" //81
         }
         field(50011; "DEL Shortcut Dim 4 Code"; Code[20])
         {
-            CaptionClass = '1,2,4';
             Caption = 'Shortcut Dimension 4 Code';
+            CaptionClass = '1,2,4';
             DataClassification = CustomerContent;
             trigger OnValidate()
             begin
@@ -87,8 +87,8 @@ tableextension 50044 "DEL GenJournalLine" extends "Gen. Journal Line" //81
         }
         field(50012; "DEL Shortcut Dim 5 Code"; Code[20])
         {
-            CaptionClass = '1,2,5';
             Caption = 'Shortcut Dimension 5 Code';
+            CaptionClass = '1,2,5';
             DataClassification = CustomerContent;
             trigger OnValidate()
             begin
@@ -97,8 +97,8 @@ tableextension 50044 "DEL GenJournalLine" extends "Gen. Journal Line" //81
         }
         field(50013; "DEL Shortcut Dim 6 Code"; Code[20])
         {
-            CaptionClass = '1,2,6';
             Caption = 'Shortcut Dimension 6 Code';
+            CaptionClass = '1,2,6';
             DataClassification = CustomerContent;
             trigger OnValidate()
             begin
@@ -107,8 +107,8 @@ tableextension 50044 "DEL GenJournalLine" extends "Gen. Journal Line" //81
         }
         field(50014; "DEL Shortcut Dim 7 Code"; Code[20])
         {
-            CaptionClass = '1,2,7';
             Caption = 'Shortcut Dimension 7 Code';
+            CaptionClass = '1,2,7';
             DataClassification = CustomerContent;
             trigger OnValidate()
             begin
@@ -117,8 +117,8 @@ tableextension 50044 "DEL GenJournalLine" extends "Gen. Journal Line" //81
         }
         field(50015; "DEL Shortcut Dim 8 Code"; Code[20])
         {
-            CaptionClass = '1,2,8';
             Caption = 'Shortcut Dimension 8 Code';
+            CaptionClass = '1,2,8';
             DataClassification = CustomerContent;
             trigger OnValidate()
             begin

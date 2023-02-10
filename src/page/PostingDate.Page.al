@@ -33,8 +33,8 @@ page 50129 "DEL Posting Date"
     end;
 
     var
-        PostingDate: Date;
         GenJnlCheckLine: Codeunit "Gen. Jnl.-Check Line";
+        PostingDate: Date;
         Text001: Label 'The entered date is not within your range of allowed posting dates';
 
     procedure GetPostingDate(): Date

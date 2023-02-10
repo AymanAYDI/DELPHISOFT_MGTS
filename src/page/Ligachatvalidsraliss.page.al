@@ -1,5 +1,6 @@
 page 50007 "DEL Lig achat validés/réalisés"
 {
+    ApplicationArea = all;
     DeleteAllowed = false;
     Editable = false;
     InsertAllowed = false;
@@ -8,7 +9,6 @@ page 50007 "DEL Lig achat validés/réalisés"
     SourceTableView = ORDER(Ascending)
                       WHERE(Type = CONST(Item));
     UsageCategory = Lists;
-    ApplicationArea = all;
 
     layout
     {

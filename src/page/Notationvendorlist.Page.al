@@ -1,5 +1,6 @@
 page 50063 "DEL Notation vendor list"
 {
+    ApplicationArea = all;
     Caption = 'Rating vendor list';
     CardPageID = "DEL Vendor Card Notation";
     Editable = false;
@@ -9,7 +10,6 @@ page 50063 "DEL Notation vendor list"
                 ORDER(Ascending)
                   WHERE("Vendor Posting Group" = FILTER('MARCH'));
     UsageCategory = Lists;
-    ApplicationArea = all;
     layout
     {
         area(content)

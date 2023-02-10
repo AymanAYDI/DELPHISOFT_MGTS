@@ -1,10 +1,10 @@
 page 50039 "DEL Currency Exchange"
 {
+    ApplicationArea = all;
     Caption = 'Currency exchange';
     PageType = List;
     SourceTable = "DEL Currency Exchange";
     UsageCategory = Administration;
-    ApplicationArea = all;
     layout
     {
         area(content)

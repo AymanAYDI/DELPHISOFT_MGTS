@@ -1,11 +1,11 @@
 page 50058 "DEL Tracking non traité"
 {
+    ApplicationArea = all;
     Caption = 'Tracking recu par XML mais non traité dans Nav';
     Editable = false;
     PageType = List;
     SourceTable = "DEL Tracking général";
     UsageCategory = Lists;
-    ApplicationArea = all;
     layout
     {
         area(content)

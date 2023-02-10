@@ -5,8 +5,8 @@ tableextension 50034 "DEL SalesHeaderArchive" extends "Sales Header Archive"
         field(50000; "DEL Fiscal Repr."; Code[10])
         {
             Caption = 'Fiscal Repr.';
-            TableRelation = Contact;
             DataClassification = CustomerContent;
+            TableRelation = Contact;
         }
         field(50004; "DEL Event Code"; Enum "DEL Code Event")
         {

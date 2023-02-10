@@ -1,9 +1,9 @@
 report 50073 "DEL Order" //405
 {
-    DefaultLayout = RDLC;
-    RDLCLayout = './src/report/RDL/Order.rdlc';
 
     Caption = 'Order';
+    DefaultLayout = RDLC;
+    RDLCLayout = './src/report/RDL/Order.rdlc';
 
     dataset
     {
@@ -405,7 +405,7 @@ report 50073 "DEL Order" //405
                     dataitem(RoundLoop; Integer)
                     {
                         DataItemTableView = SORTING(Number);
-                        column(LineAmt_PurchLine; PurchLine."Line Amount")
+                        column(LineAmt_PurchLine; TempPurchLine."Line Amount")
                         {
                             AutoFormatExpression = "Purchase Line"."Currency Code";
                             AutoFormatType = 1;
@@ -471,12 +471,12 @@ report 50073 "DEL Order" //405
                         column(VATIdentifier_PurchLine; "Purchase Line"."VAT Identifier")
                         {
                         }
-                        column(InvDiscAmt_PurchLine; -PurchLine."Inv. Discount Amount")
+                        column(InvDiscAmt_PurchLine; -TempPurchLine."Inv. Discount Amount")
                         {
                             AutoFormatExpression = "Purchase Line"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(TotalInclVAT; PurchLine."Line Amount" - PurchLine."Inv. Discount Amount")
+                        column(TotalInclVAT; TempPurchLine."Line Amount" - TempPurchLine."Inv. Discount Amount")
                         {
                             AutoFormatExpression = "Purchase Header"."Currency Code";
                             AutoFormatType = 1;
@@ -484,7 +484,7 @@ report 50073 "DEL Order" //405
                         column(TotalInclVATText; TotalInclVATText)
                         {
                         }
-                        column(VATAmountText; VATAmountLine.VATAmountText())
+                        column(VATAmountText; TempVATAmountLine.VATAmountText())
                         {
                         }
                         column(VATAmount; VATAmount)
@@ -609,17 +609,17 @@ report 50073 "DEL Order" //405
                         trigger OnAfterGetRecord()
                         begin
                             IF Number = 1 THEN
-                                PurchLine.FIND('-')
+                                TempPurchLine.FIND('-')
                             ELSE
-                                PurchLine.NEXT();
-                            "Purchase Line" := PurchLine;
+                                TempPurchLine.NEXT();
+                            "Purchase Line" := TempPurchLine;
 
                             IF NOT "Purchase Header"."Prices Including VAT" AND
-                               (PurchLine."VAT Calculation Type" = PurchLine."VAT Calculation Type"::"Full VAT")
+                               (TempPurchLine."VAT Calculation Type" = TempPurchLine."VAT Calculation Type"::"Full VAT")
                             THEN
-                                PurchLine."Line Amount" := 0;
+                                TempPurchLine."Line Amount" := 0;
 
-                            IF (PurchLine.Type = PurchLine.Type::"G/L Account") AND (NOT ShowInternalInfo) THEN
+                            IF (TempPurchLine.Type = TempPurchLine.Type::"G/L Account") AND (NOT ShowInternalInfo) THEN
                                 "Purchase Line"."No." := '';
                             AllowInvDisctxt := FORMAT("Purchase Line"."Allow Invoice Disc.");
                             TotalSubTotal += "Purchase Line"."Line Amount";
@@ -641,72 +641,72 @@ report 50073 "DEL Order" //405
 
                         trigger OnPostDataItem()
                         begin
-                            PurchLine.DELETEALL();
+                            TempPurchLine.DELETEALL();
                         end;
 
                         trigger OnPreDataItem()
                         begin
-                            MoreLines := PurchLine.FIND('+');
-                            WHILE MoreLines AND (PurchLine.Description = '') AND (PurchLine."Description 2" = '') AND
-                                  (PurchLine."No." = '') AND (PurchLine.Quantity = 0) AND
-                                  (PurchLine.Amount = 0) DO
-                                MoreLines := PurchLine.NEXT(-1) <> 0;
+                            MoreLines := TempPurchLine.FIND('+');
+                            WHILE MoreLines AND (TempPurchLine.Description = '') AND (TempPurchLine."Description 2" = '') AND
+                                  (TempPurchLine."No." = '') AND (TempPurchLine.Quantity = 0) AND
+                                  (TempPurchLine.Amount = 0) DO
+                                MoreLines := TempPurchLine.NEXT(-1) <> 0;
                             IF NOT MoreLines THEN
                                 CurrReport.BREAK();
-                            PurchLine.SETRANGE("Line No.", 0, PurchLine."Line No.");
-                            SETRANGE(Number, 1, PurchLine.COUNT);
-                            CurrReport.CREATETOTALS(PurchLine."Line Amount", PurchLine."Inv. Discount Amount");
+                            TempPurchLine.SETRANGE("Line No.", 0, TempPurchLine."Line No.");
+                            SETRANGE(Number, 1, TempPurchLine.COUNT);
+                            CurrReport.CREATETOTALS(TempPurchLine."Line Amount", TempPurchLine."Inv. Discount Amount");
                         end;
                     }
                     dataitem(VATCounter; Integer)
                     {
                         DataItemTableView = SORTING(Number);
-                        column(VATAmtLineVATBase; VATAmountLine."VAT Base")
+                        column(VATAmtLineVATBase; TempVATAmountLine."VAT Base")
                         {
                             AutoFormatExpression = "Purchase Header"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmtLineVATAmt; VATAmountLine."VAT Amount")
+                        column(VATAmtLineVATAmt; TempVATAmountLine."VAT Amount")
                         {
                             AutoFormatExpression = "Purchase Header"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmtLineLineAmt; VATAmountLine."Line Amount")
+                        column(VATAmtLineLineAmt; TempVATAmountLine."Line Amount")
                         {
                             AutoFormatExpression = "Purchase Header"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmtLineInvDiscBaseAmt; VATAmountLine."Inv. Disc. Base Amount")
+                        column(VATAmtLineInvDiscBaseAmt; TempVATAmountLine."Inv. Disc. Base Amount")
                         {
                             AutoFormatExpression = "Purchase Header"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmtLineInvDiscAmt; VATAmountLine."Invoice Discount Amount")
+                        column(VATAmtLineInvDiscAmt; TempVATAmountLine."Invoice Discount Amount")
                         {
                             AutoFormatExpression = "Purchase Header"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(VATAmtLineVAT; VATAmountLine."VAT %")
+                        column(VATAmtLineVAT; TempVATAmountLine."VAT %")
                         {
                             DecimalPlaces = 0 : 5;
                         }
-                        column(VATAmtLineVATIdentifier; VATAmountLine."VAT Identifier")
+                        column(VATAmtLineVATIdentifier; TempVATAmountLine."VAT Identifier")
                         {
                         }
 
                         trigger OnAfterGetRecord()
                         begin
-                            VATAmountLine.GetLine(Number);
+                            TempVATAmountLine.GetLine(Number);
                         end;
 
                         trigger OnPreDataItem()
                         begin
                             IF VATAmount = 0 THEN
                                 CurrReport.BREAK();
-                            SETRANGE(Number, 1, VATAmountLine.COUNT);
+                            SETRANGE(Number, 1, TempVATAmountLine.COUNT);
                             CurrReport.CREATETOTALS(
-                              VATAmountLine."Line Amount", VATAmountLine."Inv. Disc. Base Amount",
-                              VATAmountLine."Invoice Discount Amount", VATAmountLine."VAT Base", VATAmountLine."VAT Amount");
+                              TempVATAmountLine."Line Amount", TempVATAmountLine."Inv. Disc. Base Amount",
+                              TempVATAmountLine."Invoice Discount Amount", TempVATAmountLine."VAT Base", TempVATAmountLine."VAT Amount");
                         end;
                     }
                     dataitem(VATCounterLCY; Integer)
@@ -729,24 +729,24 @@ report 50073 "DEL Order" //405
 
                         trigger OnAfterGetRecord()
                         begin
-                            VATAmountLine.GetLine(Number);
+                            TempVATAmountLine.GetLine(Number);
 
                             VALVATBaseLCY := ROUND(CurrExchRate.ExchangeAmtFCYToLCY(
                                                "Purchase Header"."Posting Date", "Purchase Header"."Currency Code",
-                                               VATAmountLine."VAT Base", "Purchase Header"."Currency Factor"));
+                                               TempVATAmountLine."VAT Base", "Purchase Header"."Currency Factor"));
                             VALVATAmountLCY := ROUND(CurrExchRate.ExchangeAmtFCYToLCY(
                                                  "Purchase Header"."Posting Date", "Purchase Header"."Currency Code",
-                                                 VATAmountLine."VAT Amount", "Purchase Header"."Currency Factor"));
+                                                 TempVATAmountLine."VAT Amount", "Purchase Header"."Currency Factor"));
                         end;
 
                         trigger OnPreDataItem()
                         begin
                             IF (NOT GLSetup."Print VAT specification in LCY") OR
                                ("Purchase Header"."Currency Code" = '') OR
-                               (VATAmountLine.GetTotalVATAmount() = 0) THEN
+                               (TempVATAmountLine.GetTotalVATAmount() = 0) THEN
                                 CurrReport.BREAK();
 
-                            SETRANGE(Number, 1, VATAmountLine.COUNT);
+                            SETRANGE(Number, 1, TempVATAmountLine.COUNT);
                             CurrReport.CREATETOTALS(VALVATBaseLCY, VALVATAmountLCY);
 
                             IF GLSetup."LCY Code" = '' THEN
@@ -867,10 +867,10 @@ report 50073 "DEL Order" //405
                             AutoFormatExpression = "Purchase Header"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(PrepmtInvBufGLAccNo; PrepmtInvBuf."G/L Account No.")
+                        column(PrepmtInvBufGLAccNo; TempPrepmtInvBuf."G/L Account No.")
                         {
                         }
-                        column(PrepmtInvBufDesc; PrepmtInvBuf.Description)
+                        column(PrepmtInvBufDesc; TempPrepmtInvBuf.Description)
                         {
                         }
                         column(TotalInclVATText2; TotalInclVATText)
@@ -879,12 +879,12 @@ report 50073 "DEL Order" //405
                         column(TotalExclVATText2; TotalExclVATText)
                         {
                         }
-                        column(PrepmtInvBufAmt; PrepmtInvBuf.Amount)
+                        column(PrepmtInvBufAmt; TempPrepmtInvBuf.Amount)
                         {
                             AutoFormatExpression = "Purchase Header"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(PrepmtVATAmountText; PrepmtVATAmountLine.VATAmountText())
+                        column(PrepmtVATAmountText; TempPrepmtVATAmountLine.VATAmountText())
                         {
                         }
                         column(PrepmtVATAmount; PrepmtVATAmount)
@@ -948,53 +948,53 @@ report 50073 "DEL Order" //405
                         trigger OnAfterGetRecord()
                         begin
                             IF Number = 1 THEN BEGIN
-                                IF NOT PrepmtInvBuf.FIND('-') THEN
+                                IF NOT TempPrepmtInvBuf.FIND('-') THEN
                                     CurrReport.BREAK();
                             END ELSE
-                                IF PrepmtInvBuf.NEXT() = 0 THEN
+                                IF TempPrepmtInvBuf.NEXT() = 0 THEN
                                     CurrReport.BREAK();
 
                             IF ShowInternalInfo THEN
-                                PrepmtDimSetEntry.SETRANGE("Dimension Set ID", PrepmtInvBuf."Dimension Set ID");
+                                PrepmtDimSetEntry.SETRANGE("Dimension Set ID", TempPrepmtInvBuf."Dimension Set ID");
 
                             IF "Purchase Header"."Prices Including VAT" THEN
-                                PrepmtLineAmount := PrepmtInvBuf."Amount Incl. VAT"
+                                PrepmtLineAmount := TempPrepmtInvBuf."Amount Incl. VAT"
                             ELSE
-                                PrepmtLineAmount := PrepmtInvBuf.Amount;
+                                PrepmtLineAmount := TempPrepmtInvBuf.Amount;
                         end;
 
                         trigger OnPreDataItem()
                         begin
                             CurrReport.CREATETOTALS(
-                              PrepmtInvBuf.Amount, PrepmtInvBuf."Amount Incl. VAT",
-                              PrepmtVATAmountLine."Line Amount", PrepmtVATAmountLine."VAT Base",
-                              PrepmtVATAmountLine."VAT Amount",
+                              TempPrepmtInvBuf.Amount, TempPrepmtInvBuf."Amount Incl. VAT",
+                              TempPrepmtVATAmountLine."Line Amount", TempPrepmtVATAmountLine."VAT Base",
+                              TempPrepmtVATAmountLine."VAT Amount",
                               PrepmtLineAmount);
                         end;
                     }
                     dataitem(PrepmtVATCounter; Integer)
                     {
                         DataItemTableView = SORTING(Number);
-                        column(PrepmtVATAmtLineVATAmt; PrepmtVATAmountLine."VAT Amount")
+                        column(PrepmtVATAmtLineVATAmt; TempPrepmtVATAmountLine."VAT Amount")
                         {
                             AutoFormatExpression = "Purchase Header"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(PrepmtVATAmtLineVATBase; PrepmtVATAmountLine."VAT Base")
+                        column(PrepmtVATAmtLineVATBase; TempPrepmtVATAmountLine."VAT Base")
                         {
                             AutoFormatExpression = "Purchase Header"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(PrepmtVATAmtLineLineAmt; PrepmtVATAmountLine."Line Amount")
+                        column(PrepmtVATAmtLineLineAmt; TempPrepmtVATAmountLine."Line Amount")
                         {
                             AutoFormatExpression = "Purchase Header"."Currency Code";
                             AutoFormatType = 1;
                         }
-                        column(PrepmtVATAmtLineVAT; PrepmtVATAmountLine."VAT %")
+                        column(PrepmtVATAmtLineVAT; TempPrepmtVATAmountLine."VAT %")
                         {
                             DecimalPlaces = 0 : 5;
                         }
-                        column(PrepmtVATAmtLineVATId; PrepmtVATAmountLine."VAT Identifier")
+                        column(PrepmtVATAmtLineVATId; TempPrepmtVATAmountLine."VAT Identifier")
                         {
                         }
                         column(PrepymtVATAmtSpecCaption; PrepymtVATAmtSpecCaptionLbl)
@@ -1003,12 +1003,12 @@ report 50073 "DEL Order" //405
 
                         trigger OnAfterGetRecord()
                         begin
-                            PrepmtVATAmountLine.GetLine(Number);
+                            TempPrepmtVATAmountLine.GetLine(Number);
                         end;
 
                         trigger OnPreDataItem()
                         begin
-                            SETRANGE(Number, 1, PrepmtVATAmountLine.COUNT);
+                            SETRANGE(Number, 1, TempPrepmtVATAmountLine.COUNT);
                         end;
                     }
                     dataitem(PrepmtTotal; Integer)
@@ -1024,7 +1024,7 @@ report 50073 "DEL Order" //405
 
                         trigger OnPreDataItem()
                         begin
-                            IF NOT PrepmtInvBuf.FIND('-') THEN
+                            IF NOT TempPrepmtInvBuf.FIND('-') THEN
                                 CurrReport.BREAK();
                         end;
                     }
@@ -1032,53 +1032,53 @@ report 50073 "DEL Order" //405
 
                 trigger OnAfterGetRecord()
                 var
-                    PrepmtPurchLine: Record "Purchase Line" temporary;
+                    TempPrepmtPurchLine: Record "Purchase Line" temporary;
                     TempPurchLine: Record "Purchase Line" temporary;
                 begin
-                    CLEAR(PurchLine);
+                    CLEAR(TempPurchLine);
                     CLEAR(PurchPost);
-                    PurchLine.DELETEALL();
-                    VATAmountLine.DELETEALL();
-                    PurchPost.GetPurchLines("Purchase Header", PurchLine, 0);
-                    PurchLine.CalcVATAmountLines(0, "Purchase Header", PurchLine, VATAmountLine);
-                    PurchLine.UpdateVATOnLines(0, "Purchase Header", PurchLine, VATAmountLine);
-                    VATAmount := VATAmountLine.GetTotalVATAmount();
-                    VATBaseAmount := VATAmountLine.GetTotalVATBase();
+                    TempPurchLine.DELETEALL();
+                    TempVATAmountLine.DELETEALL();
+                    PurchPost.GetPurchLines("Purchase Header", TempPurchLine, 0);
+                    TempPurchLine.CalcVATAmountLines(0, "Purchase Header", TempPurchLine, TempVATAmountLine);
+                    TempPurchLine.UpdateVATOnLines(0, "Purchase Header", TempPurchLine, TempVATAmountLine);
+                    VATAmount := TempVATAmountLine.GetTotalVATAmount();
+                    VATBaseAmount := TempVATAmountLine.GetTotalVATBase();
                     VATDiscountAmount :=
-                      VATAmountLine.GetTotalVATDiscount("Purchase Header"."Currency Code", "Purchase Header"."Prices Including VAT");
-                    TotalAmountInclVAT := VATAmountLine.GetTotalAmountInclVAT();
+                      TempVATAmountLine.GetTotalVATDiscount("Purchase Header"."Currency Code", "Purchase Header"."Prices Including VAT");
+                    TotalAmountInclVAT := TempVATAmountLine.GetTotalAmountInclVAT();
 
-                    PrepmtInvBuf.DELETEALL();
-                    PurchPostPrepmt.GetPurchLines("Purchase Header", 0, PrepmtPurchLine);
-                    IF (NOT PrepmtPurchLine.ISEMPTY) THEN BEGIN
+                    TempPrepmtInvBuf.DELETEALL();
+                    PurchPostPrepmt.GetPurchLines("Purchase Header", 0, TempPrepmtPurchLine);
+                    IF (NOT TempPrepmtPurchLine.ISEMPTY) THEN BEGIN
                         PurchPostPrepmt.GetPurchLinesToDeduct("Purchase Header", TempPurchLine);
                         IF NOT TempPurchLine.ISEMPTY THEN
-                            PurchPostPrepmt.CalcVATAmountLines("Purchase Header", TempPurchLine, PrePmtVATAmountLineDeduct, 1);
+                            PurchPostPrepmt.CalcVATAmountLines("Purchase Header", TempPurchLine, TempPrePmtVATAmountLineDeduct, 1);
                     END;
-                    PurchPostPrepmt.CalcVATAmountLines("Purchase Header", PrepmtPurchLine, PrepmtVATAmountLine, 0);
-                    IF PrepmtVATAmountLine.FINDSET() THEN
+                    PurchPostPrepmt.CalcVATAmountLines("Purchase Header", TempPrepmtPurchLine, TempPrepmtVATAmountLine, 0);
+                    IF TempPrepmtVATAmountLine.FINDSET() THEN
                         REPEAT
-                            PrePmtVATAmountLineDeduct := PrepmtVATAmountLine;
-                            IF PrePmtVATAmountLineDeduct.FIND() THEN BEGIN
-                                PrepmtVATAmountLine."VAT Base" := PrepmtVATAmountLine."VAT Base" - PrePmtVATAmountLineDeduct."VAT Base";
-                                PrepmtVATAmountLine."VAT Amount" := PrepmtVATAmountLine."VAT Amount" - PrePmtVATAmountLineDeduct."VAT Amount";
-                                PrepmtVATAmountLine."Amount Including VAT" := PrepmtVATAmountLine."Amount Including VAT" -
-                                  PrePmtVATAmountLineDeduct."Amount Including VAT";
-                                PrepmtVATAmountLine."Line Amount" := PrepmtVATAmountLine."Line Amount" - PrePmtVATAmountLineDeduct."Line Amount";
-                                PrepmtVATAmountLine."Inv. Disc. Base Amount" := PrepmtVATAmountLine."Inv. Disc. Base Amount" -
-                                  PrePmtVATAmountLineDeduct."Inv. Disc. Base Amount";
-                                PrepmtVATAmountLine."Invoice Discount Amount" := PrepmtVATAmountLine."Invoice Discount Amount" -
-                                  PrePmtVATAmountLineDeduct."Invoice Discount Amount";
-                                PrepmtVATAmountLine."Calculated VAT Amount" := PrepmtVATAmountLine."Calculated VAT Amount" -
-                                  PrePmtVATAmountLineDeduct."Calculated VAT Amount";
-                                PrepmtVATAmountLine.MODIFY();
+                            TempPrePmtVATAmountLineDeduct := TempPrepmtVATAmountLine;
+                            IF TempPrePmtVATAmountLineDeduct.FIND() THEN BEGIN
+                                TempPrepmtVATAmountLine."VAT Base" := TempPrepmtVATAmountLine."VAT Base" - TempPrePmtVATAmountLineDeduct."VAT Base";
+                                TempPrepmtVATAmountLine."VAT Amount" := TempPrepmtVATAmountLine."VAT Amount" - TempPrePmtVATAmountLineDeduct."VAT Amount";
+                                TempPrepmtVATAmountLine."Amount Including VAT" := TempPrepmtVATAmountLine."Amount Including VAT" -
+                                  TempPrePmtVATAmountLineDeduct."Amount Including VAT";
+                                TempPrepmtVATAmountLine."Line Amount" := TempPrepmtVATAmountLine."Line Amount" - TempPrePmtVATAmountLineDeduct."Line Amount";
+                                TempPrepmtVATAmountLine."Inv. Disc. Base Amount" := TempPrepmtVATAmountLine."Inv. Disc. Base Amount" -
+                                  TempPrePmtVATAmountLineDeduct."Inv. Disc. Base Amount";
+                                TempPrepmtVATAmountLine."Invoice Discount Amount" := TempPrepmtVATAmountLine."Invoice Discount Amount" -
+                                  TempPrePmtVATAmountLineDeduct."Invoice Discount Amount";
+                                TempPrepmtVATAmountLine."Calculated VAT Amount" := TempPrepmtVATAmountLine."Calculated VAT Amount" -
+                                  TempPrePmtVATAmountLineDeduct."Calculated VAT Amount";
+                                TempPrepmtVATAmountLine.MODIFY();
                             END;
-                        UNTIL PrepmtVATAmountLine.NEXT() = 0;
-                    PurchPostPrepmt.UpdateVATOnLines("Purchase Header", PrepmtPurchLine, PrepmtVATAmountLine, 0);
-                    PurchPostPrepmt.BuildInvLineBuffer("Purchase Header", PrepmtPurchLine, 0, PrepmtInvBuf);
-                    PrepmtVATAmount := PrepmtVATAmountLine.GetTotalVATAmount();
-                    PrepmtVATBaseAmount := PrepmtVATAmountLine.GetTotalVATBase();
-                    PrepmtTotalAmountInclVAT := PrepmtVATAmountLine.GetTotalAmountInclVAT();
+                        UNTIL TempPrepmtVATAmountLine.NEXT() = 0;
+                    PurchPostPrepmt.UpdateVATOnLines("Purchase Header", TempPrepmtPurchLine, TempPrepmtVATAmountLine, 0);
+                    PurchPostPrepmt.BuildInvLineBuffer("Purchase Header", TempPrepmtPurchLine, 0, TempPrepmtInvBuf);
+                    PrepmtVATAmount := TempPrepmtVATAmountLine.GetTotalVATAmount();
+                    PrepmtVATBaseAmount := TempPrepmtVATAmountLine.GetTotalVATBase();
+                    PrepmtTotalAmountInclVAT := TempPrepmtVATAmountLine.GetTotalAmountInclVAT();
 
                     IF Number > 1 THEN
                         CopyText := Text003;
@@ -1285,22 +1285,22 @@ report 50073 "DEL Order" //405
         Language: Record Language;
         PaymentTerms: Record "Payment Terms";
         PrepmtPaymentTerms: Record "Payment Terms";
-        PrepmtInvBuf: Record "Prepayment Inv. Line Buffer" temporary;
-        PurchLine: Record "Purchase Line" temporary;
+        TempPrepmtInvBuf: Record "Prepayment Inv. Line Buffer" temporary;
+        TempPurchLine: Record "Purchase Line" temporary;
         PurchSetup: Record "Purchases & Payables Setup";
         RespCenter: Record "Responsibility Center";
         SalesPurchPerson: Record "Salesperson/Purchaser";
         ShipmentMethod: Record "Shipment Method";
-        PrepmtVATAmountLine: Record "VAT Amount Line" temporary;
-        PrePmtVATAmountLineDeduct: Record "VAT Amount Line" temporary;
-        VATAmountLine: Record "VAT Amount Line" temporary;
+        TempPrepmtVATAmountLine: Record "VAT Amount Line" temporary;
+        TempPrePmtVATAmountLineDeduct: Record "VAT Amount Line" temporary;
+        TempVATAmountLine: Record "VAT Amount Line" temporary;
         ArchiveManagement: Codeunit ArchiveManagement;
         FormatAddr: Codeunit "Format Address";   //365
+        LanguageCdu: Codeunit Language;
         PurchPost: Codeunit "Purch.-Post";
 
         PurchCountPrinted: Codeunit "Purch.Header-Printed";
         PurchPostPrepmt: Codeunit "Purchase-Post Prepayments";
-        LanguageCdu: Codeunit Language;
 
         SegManagement: Codeunit SegManagement;
         ArchiveDocument: Boolean;

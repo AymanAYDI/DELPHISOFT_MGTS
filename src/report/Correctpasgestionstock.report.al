@@ -21,7 +21,7 @@ report 50031 "DEL Correct. pas gestion stock"
 
             trigger OnAfterGetRecord()
             begin
-                Item."Replenishment System" := 0;
+                Item."Replenishment System" := "Replenishment System"::"Purchase";
                 Item."No Stockkeeping" := TRUE;
                 Item.MODIFY();
             end;

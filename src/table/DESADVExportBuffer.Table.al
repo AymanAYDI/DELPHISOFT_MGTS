@@ -65,7 +65,7 @@ table 50086 "DEL DESADV Export Buffer"
         {
             Caption = 'Delivery Date Text';
         }
-        field(200; "Supplier Name"; Text[50])
+        field(200; "Supplier Name"; Text[100])
         {
             Caption = 'Supplier Name';
         }
@@ -85,7 +85,7 @@ table 50086 "DEL DESADV Export Buffer"
         {
             Caption = 'Supplier Country';
         }
-        field(205; "Supplier Street"; Text[80])
+        field(205; "Supplier Street"; Text[100])
         {
             Caption = 'Supplier Street';
         }
@@ -105,7 +105,7 @@ table 50086 "DEL DESADV Export Buffer"
         {
             Caption = 'Supplier Post Code';
         }
-        field(600; "Delivery Name"; Text[50])
+        field(600; "Delivery Name"; Text[100])
         {
             Caption = 'Delivery Name';
         }
@@ -117,7 +117,7 @@ table 50086 "DEL DESADV Export Buffer"
         {
             Caption = 'Delivery Country';
         }
-        field(603; "Delivery Street"; Text[80])
+        field(603; "Delivery Street"; Text[100])
         {
             Caption = 'Delivery Street';
         }

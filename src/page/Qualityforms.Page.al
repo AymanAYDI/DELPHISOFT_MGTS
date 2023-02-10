@@ -13,9 +13,9 @@ page 50046 "DEL Quality forms"
             {
                 field("Item No."; Rec."Item No.")
                 {
+                    Caption = 'Item No.';
                     Editable = false;
                     Visible = false;
-                    Caption = 'Item No.';
                 }
                 field("Type / Nature Enregistrement"; Rec."Type / Nature Enregistrement")
                 {

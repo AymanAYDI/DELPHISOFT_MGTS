@@ -2,10 +2,10 @@
 table 50079 "DEL Type Order EDI"
 {
 
-
-    LookupPageID = "DEL Type Order EDI";
     Caption = 'Type Order EDI';
     DataClassification = CustomerContent;
+
+    LookupPageID = "DEL Type Order EDI";
     fields
     {
         field(1; "Code"; Code[20])

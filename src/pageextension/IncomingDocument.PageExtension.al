@@ -26,10 +26,10 @@ pageextension 50063 "DEL IncomingDocument" extends "Incoming Document" //189
             action("DEL Swiss QR-Bill Create Journal")
             {
                 ApplicationArea = Basic, Suite;
-                Promoted = true;
                 //   Visible="Swiss QRBill";
                 //   Enabled="Swiss QRBill";
                 Image = CreateDocument;
+                Promoted = true;
                 PromotedCategory = Process;
                 PromotedOnly = true;
 
@@ -41,10 +41,10 @@ pageextension 50063 "DEL IncomingDocument" extends "Incoming Document" //189
             action("DEL Swiss QR-Bill Create Purch Inv")
             {
                 ApplicationArea = Basic, Suite;
-                Promoted = true;
                 //   Visible="Swiss QRBill";
                 //   Enabled="Swiss QRBill";
                 Image = CreateDocument;
+                Promoted = true;
                 PromotedCategory = Process;
                 PromotedOnly = true;
 

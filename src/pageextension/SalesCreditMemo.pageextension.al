@@ -104,12 +104,12 @@ pageextension 50040 "DEL SalesCreditMemo" extends "Sales Credit Memo"
         {
             action("DEL PostAndPrint")
             {
-                ShortCutKey = 'Shift+F9';
                 Ellipsis = true;
-                Promoted = true;
-                PromotedIsBig = true;
                 Image = PostPrint;
+                Promoted = true;
                 PromotedCategory = Category6;
+                PromotedIsBig = true;
+                ShortCutKey = 'Shift+F9';
 
                 trigger OnAction()
                 begin
@@ -120,10 +120,10 @@ pageextension 50040 "DEL SalesCreditMemo" extends "Sales Credit Memo"
             action("DEL PostAndMatrixPrint")
             {
                 ApplicationArea = Basic, Suite;
-                Promoted = true;
-                PromotedOnly = true;
                 Image = Post;
+                Promoted = true;
                 PromotedCategory = Category6;
+                PromotedOnly = true;
 
                 trigger OnAction()
                 var
@@ -144,7 +144,7 @@ pageextension 50040 "DEL SalesCreditMemo" extends "Sales Credit Memo"
                     lFieldNo := lrecSalesCrMemoHeader.FIELDNO("No.");
                     lFieldCustNo := lrecSalesCrMemoHeader.FIELDNO("Sell-to Customer No.");
 
-                    IF lcuDocumentMatrixMgt.ShowDocMatrixSelection(Rec."Sell-to Customer No.", ProcessType::Manual, lUsage::"S.Cr.Memo", lrecDocMatrixSelection, FALSE) THEN
+                    IF lcuDocumentMatrixMgt.ShowDocMatrixSelection(Rec."Sell-to Customer No.", ProcessType::Manual, lUsage::"S.Cr.Memo".AsInteger(), lrecDocMatrixSelection, FALSE) THEN
 
                         // check if post is configured in DocMatrixSelection
                         IF lrecDocMatrixSelection.Post = lrecDocMatrixSelection.Post::Yes THEN
@@ -154,7 +154,7 @@ pageextension 50040 "DEL SalesCreditMemo" extends "Sales Credit Memo"
 
                             // if the CrMemo was posted, then we should find the "Posted Sales Credit Memo" to be further processed
                             IF lcuDocumentMatrixMgt.GetPostedSalesCreditMemo(lNo, lCustNo, lrecSalesCrMemoHeader) THEN
-                                lcuDocumentMatrixMgt.ProcessDocumentMatrix(lUsage::"S.Cr.Memo", ProcessType::Manual, lrecSalesCrMemoHeader, lFieldCustNo, lFieldNo, lrecDocMatrixSelection, 0);
+                                lcuDocumentMatrixMgt.ProcessDocumentMatrix(lUsage::"S.Cr.Memo".AsInteger(), ProcessType::Manual, lrecSalesCrMemoHeader, lFieldCustNo, lFieldNo, lrecDocMatrixSelection, 0);
                 end;
             }
         }

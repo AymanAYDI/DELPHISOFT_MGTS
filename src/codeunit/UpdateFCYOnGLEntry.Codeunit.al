@@ -65,11 +65,11 @@ codeunit 50035 "DEL Update FCY On G/L Entry"
             GLAccount_Re_Loc.RESET();
             GLEntry2_Re_Loc.RESET();
             GLAccount_Re_Loc.SETFILTER("Currency Code", '<>%1', '');
-            IF GLAccount_Re_Loc.FINDFIRST() THEN
+            IF GLAccount_Re_Loc.FindSet() THEN
                 REPEAT
                     Currency2_Co_Loc := GLAccount_Re_Loc."Currency Code";
                     GLEntry2_Re_Loc.SETFILTER("G/L Account No.", GLAccount_Re_Loc."No.");
-                    IF GLEntry2_Re_Loc.FINDFIRST() THEN
+                    IF GLEntry2_Re_Loc.FindSet() THEN
                         REPEAT
                             GLEntry2_Re_Loc."DEL Initial Currency (FCY)" := Currency2_Co_Loc;
                             GLEntry2_Re_Loc."DEL Initial Amount (FCY)" := GLEntry2_Re_Loc."Amount (FCY)";

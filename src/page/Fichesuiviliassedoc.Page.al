@@ -17,58 +17,58 @@ page 50071 "DEL Fiche suivi liasse doc"
                 Caption = 'General';
                 field("No."; Rec."No.")
                 {
-                    Editable = false;
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field(Name; Rec.Name)
                 {
-                    Editable = false;
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field(Address; Rec.Address)
                 {
-                    Editable = false;
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field("Address 2"; Rec."Address 2")
                 {
-                    Editable = false;
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field("Post Code"; Rec."Post Code")
                 {
-                    Editable = false;
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field(City; Rec.City)
                 {
-                    Editable = false;
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field("Country/Region Code"; Rec."Country/Region Code")
                 {
-                    Editable = false;
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field("Purchaser Code"; Rec."Purchaser Code")
                 {
-                    Editable = false;
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field("Gen. Bus. Posting Group"; Rec."Gen. Bus. Posting Group")
                 {
-                    Editable = false;
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field("Primary Contact No."; Rec."Primary Contact No.")
                 {
-                    Editable = false;
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field(Contact; Rec.Contact)
                 {
-                    Editable = false;
                     ApplicationArea = All;
+                    Editable = false;
                 }
             }
             group("CG d'achats NGTS")
@@ -138,6 +138,7 @@ page 50071 "DEL Fiche suivi liasse doc"
                 Image = Vendor;
                 action(Card)
                 {
+                    ApplicationArea = All;
                     Caption = 'Card';
                     Image = Vendor;
                     Promoted = true;
@@ -145,10 +146,10 @@ page 50071 "DEL Fiche suivi liasse doc"
                     PromotedIsBig = true;
                     RunObject = Page "Vendor Card";
                     RunPageLink = "No." = FIELD("No.");
-                    ApplicationArea = All;
                 }
                 action("Doc&uments")
                 {
+                    ApplicationArea = All;
                     Caption = 'Audit Report';
                     Image = Documents;
                     Promoted = true;
@@ -159,7 +160,6 @@ page 50071 "DEL Fiche suivi liasse doc"
                     RunPageView = SORTING("Table Name", "No.", "Comment Entry No.", "Line No.")
                                   WHERE("Table Name" = CONST(Vendor),
                                         "Notation Type" = FILTER(' '));
-                    ApplicationArea = All;
                 }
             }
         }

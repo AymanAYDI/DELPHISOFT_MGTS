@@ -17,15 +17,15 @@ tableextension 50028 "DEL PurchaseHeader" extends "Purchase Header" //38
         field(50002; "DEL Forwarding Agent Code"; Code[20])
         {
             Caption = 'Forwarding Agent Code';
+            DataClassification = CustomerContent;
 
             TableRelation = "DEL Forwarding agent 2";
-            DataClassification = CustomerContent;
         }
         field(50003; "DEL Port de départ"; Text[30])
         {
 
-            TableRelation = Location.Code;
             DataClassification = CustomerContent;
+            TableRelation = Location.Code;
         }
         field(50004; "DEL Code événement"; Enum "DEL Code Event")
         {
@@ -37,8 +37,8 @@ tableextension 50028 "DEL PurchaseHeader" extends "Purchase Header" //38
         }
         field(50006; "DEL Port d'arrivée"; Text[30])
         {
-            TableRelation = Location.Code;
             DataClassification = CustomerContent;
+            TableRelation = Location.Code;
         }
         field(50007; "DEL DealNeedsUpdate"; Boolean)
         {
@@ -47,20 +47,20 @@ tableextension 50028 "DEL PurchaseHeader" extends "Purchase Header" //38
         field(50008; "DEL Create By"; Text[50])
         {
             Caption = 'Create By';
-            Editable = false;
             DataClassification = CustomerContent;
+            Editable = false;
         }
         field(50009; "DEL Create Date"; Date)
         {
             Caption = 'Create Date';
-            Editable = false;
             DataClassification = CustomerContent;
+            Editable = false;
         }
         field(50010; "DEL Create Time"; Time)
         {
             Caption = 'Create Time';
-            Editable = false;
             DataClassification = CustomerContent;
+            Editable = false;
         }
         field(50011; "DEL Requested Delivery Date"; Date)
         {
@@ -71,8 +71,8 @@ tableextension 50028 "DEL PurchaseHeader" extends "Purchase Header" //38
         field(50012; "DEL Rel. Exch. Rate Amount"; Decimal)
         {
             Caption = 'Relational Exch. Rate Amount';
-            DecimalPlaces = 1 : 6;
             DataClassification = CustomerContent;
+            DecimalPlaces = 1 : 6;
         }
         field(50013; "DEL Vendor Shipment Date"; Date)
         {
@@ -82,8 +82,8 @@ tableextension 50028 "DEL PurchaseHeader" extends "Purchase Header" //38
         field(50014; "DEL Type Order EDI"; Code[20])
         {
             Caption = 'Type Order EDI';
-            TableRelation = "DEL Type Order EDI";
             DataClassification = CustomerContent;
+            TableRelation = "DEL Type Order EDI";
         }
         field(50015; "DEL GLN"; Text[30])
         {

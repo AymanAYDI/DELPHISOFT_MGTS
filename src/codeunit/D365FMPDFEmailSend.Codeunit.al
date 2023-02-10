@@ -24,10 +24,10 @@ codeunit 50053 "DEL D365FM PDF Email Send"
         CodGLanguage: Code[20];
         RemTermsCod: Code[20];
         RenewalStdTextCode: Code[20];
+        OptGDocType: Enum "DEL DoC Facture Type";
         EntryNo: Integer;
         IntGLanguage: Integer;
         RemLevelInt: Integer;
-        OptGDocType: Enum "DEL DoC Facture Type";
         Param: Text;
         TxtGCci: Text;
         TemplateMailString: Text[250];
@@ -45,14 +45,14 @@ codeunit 50053 "DEL D365FM PDF Email Send"
         ServiceHeader2: Record "Service Header";
         ServiceInvoiceHeader: Record "Service Invoice Header";
         RecLBLOBRef: Codeunit "Temp Blob";// it was a call for the record tempBlob which is removed now     
+        Tempblob: Codeunit "Temp Blob";
+        Instream: InStream;
         Text006: Label 'E-mail is empty.';
         Text007: Label 'E-mail template to apply not found.';
         Text008: Label 'Sender is empty.';
+        OutStream: OutStream;
         ToFile: Text;
         TxtLEmailBodyText: Text;
-        Tempblob: Codeunit "Temp Blob";
-        Instream: InStream;
-        OutStream: OutStream;
     begin
         RecRefMaster.SETRECFILTER();
 

@@ -40,6 +40,7 @@ page 50134 "DEL DocMatrix Mail Codes"
                 Image = Text;
                 action("Mail Text")
                 {
+                    ApplicationArea = All;
                     Caption = 'Mail Text';
                     Image = Text;
                     Promoted = true;
@@ -47,7 +48,6 @@ page 50134 "DEL DocMatrix Mail Codes"
                     PromotedIsBig = true;
                     PromotedOnly = true;
                     RunPageMode = Edit;
-                    ApplicationArea = All;
 
                     trigger OnAction()
                     var
@@ -59,13 +59,13 @@ page 50134 "DEL DocMatrix Mail Codes"
                 }
                 action("Mail Place Holders")
                 {
+                    ApplicationArea = All;
                     Caption = 'Mail Place Holders';
                     Image = CodesList;
                     Promoted = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
                     PromotedOnly = true;
-                    ApplicationArea = All;
 
                     trigger OnAction()
                     begin

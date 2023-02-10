@@ -1,5 +1,6 @@
 page 50012 "DEL Tracked product follow up"
 {
+    ApplicationArea = all;
     Caption = 'Tracked product follow up';
     DeleteAllowed = false;
     InsertAllowed = false;
@@ -10,7 +11,6 @@ page 50012 "DEL Tracked product follow up"
                       WHERE("DEL Risk Item" = CONST(true),
                             "DEL Photo Risk Item Taked" = CONST(false));
     UsageCategory = Lists;
-    ApplicationArea = all;
 
     layout
     {
@@ -30,23 +30,23 @@ page 50012 "DEL Tracked product follow up"
                 }
                 field("Document No."; Rec."Document No.")
                 {
-                    Editable = false;
                     Caption = 'Document No.';
+                    Editable = false;
                 }
                 field("No."; Rec."No.")
                 {
-                    Editable = false;
                     Caption = 'No.';
+                    Editable = false;
                 }
                 field(Description; Rec.Description)
                 {
-                    Editable = false;
                     Caption = 'Description';
+                    Editable = false;
                 }
                 field("Order Date"; Rec."Order Date")
                 {
-                    Editable = false;
                     Caption = 'Order Date';
+                    Editable = false;
                 }
                 field("Expected Receipt Date"; Rec."Expected Receipt Date")
                 {
@@ -54,8 +54,8 @@ page 50012 "DEL Tracked product follow up"
                 }
                 field(Quantity; Rec.Quantity)
                 {
-                    Editable = false;
                     Caption = 'Quantity';
+                    Editable = false;
                 }
                 field("Photo Risk Item Taked"; Rec."DEL Photo Risk Item Taked")
                 {
@@ -92,9 +92,9 @@ page 50012 "DEL Tracked product follow up"
                 Caption = 'Show Document';
                 Image = View;
                 Promoted = true;
-                PromotedOnly = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
+                PromotedOnly = true;
                 ShortCutKey = 'Shift+F7';
                 ToolTip = 'Open the document that the selected line exists on.';
 

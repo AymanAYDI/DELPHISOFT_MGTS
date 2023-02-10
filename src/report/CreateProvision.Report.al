@@ -240,7 +240,7 @@ report 50014 "DEL Create Provision"
         realElement_Re_Loc.SetRange(Fee_ID, plannedElement_Re_Par.Fee_ID);
         realElement_Re_Loc.SetRange(Fee_Connection_ID, plannedElement_Re_Par.Fee_Connection_ID);
         //on boucle sur tous les elements de type Fee
-        if realElement_Re_Loc.FindFirst() then
+        if realElement_Re_Loc.FindSet() then
             repeat
 
                 //filtre sur les positions avec element id correspondant

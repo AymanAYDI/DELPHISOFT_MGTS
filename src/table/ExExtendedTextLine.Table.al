@@ -14,6 +14,7 @@ table 99209 "DEL Ex_Extended Text Line"
         field(2; "No."; Code[20])
         {
             Caption = 'No.';
+            DataClassification = CustomerContent;
             TableRelation = IF ("Table Name" = CONST("Standard Text")) "Standard Text"
             ELSE
             IF ("Table Name" = CONST("G/L Account")) "G/L Account"
@@ -21,13 +22,12 @@ table 99209 "DEL Ex_Extended Text Line"
             IF ("Table Name" = CONST(Item)) Item
             ELSE
             IF ("Table Name" = CONST(Resource)) Resource;
-            DataClassification = CustomerContent;
         }
         field(3; "Language Code"; Code[10])
         {
             Caption = 'Language Code';
-            TableRelation = Language;
             DataClassification = CustomerContent;
+            TableRelation = Language;
         }
         field(4; "Text No."; Integer)
         {

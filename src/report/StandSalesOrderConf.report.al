@@ -1,10 +1,10 @@
 report 50068 "DEL Stand. Sales - Order Conf." //TODO ID=205 
 {
-    RDLCLayout = './StandardSalesOrderConf.rdlc';
-    WordLayout = './src/report/RDL/StandardSalesOrderConf.docx';
     Caption = 'Sales - Confirmation';
     DefaultLayout = Word;
     PreviewMode = PrintLayout;
+    RDLCLayout = './StandardSalesOrderConf.rdlc';
+    WordLayout = './src/report/RDL/StandardSalesOrderConf.docx';
     WordMergeDataItem = Header;
 
     dataset

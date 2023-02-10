@@ -201,7 +201,7 @@ codeunit 50101 "DEL MGTS_FctMgt"
 
 
     /////COD 231
-    procedure OnBeforeCodeFct(var GenJournalLine: Record "Gen. Journal Line"; var HideDialog: Boolean)
+    procedure OnBeforeCodeFct(var GenJournalLine: Record "Gen. Journal Line"; var HideDialogP: Boolean)
     var
 
         fee_Re_Loc: Record "DEL Fee";
@@ -271,10 +271,10 @@ codeunit 50101 "DEL MGTS_FctMgt"
         myTab: ARRAY[300] OF Code[20];
         myUpdateRequests: ARRAY[300] OF Code[20];
         nextEntry: Code[20];
+        ConnectionType_Op_Par: Enum "Element/Shipment";
         elementConnectionSplitIndex: Integer;
         i: Integer;
         splittIndex: Integer;
-        ConnectionType_Op_Par: Enum "Element/Shipment";
 
     begin
         TempgenJournalLine_Re.RESET();
@@ -341,7 +341,7 @@ codeunit 50101 "DEL MGTS_FctMgt"
 
                                     myUpdateRequests[i] := UpdateRequestManager_Cu.FNC_Add_Request(
                                       dealShipmentSelection_Re_Loc.Deal_ID,
-                                      dealShipmentSelection_Re_Loc."Document Type",
+                                      dealShipmentSelection_Re_Loc."Document Type".AsInteger(),
                                       dealShipmentSelection_Re_Loc."Document No.",
                                       CURRENTDATETIME
                                     );
@@ -373,7 +373,7 @@ codeunit 50101 "DEL MGTS_FctMgt"
         END;
     end;
     //----------------- CDU81
-    procedure OnBeforeConfirmSalesPostFct_SalesHeader(var SalesHeader: Record "Sales Header"; var HideDialog: Boolean; var IsHandled: Boolean; var DefaultOption: Integer; var PostAndSend: Boolean)
+    procedure OnBeforeConfirmSalesPostFct_SalesHeader(var SalesHeader: Record "Sales Header"; var HideDialogP: Boolean; var IsHandled: Boolean; var DefaultOption: Integer; var PostAndSend: Boolean)
     var
 
         dealShipmentSelection_Re: Record "DEL Deal Shipment Selection";
@@ -428,7 +428,7 @@ codeunit 50101 "DEL MGTS_FctMgt"
 
                 updateRequestID_Co_Loc := updateRequestManager_Cu.FNC_Add_Request(
                   dealShipmentSelection_Re_Loc.Deal_ID,
-                  dealShipmentSelection_Re_Loc."Document Type",
+                  dealShipmentSelection_Re_Loc."Document Type".AsInteger(),
                   dealShipmentSelection_Re_Loc."Document No.",
                   CURRENTDATETIME
                 );
@@ -484,12 +484,12 @@ codeunit 50101 "DEL MGTS_FctMgt"
 
     procedure OnGenJnlLineSetFilter_Fct(var GenJournalLine: Record "Gen. Journal Line")
     var
-        genJournalLine_Re_Temp: Record "Gen. Journal Line" TEMPORARY;
+        TempgenJournalLine_Re: Record "Gen. Journal Line" TEMPORARY;
         Provision_Cu: Codeunit "DEL Provision";
     begin
-        genJournalLine_Re_Temp.RESET();
-        genJournalLine_Re_Temp.SETRANGE("Journal Batch Name", 'PROVISION');
-        IF genJournalLine_Re_Temp.FIND('-') THEN
+        TempgenJournalLine_Re.RESET();
+        TempgenJournalLine_Re.SETRANGE("Journal Batch Name", 'PROVISION');
+        IF TempgenJournalLine_Re.FIND('-') THEN
             Provision_Cu.FNC_Add2Deals();
 
     end;
@@ -521,13 +521,13 @@ codeunit 50101 "DEL MGTS_FctMgt"
     end;
 
     //-------CDU82 ---
-    procedure OnBeforeConfirmPostFct_COD82(var SalesHeader: Record "Sales Header"; var HideDialog: Boolean; var IsHandled: Boolean; var SendReportAsEmail: Boolean; var DefaultOption: Integer)
+    procedure OnBeforeConfirmPostFct_COD82(var SalesHeader: Record "Sales Header"; var HideDialogP: Boolean; var IsHandled: Boolean; var SendReportAsEmail: Boolean; var DefaultOption: Integer)
     var
         dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
         GLAccount_Re_Loc: Record "G/L Account";
         salesLine_Re_Loc: Record "Sales Line";
-        updateRequestManager_Cu: Codeunit "DEL Update Request Manager";
         GlobalFunction: Codeunit "DEL MGTS Set/Get Functions";
+        updateRequestManager_Cu: Codeunit "DEL Update Request Manager";
         updateRequestID_Co_Loc: Code[20];
     begin
         // shipmentSelected_Bo_Loc := FALSE;
@@ -569,7 +569,7 @@ codeunit 50101 "DEL MGTS_FctMgt"
                         END;
                 updateRequestID_Co_Loc := updateRequestManager_Cu.FNC_Add_Request(
                   dealShipmentSelection_Re_Loc.Deal_ID,
-                  dealShipmentSelection_Re_Loc."Document Type",
+                  dealShipmentSelection_Re_Loc."Document Type".AsInteger(),
                   dealShipmentSelection_Re_Loc."Document No.",
                   CURRENTDATETIME
                 );
@@ -794,13 +794,13 @@ codeunit 50101 "DEL MGTS_FctMgt"
 
 
     /////COD91
-    procedure OnBeforeConfirmPostfct_PurchaseHeader(var PurchaseHeader: Record "Purchase Header"; var HideDialog: Boolean; var IsHandled: Boolean; var DefaultOption: Integer)
+    procedure OnBeforeConfirmPostfct_PurchaseHeader(var PurchaseHeader: Record "Purchase Header"; var HideDialogP: Boolean; var IsHandled: Boolean; var DefaultOption: Integer)
     var
         dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
         GLAccount_Re_Loc: Record "G/L Account";
         PurchaseLine_Re_Loc: Record "Purchase Line";
-        updateRequestManager_Cu: Codeunit "DEL Update Request Manager";
         GlobalFunction: Codeunit "DEL MGTS Set/Get Functions";
+        updateRequestManager_Cu: Codeunit "DEL Update Request Manager";
     // updateRequestID_Co_Loc: Code[20];
 
 
@@ -859,7 +859,7 @@ codeunit 50101 "DEL MGTS_FctMgt"
 
                 GlobalFunction.SetupdateRequestID_Co_Loc(updateRequestManager_Cu.FNC_Add_Request(
                                   dealShipmentSelection_Re_Loc.Deal_ID,
-                                  dealShipmentSelection_Re_Loc."Document Type",
+                                  dealShipmentSelection_Re_Loc."Document Type".AsInteger(),
                                   dealShipmentSelection_Re_Loc."Document No.",
                                   CURRENTDATETIME));
 

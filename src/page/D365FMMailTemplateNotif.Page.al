@@ -41,13 +41,13 @@ page 50146 "D365FM Mail Template Notif."
         {
             action("Import template1")
             {
+                ApplicationArea = All;
                 Caption = 'Import template';
                 Image = Import;
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 PromotedOnly = true;
-                ApplicationArea = All;
 
                 trigger OnAction()
                 begin
@@ -56,13 +56,13 @@ page 50146 "D365FM Mail Template Notif."
             }
             action("Import template2")
             {
+                ApplicationArea = All;
                 Caption = 'Import template';
                 Image = Export;
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 PromotedOnly = true;
-                ApplicationArea = All;
 
                 trigger OnAction()
                 begin
@@ -71,13 +71,13 @@ page 50146 "D365FM Mail Template Notif."
             }
             action("Import template")
             {
+                ApplicationArea = All;
                 Caption = 'Import template';
                 Image = Delete;
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 PromotedOnly = true;
-                ApplicationArea = All;
 
                 trigger OnAction()
                 begin

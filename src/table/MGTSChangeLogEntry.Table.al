@@ -1,9 +1,9 @@
 table 50076 "DEL MGTS Change Log Entry"
 {
     Caption = 'Change Log Entry';
+    DataClassification = CustomerContent;
     DrillDownPageID = "Change Log Entries";
     LookupPageID = "Change Log Entries";
-    DataClassification = CustomerContent;
     fields
     {
         field(1; "Entry No."; BigInteger)
@@ -25,9 +25,9 @@ table 50076 "DEL MGTS Change Log Entry"
         field(4; "User ID"; Code[50])
         {
             Caption = 'User ID';
-            TestTableRelation = false;
-            TableRelation = User."User Security ID";
             DataClassification = CustomerContent;
+            TableRelation = User."User Security ID";
+            TestTableRelation = false;
 
             //TODO trigger OnLookup() 
             // var
@@ -39,8 +39,8 @@ table 50076 "DEL MGTS Change Log Entry"
         field(5; "Table No."; Integer)
         {
             Caption = 'Table No.';
-            TableRelation = AllObjWithCaption."Object ID" WHERE("Object Type" = CONST(Table));
             DataClassification = CustomerContent;
+            TableRelation = AllObjWithCaption."Object ID" WHERE("Object Type" = CONST(Table));
         }
         field(6; "Table Caption"; Text[250])
         {

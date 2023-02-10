@@ -114,6 +114,7 @@ report 50078 "DEL Get Sales Orders" //698
         LeadTimeMgt: Codeunit "Lead-Time Management";
         SalesDocNoFilter: Code[20];
         Window: Dialog;
+        GetDim: enum "DEL Get Dim";
         LineCount: Integer;
         LineNo: Integer;
         SpecOrder: Integer;
@@ -121,7 +122,6 @@ report 50078 "DEL Get Sales Orders" //698
         Text001: Label 'There are no sales lines to retrieve.';
         Text50000: Label '-%1';
         Text50001: Label '+%1';
-        GetDim: enum "DEL Get Dim";
 
 
     procedure SetReqWkshLine(NewReqLine: Record "Requisition Line"; SpecialOrder: Integer)

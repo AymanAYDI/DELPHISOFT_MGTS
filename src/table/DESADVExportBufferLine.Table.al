@@ -26,7 +26,7 @@ table 50087 "DEL DESADV Export Buffer Line"
         {
             Caption = 'Document Line No.';
         }
-        field(7; "Delivery GLN"; Text[13])
+        field(7; "Delivery GLN"; Text[30])
         {
             Caption = 'Delivery GLN';
         }
@@ -35,7 +35,7 @@ table 50087 "DEL DESADV Export Buffer Line"
             Caption = 'Item No.';
             TableRelation = Item."No.";
         }
-        field(9; Description; Text[50])
+        field(9; Description; Text[100])
         {
             Caption = 'Description';
         }
@@ -47,7 +47,7 @@ table 50087 "DEL DESADV Export Buffer Line"
         {
             Caption = 'Supplier Item No.';
         }
-        field(12; "Customer Item No."; Text[30])
+        field(12; "Customer Item No."; Code[50]) //TODO : it was text[50]
         {
             Caption = 'Customer Item No.';
         }
@@ -72,7 +72,7 @@ table 50087 "DEL DESADV Export Buffer Line"
         {
             Caption = 'Delivery Date';
         }
-        field(18; "Delivery Date Text"; Text[10])
+        field(18; "Delivery Date Text"; Text[30])
         {
             Caption = 'Delivery Date Text';
         }

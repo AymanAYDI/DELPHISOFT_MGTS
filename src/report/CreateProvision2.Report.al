@@ -240,13 +240,13 @@ report 50027 "DEL Create Provision2"
         realElement_Re_Loc.SETRANGE(Type, realElement_Re_Loc.Type::Invoice);
         realElement_Re_Loc.SETRANGE(Fee_ID, plannedElement_Re_Par.Fee_ID);
         realElement_Re_Loc.SETRANGE(Fee_Connection_ID, plannedElement_Re_Par.Fee_Connection_ID);
-        IF realElement_Re_Loc.FINDFIRST() THEN
+        IF realElement_Re_Loc.FindSet() THEN
             REPEAT
 
                 position_Re_Loc.RESET();
                 position_Re_Loc.SETRANGE(Deal_ID, "DEL Deal".ID);
                 position_Re_Loc.SETRANGE(Element_ID, realElement_Re_Loc.ID);
-                IF position_Re_Loc.FINDFIRST() THEN
+                IF position_Re_Loc.FindSet() THEN
                     REPEAT
 
                         IF dealShipmentConnection_Re_Loc.GET("DEL Deal".ID, "DEL Deal Shipment".ID, position_Re_Loc."Sub Element_ID") THEN

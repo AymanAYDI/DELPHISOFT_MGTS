@@ -36,14 +36,14 @@ tableextension 50042 "DEL CompanyInformation" extends "Company Information" //79
         field(50005; "DEL FTP Password"; Text[20])
         {
             Caption = 'FTP Password';
-            ExtendedDatatype = Masked;
             DataClassification = CustomerContent;
+            ExtendedDatatype = Masked;
         }
         field(50006; "DEL Purchase E-Mail"; Text[80])
         {
             Caption = 'Purchase E-Mail';
-            ExtendedDatatype = EMail;
             DataClassification = CustomerContent;
+            ExtendedDatatype = EMail;
         }
         field(50007; "DEL FTP2 Server"; Text[50])
         {
@@ -58,8 +58,8 @@ tableextension 50042 "DEL CompanyInformation" extends "Company Information" //79
         field(50009; "DEL FTP2 Password"; Text[20])
         {
             Caption = 'FTP Password';
-            ExtendedDatatype = Masked;
             DataClassification = CustomerContent;
+            ExtendedDatatype = Masked;
         }
         field(50010; "DEL IBAN USD"; Code[50])
         {

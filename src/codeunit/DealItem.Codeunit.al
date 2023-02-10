@@ -6,8 +6,8 @@ codeunit 50024 "DEL Deal Item"
     end;
 
     var
-        Element_Cu: Codeunit "DEL Element";
         Deal_Cu: Codeunit "DEL Deal";
+        Element_Cu: Codeunit "DEL Element";
         Position_Cu: Codeunit "DEL Position";
         UpdateRequestManager_Cu: Codeunit "DEL Update Request Manager";
         Type_Op: Enum "DEL Type_Op"; //OPTION: Cost,Price
@@ -710,7 +710,7 @@ codeunit 50024 "DEL Deal Item"
                             IF NOT UpdateRequest_Re.FINDFIRST() THEN
                                 UpdateRequestManager_Cu.FNC_Add_Request(
                                   element_Re_Loc.Deal_ID,
-                                  UpdateRequest_Re.Requested_By_Type::"Deal Item",
+                                  UpdateRequest_Re.Requested_By_Type::"Deal Item".AsInteger(),
                                   '',
                                   CURRENTDATETIME
                                 );
@@ -729,7 +729,7 @@ codeunit 50024 "DEL Deal Item"
                                 IF NOT UpdateRequest_Re.FINDFIRST() THEN
                                     UpdateRequestManager_Cu.FNC_Add_Request(
                                       element_Re_Loc.Deal_ID,
-                                      UpdateRequest_Re.Requested_By_Type::"Deal Item",
+                                      UpdateRequest_Re.Requested_By_Type::"Deal Item".AsInteger(),
                                       '',
                                       CURRENTDATETIME
                                     );
@@ -739,9 +739,7 @@ codeunit 50024 "DEL Deal Item"
 
                     UNTIL (ACO_Line_Re_Loc.NEXT() = 0);
 
-                //on met à jour toutes les affaires qui viennent d'etre marquées dans la boucle
-                //le dernier paramètre est à true pour dire qu'on traite la liste silencieusement
-                UpdateRequestManager_Cu.FNC_ProcessRequestsByType(UpdateRequest_Re.Requested_By_Type::"Deal Item", '', TRUE);
+                UpdateRequestManager_Cu.FNC_ProcessRequestsByType(UpdateRequest_Re.Requested_By_Type::"Deal Item".AsInteger(), '', TRUE);
 
             END;
 
@@ -822,7 +820,7 @@ codeunit 50024 "DEL Deal Item"
                                 IF NOT UpdateRequest_Re.FINDFIRST() THEN
                                     UpdateRequestManager_Cu.FNC_Add_Request(
                                       elem_Re_Loc.Deal_ID,
-                                      UpdateRequest_Re.Requested_By_Type::"Deal Item",
+                                      UpdateRequest_Re.Requested_By_Type::"Deal Item".AsInteger(),
                                       '', //VCOLine_Re_Par."No.",
                                       CURRENTDATETIME
                                     );
@@ -843,7 +841,7 @@ codeunit 50024 "DEL Deal Item"
                                     IF NOT UpdateRequest_Re.FINDFIRST() THEN
                                         UpdateRequestManager_Cu.FNC_Add_Request(
                                           elem_Re_Loc.Deal_ID,
-                                          UpdateRequest_Re.Requested_By_Type::"Deal Item",
+                                          UpdateRequest_Re.Requested_By_Type::"Deal Item".AsInteger(),
                                           '',
                                           CURRENTDATETIME
                                         );
@@ -856,7 +854,7 @@ codeunit 50024 "DEL Deal Item"
 
                 //on met à jour toutes les affaires qui viennent d'etre marquées dans la boucle
                 //le dernier paramètre est à true pour dire qu'on traite la liste silencieusement
-                UpdateRequestManager_Cu.FNC_ProcessRequestsByType(UpdateRequest_Re.Requested_By_Type::"Deal Item", '', TRUE);
+                UpdateRequestManager_Cu.FNC_ProcessRequestsByType(UpdateRequest_Re.Requested_By_Type::"Deal Item".AsInteger(), '', TRUE);
 
             END;
 

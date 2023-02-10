@@ -54,13 +54,13 @@ page 50072 "DEL Document Sheet liasse"
         {
             action("MGTS Add")
             {
+                ApplicationArea = All;
                 Caption = 'Add';
                 Ellipsis = true;
                 Image = Add;
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
-                ApplicationArea = All;
 
                 trigger OnAction()
                 begin
@@ -69,13 +69,13 @@ page 50072 "DEL Document Sheet liasse"
             }
             action("MGTS Open")
             {
+                ApplicationArea = All;
                 Caption = 'Open';
                 Image = View;
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 ShortCutKey = 'Return';
-                ApplicationArea = All;
 
                 trigger OnAction()
                 begin

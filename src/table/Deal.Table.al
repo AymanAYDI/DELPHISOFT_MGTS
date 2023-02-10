@@ -1,8 +1,8 @@
 table 50020 "DEL Deal"
 {
     Caption = 'DEL Deal';
-    LookupPageID = "DEL Deal";
     DataClassification = CustomerContent;
+    LookupPageID = "DEL Deal";
     fields
     {
         field(1; ID; Code[20])
@@ -40,8 +40,8 @@ table 50020 "DEL Deal"
         field(30; "Purchaser Code"; Code[10])
         {
             Caption = 'Purchaser Code';
-            TableRelation = "Salesperson/Purchaser";
             DataClassification = CustomerContent;
+            TableRelation = "Salesperson/Purchaser";
         }
         field(40; "Last Update"; DateTime)
         {
@@ -56,8 +56,8 @@ table 50020 "DEL Deal"
         field(60; "Bill-to Customer No."; Code[20])
         {
             Caption = 'Bill-to Customer No.';
-            NotBlank = true;
             DataClassification = CustomerContent;
+            NotBlank = true;
         }
         field(61; "Vendor No."; Code[20])
         {

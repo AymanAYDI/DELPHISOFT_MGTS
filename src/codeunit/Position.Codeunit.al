@@ -235,7 +235,7 @@ codeunit 50022 "DEL Position"
         ACOElement_Re_Loc: Record "DEL Element";
         element_Re_Loc: Record "DEL Element";
         elementConnection_Re_Loc: Record "DEL Element Connection";
-        importFromInvoice_Re_Temp: Record "DEL Import From Invoice" temporary;
+        TempimportFromInvoice_Re: Record "DEL Import From Invoice" temporary;
         salesInvHeader_Re_Loc: Record "Sales Invoice Header";
         salesInvLine_Re_Loc: Record "Sales Invoice Line";
         VCO_Line_Re_Loc: Record "Sales Line";
@@ -363,58 +363,58 @@ codeunit 50022 "DEL Position"
                                         ERROR_TXT, 'Cu50022', 'FNC_Add_VCO_Position',
                                         STRSUBSTNO('Purch. Inv. >%1< not found', salesInvLine_Re_Loc."Document No."));
 
-                                    importFromInvoice_Re_Temp.INIT();
-                                    importFromInvoice_Re_Temp."Item No." := salesInvLine_Re_Loc."No.";
-                                    importFromInvoice_Re_Temp.Quantity := salesInvLine_Re_Loc.Quantity;
-                                    importFromInvoice_Re_Temp.Amount := salesInvLine_Re_Loc."Unit Price";
-                                    importFromInvoice_Re_Temp.Currency := salesInvHeader_Re_Loc."Currency Code";
-                                    importFromInvoice_Re_Temp.Rate :=
+                                    TempimportFromInvoice_Re.INIT();
+                                    TempimportFromInvoice_Re."Item No." := salesInvLine_Re_Loc."No.";
+                                    TempimportFromInvoice_Re.Quantity := salesInvLine_Re_Loc.Quantity;
+                                    TempimportFromInvoice_Re.Amount := salesInvLine_Re_Loc."Unit Price";
+                                    TempimportFromInvoice_Re.Currency := salesInvHeader_Re_Loc."Currency Code";
+                                    TempimportFromInvoice_Re.Rate :=
                                                                             Currency_Exchange_Re.FNC_Get_Rate(
                                                                               element_Re_Loc.Deal_ID, salesInvHeader_Re_Loc."Currency Code", 'EUR');
 
                                     //si il y a déjà une ligne pour cet article
-                                    IF NOT importFromInvoice_Re_Temp.INSERT() THEN BEGIN
+                                    IF NOT TempimportFromInvoice_Re.INSERT() THEN BEGIN
                                         //on n'ajoute pas, on modifie simplement la quantité
-                                        IF importFromInvoice_Re_Temp.GET(salesInvLine_Re_Loc."No.") THEN BEGIN
-                                            importFromInvoice_Re_Temp.Quantity += salesInvLine_Re_Loc.Quantity;
-                                            importFromInvoice_Re_Temp.MODIFY();
+                                        IF TempimportFromInvoice_Re.GET(salesInvLine_Re_Loc."No.") THEN BEGIN
+                                            TempimportFromInvoice_Re.Quantity += salesInvLine_Re_Loc.Quantity;
+                                            TempimportFromInvoice_Re.MODIFY();
                                         END;
                                     END;
 
                                 UNTIL (salesInvLine_Re_Loc.NEXT() = 0);
 
                             //2. Lire la table et créer les positions
-                            importFromInvoice_Re_Temp.RESET();
-                            IF importFromInvoice_Re_Temp.FINDFIRST() THEN
+                            TempimportFromInvoice_Re.RESET();
+                            IF TempimportFromInvoice_Re.FINDFIRST() THEN
                                 REPEAT
 
                                     //La fonction ajoute seulement si l'item n'a jamais été enregistré !
-                                    DealItem_Cu.FNC_Add(Deal_ID_Co_Par, importFromInvoice_Re_Temp."Item No.");
+                                    DealItem_Cu.FNC_Add(Deal_ID_Co_Par, TempimportFromInvoice_Re."Item No.");
 
                                     //La fonction met à jour seulement si Unit Price n'a jamais été défini
                                     DealItem_Cu.FNC_Update_Unit_Price(
                                       Deal_ID_Co_Par,
-                                      importFromInvoice_Re_Temp."Item No.",
-                                      importFromInvoice_Re_Temp.Amount,
-                                      importFromInvoice_Re_Temp.Currency
+                                      TempimportFromInvoice_Re."Item No.",
+                                      TempimportFromInvoice_Re.Amount,
+                                      TempimportFromInvoice_Re.Currency
                                     );
 
                                     //on ajoute une position dans la table position
                                     FNC_Insert_Position(
                                       Deal_ID_Co_Par,
                                       element_Re_Loc.ID,
-                                      importFromInvoice_Re_Temp."Item No.",
-                                      importFromInvoice_Re_Temp.Quantity,
-                                      importFromInvoice_Re_Temp.Currency,
-                                      importFromInvoice_Re_Temp.Amount,
+                                      TempimportFromInvoice_Re."Item No.",
+                                      TempimportFromInvoice_Re.Quantity,
+                                      TempimportFromInvoice_Re.Currency,
+                                      TempimportFromInvoice_Re.Amount,
                                       '',
-                                      importFromInvoice_Re_Temp.Rate,
-                                      DealItem_Cu.FNC_Get_Campaign_Code(Deal_ID_Co_Par, importFromInvoice_Re_Temp."Item No.")
+                                      TempimportFromInvoice_Re.Rate,
+                                      DealItem_Cu.FNC_Get_Campaign_Code(Deal_ID_Co_Par, TempimportFromInvoice_Re."Item No.")
                                     );
 
-                                UNTIL (importFromInvoice_Re_Temp.NEXT() = 0);
+                                UNTIL (TempimportFromInvoice_Re.NEXT() = 0);
 
-                            importFromInvoice_Re_Temp.DELETEALL();
+                            TempimportFromInvoice_Re.DELETEALL();
 
                         END
 

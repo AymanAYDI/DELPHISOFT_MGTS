@@ -2,8 +2,8 @@ table 50031 "DEL Deal Shipment Selection"
 {
 
     Caption = 'Deal Shipment Selection';
-    LookupPageID = "DEL Deal Shipment Selection";
     DataClassification = CustomerContent;
+    LookupPageID = "DEL Deal Shipment Selection";
     fields
     {
         field(1; "Document Type"; Enum "DEL Document Type")
@@ -25,6 +25,7 @@ table 50031 "DEL Deal Shipment Selection"
         field(12; "Account No."; Text[20])
         {
             Caption = 'Account No.';
+            DataClassification = CustomerContent;
             TableRelation = IF ("Account Type" = CONST("G/L Account")) "G/L Account"
             ELSE
             IF ("Account Type" = CONST(Customer)) Customer
@@ -36,7 +37,6 @@ table 50031 "DEL Deal Shipment Selection"
             IF ("Account Type" = CONST("Fixed Asset")) "Fixed Asset"
             ELSE
             IF ("Account Type" = CONST("IC Partner")) "IC Partner";
-            DataClassification = CustomerContent;
         }
         field(13; "Account Entry No."; Integer)
         {
@@ -51,17 +51,17 @@ table 50031 "DEL Deal Shipment Selection"
         }
         field(50; "Shipment No."; Code[20])
         {
-            TableRelation = "DEL Deal Shipment".ID;
 
             Caption = 'Shipment No.';
             DataClassification = CustomerContent;
+            TableRelation = "DEL Deal Shipment".ID;
         }
         field(60; "BR No."; Code[20])
         {
-            TableRelation = "Purch. Rcpt. Header"."No.";
 
             Caption = 'BR No.';
             DataClassification = CustomerContent;
+            TableRelation = "Purch. Rcpt. Header"."No.";
             trigger OnValidate()
             var
 
@@ -70,24 +70,24 @@ table 50031 "DEL Deal Shipment Selection"
         }
         field(70; "Purchase Invoice No."; Code[20])
         {
-            TableRelation = "Purch. Inv. Header"."No.";
 
             Caption = 'Purchase Invoice No.';
             DataClassification = CustomerContent;
+            TableRelation = "Purch. Inv. Header"."No.";
         }
         field(80; "Sales Invoice No."; Code[20])
         {
-            TableRelation = "Sales Invoice Header"."No.";
 
             Caption = 'Sales Invoice No.';
             DataClassification = CustomerContent;
+            TableRelation = "Sales Invoice Header"."No.";
         }
         field(90; "Fee Connection"; Code[20])
         {
-            TableRelation = "DEL Fee Connection".ID;
 
             Caption = 'Fee Connection';
             DataClassification = CustomerContent;
+            TableRelation = "DEL Fee Connection".ID;
         }
         field(95; "Connected Fee Description"; Text[50])
         {

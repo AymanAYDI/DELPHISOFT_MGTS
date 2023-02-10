@@ -9,16 +9,16 @@ codeunit 50060 "DEL Container Mgt"
     end;
 
     var
-        OrderNotExist: Label 'Order No. %1 not exist.';
-        ItemNotExist: Label 'Item No. %1 not exist.';
-        QtyToReceive: Label 'You cannot receive more than %1 units.';
-        NothingToPostErr: Label 'There is nothing to post.';
         Confirmed: Boolean;
-        ConfirmQst: Label 'Do you want to post the container list ?';
         HideValidationDialog: Boolean;
-        PostProgress: Label 'Container #1####\\Order     #2####\\';
-        DealShipmentErr: Label 'Il faut choisir exactement 1 livraison liée pour la commande %1 !';
         ConfirmInvQst: Label 'Do you want to invoice the container list ?';
+        ConfirmQst: Label 'Do you want to post the container list ?';
+        DealShipmentErr: Label 'Il faut choisir exactement 1 livraison liée pour la commande %1 !';
+        ItemNotExist: Label 'Item No. %1 not exist.';
+        NothingToPostErr: Label 'There is nothing to post.';
+        OrderNotExist: Label 'Order No. %1 not exist.';
+        PostProgress: Label 'Container #1####\\Order     #2####\\';
+        QtyToReceive: Label 'You cannot receive more than %1 units.';
         DocumentType: Option Invoice,"Purchase Header","Sales Header","Sales Cr. Memo","Purch. Cr. Memo",Payment,"Purchase Invoice Header","Sales Invoice Header",Provision;
 
     procedure CheckContainerLine(var ContainerLine: Record "DEL Container List")
@@ -51,12 +51,12 @@ codeunit 50060 "DEL Container Mgt"
 
     local procedure RunCode(var _ContainerLine: Record "DEL Container List")
     var
-        ContainerLine: Record "DEL Container List";
         ContainerLevel1: Record "DEL Container List";
-        Window: Dialog;
-        TotalDoc: Integer;
-        DocNumber: Integer;
+        ContainerLine: Record "DEL Container List";
         IsToPost: Boolean;
+        Window: Dialog;
+        DocNumber: Integer;
+        TotalDoc: Integer;
     begin
         IF HideValidationDialog OR NOT GUIALLOWED THEN
             Confirmed := TRUE
@@ -201,16 +201,16 @@ codeunit 50060 "DEL Container Mgt"
 
     local procedure PostPurchaseAndSalesOrder(_OrderNo: Code[20])
     var
-        PurchaseHeader: Record "Purchase Header";
-        DealShipmentSelection: Record "DEL Deal Shipment Selection";
-        UpdateRequestID: Code[20];
-        UpdateRequestManager: Codeunit "DEL Update Request Manager";
-        ShipmentSelected: Boolean;
-        Deal: Codeunit "DEL Deal";
         ACOConnection: Record "DEL ACO Connection";
-        PurchPost: Codeunit "Purch.-Post";
+        DealShipmentSelection: Record "DEL Deal Shipment Selection";
+        PurchaseHeader: Record "Purchase Header";
+        Deal: Codeunit "DEL Deal";
         FctMgt: Codeunit "DEL MGTS_FctMgt";
         GetSetCDU: Codeunit "DEL MGTS Set/Get Functions";
+        UpdateRequestManager: Codeunit "DEL Update Request Manager";
+        PurchPost: Codeunit "Purch.-Post";
+        ShipmentSelected: Boolean;
+        UpdateRequestID: Code[20];
     begin
         PurchaseHeader.SETRANGE("Document Type", PurchaseHeader."Document Type"::Order);
         PurchaseHeader.SETRANGE("No.", _OrderNo);
@@ -237,7 +237,7 @@ codeunit 50060 "DEL Container Mgt"
             //On crée une updateRequest, comme ca, si NAV plante plus loin, on sait ce qui n'a pas été updaté comme il faut
             UpdateRequestID := UpdateRequestManager.FNC_Add_Request(
               DealShipmentSelection.Deal_ID,
-              DealShipmentSelection."Document Type",
+              DealShipmentSelection."Document Type".AsInteger(),
               DealShipmentSelection."Document No.",
               CURRENTDATETIME);
         END;
@@ -276,9 +276,9 @@ codeunit 50060 "DEL Container Mgt"
     var
         ContainerList: Record "DEL Container List";
         PostedContainerList: Record "DEL Posted Container List";
-        SalesHeader: Record "Sales Header";
         PurchaseHeader: Record "Purchase Header";
         PurchaseHeaderArchive: Record "Purchase Header Archive";
+        SalesHeader: Record "Sales Header";
         SalesHeaderArchive: Record "Sales Header Archive";
     begin
         ContainerList.SETCURRENTKEY("Container No.", "Order No.");
@@ -330,11 +330,11 @@ codeunit 50060 "DEL Container Mgt"
 
     local procedure GetDealLinkedShipment(_OrderNo: Code[20]; DocType: Option Invoice,"Purchase Header","Sales Header","Sales Cr. Memo","Purch. Cr. Memo",Payment,"Purchase Invoice Header","Sales Invoice Header",Provision; var DealShipmentSelection: Record "DEL Deal Shipment Selection"): Boolean
     var
-        Element: Record "DEL Element";
         Deal: Record "DEL Deal";
         DealShipment: Record "DEL Deal Shipment";
-        Affaire_Co: Code[20];
+        Element: Record "DEL Element";
         DealShipmentSelected: Boolean;
+        Affaire_Co: Code[20];
     begin
         //on cherche si des lignes ont déjà été générée pour cette facture
         CLEAR(DealShipmentSelection);
@@ -389,12 +389,12 @@ codeunit 50060 "DEL Container Mgt"
 
     procedure Invoice(var _PostedContainer: Record "DEL Posted Container List")
     var
-        PostedContainerLine: Record "DEL Posted Container List";
         PostedContainerLevel1: Record "DEL Posted Container List";
-        Window: Dialog;
-        TotalDoc: Integer;
-        DocNumber: Integer;
+        PostedContainerLine: Record "DEL Posted Container List";
         IsToPost: Boolean;
+        Window: Dialog;
+        DocNumber: Integer;
+        TotalDoc: Integer;
     begin
         IF HideValidationDialog OR NOT GUIALLOWED THEN
             Confirmed := TRUE
@@ -480,15 +480,15 @@ codeunit 50060 "DEL Container Mgt"
 
     local procedure PostSpecialSalesOrder(var _PostedContainerLine: Record "DEL Posted Container List")
     var
+        ACOConnection: Record "DEL ACO Connection";
+        DealShipmentSelection: Record "DEL Deal Shipment Selection";
         PostedContainerLevel2: Record "DEL Posted Container List";
         SalesHeader: Record "Sales Header";
-        DealShipmentSelection: Record "DEL Deal Shipment Selection";
-        UpdateRequestID: Code[20];
-        UpdateRequestManager: Codeunit "DEL Update Request Manager";
-        ShipmentSelected: Boolean;
         Deal: Codeunit "DEL Deal";
-        ACOConnection: Record "DEL ACO Connection";
+        UpdateRequestManager: Codeunit "DEL Update Request Manager";
         SalesPost: Codeunit "Sales-Post";
+        ShipmentSelected: Boolean;
+        UpdateRequestID: Code[20];
     begin
         PostedContainerLevel2.SETRANGE("Container No.", _PostedContainerLine."Container No.");
         PostedContainerLevel2.SETRANGE("Order No.", _PostedContainerLine."Order No.");
@@ -520,7 +520,7 @@ codeunit 50060 "DEL Container Mgt"
                 //On crée une updateRequest, comme ca, si NAV plante plus loin, on sait ce qui n'a pas été updaté comme il faut
                 UpdateRequestID := UpdateRequestManager.FNC_Add_Request(
                   DealShipmentSelection.Deal_ID,
-                  DealShipmentSelection."Document Type",
+                  DealShipmentSelection."Document Type".AsInteger(),
                   DealShipmentSelection."Document No.",
                   CURRENTDATETIME);
             END;

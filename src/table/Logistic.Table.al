@@ -1,7 +1,7 @@
 table 50034 "DEL Logistic"
 {
-    DataCaptionFields = ID, "BR No.";
     Caption = 'Logistic';
+    DataCaptionFields = ID, "BR No.";
     DataClassification = CustomerContent;
     fields
     {
@@ -13,9 +13,9 @@ table 50034 "DEL Logistic"
         field(10; Deal_ID; Code[20])
 
         {
-            TableRelation = "DEL Deal".ID;
             Caption = 'Deal_ID';
             DataClassification = CustomerContent;
+            TableRelation = "DEL Deal".ID;
             trigger OnValidate()
             begin
 
@@ -26,9 +26,9 @@ table 50034 "DEL Logistic"
         }
         field(30; "BR No."; Code[20])
         {
-            TableRelation = "Purch. Rcpt. Header"."No.";
             Caption = 'BR No.';
             DataClassification = CustomerContent;
+            TableRelation = "Purch. Rcpt. Header"."No.";
         }
         field(40; "Supplier Name"; Text[100])
         {
@@ -78,8 +78,8 @@ table 50034 "DEL Logistic"
         field(119; "Payment Terms Code"; Code[10])
         {
             Caption = 'Payment Terms Code';
-            TableRelation = "Payment Terms";
             DataClassification = CustomerContent;
+            TableRelation = "Payment Terms";
         }
         field(120; "Bank dossier"; Code[30])
         {
@@ -236,9 +236,9 @@ table 50034 "DEL Logistic"
         }
         field(310; "Estimated CTNS"; Decimal)
         {
-            Editable = false;
             Caption = 'Estimated CTNS';
             DataClassification = CustomerContent;
+            Editable = false;
         }
         field(320; "Real CTNS"; Decimal)
         {
@@ -247,9 +247,9 @@ table 50034 "DEL Logistic"
         }
         field(330; "Estimated volume"; Decimal)
         {
-            Editable = false;
             Caption = 'Estimated volume';
             DataClassification = CustomerContent;
+            Editable = false;
         }
         field(340; "Actual Volume"; Decimal)
         {
@@ -258,9 +258,9 @@ table 50034 "DEL Logistic"
         }
         field(350; "Estimated Weight"; Decimal)
         {
-            Editable = false;
             Caption = 'Estimated Weight';
             DataClassification = CustomerContent;
+            Editable = false;
         }
         field(360; "Actual Weight"; Decimal)
         {
@@ -319,10 +319,10 @@ table 50034 "DEL Logistic"
         }
         field(500; "ACO No."; Code[20])
         {
-            TableRelation = "Purchase Header"."No.";
-            ValidateTableRelation = false;
             Caption = 'ACO No.';
             DataClassification = CustomerContent;
+            TableRelation = "Purchase Header"."No.";
+            ValidateTableRelation = false;
         }
         field(501; "Display record"; Boolean)
         {

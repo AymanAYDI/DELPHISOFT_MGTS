@@ -29,8 +29,8 @@ tableextension 50033 "DEL Contact" extends Contact //5050
         field(50005; "DEL GLN"; Code[13])
         {
             Caption = 'GLN';
-            Numeric = true;
             DataClassification = CustomerContent;
+            Numeric = true;
             trigger OnValidate()
             var
                 GLNCalculator: Codeunit "GLN Calculator";
@@ -42,8 +42,8 @@ tableextension 50033 "DEL Contact" extends Contact //5050
         field(60001; "DEL Note Quality"; Code[10])
         {
             Caption = 'Quality rating';
-            TableRelation = "DEL Note".Code WHERE("Type audit" = FILTER(Quality));
             DataClassification = CustomerContent;
+            TableRelation = "DEL Note".Code WHERE("Type audit" = FILTER(Quality));
             trigger OnValidate()
             begin
 
@@ -76,8 +76,8 @@ tableextension 50033 "DEL Contact" extends Contact //5050
         field(60004; "DEL Note Soc"; Code[10])
         {
             Caption = 'Social rating';
-            TableRelation = "DEL Note".Code WHERE("Type audit" = FILTER(social));
             DataClassification = CustomerContent;
+            TableRelation = "DEL Note".Code WHERE("Type audit" = FILTER(social));
             trigger OnValidate()
             begin
             end;
@@ -111,8 +111,8 @@ tableextension 50033 "DEL Contact" extends Contact //5050
         field(60007; "DEL Note Env"; Code[10])
         {
             Caption = 'Environmental rating';
-            TableRelation = "DEL Note".Code WHERE("Type audit" = FILTER(Environmental));
             DataClassification = CustomerContent;
+            TableRelation = "DEL Note".Code WHERE("Type audit" = FILTER(Environmental));
             trigger OnValidate()
             begin
             end;
@@ -191,8 +191,8 @@ tableextension 50033 "DEL Contact" extends Contact //5050
         field(70001; "DEL Customer No."; Code[20])
         {
             Caption = 'Customer No.';
-            TableRelation = Customer;
             DataClassification = CustomerContent;
+            TableRelation = Customer;
         }
         field(70002; "DEL Name Contact"; Text[20])
         {

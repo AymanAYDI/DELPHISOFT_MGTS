@@ -9,27 +9,27 @@ tableextension 50026 "DEL SalesHeader" extends "Sales Header" //36
         field(50000; "DEL Fiscal Repr."; Code[10])
         {
             Caption = 'Fiscal Repr.';
+            DataClassification = CustomerContent;
 
             TableRelation = Contact;
-            DataClassification = CustomerContent;
         }
         field(50001; "DEL Create By"; Text[50])
         {
             Caption = 'Create By';
-            Editable = false;
             DataClassification = CustomerContent;
+            Editable = false;
         }
         field(50002; "DEL Create Date"; Date)
         {
             Caption = 'Create Date';
-            Editable = false;
             DataClassification = CustomerContent;
+            Editable = false;
         }
         field(50003; "DEL Create Time"; Time)
         {
             Caption = 'Create Time';
-            Editable = false;
             DataClassification = CustomerContent;
+            Editable = false;
         }
         field(50004; "DEL Event Code"; enum "DEL Code Event")
         {
@@ -57,19 +57,19 @@ tableextension 50026 "DEL SalesHeader" extends "Sales Header" //36
         field(50006; "DEL Type Order EDI"; Code[20])
         {
             Caption = 'Type Order EDI';
+            DataClassification = CustomerContent;
 
             TableRelation = "DEL Type Order EDI";
-            DataClassification = CustomerContent;
         }
         field(50007; "DEL GLN"; Text[30])
         {
             Caption = 'Delivery GLN';
+            DataClassification = CustomerContent;
 
             TableRelation = "DEL EDI Delivery GLN Customer";
             //This property is currently not supported
             //TestTableRelation = false;
             ValidateTableRelation = false;
-            DataClassification = CustomerContent;
         }
         field(50008; "DEL Type Order EDI Description"; Text[50])
         {
@@ -82,9 +82,9 @@ tableextension 50026 "DEL SalesHeader" extends "Sales Header" //36
         field(50009; "DEL Has Spec. Purch. Order"; Boolean)
         {
             Caption = 'Has special purch. order';
+            DataClassification = CustomerContent;
 
             Editable = false;
-            DataClassification = CustomerContent;
         }
         field(50010; "DEL Export With EDI"; Boolean)
         {
@@ -103,9 +103,9 @@ tableextension 50026 "DEL SalesHeader" extends "Sales Header" //36
         field(50021; "DEL Purchase Order Create Date"; DateTime)
         {
             Caption = 'Date création commande d''achat';
+            DataClassification = CustomerContent;
 
             Editable = false;
-            DataClassification = CustomerContent;
         }
         field(50022; "DEL Status Purch. Order Create"; enum "DEL Status Purchase Order")
         {
@@ -115,9 +115,9 @@ tableextension 50026 "DEL SalesHeader" extends "Sales Header" //36
         field(50023; "DEL Err Text Pur. Order Create"; Text[250])
         {
             Caption = 'Texte erreur création commande achat';
+            DataClassification = CustomerContent;
 
             Editable = false;
-            DataClassification = CustomerContent;
         }
         field(50024; "DEL Error Purch. Order Create"; Boolean)
         {

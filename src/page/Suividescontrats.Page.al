@@ -17,57 +17,57 @@ page 50073 "DEL Suivi des contrats"
                 Caption = 'General';
                 field("No."; Rec."No.")
                 {
-                    Editable = false;
-                    Caption = 'No.';
                     ApplicationArea = All;
+                    Caption = 'No.';
+                    Editable = false;
                 }
                 field(Name; Rec.Name)
                 {
-                    Editable = false;
-                    Caption = 'Name';
                     ApplicationArea = All;
+                    Caption = 'Name';
+                    Editable = false;
                 }
                 field(Address; Rec.Address)
                 {
-                    Enabled = false;
-                    Caption = 'Address';
                     ApplicationArea = All;
+                    Caption = 'Address';
+                    Enabled = false;
                 }
                 field("Post Code"; Rec."Post Code")
                 {
-                    Editable = false;
-                    Caption = 'Post Code';
                     ApplicationArea = All;
+                    Caption = 'Post Code';
+                    Editable = false;
                 }
                 field(City; Rec.City)
                 {
-                    Editable = false;
-                    Caption = 'City';
                     ApplicationArea = All;
+                    Caption = 'City';
+                    Editable = false;
                 }
                 field("Country/Region Code"; Rec."Country/Region Code")
                 {
-                    Editable = false;
-                    Caption = 'Country/Region Code';
                     ApplicationArea = All;
+                    Caption = 'Country/Region Code';
+                    Editable = false;
                 }
                 field("Salesperson Code"; Rec."Salesperson Code")
                 {
-                    Editable = false;
-                    Caption = 'Salesperson Code';
                     ApplicationArea = All;
+                    Caption = 'Salesperson Code';
+                    Editable = false;
                 }
                 field("Gen. Bus. Posting Group"; Rec."Gen. Bus. Posting Group")
                 {
-                    Editable = false;
-                    Caption = 'Gen. Bus. Posting Group';
                     ApplicationArea = All;
+                    Caption = 'Gen. Bus. Posting Group';
+                    Editable = false;
                 }
                 field("Primary Contact No."; Rec."Primary Contact No.")
                 {
-                    Editable = false;
-                    Caption = 'Primary Contact No.';
                     ApplicationArea = All;
+                    Caption = 'Primary Contact No.';
+                    Editable = false;
                 }
                 //TODO: is already defined field(Contact; Contact)
                 // {
@@ -75,26 +75,26 @@ page 50073 "DEL Suivi des contrats"
                 // }
                 field("Phone No."; Rec."Phone No.")
                 {
-                    Editable = false;
-                    Caption = 'Phone No.';
                     ApplicationArea = All;
+                    Caption = 'Phone No.';
+                    Editable = false;
                 }
                 field("E-Mail"; Rec."E-Mail")
                 {
-                    Editable = false;
-                    Caption = 'Email';
                     ApplicationArea = All;
+                    Caption = 'Email';
+                    Editable = false;
                 }
                 field("Language Code"; Rec."Language Code")
                 {
-                    Editable = false;
-                    Caption = 'Language Code';
                     ApplicationArea = All;
+                    Caption = 'Language Code';
+                    Editable = false;
                 }
                 field("Parent Company"; Rec."DEL Parent Company")
                 {
-                    Caption = 'DEL Parent Company';
                     ApplicationArea = All;
+                    Caption = 'DEL Parent Company';
                 }
             }
             group("Suivi partnership agreement")
@@ -102,57 +102,57 @@ page 50073 "DEL Suivi des contrats"
                 Caption = 'Partnership agreement follow up';
                 field("Partnership agreement"; Rec."DEL Partnership agreement")
                 {
-                    Caption = 'DEL Partnership agreement';
                     ApplicationArea = All;
+                    Caption = 'DEL Partnership agreement';
                 }
                 field("Libellé PA"; Rec."DEL Libellé PA")
                 {
-                    Caption = 'Partnership agreement description';
                     ApplicationArea = All;
+                    Caption = 'Partnership agreement description';
                 }
                 field("Statut PA"; Rec."DEL Statut PA")
                 {
-                    Caption = 'Partnership agreement status';
                     ApplicationArea = All;
+                    Caption = 'Partnership agreement status';
                 }
                 group(Annexes)
                 {
                     Caption = 'Annexes:';
                     field("Annexe A PA"; Rec."DEL Annexe A PA")
                     {
-                        Caption = 'A';
                         ApplicationArea = All;
+                        Caption = 'A';
                     }
                     field("Annexe B PA"; Rec."DEL Annexe B PA")
                     {
-                        Caption = 'B';
                         ApplicationArea = All;
+                        Caption = 'B';
                     }
                     field("Annexe C PA"; Rec."DEL Annexe C PA")
                     {
-                        Caption = 'C';
                         ApplicationArea = All;
+                        Caption = 'C';
                     }
                     field("Annexe D PA"; Rec."DEL Annexe D PA")
                     {
-                        Caption = 'D';
                         ApplicationArea = All;
+                        Caption = 'D';
                     }
                 }
                 field("Date de début PA"; Rec."DEL Date de début PA")
                 {
-                    Caption = 'Starting date PA';
                     ApplicationArea = All;
+                    Caption = 'Starting date PA';
                 }
                 field("Date de fin PA"; Rec."DEL Date de fin PA")
                 {
-                    Caption = 'End date PA';
                     ApplicationArea = All;
+                    Caption = 'End date PA';
                 }
                 field("URL document PA"; Rec."DEL URL document PA")
                 {
-                    Caption = 'URL document PA';
                     ApplicationArea = All;
+                    Caption = 'URL document PA';
 
                     trigger OnLookup(var Text: Text): Boolean
 
@@ -169,8 +169,8 @@ page 50073 "DEL Suivi des contrats"
                 }
                 field("Comment PA"; Rec."DEL Comment PA")
                 {
-                    Caption = 'Comment PA';
                     ApplicationArea = All;
+                    Caption = 'Comment PA';
                 }
             }
             group("Suivi service agreement")
@@ -181,38 +181,38 @@ page 50073 "DEL Suivi des contrats"
                     Caption = 'Perimeter of the contract';
                     field("Service agreement"; Rec."DEL Service agreement")
                     {
-                        Caption = 'Service agreement';
                         ApplicationArea = All;
+                        Caption = 'Service agreement';
                     }
                     field("Libellé SSA"; Rec."DEL Libellé SSA")
                     {
-                        Caption = 'Service agreement description';
                         ApplicationArea = All;
+                        Caption = 'Service agreement description';
                     }
                     field("Statut SSA"; Rec."DEL Statut SSA")
                     {
-                        Caption = 'Status SSA';
                         ApplicationArea = All;
+                        Caption = 'Status SSA';
                     }
                     field("Date de début SSA"; Rec."DEL Date de début SSA")
                     {
-                        Caption = 'Starting date SSA';
                         ApplicationArea = All;
+                        Caption = 'Starting date SSA';
                     }
                     field("Date de fin SSA"; Rec."DEL Date de fin SSA")
                     {
-                        Caption = 'End date SSA';
                         ApplicationArea = All;
+                        Caption = 'End date SSA';
                     }
                     field("Comment SSA"; Rec."DEL Comment SSA")
                     {
-                        Caption = 'Comment SSA';
                         ApplicationArea = All;
+                        Caption = 'Comment SSA';
                     }
                     field("URL document SSA"; Rec."DEL URL document SSA")
                     {
-                        Caption = 'URL document SSA';
                         ApplicationArea = All;
+                        Caption = 'URL document SSA';
 
                         trigger OnLookup(var Text: Text): Boolean
                         begin
@@ -227,45 +227,45 @@ page 50073 "DEL Suivi des contrats"
                     }
                     field(Level; Rec."DEL Level")
                     {
-                        Caption = 'Level';
                         ApplicationArea = All;
+                        Caption = 'Level';
                     }
                     label(AnnexesSSA)
                     {
+                        ApplicationArea = All;
                         Caption = 'Annexes:';
                         Style = StrongAccent;
                         StyleExpr = TRUE;
-                        ApplicationArea = All;
                     }
                     field("Annexe A SSA"; Rec."DEL Annexe A SSA")
                     {
-                        Caption = 'A';
                         ApplicationArea = All;
+                        Caption = 'A';
                     }
                     field("Renouvellement tacite"; Rec."DEL Renouvellement tacite")
                     {
-                        Caption = 'Tacit renewal';
                         ApplicationArea = All;
+                        Caption = 'Tacit renewal';
                     }
                     field("Renewal by mail"; Rec."DEL Renewal by mail")
                     {
-                        Caption = 'Renewal by mail';
                         ApplicationArea = All;
+                        Caption = 'Renewal by mail';
                     }
                     field("Renewal by endorsement"; Rec."DEL Renewal by endorsement")
                     {
-                        Caption = 'Renewal by endorsement';
                         ApplicationArea = All;
+                        Caption = 'Renewal by endorsement';
                     }
                     field("Reporting vente"; Rec."DEL Reporting vente")
                     {
-                        Caption = 'Sales reports';
                         ApplicationArea = All;
+                        Caption = 'Sales reports';
                     }
                     field("Segmentation Prod Niveau"; Rec."DEL Segmentation Prod Niveau")
                     {
-                        Caption = 'Segmentation Produit Niveau';
                         ApplicationArea = All;
+                        Caption = 'Segmentation Produit Niveau';
 
                         trigger OnLookup(var Text: Text): Boolean
                         begin
@@ -298,73 +298,73 @@ page 50073 "DEL Suivi des contrats"
                     }
                     field("Segmentation Description"; Rec."DEL Segmentation Description")
                     {
-                        Editable = false;
-                        Caption = 'Segmentation Description';
                         ApplicationArea = All;
+                        Caption = 'Segmentation Description';
+                        Editable = false;
                     }
                     label(Mark)
                     {
+                        ApplicationArea = All;
                         Caption = 'Mark';
                         Style = StrongAccent;
                         StyleExpr = TRUE;
-                        ApplicationArea = All;
                     }
                     field("National Mark"; Rec."DEL National Mark")
                     {
-                        Caption = 'National Mark';
                         ApplicationArea = All;
+                        Caption = 'National Mark';
                     }
                     field(MDD; Rec."DEL MDD")
                     {
-                        Caption = 'DEL MDD';
                         ApplicationArea = All;
+                        Caption = 'DEL MDD';
                     }
                     label(Signboard)
                     {
+                        ApplicationArea = All;
                         Caption = 'Signboard';
                         Style = StrongAccent;
                         StyleExpr = TRUE;
-                        ApplicationArea = All;
                     }
                     field(NORAUTO; Rec."DEL NORAUTO")
                     {
-                        Caption = 'DEL NORAUTO';
                         ApplicationArea = All;
+                        Caption = 'DEL NORAUTO';
                     }
                     field(MIDAS; Rec."DEL MIDAS")
                     {
-                        Caption = 'DEL MIDAS';
                         ApplicationArea = All;
+                        Caption = 'DEL MIDAS';
                     }
                     field(ATU; Rec."DEL ATU")
                     {
-                        Caption = 'DEL ATU';
                         ApplicationArea = All;
+                        Caption = 'DEL ATU';
                     }
                     field(ATYSE; Rec."DEL ATYSE")
                     {
-                        Caption = 'DEL ATYSE';
                         ApplicationArea = All;
+                        Caption = 'DEL ATYSE';
                     }
                     field("CARTER CASH"; Rec."DEL CARTER CASH")
                     {
-                        Caption = 'DEL CARTER CASH';
                         ApplicationArea = All;
+                        Caption = 'DEL CARTER CASH';
                     }
                     field(SYNCHRO; Rec."DEL SYNCHRO")
                     {
-                        Caption = 'DEL SYNCHRO';
                         ApplicationArea = All;
+                        Caption = 'DEL SYNCHRO';
                     }
                     field(Shruvat; Rec."DEL Shruvat")
                     {
-                        Caption = 'DEL Shruvat';
                         ApplicationArea = All;
+                        Caption = 'DEL Shruvat';
                     }
                     field(Bythjul; Rec."DEL Bythjul")
                     {
-                        Caption = 'DEL Bythjul';
                         ApplicationArea = All;
+                        Caption = 'DEL Bythjul';
                     }
                 }
                 group("Monitoring the denunciation")
@@ -372,8 +372,8 @@ page 50073 "DEL Suivi des contrats"
                     Caption = 'Monitoring the denunciation';
                     field("Starting date of Relationship"; Rec."DEL Start date of Relationship")
                     {
-                        Caption = 'Starting date of Relationship';
                         ApplicationArea = All;
+                        Caption = 'Starting date of Relationship';
                     }
                     group("Quote Part")
                     {
@@ -386,13 +386,13 @@ page 50073 "DEL Suivi des contrats"
                                 Caption = 'Quote part 1';
                                 field("Quote part 1 Mobivia/CA %"; Rec."DEL Quote part 1 Mobivia/CA %")
                                 {
-                                    Caption = 'Quote part Mobivia/CA %';
                                     ApplicationArea = All;
+                                    Caption = 'Quote part Mobivia/CA %';
                                 }
                                 field("Quote part 1 Mobivia/CA Year"; Rec."DEL Qte part 1 Mobivia/CA Year")
                                 {
-                                    Caption = 'Year';
                                     ApplicationArea = All;
+                                    Caption = 'Year';
                                 }
                             }
                             group("Quote part 2")
@@ -400,35 +400,35 @@ page 50073 "DEL Suivi des contrats"
                                 Caption = 'Quote part 2';
                                 field("Quote part 2 Mobivia/CA %"; Rec."DEL Quote part 2 Mobivia/CA %")
                                 {
-                                    ShowCaption = false;
-                                    Caption = 'Quote part 2 Mobivia/CA %';
                                     ApplicationArea = All;
+                                    Caption = 'Quote part 2 Mobivia/CA %';
+                                    ShowCaption = false;
                                 }
                                 field("Quote part 2 Mobivia/CA Year"; Rec."DEL Qte part 2 Mobivia/CA Year")
                                 {
-                                    ShowCaption = false;
-                                    Caption = 'Quote part 2 Mobivia/CA Year';
                                     ApplicationArea = All;
+                                    Caption = 'Quote part 2 Mobivia/CA Year';
+                                    ShowCaption = false;
                                 }
                             }
                         }
                     }
                     field("Period of denunciation"; Rec."DEL Period of denunciation")
                     {
-                        Editable = Editablefield;
-                        Caption = 'Period of denunciation';
                         ApplicationArea = All;
+                        Caption = 'Period of denunciation';
+                        Editable = Editablefield;
                     }
                     field("Denunciation to analyze"; Rec."DEL Denunciation to analyze")
                     {
-                        Editable = false;
-                        Caption = 'Denunciation to analyze';
                         ApplicationArea = All;
+                        Caption = 'Denunciation to analyze';
+                        Editable = false;
                     }
                     field("Denunciation Replanned"; Rec."DEL Denunciation Replanned")
                     {
-                        Caption = 'Denunciation Replanned';
                         ApplicationArea = All;
+                        Caption = 'Denunciation Replanned';
 
                         trigger OnValidate()
                         begin
@@ -439,23 +439,23 @@ page 50073 "DEL Suivi des contrats"
                     }
                     field("Denunciation realised"; Rec."DEL Denunciation realised")
                     {
-                        Caption = 'Denunciation realised';
                         ApplicationArea = All;
+                        Caption = 'Denunciation realised';
                     }
                     field("Denunciation date"; Rec."DEL Denunciation date")
                     {
-                        Caption = 'Denunciation Date';
                         ApplicationArea = All;
+                        Caption = 'Denunciation Date';
                     }
                     field("Not denunciation"; Rec."DEL Not denunciation")
                     {
-                        Caption = 'Pas de dénonciation';
                         ApplicationArea = All;
+                        Caption = 'Pas de dénonciation';
                     }
                     field("Comment denunciation"; Rec."DEL Comment denunciation")
                     {
-                        Caption = 'Comment denunciation';
                         ApplicationArea = All;
+                        Caption = 'Comment denunciation';
                     }
                 }
                 group("Invoice tracking")
@@ -463,13 +463,13 @@ page 50073 "DEL Suivi des contrats"
                     Caption = 'Invoice tracking';
                     field("En facturation"; Rec."DEL En facturation")
                     {
-                        Caption = 'Invoicing';
                         ApplicationArea = All;
+                        Caption = 'Invoicing';
                     }
                     field("Fréquence de facturation"; Rec."DEL Fréquence de facturation")
                     {
-                        Caption = 'Frequency of invoicing';
                         ApplicationArea = All;
+                        Caption = 'Frequency of invoicing';
 
                         trigger OnValidate()
                         begin
@@ -478,27 +478,27 @@ page 50073 "DEL Suivi des contrats"
                     }
                     field("Date de prochaine facturation"; Rec."DEL Date de proch. fact.")
                     {
-                        Editable = false;
-                        Caption = 'Next invoice date';
                         ApplicationArea = All;
+                        Caption = 'Next invoice date';
+                        Editable = false;
                     }
                     field("Nbre jour avant proch. fact."; Rec."DEL Nbr jr avant proch. fact.")
                     {
-                        Editable = false;
-                        Caption = 'Nb of days before invoicing';
                         ApplicationArea = All;
+                        Caption = 'Nb of days before invoicing';
+                        Editable = false;
                     }
                     field("Last Accounting Date"; Rec."DEL Last Accounting Date")
                     {
-                        Editable = false;
-                        Caption = 'Last accounting date';
                         ApplicationArea = All;
+                        Caption = 'Last accounting date';
+                        Editable = false;
                     }
                     field(Facture; Rec."DEL Facture")
                     {
-                        Editable = false;
-                        Caption = 'Invoce No.';
                         ApplicationArea = All;
+                        Caption = 'Invoce No.';
+                        Editable = false;
 
                         trigger OnLookup(var Text: Text): Boolean
                         begin
@@ -511,21 +511,21 @@ page 50073 "DEL Suivi des contrats"
                     }
                     field(Montant; Rec."DEL Montant")
                     {
-                        Editable = false;
-                        Caption = 'Amount';
                         ApplicationArea = All;
+                        Caption = 'Amount';
+                        Editable = false;
                     }
                     field("Montant ouvert"; Rec."DEL Montant ouvert")
                     {
-                        Editable = false;
-                        Caption = 'Pending amount';
                         ApplicationArea = All;
+                        Caption = 'Pending amount';
+                        Editable = false;
                     }
                     field("Amount YTD"; Rec."DEL Amount YTD")
                     {
-                        CaptionClass = '3,' + CustDateFilter[1];
-                        Caption = 'Amount YTD';
                         ApplicationArea = All;
+                        Caption = 'Amount YTD';
+                        CaptionClass = '3,' + CustDateFilter[1];
 
                         trigger OnLookup(var Text: Text): Boolean
                         begin
@@ -540,9 +540,9 @@ page 50073 "DEL Suivi des contrats"
                     }
                     field("Amount YTD-1"; Rec."DEL Amount YTD-1")
                     {
-                        CaptionClass = '3,' + CustDateFilter[2];
-                        Caption = 'Amount YTD-1';
                         ApplicationArea = All;
+                        Caption = 'Amount YTD-1';
+                        CaptionClass = '3,' + CustDateFilter[2];
 
                         trigger OnLookup(var Text: Text): Boolean
                         begin
@@ -556,9 +556,9 @@ page 50073 "DEL Suivi des contrats"
                     }
                     field("Amount YTD-2"; Rec."DEL Amount YTD-2")
                     {
-                        CaptionClass = '3,' + CustDateFilter[3];
-                        Caption = 'Amount YTD-2';
                         ApplicationArea = All;
+                        Caption = 'Amount YTD-2';
+                        CaptionClass = '3,' + CustDateFilter[3];
 
                         trigger OnLookup(var Text: Text): Boolean
                         begin
@@ -577,156 +577,156 @@ page 50073 "DEL Suivi des contrats"
                 Caption = 'Services List';
                 field("Central trading"; Rec."DEL Central trading")
                 {
+                    ApplicationArea = All;
+                    Caption = 'Central trading';
                     Style = Strong;
                     StyleExpr = True;
-                    Caption = 'Central trading';
-                    ApplicationArea = All;
                 }
                 field("Frequency of delivery 1"; Rec."DEL Frequency of delivery 1")
                 {
-                    Caption = 'Frequency of delivery';
                     ApplicationArea = All;
+                    Caption = 'Frequency of delivery';
                 }
                 field("Invoicing Frequency 1"; Rec."DEL Invoicing Frequency 1")
                 {
-                    Caption = 'Invoicing Frequency';
                     ApplicationArea = All;
+                    Caption = 'Invoicing Frequency';
                 }
                 field("Sales data report"; Rec."DEL Sales data report")
                 {
-                    Caption = 'Sales data report';
                     ApplicationArea = All;
+                    Caption = 'Sales data report';
                 }
                 field("Frequency of delivery 2"; Rec."DEL Frequency of delivery 2")
                 {
-                    Caption = 'Frequency of delivery';
                     ApplicationArea = All;
+                    Caption = 'Frequency of delivery';
                 }
                 field("Invoicing Frequency 2"; Rec."DEL Invoicing Frequency 2")
                 {
-                    Caption = 'Invoicing Frequency';
                     ApplicationArea = All;
+                    Caption = 'Invoicing Frequency';
                 }
                 field("Assist in relat. with the BU"; Rec."DEL Ass. in relat. with the BU")
                 {
-                    Caption = 'Assist in relations with the BU (Blue Helmets)';
                     ApplicationArea = All;
+                    Caption = 'Assist in relations with the BU (Blue Helmets)';
                 }
                 field("Frequency of delivery 3"; Rec."DEL Frequency of delivery 3")
                 {
-                    Caption = 'Frequency of delivery';
                     ApplicationArea = All;
+                    Caption = 'Frequency of delivery';
                 }
                 field("Invoicing Frequency 3"; Rec."DEL Invoicing Frequency 3")
                 {
-                    Caption = 'Invoicing Frequency';
                     ApplicationArea = All;
+                    Caption = 'Invoicing Frequency';
                 }
                 field("Organization of visits"; Rec."DEL Organization of visits")
                 {
-                    Caption = 'Organization of visits';
                     ApplicationArea = All;
+                    Caption = 'Organization of visits';
                 }
                 field("Frequency of delivery 4"; Rec."DEL Frequency of delivery 4")
                 {
-                    Caption = 'Frequency of delivery';
                     ApplicationArea = All;
+                    Caption = 'Frequency of delivery';
                 }
                 field("Invoicing Frequency 4"; Rec."DEL Invoicing Frequency 4")
                 {
-                    Caption = 'Invoicing Frequency';
                     ApplicationArea = All;
+                    Caption = 'Invoicing Frequency';
                 }
                 field("Vision and Market Analysis"; Rec."DEL Vision and Market Analysis")
                 {
-                    Caption = 'Vision and Market Analysis';
                     ApplicationArea = All;
+                    Caption = 'Vision and Market Analysis';
                 }
                 field("Frequency of delivery 5"; Rec."DEL Frequency of delivery 5")
                 {
-                    Caption = 'Frequency of delivery';
                     ApplicationArea = All;
+                    Caption = 'Frequency of delivery';
                 }
                 field("Invoicing Frequency 5"; Rec."DEL Invoicing Frequency 5")
                 {
-                    Caption = 'Invoicing Frequency';
                     ApplicationArea = All;
+                    Caption = 'Invoicing Frequency';
                 }
                 field("Presentation provider strategy"; Rec."DEL Pres. provider strategy")
                 {
-                    Caption = 'Presentation provider strategy';
                     ApplicationArea = All;
+                    Caption = 'Presentation provider strategy';
                 }
                 field("Frequency of delivery 6"; Rec."DEL Frequency of delivery 6")
                 {
-                    Caption = 'Frequency of delivery';
                     ApplicationArea = All;
+                    Caption = 'Frequency of delivery';
                 }
                 field("Invoicing Frequency 6"; Rec."DEL Invoicing Frequency 6")
                 {
-                    Caption = 'Invoicing Frequency';
                     ApplicationArea = All;
+                    Caption = 'Invoicing Frequency';
                 }
                 field("Presentation MOBIVIA strategy"; Rec."DEL Pres. MOBIVIA strategy")
                 {
-                    Caption = 'Presentation MOBIVIA strategy';
                     ApplicationArea = All;
+                    Caption = 'Presentation MOBIVIA strategy';
                 }
                 field("Frequency of delivery 7"; Rec."DEL Frequency of delivery 7")
                 {
-                    Caption = 'Frequency of delivery';
                     ApplicationArea = All;
+                    Caption = 'Frequency of delivery';
                 }
                 field("Invoicing Frequency 7"; Rec."DEL Invoicing Frequency 7")
                 {
-                    Caption = 'Invoicing Frequency';
                     ApplicationArea = All;
+                    Caption = 'Invoicing Frequency';
                 }
 
                 field("Adv on the adapt. of the offer"; Rec."DEL AdvOntheAdapt.OfTheOffer")
                 {
-                    Caption = 'Advising on the adaptation of the offer';
                     ApplicationArea = All;
+                    Caption = 'Advising on the adaptation of the offer';
                 }
                 field("Frequency of delivery 8"; Rec."DEL Frequency of delivery 8")
                 {
-                    Caption = 'Frequency of delivery';
                     ApplicationArea = All;
+                    Caption = 'Frequency of delivery';
                 }
                 field("Invoicing Frequency 8"; Rec."DEL Invoicing Frequency 8")
                 {
-                    Caption = 'Invoicing Frequency';
                     ApplicationArea = All;
+                    Caption = 'Invoicing Frequency';
                 }
                 field("Favorite referencing by BU"; Rec."DEL Favorite referencing by BU")
                 {
-                    Caption = 'Favorite referencing by BU';
                     ApplicationArea = All;
+                    Caption = 'Favorite referencing by BU';
                 }
                 field("Frequency of delivery 9"; Rec."DEL Frequency of delivery 9")
                 {
-                    Caption = 'Frequency of delivery';
                     ApplicationArea = All;
+                    Caption = 'Frequency of delivery';
                 }
                 field("Invoicing Frequency 9"; Rec."DEL Invoicing Frequency 9")
                 {
-                    Caption = 'Invoicing Frequency';
                     ApplicationArea = All;
+                    Caption = 'Invoicing Frequency';
                 }
                 field(Forecast; Rec."DEL Forecast")
                 {
-                    Caption = 'Forecast';
                     ApplicationArea = All;
+                    Caption = 'Forecast';
                 }
                 field("Frequency of delivery 10"; Rec."DEL Frequency of delivery 10")
                 {
-                    Caption = 'Frequency of delivery';
                     ApplicationArea = All;
+                    Caption = 'Frequency of delivery';
                 }
                 field("Invoicing Frequency 10"; Rec."DEL Invoicing Frequency 10")
                 {
-                    Caption = 'Invoicing Frequency';
                     ApplicationArea = All;
+                    Caption = 'Invoicing Frequency';
                 }
             }
             group("Charte ethique")
@@ -734,18 +734,18 @@ page 50073 "DEL Suivi des contrats"
                 Caption = 'Ethical charter';
                 field("Statut CE"; Rec."DEL Statut CE")
                 {
-                    Caption = 'Ethical Charter status';
                     ApplicationArea = All;
+                    Caption = 'Ethical Charter status';
                 }
                 field("Date Signature CE"; Rec."DEL Date Signature CE")
                 {
-                    Caption = 'Date of signature EC';
                     ApplicationArea = All;
+                    Caption = 'Date of signature EC';
                 }
                 field("URL document CE"; Rec."DEL URL document CE")
                 {
-                    Caption = 'URL document CE';
                     ApplicationArea = All;
+                    Caption = 'URL document CE';
                     trigger OnLookup(var Text: Text): Boolean
                     begin
                         CLEAR(DocumentLine);
@@ -767,13 +767,13 @@ page 50073 "DEL Suivi des contrats"
                     Caption = 'Audit Quality';
                     field("Note Quality"; Rec."DEL Note Quality")
                     {
-                        Caption = 'Quality rating';
                         ApplicationArea = All;
+                        Caption = 'Quality rating';
                     }
                     field("Realisation Date Quality"; Rec."DEL Realisation Date Quality")
                     {
-                        Caption = 'Creation date QA';
                         ApplicationArea = All;
+                        Caption = 'Creation date QA';
                     }
                 }
                 group("Social Audit")
@@ -781,13 +781,13 @@ page 50073 "DEL Suivi des contrats"
                     Caption = 'Social Audit';
                     field("Note Soc"; Rec."DEL Note Soc")
                     {
-                        Caption = 'Social rating';
                         ApplicationArea = All;
+                        Caption = 'Social rating';
                     }
                     field("Realisation Date Soc"; Rec."DEL Realisation Date Soc")
                     {
-                        Caption = 'Creation date';
                         ApplicationArea = All;
+                        Caption = 'Creation date';
                     }
                 }
                 group("Environmental Audit")
@@ -795,24 +795,24 @@ page 50073 "DEL Suivi des contrats"
                     Caption = 'Environmental Audit';
                     field("Note Env"; Rec."DEL Note Env")
                     {
-                        Caption = 'Environmental rating';
                         ApplicationArea = All;
+                        Caption = 'Environmental rating';
                     }
                     field("Realisation Date Env"; Rec."DEL Realisation Date Env")
                     {
-                        Caption = 'Creation date';
                         ApplicationArea = All;
+                        Caption = 'Creation date';
                     }
                 }
             }
             part("Contact Contrat"; "DEL Contact Contrat")
             {
+                ApplicationArea = All;
                 Caption = 'Contact';
                 Editable = false;
                 SubPageLink = "DEL Customer No." = FIELD("No.");
                 SubPageView = SORTING("No.")
                               ORDER(Ascending);
-                ApplicationArea = All;
             }
         }
     }
@@ -827,6 +827,7 @@ page 50073 "DEL Suivi des contrats"
                 Image = Vendor;
                 action(Card)
                 {
+                    ApplicationArea = All;
                     Caption = 'Card';
                     Image = Customer;
                     Promoted = true;
@@ -834,10 +835,10 @@ page 50073 "DEL Suivi des contrats"
                     PromotedIsBig = true;
                     RunObject = Page "Customer Card";
                     RunPageLink = "No." = FIELD("No.");
-                    ApplicationArea = All;
                 }
                 action("<Page Document Sheet>")
                 {
+                    ApplicationArea = All;
                     Caption = 'Doc&uments';
                     Image = Documents;
                     Promoted = true;
@@ -849,10 +850,10 @@ page 50073 "DEL Suivi des contrats"
                                   WHERE("Table Name" = CONST(Customer),
                                         "Notation Type" = FILTER(' '),
                                         "Type liasse" = FILTER(' '));
-                    ApplicationArea = All;
                 }
                 action("Co&mments")
                 {
+                    ApplicationArea = All;
                     Caption = 'Co&mments';
                     Image = ViewComments;
                     Promoted = true;
@@ -861,25 +862,24 @@ page 50073 "DEL Suivi des contrats"
                     RunObject = Page "DEL Comment Sheet Contrats";
                     RunPageLink = "Table Name" = CONST(Customer),
                                   "No." = FIELD("No.");
-                    ApplicationArea = All;
                 }
                 action(Contact)
                 {
+                    ApplicationArea = All;
                     Image = AddContacts;
                     Promoted = true;
                     PromotedIsBig = true;
                     RunObject = Page "DEL Contact Contrat";
                     RunPageLink = "DEL Customer No." = FIELD("No.");
-                    ApplicationArea = All;
                 }
                 action(Print)
                 {
+                    ApplicationArea = All;
                     Image = Print;
                     Promoted = true;
-                    PromotedOnly = true;
                     PromotedCategory = "Report";
                     PromotedIsBig = true;
-                    ApplicationArea = All;
+                    PromotedOnly = true;
 
                     trigger OnAction()
                     begin
@@ -890,16 +890,16 @@ page 50073 "DEL Suivi des contrats"
                 }
                 action("Contract Comments")
                 {
+                    ApplicationArea = All;
                     Caption = 'Contract Comments';
                     Image = TaskList;
                     Promoted = true;
-                    PromotedOnly = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
+                    PromotedOnly = true;
                     RunObject = Page "DEL Contract comment";
                     RunPageLink = "No." = FIELD("No.");
                     RunPageView = SORTING("No.", "Line No.");
-                    ApplicationArea = All;
                 }
             }
         }

@@ -1,10 +1,10 @@
 table 50064 "DEL Liste des motifs"
 {
 
-    DrillDownPageID = "DEL Liste des motifs";
-    LookupPageID = "DEL Liste des motifs";
     Caption = 'Liste des motifs';
     DataClassification = CustomerContent;
+    DrillDownPageID = "DEL Liste des motifs";
+    LookupPageID = "DEL Liste des motifs";
 
 
     fields

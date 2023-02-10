@@ -59,9 +59,9 @@ page 50002 "DEL Import Commande vente"
                 Caption = 'Apply Entry';
                 Image = Apply;
                 Promoted = true;
-                PromotedOnly = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
+                PromotedOnly = true;
 
                 trigger OnAction()
                 begin

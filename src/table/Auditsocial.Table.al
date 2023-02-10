@@ -1,8 +1,8 @@
 table 50018 "DEL Audit social"
 {
     Caption = 'DEL Audit social';
-    LookupPageID = "DEL Audit Social";
     DataClassification = CustomerContent;
+    LookupPageID = "DEL Audit Social";
     fields
     {
         field(1; "No."; Code[20])

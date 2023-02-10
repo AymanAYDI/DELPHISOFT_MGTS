@@ -1,16 +1,16 @@
 table 50059 "DEL Matrise Group Art./Grp Std"
 {
     Caption = 'Standard Item Group / Product Group Matrix';
+    DataClassification = CustomerContent;
     DrillDownPageID = "DEL Matrice Grp art./Group std";
     LookupPageID = "DEL Matrice Grp art./Group std";
-    DataClassification = CustomerContent;
     fields
     {
         field(1; "Product Group Code"; Code[10])
         {
             Caption = 'Product Group Code';
-            TableRelation = "Product Group".Code;
             DataClassification = CustomerContent;
+            TableRelation = "Product Group".Code;
         }
         field(2; "Standard Item Group Code"; Code[20])
         {

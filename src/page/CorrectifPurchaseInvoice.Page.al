@@ -18,66 +18,66 @@ page 50060 "DEL Correctif Purchase Invoice"
                 Caption = 'General';
                 field("No."; Rec."No.")
                 {
+                    ApplicationArea = All;
                     Editable = false;
                     Importance = Promoted;
-                    ApplicationArea = All;
                 }
                 field("Buy-from Vendor No."; Rec."Buy-from Vendor No.")
                 {
+                    ApplicationArea = All;
                     Editable = false;
                     Importance = Promoted;
-                    ApplicationArea = All;
                 }
                 field("Buy-from Contact No."; Rec."Buy-from Contact No.")
                 {
-                    Editable = false;
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field("Buy-from Vendor Name"; Rec."Buy-from Vendor Name")
                 {
-                    Editable = false;
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field("Buy-from Address"; Rec."Buy-from Address")
                 {
-                    Editable = false;
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field("Buy-from Address 2"; Rec."Buy-from Address 2")
                 {
-                    Editable = false;
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field("Buy-from Post Code"; Rec."Buy-from Post Code")
                 {
-                    Editable = false;
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field("Buy-from City"; Rec."Buy-from City")
                 {
-                    Editable = false;
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field("Buy-from Contact"; Rec."Buy-from Contact")
                 {
-                    Editable = false;
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field("No. Printed"; Rec."No. Printed")
                 {
-                    Editable = false;
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field("Posting Date"; Rec."Posting Date")
                 {
+                    ApplicationArea = All;
                     Editable = false;
                     Importance = Promoted;
-                    ApplicationArea = All;
                 }
                 field("Document Date"; Rec."Document Date")
                 {
-                    Editable = false;
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field("Quote No."; Rec."Quote No.")
                 {
@@ -85,39 +85,39 @@ page 50060 "DEL Correctif Purchase Invoice"
                 }
                 field("Order No."; Rec."Order No.")
                 {
-                    Editable = false;
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field("Pre-Assigned No."; Rec."Pre-Assigned No.")
                 {
-                    Editable = false;
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field("Vendor Order No."; Rec."Vendor Order No.")
                 {
-                    Editable = false;
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field("Vendor Invoice No."; Rec."Vendor Invoice No.")
                 {
+                    ApplicationArea = All;
                     Editable = false;
                     Importance = Promoted;
-                    ApplicationArea = All;
                 }
                 field("Order Address Code"; Rec."Order Address Code")
                 {
-                    Editable = false;
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field("Purchaser Code"; Rec."Purchaser Code")
                 {
-                    Editable = false;
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field("Responsibility Center"; Rec."Responsibility Center")
                 {
-                    Editable = false;
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field("Shortcut Dimension 1 Code"; Rec."Shortcut Dimension 1 Code")
                 {
@@ -126,8 +126,8 @@ page 50060 "DEL Correctif Purchase Invoice"
             }
             part(PurchInvLines; "DEL Correct Purch. Inv Subform")
             {
-                SubPageLink = "Document No." = FIELD("No.");
                 ApplicationArea = All;
+                SubPageLink = "Document No." = FIELD("No.");
             }
         }
     }
@@ -142,6 +142,7 @@ page 50060 "DEL Correctif Purchase Invoice"
                 Image = Invoice;
                 action(Statistics)
                 {
+                    ApplicationArea = All;
                     Caption = 'Statistics';
                     Image = Statistics;
                     Promoted = true;
@@ -149,24 +150,23 @@ page 50060 "DEL Correctif Purchase Invoice"
                     RunObject = Page "Purchase Invoice Statistics";
                     RunPageLink = "No." = FIELD("No.");
                     ShortCutKey = 'F7';
-                    ApplicationArea = All;
                 }
                 action("Co&mments")
                 {
+                    ApplicationArea = All;
                     Caption = 'Co&mments';
                     Image = ViewComments;
                     RunObject = Page "Purch. Comment Sheet";
                     RunPageLink = "Document Type" = CONST("Posted Invoice"),
                                   "No." = FIELD("No."),
                                   "Document Line No." = CONST(0);
-                    ApplicationArea = All;
                 }
                 action(Dimensions)
                 {
+                    ApplicationArea = All;
                     Caption = 'Dimensions';
                     Image = Dimensions;
                     ShortCutKey = 'Shift+Ctrl+D';
-                    ApplicationArea = All;
 
                     trigger OnAction()
                     begin
@@ -179,13 +179,13 @@ page 50060 "DEL Correctif Purchase Invoice"
         {
             action("&Print")
             {
+                ApplicationArea = All;
                 Caption = '&Print';
                 Ellipsis = true;
                 Image = Print;
-                PromotedOnly = true;
                 Promoted = true;
                 PromotedCategory = Process;
-                ApplicationArea = All;
+                PromotedOnly = true;
 
                 trigger OnAction()
                 begin
@@ -195,11 +195,11 @@ page 50060 "DEL Correctif Purchase Invoice"
             }
             action("&Navigate")
             {
+                ApplicationArea = All;
                 Caption = '&Navigate';
                 Image = Navigate;
                 Promoted = true;
                 PromotedCategory = Process;
-                ApplicationArea = All;
 
                 trigger OnAction()
                 begin
@@ -208,12 +208,12 @@ page 50060 "DEL Correctif Purchase Invoice"
             }
             action("Mise à jour affaire")
             {
+                ApplicationArea = All;
                 Caption = 'Mise à jour affaire';
                 Image = Approve;
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
-                ApplicationArea = All;
 
                 trigger OnAction()
                 var

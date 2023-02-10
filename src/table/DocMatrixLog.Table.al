@@ -8,8 +8,8 @@ table 50068 "DEL DocMatrix Log"
 
         field(1; Type; Enum "Credit Transfer Account Type")
         {
-            Editable = false;
             DataClassification = CustomerContent;
+            Editable = false;
         }
         field(2; "No."; Code[20])
         {
@@ -29,10 +29,10 @@ table 50068 "DEL DocMatrix Log"
         }
         field(4; "Report ID"; Integer)
         {
+            DataClassification = CustomerContent;
             Editable = false;
 
             TableRelation = AllObjWithCaption."Object ID" WHERE("Object Type" = CONST(Report));
-            DataClassification = CustomerContent;
         }
         field(5; "Report Caption"; Text[250])
         {
@@ -46,8 +46,8 @@ table 50068 "DEL DocMatrix Log"
         }
         field(6; Usage; Enum "DEL Usage DocMatrix Selection")
         {
-            Editable = false;
             DataClassification = CustomerContent;
+            Editable = false;
         }
         field(7; Name; Text[50])
         {

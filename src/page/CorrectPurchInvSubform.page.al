@@ -16,74 +16,74 @@ page 50061 "DEL Correct Purch. Inv Subform"
             {
                 field(Type; Rec.Type)
                 {
-                    Editable = false;
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field("No."; Rec."No.")
                 {
-                    Editable = false;
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field("Cross-Reference No."; Rec."Item Reference No.")
                 {
+                    ApplicationArea = All;
                     Editable = false;
                     Visible = false;
-                    ApplicationArea = All;
                 }
                 field(Description; Rec.Description)
                 {
-                    Editable = false;
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field("Location Code"; Rec."Location Code")
                 {
-                    Editable = false;
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field(Quantity; Rec.Quantity)
                 {
+                    ApplicationArea = All;
                     BlankZero = true;
                     Editable = false;
-                    ApplicationArea = All;
                 }
                 field("Unit of Measure Code"; Rec."Unit of Measure Code")
                 {
-                    Editable = false;
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field("Unit of Measure"; Rec."Unit of Measure")
                 {
+                    ApplicationArea = All;
                     Editable = false;
                     Visible = false;
-                    ApplicationArea = All;
                 }
                 field("Direct Unit Cost"; Rec."Direct Unit Cost")
                 {
+                    ApplicationArea = All;
                     BlankZero = true;
                     Editable = false;
-                    ApplicationArea = All;
                 }
                 field("Line Amount"; Rec."Line Amount")
                 {
+                    ApplicationArea = All;
                     BlankZero = true;
                     Editable = false;
-                    ApplicationArea = All;
                 }
                 field("Line Discount %"; Rec."Line Discount %")
                 {
+                    ApplicationArea = All;
                     BlankZero = true;
                     Editable = false;
-                    ApplicationArea = All;
                 }
                 field("Amount Including VAT"; Rec."Amount Including VAT")
                 {
-                    Editable = false;
                     ApplicationArea = All;
+                    Editable = false;
                 }
                 field("Shortcut Dimension 1 Code"; Rec."Shortcut Dimension 1 Code")
                 {
-                    Editable = false;
                     ApplicationArea = All;
+                    Editable = false;
                 }
             }
         }

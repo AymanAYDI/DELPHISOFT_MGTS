@@ -24,8 +24,8 @@ table 50077 "DEL EDI Export Buffer"
         field(4; "Document No."; Code[20])
         {
             Caption = 'Document No.';
-            TableRelation = "Purchase Header"."No." WHERE("Document Type" = FIELD("Document Type"));
             DataClassification = CustomerContent;
+            TableRelation = "Purchase Header"."No." WHERE("Document Type" = FIELD("Document Type"));
         }
         field(5; "Document Date"; Date)
         {
@@ -75,8 +75,8 @@ table 50077 "DEL EDI Export Buffer"
         field(14; "Currency Code"; Code[10])
         {
             Caption = 'Currency Code';
-            TableRelation = Currency;
             DataClassification = CustomerContent;
+            TableRelation = Currency;
         }
         field(15; "Document Amount"; Decimal)
         {

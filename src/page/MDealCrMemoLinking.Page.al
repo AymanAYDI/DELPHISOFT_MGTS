@@ -18,18 +18,18 @@ page 50082 "DEL M Deal Cr. Memo Linking"
         {
             field("Sales Cr. Memo No."; Rec."Sales Cr. Memo No.")
             {
-                Caption = 'Note de crédit vente';
                 ApplicationArea = All;
+                Caption = 'Note de crédit vente';
             }
             field("Deal ID"; Rec."Deal ID")
             {
-                Caption = 'Deal ID destination';
                 ApplicationArea = All;
+                Caption = 'Deal ID destination';
             }
             field("Shipment Selection"; Rec."Shipment Selection")
             {
-                Caption = 'Deal ID origine';
                 ApplicationArea = All;
+                Caption = 'Deal ID origine';
             }
         }
     }
@@ -43,14 +43,14 @@ page 50082 "DEL M Deal Cr. Memo Linking"
                 Caption = 'Post';
                 action(Post1)
                 {
+                    ApplicationArea = All;
                     Caption = 'Post';
                     Image = Post;
-                    PromotedOnly = true;
                     Promoted = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
+                    PromotedOnly = true;
                     ShortCutKey = 'F9';
-                    ApplicationArea = All;
 
                     trigger OnAction()
                     var

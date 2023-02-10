@@ -1,8 +1,8 @@
 report 50002 "DEL Cust - Sum. Aging Simp. XX"
 {
+    Caption = 'Customer - Summary Aging Simp.';
     DefaultLayout = RDLC;
     RDLCLayout = './src/report/RDL/CustomerSumAgingSimpXX.rdlc';
-    Caption = 'Customer - Summary Aging Simp.';
 
     dataset
     {

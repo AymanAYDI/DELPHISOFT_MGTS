@@ -13,13 +13,13 @@ page 50089 "DEL Usage"
             {
                 field("Code"; Rec.Code)
                 {
-                    Caption = 'Code';
                     ApplicationArea = All;
+                    Caption = 'Code';
                 }
                 field(Description; Rec.Description)
                 {
-                    Caption = 'Description';
                     ApplicationArea = All;
+                    Caption = 'Description';
                 }
             }
         }

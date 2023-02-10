@@ -54,7 +54,7 @@ codeunit 50036 "DEL Import commande vente"
     procedure InsertError(var TextErreur: Text)
     var
         ErrorImportvente: Record "DEL Error Import vente";
-        DocNum: Code[20];
+        DocNum: Text;
         LineNo: Text;
         Pos: Text;
     begin

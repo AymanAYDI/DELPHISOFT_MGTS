@@ -15,8 +15,8 @@ page 50044 "DEL Logistic"
                 Caption = 'P R O F O R M A  I N V O I C E';
                 field("Supplier Name"; Rec."Supplier Name")
                 {
-                    Editable = false;
                     Caption = 'Supplier Name';
+                    Editable = false;
                 }
                 field("N° PI"; Rec."N° PI")
                 {

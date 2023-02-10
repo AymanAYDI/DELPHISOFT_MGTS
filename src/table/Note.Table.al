@@ -1,10 +1,10 @@
 table 50019 "DEL Note"
 {
     Caption = 'DEL Note';
+    DataClassification = CustomerContent;
 
     DrillDownPageID = "DEL Note audit";
     LookupPageID = "DEL Note audit";
-    DataClassification = CustomerContent;
     fields
     {
         field(1; "Code"; Code[10])

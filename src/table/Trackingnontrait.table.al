@@ -176,9 +176,9 @@ table 50012 "DEL Tracking non traité"
         }
         field(35; Statut; Code[20])
         {
-            Description = 'n.shipment si affecté';
             Caption = 'Statut';
             DataClassification = CustomerContent;
+            Description = 'n.shipment si affecté';
         }
     }
 

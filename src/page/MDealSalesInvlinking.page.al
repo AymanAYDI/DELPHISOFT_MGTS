@@ -39,9 +39,9 @@ page 50052 "DEL M Deal Sales Inv. linking"
                     Caption = 'Post';
                     Image = Post;
                     Promoted = true;
-                    PromotedOnly = true;
                     PromotedCategory = Process;
                     PromotedIsBig = true;
+                    PromotedOnly = true;
                     ShortCutKey = 'F9';
 
                     trigger OnAction()
@@ -93,15 +93,15 @@ page 50052 "DEL M Deal Sales Inv. linking"
 
     var
         Element_Cu: Codeunit "DEL Element";
-        UpdateRequestManager_Cu: Codeunit "DEL Update Request Manager";
         Position_CU: Codeunit "DEL Position";
+        UpdateRequestManager_Cu: Codeunit "DEL Update Request Manager";
 
     procedure ChangeCodeAchat_FNC()
     var
 
+        ACOConnection_Rec_Loc: Record "DEL ACO Connection";
         //TODO PostedLine_Re_Loc: Record "Posted Document Dimension";
         PostedLine_Re_Loc: Record "Dimension Set Entry";   //  changement du table 359 --> 480  //Posted Document Dimension
-        ACOConnection_Rec_Loc: Record "DEL ACO Connection";
         SalesInvoiceHeader_Re_Loc: Record "Sales Invoice Header";
         SalesInvoiceLine_Re_Loc: Record "Sales Invoice Line";
         NewCodeAchatNo_Co_Par: Code[20];

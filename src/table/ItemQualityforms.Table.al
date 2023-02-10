@@ -9,15 +9,15 @@ table 50056 "DEL Item Quality forms"
         field(2; "Item No."; Code[20])
         {
             Caption = 'Item No.';
-            TableRelation = Item;
             DataClassification = CustomerContent;
+            TableRelation = Item;
         }
         field(3; "Type / Nature Enregistrement"; Code[20])
         {
             Caption = 'Type of forms';
+            DataClassification = CustomerContent;
 
             TableRelation = "DEL Type/Nature Enregistrement";
-            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 CALCFIELDS(Description);

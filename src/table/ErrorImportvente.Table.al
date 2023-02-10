@@ -23,8 +23,8 @@ table 50062 "DEL Error Import vente"
         field(10; "Error"; Text[250])
         {
             Caption = 'Error';
-            Editable = false;
             DataClassification = CustomerContent;
+            Editable = false;
         }
     }
 

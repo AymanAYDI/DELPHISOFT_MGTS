@@ -13,8 +13,8 @@ page 50084 "DEL Modification Taux tva"
                 Caption = 'General';
                 field(Taux; Taux)
                 {
-                    Caption = 'Nouveau Taux TVA';
                     ApplicationArea = All;
+                    Caption = 'Nouveau Taux TVA';
                 }
             }
         }
@@ -26,12 +26,12 @@ page 50084 "DEL Modification Taux tva"
         {
             action("Maj TVA")
             {
-                Caption = 'Maj TVA';
-                Promoted = true;
-                PromotedOnly = true;
-                PromotedCategory = Process;
                 ApplicationArea = All;
+                Caption = 'Maj TVA';
                 Image = VATExemption;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedOnly = true;
 
                 trigger OnAction()
                 begin

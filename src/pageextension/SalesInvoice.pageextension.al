@@ -98,13 +98,13 @@ pageextension 50039 "DEL SalesInvoice" extends "Sales Invoice" //43
         {
             action("DEL PostAndPrint")
             {
-                ShortCutKey = 'Shift+F9';
-                Ellipsis = true;
-                Promoted = true;
-                PromotedIsBig = true;
-                Image = PostPrint;
-                PromotedCategory = Category5;
                 Caption = 'Post and &Print';
+                Ellipsis = true;
+                Image = PostPrint;
+                Promoted = true;
+                PromotedCategory = Category5;
+                PromotedIsBig = true;
+                ShortCutKey = 'Shift+F9';
 
                 trigger OnAction()
                 var

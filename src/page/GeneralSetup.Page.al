@@ -1,10 +1,10 @@
 page 50000 "DEL General Setup"
 {
+    ApplicationArea = all;
     Caption = 'General Setup';
     PageType = Card;
     SourceTable = "DEL General Setup";
     UsageCategory = Administration;
-    ApplicationArea = all;
     layout
     {
         area(content)

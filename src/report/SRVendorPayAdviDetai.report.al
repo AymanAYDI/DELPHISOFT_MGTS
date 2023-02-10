@@ -1,10 +1,10 @@
 report 50035 "DEL SR Vendor Pay. Advi. Detai"
 {
 
-    DefaultLayout = RDLC;
-    RDLCLayout = './src/report/RDL/SRVendorPaymentAdviceDetai.rdlc';
 
     Caption = 'Vendor Payment Advice detail';
+    DefaultLayout = RDLC;
+    RDLCLayout = './src/report/RDL/SRVendorPaymentAdviceDetai.rdlc';
 
     dataset
     {
@@ -567,21 +567,21 @@ report 50035 "DEL SR Vendor Pay. Advi. Detai"
     end;
 
 
-    procedure SetEsrFilter(var TempGenJourLine: Record "Gen. Journal Line")
+    procedure SetEsrFilter(var GenJourLineP: Record "Gen. Journal Line")
     var
-        VendBank: Record "Vendor Bank Account";
+        VendBankL: Record "Vendor Bank Account";
     begin
-        IF TempGenJourLine.FIND('-') THEN BEGIN
+        IF GenJourLineP.FIND('-') THEN BEGIN
             REPEAT
-                IF NOT VendBank.GET(TempGenJourLine."Account No.", TempGenJourLine."Recipient Bank Account") THEN
-                    ERROR(Text002, TempGenJourLine."Recipient Bank Account", TempGenJourLine."Account No.");
-                IF NOT (VendBank."Payment Form" IN [VendBank."Payment Form"::ESR, VendBank."Payment Form"::"ESR+"]) THEN
-                    TempGenJourLine.MARK(TRUE)
+                IF NOT VendBankL.GET(GenJourLineP."Account No.", GenJourLineP."Recipient Bank Account") THEN
+                    ERROR(Text002, GenJourLineP."Recipient Bank Account", GenJourLineP."Account No.");
+                IF NOT (VendBankL."Payment Form" IN [VendBankL."Payment Form"::ESR, VendBankL."Payment Form"::"ESR+"]) THEN
+                    GenJourLineP.MARK(TRUE)
                 ELSE
-                    TempGenJourLine.MARK(FALSE);
-            UNTIL TempGenJourLine.NEXT() = 0;
+                    GenJourLineP.MARK(FALSE);
+            UNTIL GenJourLineP.NEXT() = 0;
         END;
-        TempGenJourLine.MARKEDONLY(TRUE);
+        GenJourLineP.MARKEDONLY(TRUE);
     end;
 
     local procedure BuildPmtVendLedgEntryBuffer(EntryNo: Integer)

@@ -9,9 +9,9 @@ table 50051 "DEL Regulation Matrix Line"
         field(1; "Item Category Code"; Code[10])
         {
             Caption = 'Item Category Code';
+            DataClassification = CustomerContent;
             Editable = false;
             TableRelation = "Item Category".Code;
-            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 CALCFIELDS("Item Category Label");
@@ -20,9 +20,9 @@ table 50051 "DEL Regulation Matrix Line"
         field(2; "Product Group Code"; Code[10])
         {
             Caption = 'Product Group Code';
+            DataClassification = CustomerContent;
             Editable = false;
             TableRelation = "Product Group".Code WHERE("Item Category Code" = FIELD("Item Category Code"));
-            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 CALCFIELDS("Product Group Label");
@@ -49,15 +49,15 @@ table 50051 "DEL Regulation Matrix Line"
         field(5; "No."; Code[60])
         {
             Caption = 'No.';
-            Editable = false;
             DataClassification = CustomerContent;
+            Editable = false;
         }
 
         field(6; Type; Enum "DEL Product Type")
         {
             Caption = 'Type';
-            Editable = false;
             DataClassification = CustomerContent;
+            Editable = false;
         }
         field(7; Nature; Enum "DEL Nature de Regulation")
         {
@@ -311,15 +311,15 @@ table 50051 "DEL Regulation Matrix Line"
 
         {
             Caption = 'Description produit';
-            Editable = false;
             DataClassification = CustomerContent;
+            Editable = false;
         }
 
         field(62; Mark; Enum "DEL Mark")
         {
             Caption = 'Mark';
-            Editable = false;
             DataClassification = CustomerContent;
+            Editable = false;
         }
         field(63; "Description pays"; Text[100])
         {

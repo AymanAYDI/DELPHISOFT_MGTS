@@ -30,9 +30,9 @@ table 50078 "DEL EDI Export Buffer Line"
         field(5; "Document No."; Code[20])
         {
             Caption = 'Document No.';
+            DataClassification = CustomerContent;
 
             TableRelation = "Purchase Header"."No." WHERE("Document Type" = FIELD("Document Type"));
-            DataClassification = CustomerContent;
         }
         field(6; "Document Line No."; Integer)
         {
@@ -47,8 +47,8 @@ table 50078 "DEL EDI Export Buffer Line"
         field(8; "Item No."; Code[20])
         {
             Caption = 'Item No.';
-            TableRelation = Item."No.";
             DataClassification = CustomerContent;
+            TableRelation = Item."No.";
         }
         field(9; Description; Text[50])
         {
@@ -78,8 +78,8 @@ table 50078 "DEL EDI Export Buffer Line"
         field(14; Quantity; Decimal)
         {
             Caption = 'Quantity';
-            DecimalPlaces = 0 : 5;
             DataClassification = CustomerContent;
+            DecimalPlaces = 0 : 5;
         }
         field(15; Price; Decimal)
         {

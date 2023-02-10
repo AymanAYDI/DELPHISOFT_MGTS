@@ -11,9 +11,9 @@ tableextension 50008 "DEL PurchInvHeader" extends "Purch. Inv. Header" //122
         field(50014; "DEL Type Order EDI"; Code[20])
         {
             Caption = 'Type Order EDI';
+            DataClassification = CustomerContent;
 
             TableRelation = "DEL Type Order EDI";
-            DataClassification = CustomerContent;
         }
         field(50015; "DEL GLN"; Text[30])
         {

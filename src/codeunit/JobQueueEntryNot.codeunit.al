@@ -60,7 +60,7 @@ codeunit 50054 "DEL Job Queue Entry Not."
         recRef.GETTABLE(RecLJobQueueEntry);
 
         EmailSend.SetRecRef(recRef);
-        EmailSend.InitValue(EmailObject, Sender, RecipientEmail, 0, '', '', 0, 0, 'FctLaunchExport');
+        EmailSend.InitValue(EmailObject, Sender, RecipientEmail, "DEL DoC Facture Type"::" ", '', '', 0, 0, 'FctLaunchExport');
         EmailSend.SetParam(MailTemplate, FALSE, FALSE);
         EmailSend.SetTemplateMailString(MailTemplate);
         EmailSend.RUN();

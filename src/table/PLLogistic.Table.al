@@ -8,9 +8,9 @@ table 50036 "DEL P&L Logistic"
         field(1; "Planned Element ID"; Code[20])
         {
 
-            TableRelation = "DEL Element".ID;
             Caption = 'Planned Element ID';
             DataClassification = CustomerContent;
+            TableRelation = "DEL Element".ID;
         }
         field(10; "Planned Element Type No."; Code[20])
         {
@@ -24,9 +24,9 @@ table 50036 "DEL P&L Logistic"
         }
         field(20; "Real Element ID"; Code[20])
         {
-            TableRelation = "DEL Element".ID;
             Caption = 'Real Element ID';
             DataClassification = CustomerContent;
+            TableRelation = "DEL Element".ID;
         }
         field(30; "Real Element Type No."; Code[20])
         {

@@ -17,8 +17,8 @@ page 50037 "DEL Subform Logistic"
                 }
                 field(Deal_ID; Rec.Deal_ID)
                 {
-                    Visible = false;
                     Caption = 'Deal_ID';
+                    Visible = false;
                 }
                 field("Date"; Rec.Date)
                 {
@@ -26,8 +26,8 @@ page 50037 "DEL Subform Logistic"
                 }
                 field("BR No."; Rec."BR No.")
                 {
-                    Editable = false;
                     Caption = 'BR No.';
+                    Editable = false;
                 }
                 field(PI; Rec.PI)
                 {
@@ -43,8 +43,8 @@ page 50037 "DEL Subform Logistic"
                 }
                 field("Arrival ship"; Rec."Arrival ship")
                 {
-                    Editable = false;
                     Caption = 'Arrival ship';
+                    Editable = false;
                 }
             }
         }

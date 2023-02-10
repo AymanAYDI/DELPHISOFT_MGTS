@@ -7,14 +7,14 @@ table 50075 "DEL ACO Lines API Rec. Track."
         field(1; "Deal ID"; Code[20])
         {
             Caption = 'Deal ID';
-            TableRelation = "DEL Deal".ID;
             DataClassification = CustomerContent;
+            TableRelation = "DEL Deal".ID;
         }
         field(2; "ACO No."; Code[20])
         {
             Caption = 'ACO No.';
-            TableRelation = "Purchase Header"."No." WHERE("Document Type" = CONST(Order));
             DataClassification = CustomerContent;
+            TableRelation = "Purchase Header"."No." WHERE("Document Type" = CONST(Order));
         }
         field(3; "ACO Line No."; Integer)
         {
@@ -45,8 +45,8 @@ table 50075 "DEL ACO Lines API Rec. Track."
         field(8; Quantity; Decimal)
         {
             Caption = 'Quantity';
-            DecimalPlaces = 0 : 5;
             DataClassification = CustomerContent;
+            DecimalPlaces = 0 : 5;
         }
         field(9; "ACO Line Amount"; Decimal)
         {

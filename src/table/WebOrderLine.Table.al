@@ -2,11 +2,11 @@
 table 50003 "DEL Web_Order_Line"
 {
     Caption = 'Web_Order_Line';
+    DataClassification = CustomerContent;
 
 
     DrillDownPageID = "DEL Error Import";
     LookupPageID = "DEL Error Import";
-    DataClassification = CustomerContent;
     fields
     {
         field(10; No; Integer)
@@ -17,9 +17,9 @@ table 50003 "DEL Web_Order_Line"
         }
         field(20; Item; Code[20])
         {
-            TableRelation = Item;
             Caption = 'Item';
             DataClassification = CustomerContent;
+            TableRelation = Item;
         }
         field(25; Description; Text[50])
         {
@@ -28,9 +28,9 @@ table 50003 "DEL Web_Order_Line"
         }
         field(30; Contact; Code[20])
         {
-            TableRelation = Contact;
             Caption = 'Contact';
             DataClassification = CustomerContent;
+            TableRelation = Contact;
         }
         field(40; End_Customer; Text[30])
         {
@@ -91,9 +91,9 @@ table 50003 "DEL Web_Order_Line"
         }
         field(131; CampaignCode; Code[20])
         {
-            TableRelation = Campaign."No.";
             Caption = 'CampaignCode';
             DataClassification = CustomerContent;
+            TableRelation = Campaign."No.";
         }
         field(140; Qty_Commande; Decimal)
         {

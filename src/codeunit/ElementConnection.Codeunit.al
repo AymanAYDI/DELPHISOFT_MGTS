@@ -6,7 +6,7 @@ codeunit 50025 "DEL Element Connection"
 
     procedure FNC_Add(Deal_ID_Co_Par: Code[20]; Element_ID_Co_Par: Code[20]; ApplyTo_Co_Par: Code[20]; Instance_Op_Par: Enum "DEL Instance"; SplittIndex_Int_Par: Integer)
     begin
-        FNC_Insert(Deal_ID_Co_Par, Element_ID_Co_Par, ApplyTo_Co_Par, Instance_Op_Par, SplittIndex_Int_Par)
+        FNC_Insert(Deal_ID_Co_Par, Element_ID_Co_Par, ApplyTo_Co_Par, Instance_Op_Par.AsInteger(), SplittIndex_Int_Par)
 
     end;
 

@@ -1,9 +1,9 @@
 page 50022 "DEL Position"
 {
-    PageType = List;
-    SourceTable = "DEL Position";
 
     Caption = 'DEL Position';
+    PageType = List;
+    SourceTable = "DEL Position";
     UsageCategory = None;
 
 

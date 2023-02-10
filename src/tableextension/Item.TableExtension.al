@@ -60,8 +60,8 @@ tableextension 50020 "DEL Item" extends Item //27
         }
         field(50009; "DEL Code motif de suivi"; Integer)
         {
-            TableRelation = "DEL Liste des motifs".No;
             DataClassification = CustomerContent;
+            TableRelation = "DEL Liste des motifs".No;
         }
         field(50019; "DEL Date de creation"; Date)
         {
@@ -109,8 +109,8 @@ tableextension 50020 "DEL Item" extends Item //27
         }
         field(50030; "DEL Marque"; Text[30])
         {
-            TableRelation = Manufacturer.Code;
             DataClassification = CustomerContent;
+            TableRelation = Manufacturer.Code;
         }
         field(50031; "DEL Carac. complementaire"; Text[30])
         {
@@ -212,10 +212,10 @@ tableextension 50020 "DEL Item" extends Item //27
         }
         field(50090; "DEL Images"; Integer)
         {
-            FieldClass = FlowField;
             //TODO // CalcFormula = Count("DEL Texte Regulation" WHERE("Attached to Line No."= field("No.")));
 
             Editable = false;
+            FieldClass = FlowField;
 
         }
         field(50091; "DEL Qtés en com panier WEB"; Decimal)
@@ -228,11 +228,11 @@ tableextension 50020 "DEL Item" extends Item //27
         }
         field(50092; "DEL Qty. optimale"; Decimal)
         {
-            FieldClass = FlowField;
             CalcFormula = Sum("Purchase Price"."DEL Qty. optimale" WHERE("Item No." = FIELD("No."),
                                             "Starting Date" = FIELD("DEL Date Filter Startdate"),
                                             "Ending Date" = FIELD("DEL Date Filter Enddate")));
             Editable = false;
+            FieldClass = FlowField;
 
             TableRelation = "Purchase Price"."Vendor No." WHERE("Item No." = FIELD("No."));
         }
@@ -246,12 +246,12 @@ tableextension 50020 "DEL Item" extends Item //27
         }
         field(50096; "DEL Segment Code"; Code[20])
         {
-            FieldClass = FlowField;
             //    CalcFormula = Lookup("Product Group"."Code Segment" 
             //     WHERE ("Item Category Code"=FIELD("DEL Item Category Code"),
             //             Code=FIELD("Product Group Code"))); TODO: product grp
             Caption = 'Segment Code';
             Editable = false;
+            FieldClass = FlowField;
 
         }
         field(50100; "DEL Show item as new until"; Date)
@@ -300,7 +300,6 @@ tableextension 50020 "DEL Item" extends Item //27
         field(60005; "DEL NGTS Quality Expert"; Enum "DEL NGTS Quality Expert")
 
         {
-            FieldClass = FlowField;
             CalcFormula = Lookup("DEL Regulation Matrix"."NGTS Quality Expert"
              WHERE("Item Category Code" = FIELD("Item Category Code"),
             //TODO:Product group is no longer here  // "Product Group Code" = FIELD("Product Group Code"),
@@ -309,10 +308,10 @@ tableextension 50020 "DEL Item" extends Item //27
             Caption = 'NGTS Quality Expert';
 
             Editable = false;
+            FieldClass = FlowField;
         }
         field(60006; "DEL Regl. Generale"; Boolean)
         {
-            FieldClass = FlowField;
 
             CalcFormula = Lookup("DEL Regulation Matrix"."Regl. Generale"
             WHERE("Item Category Code" = FIELD("Item Category Code"),
@@ -322,6 +321,7 @@ tableextension 50020 "DEL Item" extends Item //27
             Caption = 'General Product Regulation';
 
             Editable = false;
+            FieldClass = FlowField;
 
         }
         field(60007; "DEL Regl. Matiere"; Boolean)
@@ -483,7 +483,6 @@ tableextension 50020 "DEL Item" extends Item //27
         }
         field(60033; "DEL Nbre Regl. Plan control"; Integer)
         {
-            FieldClass = FlowField;
 
             CalcFormula = Count("DEL Regulation Matrix Line" WHERE("Item Category Code" = FIELD("Item Category Code"),
                                                                 // TODO: 'Product Group Code' is removed.  // "Product Group Code"=FIELD("Product Group Code"),
@@ -493,6 +492,7 @@ tableextension 50020 "DEL Item" extends Item //27
             Caption = 'Plan of control regulation';
 
             Editable = false;
+            FieldClass = FlowField;
 
         }
         field(60034; "DEL Marking in the product FR"; Boolean)
@@ -551,7 +551,6 @@ tableextension 50020 "DEL Item" extends Item //27
         }
         field(60039; "DEL Warning"; Boolean)
         {
-            FieldClass = FlowField;
 
             CalcFormula = Exist("DEL Regulation Matrix Text" WHERE("Item Category Code" = FIELD("Item Category Code"),
                                                                 //TODO:'Product Group Code' is removed.   //"Product Group Code"=FIELD("Product Group Code"),
@@ -559,31 +558,32 @@ tableextension 50020 "DEL Item" extends Item //27
                                                                 Mark = FIELD("DEL Marque Produit"),
                                                                 Type = FILTER("Warning in French")));
             Editable = false;
+            FieldClass = FlowField;
 
         }
         field(91032; "DEL Length.old"; Decimal)
         {
             BlankZero = true;
             Caption = 'Length';
+            DataClassification = CustomerContent;
 
             MinValue = 0;
-            DataClassification = CustomerContent;
         }
         field(91034; "DEL Width.old"; Decimal)
         {
             BlankZero = true;
             Caption = 'Width';
+            DataClassification = CustomerContent;
 
             MinValue = 0;
-            DataClassification = CustomerContent;
         }
         field(91036; "DEL Depth.old"; Decimal)
         {
             BlankZero = true;
             Caption = 'Depth';
+            DataClassification = CustomerContent;
 
             MinValue = 0;
-            DataClassification = CustomerContent;
         }
 
     }

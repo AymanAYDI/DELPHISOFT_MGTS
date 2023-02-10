@@ -1,10 +1,10 @@
 page 50057 "DEL Affaire non affectée"
 {
+    ApplicationArea = all;
     InsertAllowed = false;
     PageType = List;
     SourceTable = "DEL Logistic";
     UsageCategory = Lists;
-    ApplicationArea = all;
     Caption = 'Affaire non affectée';
 
     layout
@@ -84,12 +84,12 @@ page 50057 "DEL Affaire non affectée"
         {
             action("MAJ de la liste")
             {
+                ApplicationArea = All;
                 Caption = 'MAJ de la liste';
                 Image = UpdateDescription;
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
-                ApplicationArea = All;
 
                 trigger OnAction()
                 begin

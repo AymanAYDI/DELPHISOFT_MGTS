@@ -16,8 +16,8 @@ codeunit 50015 "DEL DocMatrix Management" //TODO
      pPrintOnly: Boolean): Boolean
     var
         lpgDocMatrixSelection: Page "DEL DocMatrix Selection Card";
-        lErr001: Label 'There is no Document Matrix Configuration available for"%1".';
         lType: Enum "Credit Transfer Account Type";
+        lErr001: Label 'There is no Document Matrix Configuration available for"%1".';
     begin
         IF CreateDocMatrixSelection(pNo, pProcessType, pUsage, precDocMatrixSelection, pPrintOnly) THEN BEGIN
 
@@ -41,14 +41,14 @@ codeunit 50015 "DEL DocMatrix Management" //TODO
      precDocMatrixSelection: Record "DEL DocMatrix Selection"; pFieldPurchCode: Integer)
     var
         lcuDocMatrixSingleInstance: Codeunit "DEL DocMatrix SingleInstance";
-        FileManagement: Codeunit "File Management";
+        FileManagementL: Codeunit "File Management";
         lboDeleteFileAtTheEnd: Boolean;
         lPurchCode: Code[10];
         lDocNo: Code[20];
         lNo: Code[20];
-        lErr001: Label 'A unexpected problem with the parameter for the function "ProcessDocumentMatrix" occured.';
         lType: Enum "Credit Transfer Account Type";
         lAction: Enum "DEL Action100";
+        lErr001: Label 'A unexpected problem with the parameter for the function "ProcessDocumentMatrix" occured.';
         lErrPrint: Text;
         ltxClientFile: Text;
         ltxClientPath: Text;
@@ -139,12 +139,12 @@ codeunit 50015 "DEL DocMatrix Management" //TODO
         lboActionForStatement: Boolean;
         lNo: Code[20];
         lDate: Date;
+        lAction: Enum "DEL Action100";
+        lProcessType: Enum "DEL Process Type";
         lintLogID: Integer;
         lLastStatementNo: Integer;
         lReportID: Integer;
         lType: Integer;
-        lProcessType: Enum "DEL Process Type";
-        lAction: Enum "DEL Action100";
         ltxClientFile: Text;
         lvarCustomer: Variant;
     begin
@@ -263,7 +263,7 @@ codeunit 50015 "DEL DocMatrix Management" //TODO
     procedure SavePDF(pUsage: Integer; pRecordVariant: Variant; ptxClientFile: Text; ptxServerFile: Text)
     var
         RecLReportSelections: Record "Report Selections";
-        FileManagement: Codeunit "File Management";
+        FileManagementL: Codeunit "File Management";
         tempBlob: Codeunit "temp Blob";
         RecRef: RecordRef;
         Out: OutStream;
@@ -276,7 +276,7 @@ codeunit 50015 "DEL DocMatrix Management" //TODO
                 REPEAT
                     // REPORT.SAVEASPDF(RecLReportSelections."Report ID", ptxServerFile, pRecordVariant); // TODO: ancient code
                     REPORT.SAVEAS(RecLReportSelections."Report ID", '', REPORTFORMAT::Pdf, Out, RecRef);
-                    FileManagement.BLOBExport(TempBlob, ptxServerFile, TRUE);
+                    FileManagementL.BLOBExport(TempBlob, ptxServerFile, TRUE);
                     ManageFilesAfterProcess(ptxClientFile, ptxServerFile);
                     Clear(Out);
                 UNTIL RecLReportSelections.NEXT() = 0;
@@ -692,14 +692,14 @@ codeunit 50015 "DEL DocMatrix Management" //TODO
             // 2. to post a "Sales Order" and then process the "Posted Sales Invoice"
             lPostOptionSOrder := 0;
             IF (DocumentMatrix.Post <> DocumentMatrix.Post::" ") AND (pUsage = 1) AND (NOT pPrintOnly) THEN BEGIN
-                lPostOptionSOrder := DocumentMatrix.Post;
+                lPostOptionSOrder := DocumentMatrix.Post.AsInteger();
                 DocumentMatrix.SETRANGE(Usage, DocumentMatrix.Usage::"S.Invoice");
             END;
 
             // set Post to empty if a "Sales Order Confirmation" is printed
             // the post option value is for posting the Sales Order", not for only printing it
             IF pPrintOnly THEN
-                lPostOptionSOrder := DocumentMatrix.Post::" ";
+                lPostOptionSOrder := DocumentMatrix.Post::" ".AsInteger();
 
             // now find the record again and create the Selection DocMatrix record
             IF DocumentMatrix.FINDFIRST() THEN BEGIN
@@ -738,14 +738,14 @@ codeunit 50015 "DEL DocMatrix Management" //TODO
             // 2. to post a "Sales Order" and then process the "Posted Sales Invoice"
             lPostOptionSOrder := 0;
             IF (precDocMatrixSelection.Post <> precDocMatrixSelection.Post::" ") AND (pUsage = 1) AND (NOT pPrintOnly) THEN BEGIN
-                lPostOptionSOrder := precDocMatrixSelection.Post;
+                lPostOptionSOrder := precDocMatrixSelection.Post.AsInteger();
                 DocumentMatrix.SETRANGE(Usage, DocumentMatrix.Usage::"S.Invoice");
             END;
 
             // set Post to empty if a "Sales Order Confirmation" is printed
             // the post option value is for posting the Sales Order", not for only printing it
             IF pPrintOnly THEN
-                lPostOptionSOrder := DocumentMatrix.Post::" ";
+                lPostOptionSOrder := DocumentMatrix.Post::" ".AsInteger();
 
             // now find the record again and modify the Selection DocMatrix record
             IF DocumentMatrix.FINDFIRST() THEN BEGIN
@@ -943,9 +943,9 @@ codeunit 50015 "DEL DocMatrix Management" //TODO
         // get the type of contact
         CASE pUsage OF
             1, 2, 3, 85:
-                EXIT(lType::Customer);
+                EXIT(lType::Customer.AsInteger());
             6, 7:
-                EXIT(lType::Vendor);
+                EXIT(lType::Vendor.AsInteger());
         END;
     end;
 
@@ -1125,8 +1125,8 @@ codeunit 50015 "DEL DocMatrix Management" //TODO
     local procedure CheckAndCreateServerPath(pUsage: Integer; pNo: Code[20]): Text
     var
         lrecDocMatrixSetup: Record "DEL DocMatrix Setup";
-        i: Integer;
         lType: Enum "Credit Transfer Account Type";
+        i: Integer;
         ltxtStorageLocation: Text;
     begin
 
@@ -1263,7 +1263,7 @@ codeunit 50015 "DEL DocMatrix Management" //TODO
                 //On crée une updateRequest, comme ca, si NAV plante plus loin, on sait ce qui n'a pas été updaté comme il faut
                 pcdUpdateRequestID := updateRequestManager_Cu.FNC_Add_Request(
                   dealShipmentSelection_Re_Loc.Deal_ID,
-                  dealShipmentSelection_Re_Loc."Document Type",
+                  dealShipmentSelection_Re_Loc."Document Type".AsInteger(),
                   dealShipmentSelection_Re_Loc."Document No.",
                   CURRENTDATETIME
                 );

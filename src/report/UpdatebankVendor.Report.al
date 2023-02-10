@@ -1,8 +1,8 @@
 report 50060 "DEL Update bank Vendor"
 {
     DefaultLayout = RDLC;
-    RDLCLayout = './src/report/RDL/UpdatebankVendor.rdlc';
     Permissions = TableData "Vendor Ledger Entry" = rimd;
+    RDLCLayout = './src/report/RDL/UpdatebankVendor.rdlc';
 
     dataset
     {

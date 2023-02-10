@@ -155,7 +155,7 @@ codeunit 50032 "DEL Update Request Manager"
 
                 FNC_ProgressBar_Update(1);
 
-                FNC_Add_Request(deal_Re_Loc.ID, UpdateRequest_Re.Requested_By_Type::CUSTOM, 'All', CURRENTDATETIME);
+                FNC_Add_Request(deal_Re_Loc.ID, UpdateRequest_Re.Requested_By_Type::CUSTOM.AsInteger(), 'All', CURRENTDATETIME);
                 counter_Loc += 1;
 
 
@@ -189,7 +189,7 @@ codeunit 50032 "DEL Update Request Manager"
                 position_Re_Loc.RESET();
                 position_Re_Loc.SETRANGE(Element_ID, element_Re_Loc.ID);
                 IF NOT position_Re_Loc.FINDFIRST() THEN BEGIN
-                    FNC_Add_Request(element_Re_Loc.Deal_ID, UpdateRequest_Re.Requested_By_Type::CUSTOM, 'blank invoices', CURRENTDATETIME);
+                    FNC_Add_Request(element_Re_Loc.Deal_ID, UpdateRequest_Re.Requested_By_Type::CUSTOM.AsInteger(), 'blank invoices', CURRENTDATETIME);
                     counter_Loc += 1;
                 END;
             UNTIL (element_Re_Loc.NEXT() = 0);

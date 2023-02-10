@@ -40,9 +40,9 @@ table 50067 "DEL Document Matrix"
         field(4; "Report ID"; Integer)
         {
             Caption = 'Report ID';
+            DataClassification = CustomerContent;
             Editable = false;
             TableRelation = AllObjWithCaption."Object ID" WHERE("Object Type" = CONST(Report));
-            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 CALCFIELDS("Report Caption");
@@ -50,13 +50,13 @@ table 50067 "DEL Document Matrix"
         }
         field(5; "Report Caption"; Text[250])
         {
-            FieldClass = FlowField;
             CalcFormula = Lookup(AllObjWithCaption."Object Caption"
             WHERE("Object Type" = CONST(Report),
 
         "Object ID" = FIELD("Report ID")));
             Caption = 'Report Caption';
             Editable = false;
+            FieldClass = FlowField;
 
         }
         field(6; Usage; Enum "DEL Usage DocMatrix Selection")
@@ -66,7 +66,7 @@ table 50067 "DEL Document Matrix"
             trigger OnValidate()
             begin
                 CheckSetup();
-                VALIDATE("Report ID", DocumentMatrixMgt.GetReportIDWithUsage(Usage));
+                VALIDATE("Report ID", DocumentMatrixMgt.GetReportIDWithUsage(Usage.AsInteger()));
                 IF Usage = Usage::"C.Statement" THEN BEGIN
                     "Process Type" := "Process Type"::Automatic;
                     "Save PDF" := TRUE;
@@ -194,7 +194,7 @@ table 50067 "DEL Document Matrix"
             DataClassification = CustomerContent;
             trigger OnValidate()
             begin
-                IF (Post IN [1, 2, 3]) AND (Usage <> Usage::"S.Order") THEN
+                IF (Post IN ["DEL Post DocMatrix"::Ship, "DEL Post DocMatrix"::Invoice, "DEL Post DocMatrix"::"Ship and Invoice"]) AND (Usage <> Usage::"S.Order") THEN
                     IF Usage = Usage::"S.Cr.Memo" THEN
                         ERROR(Err007, FORMAT(Usage::"S.Cr.Memo"))
                     ELSE
@@ -430,8 +430,8 @@ table 50067 "DEL Document Matrix"
     local procedure u_SetRequestPageParametersFile(var pOutputText: BigText)
     var
         TempBlob: Codeunit "Temp Blob";
-        Outsr: OutStream;
         TextFile: File;
+        Outsr: OutStream;
     begin
         //TODO: à corrigerr
         //TextFile.TEXTMODE(FALSE);

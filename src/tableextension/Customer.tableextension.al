@@ -10,9 +10,9 @@ tableextension 50013 "DEL Customer" extends Customer //18
         field(50001; "DEL Fiscal Repr."; Code[10])
         {
             Caption = 'Fiscal Repr.';
+            DataClassification = CustomerContent;
 
             TableRelation = Contact;
-            DataClassification = CustomerContent;
         }
         field(50002; "DEL FTP Save"; Boolean)
         {
@@ -448,9 +448,9 @@ tableextension 50013 "DEL Customer" extends Customer //18
         field(60001; "DEL Note Quality"; Code[10])
         {
             Caption = 'Quality rating';
+            DataClassification = CustomerContent;
 
             TableRelation = "DEL Note".Code WHERE("Type audit" = FILTER(Quality));
-            DataClassification = CustomerContent;
         }
         field(60002; "DEL Realisation Date Quality"; Date)
         {
@@ -460,9 +460,9 @@ tableextension 50013 "DEL Customer" extends Customer //18
         field(60100; "DEL Note Soc"; Code[10])
         {
             Caption = 'Social rating';
+            DataClassification = CustomerContent;
 
             TableRelation = "DEL Note".Code WHERE("Type audit" = FILTER(social));
-            DataClassification = CustomerContent;
         }
         field(60101; "DEL Realisation Date Soc"; Date)
         {
@@ -472,9 +472,9 @@ tableextension 50013 "DEL Customer" extends Customer //18
         field(60102; "DEL Note Env"; Code[10])
         {
             Caption = 'Environmental rating';
+            DataClassification = CustomerContent;
 
             TableRelation = "DEL Note".Code WHERE("Type audit" = FILTER(Environmental));
-            DataClassification = CustomerContent;
         }
         field(60103; "DEL Realisation Date Env"; Date)
         {
@@ -522,20 +522,20 @@ tableextension 50013 "DEL Customer" extends Customer //18
         field(60113; "DEL Amount YTD"; Decimal)
         {
             Caption = 'Amount YTD';
-            Editable = false;
             DataClassification = CustomerContent;
+            Editable = false;
         }
         field(60114; "DEL Amount YTD-1"; Decimal)
         {
             Caption = 'Amount YTD-1';
-            Editable = false;
             DataClassification = CustomerContent;
+            Editable = false;
         }
         field(60115; "DEL Amount YTD-2"; Decimal)
         {
             Caption = 'Amount YTD-2';
-            Editable = false;
             DataClassification = CustomerContent;
+            Editable = false;
         }
         field(60116; "DEL SYNCHRO"; Boolean)
         {
@@ -544,11 +544,11 @@ tableextension 50013 "DEL Customer" extends Customer //18
         field(60117; "DEL Segmentation Description"; Text[250])
         {
             Caption = 'Segmentation Description';
+            DataClassification = CustomerContent;
 
             TableRelation = "Dimension Value".Name WHERE("Dimension Code" = FILTER('SEGMENT'));
 
             ValidateTableRelation = false;
-            DataClassification = CustomerContent;
         }
         field(60118; "DEL Shruvat"; Boolean)
         {
@@ -716,18 +716,18 @@ tableextension 50013 "DEL Customer" extends Customer //18
     }
     var
         Window: Dialog;
-        PreparationMsg: Label 'EPreparation in progress ...';
         FinishedMsg: Label 'Processing completed.';
+        PreparationMsg: Label 'EPreparation in progress ...';
 
     PROCEDURE ShowSelectedEntriesForReverse();
     VAR
         GLEntry: Record "G/L Entry";
-        GLReverseForCustomer: Page "DEL G/L Reverse For Customer";
-        GLSetup: Record "General Ledger Setup";
         ReverseGLEntry: Record "G/L Entry";
-        ReverseConfirmMsg: Label 'Do you want to reverse the selected entries;FRS=Voulez-vous extourner les ‚critures s‚lectionn‚es';
-        PostingDate: Date;
+        GLSetup: Record "General Ledger Setup";
+        GLReverseForCustomer: Page "DEL G/L Reverse For Customer";
         PostingDatePage: Page "DEL Posting Date";
+        PostingDate: Date;
+        ReverseConfirmMsg: Label 'Do you want to reverse the selected entries;FRS=Voulez-vous extourner les ‚critures s‚lectionn‚es';
         Text001: Label 'You must fill in the Posting Date field.;FRS=Vous devez renseigner le champ Date comptabilisation.';
     BEGIN
         GLSetup.GET();
@@ -771,14 +771,14 @@ tableextension 50013 "DEL Customer" extends Customer //18
 
     PROCEDURE ReverseProvisionEntries(VAR ReverseGLEntry: Record "G/L Entry"; PostingDate: Date);
     VAR
-        GLEntryProvision: Record "G/L Entry";
         BalGLEntry: Record "G/L Entry";
         GLEntry: Record "G/L Entry";
-        GLEntryVATEntryLink: Record "G/L Entry - VAT Entry Link";
-        GlobalVATEntry: Record "VAT Entry";
+        GLEntryProvision: Record "G/L Entry";
         GlobalGLEntry: Record "G/L Entry";
-        VATEntryProvision: Record "VAT Entry";
+        GLEntryVATEntryLink: Record "G/L Entry - VAT Entry Link";
         GLSetup: Record "General Ledger Setup";
+        GlobalVATEntry: Record "VAT Entry";
+        VATEntryProvision: Record "VAT Entry";
         NextGLEntryNo: Integer;
         NextTransactionNo: Integer;
         NextVATEntryNo: Integer;

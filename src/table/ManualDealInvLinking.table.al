@@ -6,11 +6,11 @@ table 50037 "DEL Manual Deal Inv. Linking"
     {
         field(1; "Entry No."; Integer)
         {
+            Caption = 'Entry No.';
+            DataClassification = CustomerContent;
             TableRelation = "G/L Entry"."Entry No." WHERE("Document Type" = CONST(Invoice),
                                                            "System-Created Entry" = CONST(false),
                                                            Amount = FILTER(> 0));
-            Caption = 'Entry No.';
-            DataClassification = CustomerContent;
         }
         field(10; "Document No."; Code[20])
         {
@@ -28,14 +28,14 @@ table 50037 "DEL Manual Deal Inv. Linking"
             CalcFormula = Count("DEL Deal Shipment Selection" WHERE(Checked = CONST(true),
                                                                  "Account Entry No." = FIELD("Entry No."),
                                                                  USER_ID = FIELD("User ID Filter")));
+            Caption = 'Shipment Selection';
             Editable = false;
             FieldClass = FlowField;
-            Caption = 'Shipment Selection';
         }
         field(51; "User ID Filter"; Code[20])
         {
-            CaptionClass = '1,3,1';
             Caption = 'Global Dimension 1 Filter';
+            CaptionClass = '1,3,1';
             FieldClass = FlowFilter;
             TableRelation = User;
         }

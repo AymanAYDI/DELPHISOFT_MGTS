@@ -1,10 +1,10 @@
 table 50073 "DEL JSON Requests log"
 {
     Caption = 'JSON Requests log';
+    DataClassification = CustomerContent;
 
     DrillDownPageID = "DEL Matrix Subs. reg Card";
     LookupPageID = "DEL Matrix Subs. reg Card";
-    DataClassification = CustomerContent;
     fields
     {
         field(1; "Entry No."; BigInteger)
@@ -31,8 +31,8 @@ table 50073 "DEL JSON Requests log"
         field(5; "Message"; BLOB)
         {
             Caption = 'Message';
-            SubType = Json;
             DataClassification = CustomerContent;
+            SubType = Json;
         }
         field(6; "Error"; Boolean)
         {

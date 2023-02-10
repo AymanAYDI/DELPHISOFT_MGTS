@@ -25,9 +25,9 @@ table 50071 "DEL DocMatrix Selection"
         field(4; "Report ID"; Integer)
         {
             Caption = 'Report ID';
+            DataClassification = CustomerContent;
             Editable = false;
             TableRelation = AllObjWithCaption."Object ID" WHERE("Object Type" = CONST(Report));
-            DataClassification = CustomerContent;
         }
         field(5; "Report Caption"; Text[250])
         {
@@ -160,7 +160,7 @@ table 50071 "DEL DocMatrix Selection"
             DataClassification = CustomerContent;
             trigger OnValidate()
             begin
-                IF (Post IN [1, 2, 3]) AND (Usage <> Usage::"S.Order") THEN
+                IF (Post IN [Post::Ship, Post::Invoice, Post::"Ship and Invoice"]) AND (Usage <> Usage::"S.Order") THEN
                     IF Usage = Usage::"S.Cr.Memo" THEN
                         ERROR(Err007, FORMAT(Usage::"S.Cr.Memo"))
                     ELSE
@@ -173,8 +173,8 @@ table 50071 "DEL DocMatrix Selection"
         field(75; "E-Mail from Sales Order"; Boolean)
         {
             Caption = 'E-Mail from Sales Order';
-            Description = 'CR100';
             DataClassification = CustomerContent;
+            Description = 'CR100';
             trigger OnValidate()
             begin
 

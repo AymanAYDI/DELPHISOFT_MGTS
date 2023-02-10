@@ -1,9 +1,9 @@
 table 50055 "DEL Type/Nature Enregistrement"
 {
     Caption = 'Type of forms';
+    DataClassification = CustomerContent;
     DrillDownPageID = "Type / Nature Enregistrement";
     LookupPageID = "Type / Nature Enregistrement";
-    DataClassification = CustomerContent;
     fields
     {
         field(1; "Code"; Code[20])

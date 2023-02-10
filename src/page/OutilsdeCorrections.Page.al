@@ -1,10 +1,10 @@
 page 50051 "DEL Outils de Corrections"
 {
+    ApplicationArea = all;
     Caption = 'Outils de Correction';
     PageType = Card;
     SourceTable = Integer;
     UsageCategory = Tasks;
-    ApplicationArea = all;
 
     actions
     {

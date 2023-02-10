@@ -5,9 +5,9 @@ tableextension 50023 "DEL Vendor" extends Vendor //23
         field(50000; "DEL Forwarding Agent Code"; Code[20])
         {
             Caption = 'Forwarding Agent Code';
+            DataClassification = CustomerContent;
             Description = 'EDI';
             TableRelation = "DEL Forwarding agent 2";
-            DataClassification = CustomerContent;
         }
         field(50010; "DEL Statut CG"; enum "DEL Statut CG")
         {
@@ -67,14 +67,14 @@ tableextension 50023 "DEL Vendor" extends Vendor //23
         field(50151; "DEL Email Payment Advice"; Code[20])
         {
             Caption = 'Sender Email Payment Advice';
-            TableRelation = "DEL DocMatrix Email Codes".Code;
             DataClassification = CustomerContent;
+            TableRelation = "DEL DocMatrix Email Codes".Code;
         }
         field(60001; "DEL Note Quality"; Code[10])
         {
             Caption = 'Quality rating';
-            TableRelation = "DEL Note".Code WHERE("Type audit" = FILTER(Quality));
             DataClassification = CustomerContent;
+            TableRelation = "DEL Note".Code WHERE("Type audit" = FILTER(Quality));
             trigger OnValidate()
             begin
                 IF "DEL Realisation Date Quality" <> 0D THEN BEGIN
@@ -149,8 +149,8 @@ tableextension 50023 "DEL Vendor" extends Vendor //23
         field(60004; "DEL Note Soc"; Code[10])
         {
             Caption = 'Social rating';
-            TableRelation = "DEL Note".Code WHERE("Type audit" = FILTER(social));
             DataClassification = CustomerContent;
+            TableRelation = "DEL Note".Code WHERE("Type audit" = FILTER(social));
             trigger OnValidate()
             begin
                 IF "DEL Realisation Date Soc" <> 0D THEN BEGIN
@@ -227,8 +227,8 @@ tableextension 50023 "DEL Vendor" extends Vendor //23
         field(60007; "DEL Note Env"; Code[10])
         {
             Caption = 'Environmental rating';
-            TableRelation = "DEL Note".Code WHERE("Type audit" = FILTER(Environmental));
             DataClassification = CustomerContent;
+            TableRelation = "DEL Note".Code WHERE("Type audit" = FILTER(Environmental));
             trigger OnValidate()
             begin
                 IF "DEL Realisation Date Env" <> 0D THEN BEGIN

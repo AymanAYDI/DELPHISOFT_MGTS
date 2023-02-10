@@ -55,14 +55,14 @@ tableextension 50049 "DEL SalesReceivablesSetup" extends "Sales & Receivables Se
         field(50010; "DEL Def.Req.Worksheet Temp"; Code[20])
         {
             Caption = 'Default Req. Worksheet Template';
-            TableRelation = "Req. Wksh. Template";
             DataClassification = CustomerContent;
+            TableRelation = "Req. Wksh. Template";
         }
         field(50011; "DEL Def. Req. Worksheet Batch"; Code[20])
         {
             Caption = 'Def. Req. Worksheet Batch';
-            TableRelation = "Requisition Wksh. Name".Name WHERE("Worksheet Template Name" = FIELD("DEL Def.Req.Worksheet Temp"));
             DataClassification = CustomerContent;
+            TableRelation = "Requisition Wksh. Name".Name WHERE("Worksheet Template Name" = FIELD("DEL Def.Req.Worksheet Temp"));
         }
     }
 }

@@ -94,9 +94,9 @@ page 50113 "DEL Matrix Plan of Cont. List"
                 ApplicationArea = All;
                 Image = Line;
                 Promoted = true;
-                PromotedOnly = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
+                PromotedOnly = true;
                 RunObject = Page "DEL Matrix Plan of Cont. Card";
                 RunPageLink = "Item Category Code" = FIELD("Item Category Code"),
                               "Product Group Code" = FIELD("Product Group Code"),

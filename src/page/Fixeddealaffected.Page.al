@@ -1,5 +1,6 @@
 page 50062 "DEL Fixed deal affected"
 {
+    ApplicationArea = all;
     Caption = 'Fixed deal affected';
     Editable = false;
     PageType = List;
@@ -7,7 +8,6 @@ page 50062 "DEL Fixed deal affected"
     SourceTableView = WHERE("Display record" = FILTER('No'),
                             "BL N°" = FILTER(<> ''));
     UsageCategory = Lists;
-    ApplicationArea = all;
     layout
     {
         area(content)
@@ -36,9 +36,9 @@ page 50062 "DEL Fixed deal affected"
                 }
                 field("Display record"; Rec."Display record")
                 {
+                    ApplicationArea = All;
                     Editable = false;
                     Visible = false;
-                    ApplicationArea = All;
                 }
                 field("Affectation manuelle"; Rec."Affectation manuelle")
                 {
@@ -54,12 +54,12 @@ page 50062 "DEL Fixed deal affected"
         {
             action("Delete BL No.")
             {
+                ApplicationArea = All;
                 Caption = 'Delete BL No.';
                 Image = UpdateDescription;
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
-                ApplicationArea = All;
 
                 trigger OnAction()
                 var

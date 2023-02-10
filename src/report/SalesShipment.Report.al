@@ -1,10 +1,10 @@
 report 50071 "DEL Sales - Shipment"  //208
 {
-    DefaultLayout = RDLC;
-    RDLCLayout = './src/report/RDL/SalesShipment.rdlc';
 
     Caption = 'Sales - Shipment';
+    DefaultLayout = RDLC;
     PreviewMode = PrintLayout;
+    RDLCLayout = './src/report/RDL/SalesShipment.rdlc';
 
     dataset
     {
@@ -743,28 +743,28 @@ report 50071 "DEL Sales - Shipment"  //208
     end;
 
     var
-        Language: Record Language;
-        SalesPurchPerson: Record "Salesperson/Purchaser";
-        Item_Rec: Record Item;
         CompanyInfo: Record "Company Information";
         CompanyInfo1: Record "Company Information";
         CompanyInfo2: Record "Company Information";
         CompanyInfo3: Record "Company Information";
-        ShiptoAddress_Rec: Record "Ship-to Address";
-        SalesSetup: Record "Sales & Receivables Setup";
-        temp_TrackingSpecBuffer: Record "Tracking Specification" temporary;
         DimSetEntry1: Record "Dimension Set Entry";
         DimSetEntry2: Record "Dimension Set Entry";
+        Item_Rec: Record Item;
+        Language: Record Language;
         PostedAsmHeader: Record "Posted Assembly Header";
         PostedAsmLine: Record "Posted Assembly Line";
         RespCenter: Record "Responsibility Center";
+        SalesSetup: Record "Sales & Receivables Setup";
+        SalesPurchPerson: Record "Salesperson/Purchaser";
+        ShiptoAddress_Rec: Record "Ship-to Address";
+        temp_TrackingSpecBuffer: Record "Tracking Specification" temporary;
         ItemTrackingAppendix: Report "Item Tracking Appendix";
         FormatAddr: Codeunit "Format Address";
-        LanguageCdu: Codeunit Language;
 
         FormatDocument: Codeunit "Format Document";
-        SegManagement: Codeunit SegManagement;
         ItemTrackingDocMgt: Codeunit "Item Tracking Doc. Management";
+        LanguageCdu: Codeunit Language;
+        SegManagement: Codeunit SegManagement;
         AsmHeaderExists: Boolean;
         Continue: Boolean;
         DisplayAssemblyInformation: Boolean;

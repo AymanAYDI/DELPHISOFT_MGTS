@@ -3,16 +3,16 @@ table 50038 "DEL Purchase Price Worksheet"
 
 
     Caption = 'Purchase Price';
-    LookupPageID = "Purchase Prices";
     DataClassification = CustomerContent;
+    LookupPageID = "Purchase Prices";
     fields
     {
         field(1; "Item No."; Code[20])
         {
             Caption = 'Item No.';
+            DataClassification = CustomerContent;
             NotBlank = true;
             TableRelation = Item;
-            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 IF "Item No." <> xRec."Item No." THEN BEGIN
@@ -24,9 +24,9 @@ table 50038 "DEL Purchase Price Worksheet"
         field(2; "Vendor No."; Code[20])
         {
             Caption = 'Vendor No.';
+            DataClassification = CustomerContent;
             NotBlank = true;
             TableRelation = Vendor;
-            DataClassification = CustomerContent;
             trigger OnValidate()
             begin
                 IF Vend.GET("Vendor No.") THEN
@@ -36,8 +36,8 @@ table 50038 "DEL Purchase Price Worksheet"
         field(3; "Currency Code"; Code[10])
         {
             Caption = 'Currency Code';
-            TableRelation = Currency;
             DataClassification = CustomerContent;
+            TableRelation = Currency;
         }
         field(4; "Starting Date"; Date)
         {
@@ -54,14 +54,14 @@ table 50038 "DEL Purchase Price Worksheet"
             AutoFormatExpression = "Currency Code";
             AutoFormatType = 2;
             Caption = 'Direct Unit Cost';
-            MinValue = 0;
             DataClassification = CustomerContent;
+            MinValue = 0;
         }
         field(14; "Minimum Quantity"; Decimal)
         {
             Caption = 'Minimum Quantity';
-            MinValue = 0;
             DataClassification = CustomerContent;
+            MinValue = 0;
         }
         field(15; "Ending Date"; Date)
         {
@@ -75,14 +75,14 @@ table 50038 "DEL Purchase Price Worksheet"
         field(5400; "Unit of Measure Code"; Code[10])
         {
             Caption = 'Unit of Measure Code';
-            TableRelation = "Item Unit of Measure".Code WHERE("Item No." = FIELD("Item No."));
             DataClassification = CustomerContent;
+            TableRelation = "Item Unit of Measure".Code WHERE("Item No." = FIELD("Item No."));
         }
         field(5700; "Variant Code"; Code[10])
         {
             Caption = 'Variant Code';
-            TableRelation = "Item Variant".Code WHERE("Item No." = FIELD("Item No."));
             DataClassification = CustomerContent;
+            TableRelation = "Item Variant".Code WHERE("Item No." = FIELD("Item No."));
         }
         field(50092; "Qty. optimale"; Decimal)
         {

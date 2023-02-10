@@ -1,11 +1,11 @@
 report 50080 "DEL Standard Purchase - Order" //1322
 {
-    RDLCLayout = './src/report/RDL/StandardPurchaseOrder.rdlc';
-    WordLayout = './StandardPurchaseOrder.docx';
     Caption = 'Purchase - Order';
     DefaultLayout = Word;
     EnableHyperlinks = true;
     PreviewMode = PrintLayout;
+    RDLCLayout = './src/report/RDL/StandardPurchaseOrder.rdlc';
+    WordLayout = './StandardPurchaseOrder.docx';
     WordMergeDataItem = "Purchase Header";
 
     dataset
@@ -939,10 +939,10 @@ report 50080 "DEL Standard Purchase - Order" //1322
         TempPrePmtVATAmountLineDeduct: Record "VAT Amount Line" temporary;
         TempVATAmountLine: Record "VAT Amount Line" temporary;
         ArchiveManagement: Codeunit ArchiveManagement;
-        LanguageCdu: Codeunit Language;
 
         FormatAddr: Codeunit "Format Address";
         FormatDocument: Codeunit "Format Document";
+        LanguageCdu: Codeunit Language;
         PurchPost: Codeunit "Purch.-Post";
         PurchasePostPrepayments: Codeunit "Purchase-Post Prepayments";
         SegManagement: Codeunit SegManagement;

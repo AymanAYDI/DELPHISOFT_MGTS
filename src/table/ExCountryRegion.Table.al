@@ -1,16 +1,16 @@
 table 99202 "DEL Ex_Country/Region"
 {
     Caption = 'Country/Region';
+    DataClassification = CustomerContent;
     DataPerCompany = false;
     LookupPageID = "Countries/Regions";
-    DataClassification = CustomerContent;
     fields
     {
         field(1; "Code"; Code[10])
         {
             Caption = 'Code';
-            NotBlank = true;
             DataClassification = CustomerContent;
+            NotBlank = true;
         }
         field(2; Name; Text[50])
         {
@@ -30,14 +30,14 @@ table 99202 "DEL Ex_Country/Region"
         field(8; "Address Format"; Enum "DEL Address format")
         {
             Caption = 'Address Format';
-            InitValue = "City+Post Code";
             DataClassification = CustomerContent;
+            InitValue = "City+Post Code";
         }
         field(9; "Contact Address Format"; Enum "DEL Contact Add. Format")
         {
             Caption = 'Contact Address Format';
-            InitValue = "After Company Name";
             DataClassification = CustomerContent;
+            InitValue = "After Company Name";
         }
         field(4006496; Mandant; Text[30])
         {

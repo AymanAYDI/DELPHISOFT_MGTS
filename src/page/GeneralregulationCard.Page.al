@@ -19,8 +19,8 @@ page 50097 "DEL General regulation Card"
                 Caption = 'Record details';
                 field(Type; Rec.Type)
                 {
-                    Editable = false;
                     Caption = 'Type';
+                    Editable = false;
                 }
                 field("No."; Rec."No.")
                 {
@@ -62,18 +62,18 @@ page 50097 "DEL General regulation Card"
                 }
                 field("Title in French"; Rec."Title in French")
                 {
-                    MultiLine = true;
                     Caption = 'Title in French';
+                    MultiLine = true;
                 }
                 field("Title in English"; Rec."Title in English")
                 {
-                    MultiLine = true;
                     Caption = 'Title in English';
+                    MultiLine = true;
                 }
                 field(Description; Rec.Description)
                 {
-                    MultiLine = true;
                     Caption = 'Description';
+                    MultiLine = true;
                 }
                 field("Starting date"; Rec."Starting date")
                 {

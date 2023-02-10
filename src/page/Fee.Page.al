@@ -1,11 +1,11 @@
 page 50024 "DEL Fee"
 {
 
+    ApplicationArea = all;
     Caption = 'Fee';
     PageType = List;
     SourceTable = "DEL Fee";
     UsageCategory = Administration;
-    ApplicationArea = all;
     layout
     {
         area(content)

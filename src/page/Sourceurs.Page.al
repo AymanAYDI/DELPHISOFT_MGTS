@@ -1,10 +1,10 @@
 page 50101 "DEL Sourceurs"
 {
+    ApplicationArea = all;
     Caption = 'Sourceurs';
     PageType = List;
     SourceTable = "DEL Sourceur";
     UsageCategory = Administration;
-    ApplicationArea = all;
     layout
     {
         area(content)
@@ -13,13 +13,13 @@ page 50101 "DEL Sourceurs"
             {
                 field("Code"; Rec.Code)
                 {
-                    Caption = 'Code';
                     ApplicationArea = All;
+                    Caption = 'Code';
                 }
                 field(Name; Rec.Name)
                 {
-                    Caption = 'Name';
                     ApplicationArea = All;
+                    Caption = 'Name';
                 }
             }
         }

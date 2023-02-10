@@ -3,16 +3,16 @@ table 99206 "DEL Ex_Unit of Measure"
 {
     Caption = 'Unit of Measure';
     DataCaptionFields = "Code", Description;
+    DataClassification = CustomerContent;
     DrillDownPageID = "Units of Measure";
     LookupPageID = "Units of Measure";
-    DataClassification = CustomerContent;
     fields
     {
         field(1; "Code"; Code[10])
         {
             Caption = 'Code';
-            NotBlank = true;
             DataClassification = CustomerContent;
+            NotBlank = true;
         }
         field(2; Description; Text[10])
         {

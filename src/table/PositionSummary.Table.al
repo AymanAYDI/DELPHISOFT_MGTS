@@ -7,9 +7,9 @@ table 50029 "DEL Position Summary"
         field(1; "Item No."; Code[20])
         {
             Caption = 'Item No.';
+            DataClassification = CustomerContent;
 
             TableRelation = Item."No.";
-            DataClassification = CustomerContent;
         }
         field(2; Description; Text[250])
         {

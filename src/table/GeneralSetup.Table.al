@@ -41,9 +41,9 @@ table 50000 "DEL General Setup"
         }
         field(601; "Code Axe Achat"; Code[10])
         {
-            TableRelation = Dimension;
             Caption = 'Code Axe Achat';
             DataClassification = CustomerContent;
+            TableRelation = Dimension;
         }
         field(700; "Nom emetteur"; Code[10])
         {
@@ -63,34 +63,34 @@ table 50000 "DEL General Setup"
         }
         field(810; "Element Nos."; Code[10])
         {
-            TableRelation = "No. Series";
             Caption = 'Element Nos.';
             DataClassification = CustomerContent;
+            TableRelation = "No. Series";
         }
         field(820; "Position Nos."; Code[10])
         {
-            TableRelation = "No. Series";
             Caption = 'Position Nos.';
             DataClassification = CustomerContent;
+            TableRelation = "No. Series";
         }
         field(830; "Fee Nos."; Code[10])
         {
-            TableRelation = "No. Series";
             Caption = 'Fee Nos.';
             DataClassification = CustomerContent;
+            TableRelation = "No. Series";
         }
         field(840; "Fee Connection Nos."; Code[10])
         {
-            TableRelation = "No. Series";
             Caption = 'Fee Connection Nos.';
             DataClassification = CustomerContent;
+            TableRelation = "No. Series";
         }
         field(851; "Default Purchasing Code"; Code[10])
         {
             Caption = 'Default Purchasing Code';
+            DataClassification = CustomerContent;
 
             TableRelation = Purchasing;
-            DataClassification = CustomerContent;
         }
         field(852; Logico; BLOB)
         {
@@ -99,15 +99,15 @@ table 50000 "DEL General Setup"
         }
         field(854; "Update Request Nos."; Code[10])
         {
-            TableRelation = "No. Series";
             Caption = 'Update Request Nos.';
             DataClassification = CustomerContent;
+            TableRelation = "No. Series";
         }
         field(855; "Provision Nos."; Code[10])
         {
-            TableRelation = "No. Series";
             Caption = 'Provision Nos.';
             DataClassification = CustomerContent;
+            TableRelation = "No. Series";
         }
         field(856; "Folder Expeditors"; text[250])
         {
@@ -194,32 +194,32 @@ table 50000 "DEL General Setup"
         field(50001; "Risque Securitaire"; Decimal)
         {
             Caption = 'Coefficient of Security Level Of Risk %';
-            DecimalPlaces = 0 : 2;
             DataClassification = CustomerContent;
+            DecimalPlaces = 0 : 2;
         }
         field(50002; "Risque Reglementaire"; Decimal)
         {
             Caption = 'Coefficient Of Regulation Level Of Risk %';
-            DecimalPlaces = 0 : 2;
             DataClassification = CustomerContent;
+            DecimalPlaces = 0 : 2;
         }
         field(50003; "Marque Produit"; Decimal)
         {
             Caption = 'Coefficient Of Brand Type %';
-            DecimalPlaces = 0 : 2;
             DataClassification = CustomerContent;
+            DecimalPlaces = 0 : 2;
         }
         field(50004; "Origine Fournisseur"; Decimal)
         {
             Caption = 'Coefficient Of Supplier %';
-            DecimalPlaces = 0 : 2;
             DataClassification = CustomerContent;
+            DecimalPlaces = 0 : 2;
         }
         field(50005; "Coefficient Of Quality Rating"; Decimal)
         {
             Caption = 'Coefficient Of Quality Rating Of Product %';
-            DecimalPlaces = 0 : 2;
             DataClassification = CustomerContent;
+            DecimalPlaces = 0 : 2;
         }
         field(50006; "Dernier num séq maj Dev Init"; Integer)
         {
@@ -229,9 +229,9 @@ table 50000 "DEL General Setup"
         field(50007; "Vendor Template"; Code[10])
         {
             Caption = 'Vendor Template';
+            DataClassification = CustomerContent;
 
             TableRelation = "Config. Template Header".Code WHERE("Table ID" = CONST(23));
-            DataClassification = CustomerContent;
         }
         field(50008; "API URL"; Text[250])
         {
@@ -246,37 +246,37 @@ table 50000 "DEL General Setup"
         field(50010; "Item Template"; Code[10])
         {
             Caption = 'Item Template';
+            DataClassification = CustomerContent;
 
             TableRelation = "Config. Template Header".Code WHERE("Table ID" = CONST(27));
-            DataClassification = CustomerContent;
         }
         field(50011; "Worksheet Template Name"; Code[10])
         {
             Caption = 'Worksheet Template Name';
+            DataClassification = CustomerContent;
 
             TableRelation = "Req. Wksh. Template";
-            DataClassification = CustomerContent;
         }
         field(50012; "Journal Batch Name"; Code[10])
         {
             Caption = 'Journal Batch Name';
+            DataClassification = CustomerContent;
 
             TableRelation = "Requisition Wksh. Name".Name WHERE("Worksheet Template Name" = FIELD("Worksheet Template Name"));
-            DataClassification = CustomerContent;
         }
         field(50013; "Sender Email Payment Advice"; Text[80])
         {
             Caption = 'Sender Email Payment Advice';
+            DataClassification = CustomerContent;
 
             ExtendedDatatype = EMail;
-            DataClassification = CustomerContent;
         }
         field(50014; "Default Email Template"; Code[20])
         {
             Caption = 'Default Email Template';
+            DataClassification = CustomerContent;
 
             TableRelation = "DEL DocMatrix Email Codes".Code;
-            DataClassification = CustomerContent;
         }
         field(50015; Mail1; Text[250])
         {

@@ -131,13 +131,13 @@ report 50009 "DEL Import from Excel sales"
                         END;
                         IF ExcelBuf."Column No." = 3 THEN BEGIN
                             IF ExcelBuf."Cell Value as Text" = 'Client' THEN
-                                SalesPriceWorksheet."Sales Type" := 0;
+                                SalesPriceWorksheet."Sales Type" := "Sales Price Type"::Customer;
                             IF ExcelBuf."Cell Value as Text" = 'Groupe tarifs client' THEN
-                                SalesPriceWorksheet."Sales Type" := 1;
+                                SalesPriceWorksheet."Sales Type" := "Sales Price Type"::"Customer Price Group";
                             IF ExcelBuf."Cell Value as Text" = 'Tous les clients' THEN
-                                SalesPriceWorksheet."Sales Type" := 2;
+                                SalesPriceWorksheet."Sales Type" := "Sales Price Type"::"All Customers";
                             IF ExcelBuf."Cell Value as Text" = 'Campagne' THEN
-                                SalesPriceWorksheet."Sales Type" := 3;
+                                SalesPriceWorksheet."Sales Type" := "Sales Price Type"::Campaign;
                             SalesPriceWorksheet.VALIDATE("Sales Type");
                         END;
                         IF ExcelBuf."Column No." = 4 THEN BEGIN

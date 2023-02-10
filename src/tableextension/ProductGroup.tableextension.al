@@ -12,15 +12,15 @@ tableextension 50036 "DEL ProductGroup" extends "Product Group"
         field(50002; "DEL Code Segment"; Code[20])
         {
             Caption = 'Segment Code';
+            DataClassification = CustomerContent;
             TableRelation = "Dimension Value".Code WHERE("Dimension Code" = CONST('SEGMENT'),
                                                           "Dimension Value Type" = CONST(Standard));
-            DataClassification = CustomerContent;
         }
         field(50003; "DEL Salesperson Code"; Code[10])
         {
             Caption = 'Salesperson Code';
-            TableRelation = "Salesperson/Purchaser";
             DataClassification = CustomerContent;
+            TableRelation = "Salesperson/Purchaser";
             trigger OnValidate()
             begin
                 IF VendeurRec.GET("DEL Salesperson Code") THEN
@@ -33,8 +33,8 @@ tableextension 50036 "DEL ProductGroup" extends "Product Group"
         field(50004; "DEL Responsible Code"; Code[10])
         {
             Caption = 'Responsible Code';
-            TableRelation = "Salesperson/Purchaser";
             DataClassification = CustomerContent;
+            TableRelation = "Salesperson/Purchaser";
             trigger OnValidate()
             begin
                 CALCFIELDS("DEL Responsible Code");
@@ -57,8 +57,8 @@ tableextension 50036 "DEL ProductGroup" extends "Product Group"
         field(50007; "DEL Sourceur Code"; Code[20])
         {
             Caption = 'Sourceur Code';
-            TableRelation = "DEL Sourceur";
             DataClassification = CustomerContent;
+            TableRelation = "DEL Sourceur";
         }
         field(50008; "DEL Sourceur"; Text[50])
         {

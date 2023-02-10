@@ -1,10 +1,10 @@
 table 50008 "DEL Document Line"
 {
     Caption = 'Document Line';
+    DataClassification = CustomerContent;
     DataPerCompany = false;
     DrillDownPageID = "DEL Document Sheet";
     LookupPageID = "DEL Document Sheet";
-    DataClassification = CustomerContent;
     fields
     {
         field(1; "Table Name"; Enum "DEL Table Namevend/customer")
@@ -31,32 +31,32 @@ table 50008 "DEL Document Line"
         field(5; "Insert Date"; Date)
         {
             Caption = 'Date';
-            Editable = false;
             DataClassification = CustomerContent;
+            Editable = false;
         }
         field(6; "Insert Time"; Time)
         {
             Caption = 'Time';
-            Editable = false;
             DataClassification = CustomerContent;
+            Editable = false;
         }
         field(7; "File Name"; Text[250])
         {
             Caption = 'File Name';
-            Editable = false;
             DataClassification = CustomerContent;
+            Editable = false;
         }
         field(8; Path; Text[250])
         {
             Caption = 'Path';
-            Editable = false;
             DataClassification = CustomerContent;
+            Editable = false;
         }
         field(9; "User ID"; Code[50])
         {
             Caption = 'User ID';
-            Editable = false;
             DataClassification = CustomerContent;
+            Editable = false;
         }
         field(10; "Notation Type"; Enum "DEL Notation Type")
         {

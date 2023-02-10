@@ -19,38 +19,38 @@ page 50090 "DEL Matrix General regulation"
             {
                 field("Item Ctegory Code"; Rec."Item Category Code")
                 {
-                    Visible = false;
-                    Caption = 'Item Category Code';
                     ApplicationArea = All;
+                    Caption = 'Item Category Code';
+                    Visible = false;
                 }
                 field("Product Group Code"; Rec."Product Group Code")
                 {
-                    Visible = false;
-                    Caption = 'Product Group Code';
                     ApplicationArea = All;
+                    Caption = 'Product Group Code';
+                    Visible = false;
                 }
                 field("Item Category Label"; Rec."Item Category Label")
                 {
-                    Visible = false;
-                    Caption = 'Item category description';
                     ApplicationArea = All;
+                    Caption = 'Item category description';
+                    Visible = false;
                 }
                 field("Product Group Label"; Rec."Product Group Label")
                 {
-                    Visible = false;
-                    Caption = 'Product group description';
                     ApplicationArea = All;
+                    Caption = 'Product group description';
+                    Visible = false;
                 }
                 field(Type; Rec.Type)
                 {
-                    Visible = false;
-                    Caption = 'Type';
                     ApplicationArea = All;
+                    Caption = 'Type';
+                    Visible = false;
                 }
                 field("No."; Rec."No.")
                 {
-                    Caption = 'No.';
                     ApplicationArea = All;
+                    Caption = 'No.';
 
                     trigger OnLookup(var Text: Text): Boolean
                     begin
@@ -66,68 +66,68 @@ page 50090 "DEL Matrix General regulation"
                 }
                 field("Description pays"; Rec."Description pays")
                 {
-                    Caption = 'Country';
                     ApplicationArea = All;
+                    Caption = 'Country';
                 }
                 field(Nature; Rec.Nature)
                 {
-                    Caption = 'Type of regulation';
                     ApplicationArea = All;
+                    Caption = 'Type of regulation';
                 }
                 field("Title in French"; Rec."Title in French")
                 {
-                    Caption = 'Title in French';
                     ApplicationArea = All;
+                    Caption = 'Title in French';
                 }
                 field("Title in English"; Rec."Title in English")
                 {
-                    Caption = 'Title in English';
                     ApplicationArea = All;
+                    Caption = 'Title in English';
                 }
                 field(Description; Rec.Description)
                 {
-                    Caption = 'Description';
                     ApplicationArea = All;
+                    Caption = 'Description';
                 }
                 field("Publication date"; Rec."Publication date")
                 {
-                    Caption = 'Publication date';
                     ApplicationArea = All;
+                    Caption = 'Publication date';
                 }
                 field("Date limit of the application"; Rec."Date limit of the application")
                 {
-                    Caption = 'Date limit of the application';
                     ApplicationArea = All;
+                    Caption = 'Date limit of the application';
                 }
                 field("Starting date"; Rec."Starting date")
                 {
-                    Caption = 'Starting date';
                     ApplicationArea = All;
+                    Caption = 'Starting date';
                 }
                 field("Date Fin"; Rec."Date Fin")
                 {
-                    Caption = 'End date';
                     ApplicationArea = All;
+                    Caption = 'End date';
                 }
                 field("Texte rattachement"; Rec."Texte rattachement")
                 {
-                    Caption = 'Text of connection';
                     ApplicationArea = All;
+                    Caption = 'Text of connection';
                 }
                 field(Statut; Rec.Statut)
                 {
-                    Caption = 'Status';
                     ApplicationArea = All;
+                    Caption = 'Status';
                 }
                 field("Texte de remplacement"; Rec."Texte de remplacement")
                 {
-                    Caption = 'Text of substitution';
                     ApplicationArea = All;
+                    Caption = 'Text of substitution';
                 }
                 field("Referent Laboratory"; Rec."Referent Laboratory")
                 {
-                    Caption = 'ICS';
                     ApplicationArea = All;
+                    Caption = 'ICS';
                 }
             }
         }
@@ -139,11 +139,11 @@ page 50090 "DEL Matrix General regulation"
         {
             action(Selection)
             {
+                ApplicationArea = All;
                 Image = CheckList;
                 Promoted = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
-                ApplicationArea = All;
 
                 trigger OnAction()
                 begin
@@ -198,11 +198,12 @@ page 50090 "DEL Matrix General regulation"
             }
             action(Card)
             {
+                ApplicationArea = All;
                 Image = Line;
                 Promoted = true;
-                PromotedOnly = true;
                 PromotedCategory = Process;
                 PromotedIsBig = true;
+                PromotedOnly = true;
                 RunObject = Page "DEL Matrix General Reg. Card";
                 RunPageLink = "Item Category Code" = FIELD("Item Category Code"),
                               "Product Group Code" = FIELD("Product Group Code"),
@@ -210,7 +211,6 @@ page 50090 "DEL Matrix General regulation"
                               Type = FIELD(Type),
                               Mark = FIELD(Mark),
                               "Product Description" = FIELD("Product Description");
-                ApplicationArea = All;
             }
         }
     }
@@ -221,9 +221,9 @@ page 50090 "DEL Matrix General regulation"
         RegGen: Page "DEL Gen. product regulation 2";
         CategCode: Code[20];
         ProductCode: Code[20];
+        MarkOptionENU: Enum "DEL Mark";
         CurrGlobLang: Integer;
         MarkOptionFRS: Option " ",MDD,"Marque Fournisseur",Licence,"Sans Marque","Marque Prestige",NC,NA,"?","Toutes Marques";
-        MarkOptionENU: Enum "DEL Mark";
         DescProduct: Text;
         Markfilter: Text;
 }

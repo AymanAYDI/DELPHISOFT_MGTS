@@ -8,15 +8,15 @@ table 50074 "DEL Order API Record Tracking"
         field(1; "Deal ID"; Code[20])
         {
             Caption = 'Deal ID';
-            TableRelation = "DEL Deal".ID;
             DataClassification = CustomerContent;
+            TableRelation = "DEL Deal".ID;
         }
         field(2; "ACO No."; Code[20])
         {
             Caption = 'ACO No.';
+            DataClassification = CustomerContent;
 
             TableRelation = "Purchase Header"."No." WHERE("Document Type" = CONST(Order));
-            DataClassification = CustomerContent;
         }
         field(3; "ACO Date"; Date)
         {
@@ -26,14 +26,14 @@ table 50074 "DEL Order API Record Tracking"
         field(4; "ACO Product"; Code[10])
         {
             Caption = 'ACO Product';
-            TableRelation = "Salesperson/Purchaser".Code;
             DataClassification = CustomerContent;
+            TableRelation = "Salesperson/Purchaser".Code;
         }
         field(5; "ACO Supplier ERP Code"; Code[20])
         {
             Caption = 'ACO Supplier ERP Code';
-            TableRelation = Vendor."No.";
             DataClassification = CustomerContent;
+            TableRelation = Vendor."No.";
         }
         field(6; "ACO Supplier ERP Name"; Text[100])
         {
@@ -84,8 +84,8 @@ table 50074 "DEL Order API Record Tracking"
 
         {
             Caption = 'ACO Incoterm';
-            TableRelation = "Shipment Method";
             DataClassification = CustomerContent;
+            TableRelation = "Shipment Method";
         }
 
         field(15; "ACO Amount"; Decimal)
@@ -97,8 +97,8 @@ table 50074 "DEL Order API Record Tracking"
 
         {
             Caption = 'ACO Currency Code';
-            TableRelation = Currency;
             DataClassification = CustomerContent;
+            TableRelation = Currency;
         }
         field(17; "VCO No."; Code[20])
         {
@@ -118,8 +118,8 @@ table 50074 "DEL Order API Record Tracking"
         field(20; "VCO Customer Name"; Code[20])
         {
             Caption = 'VCO Customer Name';
-            TableRelation = Customer."No.";
             DataClassification = CustomerContent;
+            TableRelation = Customer."No.";
         }
         field(21; "ACO Payment Deadline"; Date)
         {

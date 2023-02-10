@@ -1,15 +1,15 @@
 table 50015 "DEL Reporting Dimension 1 Code"
 {
     Caption = 'Reporting Dimension 1 Code';
-    LookupPageID = "DEL Reporting Dimension 1 Code";
     DataClassification = CustomerContent;
+    LookupPageID = "DEL Reporting Dimension 1 Code";
     fields
     {
         field(1; "Code"; Code[20])
         {
             Caption = 'Code';
-            NotBlank = true;
             DataClassification = CustomerContent;
+            NotBlank = true;
         }
         field(2; Description; Text[50])
         {

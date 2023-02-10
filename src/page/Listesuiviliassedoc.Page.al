@@ -1,5 +1,6 @@
 page 50070 "DEL Liste suivi liasse doc"
 {
+    ApplicationArea = all;
     Caption = 'follow General contract doc case List';
     CardPageID = "DEL Fiche suivi liasse doc";
     Editable = false;
@@ -9,7 +10,6 @@ page 50070 "DEL Liste suivi liasse doc"
                       ORDER(Ascending)
                       WHERE("Vendor Posting Group" = FILTER('MARCH'));
     UsageCategory = Tasks;
-    ApplicationArea = all;
 
     layout
     {

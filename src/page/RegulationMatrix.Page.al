@@ -1,12 +1,12 @@
 page 50085 "DEL Regulation Matrix"
 {
+    ApplicationArea = all;
     Caption = 'Regulation Matrix';
     CardPageID = "DEL Regulation matrix Card";
     Editable = false;
     PageType = List;
     SourceTable = "DEL Regulation Matrix";
     UsageCategory = Lists;
-    ApplicationArea = all;
     layout
     {
         area(content)
@@ -15,105 +15,105 @@ page 50085 "DEL Regulation Matrix"
             {
                 field("Item Category Code"; Rec."Item Category Code")
                 {
-                    Caption = 'Item Category Code';
                     ApplicationArea = All;
+                    Caption = 'Item Category Code';
                 }
                 field("Product Group Code"; Rec."Product Group Code")
                 {
-                    Caption = 'Product Group Code';
                     ApplicationArea = All;
+                    Caption = 'Product Group Code';
                 }
                 field("Item Category Label"; Rec."Item Category Label")
                 {
-                    Caption = 'Item Category Description';
                     ApplicationArea = All;
+                    Caption = 'Item Category Description';
                 }
                 field("Product Group Label"; Rec."Product Group Label")
                 {
-                    Caption = 'Product Group Description';
                     ApplicationArea = All;
+                    Caption = 'Product Group Description';
                 }
                 field(Mark; Rec.Mark)
                 {
-                    Caption = 'Mark';
                     ApplicationArea = All;
+                    Caption = 'Mark';
                 }
                 field("Product Description"; Rec."Product Description")
                 {
-                    Caption = 'Description produit';
                     ApplicationArea = All;
+                    Caption = 'Description produit';
                 }
                 field("Risque Quality"; Rec."Risque Quality")
                 {
-                    Caption = 'Risk Quality';
                     ApplicationArea = All;
+                    Caption = 'Risk Quality';
                 }
                 field("NGTS Quality Expert"; Rec."NGTS Quality Expert")
                 {
-                    Caption = 'NGTS Quality Expert';
                     ApplicationArea = All;
+                    Caption = 'NGTS Quality Expert';
                 }
                 field("Regl. Generale"; Rec."Regl. Generale")
                 {
-                    Caption = 'General Product Regulation';
                     ApplicationArea = All;
+                    Caption = 'General Product Regulation';
                 }
                 field("Regl. Matiere"; Rec."Regl. Matiere")
                 {
-                    Caption = 'Substance Regulation';
                     ApplicationArea = All;
+                    Caption = 'Substance Regulation';
                 }
                 field("Plan of control"; Rec."Plan of control")
                 {
-                    Caption = 'Plan of control';
                     ApplicationArea = All;
+                    Caption = 'Plan of control';
                 }
                 field("Manuel instruction"; Rec."Manuel instruction")
                 {
-                    Caption = 'Manuel instruction';
                     ApplicationArea = All;
+                    Caption = 'Manuel instruction';
                 }
                 field("Warning instruction in French"; Rec."Warning instruction in French")
                 {
-                    Caption = 'Warning instruction in French';
                     ApplicationArea = All;
+                    Caption = 'Warning instruction in French';
                 }
                 field("Warning instruction in English"; Rec."Warning instruction in English")
                 {
-                    Caption = 'Warning instruction in English';
                     ApplicationArea = All;
+                    Caption = 'Warning instruction in English';
                 }
                 field("Instruction manual + Warning"; Rec."Instruction manual + Warning")
                 {
-                    Caption = 'Instruction manual (Yes/No) + Warning';
                     ApplicationArea = All;
+                    Caption = 'Instruction manual (Yes/No) + Warning';
                 }
                 field("Marking in the product FR"; Rec."Marking in the product FR")
                 {
-                    Caption = 'Marking in the product (warning) + Pictogram type in French';
                     ApplicationArea = All;
+                    Caption = 'Marking in the product (warning) + Pictogram type in French';
                 }
                 field("Marking in the pack FR"; Rec."Marking in the pack FR")
                 {
-                    Caption = 'Marking in the pack (warning + Pictogram) in French';
                     ApplicationArea = All;
+                    Caption = 'Marking in the pack (warning + Pictogram) in French';
                 }
                 field("Marking in the product ENU"; Rec."Marking in the product ENU")
                 {
-                    Caption = 'Marking in the product (warning) + Pictogram type in English';
                     ApplicationArea = All;
+                    Caption = 'Marking in the product (warning) + Pictogram type in English';
                 }
                 field("Marking in the pack ENU"; Rec."Marking in the pack ENU")
                 {
-                    Caption = 'Marking in the pack (warning + Pictogram) in English';
                     ApplicationArea = All;
+                    Caption = 'Marking in the pack (warning + Pictogram) in English';
                 }
                 field("List Items Associated"; Rec."List Items Associated")
                 {
+                    ApplicationArea = All;
+                    Caption = 'List Items Associated';
                     DrillDown = true;
                     DrillDownPageID = "DEL Item Quality List";
-                    Caption = 'List Items Associated';
-                    ApplicationArea = All;
                 }
             }
         }
@@ -127,6 +127,7 @@ page 50085 "DEL Regulation Matrix"
             {
                 action("Régl. Générale")
                 {
+                    ApplicationArea = All;
                     Caption = 'General product regulation';
                     Image = Register;
                     Promoted = true;
@@ -141,10 +142,10 @@ page 50085 "DEL Regulation Matrix"
                                   ORDER(Ascending)
                                   WHERE(Type = FILTER("General product"));
                     Visible = RegGenerale;
-                    ApplicationArea = All;
                 }
                 action("Régl. Matière")
                 {
+                    ApplicationArea = All;
                     Caption = 'Substance regulation';
                     Image = ItemRegisters;
                     Promoted = true;
@@ -159,10 +160,10 @@ page 50085 "DEL Regulation Matrix"
                                   ORDER(Ascending)
                                   WHERE(Type = FILTER(Materials));
                     Visible = RegMat;
-                    ApplicationArea = All;
                 }
                 action("Plan Control")
                 {
+                    ApplicationArea = All;
                     Caption = 'Plan of control';
                     Image = Planning;
                     Promoted = true;
@@ -177,7 +178,6 @@ page 50085 "DEL Regulation Matrix"
                                   ORDER(Ascending)
                                   WHERE(Type = FILTER("Plan of control"));
                     Visible = PlanControl;
-                    ApplicationArea = All;
                 }
             }
         }

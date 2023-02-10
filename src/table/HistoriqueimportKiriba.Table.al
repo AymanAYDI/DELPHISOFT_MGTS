@@ -16,18 +16,18 @@ table 50066 "DEL Historique import Kiriba"
         }
         field(2; "Date"; Date)
         {
-            Editable = false;
             Caption = 'Date';
 
             DataClassification = CustomerContent;
+            Editable = false;
 
         }
         field(3; Heure; Time)
         {
-            Editable = false;
             Caption = 'Heure';
 
             DataClassification = CustomerContent;
+            Editable = false;
 
         }
     }

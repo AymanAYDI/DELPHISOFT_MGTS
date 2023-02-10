@@ -34,43 +34,43 @@ pageextension 50047 "DEL VendorCard" extends "Vendor Card" //26
             action("DEL Doc&uments")
             {
                 Caption = 'Audit report';
+                Image = Documents;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
                 RunObject = Page "DEL Document Sheet";
+                RunPageLink = "No." = FIELD("No.");
                 RunPageView = SORTING("Table Name", "No.", "Comment Entry No.", "Line No.")
                                   WHERE("Table Name" = CONST(Vendor));
-                RunPageLink = "No." = FIELD("No.");
-                Promoted = true;
-                PromotedIsBig = true;
-                Image = Documents;
-                PromotedCategory = Process;
             }
             separator(sp) { }
             action("DEL Notation fournisseur")
             {
                 Caption = 'Vendor rating';
+                Image = AdjustItemCost;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
                 RunObject = Page "DEL Vendor Card Notation";
                 RunPageLink = "No." = FIELD("No.");
-                Promoted = true;
-                PromotedIsBig = true;
-                Image = AdjustItemCost;
-                PromotedCategory = Process;
             }
             action("DEL Liasse Documentaire")
             {
                 Caption = 'General contract doc case';
+                Image = ApplicationWorksheet;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
                 RunObject = Page "DEL Fiche suivi liasse doc";
                 RunPageLink = "No." = FIELD("No.");
-                Promoted = true;
-                PromotedIsBig = true;
-                Image = ApplicationWorksheet;
-                PromotedCategory = Process;
             }
         }
         addfirst(Documents)
         {
             action("DEL Document Matrix")
             {
-                Image = TaxSetup;
                 Caption = 'Document Matrix';
+                Image = TaxSetup;
                 trigger onaction()
                 var
                     lpgDocumentMatrix: Page "DEL Document Matrix";
@@ -116,9 +116,9 @@ pageextension 50047 "DEL VendorCard" extends "Vendor Card" //26
             action("DEL Forwarding Agent")
             {
                 RunObject = Page "DEL Forwarding Agents";
+                RunPageLink = "Vendor No." = FIELD("No.");
                 RunPageView = SORTING("Vendor No.", "Location Code")
                                   ORDER(Ascending);
-                RunPageLink = "Vendor No." = FIELD("No.");
             }
         }
     }
@@ -131,7 +131,7 @@ pageextension 50047 "DEL VendorCard" extends "Vendor Card" //26
         Vendor_Fo_Loc.LOOKUPMODE(TRUE);
         IF Vendor_Fo_Loc.RUNMODAL() = ACTION::LookupOK THEN BEGIN
             Vendor_Fo_Loc.GETRECORD(Vendor_Re_Loc);
-            FeeMgt_Cu_Loc.FNC_FeeCopy(1, Vendor_Re_Loc."No.", Rec."No.");
+            FeeMgt_Cu_Loc.FNC_FeeCopy("Credit Transfer Account Type"::Vendor, Vendor_Re_Loc."No.", Rec."No.");
         END;
     END;
 }

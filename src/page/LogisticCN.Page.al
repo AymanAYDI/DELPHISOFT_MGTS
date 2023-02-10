@@ -16,8 +16,8 @@ page 50099 "DEL Logistic CN"
                 }
                 systempart(Outlookv; Outlook)
                 {
-                    Visible = false;
                     ApplicationArea = All;
+                    Visible = false;
                 }
             }
             group(group2)
@@ -28,8 +28,8 @@ page 50099 "DEL Logistic CN"
                 }
                 part(MyItems; "My Items")
                 {
-                    Visible = false;
                     ApplicationArea = All;
+                    Visible = false;
                 }
             }
         }
@@ -41,30 +41,30 @@ page 50099 "DEL Logistic CN"
         {
             action("Affair List")
             {
+                ApplicationArea = All;
                 Caption = 'Affair List';
                 Image = Quote;
                 RunObject = Page "DEL Deal";
-                ApplicationArea = All;
             }
             action("Purchase Orders")
             {
+                ApplicationArea = All;
                 Caption = 'Purchase Orders';
                 RunObject = Page "Purchase Order List";
-                ApplicationArea = All;
             }
             action(Vendors)
             {
+                ApplicationArea = All;
                 Caption = 'Vendors';
                 Image = Vendor;
                 RunObject = Page "Vendor List";
-                ApplicationArea = All;
             }
             action(Items)
             {
+                ApplicationArea = All;
                 Caption = 'Items';
                 Image = Item;
                 RunObject = Page "Item List";
-                ApplicationArea = All;
             }
         }
         area(sections)

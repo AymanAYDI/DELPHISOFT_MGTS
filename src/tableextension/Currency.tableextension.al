@@ -16,11 +16,11 @@ tableextension 50000 "DEL Currency" extends Currency
 
 
     var
-        "-DEL_QR-": Integer;
         TypeHelper: Codeunit 10;
+        "-DEL_QR-": Integer;
         "--DEL_QR--": label '';
-        ISOCodeLengthErr: Label 'The length of the string is %1, but it must be equal to %2 characters. Value: %3.';
         ASCIILetterErr: Label 'must contain ASCII letters only';
+        ISOCodeLengthErr: Label 'The length of the string is %1, but it must be equal to %2 characters. Value: %3.';
         NumericErr: Label 'must contain numbers only';
 }
 

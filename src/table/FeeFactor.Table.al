@@ -1,16 +1,16 @@
 table 50043 "DEL Fee Factor"
 {
     Caption = 'Fee Factor';
-    LookupPageID = "DEL Fee Factor";
     DataClassification = CustomerContent;
+    LookupPageID = "DEL Fee Factor";
     fields
     {
         field(1; Fee_ID; Code[20])
         {
-            TableRelation = "DEL Fee".ID;
 
             Caption = 'Fee_ID';
             DataClassification = CustomerContent;
+            TableRelation = "DEL Fee".ID;
         }
         field(10; "Allow From"; Date)
         {

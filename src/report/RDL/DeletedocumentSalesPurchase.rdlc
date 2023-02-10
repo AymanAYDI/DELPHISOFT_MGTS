@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Report xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2010/01/reportdefinition">
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -11,120 +11,6 @@
       <rd:DataSourceID>81aa369c-cb75-460c-810e-579619cc3447</rd:DataSourceID>
     </DataSource>
   </DataSources>
-  <DataSets>
-    <DataSet Name="DataSet_Result">
-      <Query>
-        <DataSourceName>DataSource</DataSourceName>
-        <CommandText />
-      </Query>
-      <Fields>
-        <Field Name="PostingDate_SalesHeader">
-          <DataField>PostingDate_SalesHeader</DataField>
-        </Field>
-        <Field Name="OrderDate_SalesHeader">
-          <DataField>OrderDate_SalesHeader</DataField>
-        </Field>
-        <Field Name="BilltoName_SalesHeader">
-          <DataField>BilltoName_SalesHeader</DataField>
-        </Field>
-        <Field Name="BilltoCustomerNo_SalesHeader">
-          <DataField>BilltoCustomerNo_SalesHeader</DataField>
-        </Field>
-        <Field Name="No_SalesHeader">
-          <DataField>No_SalesHeader</DataField>
-        </Field>
-        <Field Name="DocumentNo_SalesLine">
-          <DataField>DocumentNo_SalesLine</DataField>
-        </Field>
-        <Field Name="LineNo_SalesLine">
-          <DataField>LineNo_SalesLine</DataField>
-        </Field>
-        <Field Name="Type_SalesLine">
-          <DataField>Type_SalesLine</DataField>
-        </Field>
-        <Field Name="No_SalesLine">
-          <DataField>No_SalesLine</DataField>
-        </Field>
-        <Field Name="Description_SalesLine">
-          <DataField>Description_SalesLine</DataField>
-        </Field>
-        <Field Name="Quantity_SalesLine">
-          <DataField>Quantity_SalesLine</DataField>
-        </Field>
-        <Field Name="Quantity_SalesLineFormat">
-          <DataField>Quantity_SalesLineFormat</DataField>
-        </Field>
-        <Field Name="QtyShippedNotInvoiced_SalesLine">
-          <DataField>QtyShippedNotInvoiced_SalesLine</DataField>
-        </Field>
-        <Field Name="QtyShippedNotInvoiced_SalesLineFormat">
-          <DataField>QtyShippedNotInvoiced_SalesLineFormat</DataField>
-        </Field>
-        <Field Name="Date_Commande">
-          <DataField>Date_Commande</DataField>
-        </Field>
-        <Field Name="Amount_SalesLine">
-          <DataField>Amount_SalesLine</DataField>
-        </Field>
-        <Field Name="Amount_SalesLineFormat">
-          <DataField>Amount_SalesLineFormat</DataField>
-        </Field>
-        <Field Name="UnitPrice_SalesLine">
-          <DataField>UnitPrice_SalesLine</DataField>
-        </Field>
-        <Field Name="UnitPrice_SalesLineFormat">
-          <DataField>UnitPrice_SalesLineFormat</DataField>
-        </Field>
-        <Field Name="OrderDate_PurchaseHeader">
-          <DataField>OrderDate_PurchaseHeader</DataField>
-        </Field>
-        <Field Name="PaytoName_PurchaseHeader">
-          <DataField>PaytoName_PurchaseHeader</DataField>
-        </Field>
-        <Field Name="BuyfromVendorNo_PurchaseHeader">
-          <DataField>BuyfromVendorNo_PurchaseHeader</DataField>
-        </Field>
-        <Field Name="No_PurchaseHeader">
-          <DataField>No_PurchaseHeader</DataField>
-        </Field>
-        <Field Name="PostingDate_PurchaseHeader">
-          <DataField>PostingDate_PurchaseHeader</DataField>
-        </Field>
-        <Field Name="No_PurchaseLine">
-          <DataField>No_PurchaseLine</DataField>
-        </Field>
-        <Field Name="Description_PurchaseLine">
-          <DataField>Description_PurchaseLine</DataField>
-        </Field>
-        <Field Name="Quantity_PurchaseLine">
-          <DataField>Quantity_PurchaseLine</DataField>
-        </Field>
-        <Field Name="Quantity_PurchaseLineFormat">
-          <DataField>Quantity_PurchaseLineFormat</DataField>
-        </Field>
-        <Field Name="DirectUnitCost_PurchaseLine">
-          <DataField>DirectUnitCost_PurchaseLine</DataField>
-        </Field>
-        <Field Name="DirectUnitCost_PurchaseLineFormat">
-          <DataField>DirectUnitCost_PurchaseLineFormat</DataField>
-        </Field>
-        <Field Name="Amount_PurchaseLine">
-          <DataField>Amount_PurchaseLine</DataField>
-        </Field>
-        <Field Name="Amount_PurchaseLineFormat">
-          <DataField>Amount_PurchaseLineFormat</DataField>
-        </Field>
-        <Field Name="Type_PurchaseLine">
-          <DataField>Type_PurchaseLine</DataField>
-        </Field>
-      </Fields>
-      <rd:DataSetInfo>
-        <rd:DataSetName>DataSet</rd:DataSetName>
-        <rd:SchemaPath>Report.xsd</rd:SchemaPath>
-        <rd:TableName>Result</rd:TableName>
-      </rd:DataSetInfo>
-    </DataSet>
-  </DataSets>
   <ReportSections>
     <ReportSection>
       <Body>
@@ -1704,4 +1590,110 @@ End Function
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
   <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="PostingDate_SalesHeader">
+          <DataField>PostingDate_SalesHeader</DataField>
+        </Field>
+        <Field Name="OrderDate_SalesHeader">
+          <DataField>OrderDate_SalesHeader</DataField>
+        </Field>
+        <Field Name="BilltoName_SalesHeader">
+          <DataField>BilltoName_SalesHeader</DataField>
+        </Field>
+        <Field Name="BilltoCustomerNo_SalesHeader">
+          <DataField>BilltoCustomerNo_SalesHeader</DataField>
+        </Field>
+        <Field Name="No_SalesHeader">
+          <DataField>No_SalesHeader</DataField>
+        </Field>
+        <Field Name="DocumentNo_SalesLine">
+          <DataField>DocumentNo_SalesLine</DataField>
+        </Field>
+        <Field Name="LineNo_SalesLine">
+          <DataField>LineNo_SalesLine</DataField>
+        </Field>
+        <Field Name="Type_SalesLine">
+          <DataField>Type_SalesLine</DataField>
+        </Field>
+        <Field Name="No_SalesLine">
+          <DataField>No_SalesLine</DataField>
+        </Field>
+        <Field Name="Description_SalesLine">
+          <DataField>Description_SalesLine</DataField>
+        </Field>
+        <Field Name="Quantity_SalesLine">
+          <DataField>Quantity_SalesLine</DataField>
+        </Field>
+        <Field Name="Quantity_SalesLineFormat">
+          <DataField>Quantity_SalesLineFormat</DataField>
+        </Field>
+        <Field Name="QtyShippedNotInvoiced_SalesLine">
+          <DataField>QtyShippedNotInvoiced_SalesLine</DataField>
+        </Field>
+        <Field Name="QtyShippedNotInvoiced_SalesLineFormat">
+          <DataField>QtyShippedNotInvoiced_SalesLineFormat</DataField>
+        </Field>
+        <Field Name="Amount_SalesLine">
+          <DataField>Amount_SalesLine</DataField>
+        </Field>
+        <Field Name="Amount_SalesLineFormat">
+          <DataField>Amount_SalesLineFormat</DataField>
+        </Field>
+        <Field Name="UnitPrice_SalesLine">
+          <DataField>UnitPrice_SalesLine</DataField>
+        </Field>
+        <Field Name="UnitPrice_SalesLineFormat">
+          <DataField>UnitPrice_SalesLineFormat</DataField>
+        </Field>
+        <Field Name="OrderDate_PurchaseHeader">
+          <DataField>OrderDate_PurchaseHeader</DataField>
+        </Field>
+        <Field Name="PaytoName_PurchaseHeader">
+          <DataField>PaytoName_PurchaseHeader</DataField>
+        </Field>
+        <Field Name="BuyfromVendorNo_PurchaseHeader">
+          <DataField>BuyfromVendorNo_PurchaseHeader</DataField>
+        </Field>
+        <Field Name="No_PurchaseHeader">
+          <DataField>No_PurchaseHeader</DataField>
+        </Field>
+        <Field Name="PostingDate_PurchaseHeader">
+          <DataField>PostingDate_PurchaseHeader</DataField>
+        </Field>
+        <Field Name="No_PurchaseLine">
+          <DataField>No_PurchaseLine</DataField>
+        </Field>
+        <Field Name="Description_PurchaseLine">
+          <DataField>Description_PurchaseLine</DataField>
+        </Field>
+        <Field Name="Quantity_PurchaseLine">
+          <DataField>Quantity_PurchaseLine</DataField>
+        </Field>
+        <Field Name="Quantity_PurchaseLineFormat">
+          <DataField>Quantity_PurchaseLineFormat</DataField>
+        </Field>
+        <Field Name="DirectUnitCost_PurchaseLine">
+          <DataField>DirectUnitCost_PurchaseLine</DataField>
+        </Field>
+        <Field Name="DirectUnitCost_PurchaseLineFormat">
+          <DataField>DirectUnitCost_PurchaseLineFormat</DataField>
+        </Field>
+        <Field Name="Amount_PurchaseLine">
+          <DataField>Amount_PurchaseLine</DataField>
+        </Field>
+        <Field Name="Amount_PurchaseLineFormat">
+          <DataField>Amount_PurchaseLineFormat</DataField>
+        </Field>
+        <Field Name="Type_PurchaseLine">
+          <DataField>Type_PurchaseLine</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
 </Report>
