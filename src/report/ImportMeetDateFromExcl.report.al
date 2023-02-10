@@ -1,4 +1,4 @@
-report 50057 "Import Meeting Date From Excel"
+report 50057 "DEL Import Meet Date From Excl"
 {
     // MGTS10.042  | 02.01.2022 | Container/DESADV Management
 

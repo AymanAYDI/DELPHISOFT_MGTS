@@ -5,6 +5,7 @@ page 50057 "DEL Affaire non affectée"
     SourceTable = "DEL Logistic";
     UsageCategory = Lists;
     ApplicationArea = all;
+    Caption = 'Affaire non affectée';
 
     layout
     {

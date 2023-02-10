@@ -3,7 +3,7 @@ page 50036 "DEL ACO Selection"
     PageType = List;
     SourceTable = "Purchase Header";
     UsageCategory = None;
-
+    Caption = 'ACO Selection';
     layout
     {
         area(content)
