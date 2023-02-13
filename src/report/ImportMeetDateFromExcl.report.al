@@ -1,4 +1,4 @@
-report 50057 "Import Meeting Date From Excel"
+report 50057 "DEL Import Meet Date From Excl"
 {
     Caption = 'Import Metting Date From Excel';
     ProcessingOnly = true;

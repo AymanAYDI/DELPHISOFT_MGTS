@@ -139,7 +139,7 @@ codeunit 50044 "DEL API Orders Track Rec. Mgt."
 
     local procedure IsACOLineUpdated(PurchaseLine: Record "Purchase Line"; xPurchaseLine: Record "Purchase Line"): Boolean
     begin
-        EXIT((PurchaseLine."Cross-Reference No." <> xPurchaseLine."Cross-Reference No.") OR
+        EXIT((PurchaseLine."Item Reference No." <> xPurchaseLine."Item Reference No.") OR
              (PurchaseLine."Vendor Item No." <> xPurchaseLine."Vendor Item No.") OR
              (PurchaseLine."No." <> xPurchaseLine."No.") OR
              (PurchaseLine."DEL External reference NGTS" <> xPurchaseLine."DEL External reference NGTS") OR

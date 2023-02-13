@@ -102,7 +102,7 @@ page 50148 "DEL Delivery Planning"
                 PromotedCategory = Process;
                 PromotedIsBig = true;
                 PromotedOnly = true;
-                RunObject = Report "Import Meeting Date From Excel";
+                RunObject = Report "DEL Import Meet Date From Excl";
 
             }
             action(Invoice)

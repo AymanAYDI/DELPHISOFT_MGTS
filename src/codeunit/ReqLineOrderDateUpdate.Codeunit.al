@@ -4,7 +4,7 @@ codeunit 50001 "DEL ReqLine OrderDate Update"
     trigger OnRun()
     begin
         ReqLine.SETFILTER(ReqLine."Order Date", '<>%1', 0D);
-        IF ReqLine.FINDFIRST() THEN
+        IF ReqLine.FindSet() THEN
             REPEAT
 
                 ReqLine."Order Date" := WORKDATE();

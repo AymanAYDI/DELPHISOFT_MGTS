@@ -263,7 +263,7 @@ codeunit 50100 "DEL MGTS_Events Management"
         if Rec.IsTemporary then
             exit;
         SalesLine.SETRANGE("Shortcut Dimension 1 Code", Rec."No.");
-        IF SalesLine.FIND('-') THEN
+        IF SalesLine.FindSet() THEN
             REPEAT
                 SalesLine.VALIDATE("Shortcut Dimension 1 Code", '');
                 SalesLine.MODIFY();
@@ -604,7 +604,7 @@ codeunit 50100 "DEL MGTS_Events Management"
         ReqLineTEMP.SETRANGE("Location Code", RequisitionLine."Location Code");
         ReqLineTEMP.SETRANGE("DEL Requested Delivery Date", RequisitionLine."DEL Requested Delivery Date");
         ReqLineTEMP.SETFILTER("Line No.", '<>%1', RequisitionLine."Line No.");
-        IF ReqLineTEMP.FIND('-') THEN
+        IF ReqLineTEMP.FindSet() THEN
             REPEAT
                 GlobalFunction.SetQty(GlobalFunction.GetQty() + ReqLineTEMP.Quantity);
             // Qty := Qty + ReqLineTEMP.Quantity;
