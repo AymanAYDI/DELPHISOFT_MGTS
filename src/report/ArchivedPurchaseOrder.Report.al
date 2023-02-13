@@ -1,4 +1,4 @@
-report 50076 "DEL Archived Purchase Order"
+report 50076 "DEL Archived Purchase Order" //416
 {
     Caption = 'Archived Purchase Order';
     DefaultLayout = RDLC;
@@ -1297,11 +1297,11 @@ report 50076 "DEL Archived Purchase Order"
                 group(Options)
                 {
                     Caption = 'Options';
-                    field(NoOfCopies; NoOfCopies)
+                    field(NoOfCopiesF; NoOfCopies)
                     {
                         Caption = 'No. of Copies';
                     }
-                    field(ShowInternalInfo; ShowInternalInfo)
+                    field(ShowInternalInfoF; ShowInternalInfo)
                     {
                         Caption = 'Show Internal Information';
                     }

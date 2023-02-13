@@ -138,7 +138,7 @@ report 50027 "DEL Create Provision2"
         {
             area(content)
             {
-                field(date_Da; date_Da)
+                field(date_DaF; date_Da)
                 {
                     Caption = 'Date';
                 }

@@ -154,6 +154,7 @@ codeunit 50002 "DEL TransitaireMgt"
 
             //TODO OFile.CREATE(FileName);
             // OFile.CREATEOUTSTREAM(Ostr);
+
             tempBlob.CreateOutStream(Ostr);
 
             IF Transitaire."HSCODE Enable" = FALSE THEN BEGIN

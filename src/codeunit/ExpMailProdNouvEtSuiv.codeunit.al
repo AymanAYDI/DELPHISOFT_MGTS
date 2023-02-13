@@ -1,4 +1,4 @@
-codeunit 50010 "Export Mail Prod Nouv Et Suiv"
+codeunit 50010 "DEL Exp Mail Prod Nouv Et Suiv"
 {
 
     trigger OnRun()
@@ -12,6 +12,7 @@ codeunit 50010 "Export Mail Prod Nouv Et Suiv"
         // FileVendor.CREATEOUTSTREAM(FoutStream);
         // streamWriter := streamWriter.StreamWriter(FoutStream, encoding.Unicode); 
         tempBlob1.CreateOutStream(OutStr, TextEncoding::UTF8);
+
         PurchaseLine_Nouv.SETCURRENTKEY("Document Type", "Document No.", "Line No.");
         PurchaseLine_Nouv.SETRANGE("DEL First Purch. Order", TRUE);
         PurchaseLine_Nouv.SETRANGE(Type, PurchaseLine_Nouv.Type::Item);

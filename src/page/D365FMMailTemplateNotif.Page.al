@@ -15,7 +15,7 @@ page 50146 "D365FM Mail Template Notif."
                 {
                     ApplicationArea = All;
                 }
-                field("Template mail"; Rec."Template mail") //TODO: A Blob cannot be used as a source expression for a page field.
+                field("Template mail"; Rec."Template mail")
                 {
                     ApplicationArea = All;
                 }

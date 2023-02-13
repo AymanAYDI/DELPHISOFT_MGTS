@@ -90,7 +90,7 @@ page 50114 "DEL Matrix Text"
 
     procedure EditText()
     var
-        TextEdit: Codeunit "Export Mail Prod Nouv Et Suiv";
+        TextEdit: Codeunit "DEL Exp Mail Prod Nouv Et Suiv";
         RecRef: RecordRef;
 
     begin

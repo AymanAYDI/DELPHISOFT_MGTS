@@ -93,13 +93,4 @@ page 50061 "DEL Correct Purch. Inv Subform"
     {
     }
 
-    //TODO:"Document Lines Tracking" n'existe pas
-    // procedure ShowDocumentLineTracking()
-    // var
-    //     DocumentLineTracking: Page "Document Lines Tracking";
-    // begin
-    //     CLEAR(DocumentLineTracking);
-    //     DocumentLineTracking.SetDoc(7, "Document No.", "Line No.", "Blanket Order No.", "Blanket Order Line No.", "Order No.", "Order Line No.");
-    //     DocumentLineTracking.RUNMODAL;
-    // end;
 }

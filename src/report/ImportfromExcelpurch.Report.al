@@ -59,26 +59,6 @@ report 50013 "DEL Import from Excel purch"
         ExcelBuf.ReadSheet();
     end;
 
-    local procedure AnalyzeData()
-    begin
-    end;
-
-    local procedure InsertGLBudgetDim(DimCode2: Code[20]; DimValCode2: Code[20]; var GLBudgetEntry2: Record "G/L Budget Entry")
-    begin
-    end;
-
-    local procedure FormatData(TextToFormat: Text[250]): Text[250]
-    begin
-    end;
-
-    procedure SetGLBudgetName(NewToGLBudgetName: Code[10])
-    begin
-    end;
-
-    procedure SetBudgetDimFilter(DimCode2: Code[20]; DimValCode2: Code[20]; var GLBudgetEntry2: Record "G/L Budget Entry")
-    begin
-    end;
-
     procedure InsertPrice()
     var
         FormatDate: Date;

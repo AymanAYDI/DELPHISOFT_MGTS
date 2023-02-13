@@ -1,7 +1,5 @@
 page 50065 "DEL Document Sheet"
 {
-
-
     Caption = 'Document Sheet';
     DataCaptionFields = "No.";
     DelayedInsert = true;
@@ -156,7 +154,6 @@ page 50065 "DEL Document Sheet"
         InStr: InStream;
         OutStr: OutStream;
         Directory: Text;
-        ExportFileName: text;
 
     begin
         Directory := Document_CU.TempDirectory();

@@ -16,8 +16,24 @@ codeunit 50011 "DEL MGTS Set/Get Functions"
         updateRequestID_Co_Loc: Code[20];
         PrevReqDeliveryDate: Date;
         Qty: Decimal;
-    //COD 92------------
+        requestID_Co_Loc: Code[20];
 
+
+    //TAB 39 -----------
+    procedure SetrequestID_Co_Loc(prequestID_Co_Loc: Code[20])
+    begin
+        requestID_Co_Loc := prequestID_Co_Loc;
+    end;
+
+    procedure GetrequestID_Co_Loc(): Code[20]
+    begin
+        exit(requestID_Co_Loc);
+    end;
+
+
+
+
+    //COD 92------------
     procedure SetshipmentSelected_Bo_Loc2(pshipmentSelected_Bo_Loc2: Boolean)
     begin
         shipmentSelected_Bo_Loc2 := pshipmentSelected_Bo_Loc2;

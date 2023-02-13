@@ -119,7 +119,6 @@ codeunit 50009 "Update FCY On G/L Entry Auto"
             GLEntry_Re_Loc.SETRANGE("Document No.", GLEntry_Re_Par."Document No.");
             IF GLEntry_Re_Loc.FINDFIRST() THEN
                 REPEAT
-
                     GLEntry_Re_Loc."DEL Initial Amount (FCY)" := GLEntry_Re_Loc.Amount * Factor_Dec_Par;
                     GLEntry_Re_Loc."DEL Initial Currency (FCY)" := Currency_Co_Par;
                     GLEntry_Re_Loc.MODIFY();

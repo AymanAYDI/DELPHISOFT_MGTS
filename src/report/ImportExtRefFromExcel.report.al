@@ -99,7 +99,6 @@ report 50058 "DEL Import Ext. Ref From Excel"
         ItemCrossReference: Record "Item Reference";
         SalesHeader: Record "Sales Header";
         SalesLine: Record "Sales Line";
-        DistIntegration: Codeunit "Dist. Integration";
         CrossRef: Code[20];
         ItemNo: Code[20];
         OrderNo: Code[20];

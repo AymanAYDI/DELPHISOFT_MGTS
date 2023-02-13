@@ -228,11 +228,11 @@ report 50002 "DEL Cust - Sum. Aging Simp. XX"
         {
             area(content)
             {
-                field(StartDate; StartDate)
+                field(StartDateF; StartDate)
                 {
                     Caption = 'Date Début';
                 }
-                field(Devise_Code; Devise_Code)
+                field(Devise_CodeF; Devise_Code)
                 {
                     Caption = 'Filtre Devise';
                 }

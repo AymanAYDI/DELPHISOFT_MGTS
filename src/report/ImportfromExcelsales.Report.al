@@ -61,25 +61,6 @@ report 50009 "DEL Import from Excel sales"
         ExcelBuf.ReadSheet();
     end;
 
-    local procedure AnalyzeData()
-    begin
-    end;
-
-    local procedure InsertGLBudgetDim(DimCode2: Code[20]; DimValCode2: Code[20]; var GLBudgetEntry2: Record "G/L Budget Entry")
-    begin
-    end;
-
-    local procedure FormatData(TextToFormat: Text[250]): Text[250]
-    begin
-    end;
-
-    procedure SetGLBudgetName(NewToGLBudgetName: Code[10])
-    begin
-    end;
-
-    procedure SetBudgetDimFilter(DimCode2: Code[20]; DimValCode2: Code[20]; var GLBudgetEntry2: Record "G/L Budget Entry")
-    begin
-    end;
 
     procedure InsertPrice()
     var
@@ -100,7 +81,7 @@ report 50009 "DEL Import from Excel sales"
             last := ExcelBuf."Row No.";
 
         i := 5;
-        IF ExcelBuf.FIND('-') THEN BEGIN
+        IF ExcelBuf.FIND('-') THEN
             WHILE (i <= last) DO BEGIN
                 ExcelBuf.SETRANGE("Row No.", i);
                 SalesPriceWorksheet."Starting Date" := 0D;
@@ -117,7 +98,7 @@ report 50009 "DEL Import from Excel sales"
                 SalesPriceWorksheet."Allow Invoice Disc." := FALSE;
                 SalesPriceWorksheet."VAT Bus. Posting Gr. (Price)" := '';
                 SalesPriceWorksheet."Allow Line Disc." := FALSE;
-                IF ExcelBuf.FIND('-') THEN BEGIN
+                IF ExcelBuf.FIND('-') THEN
                     REPEAT
                         IF ExcelBuf."Column No." = 1 THEN BEGIN
                             EVALUATE(FormatDate, ExcelBuf."Cell Value as Text");
@@ -182,20 +163,17 @@ report 50009 "DEL Import from Excel sales"
                             EVALUATE(Formatbool2, ExcelBuf."Cell Value as Text");
                             SalesPriceWorksheet."Price Includes VAT" := Formatbool2;
                         END;
-                        IF ExcelBuf."Column No." = 14 THEN BEGIN
+                        IF ExcelBuf."Column No." = 14 THEN
                             SalesPriceWorksheet."VAT Bus. Posting Gr. (Price)" := ExcelBuf."Cell Value as Text";
-                        END;
                         IF ExcelBuf."Column No." = 15 THEN BEGIN
                             EVALUATE(Formatbool3, ExcelBuf."Cell Value as Text");
                             SalesPriceWorksheet."Allow Line Disc." := Formatbool3;
                         END;
                     UNTIL ExcelBuf.NEXT() = 0;
-                END;
                 SalesPriceWorksheet.INSERT();
 
                 i := i + 1;
             END;
-        END;
     end;
 
 }

@@ -73,12 +73,10 @@ report 50056 "DEL ImportContainers FromExcel"
     }
 
     var
-        TempCsvBuffer: Record "CSV Buffer" temporary;
         ContainerListBuffer: Record "DEL Container List";
         ExcelBuffer: Record "Excel Buffer";
         ExcelBufferDialogMgt: Codeunit "Excel Buffer Dialog Management";
         FileManagement: Codeunit "File Management";
-        TempBlob: Codeunit "Temp Blob";
         IStream: InStream;
         EntryNo: Integer;
         i: Integer;
@@ -88,7 +86,7 @@ report 50056 "DEL ImportContainers FromExcel"
         ExcelExtension: Label '*.xlsx;*.xls';
         FileEmpty: Label 'Le fichier est vide. ';
         ImportCompleted: Label 'Import completed!';
-        ImportFile: Label 'Import Excel worksheet...\\', Comment = '{Locked="Excel"}';
+        ImportFile: Label 'Import Excel worksheet...\\';
         UploadExcelMsg: Label 'Please Choose the Excel file.';
         FileName: Text;
         sheetName: Text;

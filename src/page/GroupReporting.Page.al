@@ -147,27 +147,6 @@ page 50018 "DEL Group Reporting"
     end;
 
 
-    procedure PrepareFile()
-    var
-        GeneralSetup: Record "DEL General Setup";
-
-    begin
-        GeneralSetup.GET();
-        //TODO: methods are not used for cloud dev---------------
-        // Filename.TEXTMODE := TRUE;
-        // Filename.WRITEMODE := TRUE;
-        // Filename.QUERYREPLACE := TRUE;
-        // Filename.CREATE(GeneralSetup."Reporting File");
-        // WriteData();
-        // Filename.CLOSE();
-        ///////// TO CHECK
-        Filename := GeneralSetup."Reporting File";
-        TempBlob.CreateOutStream(Outsr);
-        Outsr.WriteText(GeneralSetup."Reporting File");
-        WriteData();
-        MESSAGE(Text000);
-
-    end;
 
 
     procedure WriteData()

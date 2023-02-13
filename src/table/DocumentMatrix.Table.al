@@ -374,7 +374,7 @@ table 50067 "DEL Document Matrix"
     end;
 
 
-    procedure SetRequestPageParametersBigText(var precDocumentMatrix: Record "DEL DocMatrix Setup"; pBigText: BigText)
+    procedure SetRequestPageParametersBigText(var precDocumentMatrix: Record "DEL Document Matrix"; pBigText: BigText)
     var
         DataStream: OutStream;
     begin
@@ -386,7 +386,7 @@ table 50067 "DEL Document Matrix"
     end;
 
 
-    procedure GetRequestPageParametersBigText(var precDocumentMatrix: Record "DEL DocMatrix Setup"; var pBigText: BigText)
+    procedure GetRequestPageParametersBigText(var precDocumentMatrix: Record "DEL Document Matrix"; var pBigText: BigText)
     var
         BLOBInStream: InStream;
     begin
@@ -400,7 +400,7 @@ table 50067 "DEL Document Matrix"
     end;
 
 
-    procedure ChangeRequestPageParameters(var precDocumentMatrix: Record "DEL DocMatrix Setup"; pTextToFind: Text; pTextToReplace: Text)
+    procedure ChangeRequestPageParameters(VAR precDocumentMatrix: Record "DEL Document Matrix"; pTextToFind: Text; pTextToReplace: Text)
     var
         InputText: BigText;
         OutputText: BigText;

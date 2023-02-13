@@ -141,11 +141,11 @@ report 50019 "DEL Delete doc Sales/Pur"
                 group("Option")
                 {
                     Caption = 'Option';
-                    field(DeleteVente; DeleteVente)
+                    field(DeleteVenteF; DeleteVente)
                     {
                         Caption = 'Delete sales';
                     }
-                    field(DeleteAchat; DeleteAchat)
+                    field(DeleteAchatF; DeleteAchat)
                     {
                         Caption = 'Delete purchase';
                     }

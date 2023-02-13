@@ -348,8 +348,6 @@ codeunit 50015 "DEL DocMatrix Management" //TODO
         txSendFromName := lrecCompanyInformation.Name;
 
         // get the Email Address "To" from Document Matrix
-        //20200915/DEL/PD/CR100.begin
-        //txSendToAddress := GetReciverMailAddressStringFromDocMxSel(precDocMatrixSelection);
         txSendToAddress := GetReciverMailAddressStringFromDocMxSel(precDocMatrixSelection, pDocNo);
 
         // get the Email Address "From" from Document Matrix
@@ -649,9 +647,6 @@ codeunit 50015 "DEL DocMatrix Management" //TODO
         END;
     end;
 
-    local procedure __Helper_Functions__()
-    begin
-    end;
 
     local procedure FilterRecToProcessedDocument(pUsage: Integer; var pRecordVariant: Variant; pDocNo: Code[20]; pFieldDocNo: Integer)
     var
@@ -991,7 +986,7 @@ codeunit 50015 "DEL DocMatrix Management" //TODO
         lErr001: Label 'The "E-Mail From" in the Document Matrix Setup can not be empty!';
     begin
         IF precDocMatrixSelection."E-Mail From" = '' THEN
-            ERROR(lErr001) // ToDo: -> catch ERROR if the process should not be interuppted
+            ERROR(lErr001)
         ELSE
             EXIT(precDocMatrixSelection."E-Mail From");
     end;
@@ -1109,6 +1104,8 @@ codeunit 50015 "DEL DocMatrix Management" //TODO
             EXIT(pPurchCode + lSep + pNo + '-' + pDocNo + pExt);
     end;
 
+
+
     local procedure CreatePathAndFileName(pUsage: Integer; pNo: Code[20]; pDocNo: Text; var ptxClientFile: Text; var ptxServerFile: Text; var ptxClientPath: Text; pCreateTimeStamp: Boolean; pPurchCode: Code[10])
     var
         txOnlyFileName: Text;
@@ -1116,10 +1113,13 @@ codeunit 50015 "DEL DocMatrix Management" //TODO
         ptxClientPath := CheckAndCreateServerPath(pUsage, pNo);
         txOnlyFileName := CreateFileName(pNo, pDocNo, '.pdf', pCreateTimeStamp, pPurchCode);
         ptxClientFile := ptxClientPath + txOnlyFileName;
-        //TODOptxServerFile := TEMPORARYPATH + txOnlyFileName;
-
-        //TODO IF EXISTS(ptxServerFile) THEN
+        //TODO ptxServerFile := TEMPORARYPATH + txOnlyFileName;
+        ptxServerFile := txOnlyFileName;
+        //TODO 
+        // IF EXISTS(ptxServerFile) THEN
         //     ERASE(ptxServerFile);
+        if StrLen(ptxServerFile) = 0 then
+            ptxServerFile := '';
     end;
 
     local procedure CheckAndCreateServerPath(pUsage: Integer; pNo: Code[20]): Text
@@ -1153,8 +1153,9 @@ codeunit 50015 "DEL DocMatrix Management" //TODO
                 ltxtStorageLocation := ltxtStorageLocation + GetReportName(GetReportIDWithUsage(pUsage))
             ELSE
                 ltxtStorageLocation := ltxtStorageLocation + '\' + GetCustVendName(lType, pNo);
-            //TODO IF NOT FileManagement.ClientFileExists(ltxtStorageLocation) THEN
-            //     FileManagement.CreateClientDirectory(ltxtStorageLocation);
+            //TODO : these 2 functions ares no longer used in BC
+            // IF NOT FileManagement.ClientFileExists(ltxtStorageLocation) THEN
+            //    FileManagement.CreateClientDirectory(ltxtStorageLocation);
         END;
 
         EXIT(ltxtStorageLocation + '\');
@@ -1176,7 +1177,7 @@ codeunit 50015 "DEL DocMatrix Management" //TODO
         ltxTextToFind[2] := '<Field name="EndDate">';
         ltxReplaceWithText[2] := '<Field name="EndDate">' + FormatDateSepWithDashYYYYMMDD(pDate);
         FOR i := 1 TO 2 DO BEGIN
-            //TODO precDocumentMatrix.ChangeRequestPageParameters(precDocumentMatrix, ltxTextToFind[i], ltxReplaceWithText[i]);
+            precDocumentMatrix.ChangeRequestPageParameters(precDocumentMatrix, ltxTextToFind[i], ltxReplaceWithText[i]);
         END;
         COMMIT();
     end;
@@ -1197,11 +1198,6 @@ codeunit 50015 "DEL DocMatrix Management" //TODO
         // CduLFileManagement.DownloadToFile(ptxServerFile, ptxClientFile); TODO:
         // CduLFileManagement.DeleteServerFile(ptxServerFile);  TODO:
     end;
-
-    local procedure __MGTS_Functions__()
-    begin
-    end;
-
 
     procedure TestShipmentSelectionBeforeUptdateRequest(precSalesHeader: Record "Sales Header";
      var precDealShipmentSelection
@@ -1303,7 +1299,7 @@ codeunit 50015 "DEL DocMatrix Management" //TODO
                             salesLine_Re_Loc.RESET();
                             salesLine_Re_Loc.SETRANGE("Document Type", salesLine_Re_Loc."Document Type"::Invoice);
                             salesLine_Re_Loc.SETRANGE("Document No.", precSalesHeader."No.");
-                            IF salesLine_Re_Loc.FIND('-') THEN BEGIN
+                            IF salesLine_Re_Loc.FindSet() THEN BEGIN
                                 REPEAT
                                     //si c'est pas un compte alors c'est déjà grillé -> erreur
                                     IF (salesLine_Re_Loc.Type <> salesLine_Re_Loc.Type::"G/L Account") THEN

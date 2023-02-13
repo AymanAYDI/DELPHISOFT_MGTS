@@ -223,7 +223,7 @@ page 50090 "DEL Matrix General regulation"
         ProductCode: Code[20];
         MarkOptionENU: Enum "DEL Mark";
         CurrGlobLang: Integer;
-        MarkOptionFRS: Option " ",MDD,"Marque Fournisseur",Licence,"Sans Marque","Marque Prestige",NC,NA,"?","Toutes Marques";
+        MarkOptionFRS: Enum "DEL Mark"; //traduit en Francais dans l'ancienne version
         DescProduct: Text;
         Markfilter: Text;
 }

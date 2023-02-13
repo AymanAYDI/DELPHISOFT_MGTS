@@ -118,7 +118,6 @@ codeunit 50003 "DEL MGT Tracking" //TODO à Vérfier avec le client
     //         UNTIL MyFile.NEXT() = 0;
     // end;
 
-    // Item.MODIFYALL("Article exporté vers OSAM",TRUE);
 
     // procedure export()
     // var

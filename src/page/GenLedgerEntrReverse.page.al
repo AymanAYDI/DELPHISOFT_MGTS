@@ -370,9 +370,9 @@ page 50127 "DEL Gen. Ledger Entr. Reverse"
 
     trigger OnAfterGetCurrRecord()
     var
-        IncomingDocument: Record "Incoming Document";
+        LocIncomingDocument: Record "Incoming Document";
     begin
-        HasIncomingDocument := IncomingDocument.PostedDocExists(Rec."Document No.", Rec."Posting Date");
+        HasIncomingDocument := LocIncomingDocument.PostedDocExists(Rec."Document No.", Rec."Posting Date");
         CurrPage.IncomingDocAttachFactBox.PAGE.LoadDataFromRecord(Rec);
     end;
 

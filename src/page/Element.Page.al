@@ -29,11 +29,9 @@ page 50021 "DEL Element"
                 field(Fee_ID; Rec.Fee_ID)
                 {
                 }
-                //TODO
-                // field(Fee_Cu.FNC_Get_Description(Fee_ID);
-                //     Fee_Cu.FNC_Get_Description(Fee_ID))
-                // {
-                // }
+                field(FNC_Get_Description; Fee_Cu.FNC_Get_Description(Rec.Fee_ID))
+                {
+                }
                 field(Fee_Connection_ID; Rec.Fee_Connection_ID)
                 {
                 }
@@ -49,9 +47,8 @@ page 50021 "DEL Element"
             }
         }
     }
+    var
+        Fee_Cu: Codeunit "DEL Fee";
 
-    actions
-    {
-    }
 }
 

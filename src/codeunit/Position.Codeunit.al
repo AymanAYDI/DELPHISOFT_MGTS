@@ -20,31 +20,31 @@ codeunit 50022 "DEL Position"
     begin
         IF Update_Planned_Bo_Par THEN BEGIN
             // ACO
-            FNC_Add_ACO_Position(Deal_ID_Co_Par); //MESSAGE('POSITION ACO OK');
+            FNC_Add_ACO_Position(Deal_ID_Co_Par);
 
             // VCO
-            FNC_Add_VCO_Position(Deal_ID_Co_Par); //MESSAGE('POSITION VCO OK');
+            FNC_Add_VCO_Position(Deal_ID_Co_Par);
 
             // FEE
-            FNC_Add_Fee_Position(Deal_ID_Co_Par); //MESSAGE('POSITION Fee OK');
+            FNC_Add_Fee_Position(Deal_ID_Co_Par);
         END;
 
         FNC_Add_Dispatched_Positions(Deal_ID_Co_Par);
 
         // Invoice
-        FNC_Add_Invoice_Position(Deal_ID_Co_Par); //MESSAGE('POSITION Invoice OK');
+        FNC_Add_Invoice_Position(Deal_ID_Co_Par);
 
         // Purchase Invoice
-        FNC_Add_PurchInvoice_Position(Deal_ID_Co_Par, Update_Silently_Bo_Par); //MESSAGE('POSITION Purchase Invoice OK');
+        FNC_Add_PurchInvoice_Position(Deal_ID_Co_Par, Update_Silently_Bo_Par);
 
         // Purchase Credit Notes
-        FNC_Add_PurchCrMemo_Position(Deal_ID_Co_Par, Update_Silently_Bo_Par); //MESSAGE('POSITION Credit Notes OK');
+        FNC_Add_PurchCrMemo_Position(Deal_ID_Co_Par, Update_Silently_Bo_Par);
 
         // Sales Invoice
-        FNC_Add_SalesInvoice_Position(Deal_ID_Co_Par, Update_Silently_Bo_Par); //MESSAGE('POSITION Sales Invoice OK');
+        FNC_Add_SalesInvoice_Position(Deal_ID_Co_Par, Update_Silently_Bo_Par);
 
         // Sales Credit Notes
-        FNC_Add_SalesCrMemo_Position(Deal_ID_Co_Par, Update_Silently_Bo_Par); //MESSAGE('POSITION Credit Notes OK');
+        FNC_Add_SalesCrMemo_Position(Deal_ID_Co_Par, Update_Silently_Bo_Par);
 
     end;
 
@@ -442,12 +442,6 @@ codeunit 50022 "DEL Position"
     end;
 
 
-    procedure FNC_Add_BR_Position(Deal_ID_Co_Par: Code[20]; Add_Silently_Bo_Par: Boolean)
-    begin
-
-    end;
-
-
     procedure FNC_Add_Invoice_Position(Deal_ID_Co_Par: Code[20])
     var
         element_Re_Loc: Record "DEL Element";
@@ -466,12 +460,6 @@ codeunit 50022 "DEL Position"
                 Fee_Cu.FNC_Dispatch(element_Re_Loc.ID);
 
             UNTIL (element_Re_Loc.NEXT() = 0);
-    end;
-
-
-    procedure FNC_Add_Provision_Position(Deal_ID_Co_Par: Code[20])
-    begin
-
     end;
 
 

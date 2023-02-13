@@ -915,7 +915,7 @@ report 50081 "DEL Archived Sales Order" //216
                 group(Options)
                 {
                     Caption = 'Options';
-                    field(NoOfCopies; NoOfCopies)
+                    field(NoOfCopiesF; NoOfCopies)
                     {
                         Caption = 'No. of Copies';
                     }

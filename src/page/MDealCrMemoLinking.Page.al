@@ -154,6 +154,7 @@ page 50082 "DEL M Deal Cr. Memo Linking"
         PostedLine_Re_Loc.SETFILTER("Dimension Set ID", '%1|%2', 114, 115);
         //TODO PostedLine_Re_Loc.SETRANGE("Document No.", Rec."Sales Cr. Memo No.");
         PostedLine_Re_Loc.SETRANGE("Dimension Code", 'ACHAT');
+
         IF PostedLine_Re_Loc.FINDFIRST() THEN
             REPEAT
                 PostedLine_Re_Loc."Dimension Value Code" := NewCodeAchatNo_Co_Par;

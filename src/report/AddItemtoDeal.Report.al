@@ -1,6 +1,6 @@
 report 50030 "DEL Add Item to Deal"
 {
-    Caption = 'add intem to Deal';
+    Caption = 'add item to Deal';
     ProcessingOnly = true;
 
     dataset

@@ -172,31 +172,6 @@ page 50014 "DEL Corr. facture vente ligne"
         AmountIncludingVATText: Text[1024];
         [InDataSet]
         LineAmountText: Text[1024];
-    //TODO //  DocumentLineTracking: Page "5005399";
-
-
-    procedure ShowDimensions()
-    begin
-        Rec.ShowDimensions();
-    end;
-
-
-    procedure ShowItemTrackingLines()
-    begin
-        Rec.ShowItemTrackingLines();
-    end;
-
-
-    //TODO 
-    // procedure ShowDocumentLineTracking()
-    // begin
-    //     // dach0001.begin
-    //     CLEAR(DocumentLineTracking);
-    //     DocumentLineTracking.SetDoc(6, "Document No.", "Line No.", "Blanket Order No.", "Blanket Order Line No.", "Order No.", "Order Line No.")
-    //     ;
-    //     DocumentLineTracking.RUNMODAL;
-    //     // dach001.end
-    // end;
 
     local procedure DescriptionOnFormat()
     begin

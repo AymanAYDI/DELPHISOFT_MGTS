@@ -14,26 +14,26 @@ page 50050 "DEL Shipment Provision Select."
             {
                 Caption = 'General';
 
-                // field(lineNumber; lineNumber) // TODO:
-                // {
-                //     Caption = 'Nombre de lignes';
-                //     Editable = false;
-                // }
-                // field(Periodeencours; isCurrentPeriod_Te)
-                // {
-                //     Caption = 'Période en cours';
-                //     Editable = false;
-                // }
-                // field(FORMAT(date_Da,0,'<Month Text>');FORMAT(date_Da,0,'<Month Text>'))
-                // {
-                //     Caption = 'Month';
-                //     Editable = false;
-                // }
-                // field(DATE2DMY(date_Da,3);DATE2DMY(date_Da,3))
-                // {
-                //     Caption = 'Year';
-                //     Editable = false;
-                // }
+                field(lineNumber; lineNumber) 
+                {
+                    Caption = 'Nombre de lignes';
+                    Editable = false;
+                }
+                field(Periodeencours; isCurrentPeriod_Te)
+                {
+                    Caption = 'Période en cours';
+                    Editable = false;
+                }
+                field(Month ;FORMAT(date_Da,0,'<Month Text>'))
+                {
+                    Caption = 'Month';
+                    Editable = false;
+                }
+                field(DATE2DMY(date_Da,3);DATE2DMY(date_Da,3))
+                {
+                    Caption = 'Year';
+                    Editable = false;
+                }
                 field(monthLastWorkingDay; monthLastWorkingDay)
                 {
                     Caption = 'Last Working Day';
@@ -253,14 +253,12 @@ page 50050 "DEL Shipment Provision Select."
         isCurrentPeriod_Bo: Boolean;
         isCurrentPeriod_Te: Boolean;
 
-        "Provision AmountEmphasize": Boolean;
         date_Da: Date;
         monthFirstWorkingDay: Date;
         monthLastWorkingDay: Date;
         totalPlannedAmount: Decimal;
         totalProvisionAmount: Decimal;
         totalRealAmount: Decimal;
-        color: Integer;
         lineNumber: Integer;
 
     procedure FNC_UpdateTotals()

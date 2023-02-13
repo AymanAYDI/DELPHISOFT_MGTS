@@ -354,7 +354,6 @@ codeunit 50021 "DEL Element"
 
                 //on ajoute pas les positions ici, mais à la réinitialisation des positions..
             END;
-            //UNTIL(VCOElement_Re_Loc.NEXT()=0);
 
         END;
 
@@ -423,10 +422,6 @@ codeunit 50021 "DEL Element"
         shipmentID_Co_Loc: Code[20];
     begin
         /*__La partie new a été remplacée par les fonctions FNC_Add_New_Invoice et FNC_Add_New_Invoice_Connection__*/
-        /*
-        IF Add_Variant_Op_Par = Add_Variant_Op_Par::New THEN BEGIN
-        end else
-        */
         IF Add_Variant_Op_Par = Add_Variant_Op_Par::Existing THEN BEGIN
 
             /*_On cherche l'ACO liée à l'affaire_*/

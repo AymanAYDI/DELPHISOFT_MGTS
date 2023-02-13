@@ -2,8 +2,6 @@ codeunit 50006 "DEL Tracking traitement"
 {
     trigger OnRun()
     begin
-
-
         InsertionAutomatique();
     end;
 
@@ -78,8 +76,5 @@ codeunit 50006 "DEL Tracking traitement"
     end;
 
 
-    procedure AllocationManuel()
-    begin
-    end;
 }
 

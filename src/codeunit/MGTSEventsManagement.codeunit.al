@@ -511,7 +511,7 @@ codeunit 50100 "DEL MGTS_Events Management"
                 SalesOrderLine.SETRANGE("Document Type", PurchaseLine."Document Type"::Order);
                 SalesOrderLine.SETRANGE("Special Order Purchase No.", PurchaseLine."Document No.");
                 SalesOrderLine.SETRANGE("No.", PurchaseLine."No.");
-                IF SalesOrderLine.FIND('-') THEN
+                IF SalesOrderLine.FINDfirst() THEN
                     REPEAT
                         SalesOrderLine."Special Order Purchase No." := '';
                         SalesOrderLine."Special Order Purch. Line No." := 0;
@@ -691,21 +691,28 @@ codeunit 50100 "DEL MGTS_Events Management"
         ACOConnection_Re_Loc: Record "DEL ACO Connection";
         urm_Re_Loc: Record "DEL Update Request Manager";
         UpdateRequestManager_Cu: Codeunit "DEL Update Request Manager";
-        requestID_Co_Loc: Code[20];
+        //  requestID_Co_Loc: Code[20];
+        GlobalFunction: Codeunit "DEL MGTS Set/Get Functions";
+
     begin
         ACOConnection_Re_Loc.RESET();
         ACOConnection_Re_Loc.SETCURRENTKEY("ACO No.");
         ACOConnection_Re_Loc.SETRANGE("ACO No.", PurchaseLine."Document No.");
-        IF ACOConnection_Re_Loc.FIND('-') THEN BEGIN
+        IF ACOConnection_Re_Loc.FindFirst() THEN BEGIN
 
-            requestID_Co_Loc := UpdateRequestManager_Cu.FNC_Add_Request(
-              ACOConnection_Re_Loc.Deal_ID,
-              urm_Re_Loc.Requested_By_Type::"Purchase Header".AsInteger(),
-              PurchaseLine."Document No.",
-              CURRENTDATETIME
-            );
+            // requestID_Co_Loc := UpdateRequestManager_Cu.FNC_Add_Request(
+            //   ACOConnection_Re_Loc.Deal_ID,
+            //   urm_Re_Loc.Requested_By_Type::"Purchase Header".AsInteger(),
+            //   PurchaseLine."Document No.",
+            //   CURRENTDATETIME);
 
-            urm_Re_Loc.GET(requestID_Co_Loc);
+            GlobalFunction.SetrequestID_Co_Loc(UpdateRequestManager_Cu.FNC_Add_Request(
+                          ACOConnection_Re_Loc.Deal_ID,
+                          urm_Re_Loc.Requested_By_Type::"Purchase Header".AsInteger(),
+                          PurchaseLine."Document No.",
+                          CURRENTDATETIME));
+
+            urm_Re_Loc.GET(GlobalFunction.GetrequestID_Co_Loc());
             UpdateRequestManager_Cu.FNC_Process_Requests(urm_Re_Loc, FALSE, FALSE, TRUE);
 
             EXIT;

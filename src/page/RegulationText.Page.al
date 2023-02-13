@@ -70,7 +70,7 @@ page 50001 "DEL Regulation Text"
 
     procedure EditText()
     var
-        TextEdit: Codeunit "Export Mail Prod Nouv Et Suiv";
+        TextEdit: Codeunit "DEL Exp Mail Prod Nouv Et Suiv";
         RecRef: RecordRef;
         Text00001: Label 'Edit Document Text';
     begin

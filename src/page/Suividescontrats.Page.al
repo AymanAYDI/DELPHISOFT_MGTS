@@ -69,10 +69,10 @@ page 50073 "DEL Suivi des contrats"
                     Caption = 'Primary Contact No.';
                     Editable = false;
                 }
-                //TODO: is already defined field(Contact; Contact)
-                // {
-                //     Editable = false;
-                // }
+                field(Contact2; Rec.Contact)
+                {
+                    Editable = false;
+                }
                 field("Phone No."; Rec."Phone No.")
                 {
                     ApplicationArea = All;
