@@ -1,9 +1,7 @@
 codeunit 50029 "DEL Deal Shipment"
 {
-
     var
         ERROR_TXT: Label 'ERREUR\Source : %1\Function : %2\Reason : %3';
-
 
     procedure FNC_Insert(Deal_ID_Co_Par: Code[20]; Date_Par: Date; BR_No_Co_Par: Code[20]) DealShipment_ID_Ret: Code[20]
     var
@@ -24,7 +22,6 @@ codeunit 50029 "DEL Deal Shipment"
 
         AlertMgt_Cu_Loc.FNC_LogisticCopy(Deal_ID_Co_Par, DealShipment_ID_Ret);
 
-        //GRC modif begin Création dans table logistic à la création de l'affaire
         Logistic_Re_Loc.SETRANGE(ID, dealShipment_Re_Loc.ID);
         Logistic_Re_Loc.SETRANGE(Deal_ID, dealShipment_Re_Loc.Deal_ID);
         //Logistic_Re_Loc.SETRANGE("BR No.","BR No.");
@@ -35,9 +32,7 @@ codeunit 50029 "DEL Deal Shipment"
             Logistic_Re_Loc.Deal_ID := dealShipment_Re_Loc.Deal_ID;
             Logistic_Re_Loc.FNC_GetInfo(Logistic_Re_Loc);
         END;
-        //grc modif end
     end;
-
 
     procedure FNC_GetFirstShipmentNo(Deal_ID_Co_Par: Code[20]) ShipmentNo_Co_Ret: Code[20]
     var
@@ -51,9 +46,7 @@ codeunit 50029 "DEL Deal Shipment"
         dealShipment_Re_Loc.SETRANGE(Deal_ID, Deal_ID_Co_Par);
         IF dealShipment_Re_Loc.FINDFIRST() THEN
             ShipmentNo_Co_Ret := dealShipment_Re_Loc.ID
-
     end;
-
 
     procedure FNC_GetNextShipmentNo(Deal_ID_Co_Par: Code[20]) ShipmentNo_Co_Ret: Code[20]
     var
@@ -70,7 +63,6 @@ codeunit 50029 "DEL Deal Shipment"
               'FNC_GetNextShipmentNo',
               STRSUBSTNO('Deal No. >%1< does not exist !', Deal_ID_Co_Par));
     end;
-
 
     procedure FNC_GetPurchaseInvoiceNo(DealShipmentID_Co_Par: Code[20]) PurchInvNo_Co_Ret: Code[20]
     var
@@ -94,12 +86,9 @@ codeunit 50029 "DEL Deal Shipment"
                         EXIT
                     END
                 END
-
             UNTIL (dealShipmentConnection_Re_Loc.NEXT() = 0);
         END
-
     end;
-
 
     procedure FNC_GetSalesInvoiceNo(DealShipmentID_Co_Par: Code[20]) SalesInvNo_Co_Ret: Code[20]
     var
@@ -123,12 +112,9 @@ codeunit 50029 "DEL Deal Shipment"
                         EXIT
                     END
                 END
-
             UNTIL (dealShipmentConnection_Re_Loc.NEXT() = 0);
         END
-
     end;
-
 
     procedure FNC_GetBRNo(DealShipmentID_Co_Par: Code[20]) BRNo_Co_Ret: Code[20]
     var
@@ -151,12 +137,9 @@ codeunit 50029 "DEL Deal Shipment"
                         EXIT
                     END
                 END
-
             UNTIL (dealShipmentConnection_Re_Loc.NEXT() = 0);
         END
-
     end;
-
 
     procedure FNC_GetPurchInvoiceElementID(DealShipmentID_Co_Par: Code[20]) PurchInvID_Co_Ret: Code[20]
     var
@@ -177,11 +160,9 @@ codeunit 50029 "DEL Deal Shipment"
                         EXIT
                     END
                 END
-
             UNTIL (dealShipmentConnection_Re_Loc.NEXT() = 0);
         END
     end;
-
 
     procedure FNC_GetSalesInvoiceElementID(DealShipmentID_Co_Par: Code[20]) SalesInvID_Co_Ret: Code[20]
     var
@@ -201,12 +182,9 @@ codeunit 50029 "DEL Deal Shipment"
                         EXIT
                     END
                 END
-
             UNTIL (dealShipmentConnection_Re_Loc.NEXT() = 0);
         END
-
     end;
-
 
     procedure FNC_GetBRElementID(DealShipmentID_Co_Par: Code[20]) BRID_Co_Ret: Code[20]
     var
@@ -226,12 +204,9 @@ codeunit 50029 "DEL Deal Shipment"
                         EXIT
                     END
                 END
-
             UNTIL (dealShipmentConnection_Re_Loc.NEXT() = 0);
         END
-
     end;
-
 
     procedure FNC_GetSalesCrMemoElementID(DealShipmentID_Co_Par: Code[20]) CrMemoID_Co_Ret: Code[20]
     var
@@ -252,11 +227,9 @@ codeunit 50029 "DEL Deal Shipment"
                         EXIT
                     END
                 END
-
             UNTIL (dealShipmentConnection_Re_Loc.NEXT() = 0);
         END
     end;
-
 
     procedure FNC_GetPurchCrMemoElementID(DealShipmentID_Co_Par: Code[20]) CrMemoID_Co_Ret: Code[20]
     var
@@ -277,11 +250,9 @@ codeunit 50029 "DEL Deal Shipment"
                         EXIT
                     END
                 END
-
             UNTIL (dealShipmentConnection_Re_Loc.NEXT() = 0);
         END
     end;
-
 
     procedure FNC_GetSalesInvoicePeriod(DealShipmentID_Co_Par: Code[20]) period_Da_Ret: Date
     var
@@ -296,7 +267,6 @@ codeunit 50029 "DEL Deal Shipment"
             period_Da_Ret := CALCDATE('<-CM>', salesInvoiceHeader_Co_Loc."Posting Date")
     end;
 
-
     procedure FNC_SetPurchaseInvoiceNo(DealShipmentID_Co_Par: Code[20]; PurchaseInvoiceNo_Co_Par: Code[20])
     var
         dealShipment_Re_Loc: Record "DEL Deal Shipment";
@@ -306,7 +276,6 @@ codeunit 50029 "DEL Deal Shipment"
             dealShipment_Re_Loc.MODIFY();
         END
     end;
-
 
     procedure FNC_SetSalesInvoiceNo(DealShipmentID_Co_Par: Code[20]; SalesInvoiceNo_Co_Par: Code[20])
     var
@@ -318,7 +287,6 @@ codeunit 50029 "DEL Deal Shipment"
         END
     end;
 
-
     procedure FNC_SetBRNo(DealShipmentID_Co_Par: Code[20]; BRNo_Co_Par: Code[20])
     var
         dealShipment_Re_Loc: Record "DEL Deal Shipment";
@@ -329,4 +297,3 @@ codeunit 50029 "DEL Deal Shipment"
         END
     end;
 }
-

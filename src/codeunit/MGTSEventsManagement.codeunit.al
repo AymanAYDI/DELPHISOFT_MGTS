@@ -121,17 +121,15 @@ codeunit 50100 "DEL MGTS_Events Management"
         UpdateAllShortDimFromDimSetID(GenJournalLine);
     end;
 
-
     local procedure UpdateAllShortDimFromDimSetID(var Rec: Record "Gen. Journal Line")
     var
-        DimMgt: Codeunit "DEL MGTS_FctMgt";
+        DimMgt: Codeunit "DEL MGTS_Functions Mgt";
     begin
         DimMgt.UpdateAllShortDimFromDimSetID(Rec."Dimension Set ID", Rec."DEL Shortcut Dim 3 Code", Rec."DEL Shortcut Dim 4 Code", Rec."DEL Shortcut Dim 5 Code",
                                                 Rec."DEL Shortcut Dim 6 Code", Rec."DEL Shortcut Dim 7 Code", Rec."DEL Shortcut Dim 8 Code");
     end;
 
-
-    ////TAB 36 
+    ////TAB 36
     [EventSubscriber(ObjectType::Table, Database::"Sales Header", 'OnAfterCheckSellToCust', '', false, false)]
     local procedure T36_OnAfterCheckSellToCust_SalesHeader(var SalesHeader: Record "Sales Header"; xSalesHeader: Record "Sales Header"; Customer: Record Customer; CurrentFieldNo: Integer)
 
@@ -172,7 +170,6 @@ codeunit 50100 "DEL MGTS_Events Management"
     begin
         IF NeedUpdateCurrencyFactor THEN
             SalesHeader.SetHideValidationDialog(true);
-
     end;
 
     ///////
@@ -202,7 +199,6 @@ codeunit 50100 "DEL MGTS_Events Management"
         rec.VALIDATE(Rec."DEL Estimated Delivery Date", Rec."Requested Delivery Date");
     end;
 
-
     //tab 97
     [EventSubscriber(ObjectType::Table, Database::"Comment Line", 'OnAfterSetUpNewLine', '', false, false)]
 
@@ -211,8 +207,8 @@ codeunit 50100 "DEL MGTS_Events Management"
         CommentLineRec."DEL User ID" := USERID;
     end;
 
-    //// tab 27 
-    //TODO 
+    //// tab 27
+    //TODO
     // [EventSubscriber(ObjectType::Table, database::Item, 'OnAfterDeleteRelatedData', '', false, false)]
     // local procedure OnAfterDeleteRelatedData(Item: Record Item)
     // var
@@ -242,7 +238,6 @@ codeunit 50100 "DEL MGTS_Events Management"
     //         ERROR(SelectItemErr);
 
     // end;
-
 
     [EventSubscriber(ObjectType::Table, Database::"Purchase Header", 'OnAfterInsertEvent', '', false, false)]
     local procedure T38_OnAfterInsertEvent_PurchaseHeader(var Rec: Record "Purchase Header"; RunTrigger: Boolean)
@@ -356,7 +351,7 @@ codeunit 50100 "DEL MGTS_Events Management"
 
     // [EventSubscriber(ObjectType::Table, Database::"Purchase Header", 'OnValidatePaymentTermsCodeOnBeforeCalcDueDate', '', false, false)]
     // local procedure T38_OnValidatePaymentTermsCodeOnBeforeCalcDueDate_PurchaseHeader(var PurchaseHeader: Record "Purchase Header"; var xPurchaseHeader: Record "Purchase Header"; CalledByFieldNo: Integer; CallingFieldNo: Integer; var IsHandled: Boolean)
-    // var 
+    // var
     //     PaymentTerms: Record "Payment Terms";
     // begin
     //     PaymentTerms.GET(PurchaseHeader."Payment Terms Code");
@@ -381,7 +376,7 @@ codeunit 50100 "DEL MGTS_Events Management"
     var
         SpecPurchLine: Record "Purchase Line";
         ConfirmManagement: Codeunit "Confirm Management";
-        MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
+        MGTSFactMgt: Codeunit "DEL MGTS_Functions Mgt";
         RecreatePurchLinesMsg: Label 'If you change %1, the existing purchase lines will be deleted and new purchase lines based on the new information in the header will be created.\\Do you want to continue?', Comment = '%1: FieldCaption';
         ResetItemChargeAssignMsg: Label 'If you change %1, the existing purchase lines will be deleted and new purchase lines based on the new information in the header will be created.\The amount of the item charge assignment will be reset to 0.\\Do you want to continue?', Comment = '%1: FieldCaption';
         ConfirmText: Text;
@@ -410,7 +405,6 @@ codeunit 50100 "DEL MGTS_Events Management"
         end;
     end;
     ////
-
 
     [EventSubscriber(ObjectType::Table, Database::"Purchase Header", 'OnBeforeTransferSavedFieldsSpecialOrder', '', false, false)]
     local procedure T38_OnBeforeTransferSavedFieldsSpecialOrder_PurchaseHeader(var DestinationPurchaseLine: Record "Purchase Line"; var SourcePurchaseLine: Record "Purchase Line"; var IsHandled: Boolean)
@@ -457,13 +451,11 @@ codeunit 50100 "DEL MGTS_Events Management"
         PurchHeader.SuspendStatusCheck(false);
     end;
 
-
     [EventSubscriber(ObjectType::Table, Database::"Purchase Header", 'OnValidateBuyFromVendorNoOnAfterUpdateBuyFromCont', '', false, false)]
     local procedure T38_OnValidateBuyFromVendorNoOnAfterUpdateBuyFromCont_PurchaseHeader(var PurchaseHeader: Record "Purchase Header"; xPurchaseHeader: Record "Purchase Header"; CallingFieldNo: Integer; var SkipBuyFromContact: Boolean)
     begin
         PurchaseHeader.NTO_UpdateForwardingAgent();
     end;
-
 
     [EventSubscriber(ObjectType::Table, Database::"Purchase Line", 'OnAfterInsertEvent', '', false, false)]
     local procedure T39_OnAfterInsertEvent_PurchaseLine(var Rec: Record "Purchase Line"; RunTrigger: Boolean)
@@ -495,7 +487,6 @@ codeunit 50100 "DEL MGTS_Events Management"
             UpdateRequestManager_Cu.FNC_Process_Requests(urm_Re_Loc, FALSE, FALSE, TRUE);
 
             Rec.DELETE();
-
         END;
         Rec.Modify();
     end;
@@ -522,11 +513,11 @@ codeunit 50100 "DEL MGTS_Events Management"
         IsHandled := true;
     end;
 
-    ////COD 231
+    ////CDU231
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post", 'OnBeforeCode', '', false, false)]
     local procedure COD231_OnBeforeCode_GenJnlPost(var GenJournalLine: Record "Gen. Journal Line"; var HideDialog: Boolean)
     var
-        MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
+        MGTSFactMgt: Codeunit "DEL MGTS_Functions Mgt";
     begin
         MGTSFactMgt.OnBeforeCodeFct(GenJournalLine, HideDialog);
     end;
@@ -535,7 +526,7 @@ codeunit 50100 "DEL MGTS_Events Management"
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post", 'OnCodeOnAfterGenJnlPostBatchRun', '', false, false)]
     local procedure COD231_OnCodeOnAfterGenJnlPostBatchRun_GenJnlPost(var GenJnlLine: Record "Gen. Journal Line")
     var
-        MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
+        MGTSFactMgt: Codeunit "DEL MGTS_Functions Mgt";
     begin
         MGTSFactMgt.OnCodeOnAfterGenJnlPostBatchRunfct(GenJnlLine);
     end;
@@ -547,16 +538,16 @@ codeunit 50100 "DEL MGTS_Events Management"
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post", 'OnGenJnlLineSetFilter', '', false, false)]
     local procedure COD231_OnGenJnlLineSetFilter_GenJnlPost(var GenJournalLine: Record "Gen. Journal Line")
     var
-        MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
+        MGTSFactMgt: Codeunit "DEL MGTS_Functions Mgt";
     begin
         MGTSFactMgt.OnGenJnlLineSetFilter_Fct(GenJournalLine);
     end;
 
-    ////COD 232 
+    ////CDU232
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post+Print", 'OnBeforePostJournalBatch', '', false, false)]
     local procedure COD232_OnBeforePostJournalBatch_GenJnlPostPrint(var GenJournalLine: Record "Gen. Journal Line"; var HideDialog: Boolean)
     var
-        MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
+        MGTSFactMgt: Codeunit "DEL MGTS_Functions Mgt";
     begin
         MGTSFactMgt.OnBeforeCodeFct(GenJournalLine, HideDialog);
     end;
@@ -564,7 +555,7 @@ codeunit 50100 "DEL MGTS_Events Management"
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post+Print", 'OnAfterPostJournalBatch', '', false, false)]
     local procedure COD232_OnAfterPostJournalBatch_GenJnlPostPrint(var GenJournalLine: Record "Gen. Journal Line");
     var
-        MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
+        MGTSFactMgt: Codeunit "DEL MGTS_Functions Mgt";
     begin
         MGTSFactMgt.OnCodeOnAfterGenJnlPostBatchRunfct(GenJournalLine);
     end;
@@ -573,7 +564,7 @@ codeunit 50100 "DEL MGTS_Events Management"
 
     local procedure COD232_OnGenJnlLineSetFilter_GenJnlPostPrint(var GenJournalLine: Record "Gen. Journal Line")
     var
-        MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
+        MGTSFactMgt: Codeunit "DEL MGTS_Functions Mgt";
     begin
         MGTSFactMgt.OnGenJnlLineSetFilter_Fct(GenJournalLine);
     end;
@@ -591,7 +582,6 @@ codeunit 50100 "DEL MGTS_Events Management"
                 ReleasePurchaseDocument.ReleasePurchaseHeader(PurchOrderHeader, FALSE);
             ReqwkshMorder.FinalizeOrderHeader(PurchOrderHeader, ReqLine);
         end;
-
     end;
     //// COD333
 
@@ -652,7 +642,6 @@ codeunit 50100 "DEL MGTS_Events Management"
             //                 Qty := Qty + RequisitionLine.Quantity;
             UNTIL RequisitionLine.NEXT = 0;
         END;
-
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Req. Wksh.-Make Order", 'OnInitPurchOrderLineOnAfterValidateLineDiscount', '', false, false)]
@@ -683,7 +672,6 @@ codeunit 50100 "DEL MGTS_Events Management"
     end;
 
     //TODO:I suppose CommitIsSupressed say if the commit is suppressed (Skipped) during the posting
-
 
     [EventSubscriber(ObjectType::Table, Database::"Purchase Line", 'OnDeleteOnBeforePurchLineDeleteAll', '', false, false)]
     local procedure T39_OnDeleteOnBeforePurchLineDeleteAll_PurchaseLine(var PurchaseLine: Record "Purchase Line")
@@ -780,7 +768,6 @@ codeunit 50100 "DEL MGTS_Events Management"
     //         PurchaseLine.UpdateSalesEstimatedDelivery();
     // end;           TODO: check filed 10 : "Expected Receipt Date"
 
-
     [EventSubscriber(ObjectType::Table, Database::"Purchase Line", 'OnValidateQuantityOnAfterPlanPriceCalcByField', '', false, false)]
     local procedure T39_OnValidateQuantityOnAfterPlanPriceCalcByField_PurchaseLine(var PurchaseLine: Record "Purchase Line"; xPurchaseLine: Record "Purchase Line")
     var
@@ -791,7 +778,7 @@ codeunit 50100 "DEL MGTS_Events Management"
             PurchaseLine.VALIDATE(PurchaseLine."DEL Total volume", (Item."DEL Vol cbm carton transport" * PurchaseLine.Quantity / Item."DEL PCB"));
     end;
 
-    //COD 80
+    //CDU80
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnAfterPostSalesDoc', '', false, false)]
     local procedure COD80_OnAfterPostSalesDoc(var SalesHeader: Record "Sales Header";
      var GenJnlPostLine: Codeunit "Gen. Jnl.-Post Line"; SalesShptHdrNo: Code[20];
@@ -815,29 +802,12 @@ codeunit 50100 "DEL MGTS_Events Management"
                     MGTSEDIManagement.GenerateSalesInvoiceEDIBuffer(SalesInvHdrNo, TRUE);
                 END;
         END;
-
     end;
-    //TODO COD80  // je n'ai pas trouvé un evenement qui appel la "SuppressCommit"
-    // LOCAL PROCEDURE UpdateWhseDocuments();
-    // BEGIN
-    //   IF WhseReceive THEN BEGIN
-    //     //MGTS0123; MHH; single
-    //     WhsePostRcpt.SkipCUCommit(SkipCommit);
-    //     WhsePostRcpt.PostUpdateWhseDocuments(WhseRcptHeader);
-    //     TempWhseRcptHeader.DELETE;
-    //   END;
-    //   IF WhseShip THEN BEGIN
-    //     //MGTS0123; MHH; single
-    //     WhsePostShpt.SkipCUCommit(SkipCommit);
-    //     WhsePostShpt.PostUpdateWhseDocuments(WhseShptHeader);
-    //     TempWhseShptHeader.DELETE;
-    //   END;
-    // END;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnAfterInsertPostedHeaders', '', false, false)]
     local procedure COD80_OnAfterInsertPostedHeaders_SalesHeader(var SalesHeader: Record "Sales Header"; var SalesShipmentHeader: Record "Sales Shipment Header"; var SalesInvoiceHeader: Record "Sales Invoice Header"; var SalesCrMemoHdr: Record "Sales Cr.Memo Header"; var ReceiptHeader: Record "Return Receipt Header")
     var
-        MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
+        MGTSFactMgt: Codeunit "DEL MGTS_Functions Mgt";
     begin
         MGTSFactMgt.OnAfterInsertPostedHeaders(SalesHeader, SalesShipmentHeader, SalesInvoiceHeader, SalesCrMemoHdr, ReceiptHeader);
     end;
@@ -846,17 +816,17 @@ codeunit 50100 "DEL MGTS_Events Management"
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnBeforeDeleteAfterPosting', '', false, false)]
     local procedure COD80_OnBeforeDeleteAfterPosting(var SalesHeader: Record "Sales Header"; var SalesInvoiceHeader: Record "Sales Invoice Header"; var SalesCrMemoHeader: Record "Sales Cr.Memo Header"; var SkipDelete: Boolean; CommitIsSuppressed: Boolean; EverythingInvoiced: Boolean; var TempSalesLineGlobal: Record "Sales Line" temporary)
     var
-        MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
+        MGTSFactMgt: Codeunit "DEL MGTS_Functions Mgt";
     begin
         MGTSFactMgt.ReverseProvisionEntries(SalesHeader);
     end;
 
-    //CDU 81 
+    //CDU 81
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post (Yes/No)", 'OnBeforeConfirmSalesPost', '', false, false)]
     local procedure COD81_OnBeforeConfirmSalesPostFct_SalesHeader(var SalesHeader: Record "Sales Header"; var HideDialog: Boolean; var IsHandled: Boolean; var DefaultOption: Integer; var PostAndSend: Boolean)
     var
-        MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
+        MGTSFactMgt: Codeunit "DEL MGTS_Functions Mgt";
     begin
         MGTSFactMgt.OnBeforeConfirmSalesPostFct_SalesHeader(SalesHeader, HideDialog, IsHandled, DefaultOption, PostAndSend);
     end;
@@ -864,7 +834,7 @@ codeunit 50100 "DEL MGTS_Events Management"
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post (Yes/No)", 'OnAfterConfirmPost', '', false, false)]
     local procedure COD81_OnAfterConfirmPost(var SalesHeader: Record "Sales Header")
     var
-        MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
+        MGTSFactMgt: Codeunit "DEL MGTS_Functions Mgt";
     begin
         MGTSFactMgt.OnAfterConfirmPost(SalesHeader);
     end;
@@ -879,16 +849,14 @@ codeunit 50100 "DEL MGTS_Events Management"
             Deal_Cu.FNC_Reinit_Deal(dealShipmentSelection_Re.Deal_ID, FALSE, FALSE);
     end;
 
-    //----------CDU 82 
+    //----------CDU 82
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post + Print", 'OnBeforeConfirmPost', '', false, false)]
     local procedure COD82_OnBeforeConfirmPostFct(var SalesHeader: Record "Sales Header"; var HideDialog: Boolean; var IsHandled: Boolean; var SendReportAsEmail: Boolean; var DefaultOption: Integer)
     var
-        MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
+        MGTSFactMgt: Codeunit "DEL MGTS_Functions Mgt";
     begin
         MGTSFactMgt.OnBeforeConfirmPostFct_COD82(SalesHeader, HideDialog, IsHandled, SendReportAsEmail, DefaultOption);
-
-
     end;
     ///////
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post + Print", 'OnAfterConfirmPost', '', false, false)]
@@ -910,17 +878,16 @@ codeunit 50100 "DEL MGTS_Events Management"
             dealShipmentSelection_Re_Loc.SETRANGE(USER_ID, USERID);
             dealShipmentSelection_Re_Loc.DELETEALL();
         END;
-
     end;
 
-    /////COD 333
+    /////CDU333
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Req. Wksh.-Make Order", 'OnAfterInsertPurchOrderLine', '', false, false)]
 
-    local procedure OnAfterInsertPurchOrderLine(var PurchOrderLine: Record "Purchase Line"; var NextLineNo: Integer; var RequisitionLine: Record "Requisition Line"; var PurchOrderHeader: Record "Purchase Header")
+    local procedure CDU333_OnAfterInsertPurchOrderLine(var PurchOrderLine: Record "Purchase Line"; var NextLineNo: Integer; var RequisitionLine: Record "Requisition Line"; var PurchOrderHeader: Record "Purchase Header")
     begin
         PurchOrderHeader.NTO_ReportPurchDim2SalesLines(PurchOrderHeader);
     end;
-    ////COD 333 //TODO
+    ////CDU333 //TODO
     // local procedure OnBeforeInsertHeader(RequisitionLine: Record "Requisition Line"; PurchaseHeader: Record "Purchase Header"; var OrderDateReq: Date; var PostingDateReq: Date; var ReceiveDateReq: Date; var ReferenceReq: Text[35])
     // begin
     //     IF HideDialog THEN
@@ -932,17 +899,16 @@ codeunit 50100 "DEL MGTS_Events Management"
     local procedure OnAfterInsertPurchOrderHeader(var RequisitionLine: Record "Requisition Line"; var PurchaseOrderHeader: Record "Purchase Header"; CommitIsSuppressed: Boolean; SpecialOrder: Boolean)
     var
 
-        MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
+        MGTSFactMgt: Codeunit "DEL MGTS_Functions Mgt";
     begin
         MGTSFactMgt.OnAfterInsertPurchOrderHeaderFct(RequisitionLine, PurchaseOrderHeader, CommitIsSuppressed, SpecialOrder)
     end;
-
 
     //---------CDU 91
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post (Yes/No)", 'OnBeforeConfirmPost', '', false, false)]
     local procedure COD91_OnBeforeConfirmPost_PurchaseHeader(var PurchaseHeader: Record "Purchase Header"; var HideDialog: Boolean; var IsHandled: Boolean; var DefaultOption: Integer)
     var
-        MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
+        MGTSFactMgt: Codeunit "DEL MGTS_Functions Mgt";
     begin
         MGTSFactMgt.OnBeforeConfirmPostfct_PurchaseHeader(PurchaseHeader, HideDialog, IsHandled, DefaultOption);
     end;
@@ -973,7 +939,7 @@ codeunit 50100 "DEL MGTS_Events Management"
         ACOConnection_Re_Loc: Record "DEL ACO Connection";
         ConfirmManagement: Codeunit "Confirm Management";
         Deal_Cu: Codeunit "DEL Deal";
-        MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
+        MGTSFactMgt: Codeunit "DEL MGTS_Functions Mgt";
         PostConfirmQst: Label 'Do you want to post the %1?';
 
     begin
@@ -986,15 +952,15 @@ codeunit 50100 "DEL MGTS_Events Management"
         case PurchaseHeader."Document Type" of
             PurchaseHeader."Document Type"::Order:
                 if not MGTSFactMgt.SelectPostOrderOption(PurchaseHeader, DefaultOption) then
-                    exit; // when false 
+                    exit; // when false
             PurchaseHeader."Document Type"::"Return Order":
                 if not MGTSFactMgt.SelectPostReturnOrderOption(PurchaseHeader, DefaultOption) then
-                    exit; // when false 
+                    exit; // when false
             else
                 if not ConfirmManagement.GetResponseOrDefault(
                      StrSubstNo(PostConfirmQst, Format(PurchaseHeader."Document Type")), true)
                 then
-                    exit;// when false 
+                    exit;// when false
         end;
         IF PurchaseHeader."Document Type" = PurchaseHeader."Document Type"::Order THEN BEGIN
             ACOConnection_Re_Loc.RESET();
@@ -1003,7 +969,6 @@ codeunit 50100 "DEL MGTS_Events Management"
             IF ACOConnection_Re_Loc.FindFirst() THEN
                 Deal_Cu.FNC_Reinit_Deal(ACOConnection_Re_Loc.Deal_ID, FALSE, FALSE);
             PurchaseHeader."Print Posted Documents" := false;
-
         END;
     end;
 
@@ -1011,11 +976,11 @@ codeunit 50100 "DEL MGTS_Events Management"
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post (Yes/No)", 'OnBeforeRunPurchPost', '', false, false)]
     local procedure COD91_OnBeforeRunPurchPost(var PurchaseHeader: Record "Purchase Header")
     VAR
-        PostPurchCU: Codeunit 90;
-        MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
+        PostPurchCU: Codeunit "Purch.-Post";
+        MGTSFactMgt: Codeunit "DEL MGTS_Functions Mgt";
         GlobalFunction: Codeunit "DEL MGTS Set/Get Functions";
     begin
-        //TODO 
+        //TODO
         //MGTS0123; MHH; begin
         IF not GlobalFunction.GetSpecOrderPosting() THEN BEGIN
             CLEAR(PostPurchCU);
@@ -1031,10 +996,9 @@ codeunit 50100 "DEL MGTS_Events Management"
 
     local procedure COD92_OnBeforeConfirmPost(var PurchaseHeader: Record "Purchase Header"; var HideDialog: Boolean; var IsHandled: Boolean; var DefaultOption: Integer)
     var
-        MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
+        MGTSFactMgt: Codeunit "DEL MGTS_Functions Mgt";
     begin
         MGTSFactMgt.OnBeforeConfirmPostfct_PurchaseHeader(PurchaseHeader, HideDialog, IsHandled, DefaultOption);
-
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post + Print", 'OnAfterPost', '', false, false)]
@@ -1065,7 +1029,7 @@ codeunit 50100 "DEL MGTS_Events Management"
         ACOConnection_Re_Loc: Record "DEL ACO Connection";
         ConfirmManagement: Codeunit "Confirm Management";
         Deal_Cu: Codeunit "DEL Deal";
-        MGTSFactMgt: Codeunit "DEL MGTS_FctMgt";
+        MGTSFactMgt: Codeunit "DEL MGTS_Functions Mgt";
         PostAndPrintQst: Label 'Do you want to post and print the %1?';
 
     begin
@@ -1073,15 +1037,15 @@ codeunit 50100 "DEL MGTS_Events Management"
         case PurchHeader."Document Type" of
             PurchHeader."Document Type"::Order:
                 if not MGTSFactMgt.SelectPostOrderOption(PurchHeader, DefaultOption) then
-                    exit; // when false 
+                    exit; // when false
             PurchHeader."Document Type"::"Return Order":
                 if not MGTSFactMgt.SelectPostReturnOrderOption(PurchHeader, DefaultOption) then
-                    exit; // when false 
+                    exit; // when false
             else
                 if not ConfirmManagement.GetResponseOrDefault(
                      StrSubstNo(PostAndPrintQst, PurchHeader."Document Type"), true)
                 then
-                    exit; // when false 
+                    exit; // when false
 
                 IF PurchHeader."Document Type" = PurchHeader."Document Type"::Order THEN BEGIN
                     ACOConnection_Re_Loc.RESET();
@@ -1092,7 +1056,6 @@ codeunit 50100 "DEL MGTS_Events Management"
                 END;
         end;
     end;
-
 
     //TODO: les variables "tempSpecialSHBuffer" et "SpecOrderPost"sont globales.-----------------
     //TODO [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post + Print", 'OnBeforeRunPurchPost', '', false, false)]
@@ -1108,7 +1071,6 @@ codeunit 50100 "DEL MGTS_Events Management"
 
     //         PostPurchCU.GetSpecialOrderBuffer(tempSpecialSHBuffer);
 
-
     //         GetReport(PurchHeader);
 
     //         PostPurchCU.GetSpecialOrderBuffer(lTempSHBuffer);
@@ -1117,10 +1079,9 @@ codeunit 50100 "DEL MGTS_Events Management"
     //                 lSalesPostPrint.GetReport(lTempSHBuffer);
     //             UNTIL lTempSHBuffer.NEXT = 0;
 
-
     //     end;
 
-    ///// COD 90 : to be continued 
+    ///// CDU90 : to be continued
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post", 'OnBeforePostPurchaseDoc', '', false, false)]
 
     local procedure COD90_OnBeforePostPurchaseDoc(var PurchaseHeader: Record "Purchase Header"; PreviewMode: Boolean; CommitIsSupressed: Boolean; var HideProgressWindow: Boolean; var ItemJnlPostLine: Codeunit "Item Jnl.-Post Line"; var IsHandled: Boolean)
@@ -1131,7 +1092,6 @@ codeunit 50100 "DEL MGTS_Events Management"
         //     SpecOrderPosting := TRUE;
         // END ELSE
         //     CLEARALL;
-
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post", 'OnAfterCheckMandatoryFields', '', false, false)]
@@ -1146,7 +1106,7 @@ codeunit 50100 "DEL MGTS_Events Management"
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch.-Post", 'OnBeforePostCommitPurchaseDoc', '', false, false)]
     local procedure COD90_OnBeforePostCommitPurchaseDoc(var PurchaseHeader: Record "Purchase Header"; var GenJnlPostLine: Codeunit "Gen. Jnl.-Post Line"; PreviewMode: Boolean; ModifyHeader: Boolean; var CommitIsSupressed: Boolean; var TempPurchLineGlobal: Record "Purchase Line" temporary)
     var
-        MGTSFctMgt: Codeunit "DEL MGTS_FctMgt";
+        MGTSFctMgt: Codeunit "DEL MGTS_Functions Mgt";
     begin
         IF CommitIsSupressed THEN
             CommitIsSupressed := MGTSFctMgt.UpdateAssosSpecialOrderPostingNos(PurchaseHeader, PreviewMode)
@@ -1154,26 +1114,12 @@ codeunit 50100 "DEL MGTS_Events Management"
             CommitIsSupressed := FALSE;
     end;
 
-
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"GLN Calculator", 'OnBeforeIsValidCheckDigit', '', false, false)]
-    procedure COD1607_OnBeforeIsValidCheckDigit(GLNValue: Code[20]; ExpectedSize: Integer; var IsValid: Boolean; var IsHandled: Boolean)
+    procedure Cdu1607_OnBeforeIsValidCheckDigit(GLNValue: Code[20]; ExpectedSize: Integer; var IsValid: Boolean; var IsHandled: Boolean)
     var
         GLNCheckDigitErr: Label 'The GLN %1 is not valid.';
-        GLNLengthErr: Label 'The GLN length should be %1 and not %2.';
     begin
-        if GLNValue = '' then begin
-            MESSAGE(GLNCheckDigitErr, GLNValue);
-            IsValid := true;
-            IsHandled := true;
-        end else begin
-            if StrLen(GLNValue) <> ExpectedSize then
-                Error(GLNLengthErr, ExpectedSize, StrLen(GLNValue));
-
-            if Format(StrCheckSum(CopyStr(GLNValue, 1, ExpectedSize - 1), '131313131313')) = Format(GLNValue[ExpectedSize]) then
-                MESSAGE(GLNCheckDigitErr, GLNValue);
-            IsValid := true;
-            IsHandled := true;
-        end;
+        MESSAGE(GLNCheckDigitErr, GLNValue);
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"CustVendBank-Update", 'OnAfterUpdateCustomer', '', false, false)]
@@ -1190,6 +1136,7 @@ codeunit 50100 "DEL MGTS_Events Management"
         Vend: Record Vendor;
         Var_RecRef: RecordRef;
         Num_seq: Integer;
+
     begin
         NoteAuditSocial.RESET();
         NoteAuditSocial.SETRANGE(NoteAuditSocial.Type, NoteAuditSocial.Type::Contact);
@@ -1268,6 +1215,29 @@ codeunit 50100 "DEL MGTS_Events Management"
             UNTIL Var_recLink.NEXT() = 0;
         END;
     end;
+
+
+    //cdu 5702
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Dist. Integration", 'OnBeforeCheckAddSpecialOrderToAddress', '', false, false)]
+
+    local procedure Cdu5702_OnBeforeCheckAddSpecialOrderToAddress(var PurchaseHeader: Record "Purchase Header"; SalesHeader: Record "Sales Header"; var IsHandled: Boolean)
+    begin
+        IsHandled := true;
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Dist. Integration", 'OnAfterInsertPurchLine', '', false, false)]
+
+    local procedure Cdu5702_OnAfterInsertPurchLine(var PurchaseLine: Record "Purchase Line"; SalesLine: Record "Sales Line"; var NextLineNo: Integer)
+    begin
+        PurchaseLine.INSERT(TRUE);
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Dist. Integration", 'OnBeforeSalesLineModify', '', false, false)]
+    local procedure Cdu5702_OnBeforeSalesLineModify(var SalesLine: Record "Sales Line"; PurchaseLine: Record "Purchase Line")
+    begin
+        SalesLine."Shortcut Dimension 1 Code" := SalesLine."Special Order Purchase No.";
+    end;
+
     //  Codeunit 7000
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales Price Calc. Mgt.", 'OnBeforeSalesLinePriceExists', '', false, false)]
     local procedure COD7000_OnBeforeSalesLinePriceExists(var SalesLine: Record "Sales Line"; var SalesHeader: Record "Sales Header"; var TempSalesPrice: Record "Sales Price" temporary; Currency: Record Currency; CurrencyFactor: Decimal; StartingDate: Date; Qty: Decimal; QtyPerUOM: Decimal; ShowAll: Boolean; var InHandled: Boolean)
@@ -1278,45 +1248,58 @@ codeunit 50100 "DEL MGTS_Events Management"
         //     SalesLine."No.",SalesLine."Variant Code",SalesLine."Unit of Measure Code",
         //     SalesHeader."Currency Code",SalesPriceCalcMgt.SalesHeaderStartDate(SalesHeader,DateCaption),ShowAll); TODO: variable global "DateCaption"
     end;
+    //CDU431
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"IC Outbox Export", 'OnBeforeRunOutboxTransactions', '', false, false)]
+    local procedure COD431_OnBeforeRunOutboxTransactions(var ICOutboxTransaction: Record "IC Outbox Transaction"; var IsHandled: Boolean)
+    var
+        CopyICOutboxTransaction: Record "IC Outbox Transaction";
+        CompanyInfo: Record "Company Information";
+        TransitaireMgt: Codeunit "DEL TransitaireMgt";
+        ICOutBoxTrans_Loc: Record "IC Outbox Transaction";
+        ICOutBoxTrans: Record "IC Outbox Transaction";
+        ICOutboxExport: Codeunit "IC Outbox Export";
+    begin
+        CompanyInfo.Get();
+        CopyICOutboxTransaction.Copy(ICOutboxTransaction);
+        CopyICOutboxTransaction.SetRange("Line Action",
+        CopyICOutboxTransaction."Line Action"::"Send to IC Partner");
+        IF ICOutBoxTrans.FINDFIRST THEN
+            REPEAT
+                ICOutBoxTrans_Loc.SETRANGE(ICOutBoxTrans_Loc."Transaction No.", ICOutBoxTrans."Transaction No.");
+                ICOutBoxTrans_Loc.SETRANGE(ICOutBoxTrans_Loc."IC Partner Code", ICOutBoxTrans."IC Partner Code");
+                ICOutBoxTrans_Loc.SETRANGE(ICOutBoxTrans_Loc."Transaction Source", ICOutBoxTrans."Transaction Source");
+                ICOutBoxTrans_Loc.SETRANGE(ICOutBoxTrans_Loc."Document Type", ICOutBoxTrans."Document Type");
+                ICOutBoxTrans_Loc.SETRANGE(ICOutBoxTrans_Loc."Line Action", "Line Action"::"Send to IC Partner");
+                ICOutBoxTrans_Loc.SETRANGE(ICOutBoxTrans_Loc."Document No.", ICOutBoxTrans."Document No.");
+                ICOutBoxTrans_Loc.FINDFIRST;
+            //TODO
+            // ICOutboxExport.UpdateICStatus(ICOutBoxTrans_Loc);
 
-    // [EventSubscriber(ObjectType::Codeunit, Codeunit::"IC Outbox Export", 'OnBeforeRunOutboxTransactions', '', false, false)] TODO: procedure local
-    // local procedure COD431_OnBeforeRunOutboxTransactions(var ICOutboxTransaction: Record "IC Outbox Transaction"; var IsHandled: Boolean)
-    // var
-    //     CopyICOutboxTransaction: Record "IC Outbox Transaction";
-    //     CompanyInfo: Record "Company Information";
-    //     TransitaireMgt: Codeunit "DEL TransitaireMgt";
-    //     ICOutBoxTrans_Loc: Record "IC Outbox Transaction";
-    //     ICOutBoxTrans: Record "IC Outbox Transaction";
-    //     ICOutboxExport: Codeunit "IC Outbox Export";
-    // begin
-    //     CompanyInfo.Get();
-    //     CopyICOutboxTransaction.Copy(ICOutboxTransaction);
-    //     CopyICOutboxTransaction.SetRange("Line Action",
-    //     CopyICOutboxTransaction."Line Action"::"Send to IC Partner");
-    //         IF ICOutBoxTrans.FINDFIRST THEN
-    //         REPEAT
-    //         ICOutBoxTrans_Loc.SETRANGE(ICOutBoxTrans_Loc."Transaction No.",ICOutBoxTrans."Transaction No.");
-    //         ICOutBoxTrans_Loc.SETRANGE(ICOutBoxTrans_Loc."IC Partner Code",ICOutBoxTrans."IC Partner Code");
-    //         ICOutBoxTrans_Loc.SETRANGE(ICOutBoxTrans_Loc."Transaction Source",ICOutBoxTrans."Transaction Source");
-    //         ICOutBoxTrans_Loc.SETRANGE(ICOutBoxTrans_Loc."Document Type",ICOutBoxTrans."Document Type");
-    //         ICOutBoxTrans_Loc.SETRANGE(ICOutBoxTrans_Loc."Line Action","Line Action"::"Send to IC Partner");
-    //         ICOutBoxTrans_Loc.SETRANGE(ICOutBoxTrans_Loc."Document No.",ICOutBoxTrans."Document No.");
-    //         ICOutBoxTrans_Loc.FINDFIRST;
-    //         ICOutboxExport.UpdateICStatus(ICOutBoxTrans_Loc);
-
-    //         IF (ICOutBoxTrans_Loc."Source Type"::"Forwarding Document"= ICOutBoxTrans_Loc."Source Type") THEN BEGIN
-    //           TransitaireMgt.SendToTransitairePartner(ICOutBoxTrans_Loc);
-    //           ICOutboxExport.SendToExternalPartner(ICOutBoxTrans_Loc);
-    //           SendToInternalPartner(ICOutBoxTrans_Loc);
-    //         END ELSE BEGIN // LOCO
-    //           SendToExternalPartner(ICOutBoxTrans_Loc);
-    //           SendToInternalPartner(ICOutBoxTrans_Loc);
-    //           ICOutBoxTrans_Loc.SETRANGE("Line Action","Line Action"::"Return to Inbox");
-    //           ReturnToInbox(ICOutBoxTrans_Loc);
-    //           CancelTrans(ICOutBoxTrans_Loc);
-    //         END;
-    //         UNTIL ICOutBoxTrans.NEXT=0;
-    // end;
+            // IF (ICOutBoxTrans_Loc."Source Type"::"Forwarding Document"= ICOutBoxTrans_Loc."Source Type") THEN BEGIN
+            //   TransitaireMgt.SendToTransitairePartner(ICOutBoxTrans_Loc);
+            //   ICOutboxExport.SendToExternalPartner(ICOutBoxTrans_Loc);
+            //   SendToInternalPartner(ICOutBoxTrans_Loc);
+            // END ELSE BEGIN // LOCO
+            //   SendToExternalPartner(ICOutBoxTrans_Loc);
+            //   SendToInternalPartner(ICOutBoxTrans_Loc);
+            //   ICOutBoxTrans_Loc.SETRANGE("Line Action","Line Action"::"Return to Inbox");
+            //   ReturnToInbox(ICOutBoxTrans_Loc);
+            //   CancelTrans(ICOutBoxTrans_Loc);
+            // END;
+            UNTIL ICOutBoxTrans.NEXT = 0;
+    end;
+    // cdu 1221
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"SEPA CT-Fill Export Buffer", 'OnFillExportBufferOnBeforeInsertPaymentExportData', '', false, false)]
+    local procedure Cdu1221_OnFillExportBufferOnBeforeInsertPaymentExportData(var PaymentExportData: Record "Payment Export Data"; var TempGenJnlLine: Record "Gen. Journal Line" temporary)
+    begin
+        PaymentExportData."Payment Reference" := TempGenJnlLine."Payment Reference";
+    end;
+    //cdu 1247
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Process Gen. Journal  Lines", 'OnBeforeUpdateGenJnlLinesProcedure', '', false, false)]
+    local procedure Cdu247_OnBeforeUpdateGenJnlLinesProcedure(var GenJournalLineTemplate: Record "Gen. Journal Line"; var IsHandled: Boolean)
+    begin
+        IsHandled := true;
+    end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::ICInboxOutboxMgt, 'OnBeforeSendPurchDoc', '', false, false)]
     procedure OnBeforeSendPurchDoc(var PurchHeader: Record "Purchase Header"; var Post: Boolean; var IsHandled: Boolean)
@@ -1324,7 +1307,7 @@ codeunit 50100 "DEL MGTS_Events Management"
         ICOutboxTransaction_Rec: Record "IC Outbox Transaction";
         ICPartner: Record "IC Partner";
         PurchaseLine_Rec: Record "Purchase Line";
-        MGTSFctMgt: Codeunit "DEL MGTS_FctMgt";
+        MGTSFctMgt: Codeunit "DEL MGTS_Functions Mgt";
         ICInboxOutboxMgt: Codeunit ICInboxOutboxMgt;
         Qte: Decimal;
         Text002: Label 'You cannot send IC document because %1 %2 has %3 %4.';
@@ -1370,12 +1353,12 @@ codeunit 50100 "DEL MGTS_Events Management"
         PageEditable := true;
     end;
 
-    //page ext 50030 
+    //page ext 50030
     //  [EventSubscriber(ObjectType::Codeunit, Codeunit::ReqJnlManagement, 'OnAfterGetDescriptionAndRcptName', '', false, false)]
 
     // local procedure OnAfterGetDescriptionAndRcptName(var ReqLine: Record "Requisition Line"; var Description: Text[100]; var BuyFromVendorName: Text[100]; var LastReqLine: Record "Requisition Line")
     // var
-    //     ColoredPurchDueDate: Boolean; //TODO : a vérifier 
+    //     ColoredPurchDueDate: Boolean; //TODO : a vérifier
     // begin
     //     ColoredPurchDueDate := ReqLine."DEL Purchase Order Due Date" < TODAY;
     // end;
@@ -1383,8 +1366,8 @@ codeunit 50100 "DEL MGTS_Events Management"
     [EventSubscriber(ObjectType::page, page::"Sales Invoice", 'OnPostOnAfterSetDocumentIsPosted', '', false, false)]
     local procedure P43_OnPostOnAfterSetDocumentIsPosted(SalesHeader: Record "Sales Header"; var IsScheduledPosting: Boolean; var DocumentIsPosted: Boolean)
     var
-        GLEntry: Record 17;
-        NoSeries: Record 308;
+        GLEntry: Record "G/L Entry";
+        NoSeries: Record "No. Series";
         Text50000: Label 'Please note that there is no related provision. Do you want to continue?;FRS=Attention il n''a pas de provision li‚e. Voulez-vous continuer ?';
 
     begin
@@ -1398,8 +1381,5 @@ codeunit 50100 "DEL MGTS_Events Management"
                 IF NOT CONFIRM(Text50000) THEN
                     EXIT;
         END;
-
     end;
-
-
 }

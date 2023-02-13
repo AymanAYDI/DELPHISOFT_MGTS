@@ -47,7 +47,7 @@ tableextension 50050 "DEL PurchaseHeaderArchive" extends "Purchase Header Archiv
         }
         field(50011; "DEL Requested Delivery Date"; Date)
         {
-            AccessByPermission = TableData 99000880 = R;
+            AccessByPermission = TableData "Order Promising Line" = R;
             Caption = 'Requested Delivery Date';
         }
         field(50012; "DEL Rel. Exch. Rate Amount"; Decimal)

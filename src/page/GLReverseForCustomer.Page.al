@@ -1,3 +1,4 @@
+#pragma implicitwith disable
 page 50128 "DEL G/L Reverse For Customer"
 {
 
@@ -390,7 +391,7 @@ page 50128 "DEL G/L Reverse For Customer"
         IF GLAcc."No." <> Rec."G/L Account No." THEN
             IF NOT GLAcc.GET(Rec."G/L Account No.") THEN
                 IF Rec.GETFILTER("G/L Account No.") <> '' THEN
-                    IF GLAcc.GET(GETRANGEMIN("G/L Account No.")) THEN;
+                    IF GLAcc.GET(Rec.GETRANGEMIN("G/L Account No.")) THEN;
         EXIT(STRSUBSTNO('%1 %2', GLAcc."No.", GLAcc.Name))
     end;
 
@@ -399,4 +400,6 @@ page 50128 "DEL G/L Reverse For Customer"
         CurrPage.SETSELECTIONFILTER(GLEntry);
     end;
 }
+
+#pragma implicitwith restore
 

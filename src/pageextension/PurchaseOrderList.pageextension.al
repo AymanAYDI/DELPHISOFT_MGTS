@@ -51,8 +51,8 @@ pageextension 50065 "DEL PurchaseOrderList" extends "Purchase Order List" //9307
 
                 trigger OnAction()
                 var
-                    PurchaseHeader: Record 38;
-                    CduLMinimizingClicksNGTS: Codeunit 50012;
+                    PurchaseHeader: Record "Purchase Header";
+                    CduLMinimizingClicksNGTS: Codeunit "DEL Minimizing Clicks - MGTS";
                 begin
                     PurchaseHeader := Rec;
                     CurrPage.SETSELECTIONFILTER(PurchaseHeader);
@@ -72,10 +72,10 @@ pageextension 50065 "DEL PurchaseOrderList" extends "Purchase Order List" //9307
                 RunPageOnRec = false;
                 trigger OnAction()
                 var
-                    PurchaseHeader: Record 38;
-                    ReportSelection: Record 77;
-                    StandardPurchaseOrder: Report 1322;
-                    CduLMinimizingClicksNGTS: Codeunit 50012;
+                    PurchaseHeader: Record "Purchase Header";
+                    ReportSelection: Record "Report Selections";
+                    StandardPurchaseOrder: Report "Standard Purchase - Order";
+                    CduLMinimizingClicksNGTS: Codeunit "DEL Minimizing Clicks - MGTS";
                 begin
                     PurchaseHeader := Rec;
                     PurchaseHeader.SETRECFILTER();
@@ -93,7 +93,7 @@ pageextension 50065 "DEL PurchaseOrderList" extends "Purchase Order List" //9307
 
     LOCAL PROCEDURE FirstAndRiskItem();
     VAR
-        PurchaseLine_Rec: Record 39;
+        PurchaseLine_Rec: Record "Purchase Line";
     BEGIN
         FirstPurchItem := FALSE;
         RiskItem := FALSE;

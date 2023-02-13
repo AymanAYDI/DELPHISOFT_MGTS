@@ -1,6 +1,5 @@
 codeunit 50032 "DEL Update Request Manager"
 {
-
     trigger OnRun()
     begin
         FNC_Import_All();
@@ -21,7 +20,6 @@ codeunit 50032 "DEL Update Request Manager"
         intProgressStep: array[10] of Integer;
         intProgressTotal: array[10] of Integer;
         timProgress: array[10] of Time;
-
 
     procedure FNC_Process_Requests(updateRequest_Re_Par: Record "DEL Update Request Manager"; deleteWhenUpdated: Boolean; UpdatePlanned_Bo_Par: Boolean; processSilently_Bo_Par: Boolean)
     var
@@ -51,12 +49,10 @@ codeunit 50032 "DEL Update Request Manager"
                     FNC_Ignore_Request(updateRequest_Re_Par.ID);
 
                 COMMIT();
-
             UNTIL (updateRequest_Re_Par.NEXT() = 0);
         FNC_ProgressBar_Close(1);
 
         IF NOT processSilently_Bo_Par THEN MESSAGE('Liste traitée !')
-
     end;
 
     procedure FNC_Add_Request(Requested_For_Deal_ID_Co_Par: Code[20]; Requested_By_Type_Co_Par: Option; Requested_By_TypeNo_Co_Par: Code[20]; Requested_At_DateTime_Par: DateTime) updateRequest_ID_Ret: Code[20]
@@ -78,19 +74,14 @@ codeunit 50032 "DEL Update Request Manager"
 
         IF NOT UpdateRequest_Re.INSERT() THEN
             ERROR('Could not insert request')
-
     end;
-
 
     procedure FNC_Remove_Request(Request_ID_Co_Par: Code[20])
     begin
 
         IF UpdateRequest_Re.GET(Request_ID_Co_Par) THEN
             UpdateRequest_Re.DELETE();
-
-
     end;
-
 
     procedure FNC_Validate_Request(Request_ID_Co_Par: Code[20])
     begin
@@ -101,7 +92,6 @@ codeunit 50032 "DEL Update Request Manager"
         END
     end;
 
-
     procedure FNC_Ignore_Request(Request_ID_Co_Par: Code[20])
     begin
 
@@ -111,7 +101,6 @@ codeunit 50032 "DEL Update Request Manager"
         END
     end;
 
-
     procedure FNC_Test(DealID_Co_Loc: Code[20]): Boolean
     begin
         IF DealID_Co_Loc = '' THEN BEGIN
@@ -119,26 +108,15 @@ codeunit 50032 "DEL Update Request Manager"
             EXIT(FALSE);
         END;
 
-
         EXIT(TRUE);
     end;
-
 
     procedure FNC_Import_All()
     var
         deal_Re_Loc: Record "DEL Deal";
         counter_Loc: Integer;
     begin
-        /*
-        On veut updater les deals qui ont un status différent de terminé ou annulé ET qui ont des éléments
-        qui ont été ajoutés à l'affaire après le dernier update.
-        
-        lister les deals non terminés et non annulés
-        lister les deals ayant des éléments plus récents que le dernier update
-          ajouter les requests
-        
-        traiter la liste
-        */
+
         counter_Loc := 0;
 
         deal_Re_Loc.RESET();
@@ -157,16 +135,12 @@ codeunit 50032 "DEL Update Request Manager"
 
                 FNC_Add_Request(deal_Re_Loc.ID, UpdateRequest_Re.Requested_By_Type::CUSTOM.AsInteger(), 'All', CURRENTDATETIME);
                 counter_Loc += 1;
-
-
             UNTIL (deal_Re_Loc.NEXT() = 0);
 
         FNC_ProgressBar_Close(1);
 
         MESSAGE('%1 update request(s) ajoutée(s) !', counter_Loc);
-
     end;
-
 
     procedure FNC_Import_BlankInvoices()
     var
@@ -174,11 +148,6 @@ codeunit 50032 "DEL Update Request Manager"
         position_Re_Loc: Record "DEL Position";
         counter_Loc: Integer;
     begin
-        /*
-        Ajoute les affaires qui ont des éléments de type "Invoice", sales invoice ou purchase invoice
-        mais qui n'ont pas de positions correspondantes dans la table "Position"
-        */
-
         counter_Loc := 0;
 
         element_Re_Loc.RESET();
@@ -195,22 +164,10 @@ codeunit 50032 "DEL Update Request Manager"
             UNTIL (element_Re_Loc.NEXT() = 0);
 
         MESSAGE('%1 update request(s) ajoutée(s) !', counter_Loc);
-
     end;
 
     procedure FNC_ProcessRequestsByType(Type_Op_Par: Option Invoice,"Purchase Header","Sales Header","Sales Cr. Memo","Purch. Cr. Memo",Payment,Provision,USERID; TypeNo_Co_Par: Code[20]; processSilently_Bo_Par: Boolean)
     begin
-        /*
-        Traite la liste des update requests mais seulement pour un type défini
-        
-        usage:
-        
-        //met à jour toutes les update request générées par des éléments de provision
-        FNC_ProcessRequestsByType(UpdateRequest_Re.Requested_By_Type::Provision, '');
-        
-        //met à jour toutes les update request donc le type est CUSTOM et la référence 'toto'
-        FNC_ProcessRequestsByType(UpdateRequest_Re.Requested_By_Type::CUSTOM, 'toto');
-        */
 
         UpdateRequest_Re.RESET();
 
@@ -220,7 +177,6 @@ codeunit 50032 "DEL Update Request Manager"
             UpdateRequest_Re.SETRANGE("Requested_By_Type No.", TypeNo_Co_Par);
 
         FNC_Process_Requests(UpdateRequest_Re, FALSE, FALSE, processSilently_Bo_Par);
-
     end;
 
     procedure FNC_ProgressBar_Init(index_Int_Par: Integer; interval_Int_Par: Integer; stepProgress_Int_Par: Integer; text_Te_Par: Text[50]; total_Int_Par: Integer)
@@ -234,9 +190,7 @@ codeunit 50032 "DEL Update Request Manager"
           text_Te_Par + '\@1@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\', intProgress[index_Int_Par]);
         intProgressTotal[index_Int_Par] := total_Int_Par;
         timProgress[index_Int_Par] := TIME;
-
     end;
-
 
     procedure FNC_ProgressBar_Update(index_Int_Par: Integer)
     begin
@@ -253,9 +207,7 @@ codeunit 50032 "DEL Update Request Manager"
                 timProgress[index_Int_Par] := TIME;
 
                 diaProgress[index_Int_Par].UPDATE();
-
             END;
-
         END;
     end;
 
@@ -267,12 +219,6 @@ codeunit 50032 "DEL Update Request Manager"
     procedure FNC_Process_RequestsDeal(updateRequest_Re_Par: Record "DEL Update Request Manager"; deleteWhenUpdated: Boolean; UpdatePlanned_Bo_Par: Boolean; processSilently_Bo_Par: Boolean; NumID: Code[20])
     var
     begin
-
-
-        //Traite la liste des update requests passé dans le record en paramètre
-
-        //on ne traite que les status pas encore traité, les lignes qui ne doivent pas etre ignorées et que les lignes pour l'utilisateur
-        //loggé ou vide
         updateRequest_Re_Par.SETFILTER(Requested_By_User, '%1|%2', '', USERID);
         updateRequest_Re_Par.SETRANGE(Request_Status, UpdateRequest_Re.Request_Status::NOK);
         updateRequest_Re_Par.SETRANGE("To be ignored", FALSE);
@@ -304,14 +250,12 @@ codeunit 50032 "DEL Update Request Manager"
 
                 //sauve la transaction
                 COMMIT();
-
             UNTIL (updateRequest_Re_Par.NEXT() = 0);
 
         //ferme la barre de progression
         FNC_ProgressBar_Close(1);
 
         IF NOT processSilently_Bo_Par THEN MESSAGE('Liste traitée !')
-
     end;
 
     procedure FNC_Process_RequestsFilter(updateRequest_Re_Par: Record "DEL Update Request Manager"; deleteWhenUpdated: Boolean; UpdatePlanned_Bo_Par: Boolean; processSilently_Bo_Par: Boolean; FilterDeal: Text)
@@ -355,10 +299,8 @@ codeunit 50032 "DEL Update Request Manager"
 
                 //sauve la transaction
                 COMMIT();
-
             UNTIL (updateRequest_Re_Par.NEXT() = 0);
 
         //ferme la barre de progression
     end;
 }
-

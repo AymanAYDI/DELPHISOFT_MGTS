@@ -1,8 +1,5 @@
 codeunit 50058 "DEL Sales Event Mgt."
 {
-
-
-
     trigger OnRun()
     begin
     end;
@@ -36,7 +33,6 @@ codeunit 50058 "DEL Sales Event Mgt."
             Rec."DEL Amount Mention Under Total" := Customer."DEL Amount Mention Under Total";
         END;
     end;
-
 
     procedure UpdateSalesOrderPrices(SalesHeader: Record "Sales Header")
     var
@@ -73,4 +69,3 @@ codeunit 50058 "DEL Sales Event Mgt."
         END;
     end;
 }
-

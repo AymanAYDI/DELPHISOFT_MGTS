@@ -1,6 +1,5 @@
 xmlport 50005 "DEL Export BL"
 {
-
     Direction = Export;
 
     schema
@@ -94,9 +93,6 @@ xmlport 50005 "DEL Export BL"
         }
     }
 
-
-
     var
         Item_Rec: Record Item;
 }
-

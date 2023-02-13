@@ -2,8 +2,8 @@ table 50088 "DEL Dispute Reason"
 {
 
     Caption = 'Dispute Reason';
-    DrillDownPageID = 50152;
-    LookupPageID = 50152;
+    DrillDownPageID = "DEL Disputes Reasons";
+    LookupPageID = "DEL Disputes Reasons";
 
     fields
     {

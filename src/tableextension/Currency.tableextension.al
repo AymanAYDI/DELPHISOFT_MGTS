@@ -16,7 +16,7 @@ tableextension 50000 "DEL Currency" extends Currency
 
 
     var
-        TypeHelper: Codeunit 10;
+        TypeHelper: Codeunit "Type Helper";
         "-DEL_QR-": Integer;
         "--DEL_QR--": label '';
         ASCIILetterErr: Label 'must contain ASCII letters only';

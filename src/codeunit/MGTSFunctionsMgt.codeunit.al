@@ -1,4 +1,4 @@
-codeunit 50101 "DEL MGTS_FctMgt"
+codeunit 50101 "DEL MGTS_Functions Mgt"
 {
     Procedure UpdateAllShortDimFromDimSetID(DimSetID: Integer; VAR ShortDimVal3: Code[20]; VAR ShortDimVal4: Code[20]; VAR ShortDimVal5: Code[20]; VAR ShortDimVal6: Code[20]; VAR ShortDimVal7: Code[20]; VAR ShortDimVal8: Code[20])
     var
@@ -1105,7 +1105,30 @@ codeunit 50101 "DEL MGTS_FctMgt"
         // DealCU.FNC_Reinit_Deal(PostDealShipmentSelection.Deal_ID, FALSE, TRUE);
     END;
 
-
+    PROCEDURE SkipCUCommit(Skip: Boolean)
+    var
+        SkipCommit: Boolean;
+    BEGIN
+        SkipCommit := Skip;
+    END;
+    //TODO COD80  //Get et le set des var boolean 
+    // LOCAL PROCEDURE UpdateWhseDocuments();
+    // var
+    //     FunstionMgt: Codeunit "DEL MGTS_Functions Mgt";
+    // BEGIN
+    //     IF WhseReceive THEN BEGIN
+    //         //MGTS0123; MHH; single
+    //         FunstionMgt.SkipCUCommit(SkipCommit);
+    //         WhsePostRcpt.PostUpdateWhseDocuments(WhseRcptHeader);
+    //         TempWhseRcptHeader.DELETE;
+    //     END;
+    //     IF WhseShip THEN BEGIN
+    //         //MGTS0123; MHH; single
+    //         FunstionMgt.SkipCUCommit(SkipCommit);
+    //         WhsePostShpt.PostUpdateWhseDocuments(WhseShptHeader);
+    //         TempWhseShptHeader.DELETE;
+    //     END;
+    // END;
 
 
 }

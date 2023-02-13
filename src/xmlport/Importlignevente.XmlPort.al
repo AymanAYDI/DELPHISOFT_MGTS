@@ -2,7 +2,7 @@ xmlport 50013 "DEL Import ligne vente"
 {
 
     Direction = Import;
-    // Encoding = UTF16; TODO: Format= VariableText
+    textEncoding = UTF16;
     FieldSeparator = ';';
     Format = VariableText;
     TableSeparator = ';';

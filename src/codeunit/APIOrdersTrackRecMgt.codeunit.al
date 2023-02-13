@@ -1,7 +1,5 @@
 codeunit 50044 "DEL API Orders Track Rec. Mgt."
 {
-
-
     SingleInstance = true;
 
     trigger OnRun()
@@ -146,10 +144,8 @@ codeunit 50044 "DEL API Orders Track Rec. Mgt."
              (PurchaseLine."No." <> xPurchaseLine."No.") OR
              (PurchaseLine."DEL External reference NGTS" <> xPurchaseLine."DEL External reference NGTS") OR
 
-
              (PurchaseLine."DEL First Purch. Order" <> xPurchaseLine."DEL First Purch. Order") OR
              (PurchaseLine.Description <> xPurchaseLine.Description) OR
-
 
              (PurchaseLine.Quantity <> xPurchaseLine.Quantity) OR
              (PurchaseLine."Line Amount" <> xPurchaseLine."Line Amount"));
@@ -294,9 +290,7 @@ codeunit 50044 "DEL API Orders Track Rec. Mgt."
         OrderAPIRecordTracking."ACO Arrival Port" := PurchaseHeader."DEL Port d'arrivée";
         OrderAPIRecordTracking."ACO Warehouse" := PurchaseHeader."Ship-to Code";
 
-
         OrderAPIRecordTracking."ACO Event" := FORMAT(PurchaseHeader."DEL Code événement");
-
 
         OrderAPIRecordTracking."ACO ETD" := PurchaseHeader."Requested Receipt Date";
         OrderAPIRecordTracking."ACO Incoterm" := PurchaseHeader."Shipment Method Code";
@@ -310,9 +304,7 @@ codeunit 50044 "DEL API Orders Track Rec. Mgt."
         OrderAPIRecordTracking."ACO Amount" := TotalPurchaseLine.Amount;
         OrderAPIRecordTracking."ACO Payment Deadline" := PurchaseHeader."Due Date";
 
-
         OrderAPIRecordTracking."Sent Deal" := FALSE;
-
 
         OrderAPIRecordTracking.MODIFY();
         UpdateACOLineInfo(PurchaseHeader, OrderAPIRecordTracking);
@@ -333,9 +325,7 @@ codeunit 50044 "DEL API Orders Track Rec. Mgt."
         OrderAPIRecordTracking."VCO Customer Ref" := SalesHeader."External Document No.";
         OrderAPIRecordTracking."VCO Delivery date" := SalesHeader."Requested Delivery Date";
 
-
         OrderAPIRecordTracking."Sent Deal" := FALSE;
-
 
         OrderAPIRecordTracking.MODIFY();
     end;
@@ -367,16 +357,13 @@ codeunit 50044 "DEL API Orders Track Rec. Mgt."
                 ACOLinesAPIRecordTracking."ACO Line Amount" := PurchaseLine."Line Amount";
                 ACOLinesAPIRecordTracking.Quantity := PurchaseLine.Quantity;
 
-
                 ACOLinesAPIRecordTracking."ACO New Product" := PurchaseLine."DEL First Purch. Order";
                 ACOLinesAPIRecordTracking."ACO Product Description" := PurchaseLine.Description;
-
 
                 ACOLinesAPIRecordTracking.INSERT();
             UNTIL PurchaseLine.NEXT() = 0;
         END;
     end;
-
 
     procedure UpdateOrderAPIRecordTracking(DealID: Code[20])
     var
@@ -405,4 +392,3 @@ codeunit 50044 "DEL API Orders Track Rec. Mgt."
         UpdateVCOInfo(SalesHeader, OrderAPIRecordTracking);
     end;
 }
-

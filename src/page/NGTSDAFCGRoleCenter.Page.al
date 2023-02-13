@@ -539,8 +539,6 @@ page 50098 "DEL NGTS DAF-CG Role Center"
             {
                 Caption = 'Sales &Credit Memo';
                 Image = CreditMemo;
-                Promoted = true;
-                PromotedCategory = Process;
                 RunObject = Page "Sales Credit Memo";
                 RunPageMode = Create;
             }
@@ -548,8 +546,6 @@ page 50098 "DEL NGTS DAF-CG Role Center"
             {
                 Caption = 'P&urchase Credit Memo';
                 Image = CreditMemo;
-                Promoted = true;
-                PromotedCategory = Process;
                 RunObject = Page "Purchase Credit Memo";
                 RunPageMode = Create;
             }

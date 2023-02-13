@@ -1,9 +1,7 @@
 codeunit 50028 "DEL Alert and fee copy Mgt"
 {
-
     var
         temp_LogisticTmp_Re: Record "DEL Logistic" temporary;
-
 
     procedure FNC_GlobalCheck(Deal_ID: Code[20])
     var
@@ -11,7 +9,6 @@ codeunit 50028 "DEL Alert and fee copy Mgt"
         DealShip_Re_Loc: Record "DEL Deal Shipment";
         Logistic_Re_Loc: Record "DEL Logistic";
     begin
-
 
         Logistic_Re_Loc.SETRANGE(Deal_ID, Deal_ID);
         IF Logistic_Re_Loc.FINDFIRST() THEN
@@ -33,11 +30,9 @@ codeunit 50028 "DEL Alert and fee copy Mgt"
                     FNC_Alert3(DealShip2_Re_Loc);
                     FNC_Alert4(DealShip2_Re_Loc);
                     DealShip2_Re_Loc.MODIFY();
-
                 END;
             UNTIL DealShip_Re_Loc.NEXT() = 0;
     end;
-
 
     procedure FNC_Alert1(var DealShip_Re_Par: Record "DEL Deal Shipment")
     begin
@@ -46,12 +41,7 @@ codeunit 50028 "DEL Alert and fee copy Mgt"
             DealShip_Re_Par.PI := DealShip_Re_Par.PI::OK
         ELSE
             DealShip_Re_Par.PI := DealShip_Re_Par.PI::"En cours";
-
-
-
-
     end;
-
 
     procedure FNC_Alert2(var DealShip_Re_Par: Record "DEL Deal Shipment")
     begin
@@ -60,9 +50,7 @@ codeunit 50028 "DEL Alert and fee copy Mgt"
             DealShip_Re_Par."A facturer" := DealShip_Re_Par."A facturer"::"A Facturer"
         ELSE
             DealShip_Re_Par."A facturer" := DealShip_Re_Par."A facturer"::"En cours";
-
     end;
-
 
     procedure FNC_Alert3(var DealShip_Re_Par: Record "DEL Deal Shipment")
     begin
@@ -76,7 +64,6 @@ codeunit 50028 "DEL Alert and fee copy Mgt"
             DealShip_Re_Par."Depart shipment" := FALSE;
     end;
 
-
     procedure FNC_Alert4(var DealShip_Re_Par: Record "DEL Deal Shipment")
     begin
 
@@ -88,7 +75,6 @@ codeunit 50028 "DEL Alert and fee copy Mgt"
         END ELSE
             DealShip_Re_Par."Arrival ship" := FALSE;
     end;
-
 
     procedure FNC_FeeCopy(Type_Op_Par: Enum "Credit Transfer Account Type"; No_Co_Par: Code[20]; OriNo_Co_Par: Code[20])
     var
@@ -113,7 +99,6 @@ codeunit 50028 "DEL Alert and fee copy Mgt"
                 ConnectionFeeIns_Re_Loc.INSERT(TRUE);
             UNTIL ConnectionFee_Re_Loc.NEXT() = 0;
     end;
-
 
     procedure FNC_LogisticCopy(DealID_Co_Par: Code[20]; ID_Co_Par: Code[20])
     var
@@ -149,4 +134,3 @@ codeunit 50028 "DEL Alert and fee copy Mgt"
             END;
     end;
 }
-

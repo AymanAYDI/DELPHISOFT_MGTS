@@ -33,7 +33,7 @@ tableextension 50044 "DEL GenJournalLine" extends "Gen. Journal Line" //81
         {
             trigger OnAfterValidate()
             var
-                DimMgt: Codeunit "DEL MGTS_FctMgt";
+                DimMgt: Codeunit "DEL MGTS_Functions Mgt";
             begin
                 DimMgt.UpdateAllShortDimFromDimSetID("Dimension Set ID", "DEL Shortcut Dim 3 Code", "DEL Shortcut Dim 4 Code", "DEL Shortcut Dim 5 Code",
                                                         "DEL Shortcut Dim 6 Code", "DEL Shortcut Dim 7 Code", "DEL Shortcut Dim 8 Code");

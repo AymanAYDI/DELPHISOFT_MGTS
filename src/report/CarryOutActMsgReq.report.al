@@ -89,7 +89,7 @@ report 50077 "DEL CarryOut Act. Msg. - Req." //493
 
     local procedure UseOneJnl(var ReqLine1: Record "Requisition Line")
     var
-        DELMGTS_FctMgt: Codeunit "DEL MGTS_FctMgt";
+        DELMGTS_FctMgt: Codeunit "DEL MGTS_Functions Mgt";
     begin
         ReqWkshTmpl.GET(ReqLine1."Worksheet Template Name");
         IF ReqWkshTmpl.Recurring AND (ReqLine1.GETFILTER("Order Date") <> '') THEN
