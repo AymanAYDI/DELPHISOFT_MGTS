@@ -6,7 +6,7 @@ pageextension 50019 "DEL CustomerCard" extends "Customer Card" //21
         {
             trigger OnLookup(var Text: Text): Boolean
             var
-                CustPriceGroup: Record 6;
+                CustPriceGroup: Record "Customer Price Group";
                 Text50000: Label '%1|%2';
 
             begin

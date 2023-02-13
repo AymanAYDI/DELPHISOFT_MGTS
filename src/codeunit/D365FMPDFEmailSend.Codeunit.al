@@ -107,7 +107,6 @@ codeunit 50053 "DEL D365FM PDF Email Send"
 
                     LoadMailBody(RecLBLOBRef, TxtLEmailBodyText, RecRefMaster);
                     EmailMessage.AppendToBody(TxtLEmailBodyText);
-                    //ToFile := SaveReportAsPDF(RecRefMaster); //TODO : on a essayé de remplacer ce code 
                     REPORT.SAVEAS(RecRefMaster.RecordId.TableNo, '', ReportFormat::Pdf, OutStream, RecRefMaster); // TODO: Check
                     Tempblob.CreateOutStream(OutStream);
                     Tempblob.CreateInStream(Instream);
@@ -121,19 +120,15 @@ codeunit 50053 "DEL D365FM PDF Email Send"
                     RecRefMaster.SETTABLE(ServiceHeader);
                     LoadMailBody(RecLBLOBRef, TxtLEmailBodyText, RecRefMaster);
                     EmailMessage.AppendtoBody(TxtLEmailBodyText);
-                    //ToFile := SaveReportAsPDF(RecRefMaster); //TODO 
                     REPORT.SAVEAS(RecRefMaster.RecordId.TableNo, '', ReportFormat::Pdf, OutStream, RecRefMaster); // TODO: Check
                     Tempblob.CreateOutStream(OutStream);
                     Tempblob.CreateInStream(Instream);
                     EmailMessage.AddAttachment('Facture', '', Instream);
                     GetAttachmentDocuments(EntryNo);
                     Email.Send(EmailMessage);
-                    // IF Email.Send(EmailMessage) THEN BEGIN  //TODO 
-                    //     //ServiceHeader2.GET(ServiceHeader."Document Type",ServiceHeader."No.");
-                    //     //ServiceHeader2."DEL No. Send Email" +=1;
-                    //     //ServiceHeader2."DEL Subscribtion Print Date" := TODAY;
-                    //     ServiceHeader2.MODIFY();
-                    // END;
+                    IF Email.Send(EmailMessage) THEN 
+                        ServiceHeader2.MODIFY();
+                 
                 END;
             // Issue reminder
             297:

@@ -92,11 +92,8 @@ codeunit 50035 "DEL Update FCY On G/L Entry"
                 UNTIL GLAccount_Re_Loc.NEXT() = 0;
 
             MESSAGE('Mise à jour effectuée !');
-
         END;
-
     end;
-
 
     procedure updateGLEntry(var GLEntry_Re_Par: Record "G/L Entry"; Amount_Dec_Par: Decimal; Currency_Co_Par: Code[10]; Factor_Dec_Par: Decimal)
     var
@@ -116,10 +113,7 @@ codeunit 50035 "DEL Update FCY On G/L Entry"
                     GLEntry_Re_Loc."DEL Initial Amount (FCY)" := GLEntry_Re_Loc.Amount * Factor_Dec_Par;
                     GLEntry_Re_Loc."DEL Initial Currency (FCY)" := Currency_Co_Par;
                     GLEntry_Re_Loc.MODIFY();
-
                 UNTIL (GLEntry_Re_Loc.NEXT() = 0);
-
         END
     end;
 }
-

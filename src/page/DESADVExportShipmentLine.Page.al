@@ -7,7 +7,7 @@ page 50151 "DEL DESADV ExportShipment Line"
     InsertAllowed = false;
     ModifyAllowed = false;
     PageType = ListPart;
-    SourceTable = 50087;
+    SourceTable = "DEL DESADV Export Buffer Line";
 
     layout
     {

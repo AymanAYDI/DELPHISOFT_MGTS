@@ -1,3 +1,4 @@
+#pragma implicitwith disable
 page 50128 "DEL G/L Reverse For Customer"
 {
 
@@ -213,7 +214,7 @@ page 50128 "DEL G/L Reverse For Customer"
 
                     trigger OnAction()
                     begin
-                        ShowDimensions();
+                        Rec.ShowDimensions();
                         CurrPage.SAVERECORD();
                     end;
                 }
@@ -229,7 +230,7 @@ page 50128 "DEL G/L Reverse For Customer"
                     var
                         GLEntriesDimensionOverview: Page "G/L Entries Dimension Overview";
                     begin
-                        IF ISTEMPORARY THEN BEGIN
+                        IF Rec.ISTEMPORARY THEN BEGIN
                             GLEntriesDimensionOverview.SetTempGLEntry(Rec);
                             GLEntriesDimensionOverview.RUN();
                         END ELSE
@@ -247,7 +248,7 @@ page 50128 "DEL G/L Reverse For Customer"
 
                     trigger OnAction()
                     begin
-                        ShowValueEntries();
+                        Rec.ShowValueEntries();
                     end;
                 }
             }
@@ -273,7 +274,7 @@ page 50128 "DEL G/L Reverse For Customer"
                     begin
                         CLEAR(ReversalEntry);
                         IF Rec.Reversed THEN
-                            ReversalEntry.AlreadyReversedEntry(TABLECAPTION, "Entry No.");
+                            ReversalEntry.AlreadyReversedEntry(Rec.TABLECAPTION, Rec."Entry No.");
                         IF Rec."Journal Batch Name" = '' THEN
                             ReversalEntry.TestFieldError();
                         Rec.TESTFIELD("Transaction No.");
@@ -296,7 +297,7 @@ page 50128 "DEL G/L Reverse For Customer"
                         var
                             IncomingDocument: Record "Incoming Document";
                         begin
-                            IncomingDocument.ShowCard("Document No.", "Posting Date");
+                            IncomingDocument.ShowCard(Rec."Document No.", Rec."Posting Date");
                         end;
                     }
                     action(SelectIncomingDoc)
@@ -312,7 +313,7 @@ page 50128 "DEL G/L Reverse For Customer"
                         var
                             IncomingDocument: Record "Incoming Document";
                         begin
-                            IncomingDocument.SelectIncomingDocumentForPostedDocument("Document No.", "Posting Date", RECORDID);
+                            IncomingDocument.SelectIncomingDocumentForPostedDocument(Rec."Document No.", Rec."Posting Date", Rec.RECORDID);
                         end;
                     }
                     action(IncomingDocAttachFile)
@@ -328,7 +329,7 @@ page 50128 "DEL G/L Reverse For Customer"
                         var
                             IncomingDocumentAttachment: Record "Incoming Document Attachment";
                         begin
-                            IncomingDocumentAttachment.NewAttachmentFromPostedDocument("Document No.", "Posting Date");
+                            IncomingDocumentAttachment.NewAttachmentFromPostedDocument(Rec."Document No.", Rec."Posting Date");
                         end;
                     }
                 }
@@ -361,7 +362,7 @@ page 50128 "DEL G/L Reverse For Customer"
                 var
                     PostedDocsWithNoIncBuf: Record "Posted Docs. With No Inc. Buf.";
                 begin
-                    COPYFILTER("G/L Account No.", PostedDocsWithNoIncBuf."G/L Account No. Filter");
+                    Rec.COPYFILTER("G/L Account No.", PostedDocsWithNoIncBuf."G/L Account No. Filter");
                     PAGE.RUN(PAGE::"Posted Docs. With No Inc. Doc.", PostedDocsWithNoIncBuf);
                 end;
             }
@@ -378,7 +379,7 @@ page 50128 "DEL G/L Reverse For Customer"
 
     trigger OnOpenPage()
     begin
-        IF FINDFIRST() THEN;
+        IF Rec.FINDFIRST() THEN;
     end;
 
     var
@@ -389,8 +390,8 @@ page 50128 "DEL G/L Reverse For Customer"
     begin
         IF GLAcc."No." <> Rec."G/L Account No." THEN
             IF NOT GLAcc.GET(Rec."G/L Account No.") THEN
-                IF GETFILTER("G/L Account No.") <> '' THEN
-                    IF GLAcc.GET(GETRANGEMIN("G/L Account No.")) THEN;
+                IF Rec.GETFILTER("G/L Account No.") <> '' THEN
+                    IF GLAcc.GET(Rec.GETRANGEMIN("G/L Account No.")) THEN;
         EXIT(STRSUBSTNO('%1 %2', GLAcc."No.", GLAcc.Name))
     end;
 
@@ -399,4 +400,6 @@ page 50128 "DEL G/L Reverse For Customer"
         CurrPage.SETSELECTIONFILTER(GLEntry);
     end;
 }
+
+#pragma implicitwith restore
 

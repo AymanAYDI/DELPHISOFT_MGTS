@@ -1,6 +1,5 @@
 xmlport 50000 "DEL IC Transitaire"
 {
-
     Encoding = UTF8;
 
     schema
@@ -120,7 +119,6 @@ xmlport 50000 "DEL IC Transitaire"
                         }
                         textelement(HSCODE)
                         {
-
                             trigger OnBeforePassVariable()
                             begin
                                 Item.SETRANGE("No.", "Purchase Line"."No.");
@@ -130,7 +128,6 @@ xmlport 50000 "DEL IC Transitaire"
                         }
                         textelement(Marque)
                         {
-
                             trigger OnBeforePassVariable()
                             begin
                                 Item.SETRANGE("No.", "Purchase Line"."No.");
@@ -141,19 +138,17 @@ xmlport 50000 "DEL IC Transitaire"
                         }
                         textelement(Quantite)
                         {
-
                             trigger OnBeforePassVariable()
                             var
                                 longueur: Integer;
-                                quantite1: Text[30];
-                                quantite2: Text[30];
-                                quantite3: Text[30];
+                                quantite1: Text;
+                                quantite2: Text;
+                                quantite3: Text;
                             begin
                                 longueur := STRLEN(FORMAT("Purchase Line".Quantity));
 
                                 IF (longueur < 4) THEN
                                     Quantite := FORMAT("Purchase Line".Quantity);
-
 
                                 IF (longueur < 8) AND (longueur > 3) THEN BEGIN
                                     quantite1 := COPYSTR(FORMAT("Purchase Line".Quantity), 1, longueur - 4);
@@ -189,7 +184,6 @@ xmlport 50000 "DEL IC Transitaire"
 
     requestpage
     {
-
         layout
         {
         }
@@ -213,4 +207,3 @@ xmlport 50000 "DEL IC Transitaire"
         Item: Record Item;
         Manufacturer: Record Manufacturer;
 }
-

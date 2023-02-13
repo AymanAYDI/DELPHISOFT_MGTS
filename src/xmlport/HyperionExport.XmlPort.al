@@ -208,11 +208,11 @@ xmlport 50014 "DEL Hyperion Export"
                 group(Options)
                 {
                     Caption = 'Options';
-                    field(FromDate; FromDate)
+                    field(FromDateF; FromDate)
                     {
                         Caption = 'From date';
                     }
-                    field(ToDate; ToDate)
+                    field(ToDateF; ToDate)
                     {
                         Caption = 'To date';
                     }

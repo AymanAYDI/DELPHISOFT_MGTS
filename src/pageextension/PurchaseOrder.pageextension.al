@@ -228,7 +228,7 @@ pageextension 50053 "DEL PurchaseOrder" extends "Purchase Order" //50
                 trigger OnAction()
                 var
                     ApprovalsMgmt: Codeunit "Approvals Mgmt.";
-                    MGTSFCT: Codeunit "DEL MGTS_FctMgt";
+                    MGTSFCT: Codeunit "DEL MGTS_Functions Mgt";
                     InstructionMgt: Codeunit "Instruction Mgt.";
                     PrepaymentMgt: Codeunit "Prepayment Mgt.";
                     PurchPost: Codeunit "Purch.-Post (Yes/No)";
@@ -279,7 +279,7 @@ pageextension 50053 "DEL PurchaseOrder" extends "Purchase Order" //50
                 trigger OnAction()
                 var
                     ApprovalsMgmt: Codeunit "Approvals Mgmt.";
-                    MGTSFCT: Codeunit "DEL MGTS_FctMgt";
+                    MGTSFCT: Codeunit "DEL MGTS_Functions Mgt";
                     InstructionMgt: Codeunit "Instruction Mgt.";
                     PrepaymentMgt: Codeunit "Prepayment Mgt.";
                     PurchPostPrint: Codeunit "Purch.-Post + Print";

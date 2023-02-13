@@ -3,7 +3,7 @@ codeunit 50011 "DEL MGTS Set/Get Functions"
     SingleInstance = true;
 
     var
-        TempSpecialSHBuffer: Record "Sales Header";
+        SpecialSHBuffer: Record "Sales Header";
         HideValidationDialog: Boolean;
         NotInvoiceSpecOrderPost: boolean;
         shipmentSelected_Bo_CDU90: Boolean;
@@ -122,8 +122,8 @@ codeunit 50011 "DEL MGTS Set/Get Functions"
     begin
         SpecOrderPosting := NewSpecOrderPost;
 
-        TempSpecialSHBuffer.RESET();
-        TempSpecialSHBuffer.DELETEALL();
+        SpecialSHBuffer.RESET();
+        SpecialSHBuffer.DELETEALL();
 
     end;
 
@@ -134,12 +134,12 @@ codeunit 50011 "DEL MGTS Set/Get Functions"
 
         pTempSH.RESET();
         pTempSH.DELETEALL();
-        TempSpecialSHBuffer.RESET();
-        IF TempSpecialSHBuffer.FINDSET() THEN
+        SpecialSHBuffer.RESET();
+        IF SpecialSHBuffer.FINDSET() THEN
             REPEAT
-                pTempSH := TempSpecialSHBuffer;
+                pTempSH := SpecialSHBuffer;
                 pTempSH.INSERT();
-            UNTIL TempSpecialSHBuffer.NEXT() = 0;
+            UNTIL SpecialSHBuffer.NEXT() = 0;
 
     end;
 

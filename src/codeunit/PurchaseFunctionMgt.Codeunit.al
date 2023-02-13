@@ -1,14 +1,11 @@
 codeunit 50089 "DEL PurchaseFunction Mgt"
 {
-
-
     procedure UpdatePurchaseOrderPrices(PurchaseHeader: Record "Purchase Header")
     var
         PurchaseLine: Record "Purchase Line";
         PriceCalcMgt: Codeunit "Purch. Price Calc. Mgt.";
         Win: Dialog;
         CofirmMessage: Label 'Are you sure you want to update the order prices?';
-
         NothingToHandleErr: Label 'There is nothing to handle.';
         UpdatedPriceMess: Label 'Update completed.';
         UpdatePricesInProgress: Label 'Updating prices...';
@@ -37,4 +34,3 @@ codeunit 50089 "DEL PurchaseFunction Mgt"
         END;
     end;
 }
-

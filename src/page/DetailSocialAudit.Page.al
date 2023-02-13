@@ -35,9 +35,7 @@ page 50019 "DEL Detail Social Audit"
             action("Import Audit social")
             {
                 Image = Import;
-                Promoted = true;
-                PromotedIsBig = true;
-                PromotedOnly = true;
+
                 trigger OnAction()
                 begin
                     IF Auditsocial.FINDFIRST() THEN

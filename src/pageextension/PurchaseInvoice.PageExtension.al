@@ -1,3 +1,4 @@
+#pragma implicitwith disable
 pageextension 50058 "DEL PurchaseInvoice" extends "Purchase Invoice" //51
 {
     layout
@@ -66,17 +67,16 @@ pageextension 50058 "DEL PurchaseInvoice" extends "Purchase Invoice" //51
                 PromotedIsBig = true;
                 trigger OnAction()
                 var
-                    deal_Re_Loc: Record 50020;
-                    element_Re_Loc: Record 50021;
-                    dealShipment_Re_Loc: Record 50030;
-                    dealShipmentSelection_Re_Loc: Record 50031;
-                    dealShipmentConnection_Re_Loc: Record 50032;
-                    dealShipmentSelection_Page_Loc: Page 50038;
+                    deal_Re_Loc: Record "DEL Deal";
+                    element_Re_Loc: Record "DEL Element";
+                    dealShipment_Re_Loc: Record "DEL Deal Shipment";
+                    dealShipmentSelection_Re_Loc: Record "DEL Deal Shipment Selection";
+                    dealShipmentConnection_Re_Loc: Record "DEL Deal Shipment Connection";
+                    dealShipmentSelection_Page_Loc: Page "DEL Deal Shipment Selection";
                     deal_ID_Co_Loc: Code[20];
                 begin
-                    //on cherche si des lignes ont d‚j… ‚t‚ g‚n‚r‚e pour cette facture
                     dealShipmentSelection_Re_Loc.RESET();
-                    dealShipmentSelection_Re_Loc.SETRANGE(dealShipmentSelection_Re_Loc."Document No.", "No.");
+                    dealShipmentSelection_Re_Loc.SETRANGE(dealShipmentSelection_Re_Loc."Document No.", Rec."No.");
                     dealShipmentSelection_Re_Loc.SETRANGE("Document Type", dealShipmentSelection_Re_Loc."Document Type"::"Purchase Invoice Header");
                     dealShipmentSelection_Re_Loc.SETRANGE(USER_ID, USERID);
 
@@ -94,7 +94,7 @@ pageextension 50058 "DEL PurchaseInvoice" extends "Purchase Invoice" //51
 
                                     dealShipmentSelection_Re_Loc.INIT();
                                     dealShipmentSelection_Re_Loc."Document Type" := dealShipmentSelection_Re_Loc."Document Type"::"Purchase Invoice Header";
-                                    dealShipmentSelection_Re_Loc."Document No." := "No.";
+                                    dealShipmentSelection_Re_Loc."Document No." := Rec."No.";
                                     dealShipmentSelection_Re_Loc.Deal_ID := deal_Re_Loc.ID;
                                     dealShipmentSelection_Re_Loc."Shipment No." := dealShipment_Re_Loc.ID;
                                     dealShipmentSelection_Re_Loc.USER_ID := USERID;
@@ -166,4 +166,6 @@ pageextension 50058 "DEL PurchaseInvoice" extends "Purchase Invoice" //51
     //TODO SwissQRBillPurchases : Codeunit 11502;
 
 }
+
+#pragma implicitwith restore
 

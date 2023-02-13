@@ -3,8 +3,7 @@ xmlport 50006 "DEL Import commande vente"
 
     Direction = Import;
 
-    //Encoding = UTF16;
-    //TODO: The property 'Encoding' can only be set if the property 'Format' is set to 'Xml'
+    textEncoding = UTF16;
     FieldSeparator = ';';
     Format = VariableText;
     TableSeparator = ';';

@@ -234,13 +234,13 @@ pageextension 50049 "DEL ItemCard" extends "Item Card" //30
         }
     }
     var
-        DimensionValue: Record 349;
-        Marque_Rec: Record 5720;
-        ItemCategory: Record 5722;
+        DimensionValue: Record "Dimension Value";
+        Marque_Rec: Record Manufacturer;
+        ItemCategory: Record "Item Category";
+        //TODO ProductGroup : Record 5723;
         DimensionValueDesc: Text[50];
         ItemCategoryDesc: Text[50];
         MarqueDesc: Text[50];
-        //TODO ProductGroup : Record 5723;
         ProductGroupDesc: Text[50];
 
     trigger OnAfterGetRecord()

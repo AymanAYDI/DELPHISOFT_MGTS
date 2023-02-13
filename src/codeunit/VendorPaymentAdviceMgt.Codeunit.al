@@ -4,6 +4,7 @@ codeunit 50057 "DEL Vendor Payment Advice Mgt."
     var
         JournalBatchName: Code[10];
         JournalTemplateName: Code[10];
+        FileNameLbl: Label '';
         Text001: Label 'Vendor : ##################1################## \\ @@@@@@@@@@@@@@@@@@2@@@@@@@@@@@@@@@@@@';
         Text002: Label 'Processing completed !';
 
@@ -19,6 +20,7 @@ codeunit 50057 "DEL Vendor Payment Advice Mgt."
         ProgressionDialog: Dialog;
         Counter: Integer;
         RecordNumber: Integer;
+        ServerFile: Text;
         MailBody: Text;
         SendFromAddress: Text;
         SendToAddress: Text;
@@ -73,13 +75,13 @@ codeunit 50057 "DEL Vendor Payment Advice Mgt."
                 //Mail Subject and Body-Text
                 GetMailSubjectAndBodyFromModel(Vendor."DEL Email Payment Advice", Vendor."Language Code", SubjectMail, MailBody);
 
-            //Create PDF file
-            //TODO SavePDF(_JournalTemplateName, _JournalBatchName, Vendor."No.", ServerFile);
+                //Create PDF file
+                SavePDF(_JournalTemplateName, _JournalBatchName, Vendor."No.", ServerFile);
 
-            //Send mail
-            //TODO IF EXISTS(ServerFile) THEN
-            //     SendMail(SendFromName, SendFromAddress, SubjectMail, SendToAddress, MailBody,
-            //     ServerFile, STRSUBSTNO(FileNameLbl, Vendor."No."));
+                //Send mail
+                //TODO // IF EXISTS(ServerFile) THEN
+                if ServerFile <> '' then
+                    SendMail(SendToAddress, SubjectMail, MailBody, ServerFile, STRSUBSTNO(FileNameLbl, Vendor."No."), ''); //TODO a voir le contentType si necessaire 
             UNTIL TempVendor.NEXT() = 0;
             IF GUIALLOWED THEN
                 ProgressionDialog.CLOSE();
@@ -87,26 +89,28 @@ codeunit 50057 "DEL Vendor Payment Advice Mgt."
         END;
     end;
 
-    // local procedure SendSMTPmail(_SenderName: Text; _SenderAddress: Text; _Recipients: Text;
-    // _Subject: Text; _Body: Text; _AttachementFullPathFileName: Text; _FileName: Text)
-    // var
-    //     //TODO: à vérifier
-    //     SMTPMail: Codeunit "Email Message";
-    // begin
-    //    // SMTPMail.CreateMessage(_SenderName, _SenderAddress, _Recipients, _Subject, '', TRUE);
-    //    SMTPMail.Create(_SenderName, _SenderAddress, _Recipients, _Subject, '', TRUE);
-    //     SMTPMail.AppendBody(_Body);
-    //     SMTPMail.AddAttachment(_AttachementFullPathFileName, _FileName);
-    //     SMTPMail.Send;
-    // end;
-    local procedure SendMail(_Recipients: Text; _Subject: Text; _Body: Text;
-        _AttachementFullPathFileName: Text[250]; _FileName: Text[250]; ContentType: text[250])
+    local procedure SendSMTPmail(_SenderName: Text; _SenderAddress: Text; _Recipients: Text;
+    _Subject: Text; _Body: Text; _AttachementFullPathFileName: Text; _FileName: Text)
+    var
+        //TODO: à vérifier lors du test si on est besoin de mettre le sender name en parametre : j'ai dupliquer la fct 
+        Email: codeunit "Email";
+        MailMessage: Codeunit "Email Message";
+
+    begin
+        // SMTPMail.CreateMessage(_SenderName, _SenderAddress, _Recipients, _Subject, '', TRUE);
+        MailMessage.Create(_Recipients, _Subject, '', TRUE);
+        MailMessage.AppendToBody(_Body);
+        //TODO: MailMessage.AddAttachment(_AttachementFullPathFileName, _FileName);
+        Email.Send(MailMessage);
+
+    end;
+
+    local procedure SendMail(_Recipients: Text; _Subject: Text; _Body: Text; _AttachementFullPathFileName: Text[250]; _FileName: Text[250]; ContentType: text[250])
     var
         Email: codeunit "Email";
         MailMessage: Codeunit "Email Message";
     begin
         MailMessage.Create(_Recipients, _Subject, '', true);
-
         MailMessage.AppendToBody(_Body);
         MailMessage.AddAttachment(_AttachementFullPathFileName, _FileName, ContentType);
         Email.Send(MailMessage);
@@ -199,5 +203,6 @@ codeunit 50057 "DEL Vendor Payment Advice Mgt."
         JournalBatchName := _GnlJourLine."Journal Batch Name";
         JournalTemplateName := _GnlJourLine."Journal Template Name";
     end;
+
 }
 

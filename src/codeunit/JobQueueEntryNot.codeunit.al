@@ -37,7 +37,6 @@ codeunit 50054 "DEL Job Queue Entry Not."
         IF RecLJobQueueEntry."DEL Notify By Email Inactive" THEN
             IF (RecLJobQueueEntry.Status = RecLJobQueueEntry.Status::"In Process") OR
               (RecLJobQueueEntry.Status = RecLJobQueueEntry.Status::Ready) OR
-              //TODO:à vérifier (RecLJobQueueEntry.Status = RecLJobQueueEntry.Status::"5")
               (RecLJobQueueEntry.Status = RecLJobQueueEntry.Status::"On Hold with Inactivity Timeout")
               THEN
                 IF ((CURRENTDATETIME - RecLJobQueueEntry."Earliest Start Date/Time") > 7200000) THEN

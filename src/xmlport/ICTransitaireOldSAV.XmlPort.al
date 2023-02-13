@@ -117,9 +117,9 @@ xmlport 50003 "DEL IC Transitaire Old SAV"
                             trigger OnBeforePassVariable()
                             var
                                 longueur: Integer;
-                                quantite1: Text[30];
-                                quantite2: Text[30];
-                                quantite3: Text[30];
+                                quantite1: Text;
+                                quantite2: Text;
+                                quantite3: Text;
                             begin
                                 longueur := STRLEN(FORMAT("Purchase Line".Quantity));
 

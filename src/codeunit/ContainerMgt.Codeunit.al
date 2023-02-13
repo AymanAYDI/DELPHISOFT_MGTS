@@ -68,9 +68,6 @@ codeunit 50060 "DEL Container Mgt"
         ContainerLine.COPY(_ContainerLine);
         IF ContainerLine.ISEMPTY THEN
             ERROR(NothingToPostErr);
-
-        //Vérification des quantités restantes à réceptionner et les Quantités restantes à expédier
-
         ContainerLevel1.COPY(_ContainerLine);
         ContainerLevel1.SETRANGE(Level, 1);
         IF NOT ContainerLevel1.ISEMPTY THEN BEGIN
@@ -167,7 +164,7 @@ codeunit 50060 "DEL Container Mgt"
             ContainerLevel2.FINDSET;
             REPEAT
                 IF PurchaseHeader.GET(PurchaseHeader."Document Type"::Order, ContainerLevel2."Order No.") THEN BEGIN
-                    //TODO PurchaseHeader."DEL Container No." := ContainerLevel2."Container No.";
+                    PurchaseHeader."DEL Container No." := ContainerLevel2."Container No.";
                     PurchaseHeader.MODIFY;
 
                     IF PurchaseLine.GET(PurchaseHeader."Document Type", PurchaseHeader."No.", ContainerLevel2."Order Line No.") THEN BEGIN
@@ -179,7 +176,7 @@ codeunit 50060 "DEL Container Mgt"
 
                         IF (PurchaseLine."Special Order Sales No." <> '') AND (PurchaseLine."Special Order Sales Line No." <> 0) THEN
                             IF SalesHeader.GET(SalesHeader."Document Type"::Order, PurchaseLine."Special Order Sales No.") THEN BEGIN
-                                //TODO  SalesHeader."DEL Container No." := ContainerLevel2."Container No.";
+                                SalesHeader."DEL Container No." := ContainerLevel2."Container No.";
                                 SalesHeader.MODIFY;
 
                                 IF SalesLine.GET(SalesLine."Document Type"::Order, PurchaseLine."Special Order Sales No.", PurchaseLine."Special Order Sales Line No.") THEN
@@ -205,7 +202,7 @@ codeunit 50060 "DEL Container Mgt"
         DealShipmentSelection: Record "DEL Deal Shipment Selection";
         PurchaseHeader: Record "Purchase Header";
         Deal: Codeunit "DEL Deal";
-        FctMgt: Codeunit "DEL MGTS_FctMgt";
+        FctMgt: Codeunit "DEL MGTS_Functions Mgt";
         GetSetCDU: Codeunit "DEL MGTS Set/Get Functions";
         UpdateRequestManager: Codeunit "DEL Update Request Manager";
         PurchPost: Codeunit "Purch.-Post";
